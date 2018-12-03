@@ -828,8 +828,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 		}
 		// 展期成功
-		if ("detail".equals(pageFlag)
-			&& (BorrowModel.STATE_DELAY_PAY.equals(borrow.getState()))) {
+		if (BorrowModel.STATE_DELAY_PAY.equals(borrow.getState())) {
 			bpMap.put("state", borrow.getState());
 			pgList = borrowProgressMapper.listProgress(bpMap);
 			boolean passFlag = true;
