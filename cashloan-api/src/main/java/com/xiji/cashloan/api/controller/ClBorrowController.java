@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xiji.cashloan.cl.service.MagicRiskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -77,6 +78,8 @@ public class ClBorrowController extends BaseController {
 	private SceneBusinessLogService sceneBusinessLogService;
 	@Resource
 	private UserBaseInfoService userBaseInfoService;
+	@Resource
+	private MagicRiskService magicRiskService;
 	
 	/**
 	 * 查询借款列表
@@ -380,6 +383,18 @@ public class ClBorrowController extends BaseController {
 		data.put("isShow", isShow);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_DATA, data);
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+	/**
+	 * 测试魔杖2.0数据保存
+	 */
+	@RequestMapping(value = "/api/act/borrow/testMagic.htm")
+	public void testMagic() {
+		int i = magicRiskService.magicReportRequest(null, null);
+		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);

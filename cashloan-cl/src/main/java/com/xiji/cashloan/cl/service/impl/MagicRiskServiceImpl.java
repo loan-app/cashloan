@@ -1,8 +1,14 @@
 package com.xiji.cashloan.cl.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.service.MagicRiskService;
+import com.xiji.cashloan.cl.util.magic.MagicRiskConstant;
+import com.xiji.cashloan.cl.util.magic.MagicRiskUtils;
+import com.xiji.cashloan.cl.util.magic.MoxieSignUtils;
 import com.xiji.cashloan.cl.util.magic.ObjectConvertUtil;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.rc.domain.TppBusiness;
@@ -16,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 魔蝎风控数据保存实现类
@@ -95,7 +103,45 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
     @Override
     public int magicReportRequest(Borrow borrow, TppBusiness business) {
-        return 0;
+
+        long userId = 1;
+        try {
+            String appId = Global.getValue("mx_app_id");
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = new HashMap<>();
+            reqParams.put(MagicRiskConstant.REQ_METHOD, MagicRiskConstant.METHOD_MAGICWAND2);
+            reqParams.put(MagicRiskConstant.REQ_APP_ID, appId);
+            reqParams.put(MagicRiskConstant.REQ_VERSION, MagicRiskConstant.VERSION);
+            reqParams.put(MagicRiskConstant.REQ_FORMAT, MagicRiskConstant.FORMAT);
+            reqParams.put(MagicRiskConstant.REQ_SIGN_TYPE, MagicRiskConstant.SIGN_TYPE);
+            reqParams.put(MagicRiskConstant.REQ_TIMESTAMP, String.valueOf(System.currentTimeMillis()));
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", "石振波");
+            bizParams.put("mobile", "15958189557");
+            bizParams.put("idcard", "362330199408051135");
+            bizParams.put("qq", "523798422");
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            saveMagicRisk(resContent, userId);
+            return 1;
+        } catch (Exception e) {
+            logger.error("查询用户userId：" + userId + "魔杖2.0报告异常", e);
+            return 0;
+        }
+
     }
 
     @Override
@@ -109,7 +155,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                         logger.error("保存用户userId：" + userId + "魔杖2.0数据报告时，data为空，处理失败");
                         return;
                     }
-                    String transId = resJson.getString("trans_id");
+                    String transId = data.getTransId();
                     Date createDate = new Date();
 
 
@@ -219,7 +265,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
                     //手机号变更信息处理
                     SuspiciousMobileBean suspiciousMobile = data.getSuspiciousMobile();
-                    if(suspiciousMobile != null) {
+                    if (suspiciousMobile != null) {
                         MagicSuspiciousMobile magicSuspiciousMobile = ObjectConvertUtil.getMagicSuspiciousMobile(suspiciousMobile);
                         magicSuspiciousMobile.setUserId(userId);
                         magicSuspiciousMobile.setTransId(transId);
@@ -233,7 +279,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                         }
 
                         List<OtherIdcardsBean> otherIdcards = suspiciousMobile.getOtherIdcards();
-                        if(otherIdcards != null && otherIdcards.size() > 0) {
+                        if (otherIdcards != null && otherIdcards.size() > 0) {
                             List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = ObjectConvertUtil.getMagicSuspiciousOtherIdcardList(otherIdcards, userId, transId, createDate, "mobile");
                             magicSuspiciousOtherIdcardMapper.saveBatch(suspiciousOtherIdcards);
                         }
@@ -247,7 +293,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
                     //设备变更信息处理
                     SuspiciousDeviceBean suspiciousDevice = data.getSuspiciousDevice();
-                    if(suspiciousDevice != null) {
+                    if (suspiciousDevice != null) {
                         MagicSuspiciousDevice magicSuspiciousDevice = ObjectConvertUtil.getMagicSuspiciousDevice(suspiciousDevice);
                         magicSuspiciousDevice.setUserId(userId);
                         magicSuspiciousDevice.setTransId(transId);
@@ -267,7 +313,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                         }
 
                         List<OtherIdcardsBean> otherIdcards = suspiciousDevice.getOtherIdcards();
-                        if(otherIdcards != null && otherIdcards.size() > 0) {
+                        if (otherIdcards != null && otherIdcards.size() > 0) {
                             List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = ObjectConvertUtil.getMagicSuspiciousOtherIdcardList(otherIdcards, userId, transId, createDate, "device");
                             magicSuspiciousOtherIdcardMapper.saveBatch(suspiciousOtherIdcards);
                         }

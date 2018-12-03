@@ -21,12 +21,12 @@ public class ObjectConvertUtil {
         if (blackInfoDetail != null) {
             magicBlackGray.setBlackMobileNameInBlacklist(blackInfoDetail.isMobileNameInBlacklist() ? 1 : 0);
             magicBlackGray.setBlackIdcardNameInBlacklist(blackInfoDetail.isIdcardNameInBlacklist() ? 1 : 0);
-            BeanUtilsExt.copyPropertiesExt(blackInfoDetail, magicBlackGray, null);
+            BeanUtilsExt.copyPropertiesExt(magicBlackGray, blackInfoDetail, null);
         }
         if (grayInfoDetail != null) {
             magicBlackGray.setGrayMobileNameInBlacklist(grayInfoDetail.isMobileNameInGray() ? 1 : 0);
             magicBlackGray.setGrayIdcardNameInBlacklist(grayInfoDetail.isIdcardNameInGray() ? 1 : 0);
-            BeanUtilsExt.copyPropertiesExt(grayInfoDetail, magicBlackGray, null);
+            BeanUtilsExt.copyPropertiesExt(magicBlackGray, grayInfoDetail, null);
         }
         return magicBlackGray;
     }
@@ -40,7 +40,7 @@ public class ObjectConvertUtil {
         magicMobileContact.setMatchScore(mobileInfo.getMatchScore());
 
         if (mobileContact30d != null) {
-            BeanUtilsExt.copyPropertiesExt(mobileContact30d, magicMobileContact, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(magicMobileContact, mobileContact30d, new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "30d";
@@ -48,7 +48,7 @@ public class ObjectConvertUtil {
             });
         }
         if (mobileContact90d != null) {
-            BeanUtilsExt.copyPropertiesExt(mobileContact90d, magicMobileContact, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(magicMobileContact, mobileContact90d, new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "90d";
@@ -56,7 +56,7 @@ public class ObjectConvertUtil {
             });
         }
         if (mobileContact180d != null) {
-            BeanUtilsExt.copyPropertiesExt(mobileContact180d, magicMobileContact, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(magicMobileContact, mobileContact180d, new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "180d";
@@ -76,7 +76,7 @@ public class ObjectConvertUtil {
         IntimateContactInfoBean intimateContactInfo180d = mobileInfo.getIntimateContactInfo180d();
 
         if (intimateContactInfo30d != null) {
-            BeanUtilsExt.copyPropertiesExt(intimateContactInfo30d, magicIntimateContact, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(magicIntimateContact, intimateContactInfo30d, new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "30d";
@@ -85,7 +85,7 @@ public class ObjectConvertUtil {
         }
 
         if (intimateContactInfo90d != null) {
-            BeanUtilsExt.copyPropertiesExt(intimateContactInfo90d, magicIntimateContact, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(magicIntimateContact, intimateContactInfo90d, new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "90d";
@@ -94,7 +94,7 @@ public class ObjectConvertUtil {
         }
 
         if (intimateContactInfo180d != null) {
-            BeanUtilsExt.copyPropertiesExt(intimateContactInfo180d, magicIntimateContact, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(magicIntimateContact, intimateContactInfo180d, new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "180d";
@@ -110,13 +110,13 @@ public class ObjectConvertUtil {
         RegisterInfoBean registerInfo = authQueriedDetail.getRegisterInfo();
         LoanInfoBean loanInfo = authQueriedDetail.getLoanInfo();
 
-        BeanUtilsExt.copyPropertiesExt(authQueriedDetail, magicMultipoint, null);
+        BeanUtilsExt.copyPropertiesExt(magicMultipoint, authQueriedDetail, null);
         if (registerInfo != null) {
-            BeanUtilsExt.copyPropertiesExt(registerInfo, magicMultipoint, null);
+            BeanUtilsExt.copyPropertiesExt(magicMultipoint, registerInfo, null);
             magicMultipoint.setRegisterOrgTypes(StringUtil.join(registerInfo.getOrgTypes(), ","));
         }
         if (loanInfo != null) {
-            BeanUtilsExt.copyPropertiesExt(loanInfo, magicMultipoint, null);
+            BeanUtilsExt.copyPropertiesExt(magicMultipoint, loanInfo, null);
         }
         return magicMultipoint;
     }
@@ -125,7 +125,7 @@ public class ObjectConvertUtil {
         List<MagicMultipointQueriedInfo> queriedInfos = new ArrayList<>();
         for (QueriedInfosBean queriedInfosBean : queriedInfosBeanList) {
             MagicMultipointQueriedInfo magicMultipointQueriedInfo = new MagicMultipointQueriedInfo();
-            BeanUtilsExt.copyPropertiesExt(queriedInfosBean, magicMultipointQueriedInfo, null);
+            BeanUtilsExt.copyPropertiesExt(magicMultipointQueriedInfo, queriedInfosBean, null);
             magicMultipointQueriedInfo.setIsSelf(queriedInfosBean.isIsSelf() ? 1 : 0);
             magicMultipointQueriedInfo.setUserId(userId);
             magicMultipointQueriedInfo.setTransId(transId);
@@ -140,10 +140,10 @@ public class ObjectConvertUtil {
         List<MagicMultipointQueriedAnalyze> queriedAnalyzes = new ArrayList<>();
         for (QueriedAnalyzeBean analyzeBean : queriedAnalyzeList) {
             MagicMultipointQueriedAnalyze queriedAnalyze = new MagicMultipointQueriedAnalyze();
+            BeanUtilsExt.copyPropertiesExt(queriedAnalyze, analyzeBean, null);
             queriedAnalyze.setUserId(userId);
             queriedAnalyze.setTransId(transId);
             queriedAnalyze.setCreateTime(createTime);
-            BeanUtilsExt.copyPropertiesExt(analyzeBean, queriedAnalyze, null);
             queriedAnalyzes.add(queriedAnalyze);
         }
         return queriedAnalyzes;
@@ -151,7 +151,7 @@ public class ObjectConvertUtil {
 
     public static MagicUntrusted getMagicUntrusted(UntrustedInfoBean untrustedInfo) throws Exception {
         MagicUntrusted magicUntrusted = new MagicUntrusted();
-        BeanUtilsExt.copyPropertiesExt(untrustedInfo, magicUntrusted, null);
+        BeanUtilsExt.copyPropertiesExt(magicUntrusted, untrustedInfo, null);
         return magicUntrusted;
     }
 
@@ -162,7 +162,7 @@ public class ObjectConvertUtil {
             magicUntrustedDetail.setUserId(userId);
             magicUntrustedDetail.setTransId(transId);
             magicUntrustedDetail.setCreateTime(createTime);
-            BeanUtilsExt.copyPropertiesExt(detailIno, magicUntrustedDetail, null);
+            BeanUtilsExt.copyPropertiesExt(magicUntrustedDetail, detailIno, null);
             magicUntrustedDetails.add(magicUntrustedDetail);
         }
 
@@ -171,7 +171,7 @@ public class ObjectConvertUtil {
 
     public static MagicRiskQqGroup getMagicRiskQqGroup(RiskQqgroupBean riskQqgroupBean) throws Exception {
         MagicRiskQqGroup magicRiskQqGroup = new MagicRiskQqGroup();
-        BeanUtilsExt.copyPropertiesExt(riskQqgroupBean, magicRiskQqGroup, null);
+        BeanUtilsExt.copyPropertiesExt(magicRiskQqGroup, riskQqgroupBean, null);
         return magicRiskQqGroup;
     }
 
@@ -182,7 +182,7 @@ public class ObjectConvertUtil {
             magicRiskDevice.setUserId(userId);
             magicRiskDevice.setTransId(transId);
             magicRiskDevice.setCreateTime(createTime);
-            BeanUtilsExt.copyPropertiesExt(riskDeviceBean, magicRiskDevice, null);
+            BeanUtilsExt.copyPropertiesExt(magicRiskDevice, riskDeviceBean, null);
             magicRiskDevices.add(magicRiskDevice);
         }
         return magicRiskDevices;
@@ -192,7 +192,7 @@ public class ObjectConvertUtil {
         MagicCreditCardOverdue creditCardOverdue = new MagicCreditCardOverdue();
         BeanUtilsExt.copyPropertiesExt(creditCard, creditCardOverdue, null);
         if (creditCard.getCreditOverdueItem3m() != null) {
-            BeanUtilsExt.copyPropertiesExt(creditCard.getCreditOverdueItem3m(), creditCardOverdue, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(creditCardOverdue, creditCard.getCreditOverdueItem3m(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "3m";
@@ -200,7 +200,7 @@ public class ObjectConvertUtil {
             });
         }
         if (creditCard.getCreditOverdueItem6m() != null) {
-            BeanUtilsExt.copyPropertiesExt(creditCard.getCreditOverdueItem6m(), creditCardOverdue, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(creditCardOverdue, creditCard.getCreditOverdueItem6m(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "6m";
@@ -208,7 +208,7 @@ public class ObjectConvertUtil {
             });
         }
         if (creditCard.getCreditOverdueItem12m() != null) {
-            BeanUtilsExt.copyPropertiesExt(creditCard.getCreditOverdueItem12m(), creditCardOverdue, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(creditCardOverdue, creditCard.getCreditOverdueItem12m(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "12m";
@@ -223,7 +223,7 @@ public class ObjectConvertUtil {
         BeanUtilsExt.copyPropertiesExt(analysisBean, loanBehaviorAnalysis, null);
 
         if (analysisBean.getFeature7d() != null) {
-            BeanUtilsExt.copyPropertiesExt(analysisBean.getFeature7d(), loanBehaviorAnalysis, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(loanBehaviorAnalysis, analysisBean.getFeature7d(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "d7";
@@ -231,7 +231,7 @@ public class ObjectConvertUtil {
             });
         }
         if (analysisBean.getFeature15d() != null) {
-            BeanUtilsExt.copyPropertiesExt(analysisBean.getFeature15d(), loanBehaviorAnalysis, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(loanBehaviorAnalysis, analysisBean.getFeature15d(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "d15";
@@ -239,7 +239,7 @@ public class ObjectConvertUtil {
             });
         }
         if (analysisBean.getFeature30d() != null) {
-            BeanUtilsExt.copyPropertiesExt(analysisBean.getFeature30d(), loanBehaviorAnalysis, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(loanBehaviorAnalysis, analysisBean.getFeature30d(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "m1";
@@ -247,7 +247,7 @@ public class ObjectConvertUtil {
             });
         }
         if (analysisBean.getFeature90d() != null) {
-            BeanUtilsExt.copyPropertiesExt(analysisBean.getFeature90d(), loanBehaviorAnalysis, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(loanBehaviorAnalysis, analysisBean.getFeature90d(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "m3";
@@ -255,7 +255,7 @@ public class ObjectConvertUtil {
             });
         }
         if (analysisBean.getFeature180d() != null) {
-            BeanUtilsExt.copyPropertiesExt(analysisBean.getFeature180d(), loanBehaviorAnalysis, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(loanBehaviorAnalysis, analysisBean.getFeature180d(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "m6";
@@ -263,7 +263,7 @@ public class ObjectConvertUtil {
             });
         }
         if (analysisBean.getFeature360d() != null) {
-            BeanUtilsExt.copyPropertiesExt(analysisBean.getFeature360d(), loanBehaviorAnalysis, new KeyMapping() {
+            BeanUtilsExt.copyPropertiesExt(loanBehaviorAnalysis, analysisBean.getFeature360d(), new KeyMapping() {
                 @Override
                 public String mapping(String orig) {
                     return orig + "m12";
@@ -279,11 +279,11 @@ public class ObjectConvertUtil {
             MagicFundInfo magicFundInfo = new MagicFundInfo();
             FundBasicBean fundBasic = fundInfosBean.getFundBasic();
             if (fundBasic != null) {
-                BeanUtilsExt.copyPropertiesExt(fundBasic, magicFundInfo, null);
+                BeanUtilsExt.copyPropertiesExt(magicFundInfo, fundBasic, null);
             }
             FundStatisticsBean fundStatistics = fundInfosBean.getFundStatistics();
             if (fundStatistics != null) {
-                BeanUtilsExt.copyPropertiesExt(fundStatistics, magicFundInfo, null);
+                BeanUtilsExt.copyPropertiesExt(magicFundInfo, fundStatistics, null);
             }
 
             magicFundInfos.add(magicFundInfo);
@@ -295,17 +295,17 @@ public class ObjectConvertUtil {
     public static MagicBankInfo getMagicBankInfo(BankInfosBean bankInfosBean) throws Exception {
         MagicBankInfo magicBankInfo = new MagicBankInfo();
         if (bankInfosBean.getCreditCardInfo() != null) {
-            BeanUtilsExt.copyPropertiesExt(bankInfosBean.getCreditCardInfo(), magicBankInfo, null);
+            BeanUtilsExt.copyPropertiesExt(magicBankInfo, bankInfosBean.getCreditCardInfo(), null);
         }
         if (bankInfosBean.getDebitCardInfo() != null) {
-            BeanUtilsExt.copyPropertiesExt(bankInfosBean.getDebitCardInfo(), magicBankInfo, null);
+            BeanUtilsExt.copyPropertiesExt(magicBankInfo, bankInfosBean.getDebitCardInfo(), null);
         }
         return magicBankInfo;
     }
 
     public static MagicSuspiciousIdcard getMagicSuspiciousIdcard(SuspiciousIdcardBean suspiciousIdcardBean) throws Exception {
         MagicSuspiciousIdcard magicSuspiciousIdcard = new MagicSuspiciousIdcard();
-        BeanUtilsExt.copyPropertiesExt(suspiciousIdcardBean, magicSuspiciousIdcard, null);
+        BeanUtilsExt.copyPropertiesExt(magicSuspiciousIdcard, suspiciousIdcardBean, null);
         return magicSuspiciousIdcard;
     }
 
@@ -314,7 +314,7 @@ public class ObjectConvertUtil {
 
         for (OtherNamesBean otherNamesBean : otherNamesList) {
             MagicSuspiciousOtherName suspiciousOtherName = new MagicSuspiciousOtherName();
-            BeanUtilsExt.copyPropertiesExt(otherNamesBean, suspiciousOtherName, null);
+            BeanUtilsExt.copyPropertiesExt(suspiciousOtherName,otherNamesBean,  null);
             suspiciousOtherName.setType(type);
             suspiciousOtherName.setUserId(userId);
             suspiciousOtherName.setTransId(transId);
@@ -330,7 +330,7 @@ public class ObjectConvertUtil {
 
         for (OtherMobilesBean otherMobilesBean : otherMobilesList) {
             MagicSuspiciousOtherMobile suspiciousOtherMobile = new MagicSuspiciousOtherMobile();
-            BeanUtilsExt.copyPropertiesExt(otherMobilesBean, suspiciousOtherMobile, null);
+            BeanUtilsExt.copyPropertiesExt(suspiciousOtherMobile, otherMobilesBean, null);
             suspiciousOtherMobile.setIsblack(otherMobilesBean.isIsblack() ? 1 : 0);
             suspiciousOtherMobile.setType(type);
             suspiciousOtherMobile.setUserId(userId);
@@ -346,7 +346,7 @@ public class ObjectConvertUtil {
         List<MagicSuspiciousInformationSource> suspiciousInformationSources = new ArrayList<>();
         for (InformationSourcesBean informationSourcesBean : informationSourcesList) {
             MagicSuspiciousInformationSource suspiciousInformationSource = new MagicSuspiciousInformationSource();
-            BeanUtilsExt.copyPropertiesExt(informationSourcesBean, suspiciousInformationSource, null);
+            BeanUtilsExt.copyPropertiesExt(suspiciousInformationSource, informationSourcesBean, null);
             suspiciousInformationSource.setType(type);
             suspiciousInformationSource.setUserId(userId);
             suspiciousInformationSource.setTransId(transId);
@@ -358,7 +358,7 @@ public class ObjectConvertUtil {
 
     public static MagicSuspiciousMobile getMagicSuspiciousMobile(SuspiciousMobileBean suspiciousMobileBean) throws Exception {
         MagicSuspiciousMobile magicSuspiciousMobile = new MagicSuspiciousMobile();
-        BeanUtilsExt.copyPropertiesExt(suspiciousMobileBean, magicSuspiciousMobile, null);
+        BeanUtilsExt.copyPropertiesExt(magicSuspiciousMobile, suspiciousMobileBean, null);
         return magicSuspiciousMobile;
     }
 
@@ -366,7 +366,7 @@ public class ObjectConvertUtil {
         List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = new ArrayList<>();
         for (OtherIdcardsBean otherIdcardsBean : otherIdcardList) {
             MagicSuspiciousOtherIdcard suspiciousOtherIdcard = new MagicSuspiciousOtherIdcard();
-            BeanUtilsExt.copyPropertiesExt(otherIdcardsBean, suspiciousOtherIdcard, null);
+            BeanUtilsExt.copyPropertiesExt(suspiciousOtherIdcard, otherIdcardsBean, null);
             suspiciousOtherIdcard.setIsblack(otherIdcardsBean.isIsblack() ? 1 : 0);
             suspiciousOtherIdcard.setType(type);
             suspiciousOtherIdcard.setUserId(userId);
@@ -380,7 +380,7 @@ public class ObjectConvertUtil {
 
     public static MagicSuspiciousDevice getMagicSuspiciousDevice(SuspiciousDeviceBean suspiciousDeviceBean) throws Exception {
         MagicSuspiciousDevice magicSuspiciousDevice = new MagicSuspiciousDevice();
-        BeanUtilsExt.copyPropertiesExt(suspiciousDeviceBean, magicSuspiciousDevice, null);
+        BeanUtilsExt.copyPropertiesExt(magicSuspiciousDevice, suspiciousDeviceBean, null);
         return magicSuspiciousDevice;
     }
 }
