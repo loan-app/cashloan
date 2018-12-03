@@ -14,8 +14,8 @@ import java.util.Map;
 public class PayNotifyTest {
 
     public static void main(String[] args) {
-        testRefund();
-//        testPaymentNotify();
+//        testRefund();
+        testPaymentNotify();
 //        System.out.println(getSign("0002900F0345178","123456","15434542288364662","20181129","6228480328744607875","100000"));
     }
 
@@ -57,7 +57,7 @@ public class PayNotifyTest {
      * 测试放款通知。付款成功。只需要改下orderNo 其他的可以不用改
      */
     public static void testPaymentNotify() {
-        String url = "http://192.168.21.42:8011/pay/fuiou/paymentNotify.htm";
+        String url = "http://47.110.61.233:8080/pay/fuiou/paymentNotify.htm";
         Map<String,String> param = new HashMap<String, String>();
         param.put("accntnm","陈纯洪");
         param.put("accntno","6228480328744607875");
@@ -65,10 +65,10 @@ public class PayNotifyTest {
         param.put("bankno","0103");
         param.put("fuorderno","690909545406");
 //        param.put("futporderno","690909545406");
-        String mac = getSign("0002900F0345178","123456","1812030048499486","20181129","6228480328744607875","100000");
+        String mac = getSign("0002900F0345178","123456","1812030558251522","20181129","6228480328744607875","100000");
         param.put("mac",mac);
         param.put("merdt","20181129");
-        param.put("orderno","15434542288364662");
+        param.put("orderno","1812030558251522");
         param.put("reason","自助退票");
         param.put("result","渠道资金到账已复核,交易已发送");
         param.put("state","1");

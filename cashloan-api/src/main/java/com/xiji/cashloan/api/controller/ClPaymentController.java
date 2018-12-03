@@ -73,10 +73,10 @@ public class ClPaymentController extends BaseController {
 						   @RequestParam(value="ip",required = false) String ip,
 						   @RequestParam(value="type") String type) {
 		long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
-//		Map<String, String> payMap = borrowRepayService.confirmPay(borrowId, userId, ip, type);
+		Map<String, String> payMap = borrowRepayService.confirmPay(borrowId, userId, ip, type);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-		result.put(Constant.RESPONSE_CODE_MSG, "处理成功");
+		result.put(Constant.RESPONSE_CODE_MSG, payMap.get("msg"));
 		ServletUtils.writeToResponse(response,result);
 	}
 }
