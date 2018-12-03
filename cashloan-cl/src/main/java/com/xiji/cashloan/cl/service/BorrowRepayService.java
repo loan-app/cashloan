@@ -33,31 +33,31 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * @return
 	 */
 	int save(BorrowRepay borrowRepay);
-	
+
 	/**
 	 * 生成还款计划
 	 * @param borrow
 	 * @return
 	 */
 	boolean genRepayPlan(Borrow borrow);
-	
+
 	/**
 	 * 还款计划 放款 成功之后 银行卡授权
-	 * 
+	 *
 	 * @param userId
 	 */
 	void authSignApply(Long userId);
-	
-	
-	 /**
-	  * 后台列表
-	  * @param params
-	  * @param currentPage
-	  * @param pageSize
-	  * @return
-	  */
+
+
+	/**
+	 * 后台列表
+	 * @param params
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
 	Page<ManageBRepayModel> listModel(Map<String, Object> params, int currentPage,
-			int pageSize);
+									  int pageSize);
 
 	/**
 	 * 确认还款生产还款记录
@@ -79,14 +79,14 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * @return
 	 */
 	int updateLate(BorrowRepay data);
-	
+
 	/**
 	 * 条件更新还款计划数据
 	 * @param br
 	 * @return
 	 */
 	int updateSelective(Map<String, Object> paramMap);
-	
+
 
 	/**
 	 * 催收借款信息接口
@@ -96,7 +96,7 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * @return
 	 */
 	Page<ManageBorrowModel> listRepayModel(Map<String, Object> params,
-			int currentPage, int pageSize);
+										   int currentPage, int pageSize);
 
 	/**
 	 * 逾期未入催
@@ -106,20 +106,20 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * @return
 	 */
 	Page<ManageBorrowModel> listModelNotUrge(Map<String, Object> params,
-			int currentPage, int pageSize);
+											 int currentPage, int pageSize);
 
 	/**
 	 * 查询未还款列表
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 */
 	List<BorrowRepay> findUnRepay(Map<String, Object> paramMap);
-	
-	
+
+
 	/**
 	 * 查询还款计划
-	 * 
+	 *
 	 * @param paramMap
 	 * @return
 	 */
@@ -135,12 +135,12 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * 文件解析批量还款
 	 * @param repayFile
 	 * @param type
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	List<List<String>> fileBatchRepay(MultipartFile repayFile, String type) throws Exception;
-	
+
 	Map<String, String> paySdkParams(Long userId, String agreeNo, double amount, String orderNo);
-	
+
 	/**
 	 * 主动还款
 	 * @param payType
@@ -159,7 +159,8 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	/**
 	 * 还款中检查
 	 * @param borrowId
-	 * @return 
+	 * @return
 	 */
 	void repayCheck(long borrowId);
+	Map<String, String> confirmPay(Long borrowId,Long userId, String ip,String type);
 }

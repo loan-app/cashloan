@@ -7,12 +7,12 @@ import com.xiji.cashloan.cl.domain.PayLog;
 public class ManagePayLogModel extends PayLog {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * 借款订单号
 	 */
 	private String borrowOrderNo;
-	
+
 	/**
 	 * 登录名
 	 */
@@ -27,11 +27,11 @@ public class ManagePayLogModel extends PayLog {
 	 * 手机号码
 	 */
 	private String phone;
-	
+
 	/**
 	 * 借款时间 
 	 */
-	private Date loanTime; 
+	private Date loanTime;
 
 	/**
 	 * 状态中文描述
@@ -52,13 +52,13 @@ public class ManagePayLogModel extends PayLog {
 	 * 场景中文描述
 	 */
 	private String scenesStr;
-	
+
 	/**
 	 * 借款订单状态
 	 */
 	private String borrowState;
 
-	
+
 	/**
 	 * 获取借款订单号
 	 * @return borrowOrderNo
@@ -77,7 +77,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取登录名
-	 * 
+	 *
 	 * @return loginName
 	 */
 	public String getLoginName() {
@@ -86,7 +86,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置登录名
-	 * 
+	 *
 	 * @param loginName
 	 */
 	public void setLoginName(String loginName) {
@@ -95,7 +95,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取用户姓名
-	 * 
+	 *
 	 * @return realName
 	 */
 	public String getRealName() {
@@ -104,7 +104,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置用户姓名
-	 * 
+	 *
 	 * @param realName
 	 */
 	public void setRealName(String realName) {
@@ -113,7 +113,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取手机号码
-	 * 
+	 *
 	 * @return phone
 	 */
 	public String getPhone() {
@@ -122,7 +122,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置手机号码
-	 * 
+	 *
 	 * @param phone
 	 */
 	public void setPhone(String phone) {
@@ -131,7 +131,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取借款时间
-	 * 
+	 *
 	 * @return loanTime
 	 */
 	public Date getLoanTime() {
@@ -140,7 +140,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置借款时间
-	 * 
+	 *
 	 * @param loanTime
 	 */
 	public void setLoanTime(Date loanTime) {
@@ -149,7 +149,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取状态中文描述
-	 * 
+	 *
 	 * @return stateStr
 	 */
 	public String getStateStr() {
@@ -159,7 +159,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置状态中文描述
-	 * 
+	 *
 	 * @param stateStr
 	 */
 	public void setStateStr(String stateStr) {
@@ -168,7 +168,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取资金来源中文描述
-	 * 
+	 *
 	 * @return sourceStr
 	 */
 	public String getSourceStr() {
@@ -178,7 +178,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置资金来源中文描述
-	 * 
+	 *
 	 * @param sourceStr
 	 */
 	public void setSourceStr(String sourceStr) {
@@ -187,7 +187,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 获取付款方式中文描述
-	 * 
+	 *
 	 * @return typeStr
 	 */
 	public String getTypeStr() {
@@ -197,16 +197,16 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置付款方式中文描述
-	 * 
+	 *
 	 * @param typeStr
 	 */
 	public void setTypeStr(String typeStr) {
 		this.typeStr = typeStr;
 	}
-	
+
 	/**
 	 * 获取场景中文描述
-	 * 
+	 *
 	 * @return scenesStr
 	 */
 	public String getScenesStr() {
@@ -216,16 +216,16 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置场景中文描述
-	 * 
+	 *
 	 * @param scenesStr
 	 */
 	public void setScenesStr(String scenesStr) {
 		this.scenesStr = scenesStr;
 	}
-	
+
 	/**
 	 * 获取借款订单状态
-	 * 
+	 *
 	 * @return borrowState
 	 */
 	public String getBorrowState() {
@@ -234,7 +234,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 设置借款订单状态
-	 * 
+	 *
 	 * @param borrowState
 	 */
 	public void setBorrowState(String borrowState) {
@@ -243,7 +243,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 付款状态中文描述转换
-	 * 
+	 *
 	 * @param state
 	 * @return
 	 */
@@ -269,7 +269,7 @@ public class ManagePayLogModel extends PayLog {
 
 	/**
 	 * 资金来源中文描述转换
-	 * 
+	 *
 	 * @param source
 	 * @return
 	 */
@@ -302,6 +302,8 @@ public class ManagePayLogModel extends PayLog {
 			typeStr = "线下代扣";
 		} else if (PayLogModel.TYPE_AUTH_PAY.equals(type)) {
 			typeStr = "主动还款";
+		}else if (PayLogModel.TYPE_AUTH_DELAY.equals(type)) {
+			typeStr = "展期还款";
 		}else {
 			typeStr = " - ";
 		}
@@ -329,5 +331,5 @@ public class ManagePayLogModel extends PayLog {
 		return scenesStr;
 	}
 
-	
+
 }

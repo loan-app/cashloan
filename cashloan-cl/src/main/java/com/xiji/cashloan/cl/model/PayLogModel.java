@@ -4,13 +4,13 @@ import com.xiji.cashloan.cl.domain.PayLog;
 
 /**
  * 支付记录Model
- * 
+ *
  * @author gc
  * @version 1.0.0
  * @date 2017年4月6日 上午11:51:31
- *
+ * Copyright 杭州融都科技股份有限公司 All Rights Reserved
  * 官方网站：www.xiji.com
- * 
+ *
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 public class PayLogModel extends PayLog {
@@ -44,6 +44,8 @@ public class PayLogModel extends PayLog {
 	public static final String TYPE_OFFLINE_COLLECT = "40";
 	/** 付款方式 - 主动还款 */
 	public static final String TYPE_AUTH_PAY = "50";
+	/** 付款方式 - 展期还款 */
+	public static final String TYPE_AUTH_DELAY = "60";
 
 	/** 业务场景 - 放款代付 */
 	public static final String SCENES_LOANS = "10";
@@ -57,5 +59,7 @@ public class PayLogModel extends PayLog {
 	public static final String SCENES_DEDUCTION = "21";
 	/** 业务场景 - 主动还款 */
 	public static final String SCENES_ACTIVE_REPAYMENT = "30";
+	/** 业务场景 - 展期还款 */
+	public static final String SCENES_ACTIVE_DELAYPAY = "31";
 
 }
