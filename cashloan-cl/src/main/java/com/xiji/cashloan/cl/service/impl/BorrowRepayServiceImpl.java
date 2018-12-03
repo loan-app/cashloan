@@ -740,7 +740,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		if (!BorrowModel.STATE_REPAY.equals(state) &&
 				!BorrowModel.STATE_DELAY.equals(state) &&
-				!BorrowModel.STATE_BAD.equals(state)) {
+			!BorrowModel.STATE_BAD.equals(state) &&
+			!BorrowModel.STATE_DELAY_PAY.equals(state)) {
 			throw new BussinessException("借款状态有误");
 		}
 

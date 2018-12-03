@@ -427,7 +427,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if (borrow != null) {
 				if (borrow.getState().equals(BorrowModel.STATE_REPAY)
 						|| borrow.getState().equals(BorrowModel.STATE_DELAY)
-						|| borrow.getState().equals(BorrowModel.STATE_BAD)) {
+					|| borrow.getState().equals(BorrowModel.STATE_BAD)
+					|| borrow.getState().equals(BorrowModel.STATE_DELAY_PAY)) {
 					result.put("isRepay", true);
 				} else {
 					result.put("isRepay", false);
