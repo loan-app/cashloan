@@ -53,6 +53,9 @@ public class PayNotifyTest {
         System.out.println(resp);
     }
 
+    /**
+     * 测试放款通知。付款成功。只需要改下orderNo 其他的可以不用改
+     */
     public static void testPaymentNotify() {
         String url = "http://192.168.21.42:8011/pay/fuiou/paymentNotify.htm";
         Map<String,String> param = new HashMap<String, String>();
@@ -62,7 +65,8 @@ public class PayNotifyTest {
         param.put("bankno","0103");
         param.put("fuorderno","690909545406");
 //        param.put("futporderno","690909545406");
-        param.put("mac","b6dacdeda4e00e0867561e7207981b10");
+        String mac = getSign("0002900F0345178","123456","1812030048499486","20181129","6228480328744607875","100000");
+        param.put("mac",mac);
         param.put("merdt","20181129");
         param.put("orderno","15434542288364662");
         param.put("reason","自助退票");
