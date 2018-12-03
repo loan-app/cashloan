@@ -194,7 +194,7 @@ public class ManageBorrowController extends ManageBaseController {
 							BorrowModel.STATE_FINISH,
 							BorrowModel.STATE_REMISSION_FINISH,
 							BorrowModel.STATE_REPAY_PROCESSING,
-							BorrowModel.STATE_DELAY, BorrowModel.STATE_BAD);
+							BorrowModel.STATE_DELAY, BorrowModel.STATE_BAD,BorrowModel.STATE_DELAY_PAY);
 				    params.put("stateList", stateList);
 					params.put("state", "");
 				}

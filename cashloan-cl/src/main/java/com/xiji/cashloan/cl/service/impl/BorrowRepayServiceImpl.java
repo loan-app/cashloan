@@ -407,6 +407,50 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	}
 
 	/**
+	 * 展期成功。
+	 * @param param
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> confirmDelayPay(Map<String, Object> param) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Long id = (Long) param.get("id");
+		logger.debug("进入确认展期...借款id="+id);
+		logger.info("进入确认展期...借款state="+ param.get("state"));
+		BorrowRepay br = borrowRepayMapper.findByPrimary(id);
+		String state = (String) param.get("state");
+
+		Date repayTime = tool.util.DateUtil.rollDay((Date) param.get("repayTime"),7);
+		// 更新还款信息
+		int msg = updateBorrowReplayByDelayPay(br, repayTime);
+		if (msg <= 0) {
+			throw new BussinessException("更新还款信息出错" + br.getBorrowId());
+		}
+		// 更新借款表和借款进度状态
+		msg = updateBorrow(br.getBorrowId(), br.getUserId(),state);
+		if (msg <= 0) {
+			throw new BussinessException("更新借款表和借款进度状态出错" + br.getBorrowId());
+		}
+
+		// 更新催收订单中的状态
+		Map<String, Object> orderMap = new HashMap<>();
+		orderMap.put("borrowId", br.getBorrowId());
+		UrgeRepayOrder order = urgeRepayOrderService.findOrderByMap(orderMap);
+		if (order != null) {
+			logger.debug("更新存在的催收订单中的状态");
+			UrgeRepayOrderLog orderLog = new UrgeRepayOrderLog();
+			orderLog.setRemark("展期成功");
+			orderLog.setWay("50");
+			orderLog.setCreateTime(DateUtil.getNow());
+			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_PROMISE);
+			urgeRepayOrderLogService.saveOrderInfo(orderLog, order);
+		}
+		result.put("Code", Constant.SUCCEED_CODE_VALUE);
+		result.put("Msg", "展期成功");
+		return result;
+	}
+
+	/**
 	 * 更新还款计划和还款记录表
 	 *
 	 * @param br
@@ -468,7 +512,13 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		return i;
 	}
-
+	public int updateBorrowReplayByDelayPay(BorrowRepay br,Date repayTime){
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("id", br.getId());
+		paramMap.put("repayTime", repayTime);
+		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
+		return borrowRepayMapper.updateParam(paramMap);
+	}
 	@Override
 	public List<BorrowRepay> listSelective(Map<String, Object> paramMap) {
 		return borrowRepayMapper.listSelective(paramMap);
@@ -897,7 +947,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, String> result = new HashMap<>();
 		// 查询用户、用户详情、借款及用户银行卡信息
 		User user = cloanUserService.getById(userId);
-		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
+//		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
 		Borrow borrow = clBorrowService.getById(borrowId);
 		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
 		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
@@ -974,11 +1024,15 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		//只有2为展期
 		if (StringUtil.equals("2", type)) {
-			payLog.setType(PayLogModel.TYPE_AUTH_PAY);
-			payLog.setScenes(PayLogModel.SCENES_ACTIVE_REPAYMENT);
-		} else {
 			payLog.setType(PayLogModel.TYPE_AUTH_DELAY);
 			payLog.setScenes(PayLogModel.SCENES_ACTIVE_DELAYPAY);
+			result.put("code", "10");
+			result.put("msg", "展期处理中！");
+		} else {
+			payLog.setType(PayLogModel.TYPE_AUTH_PAY);
+			payLog.setScenes(PayLogModel.SCENES_ACTIVE_REPAYMENT);
+			result.put("code", "10");
+			result.put("msg", "还款处理中！");
 		}
 
 		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
@@ -1084,14 +1138,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("id", borrowRepay.getId());
 				param.put("repayTime", DateUtil.getNow());
-				param.put("repayWay",BorrowRepayLogModel.REPAY_WAY_CHARGE);
-				param.put("repayAccount", bankCard.getCardNo());
-				param.put("amount", borrowRepay.getAmount());
-				param.put("serialNumber", repaymentLog.getOrderNo());
-				param.put("penaltyAmout",borrowRepay.getPenaltyAmout());
-				param.put("state", "10");
+				param.put("state", BorrowModel.STATE_DELAY_PAY);
 				if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
-					//confirmRepay(param);
+					this.confirmDelayPay(param);
 				}
 
 				// 更新订单状态
@@ -1101,14 +1150,14 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				payLogParamMap.put("id", repaymentLog.getId());
 				payLogService.updateSelective(payLogParamMap);
 
-				// 发送代扣还款成功短信提醒
-				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
+				//todo 展期短信发送
+//				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
 				result.put("code", "10");
-				result.put("msg", "还款成功！");
+				result.put("msg", "展期成功！");
 				return result;
 			}else if (StringUtil.equalsIgnoreCase(resp.getResponseCode(), FuiouConstant.RESPONSE_PAY_PROCESSING)) {
 				result.put("code", "11");
-				result.put("msg", "还款处理中，请稍后再试!");
+				result.put("msg", "展期处理中，请稍后再试!");
 				return result;
 			}else {
 				// 更新订单状态

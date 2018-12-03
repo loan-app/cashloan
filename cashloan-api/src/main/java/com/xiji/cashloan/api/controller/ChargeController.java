@@ -22,6 +22,7 @@ import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
+import com.xiji.cashloan.core.model.BorrowModel;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -110,6 +111,10 @@ public class ChargeController extends BaseController {
 			doScenesRepayment(model,payLog);
 		}else if (PayLogModel.SCENES_DEDUCTION.equals(payLog.getScenes())){
 			doScenesDeduction(model,payLog);
+		}else if (PayLogModel.SCENES_ACTIVE_REPAYMENT.equals(payLog.getScenes())){
+			doScenesActiveRepayment(model,payLog);
+		}else if (PayLogModel.SCENES_ACTIVE_DELAYPAY.equals(payLog.getScenes())){
+			doScenesActiveDelay(model,payLog);
 		}else {
 			logger.error("没有合适的场景，异步通知处理失败" + orderNo);
 			response.setStatus(400);
@@ -169,9 +174,117 @@ public class ChargeController extends BaseController {
 		}
 		ServletUtils.writeToResponse(response, "1");
 	}
-
 	/**
-	 * 补扣
+	 * 主动扣款
+	 * @param model
+	 * @param payLog
+	 * @throws Exception
+	 */
+	private void doScenesActiveRepayment(PaymentNotifyModel model,PayLog payLog)throws Exception {
+		logger.info("主动扣款 - 异步通知：-支付状态是：" + model.getResponseCode());
+		if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
+			|| PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+
+			//付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
+			// 分期付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
+			if (model.checkReturn()) {
+
+				// 查找对应的还款计划
+				Map<String, Object> repayMap = new HashMap<String, Object>();
+				repayMap.put("userId", payLog.getUserId());
+				repayMap.put("borrowId", payLog.getBorrowId());
+				BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
+				BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
+
+				if (borrowRepay != null) {
+					Map<String, Object> param = new HashMap<String, Object>();
+					param.put("id", borrowRepay.getId());
+					//param.put("repayTime", DateUtil.dateStr4(DateUtil.getNow()));
+					param.put("repayTime", DateUtil.getNow());
+					param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
+					param.put("repayAccount", bankCard.getCardNo());
+					param.put("amount", payLog.getAmount());
+					param.put("serialNumber", payLog.getOrderNo());
+					param.put("penaltyAmout", borrowRepay.getPenaltyAmout());
+					param.put("state", "10");
+					if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
+						borrowRepayService.confirmRepay(param);
+					}
+				}
+
+				// 更新订单状态
+				Map<String,Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
+				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("id",payLog.getId());
+				payLogService.updateSelective(paramMap);
+				//发送扣款成功短信
+				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
+
+			} else {
+				Map<String,Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
+				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("id",payLog.getId());
+				payLogService.updateSelective(paramMap);
+			}
+		}else{
+			logger.info("订单" + payLog.getOrderNo() + "已处理");
+		}
+		ServletUtils.writeToResponse(response, "1");
+	}
+	/**
+	 * 主动展期，
+	 * 展期和主动代扣不一样，扣款的金额不一样，扣款金额为服务费
+	 * @param model
+	 * @param payLog
+	 * @throws Exception
+	 */
+	private void doScenesActiveDelay(PaymentNotifyModel model,PayLog payLog)throws Exception {
+		logger.info("主动展期 - 异步通知：-支付状态是：" + model.getResponseCode());
+		if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
+			|| PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+
+			// 分期付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
+			if (model.checkReturn()) {
+				// 查找对应的还款计划
+				Map<String, Object> repayMap = new HashMap<String, Object>();
+				repayMap.put("userId", payLog.getUserId());
+				repayMap.put("borrowId", payLog.getBorrowId());
+				BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
+
+				if (borrowRepay != null) {
+					Map<String, Object> param = new HashMap<String, Object>();
+					param.put("id", borrowRepay.getId());
+					param.put("repayTime", DateUtil.getNow());
+					param.put("state", BorrowModel.STATE_DELAY_PAY);
+					if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
+						borrowRepayService.confirmDelayPay(param);
+					}
+				}
+				// 更新订单状态
+				Map<String,Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
+				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("id",payLog.getId());
+				payLogService.updateSelective(paramMap);
+				//发送扣款成功短信
+//				clSmsService.repayInform(payLog.getUserId(), payLog.getBorrowId());
+				//todo 展期短信通知
+			} else {
+				Map<String,Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
+				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("id",payLog.getId());
+				payLogService.updateSelective(paramMap);
+			}
+		}else{
+			logger.info("订单" + payLog.getOrderNo() + "已处理");
+		}
+		ServletUtils.writeToResponse(response, "1");
+	}
+	/**
+	 * 扣减
 	 * @param model
 	 * @param payLog
 	 * @throws Exception

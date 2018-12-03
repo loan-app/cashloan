@@ -45,6 +45,8 @@ public class BorrowModel extends Borrow {
 	public static final String STATE_FINISH = "40";
 	/** 还款成功-金额减免 */
 	public static final String STATE_REMISSION_FINISH = "41";
+	/** 展期成功 */
+	public static final String STATE_DELAY_PAY = "44";
 	/** 还款处理中*/
 	public static final String STATE_REPAY_PROCESSING = "43";
 	/** 逾期 */
@@ -143,6 +145,9 @@ public class BorrowModel extends Borrow {
 		}else if(AUDIT_LOAN_FAIL.equals(state)){
 			stateStr=("放款审核不通过");
 		}
+		else if(STATE_DELAY_PAY.equals(state)){
+			stateStr=("展期成功");
+		}
 		return stateStr;
 	}
 	
@@ -227,6 +232,8 @@ public class BorrowModel extends Borrow {
 			remarkStr = "恭喜您,放款审核通过";
 		} else if (BorrowModel.AUDIT_LOAN_FAIL.equals(state)) {
 			remarkStr = "很遗憾,审核放款不通过";
+		} else if (BorrowModel.STATE_DELAY_PAY.equals(state)) {
+			remarkStr = "展期成功";
 		}
 		return remarkStr;
 	}
