@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_basic表:魔蝎运营商数据-基础信息类模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorBasicMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorBasic">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+        <result column="carrier" property="carrier" jdbcType="VARCHAR" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+        <result column="level" property="level" jdbcType="VARCHAR" />
+        <result column="package_name" property="packageName" jdbcType="VARCHAR" />
+        <result column="available_balance" property="availableBalance" jdbcType="INTEGER" />
+        <result column="real_balance" property="realBalance" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="reliability" property="reliability" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,req_log_id,name,mobile,idcard,carrier,province,city,open_time,level,package_name,available_balance,real_balance,state,reliability,gmt_create,gmt_modified
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="idcard != null and idcard != ''">
+                and idcard = #{idcard,jdbcType=VARCHAR}
+            </if>
+            <if test="carrier != null and carrier != ''">
+                and carrier = #{carrier,jdbcType=VARCHAR}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="openTime != null">
+                and open_time = #{openTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="level != null and level != ''">
+                and level = #{level,jdbcType=VARCHAR}
+            </if>
+            <if test="packageName != null and packageName != ''">
+                and package_name = #{packageName,jdbcType=VARCHAR}
+            </if>
+            <if test="availableBalance != null">
+                and available_balance = #{availableBalance,jdbcType=INTEGER}
+            </if>
+            <if test="realBalance != null">
+                and real_balance = #{realBalance,jdbcType=INTEGER}
+            </if>
+            <if test="state != null">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="reliability != null">
+                and reliability = #{reliability,jdbcType=INTEGER}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorBasic">
+        insert into cl_operator_basic(user_id,req_log_id,name,mobile,idcard,carrier,province,city,open_time,level,package_name,available_balance,real_balance,state,reliability,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{idcard,jdbcType=VARCHAR},#{carrier,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{openTime,jdbcType=TIMESTAMP},#{level,jdbcType=VARCHAR},#{packageName,jdbcType=VARCHAR},#{availableBalance,jdbcType=INTEGER},#{realBalance,jdbcType=INTEGER},#{state,jdbcType=VARCHAR},#{reliability,jdbcType=INTEGER},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorBasic">
+        update cl_operator_basic set
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            name = #{name,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            idcard = #{idcard,jdbcType=VARCHAR},
+            carrier = #{carrier,jdbcType=VARCHAR},
+            province = #{province,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            open_time = #{openTime,jdbcType=TIMESTAMP},
+            level = #{level,jdbcType=VARCHAR},
+            package_name = #{packageName,jdbcType=VARCHAR},
+            available_balance = #{availableBalance,jdbcType=INTEGER},
+            real_balance = #{realBalance,jdbcType=INTEGER},
+            state = #{state,jdbcType=VARCHAR},
+            reliability = #{reliability,jdbcType=INTEGER},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_basic
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="reqLogId != null">
+                req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null and name != '' ">
+                name = #{name,jdbcType=VARCHAR},                
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="idcard != null and idcard != '' ">
+                idcard = #{idcard,jdbcType=VARCHAR},                
+            </if>
+            <if test="carrier != null and carrier != '' ">
+                carrier = #{carrier,jdbcType=VARCHAR},                
+            </if>
+            <if test="province != null and province != '' ">
+                province = #{province,jdbcType=VARCHAR},                
+            </if>
+            <if test="city != null and city != '' ">
+                city = #{city,jdbcType=VARCHAR},                
+            </if>
+            <if test="openTime != null">        
+                open_time = #{openTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="level != null and level != '' ">
+                level = #{level,jdbcType=VARCHAR},                
+            </if>
+            <if test="packageName != null and packageName != '' ">
+                package_name = #{packageName,jdbcType=VARCHAR},                
+            </if>
+            <if test="availableBalance != null">        
+                available_balance = #{availableBalance,jdbcType=INTEGER},                
+            </if>
+            <if test="realBalance != null">        
+                real_balance = #{realBalance,jdbcType=INTEGER},                
+            </if>
+            <if test="state != null">        
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="reliability != null">        
+                reliability = #{reliability,jdbcType=INTEGER},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_basic
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_basic
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_basic
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_report表:运营商报告模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorReportMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorReport">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+        <result column="report" property="report" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,req_log_id,task_id,report,gmt_create,gmt_modified 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="taskId != null and taskId != ''">
+                and task_id = #{taskId,jdbcType=VARCHAR}
+            </if>
+            <if test="report != null and report != ''">
+                and report = #{report,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorReport">
+        insert into cl_operator_report(req_log_id,task_id,report,gmt_create,gmt_modified)values(#{reqLogId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{report,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorReport">
+        update cl_operator_report set 
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            task_id = #{taskId,jdbcType=VARCHAR},
+            report = #{report,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_report
+          <set>
+            <if test="reqLogId != null">        
+                req_log_id = #{reqLogId,jdbcType=BIGINT},                
+            </if>
+            <if test="taskId != null and taskId != '' ">
+                task_id = #{taskId,jdbcType=VARCHAR},                
+            </if>
+            <if test="report != null and report != '' ">
+                report = #{report,jdbcType=VARCHAR},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_report
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_report
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_report
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="getByTaskId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_report where task_id = #{taskId,jdbcType=VARCHAR}
+    </select>
+</mapper>

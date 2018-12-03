@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_req_log表:运营商认证中间表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorReqLogMapper">
+    <!--返回Map-->
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorReqLog">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+		<result column="task_state" property="taskState" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="resp_time" property="respTime" jdbcType="TIMESTAMP" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+		id, user_id, task_id, task_state, create_time, resp_time, message
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id !='' and id !=null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId !='' and userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="taskId !='' and taskId !=null">
+                and task_id = #{taskId,jdbcType=VARCHAR}
+            </if>
+            <if test="taskState !='' and taskState !=null">
+                and task_state = #{taskState,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime !=null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="respTime !=null">
+                and resp_time = #{respTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="message !=null">
+                and message = #{message,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorReqLog">
+        insert into cl_operator_req_log(user_id,task_id,task_state,create_time,resp_time,message)
+        values(#{userId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{taskState,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{respTime,jdbcType=TIMESTAMP},#{message,jdbcType=VARCHAR})
+    </insert>
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorReqLog">
+    	update cl_operator_req_log
+        <set>
+			<if test="taskId != null and taskId != '' ">
+				task_id = #{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="taskState!=null and taskState!=''">
+                task_state = #{taskState,jdbcType=VARCHAR},
+			</if>
+			<if test="respTime!=null">
+				resp_time = #{respTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="message!=null and message!=''">
+                message = #{message,jdbcType=VARCHAR}
+			</if>
+		</set>
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_req_log
+        <set>
+			<if test="taskId != null and taskId != '' ">
+				task_id = #{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="taskState!=null and taskState!=''">
+				task_state = #{taskState,jdbcType=VARCHAR},
+			</if>
+			<if test="respTime!=null">
+				resp_time = #{respTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="message!=null and message!=''">
+                message = #{message,jdbcType=VARCHAR}
+			</if>
+		</set>
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+    
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_req_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_req_log
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_req_log
+        <include refid="searchBy"/>
+    </select>
+    
+   <select id="listByUserId" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    	select  
+    	<include refid="Base_Column_List" />
+    	from cl_operator_req_log where user_id = #{userId,jdbcType=BIGINT}  and  date_format(create_time, '%Y-%m-%d')=date_format(SYSDATE(), '%Y-%m-%d')   ORDER BY  id DESC  
+    </select>
+    
+    <select id="findLastRecord" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select
+			<include refid="Base_Column_List" />
+		from cl_operator_req_log
+			<include refid="searchBy"/>
+		ORDER BY id DESC limit 1;
+	</select>
+
+</mapper>

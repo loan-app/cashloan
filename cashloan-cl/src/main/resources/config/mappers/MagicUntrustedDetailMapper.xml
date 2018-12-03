@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_untrusted_detail表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicUntrustedDetailMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicUntrustedDetail">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="court_name" property="courtName" jdbcType="VARCHAR" />
+        <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+        <result column="case_code" property="caseCode" jdbcType="VARCHAR" />
+        <result column="publish_date" property="publishDate" jdbcType="VARCHAR" />
+        <result column="gist_id" property="gistId" jdbcType="VARCHAR" />
+        <result column="duty" property="duty" jdbcType="VARCHAR" />
+        <result column="performance" property="performance" jdbcType="VARCHAR" />
+        <result column="disrupt_type_name" property="disruptTypeName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,court_name,area_name,case_code,publish_date,gist_id,duty,performance,disrupt_type_name,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="courtName != null and courtName != ''">
+                and court_name = #{courtName,jdbcType=VARCHAR}
+            </if>
+            <if test="areaName != null and areaName != ''">
+                and area_name = #{areaName,jdbcType=VARCHAR}
+            </if>
+            <if test="caseCode != null and caseCode != ''">
+                and case_code = #{caseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="publishDate != null and publishDate != ''">
+                and publish_date = #{publishDate,jdbcType=VARCHAR}
+            </if>
+            <if test="gistId != null and gistId != ''">
+                and gist_id = #{gistId,jdbcType=VARCHAR}
+            </if>
+            <if test="duty != null and duty != ''">
+                and duty = #{duty,jdbcType=VARCHAR}
+            </if>
+            <if test="performance != null and performance != ''">
+                and performance = #{performance,jdbcType=VARCHAR}
+            </if>
+            <if test="disruptTypeName != null and disruptTypeName != ''">
+                and disrupt_type_name = #{disruptTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicUntrustedDetail">
+        insert into cl_magic_untrusted_detail(user_id,trans_id,court_name,area_name,case_code,publish_date,gist_id,duty,performance,disrupt_type_name,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{courtName,jdbcType=VARCHAR},#{areaName,jdbcType=VARCHAR},#{caseCode,jdbcType=VARCHAR},#{publishDate,jdbcType=VARCHAR},#{gistId,jdbcType=VARCHAR},#{duty,jdbcType=VARCHAR},#{performance,jdbcType=VARCHAR},#{disruptTypeName,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicUntrustedDetail">
+        update cl_magic_untrusted_detail set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            court_name = #{courtName,jdbcType=VARCHAR},
+            area_name = #{areaName,jdbcType=VARCHAR},
+            case_code = #{caseCode,jdbcType=VARCHAR},
+            publish_date = #{publishDate,jdbcType=VARCHAR},
+            gist_id = #{gistId,jdbcType=VARCHAR},
+            duty = #{duty,jdbcType=VARCHAR},
+            performance = #{performance,jdbcType=VARCHAR},
+            disrupt_type_name = #{disruptTypeName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_untrusted_detail
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="courtName != null and courtName != '' ">
+                court_name = #{courtName,jdbcType=VARCHAR},                
+            </if>
+            <if test="areaName != null and areaName != '' ">
+                area_name = #{areaName,jdbcType=VARCHAR},                
+            </if>
+            <if test="caseCode != null and caseCode != '' ">
+                case_code = #{caseCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="publishDate != null and publishDate != '' ">
+                publish_date = #{publishDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="gistId != null and gistId != '' ">
+                gist_id = #{gistId,jdbcType=VARCHAR},                
+            </if>
+            <if test="duty != null and duty != '' ">
+                duty = #{duty,jdbcType=VARCHAR},                
+            </if>
+            <if test="performance != null and performance != '' ">
+                performance = #{performance,jdbcType=VARCHAR},                
+            </if>
+            <if test="disruptTypeName != null and disruptTypeName != '' ">
+                disrupt_type_name = #{disruptTypeName,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_untrusted_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_untrusted_detail
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_untrusted_detail
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into cl_magic_untrusted_detail (user_id, trans_id, court_name, area_name, case_code, publish_date,
+        gist_id, duty, performance, disrupt_type_name, create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId,jdbcType=INTEGER}, #{item.transId,jdbcType=VARCHAR},#{item.courtName,jdbcType=VARCHAR},
+            #{item.areaName,jdbcType=VARCHAR}, #{item.caseCode,jdbcType=VARCHAR}, #{item.publishDate,jdbcType=VARCHAR},
+            #{item.gistId,jdbcType=VARCHAR}, #{item.duty,jdbcType=VARCHAR}, #{item.performance,jdbcType=VARCHAR},
+            #{item.disruptTypeName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+</mapper>

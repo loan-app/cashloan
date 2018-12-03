@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_bank_info表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicBankInfoMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicBankInfo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="debit_update_date" property="debitUpdateDate" jdbcType="VARCHAR" />
+        <result column="debit_card_amount" property="debitCardAmount" jdbcType="INTEGER" />
+        <result column="debit_balance" property="debitBalance" jdbcType="VARCHAR" />
+        <result column="debit_total_income" property="debitTotalIncome" jdbcType="VARCHAR" />
+        <result column="debit_total_salary_income" property="debitTotalSalaryIncome" jdbcType="VARCHAR" />
+        <result column="debit_total_loan_income" property="debitTotalLoanIncome" jdbcType="VARCHAR" />
+        <result column="debit_total_outcome" property="debitTotalOutcome" jdbcType="VARCHAR" />
+        <result column="debit_total_consume_outcome" property="debitTotalConsumeOutcome" jdbcType="VARCHAR" />
+        <result column="debit_total_loan_outcome" property="debitTotalLoanOutcome" jdbcType="VARCHAR" />
+        <result column="credit_update_date" property="creditUpdateDate" jdbcType="VARCHAR" />
+        <result column="credit_card_amount" property="creditCardAmount" jdbcType="INTEGER" />
+        <result column="credit_total_credit_limit" property="creditTotalCreditLimit" jdbcType="VARCHAR" />
+        <result column="credit_total_credit_available" property="creditTotalCreditAvailable" jdbcType="VARCHAR" />
+        <result column="credit_max_credit_limit" property="creditMaxCreditLimit" jdbcType="VARCHAR" />
+        <result column="credit_overdue_times" property="creditOverdueTimes" jdbcType="INTEGER" />
+        <result column="credit_overdue_months" property="creditOverdueMonths" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,debit_update_date,debit_card_amount,debit_balance,debit_total_income,debit_total_salary_income,debit_total_loan_income,debit_total_outcome,debit_total_consume_outcome,debit_total_loan_outcome,credit_update_date,credit_card_amount,credit_total_credit_limit,credit_total_credit_available,credit_max_credit_limit,credit_overdue_times,credit_overdue_months,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="debitUpdateDate != null and debitUpdateDate != ''">
+                and debit_update_date = #{debitUpdateDate,jdbcType=VARCHAR}
+            </if>
+            <if test="debitCardAmount != null">
+                and debit_card_amount = #{debitCardAmount,jdbcType=INTEGER}
+            </if>
+            <if test="debitBalance != null and debitBalance != ''">
+                and debit_balance = #{debitBalance,jdbcType=VARCHAR}
+            </if>
+            <if test="debitTotalIncome != null and debitTotalIncome != ''">
+                and debit_total_income = #{debitTotalIncome,jdbcType=VARCHAR}
+            </if>
+            <if test="debitTotalSalaryIncome != null and debitTotalSalaryIncome != ''">
+                and debit_total_salary_income = #{debitTotalSalaryIncome,jdbcType=VARCHAR}
+            </if>
+            <if test="debitTotalLoanIncome != null and debitTotalLoanIncome != ''">
+                and debit_total_loan_income = #{debitTotalLoanIncome,jdbcType=VARCHAR}
+            </if>
+            <if test="debitTotalOutcome != null and debitTotalOutcome != ''">
+                and debit_total_outcome = #{debitTotalOutcome,jdbcType=VARCHAR}
+            </if>
+            <if test="debitTotalConsumeOutcome != null and debitTotalConsumeOutcome != ''">
+                and debit_total_consume_outcome = #{debitTotalConsumeOutcome,jdbcType=VARCHAR}
+            </if>
+            <if test="debitTotalLoanOutcome != null and debitTotalLoanOutcome != ''">
+                and debit_total_loan_outcome = #{debitTotalLoanOutcome,jdbcType=VARCHAR}
+            </if>
+            <if test="creditUpdateDate != null and creditUpdateDate != ''">
+                and credit_update_date = #{creditUpdateDate,jdbcType=VARCHAR}
+            </if>
+            <if test="creditCardAmount != null">
+                and credit_card_amount = #{creditCardAmount,jdbcType=INTEGER}
+            </if>
+            <if test="creditTotalCreditLimit != null and creditTotalCreditLimit != ''">
+                and credit_total_credit_limit = #{creditTotalCreditLimit,jdbcType=VARCHAR}
+            </if>
+            <if test="creditTotalCreditAvailable != null and creditTotalCreditAvailable != ''">
+                and credit_total_credit_available = #{creditTotalCreditAvailable,jdbcType=VARCHAR}
+            </if>
+            <if test="creditMaxCreditLimit != null and creditMaxCreditLimit != ''">
+                and credit_max_credit_limit = #{creditMaxCreditLimit,jdbcType=VARCHAR}
+            </if>
+            <if test="creditOverdueTimes != null">
+                and credit_overdue_times = #{creditOverdueTimes,jdbcType=INTEGER}
+            </if>
+            <if test="creditOverdueMonths != null">
+                and credit_overdue_months = #{creditOverdueMonths,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicBankInfo">
+        insert into cl_magic_bank_info(user_id,trans_id,debit_update_date,debit_card_amount,debit_balance,debit_total_income,debit_total_salary_income,debit_total_loan_income,debit_total_outcome,debit_total_consume_outcome,debit_total_loan_outcome,credit_update_date,credit_card_amount,credit_total_credit_limit,credit_total_credit_available,credit_max_credit_limit,credit_overdue_times,credit_overdue_months,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{debitUpdateDate,jdbcType=VARCHAR},#{debitCardAmount,jdbcType=INTEGER},#{debitBalance,jdbcType=VARCHAR},#{debitTotalIncome,jdbcType=VARCHAR},#{debitTotalSalaryIncome,jdbcType=VARCHAR},#{debitTotalLoanIncome,jdbcType=VARCHAR},#{debitTotalOutcome,jdbcType=VARCHAR},#{debitTotalConsumeOutcome,jdbcType=VARCHAR},#{debitTotalLoanOutcome,jdbcType=VARCHAR},#{creditUpdateDate,jdbcType=VARCHAR},#{creditCardAmount,jdbcType=INTEGER},#{creditTotalCreditLimit,jdbcType=VARCHAR},#{creditTotalCreditAvailable,jdbcType=VARCHAR},#{creditMaxCreditLimit,jdbcType=VARCHAR},#{creditOverdueTimes,jdbcType=INTEGER},#{creditOverdueMonths,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicBankInfo">
+        update cl_magic_bank_info set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            debit_update_date = #{debitUpdateDate,jdbcType=VARCHAR},
+            debit_card_amount = #{debitCardAmount,jdbcType=INTEGER},
+            debit_balance = #{debitBalance,jdbcType=VARCHAR},
+            debit_total_income = #{debitTotalIncome,jdbcType=VARCHAR},
+            debit_total_salary_income = #{debitTotalSalaryIncome,jdbcType=VARCHAR},
+            debit_total_loan_income = #{debitTotalLoanIncome,jdbcType=VARCHAR},
+            debit_total_outcome = #{debitTotalOutcome,jdbcType=VARCHAR},
+            debit_total_consume_outcome = #{debitTotalConsumeOutcome,jdbcType=VARCHAR},
+            debit_total_loan_outcome = #{debitTotalLoanOutcome,jdbcType=VARCHAR},
+            credit_update_date = #{creditUpdateDate,jdbcType=VARCHAR},
+            credit_card_amount = #{creditCardAmount,jdbcType=INTEGER},
+            credit_total_credit_limit = #{creditTotalCreditLimit,jdbcType=VARCHAR},
+            credit_total_credit_available = #{creditTotalCreditAvailable,jdbcType=VARCHAR},
+            credit_max_credit_limit = #{creditMaxCreditLimit,jdbcType=VARCHAR},
+            credit_overdue_times = #{creditOverdueTimes,jdbcType=INTEGER},
+            credit_overdue_months = #{creditOverdueMonths,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_bank_info
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitUpdateDate != null and debitUpdateDate != '' ">
+                debit_update_date = #{debitUpdateDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitCardAmount != null">        
+                debit_card_amount = #{debitCardAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="debitBalance != null and debitBalance != '' ">
+                debit_balance = #{debitBalance,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitTotalIncome != null and debitTotalIncome != '' ">
+                debit_total_income = #{debitTotalIncome,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitTotalSalaryIncome != null and debitTotalSalaryIncome != '' ">
+                debit_total_salary_income = #{debitTotalSalaryIncome,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitTotalLoanIncome != null and debitTotalLoanIncome != '' ">
+                debit_total_loan_income = #{debitTotalLoanIncome,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitTotalOutcome != null and debitTotalOutcome != '' ">
+                debit_total_outcome = #{debitTotalOutcome,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitTotalConsumeOutcome != null and debitTotalConsumeOutcome != '' ">
+                debit_total_consume_outcome = #{debitTotalConsumeOutcome,jdbcType=VARCHAR},                
+            </if>
+            <if test="debitTotalLoanOutcome != null and debitTotalLoanOutcome != '' ">
+                debit_total_loan_outcome = #{debitTotalLoanOutcome,jdbcType=VARCHAR},                
+            </if>
+            <if test="creditUpdateDate != null and creditUpdateDate != '' ">
+                credit_update_date = #{creditUpdateDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="creditCardAmount != null">        
+                credit_card_amount = #{creditCardAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="creditTotalCreditLimit != null and creditTotalCreditLimit != '' ">
+                credit_total_credit_limit = #{creditTotalCreditLimit,jdbcType=VARCHAR},                
+            </if>
+            <if test="creditTotalCreditAvailable != null and creditTotalCreditAvailable != '' ">
+                credit_total_credit_available = #{creditTotalCreditAvailable,jdbcType=VARCHAR},                
+            </if>
+            <if test="creditMaxCreditLimit != null and creditMaxCreditLimit != '' ">
+                credit_max_credit_limit = #{creditMaxCreditLimit,jdbcType=VARCHAR},                
+            </if>
+            <if test="creditOverdueTimes != null">        
+                credit_overdue_times = #{creditOverdueTimes,jdbcType=INTEGER},                
+            </if>
+            <if test="creditOverdueMonths != null">        
+                credit_overdue_months = #{creditOverdueMonths,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_bank_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_bank_info
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_bank_info
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

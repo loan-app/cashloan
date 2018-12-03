@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_basic表:魔杖2.0报告-基础信息模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicBasicMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicBasic">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+        <result column="idcard_location" property="idcardLocation" jdbcType="VARCHAR" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="gender" property="gender" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="education_level" property="educationLevel" jdbcType="INTEGER" />
+        <result column="education_is_graduation" property="educationIsGraduation" jdbcType="INTEGER" />
+        <result column="has_carrier_data" property="hasCarrierData" jdbcType="INTEGER" />
+        <result column="has_onlinebank_data" property="hasOnlinebankData" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,mobile,user_name,idcard,idcard_location,trans_id,age,gender,email,education_level,education_is_graduation,has_carrier_data,has_onlinebank_data,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="idcard != null and idcard != ''">
+                and idcard = #{idcard,jdbcType=VARCHAR}
+            </if>
+            <if test="idcardLocation != null and idcardLocation != ''">
+                and idcard_location = #{idcardLocation,jdbcType=VARCHAR}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="age != null">
+                and age = #{age,jdbcType=INTEGER}
+            </if>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="educationLevel != null">
+                and education_level = #{educationLevel,jdbcType=INTEGER}
+            </if>
+            <if test="educationIsGraduation != null">
+                and education_is_graduation = #{educationIsGraduation,jdbcType=INTEGER}
+            </if>
+            <if test="hasCarrierData != null">
+                and has_carrier_data = #{hasCarrierData,jdbcType=INTEGER}
+            </if>
+            <if test="hasOnlinebankData != null">
+                and has_onlinebank_data = #{hasOnlinebankData,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicBasic">
+        insert into cl_magic_basic(user_id,mobile,user_name,idcard,idcard_location,trans_id,age,gender,email,education_level,education_is_graduation,has_carrier_data,has_onlinebank_data,create_time)values(#{userId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{idcard,jdbcType=VARCHAR},#{idcardLocation,jdbcType=VARCHAR},#{transId,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{gender,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{educationLevel,jdbcType=INTEGER},#{educationIsGraduation,jdbcType=INTEGER},#{hasCarrierData,jdbcType=INTEGER},#{hasOnlinebankData,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicBasic">
+        update cl_magic_basic set 
+            user_id = #{userId,jdbcType=BIGINT},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            idcard = #{idcard,jdbcType=VARCHAR},
+            idcard_location = #{idcardLocation,jdbcType=VARCHAR},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            age = #{age,jdbcType=INTEGER},
+            gender = #{gender,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            education_level = #{educationLevel,jdbcType=INTEGER},
+            education_is_graduation = #{educationIsGraduation,jdbcType=INTEGER},
+            has_carrier_data = #{hasCarrierData,jdbcType=INTEGER},
+            has_onlinebank_data = #{hasOnlinebankData,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_basic
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="userName != null and userName != '' ">
+                user_name = #{userName,jdbcType=VARCHAR},                
+            </if>
+            <if test="idcard != null and idcard != '' ">
+                idcard = #{idcard,jdbcType=VARCHAR},                
+            </if>
+            <if test="idcardLocation != null and idcardLocation != '' ">
+                idcard_location = #{idcardLocation,jdbcType=VARCHAR},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="age != null">        
+                age = #{age,jdbcType=INTEGER},                
+            </if>
+            <if test="gender != null and gender != '' ">
+                gender = #{gender,jdbcType=VARCHAR},                
+            </if>
+            <if test="email != null and email != '' ">
+                email = #{email,jdbcType=VARCHAR},                
+            </if>
+            <if test="educationLevel != null">        
+                education_level = #{educationLevel,jdbcType=INTEGER},                
+            </if>
+            <if test="educationIsGraduation != null">        
+                education_is_graduation = #{educationIsGraduation,jdbcType=INTEGER},                
+            </if>
+            <if test="hasCarrierData != null">        
+                has_carrier_data = #{hasCarrierData,jdbcType=INTEGER},                
+            </if>
+            <if test="hasOnlinebankData != null">        
+                has_onlinebank_data = #{hasOnlinebankData,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_basic
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_basic
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_basic
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

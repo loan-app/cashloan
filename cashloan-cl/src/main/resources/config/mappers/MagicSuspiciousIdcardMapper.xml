@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_suspicious_idcard表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicSuspiciousIdcardMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicSuspiciousIdcard">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="other_names_cnt" property="otherNamesCnt" jdbcType="INTEGER" />
+        <result column="other_mobiles_cnt" property="otherMobilesCnt" jdbcType="INTEGER" />
+        <result column="other_mobiles_black_cnt" property="otherMobilesBlackCnt" jdbcType="INTEGER" />
+        <result column="information_sources_cnt" property="informationSourcesCnt" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,other_names_cnt,other_mobiles_cnt,other_mobiles_black_cnt,information_sources_cnt,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="otherNamesCnt != null">
+                and other_names_cnt = #{otherNamesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="otherMobilesCnt != null">
+                and other_mobiles_cnt = #{otherMobilesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="otherMobilesBlackCnt != null">
+                and other_mobiles_black_cnt = #{otherMobilesBlackCnt,jdbcType=INTEGER}
+            </if>
+            <if test="informationSourcesCnt != null">
+                and information_sources_cnt = #{informationSourcesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicSuspiciousIdcard">
+        insert into cl_magic_suspicious_idcard(user_id,trans_id,other_names_cnt,other_mobiles_cnt,other_mobiles_black_cnt,information_sources_cnt,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{otherNamesCnt,jdbcType=INTEGER},#{otherMobilesCnt,jdbcType=INTEGER},#{otherMobilesBlackCnt,jdbcType=INTEGER},#{informationSourcesCnt,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicSuspiciousIdcard">
+        update cl_magic_suspicious_idcard set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            other_names_cnt = #{otherNamesCnt,jdbcType=INTEGER},
+            other_mobiles_cnt = #{otherMobilesCnt,jdbcType=INTEGER},
+            other_mobiles_black_cnt = #{otherMobilesBlackCnt,jdbcType=INTEGER},
+            information_sources_cnt = #{informationSourcesCnt,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_suspicious_idcard
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="otherNamesCnt != null">        
+                other_names_cnt = #{otherNamesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="otherMobilesCnt != null">        
+                other_mobiles_cnt = #{otherMobilesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="otherMobilesBlackCnt != null">        
+                other_mobiles_black_cnt = #{otherMobilesBlackCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="informationSourcesCnt != null">        
+                information_sources_cnt = #{informationSourcesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_suspicious_idcard
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_suspicious_idcard
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_suspicious_idcard
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

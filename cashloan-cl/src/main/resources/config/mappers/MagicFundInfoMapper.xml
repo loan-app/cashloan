@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_fund_info表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicFundInfoMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicFundInfo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+        <result column="last_pay_date" property="lastPayDate" jdbcType="VARCHAR" />
+        <result column="account_status" property="accountStatus" jdbcType="VARCHAR" />
+        <result column="open_date" property="openDate" jdbcType="VARCHAR" />
+        <result column="open_location" property="openLocation" jdbcType="VARCHAR" />
+        <result column="balance" property="balance" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="base_amount" property="baseAmount" jdbcType="VARCHAR" />
+        <result column="monthly_income" property="monthlyIncome" jdbcType="VARCHAR" />
+        <result column="total_months" property="totalMonths" jdbcType="VARCHAR" />
+        <result column="continuous_months" property="continuousMonths" jdbcType="INTEGER" />
+        <result column="repay_times" property="repayTimes" jdbcType="INTEGER" />
+        <result column="total_companies" property="totalCompanies" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,update_date,last_pay_date,account_status,open_date,open_location,balance,email,base_amount,monthly_income,total_months,continuous_months,repay_times,total_companies,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=VARCHAR}
+            </if>
+            <if test="lastPayDate != null and lastPayDate != ''">
+                and last_pay_date = #{lastPayDate,jdbcType=VARCHAR}
+            </if>
+            <if test="accountStatus != null and accountStatus != ''">
+                and account_status = #{accountStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="openDate != null and openDate != ''">
+                and open_date = #{openDate,jdbcType=VARCHAR}
+            </if>
+            <if test="openLocation != null and openLocation != ''">
+                and open_location = #{openLocation,jdbcType=VARCHAR}
+            </if>
+            <if test="balance != null and balance != ''">
+                and balance = #{balance,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="baseAmount != null and baseAmount != ''">
+                and base_amount = #{baseAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="monthlyIncome != null and monthlyIncome != ''">
+                and monthly_income = #{monthlyIncome,jdbcType=VARCHAR}
+            </if>
+            <if test="totalMonths != null and totalMonths != ''">
+                and total_months = #{totalMonths,jdbcType=VARCHAR}
+            </if>
+            <if test="continuousMonths != null">
+                and continuous_months = #{continuousMonths,jdbcType=INTEGER}
+            </if>
+            <if test="repayTimes != null">
+                and repay_times = #{repayTimes,jdbcType=INTEGER}
+            </if>
+            <if test="totalCompanies != null">
+                and total_companies = #{totalCompanies,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicFundInfo">
+        insert into cl_magic_fund_info(user_id,trans_id,update_date,last_pay_date,account_status,open_date,open_location,balance,email,base_amount,monthly_income,total_months,continuous_months,repay_times,total_companies,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{updateDate,jdbcType=VARCHAR},#{lastPayDate,jdbcType=VARCHAR},#{accountStatus,jdbcType=VARCHAR},#{openDate,jdbcType=VARCHAR},#{openLocation,jdbcType=VARCHAR},#{balance,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{baseAmount,jdbcType=VARCHAR},#{monthlyIncome,jdbcType=VARCHAR},#{totalMonths,jdbcType=VARCHAR},#{continuousMonths,jdbcType=INTEGER},#{repayTimes,jdbcType=INTEGER},#{totalCompanies,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicFundInfo">
+        update cl_magic_fund_info set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=VARCHAR},
+            last_pay_date = #{lastPayDate,jdbcType=VARCHAR},
+            account_status = #{accountStatus,jdbcType=VARCHAR},
+            open_date = #{openDate,jdbcType=VARCHAR},
+            open_location = #{openLocation,jdbcType=VARCHAR},
+            balance = #{balance,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            base_amount = #{baseAmount,jdbcType=VARCHAR},
+            monthly_income = #{monthlyIncome,jdbcType=VARCHAR},
+            total_months = #{totalMonths,jdbcType=VARCHAR},
+            continuous_months = #{continuousMonths,jdbcType=INTEGER},
+            repay_times = #{repayTimes,jdbcType=INTEGER},
+            total_companies = #{totalCompanies,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_fund_info
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="updateDate != null and updateDate != '' ">
+                update_date = #{updateDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastPayDate != null and lastPayDate != '' ">
+                last_pay_date = #{lastPayDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="accountStatus != null and accountStatus != '' ">
+                account_status = #{accountStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="openDate != null and openDate != '' ">
+                open_date = #{openDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="openLocation != null and openLocation != '' ">
+                open_location = #{openLocation,jdbcType=VARCHAR},                
+            </if>
+            <if test="balance != null and balance != '' ">
+                balance = #{balance,jdbcType=VARCHAR},                
+            </if>
+            <if test="email != null and email != '' ">
+                email = #{email,jdbcType=VARCHAR},                
+            </if>
+            <if test="baseAmount != null and baseAmount != '' ">
+                base_amount = #{baseAmount,jdbcType=VARCHAR},                
+            </if>
+            <if test="monthlyIncome != null and monthlyIncome != '' ">
+                monthly_income = #{monthlyIncome,jdbcType=VARCHAR},                
+            </if>
+            <if test="totalMonths != null and totalMonths != '' ">
+                total_months = #{totalMonths,jdbcType=VARCHAR},
+            </if>
+            <if test="continuousMonths != null">        
+                continuous_months = #{continuousMonths,jdbcType=INTEGER},                
+            </if>
+            <if test="repayTimes != null">        
+                repay_times = #{repayTimes,jdbcType=INTEGER},                
+            </if>
+            <if test="totalCompanies != null">        
+                total_companies = #{totalCompanies,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_fund_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_fund_info
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_fund_info
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into cl_magic_fund_info (user_id, trans_id, update_date, last_pay_date, account_status, open_date,
+        open_location, balance, email, base_amount, monthly_income, total_months, continuous_months, repay_times, total_companies, create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId,jdbcType=INTEGER}, #{item.transId,jdbcType=VARCHAR},#{item.updateDate,jdbcType=VARCHAR},
+            #{item.lastPayDate,jdbcType=VARCHAR}, #{item.accountStatus,jdbcType=VARCHAR}, #{item.openDate,jdbcType=VARCHAR},
+            #{item.openLocation,jdbcType=VARCHAR}, #{item.balance,jdbcType=VARCHAR}, #{item.email,jdbcType=VARCHAR},
+            #{item.baseAmount,jdbcType=VARCHAR}, #{item.monthlyIncome,jdbcType=VARCHAR}, #{item.totalMonths,jdbcType=VARCHAR},
+            #{item.continuousMonths,jdbcType=INTEGER}, #{item.repayTimes,jdbcType=INTEGER}, #{item.totalCompanies,jdbcType=INTEGER},
+            #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+</mapper>

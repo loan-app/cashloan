@@ -1,0 +1,63 @@
+package com.rongdu.cashloan.rc.service.impl;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import tool.util.DateUtil;
+
+import com.rongdu.cashloan.core.common.mapper.BaseMapper;
+import com.rongdu.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.rongdu.cashloan.rc.domain.SimpleBorrowCount;
+import com.rongdu.cashloan.rc.mapper.SimpleBorrowCountMapper;
+import com.rongdu.cashloan.rc.service.SimpleBorrowCountService;
+
+
+/**
+ * 风控数据统计-（简）借款统计ServiceImpl
+ * 
+ * @author xx
+ * @version 1.0.0
+ * @date 2017-07-06 18:12:18
+ * Copyright 杭州融都科技股份有限公司  cashloan All Rights Reserved
+ * 官方网站：www.erongdu.com
+ * 未经授权不得进行修改、复制、出售及商业使用
+ */
+ 
+@Service("simpleBorrowCountService")
+public class SimpleBorrowCountServiceImpl extends BaseServiceImpl<SimpleBorrowCount, Long> implements SimpleBorrowCountService {
+	
+    @SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(SimpleBorrowCountServiceImpl.class);
+   
+    @Resource
+    private SimpleBorrowCountMapper simpleBorrowCountMapper;
+
+	@Override
+	public BaseMapper<SimpleBorrowCount, Long> getMapper() {
+		return simpleBorrowCountMapper;
+	}
+
+	@Override
+	public int countOne(long userId) {
+		int count = simpleBorrowCountMapper.countOne(userId);
+		
+		SimpleBorrowCount simpleBorrowCount = new SimpleBorrowCount();
+		simpleBorrowCount.setUserId(userId);
+		simpleBorrowCount.setCountOne(count);
+		simpleBorrowCount.setCreateTime(DateUtil.getNow());
+		
+//		count = simpleBorrowCountMapper.countTwo(userId);
+//		simpleBorrowCount.setCountTwo(count);
+//		
+//		count = simpleBorrowCountMapper.countThree(userId);
+//		simpleBorrowCount.setCountThree(count);
+//		
+//		count = simpleBorrowCountMapper.countFour(userId);
+//		simpleBorrowCount.setCountFour(count);
+		
+		return simpleBorrowCountMapper.save(simpleBorrowCount);
+	}
+}

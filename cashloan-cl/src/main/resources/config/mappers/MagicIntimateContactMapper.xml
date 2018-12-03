@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_intimate_contact表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicIntimateContactMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicIntimateContact">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="intimatenum_30d" property="intimatenum30d" jdbcType="INTEGER" />
+        <result column="auth_intimatenum_30d" property="authIntimatenum30d" jdbcType="INTEGER" />
+        <result column="auth_intimatenum_ratio_30d" property="authIntimatenumRatio30d" jdbcType="VARCHAR" />
+        <result column="black_intimatenum_30d" property="blackIntimatenum30d" jdbcType="INTEGER" />
+        <result column="black_intimatenum_ratio_30d" property="blackIntimatenumRatio30d" jdbcType="VARCHAR" />
+        <result column="intimate_type_30d" property="intimateType30d" jdbcType="VARCHAR" />
+        <result column="auth_intimate_indirectnum_30d" property="authIntimateIndirectnum30d" jdbcType="INTEGER" />
+        <result column="auth_intimate_indirectnum_ratio_30d" property="authIntimateIndirectnumRatio30d" jdbcType="VARCHAR" />
+        <result column="black_intimate_indirectnum_30d" property="blackIntimateIndirectnum30d" jdbcType="INTEGER" />
+        <result column="black_intimate_indirectnum_ratio_30d" property="blackIntimateIndirectnumRatio30d" jdbcType="VARCHAR" />
+        <result column="black_intimate_indirect_peernum_30d" property="blackIntimateIndirectPeernum30d" jdbcType="INTEGER" />
+        <result column="black_intimate_indirect_peernum_ratio_30d" property="blackIntimateIndirectPeernumRatio30d" jdbcType="VARCHAR" />
+        <result column="auth_intimate_indirect_peernum_30d" property="authIntimateIndirectPeernum30d" jdbcType="INTEGER" />
+        <result column="auth_intimate_indirect_peernum_ratio_30d" property="authIntimateIndirectPeernumRatio30d" jdbcType="VARCHAR" />
+        <result column="intimatenum_90d" property="intimatenum90d" jdbcType="INTEGER" />
+        <result column="auth_intimatenum_90d" property="authIntimatenum90d" jdbcType="INTEGER" />
+        <result column="auth_intimatenum_ratio_90d" property="authIntimatenumRatio90d" jdbcType="VARCHAR" />
+        <result column="black_intimatenum_90d" property="blackIntimatenum90d" jdbcType="INTEGER" />
+        <result column="black_intimatenum_ratio_90d" property="blackIntimatenumRatio90d" jdbcType="VARCHAR" />
+        <result column="intimate_type_90d" property="intimateType90d" jdbcType="VARCHAR" />
+        <result column="auth_intimate_indirectnum_90d" property="authIntimateIndirectnum90d" jdbcType="INTEGER" />
+        <result column="auth_intimate_indirectnum_ratio_90d" property="authIntimateIndirectnumRatio90d" jdbcType="VARCHAR" />
+        <result column="black_intimate_indirectnum_90d" property="blackIntimateIndirectnum90d" jdbcType="INTEGER" />
+        <result column="black_intimate_indirectnum_ratio_90d" property="blackIntimateIndirectnumRatio90d" jdbcType="VARCHAR" />
+        <result column="black_intimate_indirect_peernum_90d" property="blackIntimateIndirectPeernum90d" jdbcType="INTEGER" />
+        <result column="black_intimate_indirect_peernum_ratio_90d" property="blackIntimateIndirectPeernumRatio90d" jdbcType="VARCHAR" />
+        <result column="auth_intimate_indirect_peernum_90d" property="authIntimateIndirectPeernum90d" jdbcType="INTEGER" />
+        <result column="auth_intimate_indirect_peernum_ratio_90d" property="authIntimateIndirectPeernumRatio90d" jdbcType="VARCHAR" />
+        <result column="intimatenum_180d" property="intimatenum180d" jdbcType="INTEGER" />
+        <result column="auth_intimatenum_180d" property="authIntimatenum180d" jdbcType="INTEGER" />
+        <result column="auth_intimatenum_ratio_180d" property="authIntimatenumRatio180d" jdbcType="VARCHAR" />
+        <result column="black_intimatenum_180d" property="blackIntimatenum180d" jdbcType="INTEGER" />
+        <result column="black_intimatenum_ratio_180d" property="blackIntimatenumRatio180d" jdbcType="VARCHAR" />
+        <result column="intimate_type_180d" property="intimateType180d" jdbcType="VARCHAR" />
+        <result column="auth_intimate_indirectnum_180d" property="authIntimateIndirectnum180d" jdbcType="INTEGER" />
+        <result column="auth_intimate_indirectnum_ratio_180d" property="authIntimateIndirectnumRatio180d" jdbcType="VARCHAR" />
+        <result column="black_intimate_indirectnum_180d" property="blackIntimateIndirectnum180d" jdbcType="INTEGER" />
+        <result column="black_intimate_indirectnum_ratio_180d" property="blackIntimateIndirectnumRatio180d" jdbcType="VARCHAR" />
+        <result column="black_intimate_indirect_peernum_180d" property="blackIntimateIndirectPeernum180d" jdbcType="INTEGER" />
+        <result column="black_intimate_indirect_peernum_ratio_180d" property="blackIntimateIndirectPeernumRatio180d" jdbcType="VARCHAR" />
+        <result column="auth_intimate_indirect_peernum_180d" property="authIntimateIndirectPeernum180d" jdbcType="INTEGER" />
+        <result column="auth_intimate_indirect_peernum_ratio_180d" property="authIntimateIndirectPeernumRatio180d" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,intimatenum_30d,auth_intimatenum_30d,auth_intimatenum_ratio_30d,black_intimatenum_30d,black_intimatenum_ratio_30d,intimate_type_30d,auth_intimate_indirectnum_30d,auth_intimate_indirectnum_ratio_30d,black_intimate_indirectnum_30d,black_intimate_indirectnum_ratio_30d,black_intimate_indirect_peernum_30d,black_intimate_indirect_peernum_ratio_30d,auth_intimate_indirect_peernum_30d,auth_intimate_indirect_peernum_ratio_30d,intimatenum_90d,auth_intimatenum_90d,auth_intimatenum_ratio_90d,black_intimatenum_90d,black_intimatenum_ratio_90d,intimate_type_90d,auth_intimate_indirectnum_90d,auth_intimate_indirectnum_ratio_90d,black_intimate_indirectnum_90d,black_intimate_indirectnum_ratio_90d,black_intimate_indirect_peernum_90d,black_intimate_indirect_peernum_ratio_90d,auth_intimate_indirect_peernum_90d,auth_intimate_indirect_peernum_ratio_90d,intimatenum_180d,auth_intimatenum_180d,auth_intimatenum_ratio_180d,black_intimatenum_180d,black_intimatenum_ratio_180d,intimate_type_180d,auth_intimate_indirectnum_180d,auth_intimate_indirectnum_ratio_180d,black_intimate_indirectnum_180d,black_intimate_indirectnum_ratio_180d,black_intimate_indirect_peernum_180d,black_intimate_indirect_peernum_ratio_180d,auth_intimate_indirect_peernum_180d,auth_intimate_indirect_peernum_ratio_180d,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="intimatenum30d != null">
+                and intimatenum_30d = #{intimatenum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimatenum30d != null">
+                and auth_intimatenum_30d = #{authIntimatenum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimatenumRatio30d != null and authIntimatenumRatio30d != ''">
+                and auth_intimatenum_ratio_30d = #{authIntimatenumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimatenum30d != null">
+                and black_intimatenum_30d = #{blackIntimatenum30d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimatenumRatio30d != null and blackIntimatenumRatio30d != ''">
+                and black_intimatenum_ratio_30d = #{blackIntimatenumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="intimateType30d != null and intimateType30d != ''">
+                and intimate_type_30d = #{intimateType30d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIntimateIndirectnum30d != null">
+                and auth_intimate_indirectnum_30d = #{authIntimateIndirectnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimateIndirectnumRatio30d != null and authIntimateIndirectnumRatio30d != ''">
+                and auth_intimate_indirectnum_ratio_30d = #{authIntimateIndirectnumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimateIndirectnum30d != null">
+                and black_intimate_indirectnum_30d = #{blackIntimateIndirectnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimateIndirectnumRatio30d != null and blackIntimateIndirectnumRatio30d != ''">
+                and black_intimate_indirectnum_ratio_30d = #{blackIntimateIndirectnumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimateIndirectPeernum30d != null">
+                and black_intimate_indirect_peernum_30d = #{blackIntimateIndirectPeernum30d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimateIndirectPeernumRatio30d != null and blackIntimateIndirectPeernumRatio30d != ''">
+                and black_intimate_indirect_peernum_ratio_30d = #{blackIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIntimateIndirectPeernum30d != null">
+                and auth_intimate_indirect_peernum_30d = #{authIntimateIndirectPeernum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimateIndirectPeernumRatio30d != null and authIntimateIndirectPeernumRatio30d != ''">
+                and auth_intimate_indirect_peernum_ratio_30d = #{authIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="intimatenum90d != null">
+                and intimatenum_90d = #{intimatenum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimatenum90d != null">
+                and auth_intimatenum_90d = #{authIntimatenum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimatenumRatio90d != null and authIntimatenumRatio90d != ''">
+                and auth_intimatenum_ratio_90d = #{authIntimatenumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimatenum90d != null">
+                and black_intimatenum_90d = #{blackIntimatenum90d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimatenumRatio90d != null and blackIntimatenumRatio90d != ''">
+                and black_intimatenum_ratio_90d = #{blackIntimatenumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="intimateType90d != null and intimateType90d != ''">
+                and intimate_type_90d = #{intimateType90d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIntimateIndirectnum90d != null">
+                and auth_intimate_indirectnum_90d = #{authIntimateIndirectnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimateIndirectnumRatio90d != null and authIntimateIndirectnumRatio90d != ''">
+                and auth_intimate_indirectnum_ratio_90d = #{authIntimateIndirectnumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimateIndirectnum90d != null">
+                and black_intimate_indirectnum_90d = #{blackIntimateIndirectnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimateIndirectnumRatio90d != null and blackIntimateIndirectnumRatio90d != ''">
+                and black_intimate_indirectnum_ratio_90d = #{blackIntimateIndirectnumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimateIndirectPeernum90d != null">
+                and black_intimate_indirect_peernum_90d = #{blackIntimateIndirectPeernum90d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimateIndirectPeernumRatio90d != null and blackIntimateIndirectPeernumRatio90d != ''">
+                and black_intimate_indirect_peernum_ratio_90d = #{blackIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIntimateIndirectPeernum90d != null">
+                and auth_intimate_indirect_peernum_90d = #{authIntimateIndirectPeernum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimateIndirectPeernumRatio90d != null and authIntimateIndirectPeernumRatio90d != ''">
+                and auth_intimate_indirect_peernum_ratio_90d = #{authIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="intimatenum180d != null">
+                and intimatenum_180d = #{intimatenum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimatenum180d != null">
+                and auth_intimatenum_180d = #{authIntimatenum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimatenumRatio180d != null and authIntimatenumRatio180d != ''">
+                and auth_intimatenum_ratio_180d = #{authIntimatenumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimatenum180d != null">
+                and black_intimatenum_180d = #{blackIntimatenum180d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimatenumRatio180d != null and blackIntimatenumRatio180d != ''">
+                and black_intimatenum_ratio_180d = #{blackIntimatenumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="intimateType180d != null and intimateType180d != ''">
+                and intimate_type_180d = #{intimateType180d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIntimateIndirectnum180d != null">
+                and auth_intimate_indirectnum_180d = #{authIntimateIndirectnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimateIndirectnumRatio180d != null and authIntimateIndirectnumRatio180d != ''">
+                and auth_intimate_indirectnum_ratio_180d = #{authIntimateIndirectnumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimateIndirectnum180d != null">
+                and black_intimate_indirectnum_180d = #{blackIntimateIndirectnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimateIndirectnumRatio180d != null and blackIntimateIndirectnumRatio180d != ''">
+                and black_intimate_indirectnum_ratio_180d = #{blackIntimateIndirectnumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIntimateIndirectPeernum180d != null">
+                and black_intimate_indirect_peernum_180d = #{blackIntimateIndirectPeernum180d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIntimateIndirectPeernumRatio180d != null and blackIntimateIndirectPeernumRatio180d != ''">
+                and black_intimate_indirect_peernum_ratio_180d = #{blackIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIntimateIndirectPeernum180d != null">
+                and auth_intimate_indirect_peernum_180d = #{authIntimateIndirectPeernum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authIntimateIndirectPeernumRatio180d != null and authIntimateIndirectPeernumRatio180d != ''">
+                and auth_intimate_indirect_peernum_ratio_180d = #{authIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicIntimateContact">
+        insert into cl_magic_intimate_contact(user_id,trans_id,intimatenum_30d,auth_intimatenum_30d,auth_intimatenum_ratio_30d,black_intimatenum_30d,black_intimatenum_ratio_30d,intimate_type_30d,auth_intimate_indirectnum_30d,auth_intimate_indirectnum_ratio_30d,black_intimate_indirectnum_30d,black_intimate_indirectnum_ratio_30d,black_intimate_indirect_peernum_30d,black_intimate_indirect_peernum_ratio_30d,auth_intimate_indirect_peernum_30d,auth_intimate_indirect_peernum_ratio_30d,intimatenum_90d,auth_intimatenum_90d,auth_intimatenum_ratio_90d,black_intimatenum_90d,black_intimatenum_ratio_90d,intimate_type_90d,auth_intimate_indirectnum_90d,auth_intimate_indirectnum_ratio_90d,black_intimate_indirectnum_90d,black_intimate_indirectnum_ratio_90d,black_intimate_indirect_peernum_90d,black_intimate_indirect_peernum_ratio_90d,auth_intimate_indirect_peernum_90d,auth_intimate_indirect_peernum_ratio_90d,intimatenum_180d,auth_intimatenum_180d,auth_intimatenum_ratio_180d,black_intimatenum_180d,black_intimatenum_ratio_180d,intimate_type_180d,auth_intimate_indirectnum_180d,auth_intimate_indirectnum_ratio_180d,black_intimate_indirectnum_180d,black_intimate_indirectnum_ratio_180d,black_intimate_indirect_peernum_180d,black_intimate_indirect_peernum_ratio_180d,auth_intimate_indirect_peernum_180d,auth_intimate_indirect_peernum_ratio_180d,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{intimatenum30d,jdbcType=INTEGER},#{authIntimatenum30d,jdbcType=INTEGER},#{authIntimatenumRatio30d,jdbcType=VARCHAR},#{blackIntimatenum30d,jdbcType=INTEGER},#{blackIntimatenumRatio30d,jdbcType=VARCHAR},#{intimateType30d,jdbcType=VARCHAR},#{authIntimateIndirectnum30d,jdbcType=INTEGER},#{authIntimateIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIntimateIndirectnum30d,jdbcType=INTEGER},#{blackIntimateIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIntimateIndirectPeernum30d,jdbcType=INTEGER},#{blackIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},#{authIntimateIndirectPeernum30d,jdbcType=INTEGER},#{authIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},#{intimatenum90d,jdbcType=INTEGER},#{authIntimatenum90d,jdbcType=INTEGER},#{authIntimatenumRatio90d,jdbcType=VARCHAR},#{blackIntimatenum90d,jdbcType=INTEGER},#{blackIntimatenumRatio90d,jdbcType=VARCHAR},#{intimateType90d,jdbcType=VARCHAR},#{authIntimateIndirectnum90d,jdbcType=INTEGER},#{authIntimateIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIntimateIndirectnum90d,jdbcType=INTEGER},#{blackIntimateIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIntimateIndirectPeernum90d,jdbcType=INTEGER},#{blackIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},#{authIntimateIndirectPeernum90d,jdbcType=INTEGER},#{authIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},#{intimatenum180d,jdbcType=INTEGER},#{authIntimatenum180d,jdbcType=INTEGER},#{authIntimatenumRatio180d,jdbcType=VARCHAR},#{blackIntimatenum180d,jdbcType=INTEGER},#{blackIntimatenumRatio180d,jdbcType=VARCHAR},#{intimateType180d,jdbcType=VARCHAR},#{authIntimateIndirectnum180d,jdbcType=INTEGER},#{authIntimateIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIntimateIndirectnum180d,jdbcType=INTEGER},#{blackIntimateIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIntimateIndirectPeernum180d,jdbcType=INTEGER},#{blackIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},#{authIntimateIndirectPeernum180d,jdbcType=INTEGER},#{authIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicIntimateContact">
+        update cl_magic_intimate_contact set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            intimatenum_30d = #{intimatenum30d,jdbcType=INTEGER},
+            auth_intimatenum_30d = #{authIntimatenum30d,jdbcType=INTEGER},
+            auth_intimatenum_ratio_30d = #{authIntimatenumRatio30d,jdbcType=VARCHAR},
+            black_intimatenum_30d = #{blackIntimatenum30d,jdbcType=INTEGER},
+            black_intimatenum_ratio_30d = #{blackIntimatenumRatio30d,jdbcType=VARCHAR},
+            intimate_type_30d = #{intimateType30d,jdbcType=VARCHAR},
+            auth_intimate_indirectnum_30d = #{authIntimateIndirectnum30d,jdbcType=INTEGER},
+            auth_intimate_indirectnum_ratio_30d = #{authIntimateIndirectnumRatio30d,jdbcType=VARCHAR},
+            black_intimate_indirectnum_30d = #{blackIntimateIndirectnum30d,jdbcType=INTEGER},
+            black_intimate_indirectnum_ratio_30d = #{blackIntimateIndirectnumRatio30d,jdbcType=VARCHAR},
+            black_intimate_indirect_peernum_30d = #{blackIntimateIndirectPeernum30d,jdbcType=INTEGER},
+            black_intimate_indirect_peernum_ratio_30d = #{blackIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},
+            auth_intimate_indirect_peernum_30d = #{authIntimateIndirectPeernum30d,jdbcType=INTEGER},
+            auth_intimate_indirect_peernum_ratio_30d = #{authIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},
+            intimatenum_90d = #{intimatenum90d,jdbcType=INTEGER},
+            auth_intimatenum_90d = #{authIntimatenum90d,jdbcType=INTEGER},
+            auth_intimatenum_ratio_90d = #{authIntimatenumRatio90d,jdbcType=VARCHAR},
+            black_intimatenum_90d = #{blackIntimatenum90d,jdbcType=INTEGER},
+            black_intimatenum_ratio_90d = #{blackIntimatenumRatio90d,jdbcType=VARCHAR},
+            intimate_type_90d = #{intimateType90d,jdbcType=VARCHAR},
+            auth_intimate_indirectnum_90d = #{authIntimateIndirectnum90d,jdbcType=INTEGER},
+            auth_intimate_indirectnum_ratio_90d = #{authIntimateIndirectnumRatio90d,jdbcType=VARCHAR},
+            black_intimate_indirectnum_90d = #{blackIntimateIndirectnum90d,jdbcType=INTEGER},
+            black_intimate_indirectnum_ratio_90d = #{blackIntimateIndirectnumRatio90d,jdbcType=VARCHAR},
+            black_intimate_indirect_peernum_90d = #{blackIntimateIndirectPeernum90d,jdbcType=INTEGER},
+            black_intimate_indirect_peernum_ratio_90d = #{blackIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},
+            auth_intimate_indirect_peernum_90d = #{authIntimateIndirectPeernum90d,jdbcType=INTEGER},
+            auth_intimate_indirect_peernum_ratio_90d = #{authIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},
+            intimatenum_180d = #{intimatenum180d,jdbcType=INTEGER},
+            auth_intimatenum_180d = #{authIntimatenum180d,jdbcType=INTEGER},
+            auth_intimatenum_ratio_180d = #{authIntimatenumRatio180d,jdbcType=VARCHAR},
+            black_intimatenum_180d = #{blackIntimatenum180d,jdbcType=INTEGER},
+            black_intimatenum_ratio_180d = #{blackIntimatenumRatio180d,jdbcType=VARCHAR},
+            intimate_type_180d = #{intimateType180d,jdbcType=VARCHAR},
+            auth_intimate_indirectnum_180d = #{authIntimateIndirectnum180d,jdbcType=INTEGER},
+            auth_intimate_indirectnum_ratio_180d = #{authIntimateIndirectnumRatio180d,jdbcType=VARCHAR},
+            black_intimate_indirectnum_180d = #{blackIntimateIndirectnum180d,jdbcType=INTEGER},
+            black_intimate_indirectnum_ratio_180d = #{blackIntimateIndirectnumRatio180d,jdbcType=VARCHAR},
+            black_intimate_indirect_peernum_180d = #{blackIntimateIndirectPeernum180d,jdbcType=INTEGER},
+            black_intimate_indirect_peernum_ratio_180d = #{blackIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},
+            auth_intimate_indirect_peernum_180d = #{authIntimateIndirectPeernum180d,jdbcType=INTEGER},
+            auth_intimate_indirect_peernum_ratio_180d = #{authIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_intimate_contact
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="intimatenum30d != null">        
+                intimatenum_30d = #{intimatenum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimatenum30d != null">        
+                auth_intimatenum_30d = #{authIntimatenum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimatenumRatio30d != null and authIntimatenumRatio30d != '' ">
+                auth_intimatenum_ratio_30d = #{authIntimatenumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimatenum30d != null">        
+                black_intimatenum_30d = #{blackIntimatenum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimatenumRatio30d != null and blackIntimatenumRatio30d != '' ">
+                black_intimatenum_ratio_30d = #{blackIntimatenumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="intimateType30d != null and intimateType30d != '' ">
+                intimate_type_30d = #{intimateType30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIntimateIndirectnum30d != null">        
+                auth_intimate_indirectnum_30d = #{authIntimateIndirectnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimateIndirectnumRatio30d != null and authIntimateIndirectnumRatio30d != '' ">
+                auth_intimate_indirectnum_ratio_30d = #{authIntimateIndirectnumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimateIndirectnum30d != null">        
+                black_intimate_indirectnum_30d = #{blackIntimateIndirectnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimateIndirectnumRatio30d != null and blackIntimateIndirectnumRatio30d != '' ">
+                black_intimate_indirectnum_ratio_30d = #{blackIntimateIndirectnumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimateIndirectPeernum30d != null">        
+                black_intimate_indirect_peernum_30d = #{blackIntimateIndirectPeernum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimateIndirectPeernumRatio30d != null and blackIntimateIndirectPeernumRatio30d != '' ">
+                black_intimate_indirect_peernum_ratio_30d = #{blackIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIntimateIndirectPeernum30d != null">        
+                auth_intimate_indirect_peernum_30d = #{authIntimateIndirectPeernum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimateIndirectPeernumRatio30d != null and authIntimateIndirectPeernumRatio30d != '' ">
+                auth_intimate_indirect_peernum_ratio_30d = #{authIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="intimatenum90d != null">        
+                intimatenum_90d = #{intimatenum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimatenum90d != null">        
+                auth_intimatenum_90d = #{authIntimatenum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimatenumRatio90d != null and authIntimatenumRatio90d != '' ">
+                auth_intimatenum_ratio_90d = #{authIntimatenumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimatenum90d != null">        
+                black_intimatenum_90d = #{blackIntimatenum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimatenumRatio90d != null and blackIntimatenumRatio90d != '' ">
+                black_intimatenum_ratio_90d = #{blackIntimatenumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="intimateType90d != null and intimateType90d != '' ">
+                intimate_type_90d = #{intimateType90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIntimateIndirectnum90d != null">        
+                auth_intimate_indirectnum_90d = #{authIntimateIndirectnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimateIndirectnumRatio90d != null and authIntimateIndirectnumRatio90d != '' ">
+                auth_intimate_indirectnum_ratio_90d = #{authIntimateIndirectnumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimateIndirectnum90d != null">        
+                black_intimate_indirectnum_90d = #{blackIntimateIndirectnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimateIndirectnumRatio90d != null and blackIntimateIndirectnumRatio90d != '' ">
+                black_intimate_indirectnum_ratio_90d = #{blackIntimateIndirectnumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimateIndirectPeernum90d != null">        
+                black_intimate_indirect_peernum_90d = #{blackIntimateIndirectPeernum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimateIndirectPeernumRatio90d != null and blackIntimateIndirectPeernumRatio90d != '' ">
+                black_intimate_indirect_peernum_ratio_90d = #{blackIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIntimateIndirectPeernum90d != null">        
+                auth_intimate_indirect_peernum_90d = #{authIntimateIndirectPeernum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimateIndirectPeernumRatio90d != null and authIntimateIndirectPeernumRatio90d != '' ">
+                auth_intimate_indirect_peernum_ratio_90d = #{authIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="intimatenum180d != null">        
+                intimatenum_180d = #{intimatenum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimatenum180d != null">        
+                auth_intimatenum_180d = #{authIntimatenum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimatenumRatio180d != null and authIntimatenumRatio180d != '' ">
+                auth_intimatenum_ratio_180d = #{authIntimatenumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimatenum180d != null">        
+                black_intimatenum_180d = #{blackIntimatenum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimatenumRatio180d != null and blackIntimatenumRatio180d != '' ">
+                black_intimatenum_ratio_180d = #{blackIntimatenumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="intimateType180d != null and intimateType180d != '' ">
+                intimate_type_180d = #{intimateType180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIntimateIndirectnum180d != null">        
+                auth_intimate_indirectnum_180d = #{authIntimateIndirectnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimateIndirectnumRatio180d != null and authIntimateIndirectnumRatio180d != '' ">
+                auth_intimate_indirectnum_ratio_180d = #{authIntimateIndirectnumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimateIndirectnum180d != null">        
+                black_intimate_indirectnum_180d = #{blackIntimateIndirectnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimateIndirectnumRatio180d != null and blackIntimateIndirectnumRatio180d != '' ">
+                black_intimate_indirectnum_ratio_180d = #{blackIntimateIndirectnumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIntimateIndirectPeernum180d != null">        
+                black_intimate_indirect_peernum_180d = #{blackIntimateIndirectPeernum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIntimateIndirectPeernumRatio180d != null and blackIntimateIndirectPeernumRatio180d != '' ">
+                black_intimate_indirect_peernum_ratio_180d = #{blackIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIntimateIndirectPeernum180d != null">        
+                auth_intimate_indirect_peernum_180d = #{authIntimateIndirectPeernum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIntimateIndirectPeernumRatio180d != null and authIntimateIndirectPeernumRatio180d != '' ">
+                auth_intimate_indirect_peernum_ratio_180d = #{authIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_intimate_contact
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_intimate_contact
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_intimate_contact
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

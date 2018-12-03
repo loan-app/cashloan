@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_monthinfo表:魔蝎运营商数据-流量详情模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorMonthInfoMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorMonthInfo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="month_count" property="monthCount" jdbcType="INTEGER" />
+        <result column="miss_month_count" property="missMonthCount" jdbcType="INTEGER" />
+        <result column="no_call_month" property="noCallMonth" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,mobile,month_count,miss_month_count,no_call_month,gmt_create,gmt_modified 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="monthCount != null">
+                and month_count = #{monthCount,jdbcType=INTEGER}
+            </if>
+            <if test="missMonthCount != null">
+                and miss_month_count = #{missMonthCount,jdbcType=INTEGER}
+            </if>
+            <if test="noCallMonth != null">
+                and no_call_month = #{noCallMonth,jdbcType=INTEGER}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorMonthInfo">
+        insert into cl_operator_monthinfo(user_id,req_log_id,mobile,month_count,miss_month_count,no_call_month,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{monthCount,jdbcType=INTEGER},#{missMonthCount,jdbcType=INTEGER},#{noCallMonth,jdbcType=INTEGER},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorMonthInfo">
+        update cl_operator_monthinfo set 
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            month_count = #{monthCount,jdbcType=INTEGER},
+            miss_month_count = #{missMonthCount,jdbcType=INTEGER},
+            no_call_month = #{noCallMonth,jdbcType=INTEGER},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_monthinfo
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="reqLogId != null">
+                req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="monthCount != null">        
+                month_count = #{monthCount,jdbcType=INTEGER},                
+            </if>
+            <if test="missMonthCount != null">        
+                miss_month_count = #{missMonthCount,jdbcType=INTEGER},                
+            </if>
+            <if test="noCallMonth != null">        
+                no_call_month = #{noCallMonth,jdbcType=INTEGER},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_monthinfo
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_monthinfo
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_monthinfo
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

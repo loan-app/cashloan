@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_credit_card_overdue表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicCreditCardOverdueMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicCreditCardOverdue">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="update_date" property="updateDate" jdbcType="VARCHAR" />
+        <result column="bank_nums" property="bankNums" jdbcType="INTEGER" />
+        <result column="card_amount" property="cardAmount" jdbcType="INTEGER" />
+        <result column="total_credit_limit" property="totalCreditLimit" jdbcType="VARCHAR" />
+        <result column="max_credit_limit" property="maxCreditLimit" jdbcType="VARCHAR" />
+        <result column="overdue_card" property="overdueCard" jdbcType="INTEGER" />
+        <result column="bill_nums" property="billNums" jdbcType="INTEGER" />
+        <result column="overdue_times_12m" property="overdueTimes12m" jdbcType="INTEGER" />
+        <result column="overdue_months_12m" property="overdueMonths12m" jdbcType="INTEGER" />
+        <result column="overdue_times_6m" property="overdueTimes6m" jdbcType="INTEGER" />
+        <result column="overdue_months_6m" property="overdueMonths6m" jdbcType="INTEGER" />
+        <result column="overdue_times_3m" property="overdueTimes3m" jdbcType="INTEGER" />
+        <result column="overdue_months_3m" property="overdueMonths3m" jdbcType="INTEGER" />
+        <result column="max_overdue_money" property="maxOverdueMoney" jdbcType="VARCHAR" />
+        <result column="continue_overdue_times" property="continueOverdueTimes" jdbcType="INTEGER" />
+        <result column="last_overdue_date" property="lastOverdueDate" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,update_date,bank_nums,card_amount,total_credit_limit,max_credit_limit,overdue_card,bill_nums,overdue_times_12m,overdue_months_12m,overdue_times_6m,overdue_months_6m,overdue_times_3m,overdue_months_3m,max_overdue_money,continue_overdue_times,last_overdue_date,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=VARCHAR}
+            </if>
+            <if test="bankNums != null">
+                and bank_nums = #{bankNums,jdbcType=INTEGER}
+            </if>
+            <if test="cardAmount != null">
+                and card_amount = #{cardAmount,jdbcType=INTEGER}
+            </if>
+            <if test="totalCreditLimit != null and totalCreditLimit != ''">
+                and total_credit_limit = #{totalCreditLimit,jdbcType=VARCHAR}
+            </if>
+            <if test="maxCreditLimit != null and maxCreditLimit != ''">
+                and max_credit_limit = #{maxCreditLimit,jdbcType=VARCHAR}
+            </if>
+            <if test="overdueCard != null">
+                and overdue_card = #{overdueCard,jdbcType=INTEGER}
+            </if>
+            <if test="billNums != null">
+                and bill_nums = #{billNums,jdbcType=INTEGER}
+            </if>
+            <if test="overdueTimes12m != null">
+                and overdue_times_12m = #{overdueTimes12m,jdbcType=INTEGER}
+            </if>
+            <if test="overdueMonths12m != null">
+                and overdue_months_12m = #{overdueMonths12m,jdbcType=INTEGER}
+            </if>
+            <if test="overdueTimes6m != null">
+                and overdue_times_6m = #{overdueTimes6m,jdbcType=INTEGER}
+            </if>
+            <if test="overdueMonths6m != null">
+                and overdue_months_6m = #{overdueMonths6m,jdbcType=INTEGER}
+            </if>
+            <if test="overdueTimes3m != null">
+                and overdue_times_3m = #{overdueTimes3m,jdbcType=INTEGER}
+            </if>
+            <if test="overdueMonths3m != null">
+                and overdue_months_3m = #{overdueMonths3m,jdbcType=INTEGER}
+            </if>
+            <if test="maxOverdueMoney != null and maxOverdueMoney != ''">
+                and max_overdue_money = #{maxOverdueMoney,jdbcType=VARCHAR}
+            </if>
+            <if test="continueOverdueTimes != null">
+                and continue_overdue_times = #{continueOverdueTimes,jdbcType=INTEGER}
+            </if>
+            <if test="lastOverdueDate != null and lastOverdueDate != ''">
+                and last_overdue_date = #{lastOverdueDate,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicCreditCardOverdue">
+        insert into cl_magic_credit_card_overdue(user_id,trans_id,update_date,bank_nums,card_amount,total_credit_limit,max_credit_limit,overdue_card,bill_nums,overdue_times_12m,overdue_months_12m,overdue_times_6m,overdue_months_6m,overdue_times_3m,overdue_months_3m,max_overdue_money,continue_overdue_times,last_overdue_date,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{updateDate,jdbcType=VARCHAR},#{bankNums,jdbcType=INTEGER},#{cardAmount,jdbcType=INTEGER},#{totalCreditLimit,jdbcType=VARCHAR},#{maxCreditLimit,jdbcType=VARCHAR},#{overdueCard,jdbcType=INTEGER},#{billNums,jdbcType=INTEGER},#{overdueTimes12m,jdbcType=INTEGER},#{overdueMonths12m,jdbcType=INTEGER},#{overdueTimes6m,jdbcType=INTEGER},#{overdueMonths6m,jdbcType=INTEGER},#{overdueTimes3m,jdbcType=INTEGER},#{overdueMonths3m,jdbcType=INTEGER},#{maxOverdueMoney,jdbcType=VARCHAR},#{continueOverdueTimes,jdbcType=INTEGER},#{lastOverdueDate,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicCreditCardOverdue">
+        update cl_magic_credit_card_overdue set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=VARCHAR},
+            bank_nums = #{bankNums,jdbcType=INTEGER},
+            card_amount = #{cardAmount,jdbcType=INTEGER},
+            total_credit_limit = #{totalCreditLimit,jdbcType=VARCHAR},
+            max_credit_limit = #{maxCreditLimit,jdbcType=VARCHAR},
+            overdue_card = #{overdueCard,jdbcType=INTEGER},
+            bill_nums = #{billNums,jdbcType=INTEGER},
+            overdue_times_12m = #{overdueTimes12m,jdbcType=INTEGER},
+            overdue_months_12m = #{overdueMonths12m,jdbcType=INTEGER},
+            overdue_times_6m = #{overdueTimes6m,jdbcType=INTEGER},
+            overdue_months_6m = #{overdueMonths6m,jdbcType=INTEGER},
+            overdue_times_3m = #{overdueTimes3m,jdbcType=INTEGER},
+            overdue_months_3m = #{overdueMonths3m,jdbcType=INTEGER},
+            max_overdue_money = #{maxOverdueMoney,jdbcType=VARCHAR},
+            continue_overdue_times = #{continueOverdueTimes,jdbcType=INTEGER},
+            last_overdue_date = #{lastOverdueDate,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_credit_card_overdue
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="updateDate != null and updateDate != '' ">
+                update_date = #{updateDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="bankNums != null">        
+                bank_nums = #{bankNums,jdbcType=INTEGER},                
+            </if>
+            <if test="cardAmount != null">        
+                card_amount = #{cardAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="totalCreditLimit != null and totalCreditLimit != '' ">
+                total_credit_limit = #{totalCreditLimit,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxCreditLimit != null and maxCreditLimit != '' ">
+                max_credit_limit = #{maxCreditLimit,jdbcType=VARCHAR},                
+            </if>
+            <if test="overdueCard != null">        
+                overdue_card = #{overdueCard,jdbcType=INTEGER},                
+            </if>
+            <if test="billNums != null">        
+                bill_nums = #{billNums,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueTimes12m != null">        
+                overdue_times_12m = #{overdueTimes12m,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueMonths12m != null">        
+                overdue_months_12m = #{overdueMonths12m,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueTimes6m != null">        
+                overdue_times_6m = #{overdueTimes6m,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueMonths6m != null">        
+                overdue_months_6m = #{overdueMonths6m,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueTimes3m != null">        
+                overdue_times_3m = #{overdueTimes3m,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueMonths3m != null">        
+                overdue_months_3m = #{overdueMonths3m,jdbcType=INTEGER},                
+            </if>
+            <if test="maxOverdueMoney != null and maxOverdueMoney != '' ">
+                max_overdue_money = #{maxOverdueMoney,jdbcType=VARCHAR},                
+            </if>
+            <if test="continueOverdueTimes != null">        
+                continue_overdue_times = #{continueOverdueTimes,jdbcType=INTEGER},                
+            </if>
+            <if test="lastOverdueDate != null and lastOverdueDate != '' ">
+                last_overdue_date = #{lastOverdueDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_credit_card_overdue
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_credit_card_overdue
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_credit_card_overdue
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

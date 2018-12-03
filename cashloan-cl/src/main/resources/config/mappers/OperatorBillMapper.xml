@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_bill表:魔蝎运营商数据-基础信息类模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorBillMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorBill">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="bill_month" property="billMonth" jdbcType="VARCHAR" />
+        <result column="bill_start_date" property="billStartDate" jdbcType="VARCHAR" />
+        <result column="bill_end_date" property="billEndDate" jdbcType="VARCHAR" />
+        <result column="base_fee" property="baseFee" jdbcType="INTEGER" />
+        <result column="extra_service_fee" property="extraServiceFee" jdbcType="INTEGER" />
+        <result column="voice_fee" property="voiceFee" jdbcType="INTEGER" />
+        <result column="sms_fee" property="smsFee" jdbcType="INTEGER" />
+        <result column="web_fee" property="webFee" jdbcType="INTEGER" />
+        <result column="extra_fee" property="extraFee" jdbcType="INTEGER" />
+        <result column="total_fee" property="totalFee" jdbcType="INTEGER" />
+        <result column="discount" property="discount" jdbcType="INTEGER" />
+        <result column="extra_discount" property="extraDiscount" jdbcType="INTEGER" />
+        <result column="actual_fee" property="actualFee" jdbcType="INTEGER" />
+        <result column="paid_fee" property="paidFee" jdbcType="INTEGER" />
+        <result column="unpaid_fee" property="unpaidFee" jdbcType="INTEGER" />
+        <result column="related_mobiles" property="relatedMobiles" jdbcType="VARCHAR" />
+        <result column="point" property="point" jdbcType="INTEGER" />
+        <result column="last_point" property="lastPoint" jdbcType="INTEGER" />
+        <result column="notes" property="notes" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,req_log_id,mobile,bill_month,bill_start_date,bill_end_date,base_fee,extra_service_fee,voice_fee,sms_fee,web_fee,extra_fee,total_fee,discount,extra_discount,actual_fee,paid_fee,unpaid_fee,related_mobiles,point,last_point,notes,gmt_create,gmt_modified
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="billMonth != null and billMonth != ''">
+                and bill_month = #{billMonth,jdbcType=VARCHAR}
+            </if>
+            <if test="billStartDate != null and billStartDate != ''">
+                and bill_start_date = #{billStartDate,jdbcType=VARCHAR}
+            </if>
+            <if test="billEndDate != null and billEndDate != ''">
+                and bill_end_date = #{billEndDate,jdbcType=VARCHAR}
+            </if>
+            <if test="baseFee != null">
+                and base_fee = #{baseFee,jdbcType=INTEGER}
+            </if>
+            <if test="extraServiceFee != null">
+                and extra_service_fee = #{extraServiceFee,jdbcType=INTEGER}
+            </if>
+            <if test="voiceFee != null">
+                and voice_fee = #{voiceFee,jdbcType=INTEGER}
+            </if>
+            <if test="smsFee != null">
+                and sms_fee = #{smsFee,jdbcType=INTEGER}
+            </if>
+            <if test="webFee != null">
+                and web_fee = #{webFee,jdbcType=INTEGER}
+            </if>
+            <if test="extraFee != null">
+                and extra_fee = #{extraFee,jdbcType=INTEGER}
+            </if>
+            <if test="totalFee != null">
+                and total_fee = #{totalFee,jdbcType=INTEGER}
+            </if>
+            <if test="discount != null">
+                and discount = #{discount,jdbcType=INTEGER}
+            </if>
+            <if test="extraDiscount != null">
+                and extra_discount = #{extraDiscount,jdbcType=INTEGER}
+            </if>
+            <if test="actualFee != null">
+                and actual_fee = #{actualFee,jdbcType=INTEGER}
+            </if>
+            <if test="paidFee != null">
+                and paid_fee = #{paidFee,jdbcType=INTEGER}
+            </if>
+            <if test="unpaidFee != null">
+                and unpaid_fee = #{unpaidFee,jdbcType=INTEGER}
+            </if>
+            <if test="relatedMobiles != null and relatedMobiles != ''">
+                and related_mobiles = #{relatedMobiles,jdbcType=VARCHAR}
+            </if>
+            <if test="point != null">
+                and point = #{point,jdbcType=INTEGER}
+            </if>
+            <if test="lastPoint != null">
+                and last_point = #{lastPoint,jdbcType=INTEGER}
+            </if>
+            <if test="notes != null and notes != ''">
+                and notes = #{notes,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorBill">
+        insert into cl_operator_bill(user_id,req_log_id,mobile,bill_month,bill_start_date,bill_end_date,base_fee,extra_service_fee,voice_fee,sms_fee,web_fee,extra_fee,total_fee,discount,extra_discount,actual_fee,paid_fee,unpaid_fee,related_mobiles,point,last_point,notes,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{billMonth,jdbcType=VARCHAR},#{billStartDate,jdbcType=VARCHAR},#{billEndDate,jdbcType=VARCHAR},#{baseFee,jdbcType=INTEGER},#{extraServiceFee,jdbcType=INTEGER},#{voiceFee,jdbcType=INTEGER},#{smsFee,jdbcType=INTEGER},#{webFee,jdbcType=INTEGER},#{extraFee,jdbcType=INTEGER},#{totalFee,jdbcType=INTEGER},#{discount,jdbcType=INTEGER},#{extraDiscount,jdbcType=INTEGER},#{actualFee,jdbcType=INTEGER},#{paidFee,jdbcType=INTEGER},#{unpaidFee,jdbcType=INTEGER},#{relatedMobiles,jdbcType=VARCHAR},#{point,jdbcType=INTEGER},#{lastPoint,jdbcType=INTEGER},#{notes,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorBill">
+        update cl_operator_bill set 
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            bill_month = #{billMonth,jdbcType=VARCHAR},
+            bill_start_date = #{billStartDate,jdbcType=VARCHAR},
+            bill_end_date = #{billEndDate,jdbcType=VARCHAR},
+            base_fee = #{baseFee,jdbcType=INTEGER},
+            extra_service_fee = #{extraServiceFee,jdbcType=INTEGER},
+            voice_fee = #{voiceFee,jdbcType=INTEGER},
+            sms_fee = #{smsFee,jdbcType=INTEGER},
+            web_fee = #{webFee,jdbcType=INTEGER},
+            extra_fee = #{extraFee,jdbcType=INTEGER},
+            total_fee = #{totalFee,jdbcType=INTEGER},
+            discount = #{discount,jdbcType=INTEGER},
+            extra_discount = #{extraDiscount,jdbcType=INTEGER},
+            actual_fee = #{actualFee,jdbcType=INTEGER},
+            paid_fee = #{paidFee,jdbcType=INTEGER},
+            unpaid_fee = #{unpaidFee,jdbcType=INTEGER},
+            related_mobiles = #{relatedMobiles,jdbcType=VARCHAR},
+            point = #{point,jdbcType=INTEGER},
+            last_point = #{lastPoint,jdbcType=INTEGER},
+            notes = #{notes,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_bill
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="reqLogId != null">
+                req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="billMonth != null and billMonth != '' ">
+                bill_month = #{billMonth,jdbcType=VARCHAR},                
+            </if>
+            <if test="billStartDate != null and billStartDate != '' ">
+                bill_start_date = #{billStartDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="billEndDate != null and billEndDate != '' ">
+                bill_end_date = #{billEndDate,jdbcType=VARCHAR},                
+            </if>
+            <if test="baseFee != null">        
+                base_fee = #{baseFee,jdbcType=INTEGER},                
+            </if>
+            <if test="extraServiceFee != null">        
+                extra_service_fee = #{extraServiceFee,jdbcType=INTEGER},                
+            </if>
+            <if test="voiceFee != null">        
+                voice_fee = #{voiceFee,jdbcType=INTEGER},                
+            </if>
+            <if test="smsFee != null">        
+                sms_fee = #{smsFee,jdbcType=INTEGER},                
+            </if>
+            <if test="webFee != null">        
+                web_fee = #{webFee,jdbcType=INTEGER},                
+            </if>
+            <if test="extraFee != null">        
+                extra_fee = #{extraFee,jdbcType=INTEGER},                
+            </if>
+            <if test="totalFee != null">        
+                total_fee = #{totalFee,jdbcType=INTEGER},                
+            </if>
+            <if test="discount != null">        
+                discount = #{discount,jdbcType=INTEGER},                
+            </if>
+            <if test="extraDiscount != null">        
+                extra_discount = #{extraDiscount,jdbcType=INTEGER},                
+            </if>
+            <if test="actualFee != null">        
+                actual_fee = #{actualFee,jdbcType=INTEGER},                
+            </if>
+            <if test="paidFee != null">        
+                paid_fee = #{paidFee,jdbcType=INTEGER},                
+            </if>
+            <if test="unpaidFee != null">        
+                unpaid_fee = #{unpaidFee,jdbcType=INTEGER},                
+            </if>
+            <if test="relatedMobiles != null and relatedMobiles != '' ">
+                related_mobiles = #{relatedMobiles,jdbcType=VARCHAR},                
+            </if>
+            <if test="point != null">        
+                point = #{point,jdbcType=INTEGER},                
+            </if>
+            <if test="lastPoint != null">        
+                last_point = #{lastPoint,jdbcType=INTEGER},                
+            </if>
+            <if test="notes != null and notes != '' ">
+                notes = #{notes,jdbcType=VARCHAR},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_bill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_bill
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_bill
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_mobile_contact表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicMobileContactMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicMobileContact">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="match_score" property="matchScore" jdbcType="INTEGER" />
+        <result column="contactnum_30d" property="contactnum30d" jdbcType="INTEGER" />
+        <result column="auth_contactnum_30d" property="authContactnum30d" jdbcType="INTEGER" />
+        <result column="auth_contact_ratio_30d" property="authContactRatio30d" jdbcType="VARCHAR" />
+        <result column="black_contactnum_30d" property="blackContactnum30d" jdbcType="INTEGER" />
+        <result column="black_contactnum_ratio_30d" property="blackContactnumRatio30d" jdbcType="VARCHAR" />
+        <result column="contact_type_30d" property="contactType30d" jdbcType="VARCHAR" />
+        <result column="auth_indirectnum_30d" property="authIndirectnum30d" jdbcType="INTEGER" />
+        <result column="auth_indirectnum_ratio_30d" property="authIndirectnumRatio30d" jdbcType="VARCHAR" />
+        <result column="black_indirectnum_30d" property="blackIndirectnum30d" jdbcType="INTEGER" />
+        <result column="black_indirectnum_ratio_30d" property="blackIndirectnumRatio30d" jdbcType="VARCHAR" />
+        <result column="black_indirect_peernum_30d" property="blackIndirectPeernum30d" jdbcType="INTEGER" />
+        <result column="black_indirect_peernum_ratio_30d" property="blackIndirectPeernumRatio30d" jdbcType="VARCHAR" />
+        <result column="auth_indirect_peernum_30d" property="authIndirectPeernum30d" jdbcType="INTEGER" />
+        <result column="auth_indirect_peernum_ratio_30d" property="authIndirectPeernumRatio30d" jdbcType="VARCHAR" />
+        <result column="contactnum_90d" property="contactnum90d" jdbcType="INTEGER" />
+        <result column="auth_contactnum_90d" property="authContactnum90d" jdbcType="INTEGER" />
+        <result column="auth_contact_ratio_90d" property="authContactRatio90d" jdbcType="VARCHAR" />
+        <result column="black_contactnum_90d" property="blackContactnum90d" jdbcType="INTEGER" />
+        <result column="black_contactnum_ratio_90d" property="blackContactnumRatio90d" jdbcType="VARCHAR" />
+        <result column="contact_type_90d" property="contactType90d" jdbcType="VARCHAR" />
+        <result column="auth_indirectnum_90d" property="authIndirectnum90d" jdbcType="INTEGER" />
+        <result column="auth_indirectnum_ratio_90d" property="authIndirectnumRatio90d" jdbcType="VARCHAR" />
+        <result column="black_indirectnum_90d" property="blackIndirectnum90d" jdbcType="INTEGER" />
+        <result column="black_indirectnum_ratio_90d" property="blackIndirectnumRatio90d" jdbcType="VARCHAR" />
+        <result column="black_indirect_peernum_90d" property="blackIndirectPeernum90d" jdbcType="INTEGER" />
+        <result column="black_indirect_peernum_ratio_90d" property="blackIndirectPeernumRatio90d" jdbcType="VARCHAR" />
+        <result column="auth_indirect_peernum_90d" property="authIndirectPeernum90d" jdbcType="INTEGER" />
+        <result column="auth_indirect_peernum_ratio_90d" property="authIndirectPeernumRatio90d" jdbcType="VARCHAR" />
+        <result column="contactnum_180d" property="contactnum180d" jdbcType="INTEGER" />
+        <result column="auth_contactnum_180d" property="authContactnum180d" jdbcType="INTEGER" />
+        <result column="auth_contact_ratio_180d" property="authContactRatio180d" jdbcType="VARCHAR" />
+        <result column="black_contactnum_180d" property="blackContactnum180d" jdbcType="INTEGER" />
+        <result column="black_contactnum_ratio_180d" property="blackContactnumRatio180d" jdbcType="VARCHAR" />
+        <result column="contact_type_180d" property="contactType180d" jdbcType="VARCHAR" />
+        <result column="auth_indirectnum_180d" property="authIndirectnum180d" jdbcType="INTEGER" />
+        <result column="auth_indirectnum_ratio_180d" property="authIndirectnumRatio180d" jdbcType="VARCHAR" />
+        <result column="black_indirectnum_180d" property="blackIndirectnum180d" jdbcType="INTEGER" />
+        <result column="black_indirectnum_ratio_180d" property="blackIndirectnumRatio180d" jdbcType="VARCHAR" />
+        <result column="black_indirect_peernum_180d" property="blackIndirectPeernum180d" jdbcType="INTEGER" />
+        <result column="black_indirect_peernum_ratio_180d" property="blackIndirectPeernumRatio180d" jdbcType="VARCHAR" />
+        <result column="auth_indirect_peernum_180d" property="authIndirectPeernum180d" jdbcType="INTEGER" />
+        <result column="auth_indirect_peernum_ratio_180d" property="authIndirectPeernumRatio180d" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,match_score,contactnum_30d,auth_contactnum_30d,auth_contact_ratio_30d,black_contactnum_30d,black_contactnum_ratio_30d,contact_type_30d,auth_indirectnum_30d,auth_indirectnum_ratio_30d,black_indirectnum_30d,black_indirectnum_ratio_30d,black_indirect_peernum_30d,black_indirect_peernum_ratio_30d,auth_indirect_peernum_30d,auth_indirect_peernum_ratio_30d,contactnum_90d,auth_contactnum_90d,auth_contact_ratio_90d,black_contactnum_90d,black_contactnum_ratio_90d,contact_type_90d,auth_indirectnum_90d,auth_indirectnum_ratio_90d,black_indirectnum_90d,black_indirectnum_ratio_90d,black_indirect_peernum_90d,black_indirect_peernum_ratio_90d,auth_indirect_peernum_90d,auth_indirect_peernum_ratio_90d,contactnum_180d,auth_contactnum_180d,auth_contact_ratio_180d,black_contactnum_180d,black_contactnum_ratio_180d,contact_type_180d,auth_indirectnum_180d,auth_indirectnum_ratio_180d,black_indirectnum_180d,black_indirectnum_ratio_180d,black_indirect_peernum_180d,black_indirect_peernum_ratio_180d,auth_indirect_peernum_180d,auth_indirect_peernum_ratio_180d,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="matchScore != null">
+                and match_score = #{matchScore,jdbcType=INTEGER}
+            </if>
+            <if test="contactnum30d != null">
+                and contactnum_30d = #{contactnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authContactnum30d != null">
+                and auth_contactnum_30d = #{authContactnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authContactRatio30d != null and authContactRatio30d != ''">
+                and auth_contact_ratio_30d = #{authContactRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackContactnum30d != null">
+                and black_contactnum_30d = #{blackContactnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="blackContactnumRatio30d != null and blackContactnumRatio30d != ''">
+                and black_contactnum_ratio_30d = #{blackContactnumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="contactType30d != null and contactType30d != ''">
+                and contact_type_30d = #{contactType30d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIndirectnum30d != null">
+                and auth_indirectnum_30d = #{authIndirectnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authIndirectnumRatio30d != null and authIndirectnumRatio30d != ''">
+                and auth_indirectnum_ratio_30d = #{authIndirectnumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIndirectnum30d != null">
+                and black_indirectnum_30d = #{blackIndirectnum30d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIndirectnumRatio30d != null and blackIndirectnumRatio30d != ''">
+                and black_indirectnum_ratio_30d = #{blackIndirectnumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIndirectPeernum30d != null">
+                and black_indirect_peernum_30d = #{blackIndirectPeernum30d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIndirectPeernumRatio30d != null and blackIndirectPeernumRatio30d != ''">
+                and black_indirect_peernum_ratio_30d = #{blackIndirectPeernumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIndirectPeernum30d != null">
+                and auth_indirect_peernum_30d = #{authIndirectPeernum30d,jdbcType=INTEGER}
+            </if>
+            <if test="authIndirectPeernumRatio30d != null and authIndirectPeernumRatio30d != ''">
+                and auth_indirect_peernum_ratio_30d = #{authIndirectPeernumRatio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="contactnum90d != null">
+                and contactnum_90d = #{contactnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authContactnum90d != null">
+                and auth_contactnum_90d = #{authContactnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authContactRatio90d != null and authContactRatio90d != ''">
+                and auth_contact_ratio_90d = #{authContactRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackContactnum90d != null">
+                and black_contactnum_90d = #{blackContactnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="blackContactnumRatio90d != null and blackContactnumRatio90d != ''">
+                and black_contactnum_ratio_90d = #{blackContactnumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="contactType90d != null and contactType90d != ''">
+                and contact_type_90d = #{contactType90d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIndirectnum90d != null">
+                and auth_indirectnum_90d = #{authIndirectnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authIndirectnumRatio90d != null and authIndirectnumRatio90d != ''">
+                and auth_indirectnum_ratio_90d = #{authIndirectnumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIndirectnum90d != null">
+                and black_indirectnum_90d = #{blackIndirectnum90d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIndirectnumRatio90d != null and blackIndirectnumRatio90d != ''">
+                and black_indirectnum_ratio_90d = #{blackIndirectnumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIndirectPeernum90d != null">
+                and black_indirect_peernum_90d = #{blackIndirectPeernum90d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIndirectPeernumRatio90d != null and blackIndirectPeernumRatio90d != ''">
+                and black_indirect_peernum_ratio_90d = #{blackIndirectPeernumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIndirectPeernum90d != null">
+                and auth_indirect_peernum_90d = #{authIndirectPeernum90d,jdbcType=INTEGER}
+            </if>
+            <if test="authIndirectPeernumRatio90d != null and authIndirectPeernumRatio90d != ''">
+                and auth_indirect_peernum_ratio_90d = #{authIndirectPeernumRatio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="contactnum180d != null">
+                and contactnum_180d = #{contactnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authContactnum180d != null">
+                and auth_contactnum_180d = #{authContactnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authContactRatio180d != null and authContactRatio180d != ''">
+                and auth_contact_ratio_180d = #{authContactRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackContactnum180d != null">
+                and black_contactnum_180d = #{blackContactnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="blackContactnumRatio180d != null and blackContactnumRatio180d != ''">
+                and black_contactnum_ratio_180d = #{blackContactnumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="contactType180d != null and contactType180d != ''">
+                and contact_type_180d = #{contactType180d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIndirectnum180d != null">
+                and auth_indirectnum_180d = #{authIndirectnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authIndirectnumRatio180d != null and authIndirectnumRatio180d != ''">
+                and auth_indirectnum_ratio_180d = #{authIndirectnumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIndirectnum180d != null">
+                and black_indirectnum_180d = #{blackIndirectnum180d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIndirectnumRatio180d != null and blackIndirectnumRatio180d != ''">
+                and black_indirectnum_ratio_180d = #{blackIndirectnumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIndirectPeernum180d != null">
+                and black_indirect_peernum_180d = #{blackIndirectPeernum180d,jdbcType=INTEGER}
+            </if>
+            <if test="blackIndirectPeernumRatio180d != null and blackIndirectPeernumRatio180d != ''">
+                and black_indirect_peernum_ratio_180d = #{blackIndirectPeernumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="authIndirectPeernum180d != null">
+                and auth_indirect_peernum_180d = #{authIndirectPeernum180d,jdbcType=INTEGER}
+            </if>
+            <if test="authIndirectPeernumRatio180d != null and authIndirectPeernumRatio180d != ''">
+                and auth_indirect_peernum_ratio_180d = #{authIndirectPeernumRatio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicMobileContact">
+        insert into cl_magic_mobile_contact(user_id,trans_id,match_score,contactnum_30d,auth_contactnum_30d,auth_contact_ratio_30d,black_contactnum_30d,black_contactnum_ratio_30d,contact_type_30d,auth_indirectnum_30d,auth_indirectnum_ratio_30d,black_indirectnum_30d,black_indirectnum_ratio_30d,black_indirect_peernum_30d,black_indirect_peernum_ratio_30d,auth_indirect_peernum_30d,auth_indirect_peernum_ratio_30d,contactnum_90d,auth_contactnum_90d,auth_contact_ratio_90d,black_contactnum_90d,black_contactnum_ratio_90d,contact_type_90d,auth_indirectnum_90d,auth_indirectnum_ratio_90d,black_indirectnum_90d,black_indirectnum_ratio_90d,black_indirect_peernum_90d,black_indirect_peernum_ratio_90d,auth_indirect_peernum_90d,auth_indirect_peernum_ratio_90d,contactnum_180d,auth_contactnum_180d,auth_contact_ratio_180d,black_contactnum_180d,black_contactnum_ratio_180d,contact_type_180d,auth_indirectnum_180d,auth_indirectnum_ratio_180d,black_indirectnum_180d,black_indirectnum_ratio_180d,black_indirect_peernum_180d,black_indirect_peernum_ratio_180d,auth_indirect_peernum_180d,auth_indirect_peernum_ratio_180d,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{matchScore,jdbcType=INTEGER},#{contactnum30d,jdbcType=INTEGER},#{authContactnum30d,jdbcType=INTEGER},#{authContactRatio30d,jdbcType=VARCHAR},#{blackContactnum30d,jdbcType=INTEGER},#{blackContactnumRatio30d,jdbcType=VARCHAR},#{contactType30d,jdbcType=VARCHAR},#{authIndirectnum30d,jdbcType=INTEGER},#{authIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIndirectnum30d,jdbcType=INTEGER},#{blackIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIndirectPeernum30d,jdbcType=INTEGER},#{blackIndirectPeernumRatio30d,jdbcType=VARCHAR},#{authIndirectPeernum30d,jdbcType=INTEGER},#{authIndirectPeernumRatio30d,jdbcType=VARCHAR},#{contactnum90d,jdbcType=INTEGER},#{authContactnum90d,jdbcType=INTEGER},#{authContactRatio90d,jdbcType=VARCHAR},#{blackContactnum90d,jdbcType=INTEGER},#{blackContactnumRatio90d,jdbcType=VARCHAR},#{contactType90d,jdbcType=VARCHAR},#{authIndirectnum90d,jdbcType=INTEGER},#{authIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIndirectnum90d,jdbcType=INTEGER},#{blackIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIndirectPeernum90d,jdbcType=INTEGER},#{blackIndirectPeernumRatio90d,jdbcType=VARCHAR},#{authIndirectPeernum90d,jdbcType=INTEGER},#{authIndirectPeernumRatio90d,jdbcType=VARCHAR},#{contactnum180d,jdbcType=INTEGER},#{authContactnum180d,jdbcType=INTEGER},#{authContactRatio180d,jdbcType=VARCHAR},#{blackContactnum180d,jdbcType=INTEGER},#{blackContactnumRatio180d,jdbcType=VARCHAR},#{contactType180d,jdbcType=VARCHAR},#{authIndirectnum180d,jdbcType=INTEGER},#{authIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIndirectnum180d,jdbcType=INTEGER},#{blackIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIndirectPeernum180d,jdbcType=INTEGER},#{blackIndirectPeernumRatio180d,jdbcType=VARCHAR},#{authIndirectPeernum180d,jdbcType=INTEGER},#{authIndirectPeernumRatio180d,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicMobileContact">
+        update cl_magic_mobile_contact set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            match_score = #{matchScore,jdbcType=INTEGER},
+            contactnum_30d = #{contactnum30d,jdbcType=INTEGER},
+            auth_contactnum_30d = #{authContactnum30d,jdbcType=INTEGER},
+            auth_contact_ratio_30d = #{authContactRatio30d,jdbcType=VARCHAR},
+            black_contactnum_30d = #{blackContactnum30d,jdbcType=INTEGER},
+            black_contactnum_ratio_30d = #{blackContactnumRatio30d,jdbcType=VARCHAR},
+            contact_type_30d = #{contactType30d,jdbcType=VARCHAR},
+            auth_indirectnum_30d = #{authIndirectnum30d,jdbcType=INTEGER},
+            auth_indirectnum_ratio_30d = #{authIndirectnumRatio30d,jdbcType=VARCHAR},
+            black_indirectnum_30d = #{blackIndirectnum30d,jdbcType=INTEGER},
+            black_indirectnum_ratio_30d = #{blackIndirectnumRatio30d,jdbcType=VARCHAR},
+            black_indirect_peernum_30d = #{blackIndirectPeernum30d,jdbcType=INTEGER},
+            black_indirect_peernum_ratio_30d = #{blackIndirectPeernumRatio30d,jdbcType=VARCHAR},
+            auth_indirect_peernum_30d = #{authIndirectPeernum30d,jdbcType=INTEGER},
+            auth_indirect_peernum_ratio_30d = #{authIndirectPeernumRatio30d,jdbcType=VARCHAR},
+            contactnum_90d = #{contactnum90d,jdbcType=INTEGER},
+            auth_contactnum_90d = #{authContactnum90d,jdbcType=INTEGER},
+            auth_contact_ratio_90d = #{authContactRatio90d,jdbcType=VARCHAR},
+            black_contactnum_90d = #{blackContactnum90d,jdbcType=INTEGER},
+            black_contactnum_ratio_90d = #{blackContactnumRatio90d,jdbcType=VARCHAR},
+            contact_type_90d = #{contactType90d,jdbcType=VARCHAR},
+            auth_indirectnum_90d = #{authIndirectnum90d,jdbcType=INTEGER},
+            auth_indirectnum_ratio_90d = #{authIndirectnumRatio90d,jdbcType=VARCHAR},
+            black_indirectnum_90d = #{blackIndirectnum90d,jdbcType=INTEGER},
+            black_indirectnum_ratio_90d = #{blackIndirectnumRatio90d,jdbcType=VARCHAR},
+            black_indirect_peernum_90d = #{blackIndirectPeernum90d,jdbcType=INTEGER},
+            black_indirect_peernum_ratio_90d = #{blackIndirectPeernumRatio90d,jdbcType=VARCHAR},
+            auth_indirect_peernum_90d = #{authIndirectPeernum90d,jdbcType=INTEGER},
+            auth_indirect_peernum_ratio_90d = #{authIndirectPeernumRatio90d,jdbcType=VARCHAR},
+            contactnum_180d = #{contactnum180d,jdbcType=INTEGER},
+            auth_contactnum_180d = #{authContactnum180d,jdbcType=INTEGER},
+            auth_contact_ratio_180d = #{authContactRatio180d,jdbcType=VARCHAR},
+            black_contactnum_180d = #{blackContactnum180d,jdbcType=INTEGER},
+            black_contactnum_ratio_180d = #{blackContactnumRatio180d,jdbcType=VARCHAR},
+            contact_type_180d = #{contactType180d,jdbcType=VARCHAR},
+            auth_indirectnum_180d = #{authIndirectnum180d,jdbcType=INTEGER},
+            auth_indirectnum_ratio_180d = #{authIndirectnumRatio180d,jdbcType=VARCHAR},
+            black_indirectnum_180d = #{blackIndirectnum180d,jdbcType=INTEGER},
+            black_indirectnum_ratio_180d = #{blackIndirectnumRatio180d,jdbcType=VARCHAR},
+            black_indirect_peernum_180d = #{blackIndirectPeernum180d,jdbcType=INTEGER},
+            black_indirect_peernum_ratio_180d = #{blackIndirectPeernumRatio180d,jdbcType=VARCHAR},
+            auth_indirect_peernum_180d = #{authIndirectPeernum180d,jdbcType=INTEGER},
+            auth_indirect_peernum_ratio_180d = #{authIndirectPeernumRatio180d,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_mobile_contact
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="matchScore != null">        
+                match_score = #{matchScore,jdbcType=INTEGER},                
+            </if>
+            <if test="contactnum30d != null">        
+                contactnum_30d = #{contactnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authContactnum30d != null">        
+                auth_contactnum_30d = #{authContactnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authContactRatio30d != null and authContactRatio30d != '' ">
+                auth_contact_ratio_30d = #{authContactRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackContactnum30d != null">        
+                black_contactnum_30d = #{blackContactnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackContactnumRatio30d != null and blackContactnumRatio30d != '' ">
+                black_contactnum_ratio_30d = #{blackContactnumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactType30d != null and contactType30d != '' ">
+                contact_type_30d = #{contactType30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIndirectnum30d != null">        
+                auth_indirectnum_30d = #{authIndirectnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIndirectnumRatio30d != null and authIndirectnumRatio30d != '' ">
+                auth_indirectnum_ratio_30d = #{authIndirectnumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIndirectnum30d != null">        
+                black_indirectnum_30d = #{blackIndirectnum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIndirectnumRatio30d != null and blackIndirectnumRatio30d != '' ">
+                black_indirectnum_ratio_30d = #{blackIndirectnumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIndirectPeernum30d != null">        
+                black_indirect_peernum_30d = #{blackIndirectPeernum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIndirectPeernumRatio30d != null and blackIndirectPeernumRatio30d != '' ">
+                black_indirect_peernum_ratio_30d = #{blackIndirectPeernumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIndirectPeernum30d != null">        
+                auth_indirect_peernum_30d = #{authIndirectPeernum30d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIndirectPeernumRatio30d != null and authIndirectPeernumRatio30d != '' ">
+                auth_indirect_peernum_ratio_30d = #{authIndirectPeernumRatio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactnum90d != null">        
+                contactnum_90d = #{contactnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authContactnum90d != null">        
+                auth_contactnum_90d = #{authContactnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authContactRatio90d != null and authContactRatio90d != '' ">
+                auth_contact_ratio_90d = #{authContactRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackContactnum90d != null">        
+                black_contactnum_90d = #{blackContactnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackContactnumRatio90d != null and blackContactnumRatio90d != '' ">
+                black_contactnum_ratio_90d = #{blackContactnumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactType90d != null and contactType90d != '' ">
+                contact_type_90d = #{contactType90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIndirectnum90d != null">        
+                auth_indirectnum_90d = #{authIndirectnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIndirectnumRatio90d != null and authIndirectnumRatio90d != '' ">
+                auth_indirectnum_ratio_90d = #{authIndirectnumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIndirectnum90d != null">        
+                black_indirectnum_90d = #{blackIndirectnum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIndirectnumRatio90d != null and blackIndirectnumRatio90d != '' ">
+                black_indirectnum_ratio_90d = #{blackIndirectnumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIndirectPeernum90d != null">        
+                black_indirect_peernum_90d = #{blackIndirectPeernum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIndirectPeernumRatio90d != null and blackIndirectPeernumRatio90d != '' ">
+                black_indirect_peernum_ratio_90d = #{blackIndirectPeernumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIndirectPeernum90d != null">        
+                auth_indirect_peernum_90d = #{authIndirectPeernum90d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIndirectPeernumRatio90d != null and authIndirectPeernumRatio90d != '' ">
+                auth_indirect_peernum_ratio_90d = #{authIndirectPeernumRatio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactnum180d != null">        
+                contactnum_180d = #{contactnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authContactnum180d != null">        
+                auth_contactnum_180d = #{authContactnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authContactRatio180d != null and authContactRatio180d != '' ">
+                auth_contact_ratio_180d = #{authContactRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackContactnum180d != null">        
+                black_contactnum_180d = #{blackContactnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackContactnumRatio180d != null and blackContactnumRatio180d != '' ">
+                black_contactnum_ratio_180d = #{blackContactnumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactType180d != null and contactType180d != '' ">
+                contact_type_180d = #{contactType180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIndirectnum180d != null">        
+                auth_indirectnum_180d = #{authIndirectnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIndirectnumRatio180d != null and authIndirectnumRatio180d != '' ">
+                auth_indirectnum_ratio_180d = #{authIndirectnumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIndirectnum180d != null">        
+                black_indirectnum_180d = #{blackIndirectnum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIndirectnumRatio180d != null and blackIndirectnumRatio180d != '' ">
+                black_indirectnum_ratio_180d = #{blackIndirectnumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIndirectPeernum180d != null">        
+                black_indirect_peernum_180d = #{blackIndirectPeernum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIndirectPeernumRatio180d != null and blackIndirectPeernumRatio180d != '' ">
+                black_indirect_peernum_ratio_180d = #{blackIndirectPeernumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="authIndirectPeernum180d != null">        
+                auth_indirect_peernum_180d = #{authIndirectPeernum180d,jdbcType=INTEGER},                
+            </if>
+            <if test="authIndirectPeernumRatio180d != null and authIndirectPeernumRatio180d != '' ">
+                auth_indirect_peernum_ratio_180d = #{authIndirectPeernumRatio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_mobile_contact
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_mobile_contact
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_mobile_contact
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

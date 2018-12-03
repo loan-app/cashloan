@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_risk_device表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicRiskDeviceMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicRiskDevice">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="loan_cnt" property="loanCnt" jdbcType="INTEGER" />
+        <result column="consumption_cnt" property="consumptionCnt" jdbcType="INTEGER" />
+        <result column="lottery_cnt" property="lotteryCnt" jdbcType="INTEGER" />
+        <result column="loan_cnt_ratio" property="loanCntRatio" jdbcType="VARCHAR" />
+        <result column="consumption_cnt_ratio" property="consumptionCntRatio" jdbcType="VARCHAR" />
+        <result column="lottery_cnt_ratio" property="lotteryCntRatio" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,loan_cnt,consumption_cnt,lottery_cnt,loan_cnt_ratio,consumption_cnt_ratio,lottery_cnt_ratio,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="loanCnt != null">
+                and loan_cnt = #{loanCnt,jdbcType=INTEGER}
+            </if>
+            <if test="consumptionCnt != null">
+                and consumption_cnt = #{consumptionCnt,jdbcType=INTEGER}
+            </if>
+            <if test="lotteryCnt != null">
+                and lottery_cnt = #{lotteryCnt,jdbcType=INTEGER}
+            </if>
+            <if test="loanCntRatio != null and loanCntRatio != ''">
+                and loan_cnt_ratio = #{loanCntRatio,jdbcType=VARCHAR}
+            </if>
+            <if test="consumptionCntRatio != null and consumptionCntRatio != ''">
+                and consumption_cnt_ratio = #{consumptionCntRatio,jdbcType=VARCHAR}
+            </if>
+            <if test="lotteryCntRatio != null and lotteryCntRatio != ''">
+                and lottery_cnt_ratio = #{lotteryCntRatio,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskDevice">
+        insert into cl_magic_risk_device(user_id,trans_id,loan_cnt,consumption_cnt,lottery_cnt,loan_cnt_ratio,consumption_cnt_ratio,lottery_cnt_ratio,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{loanCnt,jdbcType=INTEGER},#{consumptionCnt,jdbcType=INTEGER},#{lotteryCnt,jdbcType=INTEGER},#{loanCntRatio,jdbcType=VARCHAR},#{consumptionCntRatio,jdbcType=VARCHAR},#{lotteryCntRatio,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskDevice">
+        update cl_magic_risk_device set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            loan_cnt = #{loanCnt,jdbcType=INTEGER},
+            consumption_cnt = #{consumptionCnt,jdbcType=INTEGER},
+            lottery_cnt = #{lotteryCnt,jdbcType=INTEGER},
+            loan_cnt_ratio = #{loanCntRatio,jdbcType=VARCHAR},
+            consumption_cnt_ratio = #{consumptionCntRatio,jdbcType=VARCHAR},
+            lottery_cnt_ratio = #{lotteryCntRatio,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_risk_device
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="loanCnt != null">        
+                loan_cnt = #{loanCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="consumptionCnt != null">        
+                consumption_cnt = #{consumptionCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="lotteryCnt != null">        
+                lottery_cnt = #{lotteryCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="loanCntRatio != null and loanCntRatio != '' ">
+                loan_cnt_ratio = #{loanCntRatio,jdbcType=VARCHAR},                
+            </if>
+            <if test="consumptionCntRatio != null and consumptionCntRatio != '' ">
+                consumption_cnt_ratio = #{consumptionCntRatio,jdbcType=VARCHAR},                
+            </if>
+            <if test="lotteryCntRatio != null and lotteryCntRatio != '' ">
+                lottery_cnt_ratio = #{lotteryCntRatio,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_risk_device
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_risk_device
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_risk_device
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into cl_magic_risk_device (user_id, trans_id, loan_cnt, consumption_cnt, lottery_cnt, loan_cnt_ratio,
+        consumption_cnt_ratio, lottery_cnt_ratio, create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId,jdbcType=INTEGER}, #{item.transId,jdbcType=VARCHAR},#{item.loanCnt,jdbcType=INTEGER},
+            #{item.consumptionCnt,jdbcType=INTEGER}, #{item.lotteryCnt,jdbcType=INTEGER}, #{item.loanCntRatio,jdbcType=VARCHAR},
+            #{item.consumptionCntRatio,jdbcType=VARCHAR}, #{item.lotteryCntRatio,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+</mapper>

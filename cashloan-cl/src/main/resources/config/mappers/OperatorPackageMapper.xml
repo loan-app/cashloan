@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_package表:魔蝎运营商数据-基础信息类模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorPackageMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorPackage">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="bill_start_date" property="billStartDate" jdbcType="TIMESTAMP" />
+        <result column="bill_end_date" property="billEndDate" jdbcType="TIMESTAMP" />
+        <result column="item" property="item" jdbcType="VARCHAR" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="total" property="total" jdbcType="VARCHAR" />
+        <result column="used" property="used" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,req_log_id,mobile,bill_start_date,bill_end_date,item,unit,total,used,gmt_create,gmt_modified
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="billStartDate != null">
+                and bill_start_date = #{billStartDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="billEndDate != null">
+                and bill_end_date = #{billEndDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item != null and item != ''">
+                and item = #{item,jdbcType=VARCHAR}
+            </if>
+            <if test="unit != null and unit != ''">
+                and unit = #{unit,jdbcType=VARCHAR}
+            </if>
+            <if test="total != null and total != ''">
+                and total = #{total,jdbcType=VARCHAR}
+            </if>
+            <if test="used != null and used != ''">
+                and used = #{used,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorPackage">
+        insert into cl_operator_package(user_id,req_log_id,mobile,bill_start_date,bill_end_date,item,unit,total,used,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{billStartDate,jdbcType=TIMESTAMP},#{billEndDate,jdbcType=TIMESTAMP},#{item,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},#{total,jdbcType=VARCHAR},#{used,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorPackage">
+        update cl_operator_package set 
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            bill_start_date = #{billStartDate,jdbcType=TIMESTAMP},
+            bill_end_date = #{billEndDate,jdbcType=TIMESTAMP},
+            item = #{item,jdbcType=VARCHAR},
+            unit = #{unit,jdbcType=VARCHAR},
+            total = #{total,jdbcType=VARCHAR},
+            used = #{used,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_package
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="reqLogId != null">
+                req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="billStartDate != null">
+                bill_start_date = #{billStartDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="billEndDate != null">
+                bill_end_date = #{billEndDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="item != null and item != '' ">
+                item = #{item,jdbcType=VARCHAR},                
+            </if>
+            <if test="unit != null and unit != '' ">
+                unit = #{unit,jdbcType=VARCHAR},                
+            </if>
+            <if test="total != null and total != '' ">
+                total = #{total,jdbcType=VARCHAR},                
+            </if>
+            <if test="used != null and used != '' ">
+                used = #{used,jdbcType=VARCHAR},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_package
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_package
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_package
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

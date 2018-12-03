@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_four_elements_log表:四要素认证记录模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.FourElementsLogMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.FourElementsLog">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+        <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="result" property="result" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,user_name,id_card,card_no,phone,result,code,check_status,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null and userId != '' ">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="idCard != null and idCard != '' ">
+                and id_card = #{idCard,jdbcType=VARCHAR}
+            </if>
+            <if test="cardNo != null and cardNo != '' ">
+                and card_no = #{cardNo,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != '' ">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="result != null and result != '' ">
+                and result = #{result,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null and code != '' ">
+                and code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="checkStatus != null and checkStatus != '' ">
+                and check_status = #{checkStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != '' ">
+          	  and DATE_FORMAT(create_time,'%Y-%m-%d') = #{createTime,jdbcType=VARCHAR}
+     		</if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.FourElementsLog">
+        insert into cl_four_elements_log(user_id,user_name,id_card,card_no,phone,result,code,check_status,create_time)values(#{userId,jdbcType=BIGINT},#{userName,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{cardNo,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{result,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{checkStatus,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.FourElementsLog">
+        update cl_four_elements_log set 
+            user_id = #{userId,jdbcType=BIGINT},
+            user_name = #{userName,jdbcType=VARCHAR},
+            id_card = #{idCard,jdbcType=VARCHAR},
+            card_no = #{cardNo,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            result = #{result,jdbcType=VARCHAR},
+            code = #{code,jdbcType=VARCHAR}, 
+            check_status = #{checkStatus,jdbcType=VARCHAR}, 
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_four_elements_log
+          <set>
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null and userId != '' ">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="idCard != null and idCard != '' ">
+                and id_card = #{idCard,jdbcType=VARCHAR}
+            </if>
+            <if test="cardNo != null and cardNo != '' ">
+                and card_no = #{cardNo,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != '' ">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="result != null and result != '' ">
+                and result = #{result,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null and code != '' ">
+                and code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="checkStatus != null and checkStatus != '' ">
+                and check_status = #{checkStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != '' ">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_four_elements_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_four_elements_log
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_four_elements_log
+        <include refid="searchBy"/>
+    </select>
+    
+    <select id="count" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(*)
+        from cl_four_elements_log
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_sms表:魔蝎运营商数据-短信详情模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorSmsMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorSms">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="bill_month" property="billMonth" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="peer_number" property="peerNumber" jdbcType="VARCHAR" />
+        <result column="location" property="location" jdbcType="VARCHAR" />
+        <result column="send_type" property="sendType" jdbcType="VARCHAR" />
+        <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
+        <result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+        <result column="fee" property="fee" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,req_log_id,mobile,bill_month,time,peer_number,location,send_type,msg_type,service_name,fee,gmt_create,gmt_modified
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="billMonth != null and billMonth != ''">
+                and bill_month = #{billMonth,jdbcType=VARCHAR}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time,jdbcType=VARCHAR}
+            </if>
+            <if test="peerNumber != null and peerNumber != ''">
+                and peer_number = #{peerNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="location != null and location != ''">
+                and location = #{location,jdbcType=VARCHAR}
+            </if>
+            <if test="sendType != null and sendType != ''">
+                and send_type = #{sendType,jdbcType=VARCHAR}
+            </if>
+            <if test="msgType != null and msgType != ''">
+                and msg_type = #{msgType,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceName != null and serviceName != ''">
+                and service_name = #{serviceName,jdbcType=VARCHAR}
+            </if>
+            <if test="fee != null">
+                and fee = #{fee,jdbcType=INTEGER}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorSms">
+        insert into cl_operator_sms(user_id,req_log_id,mobile,bill_month,time,peer_number,location,send_type,msg_type,service_name,fee,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{billMonth,jdbcType=VARCHAR},#{time,jdbcType=VARCHAR},#{peerNumber,jdbcType=VARCHAR},#{location,jdbcType=VARCHAR},#{sendType,jdbcType=VARCHAR},#{msgType,jdbcType=VARCHAR},#{serviceName,jdbcType=VARCHAR},#{fee,jdbcType=INTEGER},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorSms">
+        update cl_operator_sms set 
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            bill_month = #{billMonth,jdbcType=VARCHAR},
+            time = #{time,jdbcType=VARCHAR},
+            peer_number = #{peerNumber,jdbcType=VARCHAR},
+            location = #{location,jdbcType=VARCHAR},
+            send_type = #{sendType,jdbcType=VARCHAR},
+            msg_type = #{msgType,jdbcType=VARCHAR},
+            service_name = #{serviceName,jdbcType=VARCHAR},
+            fee = #{fee,jdbcType=INTEGER},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_sms
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="reqLogId != null">
+                req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="billMonth != null and billMonth != '' ">
+                bill_month = #{billMonth,jdbcType=VARCHAR},                
+            </if>
+            <if test="time != null and time != '' ">
+                time = #{time,jdbcType=VARCHAR},                
+            </if>
+            <if test="peerNumber != null and peerNumber != '' ">
+                peer_number = #{peerNumber,jdbcType=VARCHAR},                
+            </if>
+            <if test="location != null and location != '' ">
+                location = #{location,jdbcType=VARCHAR},                
+            </if>
+            <if test="sendType != null and sendType != '' ">
+                send_type = #{sendType,jdbcType=VARCHAR},                
+            </if>
+            <if test="msgType != null and msgType != '' ">
+                msg_type = #{msgType,jdbcType=VARCHAR},                
+            </if>
+            <if test="serviceName != null and serviceName != '' ">
+                service_name = #{serviceName,jdbcType=VARCHAR},                
+            </if>
+            <if test="fee != null">        
+                fee = #{fee,jdbcType=INTEGER},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_sms
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_sms
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_sms
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="countTable" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT COUNT(1) FROM information_schema.TABLES WHERE table_name = #{tableName,jdbcType=VARCHAR} and TABLE_SCHEMA = database()
+    </select>
+
+    <!-- 创建分表 -->
+    <select id="createTable">
+        CREATE TABLE ${tableName} (
+        `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+        `user_id` bigint(20) NOT NULL COMMENT '用户id',
+        `req_log_id` bigint(20) NOT NULL COMMENT '请求记录id',
+        `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
+        `bill_month` varchar(32) DEFAULT NULL COMMENT '账单月',
+        `time` varchar(32) DEFAULT NULL COMMENT '收/发短信时间',
+        `peer_number` varchar(64) DEFAULT NULL COMMENT '对方号码',
+        `location` varchar(64) DEFAULT NULL COMMENT '通信地(自己的)',
+        `send_type` varchar(16) DEFAULT NULL COMMENT 'SEND-发送; RECEIVE-收取',
+        `msg_type` varchar(8) DEFAULT NULL COMMENT 'SMS-短信; MSS-彩信',
+        `service_name` varchar(256) DEFAULT NULL COMMENT '业务名称. e.g. 点对点(网内)',
+        `fee` int(11) DEFAULT NULL COMMENT '通信费(单位分)',
+        `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+        `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+        PRIMARY KEY (`id`),
+        INDEX `user_id` (`user_id`) USING BTREE,
+        INDEX `mobile` (`mobile`) USING BTREE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-短信详情';
+    </select>
+
+    <insert id="saveShard">
+        insert into ${tableName}(
+        user_id,
+        req_log_id,
+        mobile,
+        bill_month,
+        time,
+        peer_number,
+        location,
+        send_type,
+        msg_type,
+        service_name,
+        fee,
+        gmt_create,
+        gmt_modified
+        )values(
+        #{item.userId,jdbcType=BIGINT},
+        #{item.reqLogId,jdbcType=BIGINT},
+        #{item.mobile,jdbcType=VARCHAR},
+        #{item.billMonth,jdbcType=VARCHAR},
+        #{item.time,jdbcType=VARCHAR},
+        #{item.peerNumber,jdbcType=VARCHAR},
+        #{item.location,jdbcType=VARCHAR},
+        #{item.sendType,jdbcType=VARCHAR},
+        #{item.msgType,jdbcType=VARCHAR},
+        #{item.serviceName,jdbcType=VARCHAR},
+        #{item.fee,jdbcType=INTEGER},
+        #{item.gmtCreate,jdbcType=TIMESTAMP},
+        #{item.gmtModified,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="listShardSelective" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="params.userId != null">
+                user_id = #{params.userId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

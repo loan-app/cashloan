@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_multipoint_queried_analyze表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicMultipointQueriedAnalyzeMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="org_type" property="orgType" jdbcType="VARCHAR" />
+        <result column="loan_cnt_15d" property="loanCnt15d" jdbcType="INTEGER" />
+        <result column="loan_cnt_30d" property="loanCnt30d" jdbcType="INTEGER" />
+        <result column="loan_cnt_90d" property="loanCnt90d" jdbcType="INTEGER" />
+        <result column="loan_cnt_180d" property="loanCnt180d" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,org_type,loan_cnt_15d,loan_cnt_30d,loan_cnt_90d,loan_cnt_180d,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="orgType != null and orgType != ''">
+                and org_type = #{orgType,jdbcType=VARCHAR}
+            </if>
+            <if test="loanCnt15d != null">
+                and loan_cnt_15d = #{loanCnt15d,jdbcType=INTEGER}
+            </if>
+            <if test="loanCnt30d != null">
+                and loan_cnt_30d = #{loanCnt30d,jdbcType=INTEGER}
+            </if>
+            <if test="loanCnt90d != null">
+                and loan_cnt_90d = #{loanCnt90d,jdbcType=INTEGER}
+            </if>
+            <if test="loanCnt180d != null">
+                and loan_cnt_180d = #{loanCnt180d,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
+        insert into cl_magic_multipoint_queried_analyze(user_id,trans_id,org_type,loan_cnt_15d,loan_cnt_30d,loan_cnt_90d,loan_cnt_180d,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{orgType,jdbcType=VARCHAR},#{loanCnt15d,jdbcType=INTEGER},#{loanCnt30d,jdbcType=INTEGER},#{loanCnt90d,jdbcType=INTEGER},#{loanCnt180d,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
+        update cl_magic_multipoint_queried_analyze set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            org_type = #{orgType,jdbcType=VARCHAR},
+            loan_cnt_15d = #{loanCnt15d,jdbcType=INTEGER},
+            loan_cnt_30d = #{loanCnt30d,jdbcType=INTEGER},
+            loan_cnt_90d = #{loanCnt90d,jdbcType=INTEGER},
+            loan_cnt_180d = #{loanCnt180d,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_multipoint_queried_analyze
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="orgType != null and orgType != '' ">
+                org_type = #{orgType,jdbcType=VARCHAR},                
+            </if>
+            <if test="loanCnt15d != null">        
+                loan_cnt_15d = #{loanCnt15d,jdbcType=INTEGER},                
+            </if>
+            <if test="loanCnt30d != null">        
+                loan_cnt_30d = #{loanCnt30d,jdbcType=INTEGER},                
+            </if>
+            <if test="loanCnt90d != null">        
+                loan_cnt_90d = #{loanCnt90d,jdbcType=INTEGER},                
+            </if>
+            <if test="loanCnt180d != null">        
+                loan_cnt_180d = #{loanCnt180d,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_multipoint_queried_analyze
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_multipoint_queried_analyze
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_multipoint_queried_analyze
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into cl_magic_multipoint_queried_analyze (user_id, trans_id, org_type, loan_cnt_15d, loan_cnt_30d, loan_cnt_90d, loan_cnt_180d, create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId,jdbcType=INTEGER}, #{item.transId,jdbcType=VARCHAR},#{item.orgType,jdbcType=VARCHAR},
+            #{item.loanCnt15d,jdbcType=INTEGER}, #{item.loanCnt30d,jdbcType=INTEGER}, #{item.loanCnt90d,jdbcType=INTEGER},
+            #{item.loanCnt180d,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_black_gray表:魔杖2.0-黑灰名单记录表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicBlackGrayMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicBlackGray">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="black_types" property="blackTypes" jdbcType="VARCHAR" />
+        <result column="black_mobile_name_in_blacklist" property="blackMobileNameInBlacklist" jdbcType="INTEGER" />
+        <result column="black_mobile_name_updated_time" property="blackMobileNameUpdatedTime" jdbcType="VARCHAR" />
+        <result column="black_idcard_name_in_blacklist" property="blackIdcardNameInBlacklist" jdbcType="INTEGER" />
+        <result column="black_idcard_name_updated_time" property="blackIdcardNameUpdatedTime" jdbcType="VARCHAR" />
+        <result column="black_overdue_amount" property="blackOverdueAmount" jdbcType="VARCHAR" />
+        <result column="black_overdue_count" property="blackOverdueCount" jdbcType="INTEGER" />
+        <result column="black_overdue_status" property="blackOverdueStatus" jdbcType="VARCHAR" />
+        <result column="gray_types" property="grayTypes" jdbcType="VARCHAR" />
+        <result column="gray_mobile_name_in_blacklist" property="grayMobileNameInBlacklist" jdbcType="INTEGER" />
+        <result column="gray_mobile_name_black_updated_time" property="grayMobileNameBlackUpdatedTime" jdbcType="VARCHAR" />
+        <result column="gray_idcard_name_in_blacklist" property="grayIdcardNameInBlacklist" jdbcType="INTEGER" />
+        <result column="gray_idcard_name_black_updated_time" property="grayIdcardNameBlackUpdatedTime" jdbcType="VARCHAR" />
+        <result column="gray_overdue_amount" property="grayOverdueAmount" jdbcType="VARCHAR" />
+        <result column="gray_overdue_count" property="grayOverdueCount" jdbcType="INTEGER" />
+        <result column="gray_overdue_status" property="grayOverdueStatus" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,black_types,black_mobile_name_in_blacklist,black_mobile_name_updated_time,black_idcard_name_in_blacklist,black_idcard_name_updated_time,black_overdue_amount,black_overdue_count,black_overdue_status,gray_types,gray_mobile_name_in_blacklist,gray_mobile_name_black_updated_time,gray_idcard_name_in_blacklist,gray_idcard_name_black_updated_time,gray_overdue_amount,gray_overdue_count,gray_overdue_status,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="blackTypes != null and blackTypes != ''">
+                and black_types = #{blackTypes,jdbcType=VARCHAR}
+            </if>
+            <if test="blackMobileNameInBlacklist != null">
+                and black_mobile_name_in_blacklist = #{blackMobileNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="blackMobileNameUpdatedTime != null and blackMobileNameUpdatedTime != ''">
+                and black_mobile_name_updated_time = #{blackMobileNameUpdatedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="blackIdcardNameInBlacklist != null">
+                and black_idcard_name_in_blacklist = #{blackIdcardNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="blackIdcardNameUpdatedTime != null and blackIdcardNameUpdatedTime != ''">
+                and black_idcard_name_updated_time = #{blackIdcardNameUpdatedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="blackOverdueAmount != null and blackOverdueAmount != ''">
+                and black_overdue_amount = #{blackOverdueAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="blackOverdueCount != null">
+                and black_overdue_count = #{blackOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="blackOverdueStatus != null and blackOverdueStatus != ''">
+                and black_overdue_status = #{blackOverdueStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="grayTypes != null and grayTypes != ''">
+                and gray_types = #{grayTypes,jdbcType=VARCHAR}
+            </if>
+            <if test="grayMobileNameInBlacklist != null">
+                and gray_mobile_name_in_blacklist = #{grayMobileNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="grayMobileNameBlackUpdatedTime != null and grayMobileNameBlackUpdatedTime != ''">
+                and gray_mobile_name_black_updated_time = #{grayMobileNameBlackUpdatedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="grayIdcardNameInBlacklist != null">
+                and gray_idcard_name_in_blacklist = #{grayIdcardNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="grayIdcardNameBlackUpdatedTime != null and grayIdcardNameBlackUpdatedTime != ''">
+                and gray_idcard_name_black_updated_time = #{grayIdcardNameBlackUpdatedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="grayOverdueAmount != null and grayOverdueAmount != ''">
+                and gray_overdue_amount = #{grayOverdueAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="grayOverdueCount != null">
+                and gray_overdue_count = #{grayOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="grayOverdueStatus != null and grayOverdueStatus != ''">
+                and gray_overdue_status = #{grayOverdueStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicBlackGray">
+        insert into cl_magic_black_gray(user_id,trans_id,black_types,black_mobile_name_in_blacklist,black_mobile_name_updated_time,black_idcard_name_in_blacklist,black_idcard_name_updated_time,black_overdue_amount,black_overdue_count,black_overdue_status,gray_types,gray_mobile_name_in_blacklist,gray_mobile_name_black_updated_time,gray_idcard_name_in_blacklist,gray_idcard_name_black_updated_time,gray_overdue_amount,gray_overdue_count,gray_overdue_status,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{blackTypes,jdbcType=VARCHAR},#{blackMobileNameInBlacklist,jdbcType=INTEGER},#{blackMobileNameUpdatedTime,jdbcType=VARCHAR},#{blackIdcardNameInBlacklist,jdbcType=INTEGER},#{blackIdcardNameUpdatedTime,jdbcType=VARCHAR},#{blackOverdueAmount,jdbcType=VARCHAR},#{blackOverdueCount,jdbcType=INTEGER},#{blackOverdueStatus,jdbcType=VARCHAR},#{grayTypes,jdbcType=VARCHAR},#{grayMobileNameInBlacklist,jdbcType=INTEGER},#{grayMobileNameBlackUpdatedTime,jdbcType=VARCHAR},#{grayIdcardNameInBlacklist,jdbcType=INTEGER},#{grayIdcardNameBlackUpdatedTime,jdbcType=VARCHAR},#{grayOverdueAmount,jdbcType=VARCHAR},#{grayOverdueCount,jdbcType=INTEGER},#{grayOverdueStatus,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicBlackGray">
+        update cl_magic_black_gray set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            black_types = #{blackTypes,jdbcType=VARCHAR},
+            black_mobile_name_in_blacklist = #{blackMobileNameInBlacklist,jdbcType=INTEGER},
+            black_mobile_name_updated_time = #{blackMobileNameUpdatedTime,jdbcType=VARCHAR},
+            black_idcard_name_in_blacklist = #{blackIdcardNameInBlacklist,jdbcType=INTEGER},
+            black_idcard_name_updated_time = #{blackIdcardNameUpdatedTime,jdbcType=VARCHAR},
+            black_overdue_amount = #{blackOverdueAmount,jdbcType=VARCHAR},
+            black_overdue_count = #{blackOverdueCount,jdbcType=INTEGER},
+            black_overdue_status = #{blackOverdueStatus,jdbcType=VARCHAR},
+            gray_types = #{grayTypes,jdbcType=VARCHAR},
+            gray_mobile_name_in_blacklist = #{grayMobileNameInBlacklist,jdbcType=INTEGER},
+            gray_mobile_name_black_updated_time = #{grayMobileNameBlackUpdatedTime,jdbcType=VARCHAR},
+            gray_idcard_name_in_blacklist = #{grayIdcardNameInBlacklist,jdbcType=INTEGER},
+            gray_idcard_name_black_updated_time = #{grayIdcardNameBlackUpdatedTime,jdbcType=VARCHAR},
+            gray_overdue_amount = #{grayOverdueAmount,jdbcType=VARCHAR},
+            gray_overdue_count = #{grayOverdueCount,jdbcType=INTEGER},
+            gray_overdue_status = #{grayOverdueStatus,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_black_gray
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackTypes != null and blackTypes != '' ">
+                black_types = #{blackTypes,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackMobileNameInBlacklist != null">        
+                black_mobile_name_in_blacklist = #{blackMobileNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="blackMobileNameUpdatedTime != null and blackMobileNameUpdatedTime != '' ">
+                black_mobile_name_updated_time = #{blackMobileNameUpdatedTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackIdcardNameInBlacklist != null">        
+                black_idcard_name_in_blacklist = #{blackIdcardNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="blackIdcardNameUpdatedTime != null and blackIdcardNameUpdatedTime != '' ">
+                black_idcard_name_updated_time = #{blackIdcardNameUpdatedTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackOverdueAmount != null and blackOverdueAmount != '' ">
+                black_overdue_amount = #{blackOverdueAmount,jdbcType=VARCHAR},                
+            </if>
+            <if test="blackOverdueCount != null">        
+                black_overdue_count = #{blackOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="blackOverdueStatus != null and blackOverdueStatus != '' ">
+                black_overdue_status = #{blackOverdueStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="grayTypes != null and grayTypes != '' ">
+                gray_types = #{grayTypes,jdbcType=VARCHAR},                
+            </if>
+            <if test="grayMobileNameInBlacklist != null">        
+                gray_mobile_name_in_blacklist = #{grayMobileNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="grayMobileNameBlackUpdatedTime != null and grayMobileNameBlackUpdatedTime != '' ">
+                gray_mobile_name_black_updated_time = #{grayMobileNameBlackUpdatedTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="grayIdcardNameInBlacklist != null">        
+                gray_idcard_name_in_blacklist = #{grayIdcardNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="grayIdcardNameBlackUpdatedTime != null and grayIdcardNameBlackUpdatedTime != '' ">
+                gray_idcard_name_black_updated_time = #{grayIdcardNameBlackUpdatedTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="grayOverdueAmount != null and grayOverdueAmount != '' ">
+                gray_overdue_amount = #{grayOverdueAmount,jdbcType=VARCHAR},                
+            </if>
+            <if test="grayOverdueCount != null">        
+                gray_overdue_count = #{grayOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="grayOverdueStatus != null and grayOverdueStatus != '' ">
+                gray_overdue_status = #{grayOverdueStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_black_gray
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_black_gray
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_black_gray
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

@@ -1,0 +1,24 @@
+package com.rongdu.creditrank.cr.service;
+
+import com.rongdu.cashloan.core.common.exception.CreditException;
+import com.rongdu.cashloan.core.common.service.BaseService;
+import com.rongdu.creditrank.cr.domain.CrResult;
+
+/**
+ * 信用评级及结果操作
+ * @author ctt
+ * @version 1.0.0
+ * @date 2017年1月6日 上午10:41:22
+ * Copyright 杭州融都科技股份有限公司 creditrank  All Rights Reserved
+ * 官方网站：www.erongdu.com
+ * 
+ * 未经授权不得进行修改、复制、出售及商业使用
+ */
+public interface CreditRatingService extends BaseService<CrResult, Long> {
+
+	/**
+	 * 信用自动评分并保存记录
+	 * @param userId
+	 */
+	CrResult saveCreditRating(String consumerNo,Long borrowTypeId) throws CreditException;
+}

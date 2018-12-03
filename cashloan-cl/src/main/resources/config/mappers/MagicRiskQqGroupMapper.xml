@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_risk_qq_group表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicRiskQqGroupMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicRiskQqGroup">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="loan_groupcnt" property="loanGroupcnt" jdbcType="INTEGER" />
+        <result column="installment_groupcnt" property="installmentGroupcnt" jdbcType="INTEGER" />
+        <result column="financial_management_groupcnt" property="financialManagementGroupcnt" jdbcType="INTEGER" />
+        <result column="woolen_groupcnt" property="woolenGroupcnt" jdbcType="INTEGER" />
+        <result column="gambling_groupcnt" property="gamblingGroupcnt" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,loan_groupcnt,installment_groupcnt,financial_management_groupcnt,woolen_groupcnt,gambling_groupcnt,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="loanGroupcnt != null">
+                and loan_groupcnt = #{loanGroupcnt,jdbcType=INTEGER}
+            </if>
+            <if test="installmentGroupcnt != null">
+                and installment_groupcnt = #{installmentGroupcnt,jdbcType=INTEGER}
+            </if>
+            <if test="financialManagementGroupcnt != null">
+                and financial_management_groupcnt = #{financialManagementGroupcnt,jdbcType=INTEGER}
+            </if>
+            <if test="woolenGroupcnt != null">
+                and woolen_groupcnt = #{woolenGroupcnt,jdbcType=INTEGER}
+            </if>
+            <if test="gamblingGroupcnt != null">
+                and gambling_groupcnt = #{gamblingGroupcnt,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskQqGroup">
+        insert into cl_magic_risk_qq_group(user_id,trans_id,loan_groupcnt,installment_groupcnt,financial_management_groupcnt,woolen_groupcnt,gambling_groupcnt,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{loanGroupcnt,jdbcType=INTEGER},#{installmentGroupcnt,jdbcType=INTEGER},#{financialManagementGroupcnt,jdbcType=INTEGER},#{woolenGroupcnt,jdbcType=INTEGER},#{gamblingGroupcnt,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskQqGroup">
+        update cl_magic_risk_qq_group set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            loan_groupcnt = #{loanGroupcnt,jdbcType=INTEGER},
+            installment_groupcnt = #{installmentGroupcnt,jdbcType=INTEGER},
+            financial_management_groupcnt = #{financialManagementGroupcnt,jdbcType=INTEGER},
+            woolen_groupcnt = #{woolenGroupcnt,jdbcType=INTEGER},
+            gambling_groupcnt = #{gamblingGroupcnt,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_risk_qq_group
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="loanGroupcnt != null">        
+                loan_groupcnt = #{loanGroupcnt,jdbcType=INTEGER},                
+            </if>
+            <if test="installmentGroupcnt != null">        
+                installment_groupcnt = #{installmentGroupcnt,jdbcType=INTEGER},                
+            </if>
+            <if test="financialManagementGroupcnt != null">        
+                financial_management_groupcnt = #{financialManagementGroupcnt,jdbcType=INTEGER},                
+            </if>
+            <if test="woolenGroupcnt != null">        
+                woolen_groupcnt = #{woolenGroupcnt,jdbcType=INTEGER},                
+            </if>
+            <if test="gamblingGroupcnt != null">        
+                gambling_groupcnt = #{gamblingGroupcnt,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_risk_qq_group
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_risk_qq_group
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_risk_qq_group
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

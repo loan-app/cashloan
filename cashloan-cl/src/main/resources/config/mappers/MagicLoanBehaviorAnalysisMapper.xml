@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_magic_loan_behavior_analysis表:魔杖2.0报告-基础信息表模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicLoanBehaviorAnalysisMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicLoanBehaviorAnalysis">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trans_id" property="transId" jdbcType="VARCHAR" />
+        <result column="defaultday_from_first_to_end" property="defaultdayFromFirstToEnd" jdbcType="VARCHAR" />
+        <result column="jiedai4_sum_fail_cnt_d7" property="jiedai4SumFailCntD7" jdbcType="VARCHAR" />
+        <result column="jiedai_avg_defaultdays_d7" property="jiedaiAvgDefaultdaysD7" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d3_cnt_d7" property="jiedai4CountFillD3CntD7" jdbcType="VARCHAR" />
+        <result column="jiedai_max_defaultdays_d7" property="jiedaiMaxDefaultdaysD7" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_sum_fill_d5_cnt_d7" property="ddJiedaiSumFillD5CntD7" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_count_fail_mamberadd_d7" property="ddJiedaiCountFailMamberaddD7" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_avg_fail_days1_d7" property="ddJiedaiAvgFailDays1D7" jdbcType="VARCHAR" />
+        <result column="jiedai_min_defaultdays_d7" property="jiedaiMinDefaultdaysD7" jdbcType="VARCHAR" />
+        <result column="last_to_end_sure_due_all_pro_all_time_d7" property="lastToEndSureDueAllProAllTimeD7" jdbcType="VARCHAR" />
+        <result column="max_sure_due_days_non_cdq_all_time_d7" property="maxSureDueDaysNonCdqAllTimeD7" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_all_pro_all_time_d7" property="sumSureDueDaysAllProAllTimeD7" jdbcType="VARCHAR" />
+        <result column="last_to_end_sure_due_non_cdq_all_time_d7" property="lastToEndSureDueNonCdqAllTimeD7" jdbcType="VARCHAR" />
+        <result column="jiedai_avg_defaultdays_d15" property="jiedaiAvgDefaultdaysD15" jdbcType="VARCHAR" />
+        <result column="jiedai_min_defaultdays_d15" property="jiedaiMinDefaultdaysD15" jdbcType="VARCHAR" />
+        <result column="jiedai4_sum_fail_cnt_d15" property="jiedai4SumFailCntD15" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_avg_fail_days1_d15" property="ddJiedaiAvgFailDays1D15" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d3_cnt_d15" property="jiedai4CountFillD3CntD15" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d5_cnt_d15" property="jiedai4CountFillD5CntD15" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_count_fail_mamberadd_d15" property="ddJiedaiCountFailMamberaddD15" jdbcType="VARCHAR" />
+        <result column="jiedai_sum_fail_amt_d15" property="jiedaiSumFailAmtD15" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_max_fail_days1_d15" property="ddJiedaiMaxFailDays1D15" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_all_pro_all_time_d15" property="sumSureDueDaysAllProAllTimeD15" jdbcType="VARCHAR" />
+        <result column="last_to_end_sure_due_all_pro_all_time_d15" property="lastToEndSureDueAllProAllTimeD15" jdbcType="VARCHAR" />
+        <result column="max_sure_due_days_non_cdq_all_time_d15" property="maxSureDueDaysNonCdqAllTimeD15" jdbcType="VARCHAR" />
+        <result column="last_to_end_sure_due_non_cdq_all_time_d15" property="lastToEndSureDueNonCdqAllTimeD15" jdbcType="VARCHAR" />
+        <result column="jiedai_avg_defaultdays_m1" property="jiedaiAvgDefaultdaysM1" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_max_fail_days1_m1" property="ddJiedaiMaxFailDays1M1" jdbcType="VARCHAR" />
+        <result column="jiedai4_sum_fail_cnt1" property="jiedai4SumFailCnt1" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_max_fail_days_m1" property="ddJiedaiMaxFailDaysM1" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_count_fail_mamberadd_m1" property="ddJiedaiCountFailMamberaddM1" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d3_cnt_m1" property="jiedai4CountFillD3CntM1" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_min_fail_days1_m1" property="ddJiedaiMinFailDays1M1" jdbcType="VARCHAR" />
+        <result column="jiedai_sum_fail_amt1" property="jiedaiSumFailAmt1" jdbcType="VARCHAR" />
+        <result column="cdq_dd_jiedai_max_fail_days1_m1" property="cdqDdJiedaiMaxFailDays1M1" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d5_cnt_m1" property="jiedai4CountFillD5CntM1" jdbcType="VARCHAR" />
+        <result column="jiedai4_avg_succ_amt1" property="jiedai4AvgSuccAmt1" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_non_cdq_all_time_m1" property="sumSureDueDaysNonCdqAllTimeM1" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_all_pro_all_time_m1" property="sumSureDueDaysAllProAllTimeM1" jdbcType="VARCHAR" />
+        <result column="avg_sure_due_days_non_cdq_all_time_m1" property="avgSureDueDaysNonCdqAllTimeM1" jdbcType="VARCHAR" />
+        <result column="pct_pay_amt_cdq_pro_all_time_m1" property="pctPayAmtCdqProAllTimeM1" jdbcType="VARCHAR" />
+        <result column="max_pay_amt_all_pro_all_time_m1" property="maxPayAmtAllProAllTimeM1" jdbcType="VARCHAR" />
+        <result column="jiedai_avg_defaultdays_m3" property="jiedaiAvgDefaultdaysM3" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_max_fail_days1_m3" property="ddJiedaiMaxFailDays1M3" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_avg_fail_days_m3" property="ddJiedaiAvgFailDaysM3" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_count_fail_mamberadd_m3" property="ddJiedaiCountFailMamberaddM3" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d3_cnt_m3" property="jiedai4CountFillD3CntM3" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d5_cnt_m3" property="jiedai4CountFillD5CntM3" jdbcType="VARCHAR" />
+        <result column="cdq_dd_jiedai_avg_fail_days1_m3" property="cdqDdJiedaiAvgFailDays1M3" jdbcType="VARCHAR" />
+        <result column="jiedai4_avg_succ_amt3" property="jiedai4AvgSuccAmt3" jdbcType="VARCHAR" />
+        <result column="jiedai_sum_fail_amt3" property="jiedaiSumFailAmt3" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_min_fail_days1_m3" property="ddJiedaiMinFailDays1M3" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_all_pro_all_time_m3" property="sumSureDueDaysAllProAllTimeM3" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_non_cdq_all_time_m3" property="sumSureDueDaysNonCdqAllTimeM3" jdbcType="VARCHAR" />
+        <result column="avg_sure_due_days_all_pro_all_time_m3" property="avgSureDueDaysAllProAllTimeM3" jdbcType="VARCHAR" />
+        <result column="max_due_cnt_non_cdq_all_time_m3" property="maxDueCntNonCdqAllTimeM3" jdbcType="VARCHAR" />
+        <result column="avg_sure_due_days_non_cdq_all_time_m3" property="avgSureDueDaysNonCdqAllTimeM3" jdbcType="VARCHAR" />
+        <result column="pct_pay_amt_cdq_pro_all_time_m3" property="pctPayAmtCdqProAllTimeM3" jdbcType="VARCHAR" />
+        <result column="jiedai_avg_defaultdays_m6" property="jiedaiAvgDefaultdaysM6" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_avg_fail_days1_m6" property="ddJiedaiAvgFailDays1M6" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_avg_fail_days_m6" property="ddJiedaiAvgFailDaysM6" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_count_fail_mamberadd_m6" property="ddJiedaiCountFailMamberaddM6" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d3_cnt_m6" property="jiedai4CountFillD3CntM6" jdbcType="VARCHAR" />
+        <result column="cdq_dd_jiedai_avg_fail_days1_m6" property="cdqDdJiedaiAvgFailDays1M6" jdbcType="VARCHAR" />
+        <result column="cdq_dd_jiedai_max_fail_days1_m6" property="cdqDdJiedaiMaxFailDays1M6" jdbcType="VARCHAR" />
+        <result column="jiedai4_avg_succ_amt6" property="jiedai4AvgSuccAmt6" jdbcType="VARCHAR" />
+        <result column="jiedai4_count_fill_d5_cnt_m6" property="jiedai4CountFillD5CntM6" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_non_cdq_all_time_m6" property="sumSureDueDaysNonCdqAllTimeM6" jdbcType="VARCHAR" />
+        <result column="max_sure_due_days_all_pro_all_time_m6" property="maxSureDueDaysAllProAllTimeM6" jdbcType="VARCHAR" />
+        <result column="avg_sure_due_days_all_pro_all_time_m6" property="avgSureDueDaysAllProAllTimeM6" jdbcType="VARCHAR" />
+        <result column="avg_sure_due_days_non_cdq_all_time_m6" property="avgSureDueDaysNonCdqAllTimeM6" jdbcType="VARCHAR" />
+        <result column="pct_pay_amt_cdq_pro_all_time_m6" property="pctPayAmtCdqProAllTimeM6" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_max_fail_days_m12" property="ddJiedaiMaxFailDaysM12" jdbcType="VARCHAR" />
+        <result column="dd_jiedai_sum_fill_d5_cnt_m12" property="ddJiedaiSumFillD5CntM12" jdbcType="VARCHAR" />
+        <result column="last_to_end_sure_due_all_pro_all_time_m12" property="lastToEndSureDueAllProAllTimeM12" jdbcType="VARCHAR" />
+        <result column="sum_sure_due_days_non_cdq_all_time_m12" property="sumSureDueDaysNonCdqAllTimeM12" jdbcType="VARCHAR" />
+        <result column="last_to_end_sure_due_non_cdq_all_time_m12" property="lastToEndSureDueNonCdqAllTimeM12" jdbcType="VARCHAR" />
+        <result column="max_due_cnt_all_pro_all_time_m12" property="maxDueCntAllProAllTimeM12" jdbcType="VARCHAR" />
+        <result column="max_due_cnt_non_cdq_all_time_m12" property="maxDueCntNonCdqAllTimeM12" jdbcType="VARCHAR" />
+        <result column="max_pay_amt_all_pro_all_time_m12" property="maxPayAmtAllProAllTimeM12" jdbcType="VARCHAR" />
+        <result column="sum_pay_cnt_all_pro_all_time_m12" property="sumPayCntAllProAllTimeM12" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trans_id,defaultday_from_first_to_end,jiedai4_sum_fail_cnt_d7,jiedai_avg_defaultdays_d7,jiedai4_count_fill_d3_cnt_d7,jiedai_max_defaultdays_d7,dd_jiedai_sum_fill_d5_cnt_d7,dd_jiedai_count_fail_mamberadd_d7,dd_jiedai_avg_fail_days1_d7,jiedai_min_defaultdays_d7,last_to_end_sure_due_all_pro_all_time_d7,max_sure_due_days_non_cdq_all_time_d7,sum_sure_due_days_all_pro_all_time_d7,last_to_end_sure_due_non_cdq_all_time_d7,jiedai_avg_defaultdays_d15,jiedai_min_defaultdays_d15,jiedai4_sum_fail_cnt_d15,dd_jiedai_avg_fail_days1_d15,jiedai4_count_fill_d3_cnt_d15,jiedai4_count_fill_d5_cnt_d15,dd_jiedai_count_fail_mamberadd_d15,jiedai_sum_fail_amt_d15,dd_jiedai_max_fail_days1_d15,sum_sure_due_days_all_pro_all_time_d15,last_to_end_sure_due_all_pro_all_time_d15,max_sure_due_days_non_cdq_all_time_d15,last_to_end_sure_due_non_cdq_all_time_d15,jiedai_avg_defaultdays_m1,dd_jiedai_max_fail_days1_m1,jiedai4_sum_fail_cnt1,dd_jiedai_max_fail_days_m1,dd_jiedai_count_fail_mamberadd_m1,jiedai4_count_fill_d3_cnt_m1,dd_jiedai_min_fail_days1_m1,jiedai_sum_fail_amt1,cdq_dd_jiedai_max_fail_days1_m1,jiedai4_count_fill_d5_cnt_m1,jiedai4_avg_succ_amt1,sum_sure_due_days_non_cdq_all_time_m1,sum_sure_due_days_all_pro_all_time_m1,avg_sure_due_days_non_cdq_all_time_m1,pct_pay_amt_cdq_pro_all_time_m1,max_pay_amt_all_pro_all_time_m1,jiedai_avg_defaultdays_m3,dd_jiedai_max_fail_days1_m3,dd_jiedai_avg_fail_days_m3,dd_jiedai_count_fail_mamberadd_m3,jiedai4_count_fill_d3_cnt_m3,jiedai4_count_fill_d5_cnt_m3,cdq_dd_jiedai_avg_fail_days1_m3,jiedai4_avg_succ_amt3,jiedai_sum_fail_amt3,dd_jiedai_min_fail_days1_m3,sum_sure_due_days_all_pro_all_time_m3,sum_sure_due_days_non_cdq_all_time_m3,avg_sure_due_days_all_pro_all_time_m3,max_due_cnt_non_cdq_all_time_m3,avg_sure_due_days_non_cdq_all_time_m3,pct_pay_amt_cdq_pro_all_time_m3,jiedai_avg_defaultdays_m6,dd_jiedai_avg_fail_days1_m6,dd_jiedai_avg_fail_days_m6,dd_jiedai_count_fail_mamberadd_m6,jiedai4_count_fill_d3_cnt_m6,cdq_dd_jiedai_avg_fail_days1_m6,cdq_dd_jiedai_max_fail_days1_m6,jiedai4_avg_succ_amt6,jiedai4_count_fill_d5_cnt_m6,sum_sure_due_days_non_cdq_all_time_m6,max_sure_due_days_all_pro_all_time_m6,avg_sure_due_days_all_pro_all_time_m6,avg_sure_due_days_non_cdq_all_time_m6,pct_pay_amt_cdq_pro_all_time_m6,dd_jiedai_max_fail_days_m12,dd_jiedai_sum_fill_d5_cnt_m12,last_to_end_sure_due_all_pro_all_time_m12,sum_sure_due_days_non_cdq_all_time_m12,last_to_end_sure_due_non_cdq_all_time_m12,max_due_cnt_all_pro_all_time_m12,max_due_cnt_non_cdq_all_time_m12,max_pay_amt_all_pro_all_time_m12,sum_pay_cnt_all_pro_all_time_m12,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="transId != null and transId != ''">
+                and trans_id = #{transId,jdbcType=VARCHAR}
+            </if>
+            <if test="defaultdayFromFirstToEnd != null and defaultdayFromFirstToEnd != ''">
+                and defaultday_from_first_to_end = #{defaultdayFromFirstToEnd,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4SumFailCntD7 != null and jiedai4SumFailCntD7 != ''">
+                and jiedai4_sum_fail_cnt_d7 = #{jiedai4SumFailCntD7,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiAvgDefaultdaysD7 != null and jiedaiAvgDefaultdaysD7 != ''">
+                and jiedai_avg_defaultdays_d7 = #{jiedaiAvgDefaultdaysD7,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD3CntD7 != null and jiedai4CountFillD3CntD7 != ''">
+                and jiedai4_count_fill_d3_cnt_d7 = #{jiedai4CountFillD3CntD7,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiMaxDefaultdaysD7 != null and jiedaiMaxDefaultdaysD7 != ''">
+                and jiedai_max_defaultdays_d7 = #{jiedaiMaxDefaultdaysD7,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiSumFillD5CntD7 != null and ddJiedaiSumFillD5CntD7 != ''">
+                and dd_jiedai_sum_fill_d5_cnt_d7 = #{ddJiedaiSumFillD5CntD7,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiCountFailMamberaddD7 != null and ddJiedaiCountFailMamberaddD7 != ''">
+                and dd_jiedai_count_fail_mamberadd_d7 = #{ddJiedaiCountFailMamberaddD7,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiAvgFailDays1D7 != null and ddJiedaiAvgFailDays1D7 != ''">
+                and dd_jiedai_avg_fail_days1_d7 = #{ddJiedaiAvgFailDays1D7,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiMinDefaultdaysD7 != null and jiedaiMinDefaultdaysD7 != ''">
+                and jiedai_min_defaultdays_d7 = #{jiedaiMinDefaultdaysD7,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndSureDueAllProAllTimeD7 != null and lastToEndSureDueAllProAllTimeD7 != ''">
+                and last_to_end_sure_due_all_pro_all_time_d7 = #{lastToEndSureDueAllProAllTimeD7,jdbcType=VARCHAR}
+            </if>
+            <if test="maxSureDueDaysNonCdqAllTimeD7 != null and maxSureDueDaysNonCdqAllTimeD7 != ''">
+                and max_sure_due_days_non_cdq_all_time_d7 = #{maxSureDueDaysNonCdqAllTimeD7,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeD7 != null and sumSureDueDaysAllProAllTimeD7 != ''">
+                and sum_sure_due_days_all_pro_all_time_d7 = #{sumSureDueDaysAllProAllTimeD7,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndSureDueNonCdqAllTimeD7 != null and lastToEndSureDueNonCdqAllTimeD7 != ''">
+                and last_to_end_sure_due_non_cdq_all_time_d7 = #{lastToEndSureDueNonCdqAllTimeD7,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiAvgDefaultdaysD15 != null and jiedaiAvgDefaultdaysD15 != ''">
+                and jiedai_avg_defaultdays_d15 = #{jiedaiAvgDefaultdaysD15,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiMinDefaultdaysD15 != null and jiedaiMinDefaultdaysD15 != ''">
+                and jiedai_min_defaultdays_d15 = #{jiedaiMinDefaultdaysD15,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4SumFailCntD15 != null and jiedai4SumFailCntD15 != ''">
+                and jiedai4_sum_fail_cnt_d15 = #{jiedai4SumFailCntD15,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiAvgFailDays1D15 != null and ddJiedaiAvgFailDays1D15 != ''">
+                and dd_jiedai_avg_fail_days1_d15 = #{ddJiedaiAvgFailDays1D15,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD3CntD15 != null and jiedai4CountFillD3CntD15 != ''">
+                and jiedai4_count_fill_d3_cnt_d15 = #{jiedai4CountFillD3CntD15,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD5CntD15 != null and jiedai4CountFillD5CntD15 != ''">
+                and jiedai4_count_fill_d5_cnt_d15 = #{jiedai4CountFillD5CntD15,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiCountFailMamberaddD15 != null and ddJiedaiCountFailMamberaddD15 != ''">
+                and dd_jiedai_count_fail_mamberadd_d15 = #{ddJiedaiCountFailMamberaddD15,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiSumFailAmtD15 != null and jiedaiSumFailAmtD15 != ''">
+                and jiedai_sum_fail_amt_d15 = #{jiedaiSumFailAmtD15,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMaxFailDays1D15 != null and ddJiedaiMaxFailDays1D15 != ''">
+                and dd_jiedai_max_fail_days1_d15 = #{ddJiedaiMaxFailDays1D15,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeD15 != null and sumSureDueDaysAllProAllTimeD15 != ''">
+                and sum_sure_due_days_all_pro_all_time_d15 = #{sumSureDueDaysAllProAllTimeD15,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndSureDueAllProAllTimeD15 != null and lastToEndSureDueAllProAllTimeD15 != ''">
+                and last_to_end_sure_due_all_pro_all_time_d15 = #{lastToEndSureDueAllProAllTimeD15,jdbcType=VARCHAR}
+            </if>
+            <if test="maxSureDueDaysNonCdqAllTimeD15 != null and maxSureDueDaysNonCdqAllTimeD15 != ''">
+                and max_sure_due_days_non_cdq_all_time_d15 = #{maxSureDueDaysNonCdqAllTimeD15,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndSureDueNonCdqAllTimeD15 != null and lastToEndSureDueNonCdqAllTimeD15 != ''">
+                and last_to_end_sure_due_non_cdq_all_time_d15 = #{lastToEndSureDueNonCdqAllTimeD15,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiAvgDefaultdaysM1 != null and jiedaiAvgDefaultdaysM1 != ''">
+                and jiedai_avg_defaultdays_m1 = #{jiedaiAvgDefaultdaysM1,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMaxFailDays1M1 != null and ddJiedaiMaxFailDays1M1 != ''">
+                and dd_jiedai_max_fail_days1_m1 = #{ddJiedaiMaxFailDays1M1,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4SumFailCnt1 != null and jiedai4SumFailCnt1 != ''">
+                and jiedai4_sum_fail_cnt1 = #{jiedai4SumFailCnt1,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMaxFailDaysM1 != null and ddJiedaiMaxFailDaysM1 != ''">
+                and dd_jiedai_max_fail_days_m1 = #{ddJiedaiMaxFailDaysM1,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiCountFailMamberaddM1 != null and ddJiedaiCountFailMamberaddM1 != ''">
+                and dd_jiedai_count_fail_mamberadd_m1 = #{ddJiedaiCountFailMamberaddM1,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD3CntM1 != null and jiedai4CountFillD3CntM1 != ''">
+                and jiedai4_count_fill_d3_cnt_m1 = #{jiedai4CountFillD3CntM1,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMinFailDays1M1 != null and ddJiedaiMinFailDays1M1 != ''">
+                and dd_jiedai_min_fail_days1_m1 = #{ddJiedaiMinFailDays1M1,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiSumFailAmt1 != null and jiedaiSumFailAmt1 != ''">
+                and jiedai_sum_fail_amt1 = #{jiedaiSumFailAmt1,jdbcType=VARCHAR}
+            </if>
+            <if test="cdqDdJiedaiMaxFailDays1M1 != null and cdqDdJiedaiMaxFailDays1M1 != ''">
+                and cdq_dd_jiedai_max_fail_days1_m1 = #{cdqDdJiedaiMaxFailDays1M1,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD5CntM1 != null and jiedai4CountFillD5CntM1 != ''">
+                and jiedai4_count_fill_d5_cnt_m1 = #{jiedai4CountFillD5CntM1,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4AvgSuccAmt1 != null and jiedai4AvgSuccAmt1 != ''">
+                and jiedai4_avg_succ_amt1 = #{jiedai4AvgSuccAmt1,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM1 != null and sumSureDueDaysNonCdqAllTimeM1 != ''">
+                and sum_sure_due_days_non_cdq_all_time_m1 = #{sumSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeM1 != null and sumSureDueDaysAllProAllTimeM1 != ''">
+                and sum_sure_due_days_all_pro_all_time_m1 = #{sumSureDueDaysAllProAllTimeM1,jdbcType=VARCHAR}
+            </if>
+            <if test="avgSureDueDaysNonCdqAllTimeM1 != null and avgSureDueDaysNonCdqAllTimeM1 != ''">
+                and avg_sure_due_days_non_cdq_all_time_m1 = #{avgSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR}
+            </if>
+            <if test="pctPayAmtCdqProAllTimeM1 != null and pctPayAmtCdqProAllTimeM1 != ''">
+                and pct_pay_amt_cdq_pro_all_time_m1 = #{pctPayAmtCdqProAllTimeM1,jdbcType=VARCHAR}
+            </if>
+            <if test="maxPayAmtAllProAllTimeM1 != null and maxPayAmtAllProAllTimeM1 != ''">
+                and max_pay_amt_all_pro_all_time_m1 = #{maxPayAmtAllProAllTimeM1,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiAvgDefaultdaysM3 != null and jiedaiAvgDefaultdaysM3 != ''">
+                and jiedai_avg_defaultdays_m3 = #{jiedaiAvgDefaultdaysM3,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMaxFailDays1M3 != null and ddJiedaiMaxFailDays1M3 != ''">
+                and dd_jiedai_max_fail_days1_m3 = #{ddJiedaiMaxFailDays1M3,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiAvgFailDaysM3 != null and ddJiedaiAvgFailDaysM3 != ''">
+                and dd_jiedai_avg_fail_days_m3 = #{ddJiedaiAvgFailDaysM3,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiCountFailMamberaddM3 != null and ddJiedaiCountFailMamberaddM3 != ''">
+                and dd_jiedai_count_fail_mamberadd_m3 = #{ddJiedaiCountFailMamberaddM3,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD3CntM3 != null and jiedai4CountFillD3CntM3 != ''">
+                and jiedai4_count_fill_d3_cnt_m3 = #{jiedai4CountFillD3CntM3,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD5CntM3 != null and jiedai4CountFillD5CntM3 != ''">
+                and jiedai4_count_fill_d5_cnt_m3 = #{jiedai4CountFillD5CntM3,jdbcType=VARCHAR}
+            </if>
+            <if test="cdqDdJiedaiAvgFailDays1M3 != null and cdqDdJiedaiAvgFailDays1M3 != ''">
+                and cdq_dd_jiedai_avg_fail_days1_m3 = #{cdqDdJiedaiAvgFailDays1M3,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4AvgSuccAmt3 != null and jiedai4AvgSuccAmt3 != ''">
+                and jiedai4_avg_succ_amt3 = #{jiedai4AvgSuccAmt3,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiSumFailAmt3 != null and jiedaiSumFailAmt3 != ''">
+                and jiedai_sum_fail_amt3 = #{jiedaiSumFailAmt3,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMinFailDays1M3 != null and ddJiedaiMinFailDays1M3 != ''">
+                and dd_jiedai_min_fail_days1_m3 = #{ddJiedaiMinFailDays1M3,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeM3 != null and sumSureDueDaysAllProAllTimeM3 != ''">
+                and sum_sure_due_days_all_pro_all_time_m3 = #{sumSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM3 != null and sumSureDueDaysNonCdqAllTimeM3 != ''">
+                and sum_sure_due_days_non_cdq_all_time_m3 = #{sumSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR}
+            </if>
+            <if test="avgSureDueDaysAllProAllTimeM3 != null and avgSureDueDaysAllProAllTimeM3 != ''">
+                and avg_sure_due_days_all_pro_all_time_m3 = #{avgSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR}
+            </if>
+            <if test="maxDueCntNonCdqAllTimeM3 != null and maxDueCntNonCdqAllTimeM3 != ''">
+                and max_due_cnt_non_cdq_all_time_m3 = #{maxDueCntNonCdqAllTimeM3,jdbcType=VARCHAR}
+            </if>
+            <if test="avgSureDueDaysNonCdqAllTimeM3 != null and avgSureDueDaysNonCdqAllTimeM3 != ''">
+                and avg_sure_due_days_non_cdq_all_time_m3 = #{avgSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR}
+            </if>
+            <if test="pctPayAmtCdqProAllTimeM3 != null and pctPayAmtCdqProAllTimeM3 != ''">
+                and pct_pay_amt_cdq_pro_all_time_m3 = #{pctPayAmtCdqProAllTimeM3,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedaiAvgDefaultdaysM6 != null and jiedaiAvgDefaultdaysM6 != ''">
+                and jiedai_avg_defaultdays_m6 = #{jiedaiAvgDefaultdaysM6,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiAvgFailDays1M6 != null and ddJiedaiAvgFailDays1M6 != ''">
+                and dd_jiedai_avg_fail_days1_m6 = #{ddJiedaiAvgFailDays1M6,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiAvgFailDaysM6 != null and ddJiedaiAvgFailDaysM6 != ''">
+                and dd_jiedai_avg_fail_days_m6 = #{ddJiedaiAvgFailDaysM6,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiCountFailMamberaddM6 != null and ddJiedaiCountFailMamberaddM6 != ''">
+                and dd_jiedai_count_fail_mamberadd_m6 = #{ddJiedaiCountFailMamberaddM6,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD3CntM6 != null and jiedai4CountFillD3CntM6 != ''">
+                and jiedai4_count_fill_d3_cnt_m6 = #{jiedai4CountFillD3CntM6,jdbcType=VARCHAR}
+            </if>
+            <if test="cdqDdJiedaiAvgFailDays1M6 != null and cdqDdJiedaiAvgFailDays1M6 != ''">
+                and cdq_dd_jiedai_avg_fail_days1_m6 = #{cdqDdJiedaiAvgFailDays1M6,jdbcType=VARCHAR}
+            </if>
+            <if test="cdqDdJiedaiMaxFailDays1M6 != null and cdqDdJiedaiMaxFailDays1M6 != ''">
+                and cdq_dd_jiedai_max_fail_days1_m6 = #{cdqDdJiedaiMaxFailDays1M6,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4AvgSuccAmt6 != null and jiedai4AvgSuccAmt6 != ''">
+                and jiedai4_avg_succ_amt6 = #{jiedai4AvgSuccAmt6,jdbcType=VARCHAR}
+            </if>
+            <if test="jiedai4CountFillD5CntM6 != null and jiedai4CountFillD5CntM6 != ''">
+                and jiedai4_count_fill_d5_cnt_m6 = #{jiedai4CountFillD5CntM6,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM6 != null and sumSureDueDaysNonCdqAllTimeM6 != ''">
+                and sum_sure_due_days_non_cdq_all_time_m6 = #{sumSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR}
+            </if>
+            <if test="maxSureDueDaysAllProAllTimeM6 != null and maxSureDueDaysAllProAllTimeM6 != ''">
+                and max_sure_due_days_all_pro_all_time_m6 = #{maxSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR}
+            </if>
+            <if test="avgSureDueDaysAllProAllTimeM6 != null and avgSureDueDaysAllProAllTimeM6 != ''">
+                and avg_sure_due_days_all_pro_all_time_m6 = #{avgSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR}
+            </if>
+            <if test="avgSureDueDaysNonCdqAllTimeM6 != null and avgSureDueDaysNonCdqAllTimeM6 != ''">
+                and avg_sure_due_days_non_cdq_all_time_m6 = #{avgSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR}
+            </if>
+            <if test="pctPayAmtCdqProAllTimeM6 != null and pctPayAmtCdqProAllTimeM6 != ''">
+                and pct_pay_amt_cdq_pro_all_time_m6 = #{pctPayAmtCdqProAllTimeM6,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiMaxFailDaysM12 != null and ddJiedaiMaxFailDaysM12 != ''">
+                and dd_jiedai_max_fail_days_m12 = #{ddJiedaiMaxFailDaysM12,jdbcType=VARCHAR}
+            </if>
+            <if test="ddJiedaiSumFillD5CntM12 != null and ddJiedaiSumFillD5CntM12 != ''">
+                and dd_jiedai_sum_fill_d5_cnt_m12 = #{ddJiedaiSumFillD5CntM12,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndSureDueAllProAllTimeM12 != null and lastToEndSureDueAllProAllTimeM12 != ''">
+                and last_to_end_sure_due_all_pro_all_time_m12 = #{lastToEndSureDueAllProAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM12 != null and sumSureDueDaysNonCdqAllTimeM12 != ''">
+                and sum_sure_due_days_non_cdq_all_time_m12 = #{sumSureDueDaysNonCdqAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndSureDueNonCdqAllTimeM12 != null and lastToEndSureDueNonCdqAllTimeM12 != ''">
+                and last_to_end_sure_due_non_cdq_all_time_m12 = #{lastToEndSureDueNonCdqAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="maxDueCntAllProAllTimeM12 != null and maxDueCntAllProAllTimeM12 != ''">
+                and max_due_cnt_all_pro_all_time_m12 = #{maxDueCntAllProAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="maxDueCntNonCdqAllTimeM12 != null and maxDueCntNonCdqAllTimeM12 != ''">
+                and max_due_cnt_non_cdq_all_time_m12 = #{maxDueCntNonCdqAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="maxPayAmtAllProAllTimeM12 != null and maxPayAmtAllProAllTimeM12 != ''">
+                and max_pay_amt_all_pro_all_time_m12 = #{maxPayAmtAllProAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="sumPayCntAllProAllTimeM12 != null and sumPayCntAllProAllTimeM12 != ''">
+                and sum_pay_cnt_all_pro_all_time_m12 = #{sumPayCntAllProAllTimeM12,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicLoanBehaviorAnalysis">
+        insert into cl_magic_loan_behavior_analysis(user_id,trans_id,defaultday_from_first_to_end,jiedai4_sum_fail_cnt_d7,jiedai_avg_defaultdays_d7,jiedai4_count_fill_d3_cnt_d7,jiedai_max_defaultdays_d7,dd_jiedai_sum_fill_d5_cnt_d7,dd_jiedai_count_fail_mamberadd_d7,dd_jiedai_avg_fail_days1_d7,jiedai_min_defaultdays_d7,last_to_end_sure_due_all_pro_all_time_d7,max_sure_due_days_non_cdq_all_time_d7,sum_sure_due_days_all_pro_all_time_d7,last_to_end_sure_due_non_cdq_all_time_d7,jiedai_avg_defaultdays_d15,jiedai_min_defaultdays_d15,jiedai4_sum_fail_cnt_d15,dd_jiedai_avg_fail_days1_d15,jiedai4_count_fill_d3_cnt_d15,jiedai4_count_fill_d5_cnt_d15,dd_jiedai_count_fail_mamberadd_d15,jiedai_sum_fail_amt_d15,dd_jiedai_max_fail_days1_d15,sum_sure_due_days_all_pro_all_time_d15,last_to_end_sure_due_all_pro_all_time_d15,max_sure_due_days_non_cdq_all_time_d15,last_to_end_sure_due_non_cdq_all_time_d15,jiedai_avg_defaultdays_m1,dd_jiedai_max_fail_days1_m1,jiedai4_sum_fail_cnt1,dd_jiedai_max_fail_days_m1,dd_jiedai_count_fail_mamberadd_m1,jiedai4_count_fill_d3_cnt_m1,dd_jiedai_min_fail_days1_m1,jiedai_sum_fail_amt1,cdq_dd_jiedai_max_fail_days1_m1,jiedai4_count_fill_d5_cnt_m1,jiedai4_avg_succ_amt1,sum_sure_due_days_non_cdq_all_time_m1,sum_sure_due_days_all_pro_all_time_m1,avg_sure_due_days_non_cdq_all_time_m1,pct_pay_amt_cdq_pro_all_time_m1,max_pay_amt_all_pro_all_time_m1,jiedai_avg_defaultdays_m3,dd_jiedai_max_fail_days1_m3,dd_jiedai_avg_fail_days_m3,dd_jiedai_count_fail_mamberadd_m3,jiedai4_count_fill_d3_cnt_m3,jiedai4_count_fill_d5_cnt_m3,cdq_dd_jiedai_avg_fail_days1_m3,jiedai4_avg_succ_amt3,jiedai_sum_fail_amt3,dd_jiedai_min_fail_days1_m3,sum_sure_due_days_all_pro_all_time_m3,sum_sure_due_days_non_cdq_all_time_m3,avg_sure_due_days_all_pro_all_time_m3,max_due_cnt_non_cdq_all_time_m3,avg_sure_due_days_non_cdq_all_time_m3,pct_pay_amt_cdq_pro_all_time_m3,jiedai_avg_defaultdays_m6,dd_jiedai_avg_fail_days1_m6,dd_jiedai_avg_fail_days_m6,dd_jiedai_count_fail_mamberadd_m6,jiedai4_count_fill_d3_cnt_m6,cdq_dd_jiedai_avg_fail_days1_m6,cdq_dd_jiedai_max_fail_days1_m6,jiedai4_avg_succ_amt6,jiedai4_count_fill_d5_cnt_m6,sum_sure_due_days_non_cdq_all_time_m6,max_sure_due_days_all_pro_all_time_m6,avg_sure_due_days_all_pro_all_time_m6,avg_sure_due_days_non_cdq_all_time_m6,pct_pay_amt_cdq_pro_all_time_m6,dd_jiedai_max_fail_days_m12,dd_jiedai_sum_fill_d5_cnt_m12,last_to_end_sure_due_all_pro_all_time_m12,sum_sure_due_days_non_cdq_all_time_m12,last_to_end_sure_due_non_cdq_all_time_m12,max_due_cnt_all_pro_all_time_m12,max_due_cnt_non_cdq_all_time_m12,max_pay_amt_all_pro_all_time_m12,sum_pay_cnt_all_pro_all_time_m12,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{defaultdayFromFirstToEnd,jdbcType=VARCHAR},#{jiedai4SumFailCntD7,jdbcType=VARCHAR},#{jiedaiAvgDefaultdaysD7,jdbcType=VARCHAR},#{jiedai4CountFillD3CntD7,jdbcType=VARCHAR},#{jiedaiMaxDefaultdaysD7,jdbcType=VARCHAR},#{ddJiedaiSumFillD5CntD7,jdbcType=VARCHAR},#{ddJiedaiCountFailMamberaddD7,jdbcType=VARCHAR},#{ddJiedaiAvgFailDays1D7,jdbcType=VARCHAR},#{jiedaiMinDefaultdaysD7,jdbcType=VARCHAR},#{lastToEndSureDueAllProAllTimeD7,jdbcType=VARCHAR},#{maxSureDueDaysNonCdqAllTimeD7,jdbcType=VARCHAR},#{sumSureDueDaysAllProAllTimeD7,jdbcType=VARCHAR},#{lastToEndSureDueNonCdqAllTimeD7,jdbcType=VARCHAR},#{jiedaiAvgDefaultdaysD15,jdbcType=VARCHAR},#{jiedaiMinDefaultdaysD15,jdbcType=VARCHAR},#{jiedai4SumFailCntD15,jdbcType=VARCHAR},#{ddJiedaiAvgFailDays1D15,jdbcType=VARCHAR},#{jiedai4CountFillD3CntD15,jdbcType=VARCHAR},#{jiedai4CountFillD5CntD15,jdbcType=VARCHAR},#{ddJiedaiCountFailMamberaddD15,jdbcType=VARCHAR},#{jiedaiSumFailAmtD15,jdbcType=VARCHAR},#{ddJiedaiMaxFailDays1D15,jdbcType=VARCHAR},#{sumSureDueDaysAllProAllTimeD15,jdbcType=VARCHAR},#{lastToEndSureDueAllProAllTimeD15,jdbcType=VARCHAR},#{maxSureDueDaysNonCdqAllTimeD15,jdbcType=VARCHAR},#{lastToEndSureDueNonCdqAllTimeD15,jdbcType=VARCHAR},#{jiedaiAvgDefaultdaysM1,jdbcType=VARCHAR},#{ddJiedaiMaxFailDays1M1,jdbcType=VARCHAR},#{jiedai4SumFailCnt1,jdbcType=VARCHAR},#{ddJiedaiMaxFailDaysM1,jdbcType=VARCHAR},#{ddJiedaiCountFailMamberaddM1,jdbcType=VARCHAR},#{jiedai4CountFillD3CntM1,jdbcType=VARCHAR},#{ddJiedaiMinFailDays1M1,jdbcType=VARCHAR},#{jiedaiSumFailAmt1,jdbcType=VARCHAR},#{cdqDdJiedaiMaxFailDays1M1,jdbcType=VARCHAR},#{jiedai4CountFillD5CntM1,jdbcType=VARCHAR},#{jiedai4AvgSuccAmt1,jdbcType=VARCHAR},#{sumSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR},#{sumSureDueDaysAllProAllTimeM1,jdbcType=VARCHAR},#{avgSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR},#{pctPayAmtCdqProAllTimeM1,jdbcType=VARCHAR},#{maxPayAmtAllProAllTimeM1,jdbcType=VARCHAR},#{jiedaiAvgDefaultdaysM3,jdbcType=VARCHAR},#{ddJiedaiMaxFailDays1M3,jdbcType=VARCHAR},#{ddJiedaiAvgFailDaysM3,jdbcType=VARCHAR},#{ddJiedaiCountFailMamberaddM3,jdbcType=VARCHAR},#{jiedai4CountFillD3CntM3,jdbcType=VARCHAR},#{jiedai4CountFillD5CntM3,jdbcType=VARCHAR},#{cdqDdJiedaiAvgFailDays1M3,jdbcType=VARCHAR},#{jiedai4AvgSuccAmt3,jdbcType=VARCHAR},#{jiedaiSumFailAmt3,jdbcType=VARCHAR},#{ddJiedaiMinFailDays1M3,jdbcType=VARCHAR},#{sumSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR},#{sumSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR},#{avgSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR},#{maxDueCntNonCdqAllTimeM3,jdbcType=VARCHAR},#{avgSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR},#{pctPayAmtCdqProAllTimeM3,jdbcType=VARCHAR},#{jiedaiAvgDefaultdaysM6,jdbcType=VARCHAR},#{ddJiedaiAvgFailDays1M6,jdbcType=VARCHAR},#{ddJiedaiAvgFailDaysM6,jdbcType=VARCHAR},#{ddJiedaiCountFailMamberaddM6,jdbcType=VARCHAR},#{jiedai4CountFillD3CntM6,jdbcType=VARCHAR},#{cdqDdJiedaiAvgFailDays1M6,jdbcType=VARCHAR},#{cdqDdJiedaiMaxFailDays1M6,jdbcType=VARCHAR},#{jiedai4AvgSuccAmt6,jdbcType=VARCHAR},#{jiedai4CountFillD5CntM6,jdbcType=VARCHAR},#{sumSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR},#{maxSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR},#{avgSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR},#{avgSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR},#{pctPayAmtCdqProAllTimeM6,jdbcType=VARCHAR},#{ddJiedaiMaxFailDaysM12,jdbcType=VARCHAR},#{ddJiedaiSumFillD5CntM12,jdbcType=VARCHAR},#{lastToEndSureDueAllProAllTimeM12,jdbcType=VARCHAR},#{sumSureDueDaysNonCdqAllTimeM12,jdbcType=VARCHAR},#{lastToEndSureDueNonCdqAllTimeM12,jdbcType=VARCHAR},#{maxDueCntAllProAllTimeM12,jdbcType=VARCHAR},#{maxDueCntNonCdqAllTimeM12,jdbcType=VARCHAR},#{maxPayAmtAllProAllTimeM12,jdbcType=VARCHAR},#{sumPayCntAllProAllTimeM12,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicLoanBehaviorAnalysis">
+        update cl_magic_loan_behavior_analysis set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trans_id = #{transId,jdbcType=VARCHAR},
+            defaultday_from_first_to_end = #{defaultdayFromFirstToEnd,jdbcType=VARCHAR},
+            jiedai4_sum_fail_cnt_d7 = #{jiedai4SumFailCntD7,jdbcType=VARCHAR},
+            jiedai_avg_defaultdays_d7 = #{jiedaiAvgDefaultdaysD7,jdbcType=VARCHAR},
+            jiedai4_count_fill_d3_cnt_d7 = #{jiedai4CountFillD3CntD7,jdbcType=VARCHAR},
+            jiedai_max_defaultdays_d7 = #{jiedaiMaxDefaultdaysD7,jdbcType=VARCHAR},
+            dd_jiedai_sum_fill_d5_cnt_d7 = #{ddJiedaiSumFillD5CntD7,jdbcType=VARCHAR},
+            dd_jiedai_count_fail_mamberadd_d7 = #{ddJiedaiCountFailMamberaddD7,jdbcType=VARCHAR},
+            dd_jiedai_avg_fail_days1_d7 = #{ddJiedaiAvgFailDays1D7,jdbcType=VARCHAR},
+            jiedai_min_defaultdays_d7 = #{jiedaiMinDefaultdaysD7,jdbcType=VARCHAR},
+            last_to_end_sure_due_all_pro_all_time_d7 = #{lastToEndSureDueAllProAllTimeD7,jdbcType=VARCHAR},
+            max_sure_due_days_non_cdq_all_time_d7 = #{maxSureDueDaysNonCdqAllTimeD7,jdbcType=VARCHAR},
+            sum_sure_due_days_all_pro_all_time_d7 = #{sumSureDueDaysAllProAllTimeD7,jdbcType=VARCHAR},
+            last_to_end_sure_due_non_cdq_all_time_d7 = #{lastToEndSureDueNonCdqAllTimeD7,jdbcType=VARCHAR},
+            jiedai_avg_defaultdays_d15 = #{jiedaiAvgDefaultdaysD15,jdbcType=VARCHAR},
+            jiedai_min_defaultdays_d15 = #{jiedaiMinDefaultdaysD15,jdbcType=VARCHAR},
+            jiedai4_sum_fail_cnt_d15 = #{jiedai4SumFailCntD15,jdbcType=VARCHAR},
+            dd_jiedai_avg_fail_days1_d15 = #{ddJiedaiAvgFailDays1D15,jdbcType=VARCHAR},
+            jiedai4_count_fill_d3_cnt_d15 = #{jiedai4CountFillD3CntD15,jdbcType=VARCHAR},
+            jiedai4_count_fill_d5_cnt_d15 = #{jiedai4CountFillD5CntD15,jdbcType=VARCHAR},
+            dd_jiedai_count_fail_mamberadd_d15 = #{ddJiedaiCountFailMamberaddD15,jdbcType=VARCHAR},
+            jiedai_sum_fail_amt_d15 = #{jiedaiSumFailAmtD15,jdbcType=VARCHAR},
+            dd_jiedai_max_fail_days1_d15 = #{ddJiedaiMaxFailDays1D15,jdbcType=VARCHAR},
+            sum_sure_due_days_all_pro_all_time_d15 = #{sumSureDueDaysAllProAllTimeD15,jdbcType=VARCHAR},
+            last_to_end_sure_due_all_pro_all_time_d15 = #{lastToEndSureDueAllProAllTimeD15,jdbcType=VARCHAR},
+            max_sure_due_days_non_cdq_all_time_d15 = #{maxSureDueDaysNonCdqAllTimeD15,jdbcType=VARCHAR},
+            last_to_end_sure_due_non_cdq_all_time_d15 = #{lastToEndSureDueNonCdqAllTimeD15,jdbcType=VARCHAR},
+            jiedai_avg_defaultdays_m1 = #{jiedaiAvgDefaultdaysM1,jdbcType=VARCHAR},
+            dd_jiedai_max_fail_days1_m1 = #{ddJiedaiMaxFailDays1M1,jdbcType=VARCHAR},
+            jiedai4_sum_fail_cnt1 = #{jiedai4SumFailCnt1,jdbcType=VARCHAR},
+            dd_jiedai_max_fail_days_m1 = #{ddJiedaiMaxFailDaysM1,jdbcType=VARCHAR},
+            dd_jiedai_count_fail_mamberadd_m1 = #{ddJiedaiCountFailMamberaddM1,jdbcType=VARCHAR},
+            jiedai4_count_fill_d3_cnt_m1 = #{jiedai4CountFillD3CntM1,jdbcType=VARCHAR},
+            dd_jiedai_min_fail_days1_m1 = #{ddJiedaiMinFailDays1M1,jdbcType=VARCHAR},
+            jiedai_sum_fail_amt1 = #{jiedaiSumFailAmt1,jdbcType=VARCHAR},
+            cdq_dd_jiedai_max_fail_days1_m1 = #{cdqDdJiedaiMaxFailDays1M1,jdbcType=VARCHAR},
+            jiedai4_count_fill_d5_cnt_m1 = #{jiedai4CountFillD5CntM1,jdbcType=VARCHAR},
+            jiedai4_avg_succ_amt1 = #{jiedai4AvgSuccAmt1,jdbcType=VARCHAR},
+            sum_sure_due_days_non_cdq_all_time_m1 = #{sumSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR},
+            sum_sure_due_days_all_pro_all_time_m1 = #{sumSureDueDaysAllProAllTimeM1,jdbcType=VARCHAR},
+            avg_sure_due_days_non_cdq_all_time_m1 = #{avgSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR},
+            pct_pay_amt_cdq_pro_all_time_m1 = #{pctPayAmtCdqProAllTimeM1,jdbcType=VARCHAR},
+            max_pay_amt_all_pro_all_time_m1 = #{maxPayAmtAllProAllTimeM1,jdbcType=VARCHAR},
+            jiedai_avg_defaultdays_m3 = #{jiedaiAvgDefaultdaysM3,jdbcType=VARCHAR},
+            dd_jiedai_max_fail_days1_m3 = #{ddJiedaiMaxFailDays1M3,jdbcType=VARCHAR},
+            dd_jiedai_avg_fail_days_m3 = #{ddJiedaiAvgFailDaysM3,jdbcType=VARCHAR},
+            dd_jiedai_count_fail_mamberadd_m3 = #{ddJiedaiCountFailMamberaddM3,jdbcType=VARCHAR},
+            jiedai4_count_fill_d3_cnt_m3 = #{jiedai4CountFillD3CntM3,jdbcType=VARCHAR},
+            jiedai4_count_fill_d5_cnt_m3 = #{jiedai4CountFillD5CntM3,jdbcType=VARCHAR},
+            cdq_dd_jiedai_avg_fail_days1_m3 = #{cdqDdJiedaiAvgFailDays1M3,jdbcType=VARCHAR},
+            jiedai4_avg_succ_amt3 = #{jiedai4AvgSuccAmt3,jdbcType=VARCHAR},
+            jiedai_sum_fail_amt3 = #{jiedaiSumFailAmt3,jdbcType=VARCHAR},
+            dd_jiedai_min_fail_days1_m3 = #{ddJiedaiMinFailDays1M3,jdbcType=VARCHAR},
+            sum_sure_due_days_all_pro_all_time_m3 = #{sumSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR},
+            sum_sure_due_days_non_cdq_all_time_m3 = #{sumSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR},
+            avg_sure_due_days_all_pro_all_time_m3 = #{avgSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR},
+            max_due_cnt_non_cdq_all_time_m3 = #{maxDueCntNonCdqAllTimeM3,jdbcType=VARCHAR},
+            avg_sure_due_days_non_cdq_all_time_m3 = #{avgSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR},
+            pct_pay_amt_cdq_pro_all_time_m3 = #{pctPayAmtCdqProAllTimeM3,jdbcType=VARCHAR},
+            jiedai_avg_defaultdays_m6 = #{jiedaiAvgDefaultdaysM6,jdbcType=VARCHAR},
+            dd_jiedai_avg_fail_days1_m6 = #{ddJiedaiAvgFailDays1M6,jdbcType=VARCHAR},
+            dd_jiedai_avg_fail_days_m6 = #{ddJiedaiAvgFailDaysM6,jdbcType=VARCHAR},
+            dd_jiedai_count_fail_mamberadd_m6 = #{ddJiedaiCountFailMamberaddM6,jdbcType=VARCHAR},
+            jiedai4_count_fill_d3_cnt_m6 = #{jiedai4CountFillD3CntM6,jdbcType=VARCHAR},
+            cdq_dd_jiedai_avg_fail_days1_m6 = #{cdqDdJiedaiAvgFailDays1M6,jdbcType=VARCHAR},
+            cdq_dd_jiedai_max_fail_days1_m6 = #{cdqDdJiedaiMaxFailDays1M6,jdbcType=VARCHAR},
+            jiedai4_avg_succ_amt6 = #{jiedai4AvgSuccAmt6,jdbcType=VARCHAR},
+            jiedai4_count_fill_d5_cnt_m6 = #{jiedai4CountFillD5CntM6,jdbcType=VARCHAR},
+            sum_sure_due_days_non_cdq_all_time_m6 = #{sumSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR},
+            max_sure_due_days_all_pro_all_time_m6 = #{maxSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR},
+            avg_sure_due_days_all_pro_all_time_m6 = #{avgSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR},
+            avg_sure_due_days_non_cdq_all_time_m6 = #{avgSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR},
+            pct_pay_amt_cdq_pro_all_time_m6 = #{pctPayAmtCdqProAllTimeM6,jdbcType=VARCHAR},
+            dd_jiedai_max_fail_days_m12 = #{ddJiedaiMaxFailDaysM12,jdbcType=VARCHAR},
+            dd_jiedai_sum_fill_d5_cnt_m12 = #{ddJiedaiSumFillD5CntM12,jdbcType=VARCHAR},
+            last_to_end_sure_due_all_pro_all_time_m12 = #{lastToEndSureDueAllProAllTimeM12,jdbcType=VARCHAR},
+            sum_sure_due_days_non_cdq_all_time_m12 = #{sumSureDueDaysNonCdqAllTimeM12,jdbcType=VARCHAR},
+            last_to_end_sure_due_non_cdq_all_time_m12 = #{lastToEndSureDueNonCdqAllTimeM12,jdbcType=VARCHAR},
+            max_due_cnt_all_pro_all_time_m12 = #{maxDueCntAllProAllTimeM12,jdbcType=VARCHAR},
+            max_due_cnt_non_cdq_all_time_m12 = #{maxDueCntNonCdqAllTimeM12,jdbcType=VARCHAR},
+            max_pay_amt_all_pro_all_time_m12 = #{maxPayAmtAllProAllTimeM12,jdbcType=VARCHAR},
+            sum_pay_cnt_all_pro_all_time_m12 = #{sumPayCntAllProAllTimeM12,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_magic_loan_behavior_analysis
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="transId != null and transId != '' ">
+                trans_id = #{transId,jdbcType=VARCHAR},                
+            </if>
+            <if test="defaultdayFromFirstToEnd != null and defaultdayFromFirstToEnd != '' ">
+                defaultday_from_first_to_end = #{defaultdayFromFirstToEnd,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4SumFailCntD7 != null and jiedai4SumFailCntD7 != '' ">
+                jiedai4_sum_fail_cnt_d7 = #{jiedai4SumFailCntD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiAvgDefaultdaysD7 != null and jiedaiAvgDefaultdaysD7 != '' ">
+                jiedai_avg_defaultdays_d7 = #{jiedaiAvgDefaultdaysD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD3CntD7 != null and jiedai4CountFillD3CntD7 != '' ">
+                jiedai4_count_fill_d3_cnt_d7 = #{jiedai4CountFillD3CntD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiMaxDefaultdaysD7 != null and jiedaiMaxDefaultdaysD7 != '' ">
+                jiedai_max_defaultdays_d7 = #{jiedaiMaxDefaultdaysD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiSumFillD5CntD7 != null and ddJiedaiSumFillD5CntD7 != '' ">
+                dd_jiedai_sum_fill_d5_cnt_d7 = #{ddJiedaiSumFillD5CntD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiCountFailMamberaddD7 != null and ddJiedaiCountFailMamberaddD7 != '' ">
+                dd_jiedai_count_fail_mamberadd_d7 = #{ddJiedaiCountFailMamberaddD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiAvgFailDays1D7 != null and ddJiedaiAvgFailDays1D7 != '' ">
+                dd_jiedai_avg_fail_days1_d7 = #{ddJiedaiAvgFailDays1D7,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiMinDefaultdaysD7 != null and jiedaiMinDefaultdaysD7 != '' ">
+                jiedai_min_defaultdays_d7 = #{jiedaiMinDefaultdaysD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndSureDueAllProAllTimeD7 != null and lastToEndSureDueAllProAllTimeD7 != '' ">
+                last_to_end_sure_due_all_pro_all_time_d7 = #{lastToEndSureDueAllProAllTimeD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxSureDueDaysNonCdqAllTimeD7 != null and maxSureDueDaysNonCdqAllTimeD7 != '' ">
+                max_sure_due_days_non_cdq_all_time_d7 = #{maxSureDueDaysNonCdqAllTimeD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeD7 != null and sumSureDueDaysAllProAllTimeD7 != '' ">
+                sum_sure_due_days_all_pro_all_time_d7 = #{sumSureDueDaysAllProAllTimeD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndSureDueNonCdqAllTimeD7 != null and lastToEndSureDueNonCdqAllTimeD7 != '' ">
+                last_to_end_sure_due_non_cdq_all_time_d7 = #{lastToEndSureDueNonCdqAllTimeD7,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiAvgDefaultdaysD15 != null and jiedaiAvgDefaultdaysD15 != '' ">
+                jiedai_avg_defaultdays_d15 = #{jiedaiAvgDefaultdaysD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiMinDefaultdaysD15 != null and jiedaiMinDefaultdaysD15 != '' ">
+                jiedai_min_defaultdays_d15 = #{jiedaiMinDefaultdaysD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4SumFailCntD15 != null and jiedai4SumFailCntD15 != '' ">
+                jiedai4_sum_fail_cnt_d15 = #{jiedai4SumFailCntD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiAvgFailDays1D15 != null and ddJiedaiAvgFailDays1D15 != '' ">
+                dd_jiedai_avg_fail_days1_d15 = #{ddJiedaiAvgFailDays1D15,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD3CntD15 != null and jiedai4CountFillD3CntD15 != '' ">
+                jiedai4_count_fill_d3_cnt_d15 = #{jiedai4CountFillD3CntD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD5CntD15 != null and jiedai4CountFillD5CntD15 != '' ">
+                jiedai4_count_fill_d5_cnt_d15 = #{jiedai4CountFillD5CntD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiCountFailMamberaddD15 != null and ddJiedaiCountFailMamberaddD15 != '' ">
+                dd_jiedai_count_fail_mamberadd_d15 = #{ddJiedaiCountFailMamberaddD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiSumFailAmtD15 != null and jiedaiSumFailAmtD15 != '' ">
+                jiedai_sum_fail_amt_d15 = #{jiedaiSumFailAmtD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMaxFailDays1D15 != null and ddJiedaiMaxFailDays1D15 != '' ">
+                dd_jiedai_max_fail_days1_d15 = #{ddJiedaiMaxFailDays1D15,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeD15 != null and sumSureDueDaysAllProAllTimeD15 != '' ">
+                sum_sure_due_days_all_pro_all_time_d15 = #{sumSureDueDaysAllProAllTimeD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndSureDueAllProAllTimeD15 != null and lastToEndSureDueAllProAllTimeD15 != '' ">
+                last_to_end_sure_due_all_pro_all_time_d15 = #{lastToEndSureDueAllProAllTimeD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxSureDueDaysNonCdqAllTimeD15 != null and maxSureDueDaysNonCdqAllTimeD15 != '' ">
+                max_sure_due_days_non_cdq_all_time_d15 = #{maxSureDueDaysNonCdqAllTimeD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndSureDueNonCdqAllTimeD15 != null and lastToEndSureDueNonCdqAllTimeD15 != '' ">
+                last_to_end_sure_due_non_cdq_all_time_d15 = #{lastToEndSureDueNonCdqAllTimeD15,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiAvgDefaultdaysM1 != null and jiedaiAvgDefaultdaysM1 != '' ">
+                jiedai_avg_defaultdays_m1 = #{jiedaiAvgDefaultdaysM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMaxFailDays1M1 != null and ddJiedaiMaxFailDays1M1 != '' ">
+                dd_jiedai_max_fail_days1_m1 = #{ddJiedaiMaxFailDays1M1,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4SumFailCnt1 != null and jiedai4SumFailCnt1 != '' ">
+                jiedai4_sum_fail_cnt1 = #{jiedai4SumFailCnt1,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMaxFailDaysM1 != null and ddJiedaiMaxFailDaysM1 != '' ">
+                dd_jiedai_max_fail_days_m1 = #{ddJiedaiMaxFailDaysM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiCountFailMamberaddM1 != null and ddJiedaiCountFailMamberaddM1 != '' ">
+                dd_jiedai_count_fail_mamberadd_m1 = #{ddJiedaiCountFailMamberaddM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD3CntM1 != null and jiedai4CountFillD3CntM1 != '' ">
+                jiedai4_count_fill_d3_cnt_m1 = #{jiedai4CountFillD3CntM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMinFailDays1M1 != null and ddJiedaiMinFailDays1M1 != '' ">
+                dd_jiedai_min_fail_days1_m1 = #{ddJiedaiMinFailDays1M1,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiSumFailAmt1 != null and jiedaiSumFailAmt1 != '' ">
+                jiedai_sum_fail_amt1 = #{jiedaiSumFailAmt1,jdbcType=VARCHAR},                
+            </if>
+            <if test="cdqDdJiedaiMaxFailDays1M1 != null and cdqDdJiedaiMaxFailDays1M1 != '' ">
+                cdq_dd_jiedai_max_fail_days1_m1 = #{cdqDdJiedaiMaxFailDays1M1,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD5CntM1 != null and jiedai4CountFillD5CntM1 != '' ">
+                jiedai4_count_fill_d5_cnt_m1 = #{jiedai4CountFillD5CntM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4AvgSuccAmt1 != null and jiedai4AvgSuccAmt1 != '' ">
+                jiedai4_avg_succ_amt1 = #{jiedai4AvgSuccAmt1,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM1 != null and sumSureDueDaysNonCdqAllTimeM1 != '' ">
+                sum_sure_due_days_non_cdq_all_time_m1 = #{sumSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeM1 != null and sumSureDueDaysAllProAllTimeM1 != '' ">
+                sum_sure_due_days_all_pro_all_time_m1 = #{sumSureDueDaysAllProAllTimeM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="avgSureDueDaysNonCdqAllTimeM1 != null and avgSureDueDaysNonCdqAllTimeM1 != '' ">
+                avg_sure_due_days_non_cdq_all_time_m1 = #{avgSureDueDaysNonCdqAllTimeM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="pctPayAmtCdqProAllTimeM1 != null and pctPayAmtCdqProAllTimeM1 != '' ">
+                pct_pay_amt_cdq_pro_all_time_m1 = #{pctPayAmtCdqProAllTimeM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxPayAmtAllProAllTimeM1 != null and maxPayAmtAllProAllTimeM1 != '' ">
+                max_pay_amt_all_pro_all_time_m1 = #{maxPayAmtAllProAllTimeM1,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiAvgDefaultdaysM3 != null and jiedaiAvgDefaultdaysM3 != '' ">
+                jiedai_avg_defaultdays_m3 = #{jiedaiAvgDefaultdaysM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMaxFailDays1M3 != null and ddJiedaiMaxFailDays1M3 != '' ">
+                dd_jiedai_max_fail_days1_m3 = #{ddJiedaiMaxFailDays1M3,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiAvgFailDaysM3 != null and ddJiedaiAvgFailDaysM3 != '' ">
+                dd_jiedai_avg_fail_days_m3 = #{ddJiedaiAvgFailDaysM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiCountFailMamberaddM3 != null and ddJiedaiCountFailMamberaddM3 != '' ">
+                dd_jiedai_count_fail_mamberadd_m3 = #{ddJiedaiCountFailMamberaddM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD3CntM3 != null and jiedai4CountFillD3CntM3 != '' ">
+                jiedai4_count_fill_d3_cnt_m3 = #{jiedai4CountFillD3CntM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD5CntM3 != null and jiedai4CountFillD5CntM3 != '' ">
+                jiedai4_count_fill_d5_cnt_m3 = #{jiedai4CountFillD5CntM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="cdqDdJiedaiAvgFailDays1M3 != null and cdqDdJiedaiAvgFailDays1M3 != '' ">
+                cdq_dd_jiedai_avg_fail_days1_m3 = #{cdqDdJiedaiAvgFailDays1M3,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4AvgSuccAmt3 != null and jiedai4AvgSuccAmt3 != '' ">
+                jiedai4_avg_succ_amt3 = #{jiedai4AvgSuccAmt3,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiSumFailAmt3 != null and jiedaiSumFailAmt3 != '' ">
+                jiedai_sum_fail_amt3 = #{jiedaiSumFailAmt3,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMinFailDays1M3 != null and ddJiedaiMinFailDays1M3 != '' ">
+                dd_jiedai_min_fail_days1_m3 = #{ddJiedaiMinFailDays1M3,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysAllProAllTimeM3 != null and sumSureDueDaysAllProAllTimeM3 != '' ">
+                sum_sure_due_days_all_pro_all_time_m3 = #{sumSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM3 != null and sumSureDueDaysNonCdqAllTimeM3 != '' ">
+                sum_sure_due_days_non_cdq_all_time_m3 = #{sumSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="avgSureDueDaysAllProAllTimeM3 != null and avgSureDueDaysAllProAllTimeM3 != '' ">
+                avg_sure_due_days_all_pro_all_time_m3 = #{avgSureDueDaysAllProAllTimeM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxDueCntNonCdqAllTimeM3 != null and maxDueCntNonCdqAllTimeM3 != '' ">
+                max_due_cnt_non_cdq_all_time_m3 = #{maxDueCntNonCdqAllTimeM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="avgSureDueDaysNonCdqAllTimeM3 != null and avgSureDueDaysNonCdqAllTimeM3 != '' ">
+                avg_sure_due_days_non_cdq_all_time_m3 = #{avgSureDueDaysNonCdqAllTimeM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="pctPayAmtCdqProAllTimeM3 != null and pctPayAmtCdqProAllTimeM3 != '' ">
+                pct_pay_amt_cdq_pro_all_time_m3 = #{pctPayAmtCdqProAllTimeM3,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedaiAvgDefaultdaysM6 != null and jiedaiAvgDefaultdaysM6 != '' ">
+                jiedai_avg_defaultdays_m6 = #{jiedaiAvgDefaultdaysM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiAvgFailDays1M6 != null and ddJiedaiAvgFailDays1M6 != '' ">
+                dd_jiedai_avg_fail_days1_m6 = #{ddJiedaiAvgFailDays1M6,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiAvgFailDaysM6 != null and ddJiedaiAvgFailDaysM6 != '' ">
+                dd_jiedai_avg_fail_days_m6 = #{ddJiedaiAvgFailDaysM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiCountFailMamberaddM6 != null and ddJiedaiCountFailMamberaddM6 != '' ">
+                dd_jiedai_count_fail_mamberadd_m6 = #{ddJiedaiCountFailMamberaddM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD3CntM6 != null and jiedai4CountFillD3CntM6 != '' ">
+                jiedai4_count_fill_d3_cnt_m6 = #{jiedai4CountFillD3CntM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="cdqDdJiedaiAvgFailDays1M6 != null and cdqDdJiedaiAvgFailDays1M6 != '' ">
+                cdq_dd_jiedai_avg_fail_days1_m6 = #{cdqDdJiedaiAvgFailDays1M6,jdbcType=VARCHAR},                
+            </if>
+            <if test="cdqDdJiedaiMaxFailDays1M6 != null and cdqDdJiedaiMaxFailDays1M6 != '' ">
+                cdq_dd_jiedai_max_fail_days1_m6 = #{cdqDdJiedaiMaxFailDays1M6,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4AvgSuccAmt6 != null and jiedai4AvgSuccAmt6 != '' ">
+                jiedai4_avg_succ_amt6 = #{jiedai4AvgSuccAmt6,jdbcType=VARCHAR},                
+            </if>
+            <if test="jiedai4CountFillD5CntM6 != null and jiedai4CountFillD5CntM6 != '' ">
+                jiedai4_count_fill_d5_cnt_m6 = #{jiedai4CountFillD5CntM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM6 != null and sumSureDueDaysNonCdqAllTimeM6 != '' ">
+                sum_sure_due_days_non_cdq_all_time_m6 = #{sumSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxSureDueDaysAllProAllTimeM6 != null and maxSureDueDaysAllProAllTimeM6 != '' ">
+                max_sure_due_days_all_pro_all_time_m6 = #{maxSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="avgSureDueDaysAllProAllTimeM6 != null and avgSureDueDaysAllProAllTimeM6 != '' ">
+                avg_sure_due_days_all_pro_all_time_m6 = #{avgSureDueDaysAllProAllTimeM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="avgSureDueDaysNonCdqAllTimeM6 != null and avgSureDueDaysNonCdqAllTimeM6 != '' ">
+                avg_sure_due_days_non_cdq_all_time_m6 = #{avgSureDueDaysNonCdqAllTimeM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="pctPayAmtCdqProAllTimeM6 != null and pctPayAmtCdqProAllTimeM6 != '' ">
+                pct_pay_amt_cdq_pro_all_time_m6 = #{pctPayAmtCdqProAllTimeM6,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiMaxFailDaysM12 != null and ddJiedaiMaxFailDaysM12 != '' ">
+                dd_jiedai_max_fail_days_m12 = #{ddJiedaiMaxFailDaysM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddJiedaiSumFillD5CntM12 != null and ddJiedaiSumFillD5CntM12 != '' ">
+                dd_jiedai_sum_fill_d5_cnt_m12 = #{ddJiedaiSumFillD5CntM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndSureDueAllProAllTimeM12 != null and lastToEndSureDueAllProAllTimeM12 != '' ">
+                last_to_end_sure_due_all_pro_all_time_m12 = #{lastToEndSureDueAllProAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumSureDueDaysNonCdqAllTimeM12 != null and sumSureDueDaysNonCdqAllTimeM12 != '' ">
+                sum_sure_due_days_non_cdq_all_time_m12 = #{sumSureDueDaysNonCdqAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndSureDueNonCdqAllTimeM12 != null and lastToEndSureDueNonCdqAllTimeM12 != '' ">
+                last_to_end_sure_due_non_cdq_all_time_m12 = #{lastToEndSureDueNonCdqAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxDueCntAllProAllTimeM12 != null and maxDueCntAllProAllTimeM12 != '' ">
+                max_due_cnt_all_pro_all_time_m12 = #{maxDueCntAllProAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxDueCntNonCdqAllTimeM12 != null and maxDueCntNonCdqAllTimeM12 != '' ">
+                max_due_cnt_non_cdq_all_time_m12 = #{maxDueCntNonCdqAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxPayAmtAllProAllTimeM12 != null and maxPayAmtAllProAllTimeM12 != '' ">
+                max_pay_amt_all_pro_all_time_m12 = #{maxPayAmtAllProAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="sumPayCntAllProAllTimeM12 != null and sumPayCntAllProAllTimeM12 != '' ">
+                sum_pay_cnt_all_pro_all_time_m12 = #{sumPayCntAllProAllTimeM12,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_loan_behavior_analysis
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_loan_behavior_analysis
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_magic_loan_behavior_analysis
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

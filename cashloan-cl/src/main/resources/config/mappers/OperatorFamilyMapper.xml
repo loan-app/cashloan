@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_family表:魔蝎运营商数据-亲情网模块 -->
+<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorFamilyMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorFamily">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="family_num" property="familyNum" jdbcType="INTEGER" />
+        <result column="long_number" property="longNumber" jdbcType="VARCHAR" />
+        <result column="short_number" property="shortNumber" jdbcType="INTEGER" />
+        <result column="member_type" property="memberType" jdbcType="VARCHAR" />
+        <result column="join_time" property="joinTime" jdbcType="VARCHAR" />
+        <result column="expire_time" property="expireTime" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_time,expire_time,gmt_create,gmt_modified
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="familyNum != null">
+                and family_num = #{familyNum,jdbcType=INTEGER}
+            </if>
+            <if test="longNumber != null and longNumber != ''">
+                and long_number = #{longNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="shortNumber != null">
+                and short_number = #{shortNumber,jdbcType=INTEGER}
+            </if>
+            <if test="memberType != null and memberType != ''">
+                and member_type = #{memberType,jdbcType=VARCHAR}
+            </if>
+            <if test="joinTime != null and joinTime != ''">
+                and join_time = #{joinTime,jdbcType=VARCHAR}
+            </if>
+            <if test="expireTime != null and expireTime != ''">
+                and expire_time = #{expireTime,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorFamily">
+        insert into cl_operator_family(user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_time,expire_time,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{familyNum,jdbcType=INTEGER},#{longNumber,jdbcType=VARCHAR},#{shortNumber,jdbcType=INTEGER},#{memberType,jdbcType=VARCHAR},#{joinTime,jdbcType=VARCHAR},#{expireTime,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorFamily">
+        update cl_operator_family set 
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            family_num = #{familyNum,jdbcType=INTEGER},
+            long_number = #{longNumber,jdbcType=VARCHAR},
+            short_number = #{shortNumber,jdbcType=INTEGER},
+            member_type = #{memberType,jdbcType=VARCHAR},
+            join_time = #{joinTime,jdbcType=VARCHAR},
+            expire_time = #{expireTime,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_family
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="reqLogId != null">
+                req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                mobile = #{mobile,jdbcType=VARCHAR},                
+            </if>
+            <if test="familyNum != null">        
+                family_num = #{familyNum,jdbcType=INTEGER},                
+            </if>
+            <if test="longNumber != null and longNumber != '' ">
+                long_number = #{longNumber,jdbcType=VARCHAR},                
+            </if>
+            <if test="shortNumber != null">        
+                short_number = #{shortNumber,jdbcType=INTEGER},                
+            </if>
+            <if test="memberType != null and memberType != '' ">
+                member_type = #{memberType,jdbcType=VARCHAR},                
+            </if>
+            <if test="joinTime != null and joinTime != '' ">
+                join_time = #{joinTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="expireTime != null and expireTime != '' ">
+                expire_time = #{expireTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_family
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_family
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_family
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>
