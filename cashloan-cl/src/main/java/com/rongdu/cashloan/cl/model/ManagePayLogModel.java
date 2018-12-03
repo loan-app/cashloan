@@ -302,6 +302,8 @@ public class ManagePayLogModel extends PayLog {
 			typeStr = "线下代扣";
 		} else if (PayLogModel.TYPE_AUTH_PAY.equals(type)) {
 			typeStr = "主动还款";
+		}else if (PayLogModel.TYPE_AUTH_DELAY.equals(type)) {
+			typeStr = "展期还款";
 		}else {
 			typeStr = " - ";
 		}

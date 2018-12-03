@@ -1,7 +1,6 @@
 package com.rongdu.cashloan.cl.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fuiou.util.MD5;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.rongdu.cashloan.cl.domain.BankCard;
@@ -33,9 +32,11 @@ import com.rongdu.cashloan.cl.model.RepayExcelModel;
 import com.rongdu.cashloan.cl.model.UrgeRepayOrderModel;
 import com.rongdu.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
 import com.rongdu.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
+import com.rongdu.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
+import com.rongdu.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
+import com.rongdu.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.rongdu.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.rongdu.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
-import com.rongdu.cashloan.cl.model.pay.lianlian.QueryRepaymentModel;
 import com.rongdu.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.rongdu.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
 import com.rongdu.cashloan.cl.service.BankCardService;
@@ -46,12 +47,14 @@ import com.rongdu.cashloan.cl.service.PayLogService;
 import com.rongdu.cashloan.cl.service.ProfitLogService;
 import com.rongdu.cashloan.cl.service.UrgeRepayOrderLogService;
 import com.rongdu.cashloan.cl.service.UrgeRepayOrderService;
+import com.rongdu.cashloan.cl.util.fuiou.AmtUtil;
 import com.rongdu.cashloan.core.common.context.Constant;
 import com.rongdu.cashloan.core.common.context.Global;
 import com.rongdu.cashloan.core.common.exception.BussinessException;
 import com.rongdu.cashloan.core.common.mapper.BaseMapper;
 import com.rongdu.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.rongdu.cashloan.core.common.util.DateUtil;
+import com.rongdu.cashloan.core.common.util.IpUtil;
 import com.rongdu.cashloan.core.common.util.OrderNoUtil;
 import com.rongdu.cashloan.core.common.util.excel.ReadExcelUtils;
 import com.rongdu.cashloan.core.domain.Borrow;
@@ -60,6 +63,8 @@ import com.rongdu.cashloan.core.domain.UserBaseInfo;
 import com.rongdu.cashloan.core.mapper.UserBaseInfoMapper;
 import com.rongdu.cashloan.core.mapper.UserMapper;
 import com.rongdu.cashloan.core.model.BorrowModel;
+import com.rongdu.cashloan.core.service.CloanUserService;
+import com.rongdu.cashloan.core.service.UserBaseInfoService;
 import com.rongdu.creditrank.cr.domain.Credit;
 import com.rongdu.creditrank.cr.domain.CreditLog;
 import com.rongdu.creditrank.cr.mapper.CreditLogMapper;
@@ -138,7 +143,11 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
     private PayReqLogMapper payReqLogMapper;
     @Resource
     private ProfitAgentMapper profitAgentMapper;
-    
+	@Resource
+	private CloanUserService cloanUserService;
+	@Resource
+	private UserBaseInfoService userBaseInfoService;
+
 	@Override
 	public BaseMapper<BorrowRepay, Long> getMapper() {
 		return borrowRepayMapper;
@@ -881,5 +890,285 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		} else {
 			throw new BussinessException(StringUtil.isNull(Constant.FAIL_CODE_VALUE), "订单号不存在");
 		}
+	}
+
+	@Override
+	public Map<String, String> confirmPay(Long borrowId,Long userId, String ip,String type) {
+		Map<String, String> result = new HashMap<>();
+		// 查询用户、用户详情、借款及用户银行卡信息
+		User user = cloanUserService.getById(userId);
+		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
+		Borrow borrow = clBorrowService.getById(borrowId);
+		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
+		String key = Global.getValue("protocol_mchntcd_key");
+
+		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
+		paramRepayMap.put("borrowId", borrowId);
+		paramRepayMap.put("userId", userId);
+		BorrowRepay borrowRepay = findSelective(paramRepayMap);
+
+		//1、查询是否存在待支付记录
+		Map<String, Object> payLogMap = new HashMap<String, Object>();
+		payLogMap.put("userId", userId);
+		payLogMap.put("borrowId", borrowId);
+		payLogMap.put("type", PayLogModel.TYPE_AUTH_PAY);
+		payLogMap.put("scenes", PayLogModel.SCENES_ACTIVE_REPAYMENT);
+		PayLog repaymentLog = payLogService.findLatestOne(payLogMap);
+		//是否存在还款记录
+		if (null != repaymentLog && !PayLogModel.STATE_PAYMENT_FAILED.equals(repaymentLog.getState())) {
+			if (PayLogModel.STATE_PAYMENT_SUCCESS.equals(repaymentLog.getState())) {
+				result.put("code", "10");
+				result.put("msg", "还款成功！");
+				return result;
+			}
+			OrderQryByMSsn beanreq = new OrderQryByMSsn();
+			beanreq.setMchntOrderId(repaymentLog.getOrderNo());
+
+			OrderQryResp resp = payHelper.checkResult(beanreq);
+
+			if (resp.checkReturn() && resp.checkSign(key)) {
+				// 查找对应的还款计划
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("id", borrowRepay.getId());
+				param.put("repayTime", DateUtil.getNow());
+				param.put("repayWay",BorrowRepayLogModel.REPAY_WAY_CHARGE);
+				param.put("repayAccount", bankCard.getCardNo());
+				param.put("amount", borrowRepay.getAmount());
+				param.put("serialNumber", repaymentLog.getOrderNo());
+				param.put("penaltyAmout",borrowRepay.getPenaltyAmout());
+				param.put("state", "10");
+				if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
+					confirmRepay(param);
+				}
+
+				// 更新订单状态
+				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
+				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_SUCCESS);
+				payLogParamMap.put("updateTime", DateUtil.getNow());
+				payLogParamMap.put("id", repaymentLog.getId());
+				payLogService.updateSelective(payLogParamMap);
+
+				// 发送代扣还款成功短信提醒
+				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
+				result.put("code", "10");
+				result.put("msg", "还款成功！");
+				return result;
+			}else if (StringUtil.equalsIgnoreCase(resp.getResponseCode(), FuiouConstant.RESPONSE_PAY_PROCESSING)) {
+				result.put("code", "11");
+				result.put("msg", "还款处理中，请稍后再试");
+				return result;
+			}else {
+				// 更新订单状态
+				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
+				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_FAILED);
+				payLogParamMap.put("updateTime", DateUtil.getNow());
+				payLogParamMap.put("id", repaymentLog.getId());
+				payLogService.updateSelective(payLogParamMap);
+			}
+		}
+		//走展期业务，是否存在展期逻辑
+
+
+		//2、走支付逻辑
+		Double sourceAmount = 0.0;
+		if ((StringUtil.equals("2", type))) {
+			sourceAmount = borrow.getFee();//展期扣除部费用
+		}else {
+			// 还款金额
+			double principal = borrowRepay.getAmount();
+			double penaltyAmout = borrowRepay.getPenaltyAmout();
+			sourceAmount = BigDecimalUtil.add(principal ,penaltyAmout);
+		}
+
+		//其他情况，为代扣还款
+		Date payReqTime = DateUtil.getNow();
+		String orderNo = OrderNoUtil.getSerialNumber();
+		OrderXmlBeanReq beanReq = new OrderXmlBeanReq();
+		beanReq.setUserId(user.getUuid());
+		beanReq.setUserIp(IpUtil.getLocalIp());
+		beanReq.setType("03");
+		beanReq.setMchntOrderId(orderNo);
+		if ("dev".equals(Global.getValue("app_environment"))) {
+			beanReq.setAmt(AmtUtil.convertAmtToBranch("0.01"));
+		} else {
+			beanReq.setAmt(AmtUtil.convertAmtToBranch(sourceAmount));
+		}
+
+		beanReq.setProtocolNo(bankCard.getAgreeNo());
+		beanReq.setNeedSendMsg("0");
+		beanReq.setBackUrl(Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
+		if ((StringUtil.equals("2", type))) {
+			beanReq.setRem1("展期还款" + borrow.getOrderNo());
+		} else {
+			beanReq.setRem1("还款" + borrow.getOrderNo());
+		}
+
+		beanReq.setRem2("repayment_" + borrow.getOrderNo());
+		OrderXmlBeanResp resp = payHelper.repayment(beanReq);
+		String payMsg = "";
+		if (resp.checkSign(key)) {
+			payMsg = resp.getResponseMsg();
+			if (resp.checkReturn() && com.rongdu.cashloan.core.common.util.StringUtil.isNotEmpty(resp.getOrderId())) {
+				payMsg = resp.getOrderId()+"|" + payMsg;
+			}
+		}
+		PayLog payLog = new PayLog();
+		payLog.setOrderNo(orderNo);
+		payLog.setUserId(userId);
+		payLog.setBorrowId(borrowId);
+		payLog.setAmount(sourceAmount);
+		payLog.setCardNo(bankCard.getCardNo());
+		payLog.setBank(bankCard.getBank());
+		payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
+
+		//只有2为展期
+		if (StringUtil.equals("2", type)) {
+			payLog.setType(PayLogModel.TYPE_AUTH_PAY);
+			payLog.setScenes(PayLogModel.SCENES_ACTIVE_REPAYMENT);
+		} else {
+			payLog.setType(PayLogModel.TYPE_AUTH_DELAY);
+			payLog.setScenes(PayLogModel.SCENES_ACTIVE_DELAYPAY);
+		}
+
+		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+		payLog.setCode(resp.getResponseCode());
+		payLog.setRemark(payMsg);
+		payLog.setPayReqTime(payReqTime);
+		payLog.setCreateTime(DateUtil.getNow());
+		payLogService.save(payLog);
+
+		return result;
+	}
+
+	public Map<String, String> checkRepmentLog(BorrowRepay borrowRepay,BankCard bankCard) {
+		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
+		String key = Global.getValue("protocol_mchntcd_key");
+
+		Map<String, String> result = new HashMap<>();
+		Map<String, Object> payLogMap = new HashMap<String, Object>();
+		payLogMap.put("userId", borrowRepay.getUserId());
+		payLogMap.put("borrowId", borrowRepay.getBorrowId());
+		payLogMap.put("type", PayLogModel.TYPE_AUTH_PAY);
+		payLogMap.put("scenes", PayLogModel.SCENES_ACTIVE_REPAYMENT);
+		PayLog repaymentLog = payLogService.findLatestOne(payLogMap);
+		//是否存在还款记录
+		if (null != repaymentLog && !PayLogModel.STATE_PAYMENT_FAILED.equals(repaymentLog.getState())) {
+			if (PayLogModel.STATE_PAYMENT_SUCCESS.equals(repaymentLog.getState())) {
+				result.put("code", "10");
+				result.put("msg", "还款成功！");
+				return result;
+			}
+			OrderQryByMSsn beanreq = new OrderQryByMSsn();
+			beanreq.setMchntOrderId(repaymentLog.getOrderNo());
+
+			OrderQryResp resp = payHelper.checkResult(beanreq);
+
+			if (resp.checkReturn() && resp.checkSign(key)) {
+				// 查找对应的还款计划
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("id", borrowRepay.getId());
+				param.put("repayTime", DateUtil.getNow());
+				param.put("repayWay",BorrowRepayLogModel.REPAY_WAY_CHARGE);
+				param.put("repayAccount", bankCard.getCardNo());
+				param.put("amount", borrowRepay.getAmount());
+				param.put("serialNumber", repaymentLog.getOrderNo());
+				param.put("penaltyAmout",borrowRepay.getPenaltyAmout());
+				param.put("state", "10");
+				if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
+					confirmRepay(param);
+				}
+
+				// 更新订单状态
+				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
+				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_SUCCESS);
+				payLogParamMap.put("updateTime", DateUtil.getNow());
+				payLogParamMap.put("id", repaymentLog.getId());
+				payLogService.updateSelective(payLogParamMap);
+
+				// 发送代扣还款成功短信提醒
+				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
+				result.put("code", "10");
+				result.put("msg", "还款成功！");
+				return result;
+			}else if (StringUtil.equalsIgnoreCase(resp.getResponseCode(), FuiouConstant.RESPONSE_PAY_PROCESSING)) {
+				result.put("code", "11");
+				result.put("msg", "还款处理中，请稍后再试!");
+				return result;
+			}else {
+				// 更新订单状态
+				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
+				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_FAILED);
+				payLogParamMap.put("updateTime", DateUtil.getNow());
+				payLogParamMap.put("id", repaymentLog.getId());
+				payLogService.updateSelective(payLogParamMap);
+			}
+		}
+		return null;
+	}
+	public Map<String, String> checkDelayPayLog(BorrowRepay borrowRepay,BankCard bankCard) {
+		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
+		String key = Global.getValue("protocol_mchntcd_key");
+
+		Map<String, String> result = new HashMap<>();
+		Map<String, Object> payLogMap = new HashMap<String, Object>();
+		payLogMap.put("userId", borrowRepay.getUserId());
+		payLogMap.put("borrowId", borrowRepay.getBorrowId());
+		payLogMap.put("type", PayLogModel.TYPE_AUTH_DELAY);
+		payLogMap.put("scenes", PayLogModel.SCENES_ACTIVE_DELAYPAY);
+		PayLog repaymentLog = payLogService.findLatestOne(payLogMap);
+		//是否存在还款记录
+		if (null != repaymentLog && !PayLogModel.STATE_PAYMENT_FAILED.equals(repaymentLog.getState())) {
+			if (PayLogModel.STATE_PAYMENT_SUCCESS.equals(repaymentLog.getState())) {
+				result.put("code", "10");
+				result.put("msg", "展期成功！");
+				return result;
+			}
+			OrderQryByMSsn beanreq = new OrderQryByMSsn();
+			beanreq.setMchntOrderId(repaymentLog.getOrderNo());
+
+			OrderQryResp resp = payHelper.checkResult(beanreq);
+
+			if (resp.checkReturn() && resp.checkSign(key)) {
+				// 查找对应的还款计划
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("id", borrowRepay.getId());
+				param.put("repayTime", DateUtil.getNow());
+				param.put("repayWay",BorrowRepayLogModel.REPAY_WAY_CHARGE);
+				param.put("repayAccount", bankCard.getCardNo());
+				param.put("amount", borrowRepay.getAmount());
+				param.put("serialNumber", repaymentLog.getOrderNo());
+				param.put("penaltyAmout",borrowRepay.getPenaltyAmout());
+				param.put("state", "10");
+				if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
+					//confirmRepay(param);
+				}
+
+				// 更新订单状态
+				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
+				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_SUCCESS);
+				payLogParamMap.put("updateTime", DateUtil.getNow());
+				payLogParamMap.put("id", repaymentLog.getId());
+				payLogService.updateSelective(payLogParamMap);
+
+				// 发送代扣还款成功短信提醒
+				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
+				result.put("code", "10");
+				result.put("msg", "还款成功！");
+				return result;
+			}else if (StringUtil.equalsIgnoreCase(resp.getResponseCode(), FuiouConstant.RESPONSE_PAY_PROCESSING)) {
+				result.put("code", "11");
+				result.put("msg", "还款处理中，请稍后再试!");
+				return result;
+			}else {
+				// 更新订单状态
+				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
+				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_FAILED);
+				payLogParamMap.put("updateTime", DateUtil.getNow());
+				payLogParamMap.put("id", repaymentLog.getId());
+				payLogService.updateSelective(payLogParamMap);
+			}
+		}
+		return null;
 	}
 }

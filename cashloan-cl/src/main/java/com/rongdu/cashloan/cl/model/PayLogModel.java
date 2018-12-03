@@ -44,6 +44,8 @@ public class PayLogModel extends PayLog {
 	public static final String TYPE_OFFLINE_COLLECT = "40";
 	/** 付款方式 - 主动还款 */
 	public static final String TYPE_AUTH_PAY = "50";
+	/** 付款方式 - 展期还款 */
+	public static final String TYPE_AUTH_DELAY = "60";
 
 	/** 业务场景 - 放款代付 */
 	public static final String SCENES_LOANS = "10";
@@ -57,5 +59,7 @@ public class PayLogModel extends PayLog {
 	public static final String SCENES_DEDUCTION = "21";
 	/** 业务场景 - 主动还款 */
 	public static final String SCENES_ACTIVE_REPAYMENT = "30";
+	/** 业务场景 - 展期还款 */
+	public static final String SCENES_ACTIVE_DELAYPAY = "31";
 
 }

@@ -162,4 +162,5 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * @return 
 	 */
 	void repayCheck(long borrowId);
+	Map<String, String> confirmPay(Long borrowId,Long userId, String ip,String type);
 }
