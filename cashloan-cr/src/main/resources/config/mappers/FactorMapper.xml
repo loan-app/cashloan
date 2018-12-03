@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_factor表:评分因子模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.FactorMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.FactorMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.Factor">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.Factor">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="factor_name" property="factorName" jdbcType="VARCHAR" />
         <result column="item_id" property="itemId" jdbcType="INTEGER" />
@@ -21,7 +21,7 @@
         <result column="card_id" property="cardId" jdbcType="INTEGER" />
     </resultMap>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.FactorModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.FactorModel">
     	
     </resultMap>
     
@@ -79,7 +79,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.Factor">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.Factor">
     	<selectKey resultType="long" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS ID
 		</selectKey>
@@ -87,7 +87,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.Factor">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.Factor">
         update arc_cr_factor set 
             factor_name = #{factorName,jdbcType=VARCHAR},
             item_id = #{itemId,jdbcType=INTEGER},

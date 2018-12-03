@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_borrow_rule_config表:借款规则详细配置表模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.BorrowRuleConfigMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.BorrowRuleConfigMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.BorrowRuleConfig">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.BorrowRuleConfig">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="borrow_rule_id" property="borrowRuleId" jdbcType="BIGINT" />
         <result column="rule_id" property="ruleId" jdbcType="BIGINT" />
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rule.domain.BorrowRuleConfig">
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.BorrowRuleConfig">
         insert into arc_borrow_rule_config(borrow_rule_id,rule_id,rule_sort,config_id,config_sort)values(#{borrowRuleId,jdbcType=BIGINT},#{ruleId,jdbcType=BIGINT},#{ruleSort,jdbcType=INTEGER},#{configId,jdbcType=BIGINT},#{configSort,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.BorrowRuleConfig">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.BorrowRuleConfig">
         update arc_borrow_rule_config set 
             borrow_rule_id = #{borrowRuleId,jdbcType=BIGINT},
             rule_id = #{ruleId,jdbcType=BIGINT},

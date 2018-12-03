@@ -26,7 +26,7 @@
 	</bean>
 
 	<!-- 使用annotation @Repository,@Service自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-	<context:component-scan base-package="com.rongdu.cashloan,com.rongdu.creditrank">
+	<context:component-scan base-package="com.xiji.cashloan,com.xiji.creditrank">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 		<context:exclude-filter type="annotation"
@@ -39,7 +39,7 @@
 
 
 	<bean id="secAuthorizeUrl"
-		class="com.rongdu.cashloan.system.security.freemarker.directive.SpringSecurityAuthorizeUrlDirective"></bean>
+		class="com.xiji.cashloan.system.security.freemarker.directive.SpringSecurityAuthorizeUrlDirective"></bean>
 	 <!-- 配置freeMarker的模板路径 -->
 	<bean id="freeMarkerConfigurer"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
@@ -123,15 +123,15 @@
 	</bean>
 	<!-- 用户权限处理 -->
 	<bean id="permissionsInterceptor"
-		class="com.rongdu.cashloan.core.common.web.interceptor.PermissionsInterceptor" />
+		class="com.xiji.cashloan.core.common.web.interceptor.PermissionsInterceptor" />
 		
 	<!-- 处理程序拦截器 -->
-	<bean id="handInterceptor" class="com.rongdu.cashloan.core.common.web.interceptor.HandInterceptor" />
+	<bean id="handInterceptor" class="com.xiji.cashloan.core.common.web.interceptor.HandInterceptor" />
 
 
 	<!-- 动静分离配置 -->
 	<bean id="urlConfigLauncherInterceptor"
-		class="com.rongdu.cashloan.core.common.web.interceptor.URLConfigLauncherInterceptor">
+		class="com.xiji.cashloan.core.common.web.interceptor.URLConfigLauncherInterceptor">
 		<property name="urlConfigs">
 			<map>
 				<entry key="mlmsAppServer" value-ref="mlmsAppServerConfig"></entry>
@@ -142,7 +142,7 @@
 		</property>
 	</bean>
      
-     <bean id="RDobjectMapper" class="com.rongdu.cashloan.core.common.util.json.mapper.RDObjectMapper" init-method="init">
+     <bean id="RDobjectMapper" class="com.xiji.cashloan.core.common.util.json.mapper.RDObjectMapper" init-method="init">
         <property name="dateFormatPattern" value="yyyy-MM-dd HH:mm:ss"/>
     </bean>
      <mvc:annotation-driven>
@@ -183,7 +183,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/modules/manage/**/*"/>
-			<bean class="com.rongdu.cashloan.manage.interceptor.ManageSessionInterceptor"/>
+			<bean class="com.xiji.cashloan.manage.interceptor.ManageSessionInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 

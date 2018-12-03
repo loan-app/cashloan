@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_auth表:用户认证模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserAuthMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserAuthMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserAuth">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserAuth">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="id_state" property="idState" jdbcType="VARCHAR" />
@@ -22,7 +22,7 @@
         <result column="other_info_time" property="otherInfoTime" jdbcType="TIMESTAMP" />  
     </resultMap>
        
-    <resultMap id="ModelResultMap" type="com.rongdu.cashloan.cl.model.UserAuthModel">
+    <resultMap id="ModelResultMap" type="com.xiji.cashloan.cl.model.UserAuthModel">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="login_name" property="loginName" jdbcType="VARCHAR" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
@@ -96,7 +96,7 @@
         </trim>
     </sql>
 
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserAuth">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserAuth">
         insert into cl_user_auth(
 	        user_id,
 	        id_state,
@@ -133,7 +133,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserAuth">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UserAuth">
         update cl_user_auth set 
             id_state = #{idState,jdbcType=VARCHAR},
             zhima_state = #{zhimaState,jdbcType=VARCHAR},

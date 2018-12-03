@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_operator_bill表:魔蝎运营商数据-基础信息类模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorBillMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.OperatorBillMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorBill">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.OperatorBill">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
@@ -118,12 +118,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorBill">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorBill">
         insert into cl_operator_bill(user_id,req_log_id,mobile,bill_month,bill_start_date,bill_end_date,base_fee,extra_service_fee,voice_fee,sms_fee,web_fee,extra_fee,total_fee,discount,extra_discount,actual_fee,paid_fee,unpaid_fee,related_mobiles,point,last_point,notes,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{billMonth,jdbcType=VARCHAR},#{billStartDate,jdbcType=VARCHAR},#{billEndDate,jdbcType=VARCHAR},#{baseFee,jdbcType=INTEGER},#{extraServiceFee,jdbcType=INTEGER},#{voiceFee,jdbcType=INTEGER},#{smsFee,jdbcType=INTEGER},#{webFee,jdbcType=INTEGER},#{extraFee,jdbcType=INTEGER},#{totalFee,jdbcType=INTEGER},#{discount,jdbcType=INTEGER},#{extraDiscount,jdbcType=INTEGER},#{actualFee,jdbcType=INTEGER},#{paidFee,jdbcType=INTEGER},#{unpaidFee,jdbcType=INTEGER},#{relatedMobiles,jdbcType=VARCHAR},#{point,jdbcType=INTEGER},#{lastPoint,jdbcType=INTEGER},#{notes,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorBill">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorBill">
         update cl_operator_bill set 
             user_id = #{userId,jdbcType=BIGINT},
             req_log_id = #{reqLogId,jdbcType=BIGINT},

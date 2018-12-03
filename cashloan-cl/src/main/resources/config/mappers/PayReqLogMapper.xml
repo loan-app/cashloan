@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_pay_req_log表:支付请求记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.PayReqLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.PayReqLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.PayReqLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.PayReqLog">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="service" property="service" jdbcType="VARCHAR" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
@@ -66,12 +66,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.PayReqLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.PayReqLog">
         insert into cl_pay_req_log(service,order_no,params,req_detail_params,return_params,return_time,notify_params,notify_time,result,create_time,ip)values(#{service,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{params,jdbcType=VARCHAR},#{reqDetailParams,jdbcType=VARCHAR},#{returnParams,jdbcType=VARCHAR},#{returnTime,jdbcType=TIMESTAMP},#{notifyParams,jdbcType=VARCHAR},#{notifyTime,jdbcType=TIMESTAMP},#{result,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{ip,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.PayReqLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.PayReqLog">
         update cl_pay_req_log set 
             service = #{service,jdbcType=VARCHAR},
             order_no = #{orderNo,jdbcType=VARCHAR},
@@ -151,7 +151,7 @@
     </select>
 
 	<!-- 分页查询 -->
-	<select id="page" resultType="com.rongdu.cashloan.cl.model.ManagePayReqLogModel"
+	<select id="page" resultType="com.xiji.cashloan.cl.model.ManagePayReqLogModel"
 		parameterType="java.util.HashMap">
 		select
 		<include refid="Base_Column_List" />
@@ -160,7 +160,7 @@
 	</select>
 	
 	<!-- 查询详情 -->
-	<select id="findDetail" resultType="com.rongdu.cashloan.cl.model.ManagePayReqLogModel"
+	<select id="findDetail" resultType="com.xiji.cashloan.cl.model.ManagePayReqLogModel"
 		parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />

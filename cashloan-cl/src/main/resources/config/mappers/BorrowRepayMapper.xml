@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_borrow_repay表:还款计划模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.BorrowRepayMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.BorrowRepayMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.BorrowRepay">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.BorrowRepay">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -15,7 +15,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
     
-    <resultMap id="BorrowRepayModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.BorrowRepayModel" >
+    <resultMap id="BorrowRepayModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.BorrowRepayModel" >
     
     </resultMap>
     
@@ -58,7 +58,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.BorrowRepay">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BorrowRepay">
         insert into cl_borrow_repay(user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time)
         SELECT #{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{amount,jdbcType=DECIMAL},#{repayTime,jdbcType=TIMESTAMP},
         #{state,jdbcType=VARCHAR},#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP} FROM DUAL
@@ -160,7 +160,7 @@
         <include refid="searchBy"/>
     </select>
             
-    <resultMap id="userBorrowRayMap"  extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageBRepayModel">
+    <resultMap id="userBorrowRayMap"  extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageBRepayModel">
          <result column="real_name" property="realName" jdbcType="VARCHAR" />
          <result column="phone" property="phone" jdbcType="VARCHAR" />
     	 <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
@@ -198,7 +198,7 @@
         ORDER BY r.id DESC
     </select>
     
-	  <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageBorrowModel">
+	  <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageBorrowModel">
 	    <result column="real_name" property="realName" jdbcType="VARCHAR" />
 	    <result column="phone" property="phone" jdbcType="VARCHAR" />
 	    <result column="repay_amount" property="repayAmount" jdbcType="DECIMAL" />
@@ -238,7 +238,7 @@
         ORDER BY r.repay_time DESC
     </select>
     
-    <update id="updateLate" parameterType="com.rongdu.cashloan.cl.domain.BorrowRepay">
+    <update id="updateLate" parameterType="com.xiji.cashloan.cl.domain.BorrowRepay">
         update cl_borrow_repay set 
         penalty_amout = #{penaltyAmout},                
         penalty_day = #{penaltyDay}

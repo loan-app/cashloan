@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_borrow表:借款信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ClBorrowMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ClBorrowMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.core.domain.Borrow">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.core.domain.Borrow">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
@@ -31,19 +31,19 @@
         id,user_id,order_no,amount,real_amount,fee,create_time,time_limit,state,again,card_id,service_fee,info_auth_fee,interest,client,address,coordinate,remark,ip,sign_service_id
     </sql>
     
-    <resultMap id="IndexModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.IndexModel">
+    <resultMap id="IndexModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.IndexModel">
     	
     </resultMap>
     
-    <resultMap id="ClBorrowModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ClBorrowModel">
+    <resultMap id="ClBorrowModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ClBorrowModel">
     	
     </resultMap>
     
-    <resultMap id="repayModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.RepayModel">
+    <resultMap id="repayModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.RepayModel">
     	
     </resultMap>
     
-    <resultMap id="ManageBorrowTestModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageBorrowTestModel">
+    <resultMap id="ManageBorrowTestModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageBorrowTestModel">
     	
     </resultMap>
     
@@ -114,7 +114,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.core.domain.Borrow" keyProperty="id" useGeneratedKeys="true">
+    <insert id="save" parameterType="com.xiji.cashloan.core.domain.Borrow" keyProperty="id" useGeneratedKeys="true">
         <!-- insert into cl_borrow(user_id,order_no,amount,real_amount,fee,create_time,time_limit,state,card_id,service_fee,info_auth_fee,interest,client,address,coordinate,remark,ip)
         SELECT #{userId,jdbcType=BIGINT},#{orderNo,jdbcType=VARCHAR},#{amount,jdbcType=DECIMAL},#{realAmount,jdbcType=DECIMAL},#{fee,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP},
         #{timeLimit,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{cardId,jdbcType=BIGINT},#{serviceFee,jdbcType=DECIMAL},#{infoAuthFee,jdbcType=DECIMAL},#{interest,jdbcType=DECIMAL},
@@ -129,7 +129,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.core.domain.Borrow">
+    <update id="update" parameterType="com.xiji.cashloan.core.domain.Borrow">
         update cl_borrow set 
             user_id = #{userId,jdbcType=BIGINT},
             order_no = #{orderNo,jdbcType=VARCHAR},
@@ -346,7 +346,7 @@
         </trim>
     </sql>
     
-     <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageBorrowModel">
+     <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageBorrowModel">
          <result column="real_name" property="realName" jdbcType="VARCHAR" />
          <result column="phone" property="phone" jdbcType="VARCHAR" />
          <result column="repay_amount" property="repayAmount" jdbcType="DECIMAL" />
@@ -611,7 +611,7 @@
         where id = #{id ,jdbcType=BIGINT} and state = #{preState,jdbcType=VARCHAR}
     </update>
     
-    <update id="updatesub"  parameterType="com.rongdu.cashloan.core.domain.Borrow">
+    <update id="updatesub"  parameterType="com.xiji.cashloan.core.domain.Borrow">
         update cl_borrow
         set sub_state = #{subState,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=BIGINT} and sub_state = 0;

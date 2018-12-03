@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_info表:评分关联表模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.InfoMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.InfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.Info">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.Info">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="tb_nid" property="tbNid" jdbcType="VARCHAR" />
         <result column="tb_name" property="tbName" jdbcType="VARCHAR" />
@@ -17,7 +17,7 @@
         id,tb_nid,tb_name,detail,state,add_time 
     </sql>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.InfoModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.InfoModel">
     	
     </resultMap>
     
@@ -57,12 +57,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.Info">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.Info">
         insert into arc_cr_info(tb_nid,tb_name,detail,state,add_time)values(#{tbNid,jdbcType=VARCHAR},#{tbName,jdbcType=VARCHAR},#{detail,jdbcType=VARCHAR},state = #{state,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.Info">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.Info">
         update arc_cr_info set 
             tb_nid = #{tbNid,jdbcType=VARCHAR},
             tb_name = #{tbName,jdbcType=VARCHAR},

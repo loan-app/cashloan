@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_sms表:短信记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.SmsMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.SmsMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.Sms">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.Sms">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
@@ -62,7 +62,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.Sms">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.Sms">
         insert into cl_sms(phone,send_time,content,resp_time,resp,sms_type,code,order_no,state,verify_time)values(#{phone,jdbcType=VARCHAR},#{sendTime,jdbcType=TIMESTAMP},#{content,jdbcType=VARCHAR},#{respTime,jdbcType=TIMESTAMP},#{resp,jdbcType=VARCHAR},#{smsType,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{verifyTime,jdbcType=INTEGER})
     </insert>
 

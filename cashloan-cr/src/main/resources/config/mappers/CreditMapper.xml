@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_credit表:授信额度管理模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.CreditMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.CreditMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.Credit">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.Credit">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="consumer_no" property="consumerNo" jdbcType="VARCHAR" />
         <result column="total" property="total" jdbcType="DECIMAL" />
@@ -16,7 +16,7 @@
         <result column="count" property="count" jdbcType="INTEGER" />
     </resultMap>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.CreditModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.CreditModel">
     	<result column="real_name" property="realName" jdbcType="VARCHAR" />
     	<result column="phone" property="phone" jdbcType="VARCHAR" />
     	<result column="id_no" property="idNo" jdbcType="VARCHAR" />
@@ -64,12 +64,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.Credit" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.Credit" useGeneratedKeys="true" keyProperty="id">
         insert into arc_credit(consumer_no,total,credit_type,grade,used,unuse,state,req_ext,count) values(#{consumerNo,jdbcType=VARCHAR},#{total,jdbcType=DECIMAL},#{creditType,jdbcType=INTEGER},#{grade,jdbcType=VARCHAR},#{used,jdbcType=DECIMAL},#{unuse,jdbcType=DECIMAL},#{state,jdbcType=VARCHAR},#{reqExt,jdbcType=VARCHAR},#{count,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.Credit">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.Credit">
         update arc_credit set 
             consumer_no = #{consumerNo,jdbcType=VARCHAR},
             total = #{total,jdbcType=DECIMAL},

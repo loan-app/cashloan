@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_borrow_rule_engine表:借款规则管理模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.BorrowRuleEngineMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.BorrowRuleEngineMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.BorrowRuleEngine">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.BorrowRuleEngine">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="borrow_type_name" property="borrowTypeName" jdbcType="VARCHAR" />
         <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
@@ -51,7 +51,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rule.domain.BorrowRuleEngine">
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.BorrowRuleEngine">
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 		SELECT LAST_INSERT_ID()
 	</selectKey>
@@ -59,7 +59,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.BorrowRuleEngine">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.BorrowRuleEngine">
         update arc_borrow_rule_engine set 
             borrow_type_name = #{borrowTypeName,jdbcType=VARCHAR},
             borrow_type = #{borrowType,jdbcType=VARCHAR},

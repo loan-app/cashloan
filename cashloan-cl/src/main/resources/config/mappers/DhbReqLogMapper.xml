@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_dhb_req_log表:贷后邦贷后邦反欺诈请求记录表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.DhbReqLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.DhbReqLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.DhbReqLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.DhbReqLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -54,12 +54,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.DhbReqLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.DhbReqLog">
         insert into cl_rc_dhb_req_log(order_no,borrow_id,user_id,create_time,resp_code,resp_params,resp_time,resp_order_no)values(#{orderNo,jdbcType=VARCHAR},#{borrowId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{respCode,jdbcType=VARCHAR},#{respParams,jdbcType=VARCHAR},#{respTime,jdbcType=TIMESTAMP},#{respOrderNo,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.DhbReqLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.DhbReqLog">
         update cl_rc_dhb_req_log set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             borrow_id = #{borrowId,jdbcType=BIGINT},

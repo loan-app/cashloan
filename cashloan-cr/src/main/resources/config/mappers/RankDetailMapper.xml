@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_rank_detail表:评分卡等级详情表模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.RankDetailMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.RankDetailMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.RankDetail">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.RankDetail">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="rank_id" property="rankId" jdbcType="INTEGER" />
         <result column="rank" property="rank" jdbcType="VARCHAR" />
@@ -58,12 +58,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.RankDetail">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.RankDetail">
         insert into arc_cr_rank_detail(rank_id,rank,amount_min,amount_max,score_min,score_max,state,rtype,add_time)values(#{rankId,jdbcType=INTEGER},#{rank,jdbcType=VARCHAR},#{amountMin,jdbcType=DECIMAL},#{amountMax,jdbcType=DECIMAL},#{scoreMin,jdbcType=INTEGER},#{scoreMax,jdbcType=INTEGER},#{state,jdbcType=VARCHAR},#{rtype,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.RankDetail">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.RankDetail">
         update arc_cr_rank_detail set 
             rank_id = #{rankId,jdbcType=INTEGER},
             rank = #{rank,jdbcType=VARCHAR},
@@ -134,7 +134,7 @@
         <include refid="searchBy"/>
     </select>
     
-    <select id="findByParentIdAndScore" resultType="com.rongdu.creditrank.cr.domain.RankDetail">
+    <select id="findByParentIdAndScore" resultType="com.xiji.creditrank.cr.domain.RankDetail">
     	select id,rank_id rankId,rank,amount_min amountMin,amount_max amountMax,score_min scoreMin,score_max scoreMax,state,rtype,add_time addTime 
      	from arc_cr_rank_detail where rank_id = #{id,jdbcType=BIGINT} 
      	<![CDATA[

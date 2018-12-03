@@ -1,9 +1,9 @@
 package com.jiya.cashloan;
 
-import com.rongdu.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
-import com.rongdu.cashloan.cl.model.pay.lianlian.PaymentModel;
-import com.rongdu.cashloan.cl.util.fuiou.XmlBeanUtils;
-import com.rongdu.cashloan.core.common.util.ReflectUtil;
+import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
+import com.xiji.cashloan.cl.model.pay.lianlian.PaymentModel;
+import com.xiji.cashloan.cl.util.fuiou.XmlBeanUtils;
+import com.xiji.cashloan.core.common.util.ReflectUtil;
 import javax.xml.bind.JAXBException;
 
 /**

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_dhb_user_basic表:贷后邦用户基本信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.DhbUserBasicMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.DhbUserBasicMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.DhbUserBasic">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.DhbUserBasic">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -94,12 +94,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.DhbUserBasic">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.DhbUserBasic">
         insert into cl_rc_dhb_user_basic(order_no,user_id,age,gender,birthday,idcard_validate,idcard_province,idcard_city,idcard_region,phone_operator,phone_province,phone_city,record_idcard_days,record_phone_days,last_appear_idcard,last_appear_phone,used_idcards_cnt,used_phones_cnt)values(#{orderNo,jdbcType=VARCHAR},#{userId,jdbcType=BIGINT},#{age,jdbcType=INTEGER},#{gender,jdbcType=VARCHAR},#{birthday,jdbcType=VARCHAR},#{idcardValidate,jdbcType=INTEGER},#{idcardProvince,jdbcType=VARCHAR},#{idcardCity,jdbcType=VARCHAR},#{idcardRegion,jdbcType=VARCHAR},#{phoneOperator,jdbcType=VARCHAR},#{phoneProvince,jdbcType=VARCHAR},#{phoneCity,jdbcType=VARCHAR},#{recordIdcardDays,jdbcType=INTEGER},#{recordPhoneDays,jdbcType=INTEGER},#{lastAppearIdcard,jdbcType=VARCHAR},#{lastAppearPhone,jdbcType=VARCHAR},#{usedIdcardsCnt,jdbcType=INTEGER},#{usedPhonesCnt,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.DhbUserBasic">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.DhbUserBasic">
         update cl_rc_dhb_user_basic set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=BIGINT},

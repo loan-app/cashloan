@@ -1,6 +1,6 @@
 package com.jiya.cashloan.test;
 
-import com.rongdu.cashloan.core.common.util.OrderNoUtil;
+import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import java.util.UUID;
 
 /**

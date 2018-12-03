@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_sdk_log表:sdk识别记录表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserSdkLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserSdkLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserSdkLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserSdkLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="time_type" property="timeType" jdbcType="VARCHAR" />
@@ -34,12 +34,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserSdkLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserSdkLog">
         insert into cl_user_sdk_log(user_id,time_type,create_time)values(#{userId,jdbcType=BIGINT},#{timeType,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserSdkLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UserSdkLog">
         update cl_user_sdk_log set 
             user_id = #{userId,jdbcType=BIGINT},
             time_type = #{timeType,jdbcType=VARCHAR},

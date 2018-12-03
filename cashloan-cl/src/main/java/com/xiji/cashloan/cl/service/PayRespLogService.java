@@ -1,0 +1,51 @@
+package com.xiji.cashloan.cl.service;
+
+import java.util.Map;
+
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.domain.PayRespLog;
+import com.xiji.cashloan.cl.model.ManagePayRespLogModel;
+import com.xiji.cashloan.core.common.service.BaseService;
+
+/**
+ * 支付响应记录Service
+ * 
+ * @author gc
+ * @version 1.0.0
+ * @date 2017-03-07 16:18:10
+ * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
+ * 官方网站：www.xiji.com
+ * 
+ * 未经授权不得进行修改、复制、出售及商业使用
+ */
+public interface PayRespLogService extends BaseService<PayRespLog, Long>{
+
+	/**
+	 * 保存响应记录
+	 * 
+	 * @param log
+	 * @return
+	 */
+	boolean save(PayRespLog log);
+
+	/**
+	 * 分页查询
+	 * 
+	 * @param current
+	 * @param pageSize
+	 * @param searchMap
+	 * @return
+	 */
+	Page<ManagePayRespLogModel> page(int current, int pageSize,
+									 Map<String, Object> searchMap);
+
+	/**
+	 * 查询详情
+	 * 
+	 * @param id
+	 * @return
+	 */
+	ManagePayRespLogModel findDetail(Long id);
+	
+	
+}

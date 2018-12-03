@@ -103,8 +103,8 @@
 
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage"
-			value="com.rongdu.cashloan,com.rongdu.creditrank" />
-		<property name="annotationClass" value="com.rongdu.cashloan.core.common.mapper.RDBatisDao" />
+			value="com.xiji.cashloan,com.xiji.creditrank" />
+		<property name="annotationClass" value="com.xiji.cashloan.core.common.mapper.RDBatisDao" />
 	</bean>
 	<bean id="slaveSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />

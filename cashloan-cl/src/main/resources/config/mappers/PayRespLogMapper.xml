@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_pay_resp_log表:支付响应记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.PayRespLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.PayRespLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.PayRespLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.PayRespLog">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="type" property="type" jdbcType="INTEGER" />
@@ -38,12 +38,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.PayRespLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.PayRespLog">
         insert into cl_pay_resp_log(order_no,type,params,create_time)values(#{orderNo,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},#{params,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.PayRespLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.PayRespLog">
         update cl_pay_resp_log set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             type = #{type,jdbcType=INTEGER},
@@ -95,7 +95,7 @@
     </select>
 
 	<!-- 分页查询 -->
-	<select id="page" resultType="com.rongdu.cashloan.cl.model.ManagePayRespLogModel"
+	<select id="page" resultType="com.xiji.cashloan.cl.model.ManagePayRespLogModel"
 		parameterType="java.util.HashMap">
 		 select
         <include refid="Base_Column_List" />
@@ -104,7 +104,7 @@
 	</select>
 	
 	<!-- 分页查询 -->
-	<select id="findDetail" resultType="com.rongdu.cashloan.cl.model.ManagePayRespLogModel"
+	<select id="findDetail" resultType="com.xiji.cashloan.cl.model.ManagePayRespLogModel"
 		parameterType="java.lang.Long">
 		 select
         <include refid="Base_Column_List" />

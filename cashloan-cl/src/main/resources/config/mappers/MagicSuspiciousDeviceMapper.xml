@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_suspicious_device表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicSuspiciousDeviceMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicSuspiciousDeviceMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicSuspiciousDevice">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicSuspiciousDevice">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -70,12 +70,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicSuspiciousDevice">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicSuspiciousDevice">
         insert into cl_magic_suspicious_device(user_id,trans_id,other_devices_cnt,mobile_other_devices_cnt,idcard_other_devices_cnt,information_sources_cnt,other_names_cnt,other_mobiles_cnt,other_mobiles_black_cnt,other_idcards_cnt,other_idcards_black_cnt,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{otherDevicesCnt,jdbcType=INTEGER},#{mobileOtherDevicesCnt,jdbcType=INTEGER},#{idcardOtherDevicesCnt,jdbcType=INTEGER},#{informationSourcesCnt,jdbcType=INTEGER},#{otherNamesCnt,jdbcType=INTEGER},#{otherMobilesCnt,jdbcType=INTEGER},#{otherMobilesBlackCnt,jdbcType=INTEGER},#{otherIdcardsCnt,jdbcType=INTEGER},#{otherIdcardsBlackCnt,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicSuspiciousDevice">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicSuspiciousDevice">
         update cl_magic_suspicious_device set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_tpp_business表:第三方征信接口信息模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.TppBusinessMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.TppBusinessMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.TppBusiness">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.TppBusiness">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="tpp_id" property="tppId" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -14,7 +14,7 @@
         <result column="test_url" property="testUrl" jdbcType="VARCHAR" />
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     </resultMap>
-    <resultMap id="ModelResultMap" type="com.rongdu.cashloan.rc.model.TppBusinessModel" extends="BaseResultMap">
+    <resultMap id="ModelResultMap" type="com.xiji.cashloan.rc.model.TppBusinessModel" extends="BaseResultMap">
     	<result column="tpp_nid" property="tppNid" jdbcType="VARCHAR" />
     </resultMap>
     
@@ -57,7 +57,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.TppBusiness">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.TppBusiness">
         insert into cl_rc_tpp_business(tpp_id,name,nid,state,extend,url,test_url,add_time)
         values(#{tppId,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{nid,jdbcType=VARCHAR},
         #{state,jdbcType=VARCHAR},#{extend,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},
@@ -65,7 +65,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rc.domain.TppBusiness">
+    <update id="update" parameterType="com.xiji.cashloan.rc.domain.TppBusiness">
         update cl_rc_tpp_business set 
             tpp_id = #{tppId,jdbcType=BIGINT},
             name = #{name,jdbcType=VARCHAR},
@@ -133,7 +133,7 @@
         <include refid="searchBy"/>
     </select>
     
-    <select id="listAll" resultType="com.rongdu.cashloan.rc.model.TppBusinessModel" >
+    <select id="listAll" resultType="com.xiji.cashloan.rc.model.TppBusinessModel" >
 		SELECT
 			business.*, tpp.nid as tpp_nid
 		FROM
@@ -145,21 +145,21 @@
 	</select>
 
 	<!-- 后台管理列表查询  -->
-	<select id="list" resultType="com.rongdu.cashloan.rc.model.ManageTppBusinessModel" parameterType="java.util.HashMap">
+	<select id="list" resultType="com.xiji.cashloan.rc.model.ManageTppBusinessModel" parameterType="java.util.HashMap">
 		select
 			<include refid="Base_Column_List" />
 		from cl_rc_tpp_business
 			<include refid="searchBy"/>
 	</select>
 	
-	<select id="findByTppId" resultType="com.rongdu.cashloan.rc.model.ManageTppBusinessModel" parameterType="java.lang.Long">
+	<select id="findByTppId" resultType="com.xiji.cashloan.rc.model.ManageTppBusinessModel" parameterType="java.lang.Long">
 		select
 			<include refid="Base_Column_List" />
 		from cl_rc_tpp_business
 		where tpp_id = #{tppId,jdbcType=BIGINT}
 	</select>
 	
-	<select id="findByNid" parameterType="com.rongdu.cashloan.rc.domain.TppBusiness" resultMap="BaseResultMap">
+	<select id="findByNid" parameterType="com.xiji.cashloan.rc.domain.TppBusiness" resultMap="BaseResultMap">
 		select
 			<include refid="Base_Column_List" />
 		from cl_rc_tpp_business

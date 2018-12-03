@@ -1,8 +1,6 @@
 package com.jiya.cashloan.moxie;
 
-import com.alibaba.fastjson.JSONObject;
-import com.rongdu.cashloan.cl.model.moxie.MxCreditRequest;
-import com.rongdu.cashloan.cl.util.token.HttpRestUtils;
+import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 
 import java.util.HashMap;
 import java.util.Map;

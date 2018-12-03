@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_factor_param表:评分因子参数模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.FactorParamMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.FactorParamMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.FactorParam">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.FactorParam">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="factor_id" property="factorId" jdbcType="INTEGER" />
         <result column="param_score" property="paramScore" jdbcType="INTEGER" />
@@ -15,7 +15,7 @@
         <result column="req_ext" property="reqExt" jdbcType="VARCHAR" />
     </resultMap>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.FactorParamModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.FactorParamModel">
     	
     </resultMap>
     
@@ -57,11 +57,11 @@
         </trim>
     </sql>
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.FactorParam">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.FactorParam">
         insert into arc_cr_factor_param(factor_id,param_score,formula,cvalue,add_time,state,nid,req_ext)values(#{factorId,jdbcType=INTEGER},#{paramScore,jdbcType=INTEGER},#{formula,jdbcType=VARCHAR},#{cvalue,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP},#{state,jdbcType=VARCHAR},#{nid,jdbcType=VARCHAR},#{reqExt,jdbcType=VARCHAR})
     </insert>
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.FactorParam">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.FactorParam">
         update arc_cr_factor_param set 
             factor_id = #{factorId,jdbcType=INTEGER},
             param_score = #{paramScore,jdbcType=INTEGER},

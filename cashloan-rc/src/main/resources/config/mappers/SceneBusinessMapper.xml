@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_scene_business表:场景与第三方征信接口关联关系模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.SceneBusinessMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.SceneBusinessMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.SceneBusiness">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.SceneBusiness">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="scene" property="scene" jdbcType="VARCHAR" />
         <result column="business_id" property="businessId" jdbcType="BIGINT" />
@@ -50,12 +50,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.SceneBusiness">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.SceneBusiness">
         insert into cl_rc_scene_business(scene,business_id,get_way,period,state,add_time,type)values(#{scene,jdbcType=VARCHAR},#{businessId,jdbcType=BIGINT},#{getWay,jdbcType=VARCHAR},#{period,jdbcType=INTEGER},#{state,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rc.domain.SceneBusiness">
+    <update id="update" parameterType="com.xiji.cashloan.rc.domain.SceneBusiness">
         update cl_rc_scene_business 
         <set>
             <if test="scene != null and scene != '' ">        
@@ -129,7 +129,7 @@
     </select>
     
      <!-- 后台管理 列表查询 -->
-    <select id="list" resultType="com.rongdu.cashloan.rc.model.ManageSceneBusinessModel" parameterType="java.util.HashMap">
+    <select id="list" resultType="com.xiji.cashloan.rc.model.ManageSceneBusinessModel" parameterType="java.util.HashMap">
 		select 
 			scene.id,scene.scene,scene.get_way,scene.type,scene.state,scene.add_time,scene.business_id,
 			(case when scene.get_way = 20 then  scene.period else ''  end)  as period,
@@ -144,7 +144,7 @@
 		LEFT JOIN cl_rc_statistics stpp on stpp.id = sbusi.statistics_id
     </select>
     
-    <select id="findTppServiceInfo" resultType="com.rongdu.cashloan.rc.model.TppServiceInfoModel">
+    <select id="findTppServiceInfo" resultType="com.xiji.cashloan.rc.model.TppServiceInfoModel">
 		select sceneId,sceneCode,getWay,period,type,busId,busNid,busName,serParams,tppId,tpp.key tppKey,tpp.mer_no merNo,tpp.sign_type signType,
 		(case when type = 10 then  tpp.extend when type = 20 then stpp.extend end) tppParams
 		from ( 

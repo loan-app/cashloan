@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_borrow_type_card表:评分卡类型绑定表模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.BorrowTypeCardMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.BorrowTypeCardMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.BorrowTypeCard">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.BorrowTypeCard">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="borrow_type_id" property="borrowTypeId" jdbcType="INTEGER" />
         <result column="borrow_type_name" property="borrowTypeName" jdbcType="VARCHAR" />
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.BorrowTypeCard">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.BorrowTypeCard">
         insert into arc_borrow_type_card(borrow_type_id,borrow_type_name,card_id,card_name,add_time)values(#{borrowTypeId,jdbcType=INTEGER},#{borrowTypeName,jdbcType=VARCHAR},#{cardId,jdbcType=INTEGER},#{cardName,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.BorrowTypeCard">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.BorrowTypeCard">
         update arc_borrow_type_card set 
             borrow_type_id = #{borrowTypeId,jdbcType=INTEGER},
             borrow_type_name = #{borrowTypeName,jdbcType=VARCHAR},

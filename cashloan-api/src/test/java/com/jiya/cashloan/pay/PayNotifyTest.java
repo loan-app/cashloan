@@ -1,8 +1,8 @@
 package com.jiya.cashloan.pay;
 
 import com.alibaba.fastjson.JSON;
-import com.rongdu.cashloan.cl.util.fuiou.MD5Util;
-import com.rongdu.cashloan.core.common.util.HttpsUtil;
+import com.xiji.cashloan.cl.util.fuiou.MD5Util;
+import com.xiji.cashloan.core.common.util.HttpsUtil;
 import java.util.HashMap;
 import java.util.Map;
 

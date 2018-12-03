@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_operator_voice表:魔蝎运营商数据-通话记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorVoiceMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.OperatorVoiceMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorVoice">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.OperatorVoice">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
@@ -20,7 +20,7 @@
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     </resultMap>
 
-    <resultMap id="ModelResultMap" type="com.rongdu.cashloan.cl.model.OperatorVoiceModel">
+    <resultMap id="ModelResultMap" type="com.xiji.cashloan.cl.model.OperatorVoiceModel">
         <id column="totalCount" property="totalCount" jdbcType="INTEGER"/>
         <id column="sumDuration" property="sumDuration" jdbcType="BIGINT"/>
     </resultMap>
@@ -79,12 +79,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorVoice">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorVoice">
         insert into cl_operator_voice(user_id,req_log_id,mobile,bill_month,time,peer_number,location,location_type,duration,dial_type,fee,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{billMonth,jdbcType=VARCHAR},#{time,jdbcType=VARCHAR},#{peerNumber,jdbcType=VARCHAR},#{location,jdbcType=VARCHAR},#{locationType,jdbcType=VARCHAR},#{duration,jdbcType=INTEGER},#{dialType,jdbcType=VARCHAR},#{fee,jdbcType=INTEGER},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorVoice">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorVoice">
         update cl_operator_voice set 
             user_id = #{userId,jdbcType=BIGINT},
             req_log_id = #{reqLogId,jdbcType=BIGINT},

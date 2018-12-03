@@ -1649,9 +1649,9 @@ CREATE TABLE `cl_quartz_info` (
 -- ----------------------------
 -- Records of cl_quartz_info
 -- ----------------------------
-INSERT INTO `cl_quartz_info` VALUES ('1', '代扣还款', 'doRepayment', '0 0 1,20 * * ?', 'com.rongdu.cashloan.manage.job.QuartzRepayment', '12', '2', '10', '2017-03-21 18:50:45');
-INSERT INTO `cl_quartz_info` VALUES ('2', '逾期计算', 'doLate', '0 0 2 * * ?', 'com.rongdu.cashloan.manage.job.QuartzLate', '2007', '0', '10', '2017-03-15 16:22:04');
-INSERT INTO `cl_quartz_info` VALUES ('3', '发放奖励', 'doProfit', '0 0 3 10 * ?', 'com.rongdu.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
+INSERT INTO `cl_quartz_info` VALUES ('1', '代扣还款', 'doRepayment', '0 0 1,20 * * ?', 'com.xiji.cashloan.manage.job.QuartzRepayment', '12', '2', '10', '2017-03-21 18:50:45');
+INSERT INTO `cl_quartz_info` VALUES ('2', '逾期计算', 'doLate', '0 0 2 * * ?', 'com.xiji.cashloan.manage.job.QuartzLate', '2007', '0', '10', '2017-03-15 16:22:04');
+INSERT INTO `cl_quartz_info` VALUES ('3', '发放奖励', 'doProfit', '0 0 3 10 * ?', 'com.xiji.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
 
 -- ----------------------------
 -- Table structure for cl_quartz_log

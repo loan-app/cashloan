@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_four_elements_log表:四要素认证记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.FourElementsLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.FourElementsLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.FourElementsLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.FourElementsLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -58,12 +58,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.FourElementsLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.FourElementsLog">
         insert into cl_four_elements_log(user_id,user_name,id_card,card_no,phone,result,code,check_status,create_time)values(#{userId,jdbcType=BIGINT},#{userName,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{cardNo,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{result,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{checkStatus,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.FourElementsLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.FourElementsLog">
         update cl_four_elements_log set 
             user_id = #{userId,jdbcType=BIGINT},
             user_name = #{userName,jdbcType=VARCHAR},

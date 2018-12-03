@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_untrusted_detail表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicUntrustedDetailMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicUntrustedDetailMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicUntrustedDetail">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicUntrustedDetail">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -66,12 +66,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicUntrustedDetail">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicUntrustedDetail">
         insert into cl_magic_untrusted_detail(user_id,trans_id,court_name,area_name,case_code,publish_date,gist_id,duty,performance,disrupt_type_name,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{courtName,jdbcType=VARCHAR},#{areaName,jdbcType=VARCHAR},#{caseCode,jdbcType=VARCHAR},#{publishDate,jdbcType=VARCHAR},#{gistId,jdbcType=VARCHAR},#{duty,jdbcType=VARCHAR},#{performance,jdbcType=VARCHAR},#{disruptTypeName,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicUntrustedDetail">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicUntrustedDetail">
         update cl_magic_untrusted_detail set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

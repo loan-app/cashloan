@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_risk_qq_group表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicRiskQqGroupMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicRiskQqGroupMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicRiskQqGroup">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicRiskQqGroup">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -54,12 +54,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskQqGroup">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicRiskQqGroup">
         insert into cl_magic_risk_qq_group(user_id,trans_id,loan_groupcnt,installment_groupcnt,financial_management_groupcnt,woolen_groupcnt,gambling_groupcnt,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{loanGroupcnt,jdbcType=INTEGER},#{installmentGroupcnt,jdbcType=INTEGER},#{financialManagementGroupcnt,jdbcType=INTEGER},#{woolenGroupcnt,jdbcType=INTEGER},#{gamblingGroupcnt,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskQqGroup">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicRiskQqGroup">
         update cl_magic_risk_qq_group set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

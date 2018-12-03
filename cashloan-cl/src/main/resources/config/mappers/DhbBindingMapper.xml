@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_dhb_binding表:贷后邦可疑绑定信息模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.DhbBindingMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.DhbBindingMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.DhbBinding">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.DhbBinding">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -46,12 +46,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.DhbBinding">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.DhbBinding">
         insert into cl_rc_dhb_binding(order_no,user_id,binding_idcards_size,binding_idcards_detail,binding_phones_size,binding_phones_detail)values(#{orderNo,jdbcType=VARCHAR},#{userId,jdbcType=BIGINT},#{bindingIdcardsSize,jdbcType=INTEGER},#{bindingIdcardsDetail,jdbcType=VARCHAR},#{bindingPhonesSize,jdbcType=INTEGER},#{bindingPhonesDetail,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.DhbBinding">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.DhbBinding">
         update cl_rc_dhb_binding set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=BIGINT},

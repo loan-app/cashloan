@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_risk_device表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicRiskDeviceMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicRiskDeviceMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicRiskDevice">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicRiskDevice">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -58,12 +58,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskDevice">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicRiskDevice">
         insert into cl_magic_risk_device(user_id,trans_id,loan_cnt,consumption_cnt,lottery_cnt,loan_cnt_ratio,consumption_cnt_ratio,lottery_cnt_ratio,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{loanCnt,jdbcType=INTEGER},#{consumptionCnt,jdbcType=INTEGER},#{lotteryCnt,jdbcType=INTEGER},#{loanCntRatio,jdbcType=VARCHAR},#{consumptionCntRatio,jdbcType=VARCHAR},#{lotteryCntRatio,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicRiskDevice">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicRiskDevice">
         update cl_magic_risk_device set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

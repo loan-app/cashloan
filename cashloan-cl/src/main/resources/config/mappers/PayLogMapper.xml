@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_pay_log表:支付记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.PayLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.PayLogMapper">
     <!--返回Map-->
-	<resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.PayLog">
+	<resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.PayLog">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
@@ -85,7 +85,7 @@
         </trim>
     </sql>
     
-    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.rongdu.cashloan.cl.domain.PayLog"   >
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.xiji.cashloan.cl.domain.PayLog"   >
         insert into cl_pay_log(
         	order_no,user_id,borrow_id,amount,card_no,bank,confirm_code,source,type,scenes,state,code,remark,pay_req_time,update_time,create_time
         )values(
@@ -96,7 +96,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.PayLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.PayLog">
         update cl_pay_log set 
         	order_no = #{orderNo,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=INTEGER},
@@ -203,7 +203,7 @@
     </select>
 
 	<!-- 分页查询 -->
-	<select id="page" resultType="com.rongdu.cashloan.cl.model.ManagePayLogModel" parameterType="java.util.HashMap">
+	<select id="page" resultType="com.xiji.cashloan.cl.model.ManagePayLogModel" parameterType="java.util.HashMap">
 		select 
 			payLog.id,payLog.order_no,borrow.order_no as borrowOrderNo,borrow.state as borrowState,payLog.borrow_id,payLog.amount,
 			payLog.card_no,payLog.bank,payLog.source,payLog.type,payLog.scenes,payLog.state,payLog.remark,payLog.pay_req_time,
@@ -253,7 +253,7 @@
 	</select>
 
 	<!-- 查询详情 -->
-	<select id="findDetail" resultType="com.rongdu.cashloan.cl.model.ManagePayLogModel" parameterType="java.lang.Long">
+	<select id="findDetail" resultType="com.xiji.cashloan.cl.model.ManagePayLogModel" parameterType="java.lang.Long">
 		select 
 			payLog.id,payLog.order_no,borrow.order_no as borrowOrderNo,borrow.state as borrowState,payLog.borrow_idpayLog.amount,
 			payLog.card_no,payLog.bank,payLog.source,payLog.type,payLog.scenes,payLog.state,payLog.remark,payLog.pay_req_time,

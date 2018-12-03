@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_credit_log表:授信额度记录模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.CreditLogMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.CreditLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.CreditLog">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.CreditLog">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="consumer_no" property="consumerNo" jdbcType="VARCHAR" />
         <result column="pre" property="pre" jdbcType="DECIMAL" />
@@ -62,12 +62,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.CreditLog">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.CreditLog">
         insert into arc_credit_log(consumer_no,pre,now,modify_total,modify_time,modify_user,type,credit_type,remark,req_ext)values(#{consumerNo,jdbcType=VARCHAR},#{pre,jdbcType=DECIMAL},#{now,jdbcType=DECIMAL},#{modifyTotal,jdbcType=DECIMAL},#{modifyTime,jdbcType=TIMESTAMP},#{modifyUser,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{creditType,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{reqExt,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.CreditLog">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.CreditLog">
         update arc_credit_log set 
             consumer_no = #{consumerNo,jdbcType=VARCHAR},
             pre = #{pre,jdbcType=DECIMAL},
@@ -142,7 +142,7 @@
         <include refid="searchBy"/>
     </select>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.CreditLogModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.CreditLogModel">
     	<result column="real_name" property="realName" jdbcType="VARCHAR" />
     	<result column="phone" property="phone" jdbcType="VARCHAR" />
     	<result column="id_no" property="idNo" jdbcType="VARCHAR" />

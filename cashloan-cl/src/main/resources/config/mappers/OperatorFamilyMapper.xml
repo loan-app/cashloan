@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_operator_family表:魔蝎运营商数据-亲情网模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorFamilyMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.OperatorFamilyMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorFamily">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.OperatorFamily">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
@@ -66,12 +66,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorFamily">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorFamily">
         insert into cl_operator_family(user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_time,expire_time,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{familyNum,jdbcType=INTEGER},#{longNumber,jdbcType=VARCHAR},#{shortNumber,jdbcType=INTEGER},#{memberType,jdbcType=VARCHAR},#{joinTime,jdbcType=VARCHAR},#{expireTime,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorFamily">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorFamily">
         update cl_operator_family set 
             user_id = #{userId,jdbcType=BIGINT},
             req_log_id = #{reqLogId,jdbcType=BIGINT},

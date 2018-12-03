@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_channel_app表:app渠道版本表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ChannelAppMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ChannelAppMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.ChannelApp">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.ChannelApp">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="channel_id" property="channelId" jdbcType="BIGINT" />
         <result column="app_type" property="appType" jdbcType="VARCHAR" />
@@ -45,12 +45,12 @@
         </trim>
     </sql>
 
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.ChannelApp">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.ChannelApp">
         insert into cl_channel_app(channel_id,app_type,latest_version,min_version,download_url,state)values(#{channelId,jdbcType=BIGINT},#{appType,jdbcType=VARCHAR},#{latestVersion,jdbcType=VARCHAR},#{minVersion,jdbcType=VARCHAR},#{downloadUrl,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.ChannelApp">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.ChannelApp">
         update cl_channel_app set 
             channel_id = #{channelId,jdbcType=BIGINT},
             app_type = #{appType,jdbcType=VARCHAR},
@@ -110,7 +110,7 @@
     </select>
 
 	<resultMap id="ChannelAppModel" extends="BaseResultMap"
-		type="com.rongdu.cashloan.cl.model.ChannelAppModel">
+		type="com.xiji.cashloan.cl.model.ChannelAppModel">
 		<result column="code" property="code" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="state" property="state" jdbcType="VARCHAR" />

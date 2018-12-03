@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_tongdun_resp_detail表:同盾审核报告详细信息模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.TongdunRespDetailMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.TongdunRespDetailMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.TongdunRespDetail">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.TongdunRespDetail">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="req_id" property="reqId" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
@@ -38,12 +38,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.TongdunRespDetail">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.TongdunRespDetail">
         insert into cl_tongdun_resp_detail(req_id,order_no,report_id,query_params)values(#{reqId,jdbcType=BIGINT},#{orderNo,jdbcType=VARCHAR},#{reportId,jdbcType=VARCHAR},#{queryParams,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.TongdunRespDetail">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.TongdunRespDetail">
         update cl_tongdun_resp_detail set 
             req_id = #{reqId,jdbcType=BIGINT},
             order_no = #{orderNo,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 风控数据-平台数据日报 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.SystemRcMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.SystemRcMapper">
 	<!-- 用户数 -->
    	<sql id="userCount">
    		select count(id) userCount,regist_time time  from ( select  id,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user ) t1 GROUP BY regist_time
@@ -51,7 +51,7 @@
    		select sum(penalty_amout) overdueInterest,repay_time time from ( select  penalty_amout,DATE_FORMAT(repay_time,'%Y-%m-%d') repay_time from cl_borrow_repay where state = '20' and penalty_day > 0 ) t GROUP BY repay_time
    	</sql>
    	
-   	<select id="dayData" resultType="com.rongdu.cashloan.cl.model.SystemDayData" parameterType="java.util.Map">
+   	<select id="dayData" resultType="com.xiji.cashloan.cl.model.SystemDayData" parameterType="java.util.Map">
    		select  T.date,
 				T.userCount,
 				T.borrowCount,
@@ -117,7 +117,7 @@
    	</select>
    	
    	<!-- 每日通过率 -->
-   	<select id="dayApr" resultType="com.rongdu.cashloan.cl.model.DayPassApr"  parameterType="java.util.Map">
+   	<select id="dayApr" resultType="com.xiji.cashloan.cl.model.DayPassApr" parameterType="java.util.Map">
    		select 
    			t1.users_borrow borrowUserCount,
    			case when t2.users_loan is null then 0 else t2.users_loan end loanUserCount , 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_bank_info表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicBankInfoMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicBankInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicBankInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicBankInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -98,12 +98,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicBankInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicBankInfo">
         insert into cl_magic_bank_info(user_id,trans_id,debit_update_date,debit_card_amount,debit_balance,debit_total_income,debit_total_salary_income,debit_total_loan_income,debit_total_outcome,debit_total_consume_outcome,debit_total_loan_outcome,credit_update_date,credit_card_amount,credit_total_credit_limit,credit_total_credit_available,credit_max_credit_limit,credit_overdue_times,credit_overdue_months,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{debitUpdateDate,jdbcType=VARCHAR},#{debitCardAmount,jdbcType=INTEGER},#{debitBalance,jdbcType=VARCHAR},#{debitTotalIncome,jdbcType=VARCHAR},#{debitTotalSalaryIncome,jdbcType=VARCHAR},#{debitTotalLoanIncome,jdbcType=VARCHAR},#{debitTotalOutcome,jdbcType=VARCHAR},#{debitTotalConsumeOutcome,jdbcType=VARCHAR},#{debitTotalLoanOutcome,jdbcType=VARCHAR},#{creditUpdateDate,jdbcType=VARCHAR},#{creditCardAmount,jdbcType=INTEGER},#{creditTotalCreditLimit,jdbcType=VARCHAR},#{creditTotalCreditAvailable,jdbcType=VARCHAR},#{creditMaxCreditLimit,jdbcType=VARCHAR},#{creditOverdueTimes,jdbcType=INTEGER},#{creditOverdueMonths,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicBankInfo">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicBankInfo">
         update cl_magic_bank_info set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

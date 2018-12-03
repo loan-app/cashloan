@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_item表:评分项目模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.ItemMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.ItemMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.Item">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.Item">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="card_id" property="cardId" jdbcType="INTEGER" />
         <result column="item_name" property="itemName" jdbcType="VARCHAR" />
@@ -14,7 +14,7 @@
         <result column="req_ext" property="reqExt" jdbcType="VARCHAR" />
     </resultMap>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.ItemModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.ItemModel">
     	
     </resultMap>
     
@@ -54,12 +54,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.Item">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.Item">
         insert into arc_cr_item(card_id,item_name,score,state,add_time,nid,req_ext)values(#{cardId,jdbcType=INTEGER},#{itemName,jdbcType=VARCHAR},#{score,jdbcType=INTEGER},#{state,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP},#{nid,jdbcType=VARCHAR},#{reqExt,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.Item">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.Item">
         update arc_cr_item set 
             card_id = #{cardId,jdbcType=INTEGER},
             item_name = #{itemName,jdbcType=VARCHAR},

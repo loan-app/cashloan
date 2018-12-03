@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_rule_engine_info表:规则评分设置管理模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.RuleEngineInfoMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.RuleEngineInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.RuleEngineInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.RuleEngineInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="rule_engin_id" property="ruleEnginId" jdbcType="BIGINT" />
         <result column="result" property="result" jdbcType="VARCHAR" />
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rule.domain.RuleEngineInfo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.RuleEngineInfo" useGeneratedKeys="true" keyProperty="id">
         insert into arc_rule_engine_info(rule_engin_id,result,formula,integral)values(#{ruleEnginId,jdbcType=BIGINT},#{result,jdbcType=VARCHAR},#{formula,jdbcType=VARCHAR},#{integral,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.RuleEngineInfo">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.RuleEngineInfo">
         update arc_rule_engine_info set 
             rule_engin_id = #{ruleEnginId,jdbcType=BIGINT},
             result = #{result,jdbcType=VARCHAR},

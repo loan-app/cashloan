@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_fund_info表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicFundInfoMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicFundInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicFundInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicFundInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -86,12 +86,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicFundInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicFundInfo">
         insert into cl_magic_fund_info(user_id,trans_id,update_date,last_pay_date,account_status,open_date,open_location,balance,email,base_amount,monthly_income,total_months,continuous_months,repay_times,total_companies,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{updateDate,jdbcType=VARCHAR},#{lastPayDate,jdbcType=VARCHAR},#{accountStatus,jdbcType=VARCHAR},#{openDate,jdbcType=VARCHAR},#{openLocation,jdbcType=VARCHAR},#{balance,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{baseAmount,jdbcType=VARCHAR},#{monthlyIncome,jdbcType=VARCHAR},#{totalMonths,jdbcType=VARCHAR},#{continuousMonths,jdbcType=INTEGER},#{repayTimes,jdbcType=INTEGER},#{totalCompanies,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicFundInfo">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicFundInfo">
         update cl_magic_fund_info set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

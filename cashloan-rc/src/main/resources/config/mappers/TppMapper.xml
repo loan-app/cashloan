@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_tpp表:第三方征信信息模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.TppMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.TppMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.Tpp">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.Tpp">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="nid" property="nid" jdbcType="VARCHAR" />
@@ -14,7 +14,7 @@
         <result column="state" property="state" jdbcType="VARCHAR" />
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     </resultMap>
-    <resultMap type="com.rongdu.cashloan.rc.model.TppModel" id="ModelResultMap">
+    <resultMap type="com.xiji.cashloan.rc.model.TppModel" id="ModelResultMap">
     	<id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="nid" property="nid" jdbcType="VARCHAR" />
@@ -24,7 +24,7 @@
         <result column="extend" property="extend" jdbcType="VARCHAR" />
         <result column="state" property="state" jdbcType="VARCHAR" />
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
-    	<collection property="businessList" ofType="com.rongdu.cashloan.rc.domain.TppBusiness">
+    	<collection property="businessList" ofType="com.xiji.cashloan.rc.domain.TppBusiness">
     		<id column="business_id" property="id" jdbcType="INTEGER" />
 	        <result column="tpp_id" property="tppId" jdbcType="INTEGER" />
 	        <result column="business_name" property="name" jdbcType="VARCHAR" />
@@ -36,7 +36,7 @@
     	</collection>
     </resultMap>
     
-    <resultMap id="BaseModelMap" type="com.rongdu.cashloan.rc.model.TppModel">
+    <resultMap id="BaseModelMap" type="com.xiji.cashloan.rc.model.TppModel">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="nid" property="nid" jdbcType="VARCHAR" />
@@ -87,7 +87,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.Tpp">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.Tpp">
         insert into cl_rc_tpp(`name`,nid,mer_no,sign_type,`key`,extend,state,add_time)
         values(#{name,jdbcType=VARCHAR},#{nid,jdbcType=VARCHAR},#{merNo,jdbcType=VARCHAR},
         #{signType,jdbcType=VARCHAR},#{key,jdbcType=VARCHAR},#{extend,jdbcType=VARCHAR},
@@ -95,7 +95,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rc.domain.Tpp">
+    <update id="update" parameterType="com.xiji.cashloan.rc.domain.Tpp">
         update cl_rc_tpp set 
             `name` = #{name,jdbcType=VARCHAR},
             nid = #{nid,jdbcType=VARCHAR},
@@ -170,7 +170,7 @@
 	</select>
 
 	<!-- 后台管理列表查询 -->
-	<select id="list" resultType="com.rongdu.cashloan.rc.model.ManageTppModel" parameterType="java.util.HashMap">
+	<select id="list" resultType="com.xiji.cashloan.rc.model.ManageTppModel" parameterType="java.util.HashMap">
 		select
 		<include refid="Base_Column_List" />
 		from cl_rc_tpp

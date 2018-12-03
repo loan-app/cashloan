@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_result表:评分结果模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.CrResultMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.CrResultMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.CrResult">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.CrResult">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="consumer_no" property="consumerNo" jdbcType="BIGINT" />
         <result column="credit_type_id" property="creditTypeId" jdbcType="BIGINT" />
@@ -42,7 +42,7 @@
     </sql>
     
     
-    <insert id="saveRecord" parameterType="com.rongdu.creditrank.cr.domain.CrResult" useGeneratedKeys="true" keyProperty="id">
+    <insert id="saveRecord" parameterType="com.xiji.creditrank.cr.domain.CrResult" useGeneratedKeys="true" keyProperty="id">
         insert into arc_cr_result(
         	consumer_no,
         	credit_type_id,
@@ -58,7 +58,7 @@
         )
     </insert>
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.CrResult">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.CrResult">
         insert into arc_cr_result(
         	consumer_no,
         	credit_type_id,
@@ -75,7 +75,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.CrResult">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.CrResult">
         update arc_cr_result set 
             consumer_no = #{consumerNo,jdbcType=BIGINT},
             credit_type_id = #{creditTypeId,jdbcType=BIGINT},
@@ -122,7 +122,7 @@
         <include refid="searchBy"/>
     </select>
     
-    <resultMap id="creditRating" type="com.rongdu.creditrank.cr.model.CreditRatingModel">
+    <resultMap id="creditRating" type="com.xiji.creditrank.cr.model.CreditRatingModel">
     	<result column="credit_type_id" property="creditTypeId" jdbcType="BIGINT" />
     	<result column="credit_type_name" property="creditTypeName" jdbcType="VARCHAR" />
         <result column="card_id" property="cardId" jdbcType="BIGINT" />
@@ -156,7 +156,7 @@
 		and f.type = #{type,jdbcType=INTEGER}
     </select>
      
-    <select id="findByConsumerNo" parameterType="java.lang.String" resultType="com.rongdu.creditrank.cr.domain.CrResult">
+    <select id="findByConsumerNo" parameterType="java.lang.String" resultType="com.xiji.creditrank.cr.domain.CrResult">
     	select
         <include refid="Base_Column_List" />
         from arc_cr_result where consumer_no = #{consumerNo,jdbcType=VARCHAR}
@@ -168,13 +168,13 @@
 		where a.consumer_no = #{consumerNo,jdbcType=VARCHAR} 
     </select>
     
-    <select id="findAllBorrowTypeResult" parameterType="java.lang.Long" resultType="com.rongdu.creditrank.cr.domain.CrResult">
+    <select id="findAllBorrowTypeResult" parameterType="java.lang.Long" resultType="com.xiji.creditrank.cr.domain.CrResult">
     	select a.id,a.consumer_no,a.credit_type_id,a.total_amount,a.total_score,a.add_time from arc_cr_result a RIGHT JOIN (select max(add_time) add_time,credit_type_id from arc_cr_result  GROUP BY credit_type_id) b
 		on a.credit_type_id = b.credit_type_id and a.add_time = b.add_time 
 		where a.consumer_no = #{consumerNo,jdbcType=VARCHAR}  
     </select>
     
-    <select id="findCreditTypeResult" resultType="com.rongdu.creditrank.cr.domain.CrResult">
+    <select id="findCreditTypeResult" resultType="com.xiji.creditrank.cr.domain.CrResult">
 		select a.consumer_no,a.total_amount total_amount, a.total_score total_score from arc_cr_result a RIGHT JOIN
 		(select max(add_time) add_time,credit_type_id from arc_cr_result where consumer_no = #{consumerNo,jdbcType=VARCHAR}  and credit_type_id = #{creditTypeId,jdbcType=BIGINT} GROUP BY credit_type_id) b
 		on a.credit_type_id = b.credit_type_id and a.add_time = b.add_time 
