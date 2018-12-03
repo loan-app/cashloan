@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 运营分析 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.SystemAnalysisMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.SystemAnalysisMapper">
 	<!-- 逾期笔数 -->
 	<sql id="overdueCount">
 		select count(borrow_id) overdueCount,create_time time from (select borrow_id,DATE_FORMAT(create_time,#{dateType,jdbcType=VARCHAR}) create_time from cl_borrow_progress where state = '50' and DATE_FORMAT(SYSDATE(),#{dateType,jdbcType=VARCHAR}) =  DATE_FORMAT(create_time,#{dateType,jdbcType=VARCHAR})) t GROUP BY create_time 
@@ -48,7 +48,7 @@
 	</sql>
 	
 	<!-- 每月逾期统计 每月 ：%Y-%m   -->
-	<select id="overdueAnalisis" parameterType="java.util.Map" resultType="com.rongdu.cashloan.cl.model.OverdueAnalisisModel">
+	<select id="overdueAnalisis" parameterType="java.util.Map" resultType="com.xiji.cashloan.cl.model.OverdueAnalisisModel">
 		select DISTINCT(p.time) date,
 			case when p2.overdueCount is null then 0 else p2.overdueCount end overdueCount,
 			case when p3.overdueAmt is null then 0 else p3.overdueAmt end overdueAmt,

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_profit_cash_log表:分润提现记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ProfitCashLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ProfitCashLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.ProfitCashLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.ProfitCashLog">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
         <result column="amount" property="amount" jdbcType="DECIMAL" />
@@ -15,11 +15,11 @@
         id,user_id,amount,add_time 
     </sql>
     
-    <resultMap id="ManageProfitLogModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageProfitLogModel">
+    <resultMap id="ManageProfitLogModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageProfitLogModel">
     	
     </resultMap>
     
-    <resultMap id="ManageProfitAmountModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageProfitAmountModel">
+    <resultMap id="ManageProfitAmountModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageProfitAmountModel">
     	
     </resultMap>
     
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.ProfitCashLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.ProfitCashLog">
         insert into cl_profit_cash_log(user_id,amount,add_time)values(#{userId,jdbcType=INTEGER},#{amount,jdbcType=DECIMAL},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.ProfitCashLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.ProfitCashLog">
         update cl_profit_cash_log set 
             user_id = #{userId,jdbcType=INTEGER},
             amount = #{amount,jdbcType=DECIMAL},

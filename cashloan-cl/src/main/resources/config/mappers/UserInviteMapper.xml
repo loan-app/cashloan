@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_invite表:邀请记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserInviteMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserInviteMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserInvite">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserInvite">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="invite_time" property="inviteTime" jdbcType="TIMESTAMP" />
         <result column="invite_id" property="inviteId" jdbcType="INTEGER" />
@@ -18,15 +18,15 @@
         id,invite_time,invite_id,invite_name,user_id,user_name 
     </sql>
     
-    <resultMap id="ManageProfitModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageProfitModel">
+    <resultMap id="ManageProfitModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageProfitModel">
     	
     </resultMap>
     
-    <resultMap id="ManageAgentModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageAgentModel">
+    <resultMap id="ManageAgentModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageAgentModel">
     	
     </resultMap>
     
-    <resultMap id="InviteBorrowModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.InviteBorrowModel">
+    <resultMap id="InviteBorrowModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.InviteBorrowModel">
     	
     </resultMap>
     
@@ -55,12 +55,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserInvite">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserInvite">
         insert into cl_user_invite(invite_time,invite_id,invite_name,user_id,user_name)values(#{inviteTime,jdbcType=TIMESTAMP},#{inviteId,jdbcType=INTEGER},#{inviteName,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserInvite">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UserInvite">
         update cl_user_invite set 
             invite_time = #{inviteTime,jdbcType=TIMESTAMP},
             invite_id = #{inviteId,jdbcType=INTEGER},

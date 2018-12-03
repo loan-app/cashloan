@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_zhima表:芝麻信用模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ZhimaMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ZhimaMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.Zhima">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.Zhima">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="bind" property="bind" jdbcType="VARCHAR" />
         <result column="bind_time" property="bindTime" jdbcType="TIMESTAMP" />
@@ -42,13 +42,13 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.Zhima">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.Zhima">
         insert into cl_zhima(bind,bind_time,user_id,score,open_id)values(#{bind,jdbcType=VARCHAR},#{bindTime,jdbcType=TIMESTAMP},#{userId,jdbcType=INTEGER},#{score,jdbcType=DECIMAL},
         #{openId,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.Zhima">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.Zhima">
         update cl_zhima 
         <set>
             <if test="bind != null and bind != '' ">        

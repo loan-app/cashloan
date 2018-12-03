@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_urge_repay_log表:催款记录表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UrgeRepayOrderLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UrgeRepayOrderLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UrgeRepayOrderLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UrgeRepayOrderLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="due_id" property="dueId" jdbcType="BIGINT" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -54,12 +54,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UrgeRepayOrderLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UrgeRepayOrderLog">
         insert into cl_urge_repay_log(due_id,borrow_id,user_id,create_time,state,remark,promise_time,way)values(#{dueId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{state,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{promiseTime,jdbcType=VARCHAR},#{way,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UrgeRepayOrderLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UrgeRepayOrderLog">
         update cl_urge_repay_log set 
             due_id = #{dueId,jdbcType=BIGINT},
             borrow_id = #{borrowId,jdbcType=BIGINT},

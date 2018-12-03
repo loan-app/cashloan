@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_pay_check表:资金对账记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.PayCheckMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.PayCheckMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.PayCheck">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.PayCheck">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
 		<result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
@@ -62,7 +62,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.PayCheck">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.PayCheck">
         insert into cl_pay_check(
         	order_no,order_amount,real_pay_amount,type,state,remark,process_result,process_way,process_time,create_time
         )values(
@@ -72,7 +72,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.PayCheck">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.PayCheck">
         update cl_pay_check set 
 			order_no = #{orderNo,jdbcType=VARCHAR},
 			order_amount = #{orderAmount,jdbcType=DECIMAL},
@@ -145,7 +145,7 @@
         <include refid="searchBy"/>
     </select>
 
-	<select id="page" resultType="com.rongdu.cashloan.cl.model.ManagePayCheckModel" parameterType="java.util.HashMap">
+	<select id="page" resultType="com.xiji.cashloan.cl.model.ManagePayCheckModel" parameterType="java.util.HashMap">
 		select
 		payCheck.id, payCheck.order_no, payCheck.order_amount, payCheck.real_pay_amount,
 		payCheck.type, payCheck.state, payCheck.remark,

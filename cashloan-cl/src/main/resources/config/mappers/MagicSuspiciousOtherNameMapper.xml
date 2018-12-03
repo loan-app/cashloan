@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_suspicious_other_name表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicSuspiciousOtherNameMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicSuspiciousOtherNameMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicSuspiciousOtherName">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicSuspiciousOtherName">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -46,12 +46,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicSuspiciousOtherName">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicSuspiciousOtherName">
         insert into cl_magic_suspicious_other_name(user_id,trans_id,latest_used_time,name,type,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{latestUsedTime,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicSuspiciousOtherName">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicSuspiciousOtherName">
         update cl_magic_suspicious_other_name set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

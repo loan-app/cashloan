@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_rule_engine表:规则引擎管理模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.RuleEngineMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.RuleEngineMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.RuleEngine">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.RuleEngine">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="state" property="state" jdbcType="VARCHAR" />
@@ -62,16 +62,16 @@
     </sql>
     
     
-    <insert id="save"   parameterType="com.rongdu.cashloan.rule.domain.RuleEngine" useGeneratedKeys="true" keyProperty="id" >
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.RuleEngine" useGeneratedKeys="true" keyProperty="id" >
         insert into arc_rule_engine(name,state,config_count,req_ext,add_ip,add_time,integral,type,type_result_status,sort)values(#{name,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{configCount,jdbcType=INTEGER},#{reqExt,jdbcType=VARCHAR},#{addIp,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP},#{integral,jdbcType=INTEGER},#{type,jdbcType=VARCHAR},#{typeResultStatus,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER})
     </insert>
 
       
-    <insert id="insertId"  useGeneratedKeys="true" keyProperty="id"  parameterType="com.rongdu.cashloan.rule.domain.RuleEngine">
+    <insert id="insertId"  useGeneratedKeys="true" keyProperty="id"  parameterType="com.xiji.cashloan.rule.domain.RuleEngine">
         insert into arc_rule_engine(name,state,config_count,req_ext,add_ip,add_time,integral,type,type_result_status,sort)values(#{name,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{configCount,jdbcType=INTEGER},#{reqExt,jdbcType=VARCHAR},#{addIp,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP},#{integral,jdbcType=INTEGER},#{type,jdbcType=VARCHAR},#{typeResultStatus,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER})
     </insert>
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.RuleEngine">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.RuleEngine">
         update arc_rule_engine set
             name = #{name,jdbcType=VARCHAR},
             state = #{state,jdbcType=VARCHAR},

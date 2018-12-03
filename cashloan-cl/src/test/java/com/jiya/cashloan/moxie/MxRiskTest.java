@@ -2,9 +2,8 @@ package com.jiya.cashloan.moxie;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rongdu.cashloan.cl.domain.mozhang.DataBean;
-import com.rongdu.cashloan.cl.model.moxie.MxCreditRequest;
-import com.rongdu.cashloan.cl.util.magic.MoxieSignUtils;
+import com.xiji.cashloan.cl.domain.mozhang.DataBean;
+import com.xiji.cashloan.cl.util.magic.MoxieSignUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

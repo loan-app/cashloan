@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_base_info表:用户详细信息模块 -->
-<mapper namespace="com.rongdu.cashloan.core.mapper.UserBaseInfoMapper">
+<mapper namespace="com.xiji.cashloan.core.mapper.UserBaseInfoMapper">
     <!--返回Map-->        
-     <resultMap id="BaseResultMap" type="com.rongdu.cashloan.core.domain.UserBaseInfo">
+     <resultMap id="BaseResultMap" type="com.xiji.cashloan.core.domain.UserBaseInfo">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -45,7 +45,7 @@
         id,user_id,phone,real_name,age,sex,national,id_no,id_addr,living_img,ocr_img,front_img,back_img,education,company_name,company_phone,company_addr,company_detail_addr,company_coordinate,salary,working_years,working_img,live_time,live_addr,live_detail_addr,live_coordinate,phone_server_pwd,register_addr,register_coordinate,state,black_reason,update_time,create_time,marital 
     </sql>
      <!--用户的基本信息的sql查询字段 公共引用...-->
-    <resultMap id="BaseInfoModelMap" extends="BaseResultMap"  type="com.rongdu.cashloan.core.model.ManagerUserModel">
+    <resultMap id="BaseInfoModelMap" extends="BaseResultMap"  type="com.xiji.cashloan.core.model.ManagerUserModel">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="login_name" property="loginName" jdbcType="VARCHAR" />
         <result column="login_pwd" property="loginPwd" jdbcType="VARCHAR" />
@@ -168,13 +168,13 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.core.domain.UserBaseInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.core.domain.UserBaseInfo">
         insert into cl_user_base_info(user_id,phone,real_name,age,sex,national,id_no,id_addr,living_img,ocr_img,front_img,back_img,education,company_name,company_phone,company_addr,company_detail_addr,company_coordinate,salary,working_years,working_img,live_time,live_addr,live_detail_addr,live_coordinate,phone_server_pwd,register_addr,register_coordinate,state,black_reason,update_time,create_time,marital)values(#{userId,jdbcType=INTEGER},#{phone,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{sex,jdbcType=VARCHAR},#{national,jdbcType=VARCHAR},#{idNo,jdbcType=VARCHAR},#{idAddr,jdbcType=VARCHAR},#{livingImg,jdbcType=VARCHAR},#{ocrImg,jdbcType=VARCHAR},#{frontImg,jdbcType=VARCHAR},#{backImg,jdbcType=VARCHAR},#{education,jdbcType=VARCHAR},#{companyName,jdbcType=VARCHAR},#{companyPhone,jdbcType=VARCHAR},#{companyAddr,jdbcType=VARCHAR},#{companyDetailAddr,jdbcType=VARCHAR},#{companyCoordinate,jdbcType=VARCHAR},#{salary,jdbcType=VARCHAR},#{workingYears,jdbcType=VARCHAR},#{workingImg,jdbcType=VARCHAR},#{liveTime,jdbcType=VARCHAR},#{liveAddr,jdbcType=VARCHAR},#{liveDetailAddr,jdbcType=VARCHAR},#{liveCoordinate,jdbcType=VARCHAR},#{phoneServerPwd,jdbcType=VARCHAR},#{registerAddr,jdbcType=VARCHAR},#{registerCoordinate,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{blackReason,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{marital,jdbcType=VARCHAR})
     </insert>
 
 
     
-     <update id="update" parameterType="com.rongdu.cashloan.core.domain.UserBaseInfo">
+     <update id="update" parameterType="com.xiji.cashloan.core.domain.UserBaseInfo">
         update cl_user_base_info
           <set>
             <if test="userId != null">        
@@ -435,12 +435,12 @@
 		where u.id = #{userId,jdbcType=BIGINT}  
     </select>
     
-    <select id="findUserImags" resultType="com.rongdu.cashloan.core.domain.UserBaseInfo"  parameterType="java.lang.Long" >
+    <select id="findUserImags" resultType="com.xiji.cashloan.core.domain.UserBaseInfo" parameterType="java.lang.Long" >
     	select id,user_id userId,living_img livingImg,front_img frontImg,back_img backImg,ocr_img ocrImg,real_name realName,id_no idNo,phone
         from  cl_user_base_info where user_id = #{userId,jdbcType=BIGINT}
     </select>
 	
-	<select id="findWorkInfo" resultType="com.rongdu.cashloan.core.model.UserWorkInfoModel" parameterType="java.lang.Long" >
+	<select id="findWorkInfo" resultType="com.xiji.cashloan.core.model.UserWorkInfoModel" parameterType="java.lang.Long" >
 		select 
 			info.id,info.user_id,info.company_name,info.company_phone,info.company_addr,info.company_detail_addr,
 			info.company_coordinate,info.salary,info.working_years,info.working_img,dict.item_code
@@ -449,7 +449,7 @@
 		where info.user_id = #{userId,jdbcType=BIGINT}
 	</select>
 	
-	<select id="findByUserId" resultType="com.rongdu.cashloan.core.domain.UserBaseInfo" parameterType="java.lang.Long" >
+	<select id="findByUserId" resultType="com.xiji.cashloan.core.domain.UserBaseInfo" parameterType="java.lang.Long" >
 		 select
         <include refid="Base_Column_List" />
         from cl_user_base_info

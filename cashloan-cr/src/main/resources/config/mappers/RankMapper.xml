@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_rank表:评分等级模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.RankMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.RankMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.Rank">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.Rank">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="rank_name" property="rankName" jdbcType="VARCHAR" />
     </resultMap>
@@ -13,7 +13,7 @@
         id,rank_name
     </sql>
     
-    <resultMap id="resultModel" extends="BaseResultMap" type="com.rongdu.creditrank.cr.model.RankModel">
+    <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.RankModel">
     	
     </resultMap>
     
@@ -30,7 +30,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.Rank">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.Rank">
     	<selectKey resultType="long" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS ID
 		</selectKey>
@@ -38,7 +38,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.Rank">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.Rank">
         update arc_cr_rank set 
             rank_name = #{rankName,jdbcType=VARCHAR},
         where id = #{id ,jdbcType=INTEGER}

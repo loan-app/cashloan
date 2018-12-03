@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_borrow表:借款信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.core.mapper.BorrowMapper">
+<mapper namespace="com.xiji.cashloan.core.mapper.BorrowMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.core.domain.Borrow">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.core.domain.Borrow">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
@@ -80,7 +80,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.core.domain.Borrow">
+    <insert id="save" parameterType="com.xiji.cashloan.core.domain.Borrow">
     	<selectKey resultType="long" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS ID
 		</selectKey>
@@ -88,7 +88,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.core.domain.Borrow">
+    <update id="update" parameterType="com.xiji.cashloan.core.domain.Borrow">
         update cl_borrow set 
             user_id = #{userId,jdbcType=BIGINT},
             order_no = #{orderNo,jdbcType=VARCHAR},

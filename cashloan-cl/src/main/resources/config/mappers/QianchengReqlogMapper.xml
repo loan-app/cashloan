@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_qiancheng_req_log表:浅橙借款申请审核模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.QianchengReqlogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.QianchengReqlogMapper">
 	<!--返回Map -->
 	<resultMap id="BaseResultMap"
-		type="com.rongdu.cashloan.cl.domain.QianchengReqlog">
+		type="com.xiji.cashloan.cl.domain.QianchengReqlog">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
 		<result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -58,7 +58,7 @@
 	</sql>
 
 
-	<insert id="save" parameterType="com.rongdu.cashloan.cl.domain.QianchengReqlog"
+	<insert id="save" parameterType="com.xiji.cashloan.cl.domain.QianchengReqlog"
 		keyProperty="id" useGeneratedKeys="true">
 		insert into cl_qiancheng_req_log(
 		order_no,
@@ -75,7 +75,7 @@
 		)
 	</insert>
 	
-	<insert id="demoSave" parameterType="com.rongdu.cashloan.cl.domain.QianchengReqlog"
+	<insert id="demoSave" parameterType="com.xiji.cashloan.cl.domain.QianchengReqlog"
 		keyProperty="id" useGeneratedKeys="true">
 		insert into cl_qiancheng_req_log(
 		order_no,
@@ -103,7 +103,7 @@
 	</insert>
 
 
-	<update id="update" parameterType="com.rongdu.cashloan.cl.domain.QianchengReqlog">
+	<update id="update" parameterType="com.xiji.cashloan.cl.domain.QianchengReqlog">
 		update cl_qiancheng_req_log
 		<set>
 			<if test="orderNo != null and orderNo != '' ">
@@ -228,7 +228,7 @@
 	</select>
 
 	<resultMap id="qianchengReqlogMap" extends="BaseResultMap"
-		type="com.rongdu.cashloan.cl.model.QianchengReqlogModel">
+		type="com.xiji.cashloan.cl.model.QianchengReqlogModel">
 		<result column="real_name" property="realName" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 	</resultMap>
@@ -261,12 +261,12 @@
 		ORDER BY q.id DESC
 	</select>
 	
-	<select id="findByOrderNo" parameterType="java.lang.String" resultType="com.rongdu.cashloan.cl.domain.QianchengReqlog">
+	<select id="findByOrderNo" parameterType="java.lang.String" resultType="com.xiji.cashloan.cl.domain.QianchengReqlog">
 		select id,order_no orderNo,borrow_id borrowId,user_id userId,state,resp_order_no respOrderNo
 		from cl_qiancheng_req_log where resp_order_no = #{orderNo,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="findByBorrowId" parameterType="java.lang.Long" resultType="com.rongdu.cashloan.cl.domain.QianchengReqlog">
+	<select id="findByBorrowId" parameterType="java.lang.Long" resultType="com.xiji.cashloan.cl.domain.QianchengReqlog">
 		select id,order_no orderNo,borrow_id borrowId,user_id userId,state,resp_order_no respOrderNo,rs_state,rs_desc,resp_code
 		from cl_qiancheng_req_log where borrow_id = #{borrowId,jdbcType=BIGINT} ORDER BY id DESC LIMIT 0,1
 	</select>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_operator_report表:运营商报告模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorReportMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.OperatorReportMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorReport">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.OperatorReport">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
         <result column="task_id" property="taskId" jdbcType="VARCHAR" />
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorReport">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorReport">
         insert into cl_operator_report(req_log_id,task_id,report,gmt_create,gmt_modified)values(#{reqLogId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{report,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorReport">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorReport">
         update cl_operator_report set 
             req_log_id = #{reqLogId,jdbcType=BIGINT},
             task_id = #{taskId,jdbcType=VARCHAR},

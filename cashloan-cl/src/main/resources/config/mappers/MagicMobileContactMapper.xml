@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_mobile_contact表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicMobileContactMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicMobileContactMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicMobileContact">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicMobileContact">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -206,12 +206,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicMobileContact">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicMobileContact">
         insert into cl_magic_mobile_contact(user_id,trans_id,match_score,contactnum_30d,auth_contactnum_30d,auth_contact_ratio_30d,black_contactnum_30d,black_contactnum_ratio_30d,contact_type_30d,auth_indirectnum_30d,auth_indirectnum_ratio_30d,black_indirectnum_30d,black_indirectnum_ratio_30d,black_indirect_peernum_30d,black_indirect_peernum_ratio_30d,auth_indirect_peernum_30d,auth_indirect_peernum_ratio_30d,contactnum_90d,auth_contactnum_90d,auth_contact_ratio_90d,black_contactnum_90d,black_contactnum_ratio_90d,contact_type_90d,auth_indirectnum_90d,auth_indirectnum_ratio_90d,black_indirectnum_90d,black_indirectnum_ratio_90d,black_indirect_peernum_90d,black_indirect_peernum_ratio_90d,auth_indirect_peernum_90d,auth_indirect_peernum_ratio_90d,contactnum_180d,auth_contactnum_180d,auth_contact_ratio_180d,black_contactnum_180d,black_contactnum_ratio_180d,contact_type_180d,auth_indirectnum_180d,auth_indirectnum_ratio_180d,black_indirectnum_180d,black_indirectnum_ratio_180d,black_indirect_peernum_180d,black_indirect_peernum_ratio_180d,auth_indirect_peernum_180d,auth_indirect_peernum_ratio_180d,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{matchScore,jdbcType=INTEGER},#{contactnum30d,jdbcType=INTEGER},#{authContactnum30d,jdbcType=INTEGER},#{authContactRatio30d,jdbcType=VARCHAR},#{blackContactnum30d,jdbcType=INTEGER},#{blackContactnumRatio30d,jdbcType=VARCHAR},#{contactType30d,jdbcType=VARCHAR},#{authIndirectnum30d,jdbcType=INTEGER},#{authIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIndirectnum30d,jdbcType=INTEGER},#{blackIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIndirectPeernum30d,jdbcType=INTEGER},#{blackIndirectPeernumRatio30d,jdbcType=VARCHAR},#{authIndirectPeernum30d,jdbcType=INTEGER},#{authIndirectPeernumRatio30d,jdbcType=VARCHAR},#{contactnum90d,jdbcType=INTEGER},#{authContactnum90d,jdbcType=INTEGER},#{authContactRatio90d,jdbcType=VARCHAR},#{blackContactnum90d,jdbcType=INTEGER},#{blackContactnumRatio90d,jdbcType=VARCHAR},#{contactType90d,jdbcType=VARCHAR},#{authIndirectnum90d,jdbcType=INTEGER},#{authIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIndirectnum90d,jdbcType=INTEGER},#{blackIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIndirectPeernum90d,jdbcType=INTEGER},#{blackIndirectPeernumRatio90d,jdbcType=VARCHAR},#{authIndirectPeernum90d,jdbcType=INTEGER},#{authIndirectPeernumRatio90d,jdbcType=VARCHAR},#{contactnum180d,jdbcType=INTEGER},#{authContactnum180d,jdbcType=INTEGER},#{authContactRatio180d,jdbcType=VARCHAR},#{blackContactnum180d,jdbcType=INTEGER},#{blackContactnumRatio180d,jdbcType=VARCHAR},#{contactType180d,jdbcType=VARCHAR},#{authIndirectnum180d,jdbcType=INTEGER},#{authIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIndirectnum180d,jdbcType=INTEGER},#{blackIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIndirectPeernum180d,jdbcType=INTEGER},#{blackIndirectPeernumRatio180d,jdbcType=VARCHAR},#{authIndirectPeernum180d,jdbcType=INTEGER},#{authIndirectPeernumRatio180d,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicMobileContact">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicMobileContact">
         update cl_magic_mobile_contact set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

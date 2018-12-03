@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_channel表:渠道信息模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ChannelMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ChannelMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.Channel">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.Channel">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -66,11 +66,11 @@
         </trim>
     </sql>
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.Channel">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.Channel">
         insert into cl_channel(code,name,linker,phone,type,state,create_time)values(#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{linker,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.Channel">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.Channel">
         update cl_channel set 
             code = #{code,jdbcType=VARCHAR},
             name = #{name,jdbcType=VARCHAR},
@@ -144,7 +144,7 @@
         from cl_channel
 	</select>
 	
-	<select id="page" resultType="com.rongdu.cashloan.cl.model.ChannelModel" parameterType="java.util.HashMap">
+	<select id="page" resultType="com.xiji.cashloan.cl.model.ChannelModel" parameterType="java.util.HashMap">
 		select
 		<include refid="Base_Column_List" />
 		from cl_channel
@@ -156,7 +156,7 @@
 		a.channel_id from cl_channel_app a where a.channel_id = c.id) and state = 10
 	</select>
 	
-	<select id="channelUserList" resultType="com.rongdu.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+	<select id="channelUserList" resultType="com.xiji.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
 	  select   `code`,`name`, sum(registerCount) as registerCount ,sum(borrowMember) as borrowMember, sum(borrowCount) as borrowCount,sum(borrowAmout) as borrowAmout,sum(badRate) as badRate ,sum(payCount) as payCount, sum(payAccount) as payAccount from  
 	(
      select   a.cl_channel_id, a.`code`,a.`name`, 0  as  registerCount ,sum(a.borrowMember) as borrowMember ,SUM(a.borrowCount) as borrowCount ,SUM(a.borrowAmout) as borrowAmout, sum(a.badRate) as badRate, sum(a.payCount) as payCount, sum(a.payAccount) as payAccount

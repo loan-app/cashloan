@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_credit_type表:额度类型管理模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.CreditTypeMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.CreditTypeMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.CreditType">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.CreditType">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="credit_type_id" property="creditTypeId" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.CreditType">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.CreditType">
         insert into arc_cr_credit_type(credit_type_id,name,card_id,rank_id,borrow_type_id,add_time)
         values(#{creditTypeId,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{cardId,jdbcType=VARCHAR},#{rankId,jdbcType=VARCHAR},
 				#{borrowTypeId,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP})
@@ -51,7 +51,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.CreditType">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.CreditType">
         update arc_cr_credit_type set 
         	<if test="name !='' and name !=null">
                 name = #{name,jdbcType=VARCHAR},
@@ -108,7 +108,7 @@
         <include refid="searchBy"/>
     </select>
     
-   	<select id="findCreditTypeInfo" parameterType="java.util.HashMap" resultType="com.rongdu.creditrank.cr.model.CreditTypeModel">
+   	<select id="findCreditTypeInfo" parameterType="java.util.HashMap" resultType="com.xiji.creditrank.cr.model.CreditTypeModel">
    		select a.id id,a.card_id cardId,a.rank_id rankId,a.borrow_type_id borrowTypeId,a.name name,a.credit_type_id creditTypeId,
 		(select GROUP_CONCAT(c.card_name) from arc_cr_card c where c.id in (${cardId})) cardName,
 		(select GROUP_CONCAT(r.rank_name) from arc_cr_rank r where r.id in (${rankId})) rankName,
@@ -116,7 +116,7 @@
 		from arc_cr_credit_type  a  where a.id = #{id,jdbcType=BIGINT}
    	</select>
    	
-   	<select id="findByPrimary" resultType="com.rongdu.creditrank.cr.model.CreditTypeModel" parameterType="java.lang.Long">
+   	<select id="findByPrimary" resultType="com.xiji.creditrank.cr.model.CreditTypeModel" parameterType="java.lang.Long">
    		select
         <include refid="Base_Column_List" />
         from arc_cr_credit_type
@@ -131,7 +131,7 @@
   		)
    	</select>
    	
-   	<select id="findEditBorrowType" resultType="com.rongdu.creditrank.cr.model.CreditRatingModel" parameterType="java.lang.Long">
+   	<select id="findEditBorrowType" resultType="com.xiji.creditrank.cr.model.CreditRatingModel" parameterType="java.lang.Long">
    		select * from (
  			select id borrowTypeId,item_value borrowTypeName,#{typeId,jdbcType=BIGINT} as type from arc_sys_dict_detail 
  			where parent_id = (select id from arc_sys_dict where type_code = 'PRODUCT_TYPE') 
@@ -148,7 +148,7 @@
 		)  
    	</select>
    	
-   	<select id="findByBorrowTypeId" parameterType="java.lang.Long" resultType="com.rongdu.creditrank.cr.model.CreditTypeModel">
+   	<select id="findByBorrowTypeId" parameterType="java.lang.Long" resultType="com.xiji.creditrank.cr.model.CreditTypeModel">
    		select id,card_id cardId,rank_id rankId,borrow_type_id borrowTypeId,name name from arc_cr_credit_type where FIND_IN_SET(#{borrowTypeId,jdbcType=BIGINT},borrow_type_id)
    	</select>
     

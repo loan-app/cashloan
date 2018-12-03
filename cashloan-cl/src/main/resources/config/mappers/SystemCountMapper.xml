@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 首页数据统计 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.SystemCountMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.SystemCountMapper">
     <resultMap id="mapResult" type="HashMap">  
         <result property="key" column="ks" />  
         <result property="value" column="vs" />  

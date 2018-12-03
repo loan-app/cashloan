@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_scene_business表:场景与第三方征信接口关联关系接口执行认知 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.SceneBusinessLogMapper">
-	<resultMap type="com.rongdu.cashloan.rc.domain.SceneBusinessLog" id="baseResultMap">
+<mapper namespace="com.xiji.cashloan.rc.mapper.SceneBusinessLogMapper">
+	<resultMap type="com.xiji.cashloan.rc.domain.SceneBusinessLog" id="baseResultMap">
 		<id column="id" property="id" jdbcType="BIGINT" />
         <result column="scene_id" property="sceneId" jdbcType="BIGINT" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -22,7 +22,7 @@
         id,scene_id,borrow_id,user_id,tpp_id,business_id,nid,create_time,update_time,rs_state,rs_desc,type
     </sql>
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.SceneBusinessLog" keyProperty="id" useGeneratedKeys="true">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.SceneBusinessLog" keyProperty="id" useGeneratedKeys="true">
     	insert cl_rc_scene_business_log(scene_id,borrow_id,user_id,tpp_id,business_id,nid,create_time,type)
     	values(#{sceneId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{tppId,jdbcType=BIGINT},#{businessId,jdbcType=BIGINT},#{nid,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR})
     </insert>
@@ -61,7 +61,7 @@
         <include refid="searchBy"/>
     </select>
     
-	<update id="update" parameterType="com.rongdu.cashloan.rc.domain.SceneBusinessLog">
+	<update id="update" parameterType="com.xiji.cashloan.rc.domain.SceneBusinessLog">
 		update cl_rc_scene_business_log 
 		<set>
 			<if test=" rsState != '' and rsState != null">
@@ -87,7 +87,7 @@
 		select <include refid="base_column_list" /> from cl_rc_scene_business_log where borrow_id = #{borrowId,jdbcType=BIGINT} and (rs_state is null or rs_state = '' or rs_state = '0')
 	</select>
 	
-	<select id="findLastExcute" resultType="com.rongdu.cashloan.rc.domain.SceneBusinessLog">
+	<select id="findLastExcute" resultType="com.xiji.cashloan.rc.domain.SceneBusinessLog">
 		select <include refid="base_column_list" /> from cl_rc_scene_business_log 
 		where user_id = #{userId,jdbcType=BIGINT} and business_id = #{busId,jdbcType=BIGINT} ORDER BY id DESC LIMIT 1
 	</select>

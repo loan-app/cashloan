@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_cr_result_detail表:评分结果模块 -->
-<mapper namespace="com.rongdu.creditrank.cr.mapper.CrResultDetailMapper">
+<mapper namespace="com.xiji.creditrank.cr.mapper.CrResultDetailMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.creditrank.cr.domain.CrResultDetail">
+    <resultMap id="BaseResultMap" type="com.xiji.creditrank.cr.domain.CrResultDetail">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="result_id" property="resultId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="BIGINT" />
@@ -75,7 +75,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.creditrank.cr.domain.CrResultDetail">
+    <insert id="save" parameterType="com.xiji.creditrank.cr.domain.CrResultDetail">
         insert into arc_cr_result_detail(
             result_id,
         	card_id,
@@ -110,7 +110,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.creditrank.cr.domain.CrResultDetail">
+    <update id="update" parameterType="com.xiji.creditrank.cr.domain.CrResultDetail">
         update arc_cr_result_detail set 
             result_id = #{resultId,jdbcType=BIGINT},
             card_id = #{cardId,jdbcType=BIGINT},
@@ -261,7 +261,7 @@
     </insert>
     
     <!--返回Map-->        
-    <resultMap id="detailMap" type="com.rongdu.creditrank.cr.model.CrResultDetailModel">
+    <resultMap id="detailMap" type="com.xiji.creditrank.cr.model.CrResultDetailModel">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="result_id" property="resultId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="BIGINT" />
@@ -292,7 +292,7 @@
     </select>
     
     <!--返回Map-->        
-    <resultMap id="factorDetailMap" type="com.rongdu.creditrank.cr.model.CrResultFactorDetail">
+    <resultMap id="factorDetailMap" type="com.xiji.creditrank.cr.model.CrResultFactorDetail">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="result_id" property="resultId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="BIGINT" />
@@ -313,7 +313,7 @@
     </select>
     
     <!--返回Map-->        
-    <resultMap id="itemDetailMap" type="com.rongdu.creditrank.cr.model.CrResultItemDetail">
+    <resultMap id="itemDetailMap" type="com.xiji.creditrank.cr.model.CrResultItemDetail">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="result_id" property="resultId" jdbcType="BIGINT" />
         <result column="card_id" property="cardId" jdbcType="BIGINT" />

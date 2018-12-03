@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_statistics_business表:风控数据统计接口模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.StatisticsBusinessMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.StatisticsBusinessMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.StatisticsBusiness">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.StatisticsBusiness">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="statistics_id" property="statisticsId" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -46,12 +46,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.StatisticsBusiness">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.StatisticsBusiness">
         insert into cl_rc_statistics_business(statistics_id,name,nid,state,extend,add_time)values(#{statisticsId,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{nid,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{extend,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rc.domain.StatisticsBusiness">
+    <update id="update" parameterType="com.xiji.cashloan.rc.domain.StatisticsBusiness">
         update cl_rc_statistics_business
          <set>
             <if test="statisticsId != null">        

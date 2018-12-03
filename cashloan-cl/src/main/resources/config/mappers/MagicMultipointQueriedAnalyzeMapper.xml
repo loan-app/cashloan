@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_multipoint_queried_analyze表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicMultipointQueriedAnalyzeMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicMultipointQueriedAnalyzeMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -54,12 +54,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
         insert into cl_magic_multipoint_queried_analyze(user_id,trans_id,org_type,loan_cnt_15d,loan_cnt_30d,loan_cnt_90d,loan_cnt_180d,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{orgType,jdbcType=VARCHAR},#{loanCnt15d,jdbcType=INTEGER},#{loanCnt30d,jdbcType=INTEGER},#{loanCnt90d,jdbcType=INTEGER},#{loanCnt180d,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicMultipointQueriedAnalyze">
         update cl_magic_multipoint_queried_analyze set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

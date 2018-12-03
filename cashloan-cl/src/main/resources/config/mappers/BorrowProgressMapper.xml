@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_borrow_progress表:借款进度表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.BorrowProgressMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.BorrowProgressMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.BorrowProgress">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.BorrowProgress">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -12,7 +12,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
     
-    <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageBorrowProgressModel">
+    <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageBorrowProgressModel">
          <result column="real_name" property="realName" jdbcType="VARCHAR" />
          <result column="phone" property="phone" jdbcType="VARCHAR" />
     	 <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
@@ -50,11 +50,11 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.BorrowProgress">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BorrowProgress">
         insert into cl_borrow_progress(user_id,borrow_id,state,remark,create_time)values(#{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{state,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.BorrowProgress">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.BorrowProgress">
         update cl_borrow_progress set 
             user_id = #{userId,jdbcType=BIGINT},
             borrow_id = #{borrowId,jdbcType=BIGINT},
@@ -117,7 +117,7 @@
         <include refid="searchBy"/>
     </select>
     
-    <select id="listIndex" resultType="com.rongdu.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
+    <select id="listIndex" resultType="com.xiji.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
         select
         <include refid="Base_Column_List" />
         from cl_borrow_progress
@@ -125,7 +125,7 @@
         ORDER BY state ASC
     </select>
     
-    <select id="listProgress" resultType="com.rongdu.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
+    <select id="listProgress" resultType="com.xiji.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
         select
         <include refid="Base_Column_List" />
         from cl_borrow_progress

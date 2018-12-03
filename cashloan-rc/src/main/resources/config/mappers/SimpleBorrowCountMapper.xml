@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_simple_borrow_count表:风控数据统计-（简）借款统计模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.SimpleBorrowCountMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.SimpleBorrowCountMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.SimpleBorrowCount">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.SimpleBorrowCount">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="count_one" property="countOne" jdbcType="INTEGER" />
@@ -18,7 +18,7 @@
         id,user_id,count_one,<!--count_two,count_three,count_four, -->create_time 
     </sql>
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.SimpleBorrowCount">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.SimpleBorrowCount">
         insert into cl_rc_simple_borrow_count(user_id,count_one,<!--count_two,count_three,count_four,-->create_time)values(#{userId,jdbcType=INTEGER},#{countOne,jdbcType=INTEGER},<!--#{countTwo,jdbcType=INTEGER},#{countThree,jdbcType=INTEGER},#{countFour,jdbcType=INTEGER},-->#{createTime,jdbcType=TIMESTAMP})
     </insert>
     

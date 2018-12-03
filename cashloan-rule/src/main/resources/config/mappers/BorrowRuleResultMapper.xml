@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_borrow_rule_result表:规则匹配结果模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.BorrowRuleResultMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.BorrowRuleResultMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.BorrowRuleResult">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.BorrowRuleResult">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="borrow_id" property="borrowId" jdbcType="INTEGER" />
         <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
@@ -21,11 +21,11 @@
         <result column="score" property="score" jdbcType="INTEGER"/>
     </resultMap>
     
-    <resultMap id="ManageReviewModel" extends="BaseResultMap" type="com.rongdu.cashloan.rule.model.ManageReviewModel" >
+    <resultMap id="ManageReviewModel" extends="BaseResultMap" type="com.xiji.cashloan.rule.model.ManageReviewModel" >
     
     </resultMap>
     
-    <resultMap id="ManageRuleResultModel" extends="BaseResultMap" type="com.rongdu.cashloan.rule.model.ManageRuleResultModel" >
+    <resultMap id="ManageRuleResultModel" extends="BaseResultMap" type="com.xiji.cashloan.rule.model.ManageRuleResultModel" >
     
     </resultMap>
     
@@ -84,7 +84,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rule.domain.BorrowRuleResult">
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.BorrowRuleResult">
         insert into arc_borrow_rule_result
         	(borrow_id,rule_id,tb_nid,tb_name,col_nid,col_name,value,matching,rule,result,result_type,req_ext,add_time,score)
         values 
@@ -95,7 +95,7 @@
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.BorrowRuleResult">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.BorrowRuleResult">
         update arc_borrow_rule_result set 
             borrow_id = #{borrowId,jdbcType=INTEGER},
             rule_id = #{ruleId,jdbcType=INTEGER},

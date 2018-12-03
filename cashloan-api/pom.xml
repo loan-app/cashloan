@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.rongdu.framework</groupId>
+		<groupId>com.xiji.framework</groupId>
 		<artifactId>cashloan</artifactId>
 		<version>1.0.4</version>
 	</parent>
@@ -22,14 +22,9 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.rongdu.framework</groupId>
+			<groupId>com.xiji.framework</groupId>
 			<artifactId>cashloan-cl</artifactId>
 			<version>1.0.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.erongdu.credit</groupId>
-			<artifactId>apidemo</artifactId>
-			<version>1.0.6</version>
 		</dependency>
 
 		<dependency>

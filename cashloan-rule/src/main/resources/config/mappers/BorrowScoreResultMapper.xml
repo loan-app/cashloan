@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_borrow_score_result表:决策引擎执行记录模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.BorrowScoreResultMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.BorrowScoreResultMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.BorrowScoreResult">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.BorrowScoreResult">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
         <result column="rule_engin_id" property="ruleEnginId" jdbcType="BIGINT" />
@@ -50,12 +50,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rule.domain.BorrowScoreResult">
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.BorrowScoreResult">
         insert into arc_borrow_score_result(borrow_id,rule_engin_id,result_type,formula,integral,score,result)values(#{borrowId,jdbcType=BIGINT},#{ruleEnginId,jdbcType=BIGINT},#{resultType,jdbcType=VARCHAR},#{formula,jdbcType=VARCHAR},#{integral,jdbcType=VARCHAR},#{score,jdbcType=INTEGER},#{result,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.BorrowScoreResult">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.BorrowScoreResult">
         update arc_borrow_score_result set 
             borrow_id = #{borrowId,jdbcType=BIGINT},
             rule_engin_id = #{ruleEnginId,jdbcType=BIGINT},

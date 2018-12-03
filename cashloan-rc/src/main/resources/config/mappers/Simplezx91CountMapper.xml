@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_simple_91zx_count表:风控数据统计-（简）通话记录统计模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.Simplezx91CountMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.Simplezx91CountMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.Simplezx91Count">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.Simplezx91Count">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="borrow_count" property="borrowCount" jdbcType="INTEGER" />
@@ -46,12 +46,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.Simplezx91Count" keyProperty="id" useGeneratedKeys="true">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.Simplezx91Count" keyProperty="id" useGeneratedKeys="true">
         insert into cl_rc_simple_91zx_count(user_id,borrow_count,overdue_amt,amt_min,amt_max,create_time)values(#{userId,jdbcType=BIGINT},#{borrowCount,jdbcType=INTEGER},#{overdueAmt,jdbcType=DECIMAL},#{amtMin,jdbcType=DECIMAL},#{amtMax,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rc.domain.Simplezx91Count">
+    <update id="update" parameterType="com.xiji.cashloan.rc.domain.Simplezx91Count">
         update cl_rc_simple_91zx_count
         <set>
             <if test="userId != null ">        

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_simple_voices_count表:风控数据统计-（简）通话记录统计模块 -->
-<mapper namespace="com.rongdu.cashloan.rc.mapper.SimpleVoicesCountMapper">
+<mapper namespace="com.xiji.cashloan.rc.mapper.SimpleVoicesCountMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rc.domain.SimpleVoicesCount">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rc.domain.SimpleVoicesCount">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
         <result column="count_one" property="countOne" jdbcType="INTEGER" />
@@ -15,7 +15,7 @@
         id,user_id,count_one,create_time
     </sql>
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rc.domain.SimpleVoicesCount">
+    <insert id="save" parameterType="com.xiji.cashloan.rc.domain.SimpleVoicesCount">
         insert into cl_rc_simple_voices_count(user_id,count_one,create_time)values(#{userId,jdbcType=INTEGER},#{countOne,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 

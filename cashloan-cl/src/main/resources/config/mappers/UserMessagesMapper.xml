@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_messages表:用户资料联系人模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserMessagesMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserMessagesMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserMessages">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserMessages">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserMessages">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserMessages">
         insert into cl_user_messages(name,phone,time,type,user_id)values(#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{time,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER})
     </insert>
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_profit_log表:分润记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ProfitLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ProfitLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.ProfitLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.ProfitLog">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="borrow_id" property="borrowId" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
@@ -18,11 +18,11 @@
        id,borrow_id,user_id,agent_id,amount,rate,add_time 
     </sql>
     
-    <resultMap id="profitLogModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ProfitLogModel">
+    <resultMap id="profitLogModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ProfitLogModel">
     	
     </resultMap>
     
-    <resultMap id="ManageCashLogModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageCashLogModel">
+    <resultMap id="ManageCashLogModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageCashLogModel">
     	
     </resultMap>
     
@@ -54,7 +54,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.ProfitLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.ProfitLog">
         insert into cl_profit_log(borrow_id,user_id,agent_id,amount,rate,add_time)values(#{borrowId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{agentId,jdbcType=INTEGER},#{amount,jdbcType=DECIMAL},#{rate,jdbcType=DECIMAL},#{addTime,jdbcType=TIMESTAMP})
     </insert>
 

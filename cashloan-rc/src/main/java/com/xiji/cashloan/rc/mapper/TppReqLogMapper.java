@@ -1,0 +1,39 @@
+package com.xiji.cashloan.rc.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+import com.xiji.cashloan.rc.domain.TppReqLog;
+import com.xiji.cashloan.rc.model.TppReqLogModel;
+
+/**
+ * 第三方征信请求记录Dao
+ * 
+ * @author zlh
+ * @version 1.0.0
+ * @date 2017-03-20 13:50:34
+ * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
+ * 官方网站：www.xiji.com
+ * 创新一部：rdc@xiji.com
+ * 未经授权不得进行修改、复制、出售及商业使用
+ */
+@RDBatisDao
+public interface TppReqLogMapper extends BaseMapper<TppReqLog,Long> {
+
+	/**
+	 * 根据订单号修改记录
+	 * @param log
+	 * @return
+	 */
+	int modifyTppReqLog(TppReqLog log);
+
+	/**
+	 * 分页查询
+	 * @param searchMap
+	 * @return
+	 */
+	List<TppReqLogModel> page(Map<String, Object> searchMap);
+
+}

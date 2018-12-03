@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_equipment_info表:用户设备信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserEquipmentInfoMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserEquipmentInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserEquipmentInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserEquipmentInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="black_box" property="blackBox" jdbcType="VARCHAR" />
@@ -70,12 +70,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserEquipmentInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserEquipmentInfo">
         insert into cl_user_equipment_info(user_id,black_box,operating_system,system_versions,phone_type,phone_brand,phone_mark,mac,version_name,version_code,app_install_time,app_market)values(#{userId,jdbcType=BIGINT},#{blackBox,jdbcType=VARCHAR},#{operatingSystem,jdbcType=VARCHAR},#{systemVersions,jdbcType=VARCHAR},#{phoneType,jdbcType=VARCHAR},#{phoneBrand,jdbcType=VARCHAR},#{phoneMark,jdbcType=VARCHAR},#{mac,jdbcType=VARCHAR},#{versionName,jdbcType=VARCHAR},#{versionCode,jdbcType=VARCHAR},#{appInstallTime,jdbcType=TIMESTAMP},#{appMarket,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserEquipmentInfo">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UserEquipmentInfo">
         update cl_user_equipment_info set 
             user_id = #{userId,jdbcType=BIGINT},
             black_box = #{blackBox,jdbcType=VARCHAR},

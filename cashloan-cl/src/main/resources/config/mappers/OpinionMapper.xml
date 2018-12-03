@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_opinion表:意见反馈表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.OpinionMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.OpinionMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.Opinion">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.Opinion">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="feedback" property="feedback" jdbcType="VARCHAR" />
@@ -14,7 +14,7 @@
         <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
     </resultMap>
     
-    <resultMap id="modelResultMap" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.OpinionModel">
+    <resultMap id="modelResultMap" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.OpinionModel">
     	
     </resultMap>
     
@@ -35,7 +35,7 @@
         </trim>
     </sql>
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.Opinion">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.Opinion">
         insert into cl_opinion(user_id,opinion,sys_user_id,feedback,state,create_time,confirm_time)
         values
         (#{userId,jdbcType=BIGINT},#{opinion,jdbcType=VARCHAR},
@@ -44,7 +44,7 @@
         #{createTime,jdbcType=TIMESTAMP},#{confirmTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.Opinion">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.Opinion">
         update cl_opinion set 
             create_time = #{createTime,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=INTEGER},

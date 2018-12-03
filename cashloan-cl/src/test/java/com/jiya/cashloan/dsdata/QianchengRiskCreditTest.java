@@ -3,7 +3,7 @@ package com.jiya.cashloan.dsdata;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jiya.cashloan.TestConstants;
-import com.rongdu.cashloan.cl.model.dsdata.TKCreditRequest;
+import com.xiji.cashloan.cl.model.dsdata.TKCreditRequest;
 
 import java.util.HashMap;
 import java.util.Map;

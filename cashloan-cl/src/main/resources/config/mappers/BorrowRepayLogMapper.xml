@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_borrow_repay_log表:还款计录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.BorrowRepayLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.BorrowRepayLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.BorrowRepayLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="repay_id" property="repayId" jdbcType="BIGINT" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -20,7 +20,7 @@
         <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
     </resultMap>
     
-    <resultMap id="BorrowRepayLogModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.BorrowRepayLogModel" >
+    <resultMap id="BorrowRepayLogModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.BorrowRepayLogModel" >
     
     </resultMap>
     
@@ -78,7 +78,7 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.BorrowRepayLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BorrowRepayLog">
 		insert into
 			cl_borrow_repay_log(repay_id,borrow_id,user_id,amount,repay_time,penalty_amout,penalty_day,repay_way,repay_account,refund_deduction,pay_time,create_time,serial_number)
 		values(
@@ -184,7 +184,7 @@
         ORDER BY id DESC
     </select>
     
-    <resultMap id="borrowRaylogMap"  extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageBRepayLogModel">
+    <resultMap id="borrowRaylogMap"  extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageBRepayLogModel">
     	 <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
          <result column="borrow_amount" property="borrowAmount" jdbcType="DECIMAL" />
          <result column="repay_amount" property="repayAmount" jdbcType="DECIMAL" />

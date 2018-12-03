@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_education_info表:用户设备信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserEducationInfoMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserEducationInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserEducationInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserEducationInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="education_type" property="educationType" jdbcType="VARCHAR" />
@@ -16,7 +16,7 @@
         <result column="state" property="state" jdbcType="VARCHAR" />
     </resultMap>
     
-    <resultMap id="UserEducationInfoModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.UserEducationInfoModel">
+    <resultMap id="UserEducationInfoModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.UserEducationInfoModel">
     	
     </resultMap>
     
@@ -62,11 +62,11 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserEducationInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserEducationInfo">
         insert into cl_user_education_info(user_id,education_type,profession,graduate_school,matriculation_time,graduation_time,graduation_conclusion,education_background,state)values(#{userId,jdbcType=BIGINT},#{educationType,jdbcType=VARCHAR},#{profession,jdbcType=VARCHAR},#{graduateSchool,jdbcType=VARCHAR},#{matriculationTime,jdbcType=VARCHAR},#{graduationTime,jdbcType=VARCHAR},#{graduationConclusion,jdbcType=VARCHAR},#{educationBackground,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR})
     </insert>
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserEducationInfo">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UserEducationInfo">
         update cl_user_education_info set 
             user_id = #{userId,jdbcType=BIGINT},
             education_type = #{educationType,jdbcType=VARCHAR},

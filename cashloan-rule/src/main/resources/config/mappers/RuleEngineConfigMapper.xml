@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_rule_engine_config表:规则引擎管理模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.RuleEngineConfigMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.RuleEngineConfigMapper">
     <!--返回Map-->       
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.RuleEngineConfig">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.RuleEngineConfig">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="rule_engin_id" property="ruleEnginId" jdbcType="BIGINT" />
         <result column="ctable" property="ctable" jdbcType="VARCHAR" />
@@ -86,12 +86,12 @@
     </sql>
     
     
-    <insert id="insert" parameterType="com.rongdu.cashloan.rule.domain.RuleEngineConfig" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="com.xiji.cashloan.rule.domain.RuleEngineConfig" keyProperty="id" useGeneratedKeys="true">
         insert into arc_rule_engine_config(rule_engin_id,ctable,table_comment,ccolumn,column_comment,formula,cvalue,state,req_ext,add_ip,add_time,type,integral,result,result_type,sort)values(#{ruleEnginId,jdbcType=BIGINT},#{ctable,jdbcType=VARCHAR},#{tableComment,jdbcType=VARCHAR},#{ccolumn,jdbcType=VARCHAR},#{columnComment,jdbcType=VARCHAR},#{formula,jdbcType=VARCHAR},#{cvalue,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{reqExt,jdbcType=VARCHAR},#{addIp,jdbcType=VARCHAR},#{addTime,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR},#{integral,jdbcType=INTEGER},#{result,jdbcType=VARCHAR},#{resultType,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.RuleEngineConfig">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.RuleEngineConfig">
         update arc_rule_engine_config set 
             rule_engin_id = #{ruleEnginId,jdbcType=BIGINT},
             ctable = #{ctable,jdbcType=VARCHAR},

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_operator_monthinfo表:魔蝎运营商数据-流量详情模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.OperatorMonthInfoMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.OperatorMonthInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.OperatorMonthInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.OperatorMonthInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
@@ -54,12 +54,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.OperatorMonthInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorMonthInfo">
         insert into cl_operator_monthinfo(user_id,req_log_id,mobile,month_count,miss_month_count,no_call_month,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{monthCount,jdbcType=INTEGER},#{missMonthCount,jdbcType=INTEGER},#{noCallMonth,jdbcType=INTEGER},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.OperatorMonthInfo">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorMonthInfo">
         update cl_operator_monthinfo set 
             user_id = #{userId,jdbcType=BIGINT},
             req_log_id = #{reqLogId,jdbcType=BIGINT},

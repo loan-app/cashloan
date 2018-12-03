@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_bank_card表:银行卡模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.BankCardMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.BankCardMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.BankCard">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.BankCard">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
         <result column="bind_time" property="bindTime" jdbcType="TIMESTAMP" />
@@ -47,12 +47,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.BankCard">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BankCard">
         insert into cl_bank_card(card_no,bind_time,user_id,bank,phone,agree_no)values(#{cardNo,jdbcType=VARCHAR},#{bindTime,jdbcType=TIMESTAMP},#{userId,jdbcType=BIGINT},#{bank,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{agreeNo,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.BankCard">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.BankCard">
         update cl_bank_card set 
             card_no = #{cardNo,jdbcType=VARCHAR},
             bind_time = #{bindTime,jdbcType=TIMESTAMP},

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_other_info表:用户更多信息模块 -->
-<mapper namespace="com.rongdu.cashloan.core.mapper.UserOtherInfoMapper">
+<mapper namespace="com.xiji.cashloan.core.mapper.UserOtherInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.core.domain.UserOtherInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.core.domain.UserOtherInfo">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
         <result column="taobao" property="taobao" jdbcType="VARCHAR" />
@@ -46,12 +46,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.core.domain.UserOtherInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.core.domain.UserOtherInfo">
         insert into cl_user_other_info(user_id,taobao,email,qq,wechat,create_time)values(#{userId,jdbcType=INTEGER},#{taobao,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{qq,jdbcType=VARCHAR},#{wechat,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.core.domain.UserOtherInfo">
+    <update id="update" parameterType="com.xiji.cashloan.core.domain.UserOtherInfo">
         update cl_user_other_info set 
             user_id = #{userId,jdbcType=INTEGER},
             taobao = #{taobao,jdbcType=VARCHAR},

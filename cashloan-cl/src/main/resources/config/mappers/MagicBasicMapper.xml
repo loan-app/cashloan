@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_basic表:魔杖2.0报告-基础信息模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicBasicMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicBasicMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicBasic">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicBasic">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
@@ -78,12 +78,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicBasic">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicBasic">
         insert into cl_magic_basic(user_id,mobile,user_name,idcard,idcard_location,trans_id,age,gender,email,education_level,education_is_graduation,has_carrier_data,has_onlinebank_data,create_time)values(#{userId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{idcard,jdbcType=VARCHAR},#{idcardLocation,jdbcType=VARCHAR},#{transId,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{gender,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{educationLevel,jdbcType=INTEGER},#{educationIsGraduation,jdbcType=INTEGER},#{hasCarrierData,jdbcType=INTEGER},#{hasOnlinebankData,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicBasic">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicBasic">
         update cl_magic_basic set 
             user_id = #{userId,jdbcType=BIGINT},
             mobile = #{mobile,jdbcType=VARCHAR},

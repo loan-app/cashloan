@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_intimate_contact表:魔杖2.0报告-基础信息表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicIntimateContactMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicIntimateContactMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicIntimateContact">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicIntimateContact">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -202,12 +202,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicIntimateContact">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicIntimateContact">
         insert into cl_magic_intimate_contact(user_id,trans_id,intimatenum_30d,auth_intimatenum_30d,auth_intimatenum_ratio_30d,black_intimatenum_30d,black_intimatenum_ratio_30d,intimate_type_30d,auth_intimate_indirectnum_30d,auth_intimate_indirectnum_ratio_30d,black_intimate_indirectnum_30d,black_intimate_indirectnum_ratio_30d,black_intimate_indirect_peernum_30d,black_intimate_indirect_peernum_ratio_30d,auth_intimate_indirect_peernum_30d,auth_intimate_indirect_peernum_ratio_30d,intimatenum_90d,auth_intimatenum_90d,auth_intimatenum_ratio_90d,black_intimatenum_90d,black_intimatenum_ratio_90d,intimate_type_90d,auth_intimate_indirectnum_90d,auth_intimate_indirectnum_ratio_90d,black_intimate_indirectnum_90d,black_intimate_indirectnum_ratio_90d,black_intimate_indirect_peernum_90d,black_intimate_indirect_peernum_ratio_90d,auth_intimate_indirect_peernum_90d,auth_intimate_indirect_peernum_ratio_90d,intimatenum_180d,auth_intimatenum_180d,auth_intimatenum_ratio_180d,black_intimatenum_180d,black_intimatenum_ratio_180d,intimate_type_180d,auth_intimate_indirectnum_180d,auth_intimate_indirectnum_ratio_180d,black_intimate_indirectnum_180d,black_intimate_indirectnum_ratio_180d,black_intimate_indirect_peernum_180d,black_intimate_indirect_peernum_ratio_180d,auth_intimate_indirect_peernum_180d,auth_intimate_indirect_peernum_ratio_180d,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{intimatenum30d,jdbcType=INTEGER},#{authIntimatenum30d,jdbcType=INTEGER},#{authIntimatenumRatio30d,jdbcType=VARCHAR},#{blackIntimatenum30d,jdbcType=INTEGER},#{blackIntimatenumRatio30d,jdbcType=VARCHAR},#{intimateType30d,jdbcType=VARCHAR},#{authIntimateIndirectnum30d,jdbcType=INTEGER},#{authIntimateIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIntimateIndirectnum30d,jdbcType=INTEGER},#{blackIntimateIndirectnumRatio30d,jdbcType=VARCHAR},#{blackIntimateIndirectPeernum30d,jdbcType=INTEGER},#{blackIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},#{authIntimateIndirectPeernum30d,jdbcType=INTEGER},#{authIntimateIndirectPeernumRatio30d,jdbcType=VARCHAR},#{intimatenum90d,jdbcType=INTEGER},#{authIntimatenum90d,jdbcType=INTEGER},#{authIntimatenumRatio90d,jdbcType=VARCHAR},#{blackIntimatenum90d,jdbcType=INTEGER},#{blackIntimatenumRatio90d,jdbcType=VARCHAR},#{intimateType90d,jdbcType=VARCHAR},#{authIntimateIndirectnum90d,jdbcType=INTEGER},#{authIntimateIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIntimateIndirectnum90d,jdbcType=INTEGER},#{blackIntimateIndirectnumRatio90d,jdbcType=VARCHAR},#{blackIntimateIndirectPeernum90d,jdbcType=INTEGER},#{blackIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},#{authIntimateIndirectPeernum90d,jdbcType=INTEGER},#{authIntimateIndirectPeernumRatio90d,jdbcType=VARCHAR},#{intimatenum180d,jdbcType=INTEGER},#{authIntimatenum180d,jdbcType=INTEGER},#{authIntimatenumRatio180d,jdbcType=VARCHAR},#{blackIntimatenum180d,jdbcType=INTEGER},#{blackIntimatenumRatio180d,jdbcType=VARCHAR},#{intimateType180d,jdbcType=VARCHAR},#{authIntimateIndirectnum180d,jdbcType=INTEGER},#{authIntimateIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIntimateIndirectnum180d,jdbcType=INTEGER},#{blackIntimateIndirectnumRatio180d,jdbcType=VARCHAR},#{blackIntimateIndirectPeernum180d,jdbcType=INTEGER},#{blackIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},#{authIntimateIndirectPeernum180d,jdbcType=INTEGER},#{authIntimateIndirectPeernumRatio180d,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicIntimateContact">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicIntimateContact">
         update cl_magic_intimate_contact set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

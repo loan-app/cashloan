@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_dhb_history_org表:贷后邦历史机构类型模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.DhbHistoryOrgMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.DhbHistoryOrgMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.DhbHistoryOrg">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.DhbHistoryOrg">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -58,12 +58,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.DhbHistoryOrg">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.DhbHistoryOrg">
         insert into cl_rc_dhb_history_org(order_no,user_id,online_installment_cnt,offline_installment_cnt,credit_card_repayment_cnt,payday_loan_cnt,online_cash_loan_cnt,offline_cash_loan_cnt,others_cnt)values(#{orderNo,jdbcType=VARCHAR},#{userId,jdbcType=BIGINT},#{onlineInstallmentCnt,jdbcType=INTEGER},#{offlineInstallmentCnt,jdbcType=INTEGER},#{creditCardRepaymentCnt,jdbcType=INTEGER},#{paydayLoanCnt,jdbcType=INTEGER},#{onlineCashLoanCnt,jdbcType=INTEGER},#{offlineCashLoanCnt,jdbcType=INTEGER},#{othersCnt,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.DhbHistoryOrg">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.DhbHistoryOrg">
         update cl_rc_dhb_history_org set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=BIGINT},

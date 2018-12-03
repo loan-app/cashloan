@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_user_emer_contacts表:紧急联系人表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.UserEmerContactsMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.UserEmerContactsMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.UserEmerContacts">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.UserEmerContacts">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.UserEmerContacts">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserEmerContacts">
         insert into cl_user_emer_contacts(name,phone,user_id,relation,type)values(#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{relation,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.UserEmerContacts">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.UserEmerContacts">
         update cl_user_emer_contacts set 
             name = #{name,jdbcType=VARCHAR},
             phone = #{phone,jdbcType=VARCHAR},

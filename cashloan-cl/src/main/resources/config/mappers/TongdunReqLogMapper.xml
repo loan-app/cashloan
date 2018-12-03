@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_tongdun_req_log表:同盾第三方请求记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.TongdunReqLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.TongdunReqLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.TongdunReqLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.TongdunReqLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
@@ -19,14 +19,14 @@
         <result column="rs_score" property="rsScore" jdbcType="INTEGER" />
     </resultMap>
     
-    <resultMap id="ModelResultMap" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.TongdunReqLogModel">
+    <resultMap id="ModelResultMap" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.TongdunReqLogModel">
 		<result column="real_name" property="realName" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="borrow_no" property="borrowNo" jdbcType="VARCHAR" />
 		<result column="amount" property="amount" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="ModelDetailResultMap" type="com.rongdu.cashloan.cl.model.TongdunReqLogModel">
+	<resultMap id="ModelDetailResultMap" type="com.xiji.cashloan.cl.model.TongdunReqLogModel">
 		<result column="query_params" property="queryParams" jdbcType="VARCHAR" />
 	</resultMap>
     
@@ -87,12 +87,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.TongdunReqLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.TongdunReqLog">
         insert into cl_tongdun_req_log(order_no,borrow_id,user_id,state,create_time,submit_code,submit_params,report_id,update_time,query_code,rs_state,rs_score)values(#{orderNo,jdbcType=VARCHAR},#{borrowId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{state,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{submitCode,jdbcType=VARCHAR},#{submitParams,jdbcType=VARCHAR},#{reportId,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},#{queryCode,jdbcType=VARCHAR},#{rsState,jdbcType=VARCHAR},#{rsScore,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.TongdunReqLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.TongdunReqLog">
         update cl_tongdun_req_log set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             borrow_id = #{borrowId,jdbcType=BIGINT},

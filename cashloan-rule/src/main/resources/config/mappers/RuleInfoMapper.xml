@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- arc_rule_info表:规则信息模块 -->
-<mapper namespace="com.rongdu.cashloan.rule.mapper.RuleInfoMapper">
+<mapper namespace="com.xiji.cashloan.rule.mapper.RuleInfoMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.rule.domain.RuleInfo">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.rule.domain.RuleInfo">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="tb_nid" property="tbNid" jdbcType="VARCHAR" />
         <result column="tb_name" property="tbName" jdbcType="VARCHAR" />
@@ -46,12 +46,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.rule.domain.RuleInfo">
+    <insert id="save" parameterType="com.xiji.cashloan.rule.domain.RuleInfo">
         insert into arc_rule_info(tb_nid,tb_name,detail,state,req_ext,add_time )values(#{tbNid,jdbcType=VARCHAR},#{tbName,jdbcType=VARCHAR},#{detail,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{reqExt,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.rule.domain.RuleInfo">
+    <update id="update" parameterType="com.xiji.cashloan.rule.domain.RuleInfo">
         update arc_rule_info set 
             tb_nid = #{tbNid,jdbcType=VARCHAR},
             tb_name = #{tbName,jdbcType=VARCHAR},

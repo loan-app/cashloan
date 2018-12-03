@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_sms_tpl表:短信记录模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.SmsTplMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.SmsTplMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.SmsTpl">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.SmsTpl">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="VARCHAR" />
         <result column="type_name" property="typeName" jdbcType="VARCHAR" />
@@ -42,12 +42,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.SmsTpl">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.SmsTpl">
         insert into cl_sms_tpl(type,type_name,tpl,number,state)values(#{type,jdbcType=VARCHAR},#{typeName,jdbcType=VARCHAR},#{tpl,jdbcType=VARCHAR},#{number,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.SmsTpl">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.SmsTpl">
         update cl_sms_tpl set 
             type = #{type,jdbcType=VARCHAR},
             type_name = #{typeName,jdbcType=VARCHAR},

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_profit_agent表:代理用户信息模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.ProfitAgentMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.ProfitAgentMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.ProfitAgent">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.ProfitAgent">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="level" property="level" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="INTEGER" />
@@ -21,7 +21,7 @@
         id,level,user_id,rate,create_time,update_time,leader_id,apply_time,old_rate,is_use 
     </sql>
     
-    <resultMap id="ManageAgentListModel" extends="BaseResultMap" type="com.rongdu.cashloan.cl.model.ManageAgentListModel">
+    <resultMap id="ManageAgentListModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.ManageAgentListModel">
     	
     </resultMap>
     
@@ -62,12 +62,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.ProfitAgent">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.ProfitAgent">
         insert into cl_profit_agent(level,user_id,rate,create_time,update_time,leader_id,apply_time,old_rate,is_use)values(#{level,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{rate,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{leaderId,jdbcType=INTEGER},#{applyTime,jdbcType=TIMESTAMP},#{oldRate,jdbcType=DECIMAL},#{isUse,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.ProfitAgent">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.ProfitAgent">
         update cl_profit_agent set 
             level = #{level,jdbcType=INTEGER},
             user_id = #{userId,jdbcType=INTEGER},

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_magic_black_gray表:魔杖2.0-黑灰名单记录表模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.MagicBlackGrayMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.MagicBlackGrayMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.MagicBlackGray">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.MagicBlackGray">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="trans_id" property="transId" jdbcType="VARCHAR" />
@@ -98,12 +98,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.MagicBlackGray">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.MagicBlackGray">
         insert into cl_magic_black_gray(user_id,trans_id,black_types,black_mobile_name_in_blacklist,black_mobile_name_updated_time,black_idcard_name_in_blacklist,black_idcard_name_updated_time,black_overdue_amount,black_overdue_count,black_overdue_status,gray_types,gray_mobile_name_in_blacklist,gray_mobile_name_black_updated_time,gray_idcard_name_in_blacklist,gray_idcard_name_black_updated_time,gray_overdue_amount,gray_overdue_count,gray_overdue_status,create_time)values(#{userId,jdbcType=BIGINT},#{transId,jdbcType=VARCHAR},#{blackTypes,jdbcType=VARCHAR},#{blackMobileNameInBlacklist,jdbcType=INTEGER},#{blackMobileNameUpdatedTime,jdbcType=VARCHAR},#{blackIdcardNameInBlacklist,jdbcType=INTEGER},#{blackIdcardNameUpdatedTime,jdbcType=VARCHAR},#{blackOverdueAmount,jdbcType=VARCHAR},#{blackOverdueCount,jdbcType=INTEGER},#{blackOverdueStatus,jdbcType=VARCHAR},#{grayTypes,jdbcType=VARCHAR},#{grayMobileNameInBlacklist,jdbcType=INTEGER},#{grayMobileNameBlackUpdatedTime,jdbcType=VARCHAR},#{grayIdcardNameInBlacklist,jdbcType=INTEGER},#{grayIdcardNameBlackUpdatedTime,jdbcType=VARCHAR},#{grayOverdueAmount,jdbcType=VARCHAR},#{grayOverdueCount,jdbcType=INTEGER},#{grayOverdueStatus,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.MagicBlackGray">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.MagicBlackGray">
         update cl_magic_black_gray set 
             user_id = #{userId,jdbcType=BIGINT},
             trans_id = #{transId,jdbcType=VARCHAR},

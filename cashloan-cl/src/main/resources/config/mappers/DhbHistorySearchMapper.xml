@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_dhb_history_search表:贷后邦历史查询模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.DhbHistorySearchMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.DhbHistorySearchMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.DhbHistorySearch">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.DhbHistorySearch">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -86,12 +86,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.DhbHistorySearch">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.DhbHistorySearch">
         insert into cl_rc_dhb_history_search(order_no,user_id,search_cnt,search_cnt_recent_7_days,search_cnt_recent_14_days,search_cnt_recent_30_days,search_cnt_recent_60_days,search_cnt_recent_90_days,search_cnt_recent_180_days,org_cnt,org_cnt_recent_7_days,org_cnt_recent_14_days,org_cnt_recent_30_days,org_cnt_recent_60_days,org_cnt_recent_90_days,org_cnt_recent_180_days)values(#{orderNo,jdbcType=VARCHAR},#{userId,jdbcType=BIGINT},#{searchCnt,jdbcType=INTEGER},#{searchCntRecent7Days,jdbcType=INTEGER},#{searchCntRecent14Days,jdbcType=INTEGER},#{searchCntRecent30Days,jdbcType=INTEGER},#{searchCntRecent60Days,jdbcType=INTEGER},#{searchCntRecent90Days,jdbcType=INTEGER},#{searchCntRecent180Days,jdbcType=INTEGER},#{orgCnt,jdbcType=INTEGER},#{orgCntRecent7Days,jdbcType=INTEGER},#{orgCntRecent14Days,jdbcType=INTEGER},#{orgCntRecent30Days,jdbcType=INTEGER},#{orgCntRecent60Days,jdbcType=INTEGER},#{orgCntRecent90Days,jdbcType=INTEGER},#{orgCntRecent180Days,jdbcType=INTEGER})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.DhbHistorySearch">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.DhbHistorySearch">
         update cl_rc_dhb_history_search set 
             order_no = #{orderNo,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=BIGINT},

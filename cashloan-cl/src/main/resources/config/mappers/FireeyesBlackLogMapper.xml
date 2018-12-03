@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_rc_fireeyes_black_log表:火眼黑名单模块 -->
-<mapper namespace="com.rongdu.cashloan.cl.mapper.FireeyesBlackLogMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.FireeyesBlackLogMapper">
     <!--返回Map-->        
-    <resultMap id="BaseResultMap" type="com.rongdu.cashloan.cl.domain.FireeyesBlackLog">
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.FireeyesBlackLog">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -58,12 +58,12 @@
     </sql>
     
     
-    <insert id="save" parameterType="com.rongdu.cashloan.cl.domain.FireeyesBlackLog">
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.FireeyesBlackLog">
         insert into cl_rc_fireeyes_black_log(user_id,phone,user_name,user_card,order_no,is_black,resp_code,resp_params,create_time)values(#{userId,jdbcType=BIGINT},#{phone,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{userCard,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{isBlack,jdbcType=VARCHAR},#{respCode,jdbcType=VARCHAR},#{respParams,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
-    <update id="update" parameterType="com.rongdu.cashloan.cl.domain.FireeyesBlackLog">
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.FireeyesBlackLog">
         update cl_rc_fireeyes_black_log set 
             user_id = #{userId,jdbcType=BIGINT},
             phone = #{phone,jdbcType=VARCHAR},
