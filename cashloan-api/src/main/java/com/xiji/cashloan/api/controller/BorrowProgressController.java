@@ -67,7 +67,7 @@ public class BorrowProgressController extends BaseController {
 		
 		String isShow = "0";
 		if (BorrowModel.STATE_REPAY.equals(borrow.getState()) || BorrowModel.STATE_DELAY.equals(borrow.getState()) ||
-				BorrowModel.STATE_FINISH.equals(borrow.getState())) {
+				BorrowModel.STATE_FINISH.equals(borrow.getState()) || BorrowModel.STATE_DELAY_PAY.equals(borrow.getState()) ) {
 			isShow = "1";
 		}
 		String s = File.separator;

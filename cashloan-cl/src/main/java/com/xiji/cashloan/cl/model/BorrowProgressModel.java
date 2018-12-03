@@ -28,6 +28,8 @@ public class BorrowProgressModel extends BorrowProgress {
 	public static final String PROGRESS_REPAY_REMISSION_SUCCESS = "41";
 	/** 还款中*/
 	public static final String PROGRESS_REPAY_PROCESSING = "43";
+	/** 展期 */
+	public static final String PROGRESS_REPAY_DELAY_PAY = "44";
 	/** 逾期 */
 	public static final String PROGRESS_REPAY_OVERDUE = "50";
 	/** 坏账 */
@@ -69,6 +71,8 @@ public class BorrowProgressModel extends BorrowProgress {
 			stateStr = "已逾期";
 		} else if (PROGRESS_BILL_BAD.equals(state)) {
 			stateStr = "坏账";
+		}else if (PROGRESS_REPAY_DELAY_PAY.equals(state)) {
+			stateStr = "展期成功";
 		} else {
 			stateStr = state;
 		}

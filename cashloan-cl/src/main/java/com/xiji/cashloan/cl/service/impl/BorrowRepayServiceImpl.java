@@ -420,7 +420,16 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		BorrowRepay br = borrowRepayMapper.findByPrimary(id);
 		String state = (String) param.get("state");
 
-		Date repayTime = tool.util.DateUtil.rollDay((Date) param.get("repayTime"),7);
+		SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
+		Date now = new Date();
+		Date repayPlanTime = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(br.getRepayTime()));
+		Date nowDate = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(now));
+		Date repayTime = null;
+		if (nowDate.after(repayPlanTime)){
+			repayTime = tool.util.DateUtil.rollDay(now,7);
+		}else {
+			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(),7);
+		}
 		// 更新还款信息
 		int msg = updateBorrowReplayByDelayPay(br, repayTime);
 		if (msg <= 0) {

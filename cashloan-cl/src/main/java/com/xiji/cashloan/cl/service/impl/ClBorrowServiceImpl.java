@@ -826,7 +826,39 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			}
 		}
+		// 展期成功
+		if ("detail".equals(pageFlag)
+			&& (BorrowModel.STATE_DELAY_PAY.equals(borrow.getState()))) {
+			bpMap.put("state", borrow.getState());
+			pgList = borrowProgressMapper.listProgress(bpMap);
+			boolean passFlag = true;
+			for (int i = pgList.size() - 1; i >= 0; i--) {
+				BorrowProgressModel progress = pgList.get(i);
+				progress.setType("10");
+				if (i == 0) {
+					progress.setStr(progress.getState());
+					progress.setState(progress.getStr());
+					list.add(progress);
+				}
 
+				if (passFlag
+					&& (BorrowProgressModel.PROGRESS_AUTO_PASS
+					.equals(progress.getState()) || BorrowProgressModel.PROGRESS_PERSON_PASS
+					.equals(progress.getState()))) {
+					progress.setStr(progress.getState());
+					progress.setState(progress.getStr());
+					list.add(progress);
+					passFlag = false;
+				}
+
+				if (BorrowProgressModel.PROGRESS_REPAY_DELAY_PAY.equals(progress
+					.getState())) {
+					progress.setStr(progress.getState());
+					progress.setState(progress.getStr());
+					list.add(progress);
+				}
+			}
+		}
 		// 逾期
 		int signState = Integer.parseInt(BorrowModel.STATE_DELAY);
 		if (BorrowModel.STATE_DELAY.equals(borrow.getState())
@@ -1045,6 +1077,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		if (bpModel.getState().equals(BorrowModel.STATE_DELAY)) {
 			bpModel.setMsg("已逾期,请尽快还款");
 			bpModel.setType("20");
+		}
+		if (bpModel.getState().equals(BorrowModel.STATE_DELAY_PAY)) {
+			bpModel.setMsg("恭喜展期成功");
+			bpModel.setType("10");
 		}
 		if (bpModel.getState().equals(BorrowModel.STATE_BAD)) {
 			bpModel.setMsg("已坏账");

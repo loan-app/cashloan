@@ -21,13 +21,13 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -105,7 +105,9 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		List<ClBorrowModel> brList = new ArrayList<ClBorrowModel>();
 		brList.add(clBorrowModel);
 		result.put("borrow", brList);
+		Date repayDate = null;
 		for (BorrowRepayModel borrowRepayModel : repay) {
+			repayDate = borrowRepayModel.getRepayTime();
 			borrowRepayModel.setRepayTimeStr(DateUtil.dateStr(borrowRepayModel.getRepayTime(),"yyyy-M-d"));
 			borrowRepayModel.setAmount(borrowRepayModel.getAmount()+borrowRepayModel.getPenaltyAmout());
 		}
@@ -127,9 +129,17 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 					delayItem.put("bankMsg",card.getBank()+"("+card.getCardNo().substring(card.getCardNo().length() - 4)+")");
 				}
 			}
-
-			delayItem.put("delayItemTips","顺延一个还款周期，需要支付还款服务费￥"+String.valueOf(borrow.getFee()));
-			delayItem.put("delayRepayTimeStr",DateUtil.dateStr(DateUtil.rollDay(new Date(),7),"yyyy-M-d"));
+			SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
+			Date repayPlanTime = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(repayDate));
+			Date nowDate = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(new Date()));
+			String dateStr = "";
+			if (nowDate.after(repayPlanTime)){
+				dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),7),"yyyy-M-d");
+			}else {
+				dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,7),"yyyy-M-d");
+			}
+			delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(borrow.getFee()));
+			delayItem.put("delayRepayTimeStr",dateStr);
 			result.put("delayItem", delayItem);
 		}
 
