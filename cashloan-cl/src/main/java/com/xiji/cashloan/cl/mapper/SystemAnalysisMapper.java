@@ -9,9 +9,9 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 /**
  * 运营分析
- * @author caitt
- * @version 1.0
- * @date 2017年3月21日下午3:01:07
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/12/03
  * Copyright 杭州融都科技股份有限公司 现金贷  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

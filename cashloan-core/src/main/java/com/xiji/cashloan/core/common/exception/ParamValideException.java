@@ -2,9 +2,12 @@ package com.xiji.cashloan.core.common.exception;
 
 /**
  *  参数校验异常
- * @author zzb
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
- */
+ * */
+
 public class ParamValideException extends ErongBaseException {
 	
 	private static final long serialVersionUID = 1L;

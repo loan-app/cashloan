@@ -2,7 +2,9 @@ package com.xiji.cashloan.cl.model.tongdun.util;
 
 
 /**
- * Created by syq on 2016/5/27.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class InterfaceConfig {
 

@@ -5,10 +5,10 @@ import com.xiji.cashloan.manage.domain.QuartzInfo;
 
 /**
  *  定时任务详情Model
- * 
- * @author gc
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017年3月27日 上午10:05:33
+ * @date 2018/11/27
  *
  * 官方网站：www.xiji.com
  * 

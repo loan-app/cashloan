@@ -64,9 +64,9 @@ import com.xiji.cashloan.system.security.userdetails.UserRole;
 /**
  * 
  * 基类action
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 下午1:48:28
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 @Controller
 public abstract class ManageBaseController extends AbstractController {

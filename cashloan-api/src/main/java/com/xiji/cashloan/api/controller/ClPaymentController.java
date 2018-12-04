@@ -18,9 +18,9 @@ import tool.util.StringUtil;
 
 /**
  * 主动还款 Controller
- * @author yhjiang
+ * @author wnb
  * @version 1.0
- * @date 2017年8月2日
+ * @date 2018/12/03
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
  */

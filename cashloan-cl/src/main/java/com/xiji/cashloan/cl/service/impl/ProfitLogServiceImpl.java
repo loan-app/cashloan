@@ -36,10 +36,10 @@ import com.xiji.cashloan.core.mapper.UserMapper;
 
 /**
  * 分润记录ServiceImpl
- * 
- * @author lyang
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-02-18 17:04:10
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

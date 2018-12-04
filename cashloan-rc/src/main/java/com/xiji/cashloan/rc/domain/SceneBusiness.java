@@ -5,10 +5,10 @@ import java.util.Date;
 
 /**
  * 场景与第三方征信接口关联关系实体
- * 
- * @author zlh
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-14 13:42:36
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

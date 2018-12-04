@@ -1,6 +1,11 @@
 package com.xiji.cashloan.core.common.exception;
 
-
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class PersistentDataException extends ErongBaseException {
 
 	private static final long serialVersionUID = -4715158650768072340L;

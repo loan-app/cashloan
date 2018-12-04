@@ -4,6 +4,13 @@ package com.xiji.cashloan.core.common.util.code;
  * MD5 算法的Java Bean
  *************************************************/
 
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class MD5 {
 	/*
 	 * 下面这些S11-S44实际上是一个4*4的矩阵，在原始的C实现中是用#define 实现的， 这里把它们实现成为static

@@ -6,6 +6,12 @@ import java.util.Map;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.system.domain.SysPerm;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public interface SysPermService extends BaseService<SysPerm, Long>{
 
 	int updateByPrimaryKeySelective(SysPerm record);

@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 编号生成器
- * @author RDuser
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  */
 public class NidGenerator {

@@ -22,9 +22,9 @@ import com.xiji.cashloan.system.service.SysConfigService;
 /**
 * 协议Controller
 * 
-* @author sly
+* @author wnb
 * @version 1.0.0
-* @date 2017-02-22 13:57:14
+* @date 2018/12/03
 * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
 * 官方网站：www.xiji.com
 * 客服中心：sly@xiji.com

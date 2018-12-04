@@ -8,10 +8,10 @@ import com.xiji.cashloan.rule.domain.BorrowRuleResult;
 
 /**
  * 规则匹配结果Service
- * 
- * @author ctt
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2016-12-21 15:04:28
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

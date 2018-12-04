@@ -28,10 +28,10 @@ import com.xiji.creditrank.cr.service.FactorParamService;
 
 /**
  * 评分因子参数ServiceImpl
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-01-05 11:13:30
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  creditrank All Rights Reserved
  * 官方网站：www.xiji.com
  * 

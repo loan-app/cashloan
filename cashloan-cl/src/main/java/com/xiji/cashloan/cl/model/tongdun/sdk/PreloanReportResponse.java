@@ -2,7 +2,9 @@ package com.xiji.cashloan.cl.model.tongdun.sdk;
 
 
 /**
- * Created by syq on 2016/8/5.
+ * @author wnb
+ * @date 2018/11/28
+ * @version 1.0.0
  */
 public class PreloanReportResponse extends AbstractHttpRestResponse {
 

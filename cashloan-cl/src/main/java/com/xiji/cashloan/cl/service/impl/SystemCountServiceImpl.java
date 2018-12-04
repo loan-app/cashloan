@@ -24,9 +24,9 @@ import com.xiji.cashloan.core.common.util.DateUtil;
 
 /**
  * 首页系统数据统计
- * @author caitt
- * @version 1.0
- * @date 2017年3月16日上午10:16:51
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  * Copyright 杭州融都科技股份有限公司 现金贷  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

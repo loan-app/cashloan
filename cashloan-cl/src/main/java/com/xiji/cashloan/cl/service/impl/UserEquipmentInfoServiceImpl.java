@@ -21,10 +21,10 @@ import com.xiji.cashloan.core.mapper.UserMapper;
 
 /**
  * 用户设备信息表ServiceImpl
- * 
- * @author xx
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-04-17 17:32:05
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

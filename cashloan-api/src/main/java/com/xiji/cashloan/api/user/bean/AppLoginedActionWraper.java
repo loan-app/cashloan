@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import com.xiji.cashloan.core.common.util.StringUtil;
 
 /**
- * Created by lsk on 2016/7/29.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @SuppressWarnings({ "rawtypes", "unused" })
 public abstract class AppLoginedActionWraper extends AppAbsActionWrapper {

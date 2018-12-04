@@ -16,7 +16,9 @@ import com.xiji.cashloan.core.common.model.TimeProfiler;
 /**
  * 性能监听器:将访问时间以100毫秒为单位，
  * 超过100毫秒的，将记录下访问信息，以日志形式输出
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class PerformanceMonitorFilter implements Filter {
 

@@ -31,7 +31,9 @@ import tool.util.StringUtil;
  * 校验一个file文件是否是真实的文件类型
  * （避免是用户在上传时将后缀修改掉，伪装
  * 其他类型的文件进行上传操作）
- * @author RDuser
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class FileUtil {
 	

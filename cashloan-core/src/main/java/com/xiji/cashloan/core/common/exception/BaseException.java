@@ -1,5 +1,10 @@
 package com.xiji.cashloan.core.common.exception;
 
+/**
+ * @author wnb
+ * @date 2018/11/26
+ * @version 1.0.0
+ */
 public class BaseException extends RuntimeException {
 	
 	private static final long serialVersionUID = 538922474277376456L;

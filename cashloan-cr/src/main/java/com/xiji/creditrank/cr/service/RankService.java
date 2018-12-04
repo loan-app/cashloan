@@ -10,10 +10,10 @@ import com.xiji.creditrank.cr.model.RankModel;
 
 /**
  * 评分等级Service
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-01-04 15:09:59
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

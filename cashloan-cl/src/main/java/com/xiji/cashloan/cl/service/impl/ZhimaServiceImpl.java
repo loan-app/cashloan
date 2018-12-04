@@ -32,6 +32,12 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("zhimaService")
 public class ZhimaServiceImpl extends BaseServiceImpl<Zhima, Long> implements ZhimaService {
 

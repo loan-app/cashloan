@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import com.xiji.creditrank.cr.model.srule.config.rule.Rule;
 
 /**
- * Created by syq on 2016/12/18.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public class Client {
 

@@ -25,7 +25,9 @@ import com.xiji.cashloan.core.common.util.MapUtil;
 import freemarker.template.Configuration;
 
 /**
- * Created by lsk on 2017/5/24.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @Service
 public class ContractService {

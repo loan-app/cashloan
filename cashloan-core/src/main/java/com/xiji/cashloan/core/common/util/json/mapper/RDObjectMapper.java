@@ -11,6 +11,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @SuppressWarnings("serial")
 public class RDObjectMapper extends ObjectMapper {
 

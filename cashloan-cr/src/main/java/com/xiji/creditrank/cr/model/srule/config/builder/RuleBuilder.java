@@ -5,8 +5,11 @@ import com.xiji.creditrank.cr.model.srule.config.condition.ConditionItem;
 /**
  * user interface , show the method to use
  * each type rule must have only one builder ,means builder should be the single also
- * Created by syq on 2016/12/17.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
+
 public interface RuleBuilder<T> {
 
 

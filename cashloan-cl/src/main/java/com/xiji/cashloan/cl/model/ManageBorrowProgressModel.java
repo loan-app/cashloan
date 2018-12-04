@@ -2,7 +2,11 @@ package com.xiji.cashloan.cl.model;
 
 import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.core.model.BorrowModel;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class ManageBorrowProgressModel extends BorrowProgress {
 
 	private static final long serialVersionUID = 1L;

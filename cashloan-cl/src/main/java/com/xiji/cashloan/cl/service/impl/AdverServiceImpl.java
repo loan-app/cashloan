@@ -17,7 +17,11 @@ import com.xiji.cashloan.cl.service.AdverService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 
-
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("adverService")
 public class AdverServiceImpl extends BaseServiceImpl<Adver, Long> implements AdverService {
 	

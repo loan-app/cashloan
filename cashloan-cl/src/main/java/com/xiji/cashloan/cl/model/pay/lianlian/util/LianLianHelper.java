@@ -42,10 +42,11 @@ import com.xiji.cashloan.core.domain.UserBaseInfo;
 
 /**
  * 连连支付
- * 
- * @author gc
+ *
+ /**
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月6日 下午4:36:16
  *
  * 官方网站：www.xiji.com
  * 

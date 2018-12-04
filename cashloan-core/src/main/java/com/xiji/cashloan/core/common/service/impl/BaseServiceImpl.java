@@ -7,6 +7,14 @@ import javax.annotation.Resource;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.BaseService;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ * @param <T>
+ * @param <ID>
+ */
 public abstract class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {
 	
 	@Resource

@@ -20,6 +20,13 @@ import com.xiji.cashloan.system.mapper.SysRoleMapper;
 import com.xiji.cashloan.system.security.authentication.encoding.PasswordEncoder;
 import com.xiji.cashloan.system.service.SysRoleService;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @SuppressWarnings("rawtypes")
 @Service(value = "sysRoleServiceImpl")
 public class SysRoleServiceImpl extends BaseServiceImpl implements SysRoleService {

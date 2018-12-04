@@ -6,10 +6,10 @@ import com.xiji.cashloan.core.common.context.Global;
 
 /**
  * 渠道信息Model
- * 
- * @author jdd
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月6日 上午10:09:35
+ *
  *
  * 官方网站：www.xiji.com
  * 

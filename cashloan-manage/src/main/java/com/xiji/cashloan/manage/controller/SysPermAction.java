@@ -6,10 +6,10 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.system.service.SysPermService;
 import com.xiji.cashloan.system.service.SysUserRoleService;
 
-/** 
- * @author  作者 lyang: 
- * @date 创建时间：2016-12-2 下午7:09:24 
- * @version 1.0 * @parameter  
+/**
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * @since  
  * @return  
  */

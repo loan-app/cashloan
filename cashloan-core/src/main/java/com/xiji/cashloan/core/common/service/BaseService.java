@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 /**
  * 基类接口定义
- * @author zlh
- * @version 1.0
- * @date 2016年10月24日 上午10:23:20
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  * Copyright 杭州融都科技股份有限公司  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

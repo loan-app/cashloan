@@ -9,9 +9,9 @@ import com.xiji.cashloan.system.domain.SysUserRole;
 /**
  * 
  * 用户角色关联信息service接口
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午9:55:01
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface SysUserRoleService {
 	/**

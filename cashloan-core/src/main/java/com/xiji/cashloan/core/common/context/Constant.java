@@ -4,10 +4,10 @@ package com.xiji.cashloan.core.common.context;
 
 /**
  * 公用常量类定义
- * 
- * @version 1.0
- * @author 吴国成f
- * @created 2014年9月23日 下午2:17:20
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class Constant {
 

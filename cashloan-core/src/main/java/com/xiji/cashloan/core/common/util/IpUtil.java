@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
  * <p>Company: 杭州融都科技有限公司 http://www.xiji.com</p>
  * <p>System: 小贷管理系统</p>
  * <p>Description: ip获取工具类</p>
- *  
- * @author：wujing
- * @version 1.0
- * @since 2014-4-2
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class IpUtil {
 	

@@ -11,9 +11,9 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 /**
  * 场景与第三方征信接口执行记录
- * @author caitt
- * @version 1.0
- * @date 2017年4月11日上午11:53:19
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 现金贷  All Rights Reserved
  * 官方网站：www.xiji.com
  * 研发中心：rdc@xiji.com

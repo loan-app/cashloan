@@ -4,10 +4,10 @@ import com.xiji.cashloan.rc.domain.SceneBusiness;
 
 /**
  * 场景与第三方征信接口关联关系Model - 后台管理  
- * 
- * @author gc
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017年3月18日 下午3:23:36
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 Arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

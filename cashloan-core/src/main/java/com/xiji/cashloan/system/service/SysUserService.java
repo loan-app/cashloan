@@ -13,9 +13,9 @@ import com.xiji.cashloan.system.domain.SysRole;
 
 /**
  * 系统用户服务
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月22日 下午3:48:21
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface SysUserService {
 

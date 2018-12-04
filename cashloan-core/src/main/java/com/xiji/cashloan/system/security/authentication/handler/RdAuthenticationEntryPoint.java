@@ -17,6 +17,13 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 
 import com.xiji.cashloan.core.common.util.ServletUtils;
 
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @SuppressWarnings({"deprecation","unused"})
 public class RdAuthenticationEntryPoint extends
 		LoginUrlAuthenticationEntryPoint {

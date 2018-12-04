@@ -1,5 +1,12 @@
 package com.xiji.cashloan.system.constant;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class SystemConstant {
 
 	/*********************** 菜单：是否是菜单 ****************************************/

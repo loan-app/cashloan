@@ -19,6 +19,11 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("opinionService")
 public class OpinionServiceImpl extends BaseServiceImpl<Opinion, Long> implements OpinionService {
 	

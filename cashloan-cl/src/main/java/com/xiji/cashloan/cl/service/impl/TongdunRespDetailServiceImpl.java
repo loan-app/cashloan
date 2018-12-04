@@ -12,7 +12,12 @@ import com.xiji.cashloan.cl.service.TongdunRespDetailService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 
-
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("tongdunRespDetailService")
 public class TongdunRespDetailServiceImpl extends BaseServiceImpl<TongdunRespDetail, Long> implements TongdunRespDetailService {
 	

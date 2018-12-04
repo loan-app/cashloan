@@ -8,7 +8,10 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * 解析json上下文类，被观察者
- * Created by syq on 2015/12/28.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("rawtypes")
 public class JsonParserContext extends Observable {

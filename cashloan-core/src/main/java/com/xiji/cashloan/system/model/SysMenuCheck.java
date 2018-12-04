@@ -4,6 +4,14 @@ import java.util.List;
 
 import com.xiji.cashloan.system.domain.SysMenu;
 
+
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class SysMenuCheck extends SysMenu {
 
 	private static final long serialVersionUID = 73161925067707896L;

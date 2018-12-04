@@ -25,7 +25,13 @@ import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.manage.service.QuartzInfoService;
 import com.xiji.cashloan.manage.service.QuartzLogService;
 
-
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 @Component
 @Lazy(value = false)
 public class QuartzRepayInform implements Job{

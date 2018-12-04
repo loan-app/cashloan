@@ -9,7 +9,9 @@ import com.xiji.cashloan.cl.model.zmxy.base.BaseResp;
 import com.xiji.cashloan.cl.model.zmxy.base.ZmConstant;
 
 /**
- * Created by syq on 2016/9/13.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("serial")
 public class ZmWatchListResp extends BaseResp {

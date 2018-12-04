@@ -23,7 +23,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 /**
  * 确认还款Excel文档工具类
- * */
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class RepayExcelModel {
 
 	private static final Logger logger = Logger.getLogger(RepayExcelModel.class);

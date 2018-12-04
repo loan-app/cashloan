@@ -2,7 +2,11 @@ package com.xiji.cashloan.cl.model.pay.fuiou.agreement;
 
 import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 @XObject(value = "REQUEST")
 public class OrderXmlBeanReq {
 	@XNode("VERSION")

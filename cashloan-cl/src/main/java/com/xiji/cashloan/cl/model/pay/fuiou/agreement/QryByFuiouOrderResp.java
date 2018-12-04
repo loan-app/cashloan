@@ -4,7 +4,11 @@ import com.fuiou.util.MD5;
 import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
 import tool.util.StringUtil;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 @XObject(value = "FM")
 public class QryByFuiouOrderResp extends ProtocolResp{
 	/** 响应代码

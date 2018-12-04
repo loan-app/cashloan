@@ -6,11 +6,10 @@ import java.util.List;
  * 导出Excel的信息 Title: eed <br>
  * Description: <br>
  * Copyright: eastcom Copyright (C) 2009 <br>
- * 
- * @author <a href="mailto:邮箱">jiangxd</a><br>
- * @e-mail: jiangxd@eastcom-sw.com<br>
- * @version 2.0 <br>
- * @creatdate 2013-2-4 下午05:44:28 <br>
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class ExcelBean {
 	/**

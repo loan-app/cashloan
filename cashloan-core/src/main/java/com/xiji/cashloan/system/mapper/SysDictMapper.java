@@ -12,9 +12,9 @@ import com.xiji.cashloan.system.domain.SysDict;
 /**
  * 
  * 数据字典DAO接口
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午9:44:54
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @RDBatisDao
 public interface SysDictMapper extends BaseMapper<SysDict,Long> {

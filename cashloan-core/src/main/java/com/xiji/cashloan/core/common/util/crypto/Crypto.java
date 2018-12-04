@@ -2,6 +2,9 @@ package com.xiji.cashloan.core.common.util.crypto;
 
 /**
  * 加解密接口
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface Crypto {
 

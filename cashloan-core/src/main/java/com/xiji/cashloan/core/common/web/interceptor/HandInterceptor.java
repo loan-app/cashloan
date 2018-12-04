@@ -18,7 +18,12 @@ import org.springframework.web.servlet.mvc.multiaction.MethodNameResolver;
 
 import tool.util.StringUtil;
 
-
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service
 public class HandInterceptor extends HandlerInterceptorAdapter{
 

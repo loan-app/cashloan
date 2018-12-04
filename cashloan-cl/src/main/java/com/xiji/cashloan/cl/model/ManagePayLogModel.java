@@ -3,7 +3,11 @@ package com.xiji.cashloan.cl.model;
 import java.util.Date;
 
 import com.xiji.cashloan.cl.domain.PayLog;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class ManagePayLogModel extends PayLog {
 
 	private static final long serialVersionUID = 1L;

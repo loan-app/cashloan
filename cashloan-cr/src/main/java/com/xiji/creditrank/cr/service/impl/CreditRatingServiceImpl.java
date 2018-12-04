@@ -35,9 +35,9 @@ import com.xiji.creditrank.cr.model.srule.model.SimpleRule;
 
 /**
  * 信用评级及结果操作
- * @author ctt
+ * @author wnb
  * @version 1.0.0
- * @date 2017年1月6日 上午10:46:51
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 creditrank  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

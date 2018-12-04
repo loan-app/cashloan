@@ -12,6 +12,13 @@ import com.xiji.cashloan.system.domain.SysRoleMenu;
 import com.xiji.cashloan.system.mapper.SysRoleMenuMapper;
 import com.xiji.cashloan.system.service.SysRoleMenuService;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service(value = "sysRoleMenuServiceImpl")
 public class SysRoleMenuServiceImpl implements SysRoleMenuService {
 	@Resource

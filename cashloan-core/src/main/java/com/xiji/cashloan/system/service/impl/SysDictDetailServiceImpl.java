@@ -19,10 +19,10 @@ import com.xiji.cashloan.system.service.SysDictDetailService;
 
 /**
  * Service
- * 
- * @author wgc
- * @version 1.0
- * @since 2014-11-03
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @Service(value = "sysDictDetailService")
 public class SysDictDetailServiceImpl extends BaseServiceImpl<SysDictDetail,Long> implements

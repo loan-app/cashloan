@@ -11,10 +11,10 @@ import com.xiji.cashloan.system.model.MenuModel;
 /**
  * 
  * 菜单服务类
- * 
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午9:54:35
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface SysMenuService {
 

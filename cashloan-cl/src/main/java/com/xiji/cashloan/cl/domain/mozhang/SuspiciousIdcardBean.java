@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Created by lu on 2018/9/27.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SuspiciousIdcardBean {

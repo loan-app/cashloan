@@ -2,9 +2,9 @@ package com.xiji.cashloan.rule.model.srule.model;
 
 /**
  * 基础规则信息，默认规则为结果导向
- * @author ctt
+ * @author wnb
  * @version 1.0.0
- * @date 2017年1月3日 上午11:49:01
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 creditrank  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

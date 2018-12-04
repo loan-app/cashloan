@@ -20,7 +20,10 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 
 /**
  * 包装芝麻信用的授权查询
- * Created by syq on 2016/9/11.
+ **
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class AuthInfoQuery extends BaseQuery {
 

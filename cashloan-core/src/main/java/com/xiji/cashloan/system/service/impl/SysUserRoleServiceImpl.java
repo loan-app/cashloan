@@ -15,6 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.xiji.cashloan.core.common.exception.ServiceException;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service(value = "sysUserRoleServiceImpl")
 public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRole, Long> implements SysUserRoleService {
 

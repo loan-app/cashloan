@@ -52,10 +52,10 @@ import tool.util.NumberUtil;
 
 /**
  * 还款记录后台管理Controller
- * 
- * @author gc
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017年3月30日 上午10:16:17
+ * @date 2018/11/27
  *
  * 官方网站：www.xiji.com
  * 

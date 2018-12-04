@@ -12,10 +12,10 @@ import com.xiji.cashloan.system.domain.SysUser;
 /**
  * 
  * 用户model
- * 
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午11:53:39
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class SysUserModel extends SysUser {
 

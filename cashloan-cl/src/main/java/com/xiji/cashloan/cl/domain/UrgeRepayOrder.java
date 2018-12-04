@@ -8,9 +8,9 @@ import com.xiji.cashloan.core.common.context.Global;
 /**
  * 催款计划表实体
  * 
- * @author jdd
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-07 16:35:39
+ * @date 2018/11/23
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

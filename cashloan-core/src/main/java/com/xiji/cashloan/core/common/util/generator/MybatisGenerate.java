@@ -20,9 +20,10 @@ import freemarker.template.TemplateException;
 
 /**
  * mybatis映射代码生成器
- * 
- * @author Administrator
  *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class MybatisGenerate {
 	

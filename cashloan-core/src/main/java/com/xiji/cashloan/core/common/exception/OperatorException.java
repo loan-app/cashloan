@@ -4,9 +4,9 @@ package com.xiji.cashloan.core.common.exception;
 /**
  * 
  * 用户操作异常类
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 下午1:42:48
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class OperatorException extends BaseRuntimeException {
 

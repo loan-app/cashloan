@@ -4,7 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ * @param <T>
+ * @param <ID>
+ */
 @RDBatisDao
 public interface BaseMapper<T, ID extends Serializable> {
 

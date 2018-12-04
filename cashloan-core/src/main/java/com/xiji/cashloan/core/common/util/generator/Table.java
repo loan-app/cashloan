@@ -1,5 +1,12 @@
 package com.xiji.cashloan.core.common.util.generator;
 
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class Table {
 	/**
 	 * 实体类名

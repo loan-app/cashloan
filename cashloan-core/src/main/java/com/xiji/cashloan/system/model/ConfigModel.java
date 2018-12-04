@@ -11,9 +11,9 @@ import org.springframework.beans.BeanUtils;
 /**
  * 
  * 系统参数Model
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午11:49:35
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class ConfigModel extends SysConfig {
 	

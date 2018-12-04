@@ -22,9 +22,9 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
  /**
  * 分润记录Controller
  * 
- * @author lyang
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-18 17:04:10
+ * @date 2018/12/03
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

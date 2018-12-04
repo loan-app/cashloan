@@ -7,7 +7,9 @@ import java.util.List;
 /**
  * 条件收集器
  * 非线程安全类
- * Created by syq on 2016/12/13.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public class ConditionItem implements Iterator<Object[]> {
 

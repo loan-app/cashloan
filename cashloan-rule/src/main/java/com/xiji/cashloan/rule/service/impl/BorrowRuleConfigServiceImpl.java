@@ -20,10 +20,10 @@ import com.xiji.cashloan.rule.service.BorrowRuleConfigService;
 
 /**
  * 借款规则详细配置表ServiceImpl
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-04-21 15:23:19
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

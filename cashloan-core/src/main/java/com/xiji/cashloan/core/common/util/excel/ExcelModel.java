@@ -3,9 +3,9 @@ package com.xiji.cashloan.core.common.util.excel;
 /**
  * excel处理model
  * TODO 用于批量处理，逐行读取excel并记录处理结果
- * @author lm
- * @version 2.0
- * @date 2015年7月1日 下午2:13:26
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class ExcelModel {
 

@@ -14,9 +14,9 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * 
  * 实现树型
- * @version 1.0
- * @author 吴国成
- * @created 2014年12月18日 下午2:39:24
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class Tree{	
 	

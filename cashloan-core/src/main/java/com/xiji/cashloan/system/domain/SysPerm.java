@@ -13,6 +13,12 @@ package com.xiji.cashloan.system.domain;
 
 import java.util.Date;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class SysPerm {
 	/**
 	 * sys_perm.id

@@ -1,7 +1,9 @@
 package com.xiji.cashloan.cl.model.zmxy.antiFraud;
 
 /**
- * Created by syq on 2016/9/12.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class AntiFraudParam {
 

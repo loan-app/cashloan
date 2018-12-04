@@ -20,8 +20,10 @@ import tool.util.StringUtil;
 
 /**
  * 富有支付
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
-
 public class FuiouHelper extends BasePay{
 
 	public static final Logger logger = LoggerFactory.getLogger(FuiouHelper.class);

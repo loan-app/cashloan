@@ -1,7 +1,9 @@
 package com.xiji.cashloan.cl.model.zmxy.base;
 
 /**
- * Created by syq on 2016/9/11.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public abstract class BaseQuery {
 

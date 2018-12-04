@@ -5,10 +5,10 @@ import tool.util.NumberUtil;
 
 /**
  * 金额转换工具类
- * 
- * @author 
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017年7月20日 下午12:19:23
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

@@ -22,9 +22,9 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
  /**
  * 还款计录Controller
  * 
- * @author lyang
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-14 13:46:12
+ * @date 2018/12/03
  * 官方网站：www.xiji.com
  * 
  * 未经授权不得进行修改、复制、出售及商业使用

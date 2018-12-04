@@ -2,6 +2,13 @@ package com.xiji.cashloan.core.common.util.excel;
 
 import java.text.DecimalFormat;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class TableDataCell {
 	private String value;
 

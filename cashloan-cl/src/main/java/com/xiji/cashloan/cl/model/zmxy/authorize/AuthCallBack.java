@@ -12,7 +12,10 @@ import com.xiji.cashloan.cl.model.zmxy.base.ZmConstant;
 
 /**
  * 对授权返回的参数进行解析
- * Created by syq on 2016/9/11.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class AuthCallBack extends BaseQuery {
 

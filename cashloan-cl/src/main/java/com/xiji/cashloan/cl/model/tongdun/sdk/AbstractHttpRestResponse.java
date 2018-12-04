@@ -10,7 +10,9 @@ import com.xiji.cashloan.cl.model.tongdun.http.HttpRestRequest;
 import com.xiji.cashloan.cl.model.tongdun.http.HttpRestResponse;
 
 /**
- * Created by syq on 2016/6/7.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class AbstractHttpRestResponse extends HttpRestResponse {
 

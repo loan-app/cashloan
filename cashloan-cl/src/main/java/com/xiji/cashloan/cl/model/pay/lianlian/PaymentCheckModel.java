@@ -7,10 +7,10 @@ import tool.util.NumberUtil;
 
 /**
  * 付款明细(实时付款)对账
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年4月13日 下午3:21:03
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

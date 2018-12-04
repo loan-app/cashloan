@@ -2,10 +2,10 @@ package com.xiji.cashloan.cl.model.pay.lianlian;
 
 /**
  * 连连支付 分期付 - 还款计划
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月12日 下午3:36:46
  *
  * 官方网站：www.xiji.com
  * 

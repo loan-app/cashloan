@@ -6,6 +6,12 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import org.nuxeo.common.xmap.XMap;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public final class XMapUtil {
 	private static final String charset = Charset.defaultCharset().name();
 

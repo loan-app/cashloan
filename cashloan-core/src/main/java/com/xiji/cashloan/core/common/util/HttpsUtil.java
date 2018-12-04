@@ -53,6 +53,13 @@ import org.apache.log4j.Logger;
  * It has been replaced by the Apache HttpComponents project in its HttpClient and HttpCore modules, 
  * which offer better performance and more flexibility.</a>
  */
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @SuppressWarnings("deprecation")
 public class HttpsUtil {
 	

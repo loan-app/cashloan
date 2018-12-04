@@ -15,10 +15,10 @@ import tool.util.StringUtil;
 
 /**
  * 缓存帮助类
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017年1月7日 上午10:40:22
  * Copyright 杭州融都科技股份有限公司 资产匹配系统 All Rights Reserved
  * 官方网站：www.xiji.com
  * 

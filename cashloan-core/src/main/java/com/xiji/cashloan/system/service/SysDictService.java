@@ -10,9 +10,9 @@ import com.xiji.cashloan.system.domain.SysDict;
 /**
  * 
  * 数据字典Service
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午10:03:05
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface SysDictService {
 	/**

@@ -3,7 +3,9 @@ package com.xiji.cashloan.api.user.bean;
 import java.util.Map;
 
 /**
- * Created by lsk on 2016/9/21.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @SuppressWarnings({ "rawtypes" })
 public class AppSessionBean {

@@ -4,7 +4,11 @@ import java.util.Date;
 
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import tool.util.BigDecimalUtil;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class ManageBRepayModel extends BorrowRepay {
 	
 	private static final long serialVersionUID = 1L;

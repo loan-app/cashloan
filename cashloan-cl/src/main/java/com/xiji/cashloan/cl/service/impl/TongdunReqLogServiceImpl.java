@@ -56,6 +56,12 @@ import com.xiji.cashloan.core.mapper.UserOtherInfoMapper;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.rc.mapper.TppBusinessMapper;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("tongdunReqLogService")
 @SuppressWarnings("unchecked")
 public class TongdunReqLogServiceImpl extends

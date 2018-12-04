@@ -39,7 +39,9 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.service.CloanUserService;
 
 /**
- * Created by lsk on 2016/7/27.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @Service("clUserService_")
 @SuppressWarnings({ "rawtypes", "unchecked" })

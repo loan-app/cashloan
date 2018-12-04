@@ -26,6 +26,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.core.common.exception.ServiceException;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @Service(value = "sysUserService")
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implements SysUserService {
     

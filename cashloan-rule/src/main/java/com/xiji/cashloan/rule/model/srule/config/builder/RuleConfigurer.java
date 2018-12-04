@@ -5,7 +5,9 @@ import java.util.Map;
 import com.xiji.cashloan.rule.model.srule.utils.RulePolicy;
 
 /**
- * Created by syq on 2016/12/18.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public interface RuleConfigurer<H> extends Builder {
 

@@ -6,9 +6,9 @@ import java.util.Date;
 /**
  * 支付记录实体
  * 
- * @author gc
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-07 16:18:56
+ * @date 2018/12/01
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

@@ -18,7 +18,10 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * AutoPickField注解的生成器
- * Created by syq on 2015/10/13.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("rawtypes")
 public class JsonFieldAutoPickGenerator {

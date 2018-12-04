@@ -5,7 +5,9 @@ import tool.util.StringUtil;
 
 /**
  * URL配置
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 
 public class URLConfig {

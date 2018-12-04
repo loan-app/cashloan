@@ -14,8 +14,11 @@ import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.MapUtil;
 
 /**
- * Created by lsk on 2016/8/16.
- */
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
+ *
+ **/
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AppAbsActionWrapper {
     private Logger logger = LoggerFactory.getLogger(AppAbsActionWrapper.class);

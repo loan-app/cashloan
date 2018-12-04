@@ -28,15 +28,15 @@ import com.xiji.cashloan.rule.domain.RuleEngine;
 import com.xiji.cashloan.rule.service.BorrowRuleConfigService;
 import com.xiji.cashloan.rule.service.RuleEngineService;
 
- /**
+/**
  * 规则引擎管理Controller
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2016-12-12 17:24:27
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
- * 
+ * <p>
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 @Controller

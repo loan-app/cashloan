@@ -6,9 +6,9 @@ import java.util.Date;
 /**
  * 同盾第三方请求记录实体
  * 
- * @author jdd
+ * @author wnb
  * @version 1.0.0
- * @date 2017-04-26 15:26:56
+ * @date 2018/11/23
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

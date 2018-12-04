@@ -2,7 +2,11 @@ package com.xiji.cashloan.cl.model.pay.fuiou.agreement;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 @XmlRootElement(name="ORDER")
 public class OrderQryByMSsn
 {

@@ -3,8 +3,9 @@ package com.xiji.cashloan.core.common.context;
 /**
  * 
  * TODO 后台列表数据导出 常量
- * @author lyang
- * @date 2017年4月13日 下午14:40:52
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public final class ExportConstant {
 	

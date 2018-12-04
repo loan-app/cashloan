@@ -4,11 +4,13 @@ import java.util.Date;
 
 /**
  * 渠道统计model
- * 
- * @author jdd
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017-5-8 下午2:19:02 Copyright 杭州融都科技股份有限公司 金融创新事业部 cashloan All Rights
- *       Reserved 官方网站：www.xiji.com 未经授权不得进行修改、复制、出售及商业使用
+ * Copyright 杭州融都科技股份有限公司 金融创新事业部 cashloan All RightsReserved
+ * 官方网站：www.xiji.com
+ * 未经授权不得进行修改、复制、出售及商业使用
  */
 public class ChannelCountModel {
 	/**

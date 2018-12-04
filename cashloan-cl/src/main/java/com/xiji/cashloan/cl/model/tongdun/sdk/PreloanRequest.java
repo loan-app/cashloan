@@ -14,7 +14,9 @@ import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.cl.model.tongdun.util.EncryptUtil;
 
 /**
- * Created by syq on 2016/8/5.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("unchecked")
 public class PreloanRequest extends HttpRestRequest<PreloanResponse> {

@@ -5,6 +5,13 @@ import java.util.List;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.system.domain.SysRolePerm;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public interface SysRolePermService extends BaseService<SysRolePerm, Long> {
 
 	/**

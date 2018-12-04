@@ -23,6 +23,13 @@ import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.rc.service.TppBusinessService;
 
+/**
+ *
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 @Scope("prototype")
 @Controller
 public class ManageBorrowTest extends ManageBaseController{

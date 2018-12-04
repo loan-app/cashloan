@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * base64解码
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public abstract class CharacterEncoder {
 	

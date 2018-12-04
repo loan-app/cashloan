@@ -12,7 +12,9 @@ import com.xiji.cashloan.core.common.util.json.AbstractJsonSerializer;
 /**
  * 
  * 使用fastjson的实现
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class JsonSerializer extends AbstractJsonSerializer  {
 	

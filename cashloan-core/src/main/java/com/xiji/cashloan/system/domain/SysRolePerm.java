@@ -4,9 +4,9 @@ import java.util.Date;
 
 /**
  *
- * @author rd
- * @version 1.0.0.0
- * @date 2016年12月02日 下午14:56:41
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  * Copyright 杭州融都科技股份有限公司 arc  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

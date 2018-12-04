@@ -12,10 +12,10 @@ import com.xiji.cashloan.system.domain.SysUser;
 /**
  * 
  * 用户DAO
- * 
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月22日 下午2:53:15
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @RDBatisDao
 public interface SysUserMapper extends BaseMapper<SysUser, Long>{

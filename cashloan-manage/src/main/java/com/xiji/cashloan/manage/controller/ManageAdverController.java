@@ -28,9 +28,9 @@ import com.xiji.cashloan.core.common.util.file.FileUtil;
 /**
  * 
  * @Description 广告管理
- * @author mcwang
- * @CreatTime 2017年6月21日 下午2:45:16
- * @since version 1.0.0
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 @Controller
 @Scope("prototype")

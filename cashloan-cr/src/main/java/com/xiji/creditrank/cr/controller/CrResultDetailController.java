@@ -25,13 +25,13 @@ import com.xiji.creditrank.cr.service.CrResultDetailService;
 
  /**
  * 评分结果Controller
- * 
- * @author ctt
+ *
+ *  @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-01-05 16:46:34
  * Copyright 杭州融都科技股份有限公司  creditrank All Rights Reserved
  * 官方网站：www.xiji.com
- * 
+ *
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 @Scope("prototype")
@@ -63,7 +63,7 @@ public class CrResultDetailController extends BaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response,result);
 	}
-	
+
 	/**
 	 * 查询用户评分树形结构表
 	 * @param secreditrankh
@@ -77,5 +77,5 @@ public class CrResultDetailController extends BaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response,result);
 	}
-	
+
 }

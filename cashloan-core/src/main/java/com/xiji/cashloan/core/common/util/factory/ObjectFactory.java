@@ -4,7 +4,9 @@ import com.xiji.cashloan.core.common.exception.ObjectNotFoundException;
 
 /**
  * 对象工厂
- * @author FHJ
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  * @param <T>
  */

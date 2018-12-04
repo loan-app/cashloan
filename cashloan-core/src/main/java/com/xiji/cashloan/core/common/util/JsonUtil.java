@@ -29,6 +29,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.pagehelper.PageInfo;
 import com.xiji.cashloan.core.common.context.Constant;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class JsonUtil extends tool.util.JsonUtil {
 	
 	public static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);

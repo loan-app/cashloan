@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 /**
  * 用户联系人
- * @author chenxy
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-04 11:52:26
+ * @date 2018/11/23
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

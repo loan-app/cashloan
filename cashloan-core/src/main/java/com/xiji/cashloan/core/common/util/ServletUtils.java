@@ -23,7 +23,12 @@ import org.springframework.core.io.Resource;
 import tool.util.StringUtil;
 
 
-
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class ServletUtils {
 	private static final Logger logger = LoggerFactory.getLogger(ServletUtils.class);
 

@@ -6,7 +6,11 @@ import tool.util.BigDecimalUtil;
 import tool.util.StringUtil;
 
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class ManageBRepayLogModel extends BorrowRepayLog {
 	/**
 	 * 

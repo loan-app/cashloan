@@ -21,10 +21,10 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 
 /**
  * 评分卡类型绑定表Controller
- * 
- * @author lyang
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-01-12 10:50:10
  * Copyright 杭州融都科技股份有限公司  creditrank All Rights Reserved
  * 官方网站：www.xiji.com
  * 

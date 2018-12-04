@@ -7,7 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * 注解标记哪些属性需要设值
- * Created by syq on 2015/10/13.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ *
  */
 
 

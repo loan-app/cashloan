@@ -41,9 +41,9 @@ import com.xiji.cashloan.core.service.UserBaseInfoService;
 /**
  * 运营商认证
  *
- * @author jdd
+ * @author wnb
  * @version 1.0.0
- * @date 2017-5-17 下午2:58:39
+ * @date 2018/12/03
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
  */

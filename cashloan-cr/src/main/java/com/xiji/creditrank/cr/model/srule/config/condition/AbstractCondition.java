@@ -3,7 +3,9 @@ package com.xiji.creditrank.cr.model.srule.config.condition;
 import com.xiji.creditrank.cr.model.srule.utils.ConditionOpt;
 
 /**
- * Created by syq on 2016/12/12.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public class AbstractCondition<T> implements Condition<T> {
 

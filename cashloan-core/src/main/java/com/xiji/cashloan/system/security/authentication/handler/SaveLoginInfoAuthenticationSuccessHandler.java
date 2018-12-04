@@ -33,7 +33,9 @@ import com.xiji.cashloan.system.service.SysUserService;
 
 /**
  * 验证通过Handler 此Handler对用户验证通过后对用户登录信息进行记录
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 
 @Service

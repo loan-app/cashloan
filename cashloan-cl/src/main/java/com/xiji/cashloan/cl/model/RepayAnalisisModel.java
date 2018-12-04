@@ -5,9 +5,11 @@ import tool.util.StringUtil;
 
 /**
  * 每月/每日 还款分析
- * @author caitt
- * @version 1.0
- * @date 2017年3月21日下午3:27:53
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ *
  * Copyright 杭州融都科技股份有限公司 现金贷  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

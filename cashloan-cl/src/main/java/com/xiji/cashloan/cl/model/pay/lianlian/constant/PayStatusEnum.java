@@ -2,10 +2,11 @@ package com.xiji.cashloan.cl.model.pay.lianlian.constant;
 
 /**
  * 支付状态枚举
- * 
- * @author gc
+ *
+ /**
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月6日 上午11:03:11
  *
  * 官方网站：www.xiji.com
  * 

@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.xiji.cashloan.core.common.util.StringUtil;
 
 /**
- * Created by lsk on 2016/7/27.
+ * @author wnb
+ * @date 2018/12/03
+ *  @version 1.0
  */
 @Scope("prototype")
 @Controller
@@ -108,7 +110,6 @@ public class LoginController {
 	 * @param request
 	 * @param response
 	 * @param phone
-	 * @param type
 	 *            REGISTER_VCODE FORGET_PWD
 	 */
 	@RequestMapping("fetchSmsVCode")

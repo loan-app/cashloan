@@ -4,8 +4,9 @@ package com.xiji.cashloan.cl.model;
 import com.xiji.cashloan.cl.domain.TongdunReqLog;
 
 /**
- * /**
- * Created by dufy on 2017/3/22.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class TongdunReqLogModel extends TongdunReqLog{
 	

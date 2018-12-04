@@ -19,10 +19,10 @@ import com.xiji.cashloan.core.common.context.Global;
 
 /**
  * ftp文件的上传与下载
- * 
- * @author ld
- * @version 1.0
- * @date 2016年6月13日 下午4:57:12 
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

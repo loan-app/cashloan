@@ -1,7 +1,9 @@
 package com.xiji.cashloan.cl.model.tongdun.http;
 
 /**
- * Created by syq on 2015/10/13.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("serial")
 public class HttpRestException extends RuntimeException {

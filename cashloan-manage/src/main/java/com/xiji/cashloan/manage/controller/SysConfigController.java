@@ -40,8 +40,9 @@ import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.cashloan.system.service.SysDictService;
 
 /**
- * User:    mcwang
- * DateTime:2016-08-04 03:26:22
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * details: 系统参数表,Action请求层
  * source:  代码生成器
  */

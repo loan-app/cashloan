@@ -7,7 +7,9 @@ import com.antgroup.zmxy.openplatform.api.response.ZhimaCreditIvsDetailGetRespon
 import com.xiji.cashloan.cl.model.zmxy.base.BaseResp;
 
 /**
- * Created by syq on 2016/9/13.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("serial")
 public class ZmAntiFraudResp extends BaseResp{

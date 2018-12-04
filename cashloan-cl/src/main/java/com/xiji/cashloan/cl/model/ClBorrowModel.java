@@ -7,8 +7,9 @@ import com.xiji.cashloan.core.model.BorrowModel;
 
 /**
  * 借款
- * @author Administrator
- *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class ClBorrowModel extends Borrow {
 

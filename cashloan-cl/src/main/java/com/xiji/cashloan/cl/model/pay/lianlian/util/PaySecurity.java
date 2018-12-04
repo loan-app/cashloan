@@ -1,7 +1,11 @@
 package com.xiji.cashloan.cl.model.pay.lianlian.util;
 
 import java.util.Random;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class PaySecurity {
 
 	public static String encrypt(String plaintext, String public_key){

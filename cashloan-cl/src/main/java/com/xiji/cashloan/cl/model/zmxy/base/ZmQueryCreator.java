@@ -10,7 +10,9 @@ import com.xiji.cashloan.core.common.context.Global;
 /**
  * 工厂类
  * 为每个接口创建实例
- * Created by syq on 2016/9/14.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class ZmQueryCreator {
 

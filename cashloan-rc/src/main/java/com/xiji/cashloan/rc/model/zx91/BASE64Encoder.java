@@ -36,9 +36,9 @@ import java.io.IOException;
  * This means that the encoded text will simply start with the first line of
  * encoded text and end with the last line of encoded text.
  * 
- * @author Chuck McManis
- * @see CharacterEncoder
- * @see BASE64Decoder
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class BASE64Encoder extends CharacterEncoder
 {

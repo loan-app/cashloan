@@ -19,10 +19,9 @@ import java.io.OutputStream;
 * <p>
 * 依赖javabase64-1.3.1.jar
 * </p>
-* 
-* @author IceWee
-* @date 2012-5-19
-* @version 1.0
+* @author wnb
+* @date 2018/11/27
+* @version 1.0.0
 */
 public class Base64Utils {
 

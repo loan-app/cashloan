@@ -9,10 +9,10 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 /**
  * sdk识别记录表Dao
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-04-20 09:52:08
+ * @date 2018/12/03
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

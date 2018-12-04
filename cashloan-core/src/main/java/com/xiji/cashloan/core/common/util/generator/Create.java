@@ -3,6 +3,12 @@ package com.xiji.cashloan.core.common.util.generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class Create {
 	
 	public static final Logger logger = LoggerFactory.getLogger(Create.class);

@@ -12,8 +12,10 @@ import javax.imageio.ImageIO;
   
 /** 
  * 验证码生成器 
- * 
- * @author  
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */  
 public class ValidateCode {  
     // 图片的宽度。  

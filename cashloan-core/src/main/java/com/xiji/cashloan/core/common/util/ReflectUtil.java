@@ -19,12 +19,13 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * 工具类-反射帮助类
- * 
- * @author yinLiang
- * @version 1.0
- * @date 2015年11月17日 下午5:39:54 Copyright 杭州融都科技股份有限公司  All Rights
- *       Reserved 官方网站：www.xiji.com
- *       未经授权不得进行修改、复制、出售及商业使用
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ * Copyright 杭州融都科技股份有限公司  All Rights Reserved
+ * 官方网站：www.xiji.com
+ * 未经授权不得进行修改、复制、出售及商业使用
  */
 public class ReflectUtil {
 

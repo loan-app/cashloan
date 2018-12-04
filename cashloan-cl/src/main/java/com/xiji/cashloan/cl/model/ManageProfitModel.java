@@ -1,7 +1,11 @@
 package com.xiji.cashloan.cl.model;
 
 import java.util.Date;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class ManageProfitModel {
 
 	private long id;

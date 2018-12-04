@@ -3,7 +3,9 @@ package com.xiji.cashloan.rule.model.srule.config.condition;
 import com.xiji.cashloan.rule.model.srule.utils.ConditionOpt;
 
 /**
- * Created by syq on 2016/12/11.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public interface Condition<T> {
 

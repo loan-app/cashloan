@@ -36,6 +36,12 @@ import com.xiji.cashloan.system.mapper.SysUserMapper;
 import com.xiji.cashloan.system.security.authentication.encoding.PasswordEncoder;
 import com.xiji.cashloan.system.service.SysUserService;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("profitAgentService")
 public class ProfitAgentServiceImpl extends BaseServiceImpl<ProfitAgent, Long> implements ProfitAgentService {
 	

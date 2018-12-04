@@ -5,6 +5,13 @@ import java.util.List;
 
 import com.xiji.creditrank.cr.domain.CrResultDetail;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 @SuppressWarnings("serial")
 public class CrResultDetailModel extends CrResultDetail {
 	

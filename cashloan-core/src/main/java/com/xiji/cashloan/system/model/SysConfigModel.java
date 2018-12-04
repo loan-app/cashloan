@@ -7,9 +7,9 @@ import com.xiji.cashloan.system.domain.SysConfig;
 /**
  * 
  * 系统参数实体类
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午11:48:02
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class SysConfigModel extends SysConfig {
 

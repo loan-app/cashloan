@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Blowfish算法加解密实现
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class BlowfishCryptoImpl extends AbstractCryptoImpl {
 	

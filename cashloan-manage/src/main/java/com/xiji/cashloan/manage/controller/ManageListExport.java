@@ -26,6 +26,13 @@ import com.xiji.cashloan.cl.service.PayCheckService;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.UrgeRepayOrderService;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 @Scope("prototype")
 @Controller
 @SuppressWarnings({ "unchecked", "rawtypes" })

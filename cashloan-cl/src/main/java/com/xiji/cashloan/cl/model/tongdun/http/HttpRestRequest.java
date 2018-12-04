@@ -8,7 +8,10 @@ import org.springframework.http.HttpHeaders;
 
 /**
  * SDK请求总接口
- * Created by syq on 2015/10/13.
+ * 
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public abstract class HttpRestRequest<T extends HttpRestResponse> {
 

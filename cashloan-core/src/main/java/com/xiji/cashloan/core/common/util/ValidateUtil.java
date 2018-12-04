@@ -9,10 +9,10 @@ import tool.util.StringUtil;
 
 /**
  * 数据校验工具类
- * 
- * @author xx
- * @version 2.0
- * @since 2014年1月8日
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class ValidateUtil {
 	
@@ -21,7 +21,7 @@ public class ValidateUtil {
 	/**
 	 * 校验用户名 规则：数字与字母组合，字母，汉字，4-16位(?![a-zA-Z]+$)
 	 * 
-	 * @param userName
+	 * @param user_name
 	 * @return
 	 */
 	public static boolean isUser_name(String user_name) {

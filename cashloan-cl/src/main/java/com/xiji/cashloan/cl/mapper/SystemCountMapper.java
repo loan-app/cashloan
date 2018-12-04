@@ -6,8 +6,13 @@ import java.util.Map;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 
-
-
+/**
+ *
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 @RDBatisDao
 public interface SystemCountMapper {
 	/**

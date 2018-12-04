@@ -22,8 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 读取Excel
- * 
- * @author jdd
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class ReadExcelUtils {
 	private Logger logger = LoggerFactory.getLogger(ReadExcelUtils.class);

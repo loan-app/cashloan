@@ -3,6 +3,12 @@ package com.xiji.cashloan.core.common.util.excel;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class TableColumn {
 	/**
 	 * 字符串型

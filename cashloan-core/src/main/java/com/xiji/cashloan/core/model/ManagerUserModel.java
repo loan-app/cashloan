@@ -4,6 +4,12 @@ import java.util.Date;
 
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class ManagerUserModel extends UserBaseInfo {
 
 	private static final long serialVersionUID = 1L;

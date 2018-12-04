@@ -27,9 +27,9 @@ import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 /**
  * 运营商回调信息处理
  *
- * @author caitt
- * @version 1.0
- * @date 2017年3月22日上午10:24:47
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @Service("operatorService")
 @Transactional(rollbackFor = Exception.class)

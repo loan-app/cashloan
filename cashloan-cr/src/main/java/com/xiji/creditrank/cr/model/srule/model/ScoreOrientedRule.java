@@ -2,9 +2,9 @@ package com.xiji.creditrank.cr.model.srule.model;
 
 /**
  * 分值导向规则信息，在结果导向规则基础上增加评分处理
- * @author ctt
+ * @author wnb
  * @version 1.0.0
- * @date 2017年1月3日 上午11:48:48
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 creditrank  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

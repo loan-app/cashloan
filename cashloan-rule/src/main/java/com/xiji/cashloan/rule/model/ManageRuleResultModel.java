@@ -4,6 +4,15 @@ import java.util.List;
 
 import com.xiji.cashloan.rule.domain.BorrowRuleResult;
 
+
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ *
+ */
 public class ManageRuleResultModel extends BorrowRuleResult {
 
 	private static final long serialVersionUID = 1L;

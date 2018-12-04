@@ -3,7 +3,15 @@ package com.xiji.cashloan.rule.model;
 import java.util.List;
 
 import com.xiji.cashloan.rule.domain.BorrowRuleConfig;
- 
+
+
+/**
+ *
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 public class BorrowRuleConfigModel   {
 	private BorrowRuleConfig rule;
 	private List<BorrowRuleConfig> configList;

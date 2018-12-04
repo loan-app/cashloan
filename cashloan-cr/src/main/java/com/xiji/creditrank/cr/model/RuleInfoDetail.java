@@ -12,9 +12,9 @@ import tool.util.StringUtil;
 
 /**
  * 规则信息详情
- * @author ctt
+ * @author wnb
  * @version 1.0.0
- * @date 2016年12月20日 下午1:59:39
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 ARC  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

@@ -5,7 +5,9 @@ import java.util.List;
 import com.antgroup.zmxy.openplatform.api.domain.ZmWatchListExtendInfo;
 
 /**
- * Created by syq on 2016/9/12.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class RiskDetail {
 

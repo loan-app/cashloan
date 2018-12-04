@@ -20,10 +20,10 @@ import com.xiji.cashloan.core.common.util.ReflectUtil;
 
 /**
  * 连连支付接口基类
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月6日 上午10:59:19 
  *
  * 官方网站：www.xiji.com
  *  

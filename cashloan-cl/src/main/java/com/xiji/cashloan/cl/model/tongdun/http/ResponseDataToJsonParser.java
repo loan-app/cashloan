@@ -3,7 +3,9 @@ package com.xiji.cashloan.cl.model.tongdun.http;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Created by syq on 2016/5/30.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class ResponseDataToJsonParser<T extends HttpRestResponse> implements HttpResponseParser<T>{
 

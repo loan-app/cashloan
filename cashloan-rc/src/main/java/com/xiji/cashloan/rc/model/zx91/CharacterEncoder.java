@@ -62,10 +62,9 @@ import java.nio.ByteBuffer;
  * <DD>bytesPerLine which tells the encoder the maximum number of 64 * bytes per
  * line. 65 *
  * </DL>
- * 66 * 67 * Several useful encoders have already been written and are 68 *
- * referenced in the See Also list below. 69 * 70 * @author Chuck McManis 71 * @see
- * CharacterDecoder; 72 * @see UCEncoder 73 * @see UUEncoder 74 * @see
- * BASE64Encoder 75
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public abstract class CharacterEncoder
 {

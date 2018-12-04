@@ -19,7 +19,14 @@ import org.slf4j.LoggerFactory;
 import tool.util.StringUtil;
 
 
-
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class GenerateUtils {
 	public static final Logger logger = LoggerFactory.getLogger(GenerateUtils.class);
 	/**

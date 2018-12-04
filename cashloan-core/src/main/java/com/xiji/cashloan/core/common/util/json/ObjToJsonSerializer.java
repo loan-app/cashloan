@@ -2,7 +2,9 @@ package com.xiji.cashloan.core.common.util.json;
 
 /**
  * JSON序列化处理
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  */
 public interface ObjToJsonSerializer {

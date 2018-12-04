@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Base64编码, 默认编码之后进行URL编码, 解码之前进行URL解码, 方便在URL中传值
- * 
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class Base64 {
 

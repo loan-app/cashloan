@@ -3,7 +3,9 @@ package com.xiji.cashloan.core.common.util.json;
 
 /**
  * 统一json处理的基类。统一json格是{errorNo:错误号, errorInfo:错误信息, property:数据, ……}
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  */
 public abstract class AbstractJsonSerializer  {

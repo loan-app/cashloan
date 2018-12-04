@@ -18,6 +18,13 @@ import com.xiji.cashloan.system.domain.SysDict;
 import com.xiji.cashloan.system.mapper.SysDictDetailMapper;
 import com.xiji.cashloan.system.service.SysDictService;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @Service(value = "sysDictService")
 public class SysDictServiceImpl implements SysDictService {
 	@Resource

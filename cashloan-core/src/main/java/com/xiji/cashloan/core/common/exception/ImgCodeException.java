@@ -2,9 +2,9 @@ package com.xiji.cashloan.core.common.exception;
 
 /**
  * 图片验证码异常
- * @author lyang
- * @version 1.0
- * @date 2017年4月25日
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com
