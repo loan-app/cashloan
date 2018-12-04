@@ -16,9 +16,9 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 
 /**
  * 后台登陆，首页统计数据
- * @author caitt
- * @version 1.0
- * @date 2017年3月15日下午2:28:26
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 现金贷  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

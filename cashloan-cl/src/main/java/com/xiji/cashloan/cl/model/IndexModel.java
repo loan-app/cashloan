@@ -6,8 +6,9 @@ import com.xiji.cashloan.core.domain.Borrow;
 
 /**
  * 首页参数
- * @author Administrator
- *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class IndexModel extends Borrow {
 

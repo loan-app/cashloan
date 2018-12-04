@@ -28,7 +28,9 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.service.CloanUserService;
 
 /**
- * Created by lsk on 2017/2/15.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @Scope("prototype")
 @Controller

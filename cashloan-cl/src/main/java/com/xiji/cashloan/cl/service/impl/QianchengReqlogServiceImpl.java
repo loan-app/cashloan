@@ -19,10 +19,10 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 
 /**
  * 浅橙借款申请审核ServiceImpl
- * 
- * @author caitt
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-03-15 11:46:54
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

@@ -4,7 +4,9 @@ import com.xiji.creditrank.cr.model.srule.exception.RuleValueException;
 
 /**
  * user interface show method to use
- * Created by syq on 2016/12/17.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public interface Rule {
 

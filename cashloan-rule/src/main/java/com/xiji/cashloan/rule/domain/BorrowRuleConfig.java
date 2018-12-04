@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * 借款规则详细配置表实体
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-04-21 15:23:19
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

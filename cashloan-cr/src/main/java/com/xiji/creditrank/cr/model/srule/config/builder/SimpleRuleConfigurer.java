@@ -8,7 +8,9 @@ import com.xiji.creditrank.cr.model.srule.config.rule.RuleBasic;
 import com.xiji.creditrank.cr.model.srule.utils.RulePolicy;
 
 /**
- * Created by syq on 2016/12/18.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SimpleRuleConfigurer<H, O extends Rule, B extends AbstractRuleBuilder<H, O>> extends RuleConfigurerAdapter<H, O, B> {

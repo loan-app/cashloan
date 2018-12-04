@@ -33,10 +33,10 @@ import com.xiji.creditrank.cr.service.ItemService;
 
 /**
  * 评分项目ServiceImpl
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-01-04 15:09:22
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  creditrank All Rights Reserved
  * 官方网站：www.xiji.com
  * 

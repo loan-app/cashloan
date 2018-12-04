@@ -11,7 +11,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * Created by syq on 2015/12/28.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JsonArrayParser implements JsonNodeTypeParser {

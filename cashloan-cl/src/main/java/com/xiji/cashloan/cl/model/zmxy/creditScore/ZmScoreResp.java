@@ -5,7 +5,9 @@ import com.xiji.cashloan.cl.model.zmxy.base.BaseResp;
 
 
 /**
- * Created by syq on 2016/9/13.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class ZmScoreResp extends BaseResp {
 

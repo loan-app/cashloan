@@ -9,10 +9,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
  * 广告Service
- * 
- * @author wmc
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-06-21 14:33:20
  * Copyright 杭州融都科技股份有限公司  cashloan All Rights Reserved
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

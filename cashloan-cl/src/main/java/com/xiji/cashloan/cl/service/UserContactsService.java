@@ -9,10 +9,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
  * 用户资料--联系人Service
- * 
- * @author chenxy
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-03-04 11:52:26
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

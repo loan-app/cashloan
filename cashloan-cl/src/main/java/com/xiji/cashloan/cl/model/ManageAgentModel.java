@@ -2,7 +2,11 @@ package com.xiji.cashloan.cl.model;
 
 import com.xiji.cashloan.cl.domain.UserInvite;
 
-
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class ManageAgentModel extends UserInvite {
 
 	private static final long serialVersionUID = 1L;

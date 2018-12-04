@@ -15,10 +15,10 @@ import com.xiji.cashloan.rc.service.TppReqLogService;
 
 /**
  * 第三方征信请求记录ServiceImpl
- * 
- * @author zlh
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-20 13:50:34
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

@@ -28,15 +28,15 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 
- /**
+/**
  * 催款专员以及催收统计相关接口Controller
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-07 14:21:58
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
- * 
+ * <p>
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 @Scope("prototype")

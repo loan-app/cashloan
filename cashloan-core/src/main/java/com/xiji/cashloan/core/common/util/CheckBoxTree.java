@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 /**
  * 
  * 带checkbox树结构
- * @version 1.0
- * @author 吴国成
- * @created 2014年12月31日 上午10:58:34
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class CheckBoxTree {
 	

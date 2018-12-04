@@ -2,9 +2,9 @@ package com.xiji.cashloan.core.common.exception;
 
 /**
  * 自定义异常类
- * @author zlh
- * @version 1.0
- * @date 2016年11月3日 下午3:22:21
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  * Copyright 杭州融都科技股份有限公司  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

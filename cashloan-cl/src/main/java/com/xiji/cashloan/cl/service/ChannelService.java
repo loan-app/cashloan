@@ -11,10 +11,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
  * 渠道信息Service
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-03-03 10:52:07
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 
@@ -33,7 +33,7 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	/**
 	 * 更新渠道信息
 	 * 
-	 * @param channel
+	 * @param paramMap
 	 * @return
 	 */
 	boolean update(Map<String, Object> paramMap);

@@ -87,9 +87,9 @@ import tool.util.StringUtil;
 /**
  * 还款计划ServiceImpl
  *
- * @author lyang
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-02-14 13:42:32
  * 官方网站：www.xiji.com
  *
  * 未经授权不得进行修改、复制、出售及商业使用

@@ -21,6 +21,11 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 
+/**
+ *
+ * @author:wnb
+ * @date:2018/12/03
+ */
 @Scope("prototype")
 @Controller
 public class AdverController extends BaseController{

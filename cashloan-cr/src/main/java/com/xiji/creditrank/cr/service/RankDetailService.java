@@ -7,10 +7,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.creditrank.cr.domain.RankDetail;
 /**
  * 评分卡等级详情表Service
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-06 11:27:25
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

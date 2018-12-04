@@ -20,7 +20,11 @@ import java.util.zip.ZipFile;
 import org.apache.avalon.framework.parameters.ParameterException;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class AlipayDownLoanFile {
 	
 	private static final Logger logger = Logger.getLogger(AlipayDownLoanFile.class);
@@ -46,7 +50,6 @@ public class AlipayDownLoanFile {
 	/**
      * 从Url中下载文件保存，返回本地地址
      * @param urlStr
-     * @param fileName
      * @param savePath
      * @throws IOException
      */

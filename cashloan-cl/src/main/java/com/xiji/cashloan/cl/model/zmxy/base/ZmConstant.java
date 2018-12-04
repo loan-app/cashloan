@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 收集芝麻信息各个接口中的常量
- * Created by syq on 2016/9/12.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class ZmConstant {
 	public static final Logger logger = LoggerFactory.getLogger(ZmConstant.class);

@@ -9,7 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by lsk on 2015/10/21.
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class SqlUtil {

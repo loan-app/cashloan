@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * <p>
  * Description:base64编码类
- * </p>
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class Base64Encoder extends CharacterEncoder {
 

@@ -10,7 +10,9 @@ import com.xiji.cashloan.cl.model.tongdun.http.HttpRestException;
 import com.xiji.cashloan.cl.model.tongdun.http.HttpRestRequest;
 
 /**
- * Created by syq on 2016/8/5.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class PreloanReportRequest extends HttpRestRequest<PreloanReportResponse> {
 	

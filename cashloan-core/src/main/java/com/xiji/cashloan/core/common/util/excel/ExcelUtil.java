@@ -40,6 +40,13 @@ import tool.util.StringUtil;
 
 import com.xiji.cashloan.core.common.util.ReflectUtil;
 
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @SuppressWarnings("deprecation")
 public class ExcelUtil {
 	

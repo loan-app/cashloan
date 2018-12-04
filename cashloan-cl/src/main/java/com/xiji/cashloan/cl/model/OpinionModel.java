@@ -4,9 +4,11 @@ import com.xiji.cashloan.cl.domain.Opinion;
 
 /**
  * 意见反馈model
- * @author xx
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年4月6日 下午6:43:38
+ *
  * Copyright 杭州融都科技股份有限公司 金融创新事业部 此处填写项目英文简称  All Rights Reserved
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

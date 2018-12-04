@@ -4,6 +4,12 @@ package com.xiji.creditrank.cr.model;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 public class CrResultItemDetail {
 	/**
      * 用户ID

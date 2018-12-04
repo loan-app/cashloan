@@ -10,10 +10,11 @@ import com.xiji.cashloan.core.common.context.Global;
 
 /**
  * 连连支付 实时付款 - 付款交易
- * 
- * @author gc
+ *
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月6日 上午11:27:28
  *       官方网站：www.xiji.com  未经授权不得进行修改、复制、出售及商业使用
  */
 public class PaymentModel extends BasePaymentModel {

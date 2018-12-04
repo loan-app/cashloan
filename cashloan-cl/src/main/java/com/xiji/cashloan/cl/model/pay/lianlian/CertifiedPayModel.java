@@ -2,10 +2,11 @@ package com.xiji.cashloan.cl.model.pay.lianlian;
 
 /**
  * 连连支付 - 认证支付
- * 
- * @author gc
+ *
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年6月29日 下午7:06:51
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

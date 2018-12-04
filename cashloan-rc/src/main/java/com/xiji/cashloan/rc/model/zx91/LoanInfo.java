@@ -2,6 +2,13 @@ package com.xiji.cashloan.rc.model.zx91;
 
 import java.util.Date;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 public class LoanInfo {
     private Integer borrowType;//借款类型 0.未知1.个人信贷2.个人抵押3.企业信贷4.企业抵押
 	private Integer borrowState ;//借款状态 0.未知1.拒贷2.批贷已放款3.批贷未放款4.借款人放弃申请5.审核中6.待放款

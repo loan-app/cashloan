@@ -17,7 +17,10 @@ import com.xiji.cashloan.cl.model.zmxy.base.ZmConstant;
 /**
  * 反欺诈信息验证
  * 注意反欺诈验证不需要用户授权，即不需要openId
- * Created by syq on 2016/9/12.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class ZmAntiFraudQuery extends BaseQuery {
 	public static final Logger logger = LoggerFactory.getLogger(ZmAntiFraudQuery.class);

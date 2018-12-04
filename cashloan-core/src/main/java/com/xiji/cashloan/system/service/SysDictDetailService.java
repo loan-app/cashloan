@@ -10,9 +10,9 @@ import com.xiji.cashloan.system.domain.SysDictDetail;
 
 /**
  * Service
- * @author wgc
- * @version 1.0
- * @since 2014-11-03
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface SysDictDetailService extends BaseService<SysDictDetail,Long> {
 

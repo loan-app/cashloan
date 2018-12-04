@@ -36,7 +36,9 @@ import com.xiji.cashloan.system.service.SysUserService;
 
 /**
  * 认证管理器: 用户角色信息Provider
- * @author zhangyz 
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @SuppressWarnings("deprecation")
 @Service

@@ -17,6 +17,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiji.cashloan.core.common.context.Constant;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
  
     public AjaxAuthenticationSuccessHandler() {

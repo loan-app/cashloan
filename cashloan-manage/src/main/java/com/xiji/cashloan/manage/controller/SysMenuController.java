@@ -38,6 +38,12 @@ import com.xiji.cashloan.system.domain.SysPerm;
 import com.xiji.cashloan.system.domain.SysRole;
 import com.xiji.cashloan.system.service.SysMenuService;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 @Scope("prototype")
 @Controller
 public class SysMenuController extends BaseController {

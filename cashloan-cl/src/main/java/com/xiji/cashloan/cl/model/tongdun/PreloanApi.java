@@ -23,7 +23,9 @@ import com.xiji.cashloan.core.common.util.base64.Base64Encoder;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 
 /**
- * Created by syq on 2016/8/5.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class PreloanApi {
 

@@ -71,11 +71,10 @@ import java.nio.ByteBuffer;
  *    74    *      DecoderClassName: Error message.
  *    75    *
  * </pre>
- * 
- * 76 * 77 * Several useful decoders have already been written and are 78 *
- * referenced in the See Also list below. 79 * 80 * @author Chuck McManis 81 * @see
- * CEFormatException 82 * @see CharacterEncoder 83 * @see UCDecoder 84 * @see
- * UUDecoder 85 * @see BASE64Decoder 86
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 
 public abstract class CharacterDecoder

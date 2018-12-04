@@ -43,10 +43,10 @@ import credit.Header;
 
 /**
  * 贷后邦贷后邦反欺诈请求记录表ServiceImpl
- * 
- * @author jdd
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-06-02 18:20:59
  * Copyright 杭州融都科技股份有限公司  cashloan All Rights Reserved
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

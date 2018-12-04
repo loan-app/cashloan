@@ -5,9 +5,9 @@ import java.io.Serializable;
 
 /**
  * 客户字典详细项信息表实体
- * @author wgc
- * @version 1.0
- * @since 2014-11-03
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class SysDictDetail implements Serializable {
 	

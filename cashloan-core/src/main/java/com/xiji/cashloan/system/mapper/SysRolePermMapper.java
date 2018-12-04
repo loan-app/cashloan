@@ -15,6 +15,13 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import com.xiji.cashloan.system.domain.SysRolePerm;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @RDBatisDao
 public interface SysRolePermMapper extends BaseMapper<SysRolePerm, Long> {
 

@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.xiji.creditrank.cr.domain.Item;
 
-/** 
- * @author lyang
- * @version 1.0
- * @date 2017-1-5 下午4:50:23
+/**
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 资产风控系统  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

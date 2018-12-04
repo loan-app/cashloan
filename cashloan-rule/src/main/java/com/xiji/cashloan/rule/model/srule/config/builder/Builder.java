@@ -4,7 +4,9 @@ import com.xiji.cashloan.rule.model.srule.config.rule.Rule;
 import com.xiji.cashloan.rule.model.srule.config.rule.RuleBasic;
 
 /**
- * Created by syq on 2016/12/18.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public interface Builder {
 	

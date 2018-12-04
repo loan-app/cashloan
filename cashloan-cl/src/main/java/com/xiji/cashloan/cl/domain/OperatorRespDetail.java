@@ -8,9 +8,9 @@ import tool.util.DateUtil;
 /**
  * 运营商认证通知详情表实体
  * 
- * @author xx
+ * @author wnb
  * @version 1.0.0
- * @date 2017-05-17 12:38:22
+ * @date 2018/11/29
  * Copyright 杭州融都科技股份有限公司  cashloan All Rights Reserved
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

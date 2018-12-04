@@ -39,10 +39,10 @@ import tool.util.DateUtil;
 
 /**
  * 自动奖励发放
- * 
- * @author gc
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017年3月24日 下午1:54:34 
+ * @date 2018/11/27
  *
  * 官方网站：www.xiji.com
  * 

@@ -12,11 +12,10 @@ import com.xiji.cashloan.core.common.util.DateUtil;
  * 数据行对象 Title: Excel导出工具<br>
  * Description: 封装了数据导出到excel中的行对象，包括行中列数据对象的操作方法等<br>
  * Copyright: eastcom Copyright (C) 2009 <br>
- * 
- * @author <a href="mailto:邮箱">jiangxd</a><br>
- * @e-mail: jiangxd@eastcom-sw.com<br>
- * @version 2.0 <br>
- * @creatdate 2012-11-7 下午03:32:20 <br>
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class TableDataRow {
 	/**

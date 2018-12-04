@@ -5,7 +5,13 @@ import java.nio.charset.Charset;
 import org.apache.commons.lang3.StringUtils;
 
 
-
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 public class PkgHeader {
 	private String version;			//默认01
 	private String custNo;			//请求源

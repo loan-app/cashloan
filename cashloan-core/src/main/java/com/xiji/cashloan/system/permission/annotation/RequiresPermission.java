@@ -8,6 +8,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Documented
 @Inherited

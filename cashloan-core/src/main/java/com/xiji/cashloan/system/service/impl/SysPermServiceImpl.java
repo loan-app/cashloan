@@ -13,6 +13,13 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.system.domain.SysPerm;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @Service("sysPermService")
 public class SysPermServiceImpl extends BaseServiceImpl<SysPerm,Long> implements SysPermService {
 

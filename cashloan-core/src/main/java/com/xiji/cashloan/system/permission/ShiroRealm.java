@@ -28,6 +28,12 @@ import org.apache.shiro.subject.Subject;
 
 import com.xiji.cashloan.core.common.exception.ServiceException;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class ShiroRealm extends AuthorizingRealm {
 
 	private static final Logger logger = Logger.getLogger(ShiroRealm.class);

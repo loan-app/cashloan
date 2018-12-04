@@ -12,10 +12,10 @@ import com.xiji.cashloan.rc.domain.TppBusiness;
 
 /**
  * 同盾第三方请求记录Service
- * 
- * @author jdd
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-04-26 15:26:56
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

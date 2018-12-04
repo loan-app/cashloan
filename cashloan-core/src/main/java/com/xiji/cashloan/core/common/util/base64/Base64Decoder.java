@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ *
+ */
 public class Base64Decoder extends CharacterDecoder {
 
 	public Base64Decoder() {

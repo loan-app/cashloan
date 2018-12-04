@@ -4,10 +4,11 @@ import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 
 /**
  * 连连支付 银行卡还款扣款接口
- * 
- * @author gc
+ *
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月10日 上午11:34:27
  *
  * 官方网站：www.xiji.com
  * 

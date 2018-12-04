@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by Administrator on 2015/2/13.
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class MapRender {

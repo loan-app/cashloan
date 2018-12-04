@@ -22,7 +22,9 @@ import com.xiji.cashloan.core.common.util.MapUtil;
 import com.xiji.cashloan.core.common.util.SqlUtil;
 
 /**
- * Created by lsk on 2016/9/21.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @Service
 @SuppressWarnings({ "rawtypes", "unchecked" })

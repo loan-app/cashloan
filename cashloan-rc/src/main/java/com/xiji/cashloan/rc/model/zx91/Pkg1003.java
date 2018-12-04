@@ -1,5 +1,12 @@
 package com.xiji.cashloan.rc.model.zx91;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 public class Pkg1003 {
 	private String realName;	//姓名
 	private String idCard;		//身份证号

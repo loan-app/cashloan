@@ -4,10 +4,11 @@ import com.xiji.cashloan.cl.domain.PayCheck;
 
 /**
  * 资金对账记录Model
- * 
- * @author gc
+ *
+ **
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年4月17日 下午5:55:04
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

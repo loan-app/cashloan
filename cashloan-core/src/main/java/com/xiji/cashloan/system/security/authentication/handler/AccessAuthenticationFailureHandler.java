@@ -17,6 +17,12 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @SuppressWarnings("unused")
 public class AccessAuthenticationFailureHandler implements
 		AuthenticationFailureHandler {

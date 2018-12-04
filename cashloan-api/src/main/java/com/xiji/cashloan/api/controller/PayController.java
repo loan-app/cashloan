@@ -41,9 +41,9 @@ import com.xiji.cashloan.core.model.BorrowModel;
 /**
  * 连连实时付款(代付)异步通知
  * 
- * @author gc
+ * @author wnb
  * @version 1.0.0
- * @date 2017年3月24日 下午2:49:56
+ * @date 2018/12/03
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
  */

@@ -13,6 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.xiji.cashloan.core.common.util.parse.ClassTypeParser;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class DefaultClassTypeParser implements ClassTypeParser {
 	static ObjectMapper mapper = new ObjectMapper();
 	static {

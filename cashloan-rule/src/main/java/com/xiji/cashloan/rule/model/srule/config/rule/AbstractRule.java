@@ -8,7 +8,9 @@ import com.xiji.cashloan.rule.model.srule.exception.RuleValueException;
 import com.xiji.cashloan.rule.model.srule.utils.RulePolicy;
 
 /**
- * Created by syq on 2016/12/17.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public abstract class AbstractRule<T> implements Rule, RuleBasic<T> {
 

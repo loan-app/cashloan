@@ -8,6 +8,9 @@ import java.io.OutputStream;
 
 /**
  * base64编码
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public abstract class CharacterDecoder {
 

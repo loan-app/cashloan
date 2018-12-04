@@ -8,7 +8,9 @@ import com.xiji.creditrank.cr.model.srule.config.rule.RuleBasic;
 /**
  * A base {@link AbstractRuleBuilder} that ensures the object being built is only built one time.
  * <p>
- * Created by syq on 2016/12/8.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public abstract class AbstractRuleBuilder<H, O extends Rule> implements RuleBuilder<H>, Builder {
 

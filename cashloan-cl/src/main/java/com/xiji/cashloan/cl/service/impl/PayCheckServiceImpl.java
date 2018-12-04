@@ -20,10 +20,10 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 
 /**
  * 资金对账记录ServiceImpl
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-04-13 17:12:20
  * Copyright 杭州融都科技股份有限公司   All Rights Reserved
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

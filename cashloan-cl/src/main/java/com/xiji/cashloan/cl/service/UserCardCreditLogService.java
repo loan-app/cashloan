@@ -5,10 +5,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
  * 人脸识别请求记录Service
- * 
- * @author jdd
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-04-10 14:37:56
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

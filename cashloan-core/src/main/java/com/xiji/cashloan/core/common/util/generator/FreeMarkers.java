@@ -14,9 +14,10 @@ import freemarker.template.TemplateException;
 
 /**
  * FreeMarkers工具类
- * 
- * @author ThinkGem
- * @version 2013-01-15
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class FreeMarkers {
 

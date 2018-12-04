@@ -52,9 +52,8 @@ import java.io.PushbackInputStream;
    53    *    "BASE64Decoder: Not enough bytes for an atom."
    54    * </pre>
    55    *
-   56    * @author      Chuck McManis
-   57    * @see         CharacterEncoder
-   58    * @see         BASE64Decoder
+   56    * @author wnb
+   57    * @date 2018/11/27
    59    */
  
   public class BASE64Decoder extends CharacterDecoder {

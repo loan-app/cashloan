@@ -10,9 +10,9 @@ import com.xiji.cashloan.system.domain.SysUserRole;
 /**
  * 
  * 用户角色DAO
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月22日 下午2:47:14
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @RDBatisDao
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole, Long> {

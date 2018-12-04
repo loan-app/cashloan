@@ -9,7 +9,9 @@ import com.xiji.creditrank.cr.model.srule.exception.RuleNotFoundException;
 /**
  * 定义规则之间的关系接口
  * 单条规则与规则之间的关系，可能很复杂，也可能很简单
- * Created by syq on 2016/12/14.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public interface RulesLogic {
 

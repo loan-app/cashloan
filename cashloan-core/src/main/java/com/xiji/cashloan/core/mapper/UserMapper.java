@@ -11,10 +11,10 @@ import com.xiji.cashloan.core.model.CloanUserModel;
 
 /**
  * 用户管理Dao
- * 
- * @author lyang
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2016-12-08 15:13:39
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 
@@ -25,7 +25,7 @@ public interface UserMapper extends BaseMapper<User,Long> {
 
 	/**
 	 * 分页查询返回CreditModel
-	 * @param searchMap
+	 * @param params
 	 * @return
 	 */
 	//List<CreditModel> page(Map<String,Object> searchMap);

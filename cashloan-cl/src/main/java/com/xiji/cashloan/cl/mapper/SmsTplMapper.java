@@ -6,10 +6,10 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 /**
  * 短信记录Dao
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-13 18:36:01
+ * @date 2018/12/03
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

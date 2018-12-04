@@ -13,6 +13,13 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class MyAccessDeniedHandlerImpl implements AccessDeniedHandler {
 
 	@Override

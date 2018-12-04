@@ -14,7 +14,12 @@ import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 @Service
 public class ManageSessionInterceptor extends HandlerInterceptorAdapter {
 

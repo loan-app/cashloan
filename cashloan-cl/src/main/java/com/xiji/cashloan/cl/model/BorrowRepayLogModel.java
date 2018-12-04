@@ -3,7 +3,11 @@ package com.xiji.cashloan.cl.model;
 import tool.util.DateUtil;
 
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class BorrowRepayLogModel extends BorrowRepayLog {
 
 	private static final long serialVersionUID = 1L;

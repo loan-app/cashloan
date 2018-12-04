@@ -29,7 +29,9 @@ import freemarker.template.TemplateModelException;
  * 注意: 该指令不能用于
  * 
  * 用户未登录的页面, 否则会抛出异常
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class SpringSecurityAuthorizeUrlDirective implements TemplateDirectiveModel {
 	

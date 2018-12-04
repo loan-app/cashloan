@@ -8,7 +8,9 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * 在spring初始化时候能获得spring的context，等于可以快速取到spring的context
  * 需要在spring配置里加 &lt;bean class="com.xiji.eloan.common.utils.AppContextHolder"&gt;
- * @author zzb
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class AppContextHolder implements ApplicationContextAware{
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppContextHolder.class);

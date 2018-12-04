@@ -2,6 +2,13 @@ package com.xiji.cashloan.core.model;
 
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class UserWorkInfoModel extends UserBaseInfo {
 
 	private static final long serialVersionUID = 1L;

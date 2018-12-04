@@ -19,8 +19,10 @@ import javax.crypto.Cipher;
 
 
 /**
- * @author fuiou honcyGao
- * 20160815
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
  * RSA公钥/私钥/签名工具包
  * 字符串格式的密钥在未在特殊说明情况下都为BASE64编码格式
  * 由于非对称加密速度极其缓慢，一般文件不使用它来加密而是使用对称加密

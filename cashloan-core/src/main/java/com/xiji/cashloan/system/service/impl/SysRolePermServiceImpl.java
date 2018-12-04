@@ -13,6 +13,12 @@ import com.xiji.cashloan.system.domain.SysRolePerm;
 import com.xiji.cashloan.system.mapper.SysRolePermMapper;
 import com.xiji.cashloan.system.service.SysRolePermService;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("sysRolePermService")
 public class SysRolePermServiceImpl extends BaseServiceImpl<SysRolePerm, Long> implements SysRolePermService {
 

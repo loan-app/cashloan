@@ -9,10 +9,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
  * app渠道版本表Service
- * 
- * @author dufy
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-05-10 10:29:55
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com

@@ -14,7 +14,9 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
- * Created by syq on 2016/6/15.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class CustomerErrorHandler extends DefaultResponseErrorHandler {
 

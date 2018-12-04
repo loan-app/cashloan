@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.User;
 
 /**
  * 用户和角色信息类
- * 
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class UserRole extends User {
 

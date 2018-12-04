@@ -3,6 +3,13 @@ package com.xiji.cashloan.cl.model.pay.fuiou.agreement;
 import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
 
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 @XObject(value = "REQUEST")
 public class BindXmlBeanReq {
 	

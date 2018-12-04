@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * 紧急联系人表实体
  * 
- * @author lyang
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-14 11:24:05
+ * @date 2018/11/23
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

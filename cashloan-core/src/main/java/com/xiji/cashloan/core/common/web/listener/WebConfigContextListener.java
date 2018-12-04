@@ -11,9 +11,9 @@ import com.xiji.cashloan.core.common.util.CacheUtil;
 
 /**
  * 监听器
- * @author gc
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2016年11月11日 下午3:40:52
  * Copyright 杭州融都科技股份有限公司  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

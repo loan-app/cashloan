@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 小贷基类控制层基类
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  */
 public abstract class AbstractController {

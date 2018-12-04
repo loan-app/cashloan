@@ -22,6 +22,13 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.rc.mapper.SceneBusinessLogMapper;
 
+
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ */
 @Service("sceneBusinessLogService")
 @Transactional(rollbackFor=Exception.class)
 public class SceneBusinessLogServiceImpl extends BaseServiceImpl<SceneBusinessLog, Long> implements SceneBusinessLogService {

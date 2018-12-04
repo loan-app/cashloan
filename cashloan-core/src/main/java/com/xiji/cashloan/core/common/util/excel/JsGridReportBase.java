@@ -29,6 +29,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class JsGridReportBase {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JsGridReportBase.class);

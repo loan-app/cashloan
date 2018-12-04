@@ -38,9 +38,9 @@ import tool.util.DateUtil;
 /**
  * 连连分期付(代扣)异步通知
  * 
- * @author gc
+ * @author wnb
  * @version 1.0.0
- * @date 2017年3月24日 下午2:34:11
+ * @date 2018/12/03
  *
  * 官方网站：www.xiji.com
  * 

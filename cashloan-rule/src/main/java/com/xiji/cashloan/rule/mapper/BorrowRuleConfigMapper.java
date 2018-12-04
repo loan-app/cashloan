@@ -9,10 +9,10 @@ import com.xiji.cashloan.rule.domain.BorrowRuleConfig;
 
 /**
  * 借款规则详细配置表Dao
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-04-21 15:23:19
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  */
 @RDBatisDao

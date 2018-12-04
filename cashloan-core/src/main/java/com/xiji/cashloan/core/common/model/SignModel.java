@@ -3,10 +3,11 @@ package com.xiji.cashloan.core.common.model;
 import org.apache.log4j.Logger;
 
 
-/** 
- * @author lid
- * @version 1.0
- * @date 2016年12月13日 下午2:18:28
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  * Copyright 杭州融都科技股份有限公司 资产匹配系统 All Rights Reserved
  * 官方网站：www.xiji.com
  * 

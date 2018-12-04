@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * 运营商信息-通话记录实体
  *
- * @author caitt
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-13 16:44:01
+ * @date 2018/11/29
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * <p/>

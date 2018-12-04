@@ -6,7 +6,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.xiji.cashloan.core.common.util.DateUtil;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class BusinessExceptionMonitor {
 
 	//private static Logger logger = LoggerFactory.getLogger(BusinessExceptionMonitor.class);

@@ -11,10 +11,10 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 /**
  * 借款进度表Dao
- * 
- * @author lyang
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-14 10:31:04
+ * @date 2018/12/03
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

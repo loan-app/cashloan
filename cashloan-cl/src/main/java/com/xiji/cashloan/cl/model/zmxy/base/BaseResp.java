@@ -6,7 +6,10 @@ import com.antgroup.zmxy.openplatform.api.ZhimaResponse;
 
 /**
  * 抽象结果返回类
- * Created by syq on 2016/9/13.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 @SuppressWarnings("serial")
 public abstract class BaseResp extends ZhimaResponse{

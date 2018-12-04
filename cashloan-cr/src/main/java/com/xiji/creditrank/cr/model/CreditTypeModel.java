@@ -4,9 +4,9 @@ import com.xiji.creditrank.cr.domain.CreditType;
 
 /**
  * 额度类型页面显示model
- * @author caitt
+ * @author wnb
  * @version 1.0.0
- * @date 2017年1月20日 下午2:55:58
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 ARC  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

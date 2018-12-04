@@ -37,9 +37,9 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 /**
  * 连连支付 - 认证支付
  * 
- * @author gc
+ * @author wnb
  * @version 1.0.0
- * @date 2017年6月30日 上午11:45:58 
+ * @date 2018/12/03
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

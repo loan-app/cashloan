@@ -23,9 +23,9 @@ import com.xiji.cashloan.rc.service.StatisticsBusinessService;
 
 /**
  * 风控数据统计接口
- * @author caitt
- * @version 1.0
- * @date 2017年4月14日上午9:16:51
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 现金贷  All Rights Reserved
  * 官方网站：www.xiji.com
  * 研发中心：rdc@xiji.com

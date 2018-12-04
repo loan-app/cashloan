@@ -11,7 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 访问决策管理器
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class AccessDecisionManager implements org.springframework.security.access.AccessDecisionManager{
 

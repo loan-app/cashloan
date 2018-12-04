@@ -37,7 +37,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.core.common.context.Constant;
 
 /**
- * Created by lsk on 2015/12/16.
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class HttpUtil {
 	

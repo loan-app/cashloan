@@ -8,10 +8,10 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 /**
  * 催款记录表Dao
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-03-07 14:28:22
+ * @date 2018/12/03
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

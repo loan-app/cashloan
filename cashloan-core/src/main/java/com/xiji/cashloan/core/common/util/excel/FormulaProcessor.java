@@ -3,6 +3,12 @@ package com.xiji.cashloan.core.common.util.excel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class FormulaProcessor {
 	private static FormulaProcessor self = null;
 

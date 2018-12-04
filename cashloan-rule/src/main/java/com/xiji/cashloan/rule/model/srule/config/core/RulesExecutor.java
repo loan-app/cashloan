@@ -7,7 +7,9 @@ import com.xiji.cashloan.rule.model.srule.config.rule.Rule;
 
 /**
  * 规则结果执行器
- * Created by syq on 2016/12/13.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public class RulesExecutor {
 

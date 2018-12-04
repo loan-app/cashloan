@@ -9,10 +9,10 @@ import com.xiji.cashloan.rule.domain.RuleEngineConfig;
 
 /**
  * 规则引擎管理Dao
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2016-12-12 17:25:31
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

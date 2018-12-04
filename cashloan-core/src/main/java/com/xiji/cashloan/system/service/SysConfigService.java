@@ -8,8 +8,9 @@ import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.system.domain.SysConfig;
 
 /**
-* User:    mcwang
-* DateTime:2016-08-04 03:26:22
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
 * details: 系统参数表,Service接口层
 * source:  代码生成器
 */

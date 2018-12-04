@@ -10,7 +10,10 @@ import org.apache.commons.logging.LogFactory;
  * 
  * 性能监测，超过指定值的允许都将被记录。 如果把TimeProfiler 的log
  * level定为info，则输出简要信息，如果设为debug，则输出详细信息
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
  */
 
 public final class TimeProfiler {

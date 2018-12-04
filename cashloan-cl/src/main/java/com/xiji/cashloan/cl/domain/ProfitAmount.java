@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * 分润资金实体
  * 
- * @author lyang
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-18 16:29:51
+ * @date 2018/12/01
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

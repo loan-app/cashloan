@@ -18,6 +18,14 @@ import com.xiji.cashloan.manage.model.QuartzInfoModel;
 import com.xiji.cashloan.manage.model.QuartzManager;
 import com.xiji.cashloan.manage.service.QuartzInfoService;
 
+
+/**
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ */
 public class QuartzListener implements ServletContextListener,HttpSessionAttributeListener{
 
 	private static Logger logger=Logger.getLogger(QuartzListener.class);

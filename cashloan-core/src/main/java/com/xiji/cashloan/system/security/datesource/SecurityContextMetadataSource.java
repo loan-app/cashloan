@@ -16,7 +16,9 @@ import com.xiji.cashloan.system.security.userdetails.UserRole;
 
 /**
  * 访问决策器：角色与功能的URL访问决策。
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class SecurityContextMetadataSource implements FilterInvocationSecurityMetadataSource {
 	

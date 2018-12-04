@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * AES算法加解密实现
- * 
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class AESCryptoImpl extends AbstractCryptoImpl {
 	

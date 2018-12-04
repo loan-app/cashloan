@@ -47,10 +47,10 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 
 /**
  * 还款计划表和还款记录Controller
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-02-24 14:02:41 
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司 arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

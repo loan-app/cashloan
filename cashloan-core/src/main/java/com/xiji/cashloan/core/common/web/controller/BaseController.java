@@ -65,9 +65,9 @@ import com.xiji.cashloan.system.service.SysUserService;
 /**
  * 
  * 基类action
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 下午1:48:28
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @Controller
 @Scope("prototype")

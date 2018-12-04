@@ -27,6 +27,14 @@ import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.util.MapUtil;
 import com.xiji.cashloan.system.domain.SysRoleMenu;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @Service(value = "sysMenuServiceImpl")
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu,Long> implements SysMenuService {
 

@@ -22,10 +22,10 @@ import com.xiji.creditrank.cr.domain.CrResult;
 
 /**
  * 评分结果Controller
- * 
- * @author ctt
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-01-05 16:22:54
  * Copyright 杭州融都科技股份有限公司  creditrank All Rights Reserved
  * 官方网站：www.xiji.com
  * 

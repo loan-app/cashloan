@@ -7,7 +7,10 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * 对json的类型分别处理，统一定义操作接口
- * Created by syq on 2015/12/28.
+ **
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public interface JsonNodeTypeParser extends Observer {
 

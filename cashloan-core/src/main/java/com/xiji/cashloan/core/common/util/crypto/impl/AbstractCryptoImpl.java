@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  *加解密基类
- * 
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public abstract class AbstractCryptoImpl implements Crypto {
 	

@@ -9,7 +9,9 @@ import com.xiji.cashloan.core.common.util.json.ObjToJsonSerializer;
 
 /**
  * JSON转化处理
- * @author zhangyz
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class ObjToJsonSerializerImpl implements ObjToJsonSerializer {
 

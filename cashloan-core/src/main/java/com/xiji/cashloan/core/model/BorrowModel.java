@@ -4,9 +4,9 @@ import com.xiji.cashloan.core.domain.Borrow;
 
 /**
  * 借款进度状态model
- * @author jdd
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2016年1月12日 下午2:35:42
  * Copyright 杭州融都科技股份有限公司 ARC  All Rights Reserved
  * 官方网站：www.xiji.com
  * 

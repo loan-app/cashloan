@@ -2,9 +2,9 @@ package com.xiji.cashloan.rc.constant;
 
 /**
  * 第三方征信 常量
- * @author zlh
- * @version 1.0
- * @date 2017年3月18日 下午2:59:24
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * 官方网站：www.xiji.com
  * 创新一部：rdc@xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

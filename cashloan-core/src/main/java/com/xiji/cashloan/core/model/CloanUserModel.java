@@ -2,6 +2,12 @@ package com.xiji.cashloan.core.model;
 
 import java.util.Date;
 
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class CloanUserModel {
 	/**
 	 * 主键Id

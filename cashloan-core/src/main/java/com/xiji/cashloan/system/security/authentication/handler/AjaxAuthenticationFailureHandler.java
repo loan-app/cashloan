@@ -20,6 +20,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiji.cashloan.core.common.context.Constant;
 
+
+/**
+ *
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @SuppressWarnings("deprecation")
 public class AjaxAuthenticationFailureHandler implements
 		AuthenticationFailureHandler {

@@ -4,10 +4,11 @@ import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 
 /**
  * 连连支付 分期付 - 授权申请接口
- * 
- * @author gc
+ *
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年3月13日 下午1:56:53
  *
  * 官方网站：www.xiji.com
  * 

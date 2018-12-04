@@ -2,7 +2,9 @@ package com.xiji.creditrank.cr.model.srule.utils;
 
 /**
  * 条件的操作符常量
- * Created by syq on 2016/12/12.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public enum ConditionOpt {
 

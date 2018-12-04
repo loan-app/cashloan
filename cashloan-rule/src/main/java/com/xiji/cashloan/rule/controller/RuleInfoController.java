@@ -32,10 +32,10 @@ import com.xiji.cashloan.rule.service.RuleInfoService;
 
 /**
  * 规则信息Controller
- * 
- * @author ctt
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2016-12-20 13:58:48
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

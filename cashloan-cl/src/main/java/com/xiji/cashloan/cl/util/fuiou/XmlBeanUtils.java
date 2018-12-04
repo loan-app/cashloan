@@ -9,8 +9,10 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  * Xml 和JavaBean转换工具类
- * 
- * @author XiaoHao
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  */
 public class XmlBeanUtils

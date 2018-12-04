@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 附件读取
- * 
- * @version 1.0
- * @author RDuser
- * @since 2017-02-15
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 @Controller
 @Scope("prototype")

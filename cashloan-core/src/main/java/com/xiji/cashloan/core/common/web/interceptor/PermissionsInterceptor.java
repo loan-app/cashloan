@@ -12,7 +12,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.xiji.cashloan.system.service.SysMenuService;
 
-
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 @Service
 public class PermissionsInterceptor extends HandlerInterceptorAdapter {
 

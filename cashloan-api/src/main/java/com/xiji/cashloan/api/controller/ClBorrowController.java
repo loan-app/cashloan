@@ -54,9 +54,9 @@ import credit.ApiSignUtil;
 
 /**
  * 借款申请风控接口执行记录
- * @author caitt
+ * @author wnb
  * @version 1.0
- * @date 2017年4月11日下午5:40:14
+ * @date 2018/12/03
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
  */

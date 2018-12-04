@@ -1,5 +1,11 @@
 package com.xiji.cashloan.cl.util;
 
+/**
+ *
+  @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 public class Test1 {
     private String name;
     private int age;

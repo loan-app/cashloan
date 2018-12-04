@@ -3,9 +3,9 @@ package com.xiji.cashloan.cl.model;
 
  /**
  * 支付宝查询对账单下载地址
- * @author jdd
+ * @author wnb
  * @version 1.0.0
- * @date 2017-4-5 上午11:20:28
+ * @date 2018/11/28
  * Copyright 杭州融都科技股份有限公司 金融创新事业部 cashloan  All Rights Reserved
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用

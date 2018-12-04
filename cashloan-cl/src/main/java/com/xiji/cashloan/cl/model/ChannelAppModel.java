@@ -1,7 +1,11 @@
 package com.xiji.cashloan.cl.model;
 
 import com.xiji.cashloan.cl.domain.ChannelApp;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class ChannelAppModel extends ChannelApp{
 	
 	private static final long serialVersionUID = 1L;

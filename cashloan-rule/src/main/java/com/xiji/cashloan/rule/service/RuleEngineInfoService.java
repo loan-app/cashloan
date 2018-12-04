@@ -8,10 +8,10 @@ import com.xiji.cashloan.rule.domain.RuleEngineInfo;
 
 /**
  * 规则评分设置管理Service
- * 
- * @author jdd
+ *
+ * @author wnb
  * @version 1.0.0
- * @date 2017-01-03 17:28:16
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

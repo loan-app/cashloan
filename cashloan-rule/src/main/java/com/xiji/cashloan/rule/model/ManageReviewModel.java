@@ -2,6 +2,15 @@ package com.xiji.cashloan.rule.model;
 
 import com.xiji.cashloan.rule.domain.BorrowRuleResult;
 
+/**
+ *
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
+ *
+ *
+ */
 public class ManageReviewModel extends BorrowRuleResult{
 
 	private static final long serialVersionUID = 1L;

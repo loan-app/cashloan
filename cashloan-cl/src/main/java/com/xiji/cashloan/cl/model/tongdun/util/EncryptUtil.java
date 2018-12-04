@@ -14,7 +14,10 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * 加密工具类
- * Created by syq on 2016/5/27.
+ *
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class EncryptUtil {
 

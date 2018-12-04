@@ -10,9 +10,9 @@ import com.xiji.cashloan.system.domain.SysRoleMenu;
 /**
  * 
  * 角色菜单关联信息service接口
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 上午9:55:37
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public interface SysRoleMenuService {
 	/**

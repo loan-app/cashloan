@@ -24,6 +24,11 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.mapper.UserMapper;
 
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ */
 @Service("channelService")
 public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implements ChannelService {
 	

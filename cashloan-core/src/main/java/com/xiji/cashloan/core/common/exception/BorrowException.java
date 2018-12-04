@@ -3,10 +3,10 @@ package com.xiji.cashloan.core.common.exception;
 
 /**
  * 借贷异常
- * 
- * @author xx
- * @version 2.0
- * @since 2014年3月4日
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class BorrowException extends BaseRuntimeException {
 

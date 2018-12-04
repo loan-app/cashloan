@@ -23,7 +23,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.base64.Base64Util;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 public class SignUtil {
 
 	private static Logger logger = Logger.getLogger(SignUtil.class);

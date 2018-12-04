@@ -5,9 +5,9 @@ import com.xiji.cashloan.cl.domain.PayLog;
 /**
  * 支付记录Model
  *
- * @author gc
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年4月6日 上午11:51:31
  * Copyright 杭州融都科技股份有限公司 All Rights Reserved
  * 官方网站：www.xiji.com
  *

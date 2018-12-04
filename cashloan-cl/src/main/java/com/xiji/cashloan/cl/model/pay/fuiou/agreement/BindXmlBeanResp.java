@@ -5,6 +5,11 @@ import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
 import tool.util.StringUtil;
 
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 @XObject(value = "RESPONSE")
 public class BindXmlBeanResp extends ProtocolResp{
 	@XNode("VERSION")

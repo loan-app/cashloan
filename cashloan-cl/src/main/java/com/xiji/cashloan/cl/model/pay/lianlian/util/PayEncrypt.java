@@ -25,7 +25,11 @@ import org.slf4j.LoggerFactory;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
+/**
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
+ */
 @SuppressWarnings("restriction")
 public class PayEncrypt {
 	

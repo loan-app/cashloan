@@ -1,7 +1,9 @@
 package com.xiji.cashloan.rule.model.srule.exception;
 
 /**
- * Created by syq on 2016/12/14.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public class RuleNotFoundException extends RuntimeException{
 

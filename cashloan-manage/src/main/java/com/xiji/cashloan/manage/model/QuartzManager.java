@@ -13,8 +13,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 定时任务动态修改
- * 
- * @author Administrator
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  * 
  */
 @SuppressWarnings({ "rawtypes" })

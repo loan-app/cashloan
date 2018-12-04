@@ -24,9 +24,9 @@ import com.xiji.cashloan.cl.service.QianchengReqlogService;
 
 /**
  * 浅橙请求记录表Controller
- * @author dufy
+ * @author wnb
  * @version 1.0.0
- * @data 2017-03-21 09:54:01
+ * @date 2018/11/27
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 

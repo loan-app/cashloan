@@ -21,10 +21,10 @@ import com.xiji.cashloan.core.service.UserBaseInfoService;
 
 /**
  * 用户详情表ServiceImpl
- * 
- * @author lyang
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-02-14 11:08:04
  * Copyright 杭州融都科技股份有限公司  cl All Rights Reserved
  * 官方网站：www.xiji.com
  * 

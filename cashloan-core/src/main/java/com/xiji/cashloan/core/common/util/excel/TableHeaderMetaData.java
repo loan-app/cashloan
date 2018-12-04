@@ -7,11 +7,10 @@ import java.util.List;
  * Title: <br>
  * Description: 表头对象，用于创建excel表头，支持多层表头<br>
  * Copyright: eastcom Copyright (C) 2009 <br>
- * 
- * @author <a href="mailto:邮箱">jiangxd</a><br>
- * @e-mail: jiangxd@eastcom-sw.com<br>
- * @version 2.0 <br>
- * @creatdate 2012-11-7 下午03:21:39 <br>
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  */
 public class TableHeaderMetaData {
 	/**

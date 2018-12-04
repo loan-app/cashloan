@@ -33,10 +33,10 @@ import com.xiji.cashloan.system.service.SysDictService;
 /**
  * 
  * 数据字典管理
- * 
- * @version 1.0
- * @author 吴国成
- * @created 2014年9月23日 下午2:13:03
+ *
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 @Scope("prototype")
 @Controller

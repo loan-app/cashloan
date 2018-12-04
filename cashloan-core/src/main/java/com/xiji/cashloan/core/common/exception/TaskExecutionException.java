@@ -1,6 +1,11 @@
 package com.xiji.cashloan.core.common.exception;
 
-
+/**
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class TaskExecutionException extends ErongBaseException{
 
 	

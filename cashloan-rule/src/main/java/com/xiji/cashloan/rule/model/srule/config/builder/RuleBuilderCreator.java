@@ -16,7 +16,9 @@ import com.xiji.cashloan.rule.model.srule.utils.RulePolicy;
 
 /**
  * builder factory single instance
- * Created by syq on 2016/12/17.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public class RuleBuilderCreator {
 

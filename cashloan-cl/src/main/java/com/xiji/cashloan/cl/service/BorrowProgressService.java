@@ -11,10 +11,10 @@ import com.xiji.cashloan.core.domain.Borrow;
 
 /**
  * 借款进度表Service
- * 
- * @author lyang
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-02-14 10:31:04
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 
@@ -24,7 +24,7 @@ public interface BorrowProgressService extends BaseService<BorrowProgress, Long>
 
 	/**
 	 * 进度查询
-	 * @param borrowId
+	 * @param borrow
 	 * @return
 	 */
 	Map<String,Object> result(Borrow borrow);

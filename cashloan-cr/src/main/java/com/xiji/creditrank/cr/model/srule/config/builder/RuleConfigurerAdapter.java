@@ -6,7 +6,9 @@ import com.xiji.creditrank.cr.model.srule.config.rule.Rule;
 
 /**
  * 规则配置类的抽象适配器,主要功能是保存builder的实例
- * Created by syq on 2016/12/9.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 public abstract class RuleConfigurerAdapter<H, O extends Rule, B extends AbstractRuleBuilder<H, O>> implements RuleConfigurer<H> {
 

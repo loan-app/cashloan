@@ -13,10 +13,10 @@ import com.xiji.cashloan.cl.model.pay.lianlian.RepaymentModel;
 
 /**
  * 支付接口
- * 
- * @author gc
+ *
+ * @author wnb
+ * @date 2018/11/30
  * @version 1.0.0
- * @date 2017年4月19日 下午4:09:30 
  *
  * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
@@ -34,7 +34,7 @@ public interface PayHepler {
 	/**
 	 * 授权
 	 * 
-	 * @param paramMap
+	 * @param model
 	 * @return
 	 */
 	public BasePaymentModel authApply(AuthApplyModel model);

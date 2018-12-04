@@ -5,8 +5,10 @@ import java.io.Serializable;
 import com.xiji.cashloan.system.domain.SysMenu;
 
 /**
- *  
- * @author Administrator
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
  *
  */
 

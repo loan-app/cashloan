@@ -14,7 +14,9 @@ import com.xiji.creditrank.cr.model.srule.exception.RuleValueException;
 import com.xiji.creditrank.cr.model.srule.utils.ConditionOpt;
 
 /**
- * Created by syq on 2016/12/17.
+ * @author wnb
+ * @version 1.0.0
+ * @date 2018/11/27
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class SimpleRuleBuilder<H, T extends Rule> extends AbstractRuleBuilder<H, T> {

@@ -12,7 +12,9 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Created by syq on 2015/10/13.
+ * @author wnb
+ * @date 2018/11/30
+ * @version 1.0.0
  */
 public class HttpRestClient {
 

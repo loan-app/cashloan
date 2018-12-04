@@ -6,6 +6,14 @@ import java.util.Collection;
 
 import org.springframework.security.access.ConfigAttribute;
 
+
+/**
+ *
+ * @author wnb
+ * @date 2018/11/27
+ * @version 1.0.0
+ *
+ */
 public class UserFunction implements Serializable {
     
     /**

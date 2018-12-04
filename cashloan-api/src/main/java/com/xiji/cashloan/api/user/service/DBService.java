@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import com.xiji.cashloan.core.common.exception.BaseRuntimeException;
 
 /**
- * Created by lsk on 2017/2/14.
+ * @author wnb
+ * @date 2018/12/03
+ * @version 1.0.0
  */
 @Service
 public class DBService {

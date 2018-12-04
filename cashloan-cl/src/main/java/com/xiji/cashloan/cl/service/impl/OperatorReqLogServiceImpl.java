@@ -24,10 +24,10 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 
 /**
  * 运营商认证中间表ServiceImpl
- * 
- * @author lyang
+ *
+ * @author wnb
+ * @date 2018/11/27
  * @version 1.0.0
- * @date 2017-03-01 16:27:59
  * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
  * 官方网站：www.xiji.com
  * 
