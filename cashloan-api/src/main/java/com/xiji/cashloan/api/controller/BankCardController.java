@@ -171,13 +171,17 @@ public class BankCardController extends BaseController {
 		@RequestParam(value = "userId", required = true) String userId,
 		@RequestParam(value = "mobileNo", required = true) String mobileNo){
 		//校验更换绑卡时，是否存在未结束的借款
-		List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(NumberUtil.getLong(userId));
-		if (null != list && !list.isEmpty()) {
-			Borrow borrow = list.get(0);
-			if(borrow != null && BorrowModel.STATE_REPAY_FAIL != borrow.getState()){
-				throw new BussinessException("借款结束前不能更换银行卡");
+		String bindCardSwitch = Global.getValue("bindCardSwitch");//10支持接口结束前换卡，20不支持
+		if (StringUtil.equals(bindCardSwitch, "10")) {
+			List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(NumberUtil.getLong(userId));
+			if (null != list && !list.isEmpty()) {
+				Borrow borrow = list.get(0);
+				if(borrow != null && BorrowModel.STATE_REPAY_FAIL != borrow.getState()){
+					throw new BussinessException("借款结束前不能更换银行卡");
+				}
 			}
 		}
+
 		if(!StringUtil.isNumber(cardNo) || cardNo.length() <15 || cardNo.length() > 30   ){
 			Map<String,Object> result=new HashMap<String,Object>();
 			result.put(Constant.RESPONSE_CODE,Constant.FAIL_CODE_VALUE);
