@@ -65,10 +65,11 @@ public class PayNotifyTest {
         param.put("bankno","0103");
         param.put("fuorderno","690909545406");
 //        param.put("futporderno","690909545406");
-        String mac = getSign("0002900F0345178","123456","1812030558251522","20181129","6228480328744607875","100000");
+        String orderNo = "1812041180020668";
+        String mac = getSign("0002900F0345178","123456",orderNo,"20181129","6228480328744607875","100000");
         param.put("mac",mac);
         param.put("merdt","20181129");
-        param.put("orderno","1812030558251522");
+        param.put("orderno",orderNo);
         param.put("reason","自助退票");
         param.put("result","渠道资金到账已复核,交易已发送");
         param.put("state","1");
