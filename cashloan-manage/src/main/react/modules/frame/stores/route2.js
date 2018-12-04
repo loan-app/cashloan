@@ -30,6 +30,7 @@ var sysDicManage = require('../../SystemMng/DictionaryMang/index');//字典管�
 var SystemParameterSettings = require('../../SystemMng/SystemParameterSettings/index');//系统参数设置
 var NoteMould = require('../../NewsRecord/NoteMould/index');//字典管理
 var NoteMessage = require('../../NewsRecord/NoteMessage/index');//系统参数设置
+var OperatorReport = require('../../CreditReport/OperatorReport/index');//信用报告,运营商报告
 
 module.exports = {
   RepaymentPlanList,
@@ -63,5 +64,6 @@ module.exports = {
   SystemParameterSettings,
   LoanSchedule,
   NoteMould,
-  NoteMessage
+  NoteMessage,
+  OperatorReport
 }

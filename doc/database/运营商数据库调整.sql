@@ -106,7 +106,7 @@ CREATE TABLE `cl_operator_family` (
   `long_number` varchar(24) DEFAULT NULL COMMENT '成员手机号',
   `short_number` int(11) DEFAULT NULL COMMENT '成员短号',
   `member_type` varchar(8) DEFAULT NULL COMMENT '成员类型. MASTER-家长; MEMBER-普通成员',
-  `join_time` varchar(32) DEFAULT NULL COMMENT '加入日期',
+  `join_date` varchar(32) DEFAULT NULL COMMENT '加入日期',
   `expire_time` varchar(32) DEFAULT NULL COMMENT '失效日期',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',

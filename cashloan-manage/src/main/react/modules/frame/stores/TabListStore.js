@@ -94,7 +94,8 @@ export default Reflux.createStore({
 					'sysDicManage',
 					'SystemParameterSettings',
 					'NoteMessage',
-  					'NoteMould'
+  					'NoteMould',
+					'OperatorReport'
 			];
 
 			var routeNames3 = [
