@@ -22,7 +22,7 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 
 /**
  * app版本控制
- * @author dufy
+ * @author wnb
  * @version 1.0
  * @date 2018年12月03日
  * 官方网站：www.xiji.com
