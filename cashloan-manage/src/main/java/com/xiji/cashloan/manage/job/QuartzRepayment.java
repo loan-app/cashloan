@@ -6,11 +6,9 @@ import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QueryPayOrderInfo;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
@@ -38,7 +36,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -125,12 +122,9 @@ public class QuartzRepayment implements Job {
 					if (PayLogModel.STATE_PAYMENT_SUCCESS.equals(repaymentLog.getState())) {
 						continue;
 					}
-					OrderQryByMSsn beanreq = new OrderQryByMSsn();
-					beanreq.setMchntOrderId(repaymentLog.getOrderNo());
+					QueryPayOrderInfo payOrderInfo = payHelper.queryPayInfo(repaymentLog);
 
-					OrderQryResp resp = payHelper.checkResult(beanreq);
-					String key = Global.getValue("protocol_mchntcd_key");
-					if (resp.checkReturn() && resp.checkSign(key)) {
+					if (StringUtil.equals(payOrderInfo.getCode(),QueryPayOrderInfo.PAY_SUCCESS)) {
 						// 查找对应的还款计划
 						Map<String, Object> param = new HashMap<String, Object>();
 						param.put("id", borrowRepay.getId());
@@ -155,9 +149,9 @@ public class QuartzRepayment implements Job {
 						// 发送代扣还款成功短信提醒
 						clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
 						continue;
-					}else if (StringUtil.equalsIgnoreCase(resp.getResponseCode(),FuiouConstant.RESPONSE_PAY_PROCESSING)) {
+					}else if (StringUtil.equals(payOrderInfo.getCode(),QueryPayOrderInfo.PAY_PROCESSING)) {
 						continue;
-					}else {
+					} else if (StringUtil.equals(payOrderInfo.getCode(), QueryPayOrderInfo.PAY_FAIL)) {
 						// 更新订单状态
 						Map<String, Object> payLogParamMap = new HashMap<String, Object>();
 						payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_FAILED);
@@ -224,14 +218,19 @@ public class QuartzRepayment implements Job {
 				String key = Global.getValue("protocol_mchntcd_key");
 				OrderXmlBeanResp resp = payHelper.repayment(beanReq);
 				String payMsg = "";
+				String payOrderNo = "";
 				if (resp.checkSign(key)) {
 					payMsg = resp.getResponseMsg();
 					if (resp.checkReturn() && StringUtil.isNotEmpty(resp.getOrderId())) {
 						payMsg = resp.getOrderId()+"|" + payMsg;
 					}
+					payOrderNo = resp.getOrderId();
 				}
 				PayLog payLog = new PayLog();
 				payLog.setOrderNo(orderNo);
+				if (StringUtil.isNotEmpty(payOrderNo)) {
+					payLog.setPayOrderNo(payOrderNo);
+				}
 				payLog.setUserId(borrowRepay.getUserId());
 				payLog.setBorrowId(borrowRepay.getBorrowId());
 				payLog.setAmount(amount);

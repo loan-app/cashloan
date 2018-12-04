@@ -78,4 +78,9 @@ public class FuiouConstant {
     public static final String PROTOCOL_CHECKRESULT = "checkResult.pay";
     /** 协议支付-接口标记 - 商户支持卡 Bin 查询接口 */
     public static final String PROTOCOL_CARDBINQUERY = "cardBinQuery.pay";
+
+    /** 协议支付-接口标记 - 订单结果查询接口(富友订单号)-状态码-已经支付 */
+    public static final String PROTOCOL_QUERYORDERID_PAYSUCCESS = "5185";
+    /** 协议支付-接口标记 - 订单结果查询接口(富友订单号)-状态码- 支付处理中*/
+    public static final String PROTOCOL_QUERYORDERID_PAYING = "51B3";
 }

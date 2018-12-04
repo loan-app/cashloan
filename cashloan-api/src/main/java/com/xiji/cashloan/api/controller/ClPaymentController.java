@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.StringUtil;
 
 /**
  * 主动还款 Controller
@@ -75,7 +76,11 @@ public class ClPaymentController extends BaseController {
 		long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
 		Map<String, String> payMap = borrowRepayService.confirmPay(borrowId, userId, ip, type);
 		Map<String,Object> result = new HashMap<String,Object>();
-		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		if (StringUtil.equals(payMap.get("code"), "12")) {
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+		} else {
+			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		}
 		result.put(Constant.RESPONSE_CODE_MSG, payMap.get("msg"));
 		ServletUtils.writeToResponse(response,result);
 	}

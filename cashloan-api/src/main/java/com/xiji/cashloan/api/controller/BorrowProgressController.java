@@ -46,9 +46,6 @@ public class BorrowProgressController extends BaseController {
 
 	/**
 	 * 借款进度查询
-	 * @param userId
-	 * @param current
-	 * @param pageSize
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/api/act/mine/borrow/findProgress.htm", method = RequestMethod.POST)

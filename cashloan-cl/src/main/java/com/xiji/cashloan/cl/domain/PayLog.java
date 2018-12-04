@@ -27,6 +27,10 @@ import java.util.Date;
 	 * 请求订单编号
 	 */
 	private String orderNo;
+	/**
+	 * 对应的支付订单号（支付接口返回的）
+	 */
+	private String payOrderNo = "";
 
 	/**
 	 * 用户标识
@@ -404,5 +408,11 @@ import java.util.Date;
 		this.code = code;
 	}
 
-	
+	public String getPayOrderNo() {
+		return payOrderNo;
+	}
+
+	public void setPayOrderNo(String payOrderNo) {
+		this.payOrderNo = payOrderNo;
+	}
 }
