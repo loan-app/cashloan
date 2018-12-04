@@ -295,10 +295,20 @@ public class ObjectConvertUtil {
     public static MagicBankInfo getMagicBankInfo(BankInfosBean bankInfosBean) throws Exception {
         MagicBankInfo magicBankInfo = new MagicBankInfo();
         if (bankInfosBean.getCreditCardInfo() != null) {
-            BeanUtilsExt.copyPropertiesExt(magicBankInfo, bankInfosBean.getCreditCardInfo(), null);
+            BeanUtilsExt.copyPropertiesExt(magicBankInfo, bankInfosBean.getCreditCardInfo(), new KeyMapping() {
+                @Override
+                public String mapping(String orig) {
+                    return orig;
+                }
+            });
         }
         if (bankInfosBean.getDebitCardInfo() != null) {
-            BeanUtilsExt.copyPropertiesExt(magicBankInfo, bankInfosBean.getDebitCardInfo(), null);
+            BeanUtilsExt.copyPropertiesExt(magicBankInfo, bankInfosBean.getDebitCardInfo(), new KeyMapping() {
+                @Override
+                public String mapping(String orig) {
+                    return orig;
+                }
+            });
         }
         return magicBankInfo;
     }
@@ -314,7 +324,7 @@ public class ObjectConvertUtil {
 
         for (OtherNamesBean otherNamesBean : otherNamesList) {
             MagicSuspiciousOtherName suspiciousOtherName = new MagicSuspiciousOtherName();
-            BeanUtilsExt.copyPropertiesExt(suspiciousOtherName,otherNamesBean,  null);
+            BeanUtilsExt.copyPropertiesExt(suspiciousOtherName, otherNamesBean, null);
             suspiciousOtherName.setType(type);
             suspiciousOtherName.setUserId(userId);
             suspiciousOtherName.setTransId(transId);
@@ -382,5 +392,12 @@ public class ObjectConvertUtil {
         MagicSuspiciousDevice magicSuspiciousDevice = new MagicSuspiciousDevice();
         BeanUtilsExt.copyPropertiesExt(magicSuspiciousDevice, suspiciousDeviceBean, null);
         return magicSuspiciousDevice;
+    }
+
+    public static MagicFraudulenceInfo getMagicFraudulenceInfo(FraudulenceInfoBean fraudulenceInfoBean) throws Exception {
+        MagicFraudulenceInfo fraudulenceInfo = new MagicFraudulenceInfo();
+        BeanUtilsExt.copyPropertiesExt(fraudulenceInfo, fraudulenceInfoBean, null);
+        fraudulenceInfo.setIsHit(fraudulenceInfoBean.isHit() ? 1 : 0);
+        return fraudulenceInfo;
     }
 }

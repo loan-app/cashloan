@@ -220,3 +220,38 @@ ALTER TABLE `cl_operator_net`
 ADD INDEX `user_id` (`user_id`) USING BTREE,
 ADD INDEX `mobile` (`mobile`) USING BTREE,
 ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
+
+-- 新建运营商报告表
+CREATE TABLE `cl_operator_report` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `req_log_id` bigint(20) NOT NULL COMMENT '请求记录标识',
+  `task_id` varchar(64) DEFAULT '' COMMENT '订单号',
+  `report` longtext COMMENT '运营商报告内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商报告表表';
+
+-- 新建调用外部数据收费记录表
+CREATE TABLE `cl_calls_outside_fee` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `task_id` varchar(64) NOT NULL COMMENT '任务id',
+  `type` TINYINT(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为',
+  `fee` decimal(5,2) NOT NULL COMMENT '收取费用',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='调用外部收据收费表';
+
+-- 新增运营商报告查看链接表
+CREATE TABLE `cl_operator_report_link` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `task_id` varchar(64) NOT NULL COMMENT '任务id',
+  `message` text COMMENT '运营商报告链接',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商报告查看链接';

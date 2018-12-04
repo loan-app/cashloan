@@ -59,6 +59,8 @@ public class DataBean {
     private LoanBehaviorAnalysisBean loanBehaviorAnalysis;
     @JsonProperty("bank_infos")
     private BankInfosBean bankInfos;
+    @JsonProperty("fraudulence_info")
+    private FraudulenceInfoBean fraudulenceInfo;
 
     public List<RiskDeviceBean> getRiskDevice() {
         return riskDevice;
@@ -194,5 +196,13 @@ public class DataBean {
 
     public void setRiskQqgroup(RiskQqgroupBean riskQqgroup) {
         this.riskQqgroup = riskQqgroup;
+    }
+
+    public FraudulenceInfoBean getFraudulenceInfo() {
+        return fraudulenceInfo;
+    }
+
+    public void setFraudulenceInfo(FraudulenceInfoBean fraudulenceInfo) {
+        this.fraudulenceInfo = fraudulenceInfo;
     }
 }

@@ -20,4 +20,12 @@ public class MagicRiskConstant {
 
     //魔杖2.0
     public static String METHOD_MAGICWAND2 = "moxie.api.risk.magicwand2";
+    //魔杖反欺诈
+    public static String METHOD_MAGICWAND2_ANTI_FRAUD = "moxie.api.risk.magicwand2.anti-fraud";
+    //魔杖黑灰名单
+    public static String METHOD_MAGICWAND2_BLACK_GRAY = "moxie.api.risk.magicwand2.black-gray";
+    //魔杖多头
+    public static String METHOD_MAGICWAND2_MULTI_INFO = "moxie.api.risk.magicwand2.multi-info";
+    //魔杖贷后行为
+    public static String METHOD_MAGICWAND2_POST_LOAD = "moxie.api.risk.magicwand2.post-load";
 }

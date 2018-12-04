@@ -393,7 +393,12 @@ public class ClBorrowController extends BaseController {
 	 */
 	@RequestMapping(value = "/api/act/borrow/testMagic.htm")
 	public void testMagic() {
-		int i = magicRiskService.magicReportRequest(null, null);
+		Borrow borrow = new Borrow();
+		borrow.setUserId(1L);
+		int i = magicRiskService.queryAntiFraud(borrow, null);
+		int i2 = magicRiskService.queryMultiInfo(borrow, null);
+		int i3 = magicRiskService.queryPostLoad(borrow, null);
+		int i4 = magicRiskService.queryBlackGray(borrow, null);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");

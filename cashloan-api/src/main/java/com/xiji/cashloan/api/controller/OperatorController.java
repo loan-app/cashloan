@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
-import com.xiji.cashloan.cl.domain.OperatorReport;
+import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.model.moxie.MxConstant;
 import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.model.moxie.OperatorStatusEnum;
 import com.xiji.cashloan.cl.model.moxie.SignatureUtils;
 import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -27,8 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xiji.cashloan.cl.domain.OperatorReqLog;
-import com.xiji.cashloan.cl.domain.OperatorRespDetail;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -38,7 +37,6 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
-import com.xiji.cashloan.rc.service.TppBusinessService;
 
 /**
  * 运营商认证
@@ -66,9 +64,11 @@ public class OperatorController extends BaseController {
     @Resource
     private OperatorService operatorService;
     @Resource
-    private TppBusinessService tppBusinessService;
-    @Resource
     private OperatorReportService operatorReportService;
+    @Resource
+    private CallsOutSideFeeService callsOutSideFeeService;
+    @Resource
+    private OperatorReportLinkService operatorReportLinkService;
 
     private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -259,6 +259,12 @@ public class OperatorController extends BaseController {
                         logger.error("严重问题，userId:" + userId + "运营商数据保存异常", e);
                         return;
                     }
+                    //插入调用外部数据接口费用表
+                    CallsOutSideFee callsOutSideFee = callsOutSideFeeService.getByTaskId(taskId);
+                    if(callsOutSideFee == null) {
+                        callsOutSideFee = new CallsOutSideFee(userId, taskId, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR);
+                        callsOutSideFeeService.insert(callsOutSideFee);
+                    }
                     //修改认证状态为认证完成
                     userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
                     userAuthService.updateByUserId(userAuth);
@@ -279,6 +285,10 @@ public class OperatorController extends BaseController {
                 } else {
                     //状态修改为 报告生成成功
                     updateOperatorLogState(operatorReqLog.getId(), "report.true", StringUtil.EMPTY, timestamp);
+                    //保存运营商报告链接
+                    String message = requestJson.getString("message");
+                    OperatorReportLink operatorReportLink = new OperatorReportLink(userId, taskId, message);
+                    operatorReportLinkService.insert(operatorReportLink);
                     //获取运营商报告
                     fixedThreadPool.execute(new Runnable() {
                         public void run() {
@@ -291,7 +301,7 @@ public class OperatorController extends BaseController {
                                 String result = MxCreditRequest.get(host, headMap);
                                 OperatorReport oldReport = operatorReportService.getByTaskId(taskId);
                                 if (oldReport == null) {
-                                    OperatorReport operatorReport = new OperatorReport(reqLogId, taskId, result);
+                                    OperatorReport operatorReport = new OperatorReport(userId, reqLogId, taskId, result);
                                     operatorReportService.insert(operatorReport);
                                 } else {
                                     Map<String, Object> updateMap = new HashMap<>();

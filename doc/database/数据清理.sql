@@ -78,4 +78,26 @@ TRUNCATE TABLE cl_operator_net_1;
 TRUNCATE TABLE cl_operator_net;
 
 -- 魔杖2.0数据
-TRUNCATE
+TRUNCATE TABLE cl_magic_bank_info;
+TRUNCATE TABLE cl_magic_basic;
+TRUNCATE TABLE cl_magic_black_gray;
+TRUNCATE TABLE cl_magic_credit_card_overdue;
+TRUNCATE TABLE cl_magic_fraudulence_info;
+TRUNCATE TABLE cl_magic_fund_info;
+TRUNCATE TABLE cl_magic_intimate_contact;
+TRUNCATE TABLE cl_magic_loan_behavior_analysis;
+TRUNCATE TABLE cl_magic_mobile_contact;
+TRUNCATE TABLE cl_magic_multipoint;
+TRUNCATE TABLE cl_magic_multipoint_queried_analyze;
+TRUNCATE TABLE cl_magic_multipoint_queried_info;
+TRUNCATE TABLE cl_magic_risk_device;
+TRUNCATE TABLE cl_magic_risk_qq_group;
+TRUNCATE TABLE cl_magic_suspicious_device;
+TRUNCATE TABLE cl_magic_suspicious_idcard;
+TRUNCATE TABLE cl_magic_suspicious_information_source;
+TRUNCATE TABLE cl_magic_suspicious_mobile;
+TRUNCATE TABLE cl_magic_suspicious_other_idcard;
+TRUNCATE TABLE cl_magic_suspicious_other_mobile;
+TRUNCATE TABLE cl_magic_suspicious_other_name;
+TRUNCATE TABLE cl_magic_untrusted;
+TRUNCATE TABLE cl_magic_untrusted_detail;

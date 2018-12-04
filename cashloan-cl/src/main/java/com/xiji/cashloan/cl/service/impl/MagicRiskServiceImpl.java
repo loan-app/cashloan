@@ -4,13 +4,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.service.MagicRiskService;
+import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.cl.util.magic.MagicRiskConstant;
 import com.xiji.cashloan.cl.util.magic.MagicRiskUtils;
 import com.xiji.cashloan.cl.util.magic.MoxieSignUtils;
 import com.xiji.cashloan.cl.util.magic.ObjectConvertUtil;
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.domain.mozhang.*;
@@ -101,10 +105,253 @@ public class MagicRiskServiceImpl implements MagicRiskService {
     @Resource
     private MagicBankInfoMapper magicBankInfoMapper;
 
+    @Resource
+    private UserBaseInfoMapper userBaseInfoMapper;
+
+    @Resource
+    private CallsOutSideFeeMapper callsOutSideFeeMapper;
+
+    @Resource
+    private MagicFraudulenceInfoMapper magicFraudulenceInfoMapper;
+
+    @Override
+    public int queryAntiFraud(Borrow borrow, TppBusiness business) {
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if(userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+            return i;
+        }
+        Long userId = userBaseinfo.getUserId();
+        try {
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_ANTI_FRAUD);
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            JSONObject resJson = JSONObject.parseObject(resContent);
+            if ("0000".equals(resJson.getString("code"))) {
+                //插入收费记录表
+                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                String transId = data.getString("trans_id");
+                Date createDate = DateUtil.getNow();
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD, CallsOutSideFeeConstant.FEE_ANTI_FRAUD);
+                callsOutSideFeeMapper.save(callsOutSideFee);
+                //法院失信
+                UntrustedInfoBean untrustedInfo = JSONObject.parseObject(data.getString("untrusted_info"), UntrustedInfoBean.class);
+                if (untrustedInfo != null) {
+                    saveUntrustedInfo(untrustedInfo, userId, transId, createDate);
+                }
+                //身份证变更信息
+                SuspiciousIdcardBean suspiciousIdcard = JSONObject.parseObject(data.getString("suspicious_idcard"), SuspiciousIdcardBean.class);
+                if(suspiciousIdcard != null) {
+                    saveSuspiciousIdcard(suspiciousIdcard, userId, transId, createDate);
+                }
+                //手机号变更信息
+                SuspiciousMobileBean suspiciousMobile = JSONObject.parseObject(data.getString("suspicious_mobile"), SuspiciousMobileBean.class);
+                if(suspiciousMobile != null) {
+                    saveSuspiciousMobile(suspiciousMobile, userId, transId, createDate);
+                }
+                //设备变更信息
+                SuspiciousDeviceBean suspiciousDevice = JSONObject.parseObject(data.getString("suspicious_device"), SuspiciousDeviceBean.class);
+                if(suspiciousDevice != null) {
+                    saveSuspiciousDevice(suspiciousDevice, userId, transId, createDate);
+                }
+                //QQ群风险信息
+                RiskQqgroupBean riskQqgroup = JSONObject.parseObject(data.getString("risk_qqgroup"), RiskQqgroupBean.class);
+                if(riskQqgroup != null) {
+                    saveRiskQqgroup(riskQqgroup, userId, transId, createDate);
+                }
+                //欺诈风险名单
+                FraudulenceInfoBean fraudulenceInfo = JSONObject.parseObject(data.getString("fraudulence_info"), FraudulenceInfoBean.class);
+                if(fraudulenceInfo != null) {
+                    saveFraudulenceInfo(fraudulenceInfo, userId, transId, createDate);
+                }
+                i = 1;
+            }
+        } catch (Exception e) {
+            logger.error("用户userId：" + userId + "魔杖2.0-反欺诈同步响应数据错误", e);
+        }
+        return i;
+    }
+
+    @Override
+    public int queryMultiInfo(Borrow borrow, TppBusiness business) {
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if(userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+            return i;
+        }
+        Long userId = userBaseinfo.getUserId();
+        try {
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_MULTI_INFO);
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            JSONObject resJson = JSONObject.parseObject(resContent);
+            if ("0000".equals(resJson.getString("code"))) {
+                //插入收费记录表
+                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                String transId = data.getString("trans_id");
+                Date createDate = DateUtil.getNow();
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO, CallsOutSideFeeConstant.FEE_MULTI_INFO);
+                callsOutSideFeeMapper.save(callsOutSideFee);
+                //保存数据
+                AuthQueriedDetailBean authQueriedDetail = JSONObject.parseObject(data.getString("auth_queried_detail"), AuthQueriedDetailBean.class);
+                if (authQueriedDetail != null) {
+                    saveMutiInfo(authQueriedDetail, userId, transId, createDate);
+                }
+                i = 1;
+            }
+        } catch (Exception e) {
+            logger.error("用户userId：" + userId + "魔杖2.0-多头同步响应数据错误", e);
+        }
+        return i;
+    }
+
+    @Override
+    public int queryBlackGray(Borrow borrow, TppBusiness business) {
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if(userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+            return i;
+        }
+        Long userId = userBaseinfo.getUserId();
+        try {
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_BLACK_GRAY);
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            JSONObject resJson = JSONObject.parseObject(resContent);
+            if ("0000".equals(resJson.getString("code"))) {
+                //插入收费记录表
+                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                String transId = data.getString("trans_id");
+                Date createDate = DateUtil.getNow();
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY, CallsOutSideFeeConstant.FEE_BLACK_GRAY);
+                callsOutSideFeeMapper.save(callsOutSideFee);
+                //保存数据
+                BlackInfoDetailBean blackInfoDetail = JSONObject.parseObject(data.getString("black_info_detail"), BlackInfoDetailBean.class);
+                GrayInfoDetailBean grayInfoDetail = JSONObject.parseObject(data.getString("gray_info_detail"), GrayInfoDetailBean.class);
+                if (blackInfoDetail != null || grayInfoDetail != null) {
+                    saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
+                }
+                i = 1;
+            }
+        } catch (Exception e) {
+            logger.error("用户userId：" + userId + "魔杖2.0-黑灰名单响应数据错误", e);
+        }
+        return i;
+    }
+
+    @Override
+    public int queryPostLoad(Borrow borrow, TppBusiness business) {
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if(userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+            return i;
+        }
+        Long userId = userBaseinfo.getUserId();
+        try {
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_POST_LOAD);
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            JSONObject resJson = JSONObject.parseObject(resContent);
+            if ("0000".equals(resJson.getString("code"))) {
+                //插入收费记录表
+                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                String transId = data.getString("trans_id");
+                Date createDate = DateUtil.getNow();
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD, CallsOutSideFeeConstant.FEE_POST_LOAD);
+                callsOutSideFeeMapper.save(callsOutSideFee);
+                //保存数据
+                LoanBehaviorAnalysisBean loanBehaviorAnalysis = JSONObject.parseObject(data.getString("loan_behavior_analysis"), LoanBehaviorAnalysisBean.class);
+                if (loanBehaviorAnalysis != null) {
+                    saveLoanBehaviorAnalysis(loanBehaviorAnalysis, userId, transId, createDate);
+                }
+                i = 1;
+            }
+        } catch (Exception e) {
+            logger.error("用户userId：" + userId + "魔杖2.0-多头同步响应数据错误", e);
+        }
+        return i;
+    }
+
     @Override
     public int magicReportRequest(Borrow borrow, TppBusiness business) {
-
-        long userId = 1;
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
         try {
             String appId = Global.getValue("mx_app_id");
             String privateKey = Global.getValue("mx_private_key");
@@ -120,10 +367,9 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
             /** 业务参数 */
             Map<String, String> bizParams = new HashMap<>();
-            bizParams.put("name", "石振波");
-            bizParams.put("mobile", "15958189557");
-            bizParams.put("idcard", "362330199408051135");
-            bizParams.put("qq", "523798422");
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
             String bizContent = new ObjectMapper().writeValueAsString(bizParams);
 
             reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
@@ -135,13 +381,16 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
             String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
             String resContent = MxCreditRequest.get(getURL, null);
-            saveMagicRisk(resContent, userId);
-            return 1;
+            JSONObject resJson = JSONObject.parseObject(resContent);
+            if ("0000".equals(resJson.getString("code"))) {
+                //插入收费记录表
+                saveMagicRisk(resContent, userBaseinfo.getUserId());
+                i = 1;
+            }
         } catch (Exception e) {
-            logger.error("查询用户userId：" + userId + "魔杖2.0报告异常", e);
-            return 0;
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + "魔杖2.0报告异常", e);
         }
-
+        return i;
     }
 
     @Override
@@ -172,11 +421,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     BlackInfoDetailBean blackInfoDetail = data.getBlackInfoDetail();
                     GrayInfoDetailBean grayInfoDetail = data.getGrayInfoDetail();
                     if (blackInfoDetail != null || grayInfoDetail != null) {
-                        MagicBlackGray magicBlackGray = ObjectConvertUtil.getMagicBlackGray(blackInfoDetail, grayInfoDetail);
-                        magicBlackGray.setUserId(userId);
-                        magicBlackGray.setTransId(transId);
-                        magicBlackGray.setCreateTime(createDate);
-                        magicBlackGrayMapper.save(magicBlackGray);
+                        saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
                     }
 
                     MobileInfoBean mobileInfo = data.getMobileInfo();
@@ -198,141 +443,38 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     //处理用户多头信息
                     AuthQueriedDetailBean authQueriedDetail = data.getAuthQueriedDetail();
                     if (authQueriedDetail != null) {
-                        MagicMultipoint magicMultipoint = ObjectConvertUtil.getMagicMultipoint(authQueriedDetail);
-                        magicMultipoint.setUserId(userId);
-                        magicMultipoint.setTransId(transId);
-                        magicMultipoint.setCreateTime(createDate);
-                        magicMultipointMapper.save(magicMultipoint);
-
-                        List<QueriedInfosBean> queriedInfosList = authQueriedDetail.getQueriedInfos();
-                        if (queriedInfosList != null && queriedInfosList.size() > 0) {
-                            List<MagicMultipointQueriedInfo> queriedInfoList = ObjectConvertUtil.getQueriedInfoList(queriedInfosList, userId, transId, createDate);
-                            magicMultipointQueriedInfoMapper.saveBatch(queriedInfoList);
-                        }
-
-                        List<QueriedAnalyzeBean> queriedAnalyzeList = authQueriedDetail.getQueriedAnalyze();
-                        if (queriedAnalyzeList != null && queriedAnalyzeList.size() > 0) {
-                            List<MagicMultipointQueriedAnalyze> queriedAnalyzes = ObjectConvertUtil.getQueriedAnalyzList(queriedAnalyzeList, userId, transId, createDate);
-                            magicMultipointQueriedAnalyzeMapper.saveBatch(queriedAnalyzes);
-                        }
+                        saveMutiInfo(authQueriedDetail, userId, transId, createDate);
                     }
 
                     //处理用户法院失信信息
                     UntrustedInfoBean untrustedInfo = data.getUntrustedInfo();
                     if (untrustedInfo != null) {
-                        MagicUntrusted magicUntrusted = ObjectConvertUtil.getMagicUntrusted(untrustedInfo);
-                        magicUntrusted.setUserId(userId);
-                        magicUntrusted.setTransId(transId);
-                        magicUntrusted.setCreateTime(createDate);
-                        magicUntrustedMapper.save(magicUntrusted);
-
-                        List<DishonestDetailInoBean> dishonestDetailInos = untrustedInfo.getDishonestDetailIno();
-                        if (dishonestDetailInos != null && dishonestDetailInos.size() > 0) {
-                            List<MagicUntrustedDetail> magicUntrustedDetails = ObjectConvertUtil.getMagicUntrustedDetailList(dishonestDetailInos, userId, transId, createDate);
-                            magicUntrustedDetailMapper.saveBatch(magicUntrustedDetails);
-                        }
+                        saveUntrustedInfo(untrustedInfo, userId, transId, createDate);
                     }
 
                     //变更信息处理
                     //身份证变更信息处理
                     SuspiciousIdcardBean suspiciousIdcard = data.getSuspiciousIdcard();
                     if (suspiciousIdcard != null) {
-                        MagicSuspiciousIdcard magicSuspiciousIdcard = ObjectConvertUtil.getMagicSuspiciousIdcard(suspiciousIdcard);
-                        magicSuspiciousIdcard.setUserId(userId);
-                        magicSuspiciousIdcard.setTransId(transId);
-                        magicSuspiciousIdcard.setCreateTime(createDate);
-                        magicSuspiciousIdcardMapper.save(magicSuspiciousIdcard);
-
-
-                        List<OtherNamesBean> otherNames = suspiciousIdcard.getOtherNames();
-                        if (otherNames != null && otherNames.size() > 0) {
-                            List<MagicSuspiciousOtherName> suspiciousOtherNames = ObjectConvertUtil.getMagicSuspiciousOtherNameList(otherNames, userId, transId, createDate, "idcard");
-                            magicSuspiciousOtherNameMapper.saveBatch(suspiciousOtherNames);
-                        }
-
-                        List<OtherMobilesBean> otherMobiles = suspiciousIdcard.getOtherMobiles();
-                        if (otherMobiles != null && otherMobiles.size() > 0) {
-                            List<MagicSuspiciousOtherMobile> suspiciousOtherMobiles = ObjectConvertUtil.getMagicSuspiciousOtherMobileList(otherMobiles, userId, transId, createDate, "idcard");
-                            magicSuspiciousOtherMobileMapper.saveBatch(suspiciousOtherMobiles);
-                        }
-
-                        List<InformationSourcesBean> informationSources = suspiciousIdcard.getInformationSources();
-                        if (informationSources != null && informationSources.size() > 0) {
-                            List<MagicSuspiciousInformationSource> suspiciousInformationSources = ObjectConvertUtil.getMagicSuspiciousInformationSourceList(informationSources, userId, transId, createDate, "idcard");
-                            magicSuspiciousInformationSourceMapper.saveBatch(suspiciousInformationSources);
-                        }
+                        saveSuspiciousIdcard(suspiciousIdcard, userId, transId, createDate);
                     }
 
                     //手机号变更信息处理
                     SuspiciousMobileBean suspiciousMobile = data.getSuspiciousMobile();
                     if (suspiciousMobile != null) {
-                        MagicSuspiciousMobile magicSuspiciousMobile = ObjectConvertUtil.getMagicSuspiciousMobile(suspiciousMobile);
-                        magicSuspiciousMobile.setUserId(userId);
-                        magicSuspiciousMobile.setTransId(transId);
-                        magicSuspiciousMobile.setCreateTime(createDate);
-                        magicSuspiciousMobileMapper.save(magicSuspiciousMobile);
-
-                        List<OtherNamesBean> otherNames = suspiciousMobile.getOtherNames();
-                        if (otherNames != null && otherNames.size() > 0) {
-                            List<MagicSuspiciousOtherName> suspiciousOtherNames = ObjectConvertUtil.getMagicSuspiciousOtherNameList(otherNames, userId, transId, createDate, "mobile");
-                            magicSuspiciousOtherNameMapper.saveBatch(suspiciousOtherNames);
-                        }
-
-                        List<OtherIdcardsBean> otherIdcards = suspiciousMobile.getOtherIdcards();
-                        if (otherIdcards != null && otherIdcards.size() > 0) {
-                            List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = ObjectConvertUtil.getMagicSuspiciousOtherIdcardList(otherIdcards, userId, transId, createDate, "mobile");
-                            magicSuspiciousOtherIdcardMapper.saveBatch(suspiciousOtherIdcards);
-                        }
-
-                        List<InformationSourcesBean> informationSources = suspiciousMobile.getInformationSources();
-                        if (informationSources != null && informationSources.size() > 0) {
-                            List<MagicSuspiciousInformationSource> suspiciousInformationSources = ObjectConvertUtil.getMagicSuspiciousInformationSourceList(informationSources, userId, transId, createDate, "mobile");
-                            magicSuspiciousInformationSourceMapper.saveBatch(suspiciousInformationSources);
-                        }
+                        saveSuspiciousMobile(suspiciousMobile, userId, transId, createDate);
                     }
 
                     //设备变更信息处理
                     SuspiciousDeviceBean suspiciousDevice = data.getSuspiciousDevice();
                     if (suspiciousDevice != null) {
-                        MagicSuspiciousDevice magicSuspiciousDevice = ObjectConvertUtil.getMagicSuspiciousDevice(suspiciousDevice);
-                        magicSuspiciousDevice.setUserId(userId);
-                        magicSuspiciousDevice.setTransId(transId);
-                        magicSuspiciousDevice.setCreateTime(createDate);
-                        magicSuspiciousDeviceMapper.save(magicSuspiciousDevice);
-
-                        List<OtherNamesBean> otherNames = suspiciousDevice.getOtherNames();
-                        if (otherNames != null && otherNames.size() > 0) {
-                            List<MagicSuspiciousOtherName> suspiciousOtherNames = ObjectConvertUtil.getMagicSuspiciousOtherNameList(otherNames, userId, transId, createDate, "device");
-                            magicSuspiciousOtherNameMapper.saveBatch(suspiciousOtherNames);
-                        }
-
-                        List<OtherMobilesBean> otherMobiles = suspiciousDevice.getOtherMobiles();
-                        if (otherMobiles != null && otherMobiles.size() > 0) {
-                            List<MagicSuspiciousOtherMobile> suspiciousOtherMobiles = ObjectConvertUtil.getMagicSuspiciousOtherMobileList(otherMobiles, userId, transId, createDate, "device");
-                            magicSuspiciousOtherMobileMapper.saveBatch(suspiciousOtherMobiles);
-                        }
-
-                        List<OtherIdcardsBean> otherIdcards = suspiciousDevice.getOtherIdcards();
-                        if (otherIdcards != null && otherIdcards.size() > 0) {
-                            List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = ObjectConvertUtil.getMagicSuspiciousOtherIdcardList(otherIdcards, userId, transId, createDate, "device");
-                            magicSuspiciousOtherIdcardMapper.saveBatch(suspiciousOtherIdcards);
-                        }
-
-                        List<InformationSourcesBean> informationSources = suspiciousDevice.getInformationSources();
-                        if (informationSources != null && informationSources.size() > 0) {
-                            List<MagicSuspiciousInformationSource> suspiciousInformationSources = ObjectConvertUtil.getMagicSuspiciousInformationSourceList(informationSources, userId, transId, createDate, "device");
-                            magicSuspiciousInformationSourceMapper.saveBatch(suspiciousInformationSources);
-                        }
+                        saveSuspiciousDevice(suspiciousDevice, userId, transId, createDate);
                     }
 
                     //处理QQ群风险信息
                     RiskQqgroupBean riskQqgroup = data.getRiskQqgroup();
                     if (riskQqgroup != null) {
-                        MagicRiskQqGroup magicRiskQqGroup = ObjectConvertUtil.getMagicRiskQqGroup(riskQqgroup);
-                        magicRiskQqGroup.setUserId(userId);
-                        magicRiskQqGroup.setTransId(transId);
-                        magicRiskQqGroup.setCreateTime(createDate);
-                        magicRiskQqGroupMapper.save(magicRiskQqGroup);
+                        saveRiskQqgroup(riskQqgroup, userId, transId, createDate);
                     }
 
                     //处理设备指纹风险信息
@@ -355,11 +497,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     //处理贷后行为信息
                     LoanBehaviorAnalysisBean loanBehaviorAnalysis = data.getLoanBehaviorAnalysis();
                     if (loanBehaviorAnalysis != null) {
-                        MagicLoanBehaviorAnalysis magicLoanBehaviorAnalysis = ObjectConvertUtil.getMagicLoanBehaviorAnalysis(loanBehaviorAnalysis);
-                        magicLoanBehaviorAnalysis.setUserId(userId);
-                        magicLoanBehaviorAnalysis.setTransId(transId);
-                        magicLoanBehaviorAnalysis.setCreateTime(createDate);
-                        magicLoanBehaviorAnalysisMapper.save(magicLoanBehaviorAnalysis);
+                        saveLoanBehaviorAnalysis(loanBehaviorAnalysis, userId, transId, createDate);
                     }
 
                     //处理公积金信息
@@ -376,6 +514,11 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                         magicBankInfoMapper.save(magicBankInfo);
                     }
 
+                    //处理欺诈风险信息
+                    FraudulenceInfoBean fraudulenceInfo = data.getFraudulenceInfo();
+                    if(fraudulenceInfo != null) {
+                        saveFraudulenceInfo(fraudulenceInfo, userId, transId, createDate);
+                    }
                 } else {
                     logger.error("保存用户userId：" + userId + "魔杖2.0数据时，查询魔杖报告返回异常，处理失败，返回数据:" + resJson);
                 }
@@ -390,5 +533,169 @@ public class MagicRiskServiceImpl implements MagicRiskService {
         }
 
 
+    }
+
+    private Map<String, String> getReqParams(String method) {
+        Map<String, String> reqParams = new HashMap<>();
+        reqParams.put(MagicRiskConstant.REQ_METHOD, method);
+        reqParams.put(MagicRiskConstant.REQ_APP_ID, Global.getValue("mx_app_id"));
+        reqParams.put(MagicRiskConstant.REQ_VERSION, MagicRiskConstant.VERSION);
+        reqParams.put(MagicRiskConstant.REQ_FORMAT, MagicRiskConstant.FORMAT);
+        reqParams.put(MagicRiskConstant.REQ_SIGN_TYPE, MagicRiskConstant.SIGN_TYPE);
+        reqParams.put(MagicRiskConstant.REQ_TIMESTAMP, String.valueOf(System.currentTimeMillis()));
+
+        return reqParams;
+    }
+
+    private void saveMutiInfo(AuthQueriedDetailBean authQueriedDetail, Long userId, String transId, Date createDate) throws Exception {
+        MagicMultipoint magicMultipoint = ObjectConvertUtil.getMagicMultipoint(authQueriedDetail);
+        magicMultipoint.setUserId(userId);
+        magicMultipoint.setTransId(transId);
+        magicMultipoint.setCreateTime(createDate);
+        magicMultipointMapper.save(magicMultipoint);
+
+        List<QueriedInfosBean> queriedInfosList = authQueriedDetail.getQueriedInfos();
+        if (queriedInfosList != null && queriedInfosList.size() > 0) {
+            List<MagicMultipointQueriedInfo> queriedInfoList = ObjectConvertUtil.getQueriedInfoList(queriedInfosList, userId, transId, createDate);
+            magicMultipointQueriedInfoMapper.saveBatch(queriedInfoList);
+        }
+
+        List<QueriedAnalyzeBean> queriedAnalyzeList = authQueriedDetail.getQueriedAnalyze();
+        if (queriedAnalyzeList != null && queriedAnalyzeList.size() > 0) {
+            List<MagicMultipointQueriedAnalyze> queriedAnalyzes = ObjectConvertUtil.getQueriedAnalyzList(queriedAnalyzeList, userId, transId, createDate);
+            magicMultipointQueriedAnalyzeMapper.saveBatch(queriedAnalyzes);
+        }
+    }
+
+    private void saveUntrustedInfo(UntrustedInfoBean untrustedInfo, Long userId, String transId, Date createDate) throws Exception {
+        MagicUntrusted magicUntrusted = ObjectConvertUtil.getMagicUntrusted(untrustedInfo);
+        magicUntrusted.setUserId(userId);
+        magicUntrusted.setTransId(transId);
+        magicUntrusted.setCreateTime(createDate);
+        magicUntrustedMapper.save(magicUntrusted);
+
+        List<DishonestDetailInoBean> dishonestDetailInos = untrustedInfo.getDishonestDetailIno();
+        if (dishonestDetailInos != null && dishonestDetailInos.size() > 0) {
+            List<MagicUntrustedDetail> magicUntrustedDetails = ObjectConvertUtil.getMagicUntrustedDetailList(dishonestDetailInos, userId, transId, createDate);
+            magicUntrustedDetailMapper.saveBatch(magicUntrustedDetails);
+        }
+    }
+
+    private void saveSuspiciousIdcard(SuspiciousIdcardBean suspiciousIdcard, Long userId, String transId, Date createDate) throws Exception {
+        MagicSuspiciousIdcard magicSuspiciousIdcard = ObjectConvertUtil.getMagicSuspiciousIdcard(suspiciousIdcard);
+        magicSuspiciousIdcard.setUserId(userId);
+        magicSuspiciousIdcard.setTransId(transId);
+        magicSuspiciousIdcard.setCreateTime(createDate);
+        magicSuspiciousIdcardMapper.save(magicSuspiciousIdcard);
+
+
+        List<OtherNamesBean> otherNames = suspiciousIdcard.getOtherNames();
+        if (otherNames != null && otherNames.size() > 0) {
+            List<MagicSuspiciousOtherName> suspiciousOtherNames = ObjectConvertUtil.getMagicSuspiciousOtherNameList(otherNames, userId, transId, createDate, "idcard");
+            magicSuspiciousOtherNameMapper.saveBatch(suspiciousOtherNames);
+        }
+
+        List<OtherMobilesBean> otherMobiles = suspiciousIdcard.getOtherMobiles();
+        if (otherMobiles != null && otherMobiles.size() > 0) {
+            List<MagicSuspiciousOtherMobile> suspiciousOtherMobiles = ObjectConvertUtil.getMagicSuspiciousOtherMobileList(otherMobiles, userId, transId, createDate, "idcard");
+            magicSuspiciousOtherMobileMapper.saveBatch(suspiciousOtherMobiles);
+        }
+
+        List<InformationSourcesBean> informationSources = suspiciousIdcard.getInformationSources();
+        if (informationSources != null && informationSources.size() > 0) {
+            List<MagicSuspiciousInformationSource> suspiciousInformationSources = ObjectConvertUtil.getMagicSuspiciousInformationSourceList(informationSources, userId, transId, createDate, "idcard");
+            magicSuspiciousInformationSourceMapper.saveBatch(suspiciousInformationSources);
+        }
+    }
+
+    private void saveSuspiciousMobile(SuspiciousMobileBean suspiciousMobile, Long userId, String transId, Date createDate) throws Exception {
+        MagicSuspiciousMobile magicSuspiciousMobile = ObjectConvertUtil.getMagicSuspiciousMobile(suspiciousMobile);
+        magicSuspiciousMobile.setUserId(userId);
+        magicSuspiciousMobile.setTransId(transId);
+        magicSuspiciousMobile.setCreateTime(createDate);
+        magicSuspiciousMobileMapper.save(magicSuspiciousMobile);
+
+        List<OtherNamesBean> otherNames = suspiciousMobile.getOtherNames();
+        if (otherNames != null && otherNames.size() > 0) {
+            List<MagicSuspiciousOtherName> suspiciousOtherNames = ObjectConvertUtil.getMagicSuspiciousOtherNameList(otherNames, userId, transId, createDate, "mobile");
+            magicSuspiciousOtherNameMapper.saveBatch(suspiciousOtherNames);
+        }
+
+        List<OtherIdcardsBean> otherIdcards = suspiciousMobile.getOtherIdcards();
+        if (otherIdcards != null && otherIdcards.size() > 0) {
+            List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = ObjectConvertUtil.getMagicSuspiciousOtherIdcardList(otherIdcards, userId, transId, createDate, "mobile");
+            magicSuspiciousOtherIdcardMapper.saveBatch(suspiciousOtherIdcards);
+        }
+
+        List<InformationSourcesBean> informationSources = suspiciousMobile.getInformationSources();
+        if (informationSources != null && informationSources.size() > 0) {
+            List<MagicSuspiciousInformationSource> suspiciousInformationSources = ObjectConvertUtil.getMagicSuspiciousInformationSourceList(informationSources, userId, transId, createDate, "mobile");
+            magicSuspiciousInformationSourceMapper.saveBatch(suspiciousInformationSources);
+        }
+    }
+
+    private void saveSuspiciousDevice(SuspiciousDeviceBean suspiciousDevice, Long userId, String transId, Date createDate) throws Exception {
+        MagicSuspiciousDevice magicSuspiciousDevice = ObjectConvertUtil.getMagicSuspiciousDevice(suspiciousDevice);
+        magicSuspiciousDevice.setUserId(userId);
+        magicSuspiciousDevice.setTransId(transId);
+        magicSuspiciousDevice.setCreateTime(createDate);
+        magicSuspiciousDeviceMapper.save(magicSuspiciousDevice);
+
+        List<OtherNamesBean> otherNames = suspiciousDevice.getOtherNames();
+        if (otherNames != null && otherNames.size() > 0) {
+            List<MagicSuspiciousOtherName> suspiciousOtherNames = ObjectConvertUtil.getMagicSuspiciousOtherNameList(otherNames, userId, transId, createDate, "device");
+            magicSuspiciousOtherNameMapper.saveBatch(suspiciousOtherNames);
+        }
+
+        List<OtherMobilesBean> otherMobiles = suspiciousDevice.getOtherMobiles();
+        if (otherMobiles != null && otherMobiles.size() > 0) {
+            List<MagicSuspiciousOtherMobile> suspiciousOtherMobiles = ObjectConvertUtil.getMagicSuspiciousOtherMobileList(otherMobiles, userId, transId, createDate, "device");
+            magicSuspiciousOtherMobileMapper.saveBatch(suspiciousOtherMobiles);
+        }
+
+        List<OtherIdcardsBean> otherIdcards = suspiciousDevice.getOtherIdcards();
+        if (otherIdcards != null && otherIdcards.size() > 0) {
+            List<MagicSuspiciousOtherIdcard> suspiciousOtherIdcards = ObjectConvertUtil.getMagicSuspiciousOtherIdcardList(otherIdcards, userId, transId, createDate, "device");
+            magicSuspiciousOtherIdcardMapper.saveBatch(suspiciousOtherIdcards);
+        }
+
+        List<InformationSourcesBean> informationSources = suspiciousDevice.getInformationSources();
+        if (informationSources != null && informationSources.size() > 0) {
+            List<MagicSuspiciousInformationSource> suspiciousInformationSources = ObjectConvertUtil.getMagicSuspiciousInformationSourceList(informationSources, userId, transId, createDate, "device");
+            magicSuspiciousInformationSourceMapper.saveBatch(suspiciousInformationSources);
+        }
+    }
+
+    private void saveRiskQqgroup(RiskQqgroupBean riskQqgroup, Long userId, String transId, Date createDate) throws Exception {
+        MagicRiskQqGroup magicRiskQqGroup = ObjectConvertUtil.getMagicRiskQqGroup(riskQqgroup);
+        magicRiskQqGroup.setUserId(userId);
+        magicRiskQqGroup.setTransId(transId);
+        magicRiskQqGroup.setCreateTime(createDate);
+        magicRiskQqGroupMapper.save(magicRiskQqGroup);
+    }
+
+
+    private void saveLoanBehaviorAnalysis(LoanBehaviorAnalysisBean loanBehaviorAnalysis, Long userId, String transId, Date createDate) throws Exception {
+        MagicLoanBehaviorAnalysis magicLoanBehaviorAnalysis = ObjectConvertUtil.getMagicLoanBehaviorAnalysis(loanBehaviorAnalysis);
+        magicLoanBehaviorAnalysis.setUserId(userId);
+        magicLoanBehaviorAnalysis.setTransId(transId);
+        magicLoanBehaviorAnalysis.setCreateTime(createDate);
+        magicLoanBehaviorAnalysisMapper.save(magicLoanBehaviorAnalysis);
+    }
+
+    private void saveBlackGrayInfo(BlackInfoDetailBean blackInfoDetail, GrayInfoDetailBean grayInfoDetail, Long userId, String transId, Date createDate) throws Exception {
+        MagicBlackGray magicBlackGray = ObjectConvertUtil.getMagicBlackGray(blackInfoDetail, grayInfoDetail);
+        magicBlackGray.setUserId(userId);
+        magicBlackGray.setTransId(transId);
+        magicBlackGray.setCreateTime(createDate);
+        magicBlackGrayMapper.save(magicBlackGray);
+    }
+
+    private void saveFraudulenceInfo(FraudulenceInfoBean fraudulenceInfo, Long userId, String transId, Date createDate) throws Exception {
+        MagicFraudulenceInfo magicFraudulenceInfo = ObjectConvertUtil.getMagicFraudulenceInfo(fraudulenceInfo);
+        magicFraudulenceInfo.setUserId(userId);
+        magicFraudulenceInfo.setTransId(transId);
+        magicFraudulenceInfo.setCreateTime(createDate);
+        magicFraudulenceInfoMapper.save(magicFraudulenceInfo);
     }
 }

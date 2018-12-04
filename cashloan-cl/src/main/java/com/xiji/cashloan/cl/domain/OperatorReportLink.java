@@ -6,13 +6,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 运营商报告实体
+ * 运营商报告链接实体
  * 
  * @author szb
  * @version 1.0.0
- * @date 2018-11-27 10:29:41
+ * @date 2018-12-04 20:18:44
  */
- public class OperatorReport implements Serializable {
+ public class OperatorReportLink implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,24 +22,19 @@ import java.util.Date;
     private Long id;
 
     /**
-     * 用户标识
-     */
+    * 用户标识
+    */
     private Long userId;
 
     /**
-    * 请求记录标识
-    */
-    private Long reqLogId;
-
-    /**
-    * 订单号
+    * 任务id
     */
     private String taskId;
 
     /**
-    * 运营商报告内容
+    * 报告链接
     */
-    private String report;
+    private String message;
 
     /**
     * 创建时间
@@ -47,20 +42,19 @@ import java.util.Date;
     private Date gmtCreate;
 
     /**
-    * 修改时间
+    * 更新时间
     */
     private Date gmtModified;
 
-    public OperatorReport() {
+    public OperatorReportLink() {
         super();
     }
 
-    public OperatorReport(Long userId, Long reqLogId, String taskId, String report) {
+    public OperatorReportLink(Long userId, String taskId, String message) {
         super();
         this.userId = userId;
-        this.reqLogId = reqLogId;
         this.taskId = taskId;
-        this.report = report;
+        this.message = message;
         this.gmtCreate = DateUtil.getNow();
     }
 
@@ -82,66 +76,58 @@ import java.util.Date;
         this.id = id;
     }
 
-    public Long getUserId() {
+    /**
+    * 获取用户标识
+    *
+    * @return 用户标识
+    */
+    public Long getUserId(){
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    /**
+    * 设置用户标识
+    * 
+    * @param userId 要设置的用户标识
+    */
+    public void setUserId(Long userId){
         this.userId = userId;
     }
 
     /**
-    * 获取请求记录标识
+    * 获取任务id
     *
-    * @return 请求记录标识
-    */
-    public Long getReqLogId(){
-        return reqLogId;
-    }
-
-    /**
-    * 设置请求记录标识
-    * 
-    * @param reqLogId 要设置的请求记录标识
-    */
-    public void setReqLogId(Long reqLogId){
-        this.reqLogId = reqLogId;
-    }
-
-    /**
-    * 获取订单号
-    *
-    * @return 订单号
+    * @return 任务id
     */
     public String getTaskId(){
         return taskId;
     }
 
     /**
-    * 设置订单号
+    * 设置任务id
     * 
-    * @param taskId 要设置的订单号
+    * @param taskId 要设置的任务id
     */
     public void setTaskId(String taskId){
         this.taskId = taskId;
     }
 
     /**
-    * 获取运营商报告内容
+    * 获取报告链接
     *
-    * @return 运营商报告内容
+    * @return 报告链接
     */
-    public String getReport(){
-        return report;
+    public String getMessage(){
+        return message;
     }
 
     /**
-    * 设置运营商报告内容
+    * 设置报告链接
     * 
-    * @param report 要设置的运营商报告内容
+    * @param message 要设置的报告链接
     */
-    public void setReport(String report){
-        this.report = report;
+    public void setMessage(String message){
+        this.message = message;
     }
 
     /**
@@ -163,18 +149,18 @@ import java.util.Date;
     }
 
     /**
-    * 获取修改时间
+    * 获取更新时间
     *
-    * @return 修改时间
+    * @return 更新时间
     */
     public Date getGmtModified(){
         return gmtModified;
     }
 
     /**
-    * 设置修改时间
+    * 设置更新时间
     * 
-    * @param gmtModified 要设置的修改时间
+    * @param gmtModified 要设置的更新时间
     */
     public void setGmtModified(Date gmtModified){
         this.gmtModified = gmtModified;
