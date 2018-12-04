@@ -77,4 +77,5 @@ TRUNCATE TABLE cl_operator_sms;
 TRUNCATE TABLE cl_operator_net_1;
 TRUNCATE TABLE cl_operator_net;
 
-
+-- 魔杖2.0数据
+TRUNCATE

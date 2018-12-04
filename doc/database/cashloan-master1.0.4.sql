@@ -865,6 +865,7 @@ CREATE TABLE `arc_sys_menu` (
 -- ----------------------------
 INSERT INTO `arc_sys_menu` VALUES ('1', '0', '工作台', '0', '', 'icon-yonghuxinxi', '00000000001', null, '', '2017-01-01 00:00:00', '', '工作台', '0', 'ShowWorkbench', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('2', '0', '用户管理', '0', '', 'icon-yonghuxinxi', '00000000002', null, '', '2017-01-01 00:00:00', '', '用户信息', '0', 'UserInformation', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1001', '0', '信用报告', '0', '', 'icon-xinyong', '00000000002', null, '', '2017-01-01 00:00:00', '', '信用报告', '0', 'CreditReport', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('3', '0', '代理商管理', '0', '', 'icon-dailishang', '00000000003', null, '', '2017-01-01 00:00:00', '', '代理商管理-管理员', '0', 'AgentManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('4', '0', '一级代理商管理', '0', '', 'icon-dailishang', '00000000004', null, '', '2017-01-01 00:00:00', '', '代理商管理-代理商', '0', 'AgentBranchManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('5', '0', '征信引擎', '0', '', 'icon-tongji', '00000000005', null, '', '2017-01-01 00:00:00', '', '第三方征信', '0', 'ThirdPartyInquiry', null, null, null, null);
@@ -963,6 +964,10 @@ INSERT INTO `arc_sys_menu` VALUES ('97', '0', '执行记录', '22', '', null, '0
 INSERT INTO `arc_sys_menu` VALUES ('98', '0', '广告信息', '23', '', '', '00000000001', '2017-01-01 00:00:00', '', '2017-01-01 00:00:00', '', '广告信息', '0', 'AdverManageList', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('99', '0', '渠道管理', '24', '', null, '00000000001', null, '', null, '', '渠道管理', '0', 'ChannelManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('100', '0', '渠道信息统计', '24', '', null, '00000000001', null, '', null, '', '渠道信息统计', '0', 'ChannelInformationStatistics', null, null, null, null);
+
+
+INSERT INTO `arc_sys_menu` VALUES ('1002', '0', '运营商报告', '1001', '', null, '00000000001', null, '', '2017-01-01 00:00:00', '', '运营商报告', '0', 'OperatorReport', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1003', '0', '信贷报告', '1001', '', null, '00000000002', null, '', '2017-01-01 00:00:00', '', '信贷报告', '0', 'CreditLoanReport', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for arc_sys_role_menu
