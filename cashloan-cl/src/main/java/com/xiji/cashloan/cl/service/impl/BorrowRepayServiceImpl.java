@@ -418,8 +418,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
 		Date now = new Date();
-		Date repayPlanTime = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(br.getRepayTime()));
-		Date nowDate = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(now));
+		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
+		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
 		if (nowDate.after(repayPlanTime)){
 			repayTime = tool.util.DateUtil.rollDay(now,7);
