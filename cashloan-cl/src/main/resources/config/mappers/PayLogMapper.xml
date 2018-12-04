@@ -6,6 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.PayLog">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="pay_order_no" property="payOrderNo" jdbcType="VARCHAR" />
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="borrow_id" property="borrowId" jdbcType="INTEGER" />
 		<result column="amount" property="amount" jdbcType="DECIMAL" />
@@ -25,7 +26,7 @@
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,order_no,user_id,borrow_id,amount,card_no,bank,confirm_code,source,type,scenes,state,code,remark,pay_req_time,update_time,create_time 
+        id,order_no,pay_order_no,user_id,borrow_id,amount,card_no,bank,confirm_code,source,type,scenes,state,code,remark,pay_req_time,update_time,create_time
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -36,6 +37,9 @@
             </if>
              <if test="orderNo != null and orderNo != ''">
                 and order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="payOrderNo != null and payOrderNo != ''">
+                and pay_order_no = #{payOrderNo,jdbcType=VARCHAR}
             </if>
             <if test="userId != null and userId != ''">
                 and user_id = #{userId,jdbcType=INTEGER}
@@ -87,9 +91,9 @@
     
     <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.xiji.cashloan.cl.domain.PayLog"   >
         insert into cl_pay_log(
-        	order_no,user_id,borrow_id,amount,card_no,bank,confirm_code,source,type,scenes,state,code,remark,pay_req_time,update_time,create_time
+        	order_no,pay_order_no,user_id,borrow_id,amount,card_no,bank,confirm_code,source,type,scenes,state,code,remark,pay_req_time,update_time,create_time
         )values(
-        	#{orderNo,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{borrowId,jdbcType=INTEGER},#{amount,jdbcType=DECIMAL},
+        	#{orderNo,jdbcType=VARCHAR},#{payOrderNo,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{borrowId,jdbcType=INTEGER},#{amount,jdbcType=DECIMAL},
         	#{cardNo,jdbcType=VARCHAR},#{bank,jdbcType=VARCHAR},#{confirmCode,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR},
         	#{type,jdbcType=VARCHAR},#{scenes,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
         	#{payReqTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP})
@@ -124,6 +128,9 @@
           	<if test="orderNo != nul and orderNo != ''">
           		order_no = #{orderNo,jdbcType=VARCHAR},
           	</if>
+            <if test="payOrderNo != nul and payOrderNo != ''">
+                pay_order_no = #{payOrderNo,jdbcType=VARCHAR},
+            </if>
             <if test="userId != null and userId != '' ">        
                 user_id = #{userId,jdbcType=INTEGER},
             </if>
@@ -205,7 +212,7 @@
 	<!-- 分页查询 -->
 	<select id="page" resultType="com.xiji.cashloan.cl.model.ManagePayLogModel" parameterType="java.util.HashMap">
 		select 
-			payLog.id,payLog.order_no,borrow.order_no as borrowOrderNo,borrow.state as borrowState,payLog.borrow_id,payLog.amount,
+			payLog.id,payLog.order_no,payLog.pay_order_no,borrow.order_no as borrowOrderNo,borrow.state as borrowState,payLog.borrow_id,payLog.amount,
 			payLog.card_no,payLog.bank,payLog.source,payLog.type,payLog.scenes,payLog.state,payLog.remark,payLog.pay_req_time,
 			payLog.update_time,payLog.create_time,borrow.create_time as loanTime,user.login_name,baseInfo.real_name,baseInfo.phone
 		from 
@@ -255,7 +262,7 @@
 	<!-- 查询详情 -->
 	<select id="findDetail" resultType="com.xiji.cashloan.cl.model.ManagePayLogModel" parameterType="java.lang.Long">
 		select 
-			payLog.id,payLog.order_no,borrow.order_no as borrowOrderNo,borrow.state as borrowState,payLog.borrow_idpayLog.amount,
+			payLog.id,payLog.order_no,payLog.pay_order_no,borrow.order_no as borrowOrderNo,borrow.state as borrowState,payLog.borrow_idpayLog.amount,
 			payLog.card_no,payLog.bank,payLog.source,payLog.type,payLog.scenes,payLog.state,payLog.remark,payLog.pay_req_time,
 			payLog.update_time,payLog.create_time,borrow.create_time as loanTime,user.login_name,baseInfo.real_name,baseInfo.phone
 		from 

@@ -100,6 +100,9 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		if(StringUtil.isNotBlank(searchMap)){
 			clBorrowModel.setCardNo(card.getCardNo());
 			clBorrowModel.setBank(card.getBank());
+			if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
+				result.put("bankMsg",card.getBank()+"("+card.getCardNo().substring(card.getCardNo().length() - 4)+")");
+			}
 		}
 		
 		List<ClBorrowModel> brList = new ArrayList<ClBorrowModel>();

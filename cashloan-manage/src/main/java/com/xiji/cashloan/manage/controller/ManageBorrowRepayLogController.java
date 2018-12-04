@@ -7,10 +7,9 @@ import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.ManageBRepayLogModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QueryPayOrderInfo;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
@@ -223,11 +222,9 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		// 订单存在并不是支付失败记录
 		if (null != deductionLog
 				&& !PayLogModel.STATE_PAYMENT_FAILED.equals(deductionLog.getState())) {
-			OrderQryByMSsn beanreq = new OrderQryByMSsn();
-			beanreq.setMchntOrderId(deductionLog.getOrderNo());
-			OrderQryResp resp = payHelper.checkResult(beanreq);
-			String key = Global.getValue("protocol_mchntcd_key");
-			if (resp.checkReturn() && resp.checkSign(key)) {
+			QueryPayOrderInfo payOrderInfo = payHelper.queryPayInfo(deductionLog);
+
+			if (StringUtil.equals(payOrderInfo.getCode(),QueryPayOrderInfo.PAY_SUCCESS)) {
 				// 更新订单状态
 				deductionLog.setState(PayLogModel.STATE_PAYMENT_SUCCESS);
 				deductionLog.setUpdateTime(DateUtil.getNow());
@@ -256,15 +253,20 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		String key = Global.getValue("protocol_mchntcd_key");
 		OrderXmlBeanResp resp = payHelper.repayment(beanReq);
 		String payMsg = "";
+		String payOrderNo = "";
 		if (resp.checkSign(key)) {
 			payMsg = resp.getResponseMsg();
 			if (resp.checkReturn() && StringUtil.isNotEmpty(resp.getOrderId())) {
 				payMsg = resp.getOrderId()+"|" + payMsg;
 			}
+			payOrderNo = resp.getOrderId();
 		}
 
 		PayLog payLog = new PayLog();
 		payLog.setOrderNo(orderNo);
+		if (StringUtil.isNotEmpty(payOrderNo)) {
+			payLog.setPayOrderNo(payOrderNo);
+		}
 		payLog.setUserId(borrowRepay.getUserId());
 		payLog.setBorrowId(borrowRepay.getBorrowId());
 		payLog.setAmount(NumberUtil.getDouble(amount));

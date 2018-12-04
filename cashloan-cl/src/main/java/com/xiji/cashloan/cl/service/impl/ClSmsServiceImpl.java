@@ -260,6 +260,24 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 					.replace("{$cardNo}", StringUtil.isNull(map.get("cardNo")))
 					.replace("{$bankCardNo}", StringUtil.isNull(map.get("bankCardNo")));
 		}
+		if("delayPlan".equals(smsType)){
+			String appName = Global.getValue("appName");
+			message = ret(smsType);
+			message = message
+				.replace("{$appName}", appName)
+				.replace(
+					"{$year}",
+					DateUtil.dateStr(DateUtil.valueOf(
+						DateUtil.dateStr(DateUtil.valueOf(map.get("time").toString()), DateUtil.DATEFORMAT_STR_002)),"yyyy"))
+				.replace(
+					"{$month}",
+					DateUtil.dateStr(DateUtil.valueOf(
+						DateUtil.dateStr(DateUtil.valueOf(map.get("time").toString()), DateUtil.DATEFORMAT_STR_002)),"M"))
+				.replace(
+					"{$day}",
+					DateUtil.dateStr(DateUtil.valueOf(
+						DateUtil.dateStr(DateUtil.valueOf(map.get("time").toString()), DateUtil.DATEFORMAT_STR_002)),"dd"));
+		}
 		return message;
 	}
 	
@@ -455,6 +473,30 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			}
 		}
         return null;
+	}
+
+	@Override
+	public String delayPlan(long userId,long borrowId,Date date) {
+		Map<String, Object> search = new HashMap<>();
+		User user = userMapper.findByPrimary(userId);
+		search.put("borrowId", borrowId);
+		Borrow br = clBorrowMapper.findByPrimary(borrowId);
+		if (user!=null&&br!=null) {
+			search.put("type", "delayPlan");
+			search.put("state", "10");
+			SmsTpl tpl = smsTplMapper.findSelective(search);
+			if (tpl!=null) {
+				search = new HashMap<>();
+				search.put("time", DateUtil.dateStr(date,DateUtil.DATEFORMAT_STR_001));
+				Map<String, Object> payload = new HashMap<>();
+				payload.put("mobile", user.getLoginName());
+				payload.put("message", changeMessage("delayPlan",search));
+				String result = sendCode(payload,tpl.getNumber());
+				logger.debug("短信发送结果"+result);
+				return result(result, user.getLoginName(), "delayPlan",0);
+			}
+		}
+		return null;
 	}
 	
 	@Override

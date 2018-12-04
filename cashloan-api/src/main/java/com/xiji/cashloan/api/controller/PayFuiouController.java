@@ -176,6 +176,7 @@ public class PayFuiouController extends BaseController{
 				Map<String,Object> paramMap = new HashMap<String, Object>();
 				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
 				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("payOrderNo",model.getFuorderno());
 				paramMap.put("id",payLog.getId());
 				payLogService.updateSelective(paramMap);
 
@@ -234,6 +235,7 @@ public class PayFuiouController extends BaseController{
 				Map<String,Object> paramMap = new HashMap<String, Object>();
 				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
 				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("payOrderNo",model.getFuorderno());
 				paramMap.put("id",payLog.getId());
 				payLogService.updateSelective(paramMap);
 
@@ -281,6 +283,7 @@ public class PayFuiouController extends BaseController{
 				Map<String,Object> paramMap = new HashMap<String, Object>();
 				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
 				paramMap.put("updateTime",DateUtil.getNow());
+				paramMap.put("payOrderNo",model.getFuorderno());
 				paramMap.put("id",payLog.getId());
 				payLogService.updateSelective(paramMap);
 			}else {

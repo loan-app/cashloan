@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service;
 
+import java.util.Date;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
@@ -77,6 +78,8 @@ public interface ClSmsService extends BaseService<Sms, Long>{
 	 * @return
 	 */
 	String repayInform(long userId,long borrowId);
+
+	String delayPlan(long userId,long borrowId,Date date);
 
 	/**
 	 * 逾期通知短信

@@ -76,6 +76,8 @@ let SeachForm = React.createClass({
                     <Option value="12">退还</Option>
                     <Option value="20">还款</Option>
                     <Option value="21">补扣</Option>
+                    <Option value="30">主动扣款</Option>
+                    <Option value="31">展期扣款</Option>
                 </Select>
              </FormItem>
              <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
