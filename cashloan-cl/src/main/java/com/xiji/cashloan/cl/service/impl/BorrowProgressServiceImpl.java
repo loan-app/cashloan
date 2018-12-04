@@ -122,25 +122,27 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		//展期逻辑
 		String delaySwitch = Global.getValue("delay_switch");
 		if (StringUtil.equalsIgnoreCase(delaySwitch,"10")) {
-
-			Map<String,Object> delayItem = new HashMap<>();
-			if(StringUtil.isNotBlank(searchMap)){
-				if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
-					delayItem.put("bankMsg",card.getBank()+"("+card.getCardNo().substring(card.getCardNo().length() - 4)+")");
+			//存在还款计划时，才需要展示展期信息
+			if (repayDate != null) {
+				Map<String,Object> delayItem = new HashMap<>();
+				if(StringUtil.isNotBlank(searchMap)){
+					if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
+						delayItem.put("bankMsg",card.getBank()+"("+card.getCardNo().substring(card.getCardNo().length() - 4)+")");
+					}
 				}
+				SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
+				Date repayPlanTime = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(repayDate));
+				Date nowDate = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(new Date()));
+				String dateStr = "";
+				if (nowDate.after(repayPlanTime)){
+					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),7),"yyyy-M-d");
+				}else {
+					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,7),"yyyy-M-d");
+				}
+				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(borrow.getFee()));
+				delayItem.put("delayRepayTimeStr",dateStr);
+				result.put("delayItem", delayItem);
 			}
-			SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
-			Date repayPlanTime = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(repayDate));
-			Date nowDate = com.xiji.cashloan.core.common.util.DateUtil.valueOf(time.format(new Date()));
-			String dateStr = "";
-			if (nowDate.after(repayPlanTime)){
-				dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),7),"yyyy-M-d");
-			}else {
-				dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,7),"yyyy-M-d");
-			}
-			delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(borrow.getFee()));
-			delayItem.put("delayRepayTimeStr",dateStr);
-			result.put("delayItem", delayItem);
 		}
 
 		return result;
@@ -239,6 +241,9 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 			for (int i = 0; i < list.size(); i++) {
 				ManageBorrowProgressModel model = list.get(i);
 				Borrow b = clBorrowMapper.findByPrimary(model.getBorrowId());
+				if (b == null) {
+					continue;
+				}
 				list.get(i).setAmount(b.getAmount());
 				list.get(i).setOrderNo(b.getOrderNo());
 				UserBaseInfo info = userBaseInfoMapper.findByUserId(model.getUserId());
