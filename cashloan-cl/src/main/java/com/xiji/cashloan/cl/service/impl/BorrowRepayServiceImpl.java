@@ -426,6 +426,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}else {
 			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(),7);
 		}
+		result.put("repayTime", repayTime);
 		// 更新还款信息
 		int msg = updateBorrowReplayByDelayPay(br, repayTime);
 		if (msg <= 0) {
@@ -1145,12 +1146,12 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				// 查找对应的还款计划
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("id", borrowRepay.getId());
-				param.put("repayTime", DateUtil.getNow());
 				param.put("state", BorrowModel.STATE_DELAY_PAY);
-				if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
-					this.confirmDelayPay(param);
+				Date repayTime = null;
+				Map<String, Object> delayPayMap = confirmDelayPay(param);
+				if (delayPayMap != null) {
+					repayTime = (Date) delayPayMap.get("repayTime");
 				}
-
 				// 更新订单状态
 				Map<String, Object> payLogParamMap = new HashMap<String, Object>();
 				payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_SUCCESS);
@@ -1158,8 +1159,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				payLogParamMap.put("id", repaymentLog.getId());
 				payLogService.updateSelective(payLogParamMap);
 
-				//todo 展期短信发送
-//				clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
+				//发送展期成功短信
+				clSmsService.delayPlan(repaymentLog.getUserId(), repaymentLog.getBorrowId(),repayTime);
 				result.put("code", "10");
 				result.put("msg", "展期成功！");
 				return result;

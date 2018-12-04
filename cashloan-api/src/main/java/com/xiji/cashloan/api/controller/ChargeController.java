@@ -23,6 +23,7 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.model.BorrowModel;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -252,14 +253,16 @@ public class ChargeController extends BaseController {
 				repayMap.put("userId", payLog.getUserId());
 				repayMap.put("borrowId", payLog.getBorrowId());
 				BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
-
+				Date repayTime = null;
 				if (borrowRepay != null) {
 					Map<String, Object> param = new HashMap<String, Object>();
 					param.put("id", borrowRepay.getId());
-					param.put("repayTime", DateUtil.getNow());
 					param.put("state", BorrowModel.STATE_DELAY_PAY);
 					if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
-						borrowRepayService.confirmDelayPay(param);
+						Map<String, Object> delayPayMap = borrowRepayService.confirmDelayPay(param);
+						if (delayPayMap != null) {
+							repayTime = (Date) delayPayMap.get("repayTime");
+						}
 					}
 				}
 				// 更新订单状态
@@ -268,9 +271,8 @@ public class ChargeController extends BaseController {
 				paramMap.put("updateTime",DateUtil.getNow());
 				paramMap.put("id",payLog.getId());
 				payLogService.updateSelective(paramMap);
-				//发送扣款成功短信
-//				clSmsService.repayInform(payLog.getUserId(), payLog.getBorrowId());
-				//todo 展期短信通知
+				//发送展期成功短信
+				clSmsService.delayPlan(payLog.getUserId(), payLog.getBorrowId(),repayTime);
 			} else {
 				Map<String,Object> paramMap = new HashMap<String, Object>();
 				paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);

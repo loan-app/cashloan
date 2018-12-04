@@ -325,6 +325,8 @@ public class ManagePayLogModel extends PayLog {
 			scenesStr = "补扣";
 		} else if (PayLogModel.SCENES_ACTIVE_REPAYMENT.equals(scenes)) {
 			scenesStr = "主动还款";
+		}else if (PayLogModel.SCENES_ACTIVE_DELAYPAY.equals(scenes)) {
+			scenesStr = "展期扣款";
 		}else {
 			scenesStr = " - ";
 		}
