@@ -73,7 +73,7 @@ export default React.createClass({
       }
     }
     Utils.ajaxData({
-      url: '/modules/manage/cl/cluser/authlist.htm',
+      url: '/modules/manage/calls/outside/fee/list.htm',
       data: params,
       callback: (result) => {
         const pagination = this.state.pagination;
@@ -104,52 +104,52 @@ export default React.createClass({
     });
     this.fetch(params);
   },
-  changeStatus(title,record) {
-    var me = this;
-    var selectedRowKeys =me.state.selectedRowKeys;
-    var id = record.id;
-    var status;
-    var msg = "";
-    var tips = "";
-    var trueurl = "";
-      if (title == "加入黑名单") {
-        msg = '加入黑名单';
-        status = '20';
-        tips = '您是否确定加入黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      } else if (title == "解除黑名单") {
-        msg = '解除黑名单成功';
-        status = '10';
-        tips = '您是否确定解除黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      }
-      confirm({
-        title: tips,
-        onOk: function() {
-          Utils.ajaxData({
-            url: trueurl,
-            data: {     
-              id: id, 
-              state:status
-            },
-            method: 'post',
-            callback: (result) => {
-              if(result.code==200){
-                Modal.success({
-                 title: result.msg,
-                });     
-              }else{
-                Modal.error({
-                  title:  result.msg,
-                });
-              }
-              me.refreshList();
-            }
-          });
-        },
-        onCancel: function() {}
-      });
-  },
+  // changeStatus(title,record) {
+  //   var me = this;
+  //   var selectedRowKeys =me.state.selectedRowKeys;
+  //   var id = record.id;
+  //   var status;
+  //   var msg = "";
+  //   var tips = "";
+  //   var trueurl = "";
+  //     if (title == "加入黑名单") {
+  //       msg = '加入黑名单';
+  //       status = '20';
+  //       tips = '您是否确定加入黑名单';
+  //       trueurl = "/modules/manage/user/updateState.htm"
+  //     } else if (title == "解除黑名单") {
+  //       msg = '解除黑名单成功';
+  //       status = '10';
+  //       tips = '您是否确定解除黑名单';
+  //       trueurl = "/modules/manage/user/updateState.htm"
+  //     }
+  //     confirm({
+  //       title: tips,
+  //       onOk: function() {
+  //         Utils.ajaxData({
+  //           url: trueurl,
+  //           data: {
+  //             id: id,
+  //             state:status
+  //           },
+  //           method: 'post',
+  //           callback: (result) => {
+  //             if(result.code==200){
+  //               Modal.success({
+  //                title: result.msg,
+  //               });
+  //             }else{
+  //               Modal.error({
+  //                 title:  result.msg,
+  //               });
+  //             }
+  //             me.refreshList();
+  //           }
+  //         });
+  //       },
+  //       onCancel: function() {}
+  //     });
+  // },
   componentDidMount() {
     this.fetch();
   },
@@ -171,82 +171,37 @@ export default React.createClass({
       selectedRowKeys,
     }; 
     const hasSelected = selectedRowKeys.length > 0;
+
     var columns = [{
-      title: '真实姓名',
-      dataIndex: 'realName',
+      title: '时间',
+      dataIndex: 'gmtCreate',
     }, {
-      title: '手机号码',
-      dataIndex: "phone",
+      title: '用户标识',
+      dataIndex: "userId",
     }, {
-      title: '银行卡状态',
-      dataIndex: 'bankCardState',
-      render: (text, record)=>{
-        if(record.bankCardState==10){
-          return "未认证"
-        }else if(record.bankCardState==20){
-          return "认证中"
-        }else if(record.bankCardState==30){
-          return "已认证"
-        }else{
-          return "-"
-        }
+      title: '任务id',
+      dataIndex: 'taskId',
+    }, {
+      title: '调用类型',
+      dataIndex: 'type',
+      render: (text, record)=> {
+          if (record.type == 1) {
+              return "运营商"
+          } else if (record.type == 2) {
+              return "魔杖反欺诈"
+          } else if (record.type == 3) {
+              return "魔杖多头"
+          } else if (record.type == 4) {
+              return "魔杖黑灰名单"
+          } else if (record.type == 5) {
+              return "魔杖贷后行为"
+          } else {
+              return "-"
+          }
       }
     }, {
-      title: '紧急联系人状态',
-      dataIndex: 'contactState',
-      render: (text, record)=>{
-        if(record.contactState==10){
-          return "未完善"
-        }else if(record.contactState==20){
-          return "完善中"
-        }else if(record.contactState==30){
-          return "已完善"
-        }else{
-          return "-"
-        }
-      }
-    }, {
-      title: '身份认证状态',
-      dataIndex: "idState",
-      render: (text, record)=>{
-        if(record.idState==10){
-          return "未认证"
-        }else if(record.idState==20){
-          return "认证中"
-        }else if(record.idState==30){
-          return "已认证"
-        }else{
-          return "-"
-        }
-      }
-    }, {
-      title: '手机运营商认证状态',
-      dataIndex: "phoneState",
-      render: (text, record)=>{
-        if(record.phoneState==10){
-          return "未认证"
-        }else if(record.phoneState==20){
-          return "认证中"
-        }else if(record.phoneState==30){
-          return "已认证"
-        }else{
-          return "-"
-        }
-      }
-    }, {
-      title: '芝麻授信状态',
-      dataIndex: 'zhimaState',
-      render: (text, record)=>{
-        if(record.zhimaState==10){
-          return "未授信"
-        }else if(record.zhimaState==20){
-          return "授信中"
-        }else if(record.zhimaState==30){
-          return "已授信"
-        }else{
-          return "-"
-        }
-      }
+      title: '收取费用',
+      dataIndex: "fee",
     }];
     var state = this.state;
     return (
