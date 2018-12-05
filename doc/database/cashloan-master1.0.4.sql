@@ -1090,6 +1090,10 @@ INSERT INTO `arc_sys_role_menu` VALUES ('98', '1', '98');
 INSERT INTO `arc_sys_role_menu` VALUES ('99', '1', '99');
 INSERT INTO `arc_sys_role_menu` VALUES ('100', '1', '100');
 
+INSERT INTO `arc_sys_role_menu` VALUES ('101', '1', '1001');
+INSERT INTO `arc_sys_role_menu` VALUES ('102', '1', '1002');
+INSERT INTO `arc_sys_role_menu` VALUES ('103', '1', '1003');
+
 
 -- ----------------------------
 -- Table structure for arc_sys_perm

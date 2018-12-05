@@ -255,3 +255,14 @@ CREATE TABLE `cl_operator_report_link` (
   `gmt_modified` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商报告查看链接';
+
+DROP TABLE IF EXISTS `cl_magic_req_detail`;
+CREATE TABLE `cl_magic_req_detail` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
+  `trans_id` varchar(64) DEFAULT '' COMMENT '报告id',
+  `data` longtext COMMENT '返回内容',
+  `type` tinyint(4) NOT NULL COMMENT '类型 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='魔杖2.0-请求详情';
