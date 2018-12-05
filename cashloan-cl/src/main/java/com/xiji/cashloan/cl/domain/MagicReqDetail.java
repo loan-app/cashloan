@@ -1,5 +1,7 @@
 package com.xiji.cashloan.cl.domain;
 
+import com.xiji.cashloan.core.common.util.DateUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,6 +46,18 @@ import java.util.Date;
     */
     private Date createTime;
 
+    public MagicReqDetail() {
+        super();
+    }
+
+    public MagicReqDetail(Long userId, String transId, String data, Integer type) {
+        super();
+        this.userId = userId;
+        this.transId = transId;
+        this.data = data;
+        this.type = type;
+        this.createTime = DateUtil.getNow();
+    }
 
     /**
     * 获取主键Id

@@ -76,6 +76,7 @@ TRUNCATE TABLE cl_operator_sms_1;
 TRUNCATE TABLE cl_operator_sms;
 TRUNCATE TABLE cl_operator_net_1;
 TRUNCATE TABLE cl_operator_net;
+TRUNCATE TABLE cl_operator_report_link;
 
 -- 魔杖2.0数据
 TRUNCATE TABLE cl_magic_bank_info;
@@ -101,3 +102,6 @@ TRUNCATE TABLE cl_magic_suspicious_other_mobile;
 TRUNCATE TABLE cl_magic_suspicious_other_name;
 TRUNCATE TABLE cl_magic_untrusted;
 TRUNCATE TABLE cl_magic_untrusted_detail;
+
+TRUNCATE TABLE cl_magic_req_detail;
+TRUNCATE TABLE cl_calls_outside_fee;

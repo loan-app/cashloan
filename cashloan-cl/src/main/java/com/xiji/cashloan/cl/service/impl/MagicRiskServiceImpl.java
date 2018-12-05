@@ -114,6 +114,9 @@ public class MagicRiskServiceImpl implements MagicRiskService {
     @Resource
     private MagicFraudulenceInfoMapper magicFraudulenceInfoMapper;
 
+    @Resource
+    private MagicReqDetailMapper magicReqDetailMapper;
+
     @Override
     public int queryAntiFraud(Borrow borrow, TppBusiness business) {
         int i = 0;
@@ -153,6 +156,9 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                 Date createDate = DateUtil.getNow();
                 CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD, CallsOutSideFeeConstant.FEE_ANTI_FRAUD);
                 callsOutSideFeeMapper.save(callsOutSideFee);
+                //插入详情表
+                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD);
+                magicReqDetailMapper.save(magicReqDetail);
                 //法院失信
                 UntrustedInfoBean untrustedInfo = JSONObject.parseObject(data.getString("untrusted_info"), UntrustedInfoBean.class);
                 if (untrustedInfo != null) {
@@ -224,10 +230,13 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             String resContent = MxCreditRequest.get(getURL, null);
             JSONObject resJson = JSONObject.parseObject(resContent);
             if ("0000".equals(resJson.getString("code"))) {
-                //插入收费记录表
                 JSONObject data = JSONObject.parseObject(resJson.getString("data"));
                 String transId = data.getString("trans_id");
                 Date createDate = DateUtil.getNow();
+                //插入详情表
+                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
+                magicReqDetailMapper.save(magicReqDetail);
+                //插入收费记录表
                 CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO, CallsOutSideFeeConstant.FEE_MULTI_INFO);
                 callsOutSideFeeMapper.save(callsOutSideFee);
                 //保存数据
@@ -276,10 +285,13 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             String resContent = MxCreditRequest.get(getURL, null);
             JSONObject resJson = JSONObject.parseObject(resContent);
             if ("0000".equals(resJson.getString("code"))) {
-                //插入收费记录表
                 JSONObject data = JSONObject.parseObject(resJson.getString("data"));
                 String transId = data.getString("trans_id");
                 Date createDate = DateUtil.getNow();
+                //插入详情表
+                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
+                magicReqDetailMapper.save(magicReqDetail);
+                //插入收费记录表
                 CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY, CallsOutSideFeeConstant.FEE_BLACK_GRAY);
                 callsOutSideFeeMapper.save(callsOutSideFee);
                 //保存数据
@@ -329,10 +341,13 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             String resContent = MxCreditRequest.get(getURL, null);
             JSONObject resJson = JSONObject.parseObject(resContent);
             if ("0000".equals(resJson.getString("code"))) {
-                //插入收费记录表
                 JSONObject data = JSONObject.parseObject(resJson.getString("data"));
                 String transId = data.getString("trans_id");
                 Date createDate = DateUtil.getNow();
+                //插入详情表
+                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
+                magicReqDetailMapper.save(magicReqDetail);
+                //插入收费记录表
                 CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD, CallsOutSideFeeConstant.FEE_POST_LOAD);
                 callsOutSideFeeMapper.save(callsOutSideFee);
                 //保存数据
