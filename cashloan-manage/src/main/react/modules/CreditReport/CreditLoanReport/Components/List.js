@@ -134,7 +134,7 @@ export default React.createClass({
         title: '操作',
         render: (text, record) => {
             return <div>
-                <a href="javascript:;" onClick={me.showModal.bind(me, '查看详情', record, true)}>查看详情</a>
+                <a href="javascript:;" onClick={me.showModal.bind(me, '查看详情', record, true)}>查看报告</a>
             </div>
         }
         }];
