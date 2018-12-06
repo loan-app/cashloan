@@ -31,6 +31,7 @@ var SystemParameterSettings = require('../../SystemMng/SystemParameterSettings/i
 var NoteMould = require('../../NewsRecord/NoteMould/index');//字典管理
 var NoteMessage = require('../../NewsRecord/NoteMessage/index');//系统参数设置
 var OperatorReport = require('../../CreditReport/OperatorReport/index');//信用报告,运营商报告
+var CreditLoanReport = require('../../CreditReport/CreditLoanReport/index');//信用报告,信贷报告
 var OutsideFee = require('../../FeeManage/OutsideFee/index'); //费用管理 外部数据费用
 
 module.exports = {
@@ -67,5 +68,6 @@ module.exports = {
   NoteMould,
   NoteMessage,
   OperatorReport,
+  CreditLoanReport,
   OutsideFee
 }

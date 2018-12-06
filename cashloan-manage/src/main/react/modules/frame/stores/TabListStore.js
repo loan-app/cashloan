@@ -96,6 +96,7 @@ export default Reflux.createStore({
 					'NoteMessage',
   					'NoteMould',
 					'OperatorReport',
+					'CreditLoanReport',
 					'OutsideFee'
 			];
 
