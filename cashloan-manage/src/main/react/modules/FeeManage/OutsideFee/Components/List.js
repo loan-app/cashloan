@@ -116,17 +116,6 @@ export default React.createClass({
   },
  
   render() {
-    var me = this;
-    const {
-      loading,
-      selectedRowKeys
-    } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-    };
-
-    const hasSelected = selectedRowKeys.length > 0;
-
     var columns = [{
       title: '时间',
       dataIndex: 'gmtCreate',
