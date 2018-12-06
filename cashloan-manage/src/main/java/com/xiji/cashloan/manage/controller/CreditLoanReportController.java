@@ -38,7 +38,7 @@ public class CreditLoanReportController extends BaseController {
     private UserBaseInfoService userBaseInfoService;
 
     /**
-     *用户信息列表
+     *用户信贷报告列表
      * @param searchParams
      * @param currentPage
      * @param pageSize
