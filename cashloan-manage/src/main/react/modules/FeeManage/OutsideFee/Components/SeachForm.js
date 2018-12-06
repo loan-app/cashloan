@@ -30,6 +30,13 @@ let SeachForm = React.createClass({
       current: 1,
     });
   },
+    handleReset() {
+        this.props.form.resetFields();
+        this.props.passParams({
+            pageSize: 10,
+            current: 1,
+        });
+    },
   render() {
     const {
       getFieldProps
@@ -52,6 +59,7 @@ let SeachForm = React.createClass({
           </Select>
           </FormItem>
         <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
+          <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
       </Form>
     );
   }

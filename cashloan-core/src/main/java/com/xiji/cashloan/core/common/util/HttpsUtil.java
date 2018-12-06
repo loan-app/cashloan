@@ -41,8 +41,6 @@ import org.apache.log4j.Logger;
  * @author xx
  * @version 1.0.0
  * @date 2016年12月1日 上午11:15:15
- * Copyright 杭州融都科技股份有限公司 金融创新部  All Rights Reserved
- * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
  * 
  * 不再使用apache commons HttpClient项目，使用apache HttpClient和HttpCore项目

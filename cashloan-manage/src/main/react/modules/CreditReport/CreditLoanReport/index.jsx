@@ -1,4 +1,4 @@
-/*客户管理-用户认证信息*/
+/*信贷报告*/
 import React from 'react';
 import List from './Components/List';
 import SeachForm from './Components/SeachForm';

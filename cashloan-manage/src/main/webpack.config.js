@@ -20,7 +20,7 @@ module.exports = {
     port: 8000,
     proxy: {
      '\*': {
-    	 target: 'http://127.0.0.1:10620',
+    	 target: 'http://127.0.0.1:8081',
        secure: false
      }
     } 

@@ -13,7 +13,7 @@ import com.xiji.cashloan.rule.domain.BorrowRuleConfig;
  * @author wnb
  * @version 1.0.0
  * @date 2018/11/27
- * Copyright 杭州融都科技股份有限公司  arc All Rights Reserved
+ *
  */
 @RDBatisDao
 public interface BorrowRuleConfigMapper extends BaseMapper<BorrowRuleConfig,Long> {

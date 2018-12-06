@@ -3,7 +3,7 @@ import {
   Table,
   Modal
 } from 'antd';
-var confirm = Modal.confirm;
+import ReportLink from "./ReportLink";
 const objectAssign = require('object-assign');
 export default React.createClass({
   getInitialState() {
@@ -12,8 +12,8 @@ export default React.createClass({
       loading: false,
       data: [],
       pagination: {},
-      canEdit: true,
       visible: false,
+        record:"",
       visibleAdd:false,
     };
   },
@@ -34,7 +34,6 @@ export default React.createClass({
     this.setState({
       canEdit: canEdit,
       visible: true,
-      title: title,
       record: record
     },()=>{
       this.refs.CustomerWin.setFieldsValue(record);
@@ -73,7 +72,7 @@ export default React.createClass({
       }
     }
     Utils.ajaxData({
-      url: '/modules/manage/cl/cluser/authlist.htm',
+      url: '/modules/manage/operator/reportLink/page.htm',
       data: params,
       callback: (result) => {
         const pagination = this.state.pagination;
@@ -104,55 +103,22 @@ export default React.createClass({
     });
     this.fetch(params);
   },
-  changeStatus(title,record) {
-    var me = this;
-    var selectedRowKeys =me.state.selectedRowKeys;
-    var id = record.id;
-    var status;
-    var msg = "";
-    var tips = "";
-    var trueurl = "";
-      if (title == "加入黑名单") {
-        msg = '加入黑名单';
-        status = '20';
-        tips = '您是否确定加入黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      } else if (title == "解除黑名单") {
-        msg = '解除黑名单成功';
-        status = '10';
-        tips = '您是否确定解除黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      }
-      confirm({
-        title: tips,
-        onOk: function() {
-          Utils.ajaxData({
-            url: trueurl,
-            data: {     
-              id: id, 
-              state:status
-            },
-            method: 'post',
-            callback: (result) => {
-              if(result.code==200){
-                Modal.success({
-                 title: result.msg,
-                });     
-              }else{
-                Modal.error({
-                  title:  result.msg,
-                });
-              }
-              me.refreshList();
-            }
-          });
-        },
-        onCancel: function() {}
-      });
-  },
+
   componentDidMount() {
     this.fetch();
   },
+    //查看弹窗
+    showModal(record,title) {
+
+        this.setState({
+            visibleAdd: true,
+            record: record,
+            title: title
+        },()=>{
+
+            this.refs.ReportLink.setFieldsValue(record);
+        })
+    },
 
   onRowClick(record) {
     this.setState({
@@ -178,74 +144,20 @@ export default React.createClass({
       title: '手机号码',
       dataIndex: "phone",
     }, {
-      title: '银行卡状态',
-      dataIndex: 'bankCardState',
-      render: (text, record)=>{
-        if(record.bankCardState==10){
-          return "未认证"
-        }else if(record.bankCardState==20){
-          return "认证中"
-        }else if(record.bankCardState==30){
-          return "已认证"
-        }else{
-          return "-"
-        }
-      }
+      title: '身份证号',
+      dataIndex: 'idNo',
     }, {
-      title: '紧急联系人状态',
-      dataIndex: 'contactState',
-      render: (text, record)=>{
-        if(record.contactState==10){
-          return "未完善"
-        }else if(record.contactState==20){
-          return "完善中"
-        }else if(record.contactState==30){
-          return "已完善"
-        }else{
-          return "-"
-        }
-      }
-    }, {
-      title: '身份认证状态',
-      dataIndex: "idState",
-      render: (text, record)=>{
-        if(record.idState==10){
-          return "未认证"
-        }else if(record.idState==20){
-          return "认证中"
-        }else if(record.idState==30){
-          return "已认证"
-        }else{
-          return "-"
-        }
-      }
-    }, {
-      title: '手机运营商认证状态',
-      dataIndex: "phoneState",
-      render: (text, record)=>{
-        if(record.phoneState==10){
-          return "未认证"
-        }else if(record.phoneState==20){
-          return "认证中"
-        }else if(record.phoneState==30){
-          return "已认证"
-        }else{
-          return "-"
-        }
-      }
-    }, {
-      title: '芝麻授信状态',
-      dataIndex: 'zhimaState',
-      render: (text, record)=>{
-        if(record.zhimaState==10){
-          return "未授信"
-        }else if(record.zhimaState==20){
-          return "授信中"
-        }else if(record.zhimaState==30){
-          return "已授信"
-        }else{
-          return "-"
-        }
+      title: '报告时间',
+      dataIndex: 'gmtModified',
+    },  {
+      title: '查看报告',
+      dataIndex: "operateUrl",
+      render: (value,record) => {
+          return(
+              <div style={{ textAlign: "left" }}>
+                  {record.operateUrl != '' ? <a href="#" onClick={me.showModal.bind(me,record, '查看报告', false)}>查看报告</a> : '-'}
+              </div>
+          )
       }
     }];
     var state = this.state;
@@ -257,6 +169,7 @@ export default React.createClass({
              pagination={this.state.pagination}
              loading={this.state.loading}
              onChange={this.handleTableChange}  />
+            <ReportLink ref="ReportLink" visible={state.visibleAdd} title={state.title} hideModal={me.hideModal} record={state.record} />
          </div>
     );
   }

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Title: <br>
  * Description: 表头对象，用于创建excel表头，支持多层表头<br>
- * Copyright: eastcom Copyright (C) 2009 <br>
+ * Copyright:  Copyright (C) 2009 <br>
  *
  * @author wnb
  * @date 2018/11/27

@@ -11,7 +11,7 @@ import com.xiji.cashloan.core.common.util.DateUtil;
 /**
  * 数据行对象 Title: Excel导出工具<br>
  * Description: 封装了数据导出到excel中的行对象，包括行中列数据对象的操作方法等<br>
- * Copyright: eastcom Copyright (C) 2009 <br>
+ * Copyright:  Copyright (C) 2009 <br>
  *
  * @author wnb
  * @date 2018/11/27

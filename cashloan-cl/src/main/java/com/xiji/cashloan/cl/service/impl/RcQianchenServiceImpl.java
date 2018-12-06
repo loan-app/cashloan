@@ -53,8 +53,6 @@ import credit.QianchengRiskRequest;
  * @author wnb
  * @date 2018/11/27
  * @version 1.0.0
- * Copyright 杭州融都科技股份有限公司 现金贷 All Rights Reserved
- * 官方网站：www.xiji.com
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 @Service("rcQianchenService")
@@ -124,7 +122,7 @@ public class RcQianchenServiceImpl implements RcQianchenService {
 		}
 
 		basicInfo.setUser_contact(ucList);
-		// basicInfo.setCompany_name("杭州融都科技股份有限公司");
+		// basicInfo.setCompany_name("");
 		// basicInfo.setCompany_address("杭州市拱墅区");
 		// basicInfo.setCompany_phone("0571-85132616");
 		//
