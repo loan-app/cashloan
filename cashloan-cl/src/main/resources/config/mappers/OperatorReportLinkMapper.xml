@@ -101,5 +101,30 @@
         from cl_operator_report_link
         <include refid="searchBy"/>
     </select>
-    
+
+    <!-- 分页查询 -->
+    <select id="page" resultType="com.xiji.cashloan.cl.model.ManageOperatorReportLinkModel" parameterType="java.util.HashMap">
+        select link.user_id,link.task_id,link.message,link.gmt_create,link.gmt_modified,baseInfo.real_name,baseInfo.phone,baseInfo.id_no
+        from cl_operator_report_link link  left join cl_user_base_info baseInfo on link.user_id = baseInfo.user_id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="realName != null and realName !=''">
+                and baseInfo.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="phone !=null and phone !=''">
+                and baseInfo.phone like  concat("%",#{phone,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="idNo !=null and idNo !=''">
+                and baseInfo.id_no like  concat("%",#{idNo,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="startTime != null">
+                <![CDATA[ AND DATE_FORMAT(link.gmt_modified, '%Y-%m-%d') >=
+            	 DATE_FORMAT(#{startTime,jdbcType=TIMESTAMP},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ AND DATE_FORMAT(link.gmt_modified, '%Y-%m-%d') <=
+            	DATE_FORMAT(#{endTime,jdbcType=TIMESTAMP},'%Y-%m-%d') ]]>
+            </if>
+        </trim>
+        order by link.id desc
+    </select>
 </mapper>

@@ -241,6 +241,8 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, 'face的secret', 'face_api_secret
 INSERT INTO `arc_sys_config` VALUES (null, 20, '是否展期', 'delay_switch', '10', 1, '是否展期：10-开启，20-不启用', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 20,'app名称','appName','哆啦a借',1,'产品名称',1);
 INSERT INTO `arc_sys_config` VALUES (null, 20,'绑卡开关','bindCardSwitch','20',1,'10-不支持借款未结束换绑卡，20-支持借款未结束换绑卡',1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '魔蝎报告url前缀', 'magic_prefix_report_url', 'https://tenant.51datakey.com/carrier/report_data?data=', 1, '魔蝎报告url前缀', 1);
+
 alter table `cl_pay_log` add column `pay_order_no` varchar(64)  default '';
 
 
