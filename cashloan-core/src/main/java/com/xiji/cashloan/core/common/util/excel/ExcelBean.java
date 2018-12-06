@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 导出Excel的信息 Title: eed <br>
  * Description: <br>
- * Copyright: eastcom Copyright (C) 2009 <br>
+ * Copyright:  Copyright (C) 2009 <br>
  *
  * @author wnb
  * @date 2018/11/27

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 表格数据对象 Title: Excel导出工具<br>
  * Description: 封装了单个Sheet里除了表格标题及副标题等信息外的对象，包括表格表头对象、数据行对象集合及其操作方法等<br>
- * Copyright: eastcom Copyright (C) 2009 <br>
+ * Copyright:  Copyright (C) 2009 <br>
  *
  * @author wnb
  * @date 2018/11/27

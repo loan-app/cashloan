@@ -30,7 +30,7 @@ public class FormulaProcessor {
 		 * = row.getTable().getTableHeader().getColumnAt(cell.getColumnIndex()); int type = thc.getColumnType(); if
 		 * (type == TableColumn.COLUMN_TYPE_FORMULA && thc.getAggregateRule() != null){ String f =
 		 * convertFormula(thc.getAggregateRule()); try{ Interpreter process = new Interpreter();
-		 * process.getNameSpace().importCommands("com.eastcom.kaas.web.report.bean" ); process.set("row", row);
+		 * process.getNameSpace().importCommands("com..kaas.web.report.bean" ); process.set("row", row);
 		 * process.set("computed", computed); Object ret = process.eval(f); double v = (Double)ret; cell.setValue(v);
 		 * computed.add(cell.getColumnIndex()); } catch (Exception e){ e.printStackTrace(); cell.setValue(0);
 		 * cell.setValue("-"); computed.add(cell.getColumnIndex()); } } }

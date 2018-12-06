@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 /**
  *  
  * <p>Copyright: All Rights Reserved</p>
- * <p>Company: 杭州融都科技有限公司 http://www.xiji.com</p>
  * <p>System: 小贷管理系统</p>
  * <p>Description: ip获取工具类</p>
  *

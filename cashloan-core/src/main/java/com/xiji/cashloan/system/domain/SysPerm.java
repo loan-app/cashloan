@@ -4,8 +4,8 @@
  * @author rd
  * @version 1.0.0.0
  * @date 2016年12月01日 下午16:01:55
- * Copyright 杭州融都科技股份有限公司 资金托管系统  All Rights Reserved
- * 官方网站：www.xiji.com
+ *
+ *
  * 
  * 未经授权不得进行修改、复制、出售及商业使用
  */

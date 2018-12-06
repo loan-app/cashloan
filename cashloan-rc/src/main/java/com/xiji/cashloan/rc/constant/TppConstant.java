@@ -5,8 +5,8 @@ package com.xiji.cashloan.rc.constant;
  * @author wnb
  * @version 1.0.0
  * @date 2018/11/27
- * 官方网站：www.xiji.com
- * 创新一部：rdc@xiji.com
+ *
+ *
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 public final class TppConstant {

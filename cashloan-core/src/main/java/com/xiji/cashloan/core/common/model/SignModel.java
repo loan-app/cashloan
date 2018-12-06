@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
  * @author wnb
  * @date 2018/11/27
  * @version 1.0.0
- * Copyright 杭州融都科技股份有限公司 资产匹配系统 All Rights Reserved
- * 官方网站：www.xiji.com
+ *
+ *
  * 
  * 未经授权不得进行修改、复制、出售及商业使用
  */
