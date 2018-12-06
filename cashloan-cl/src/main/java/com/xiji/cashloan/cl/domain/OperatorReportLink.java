@@ -56,6 +56,7 @@ import java.util.Date;
         this.taskId = taskId;
         this.message = message;
         this.gmtCreate = DateUtil.getNow();
+        this.gmtModified = DateUtil.getNow();
     }
 
     /**

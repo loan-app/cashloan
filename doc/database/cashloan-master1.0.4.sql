@@ -17,30 +17,42 @@ CREATE TABLE `arc_borrow_rule_config` (
 -- ----------------------------
 -- Records of arc_borrow_rule_config
 -- ----------------------------
-INSERT INTO `arc_borrow_rule_config` VALUES ('1', '1', '1', '99', '1', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('2', '1', '1', '99', '2', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('3', '1', '2', '98', '3', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('4', '1', '2', '98', '4', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('5', '1', '3', '97', '9', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('6', '1', '3', '97', '10', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('7', '1', '3', '97', '11', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('8', '1', '3', '97', '5', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('9', '1', '3', '97', '6', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('10', '1', '4', '10', '7', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('11', '1', '5', '9', '8', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('12', '1', '6', '8', '23', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('13', '1', '6', '8', '24', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('14', '1', '6', '8', '17', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('15', '1', '6', '8', '18', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('16', '1', '6', '8', '19', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('17', '1', '6', '8', '20', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('18', '1', '6', '8', '21', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('19', '1', '6', '8', '22', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('20', '1', '6', '8', '12', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('21', '1', '6', '8', '13', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('22', '1', '6', '8', '14', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('23', '1', '6', '8', '15', '0');
-INSERT INTO `arc_borrow_rule_config` VALUES ('24', '1', '6', '8', '16', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('1', '1', '4', '0', '32', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('2', '1', '4', '0', '33', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('3', '1', '4', '0', '34', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('4', '1', '4', '0', '35', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('5', '1', '4', '0', '36', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('6', '1', '4', '0', '30', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('7', '1', '4', '0', '31', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('8', '1', '4', '0', '16', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('9', '1', '4', '0', '17', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('10', '1', '4', '0', '18', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('11', '1', '4', '0', '19', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('12', '1', '4', '0', '20', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('13', '1', '4', '0', '21', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('14', '1', '4', '0', '22', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('15', '1', '4', '0', '23', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('16', '1', '4', '0', '24', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('17', '1', '4', '0', '25', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('18', '1', '4', '0', '26', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('19', '1', '4', '0', '27', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('20', '1', '4', '0', '28', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('21', '1', '4', '0', '29', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('22', '1', '4', '0', '15', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('23', '1', '3', '0', '7', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('24', '1', '3', '0', '8', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('25', '1', '3', '0', '9', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('26', '1', '3', '0', '10', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('27', '1', '3', '0', '11', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('28', '1', '3', '0', '12', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('29', '1', '3', '0', '13', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('30', '1', '3', '0', '14', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('31', '1', '2', '0', '5', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('32', '1', '2', '0', '6', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('33', '1', '2', '0', '4', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('34', '1', '2', '0', '3', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('35', '1', '1', '0', '2', '0');
+INSERT INTO `arc_borrow_rule_config` VALUES ('36', '1', '1', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for arc_borrow_rule_engine
@@ -61,7 +73,7 @@ CREATE TABLE `arc_borrow_rule_engine` (
 -- ----------------------------
 -- Records of arc_borrow_rule_engine
 -- ----------------------------
-INSERT INTO `arc_borrow_rule_engine` VALUES ('1', '现金贷', '01', '贷前', '10', '2017-01-01 00:00:00', '', '24');
+INSERT INTO `arc_borrow_rule_engine` VALUES ('1', '现金贷', '01', '贷前', '10', '2018-12-06 00:00:00', '', '36');
 
 -- ----------------------------
 -- Table structure for arc_borrow_rule_result
@@ -395,12 +407,10 @@ CREATE TABLE `arc_rule_engine` (
 -- ----------------------------
 -- Records of arc_rule_engine
 -- ----------------------------
-INSERT INTO `arc_rule_engine` VALUES ('1', '用户基本信息', '10', '2', null, '127.0.0.1', '2017-01-01 12:00:22', null, '20', '10', null);
-INSERT INTO `arc_rule_engine` VALUES ('2', '芝麻信用评分', '10', '2', null, '127.0.0.1', '2017-01-01 12:01:30', null, '20', '10', null);
-INSERT INTO `arc_rule_engine` VALUES ('3', '运营商信息', '10', '5', null, '127.0.0.1', '2017-01-01 12:03:22', null, '20', '10', null);
-INSERT INTO `arc_rule_engine` VALUES ('4', '浅橙贷前审核', '10', '1', null, '127.0.0.1', '2017-01-01 13:40:36', null, '20', '10', null);
-INSERT INTO `arc_rule_engine` VALUES ('5', '火眼黑名单', '10', '1', null, '127.0.0.1', '2017-01-01 13:44:51', null, '20', '10', null);
-INSERT INTO `arc_rule_engine` VALUES ('6', '贷后邦反欺诈', '10', '13', null, '127.0.0.1', '2017-01-01 14:24:52', null, '20', '10', null);
+INSERT INTO `arc_rule_engine` VALUES ('1', '运营商信息', '10', '2', null, '127.0.0.1', '2018-12-06 12:46:14', null, '20', '10', null);
+INSERT INTO `arc_rule_engine` VALUES ('2', '魔杖黑灰名单', '10', '4', null, '127.0.0.1', '2018-12-06 12:47:54', null, '20', '10', null);
+INSERT INTO `arc_rule_engine` VALUES ('3', '魔杖多头', '10', '8', null, '127.0.0.1', '2018-12-06 13:41:44', null, '20', '10', null);
+INSERT INTO `arc_rule_engine` VALUES ('4', '魔杖反欺诈', '10', '22', null, '127.0.0.1', '2018-12-06 13:44:44', null, '20', '10', null);
 
 -- ----------------------------
 -- Table structure for arc_rule_engine_config
@@ -430,30 +440,42 @@ CREATE TABLE `arc_rule_engine_config` (
 -- ----------------------------
 -- Records of arc_rule_engine_config
 -- ----------------------------
-INSERT INTO `arc_rule_engine_config` VALUES ('1', '1', 'cl_user_base_info', '用户详情表', 'age', '年龄', '<', '18', '10', null, '127.0.0.1', '2017-11-09 12:00:22', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('2', '1', 'cl_user_base_info', '用户详情表', 'age', '年龄', '>', '60', '10', null, '127.0.0.1', '2017-11-09 12:00:22', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('3', '2', 'cl_zhima', '芝麻信用', 'score', '分数', '<', '500', '10', null, '127.0.0.1', '2017-11-09 12:01:30', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('4', '2', 'cl_zhima', '芝麻信用', 'score', '分数', '<=and<', '500,550', '10', null, '127.0.0.1', '2017-11-09 12:01:30', 'int', null, null, '20', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('5', '3', 'cl_operator_basic', '运营商认证基础信息表', 'extend_phone_age', '网龄', '<', '90', '10', null, '127.0.0.1', '2017-11-09 12:03:22', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('6', '3', 'cl_operator_basic', '运营商认证基础信息表', 'extend_phone_age', '网龄', '<=and<', '90,180', '10', null, '127.0.0.1', '2017-11-09 12:03:22', 'int', null, null, '20', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('7', '4', 'cl_qiancheng_req_log', '浅橙请求记录表', 'rs_state', '审核结果', 'include', '1', '10', null, '127.0.0.1', '2017-11-09 13:40:36', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('8', '5', 'cl_rc_fireeyes_black_log', '火眼黑名单记录表', 'is_black', '同步响应返回是否黑名单内容', 'include', '1', '10', null, '127.0.0.1', '2017-11-09 13:44:51', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('9', '3', 'cl_operator_basic', '运营商认证基础信息表', 'province', '省份', 'include', '新疆', '10', null, '127.0.0.1', '2017-11-09 13:55:40', 'string', null, null, '20', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('10', '3', 'cl_operator_basic', '运营商认证基础信息表', 'province', '省份', 'include', '西藏', '10', null, '127.0.0.1', '2017-11-09 13:55:40', 'string', null, null, '20', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('11', '3', 'cl_operator_basic', '运营商认证基础信息表', 'province', '省份', 'include', '内蒙古', '10', null, '127.0.0.1', '2017-11-09 13:55:40', 'string', null, null, '20', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('12', '6', 'cl_rc_dhb_user_basic', '贷后邦用户基本信息表', 'idcard_validate', '身份证是否是有效身份证', '!=', '1', '10', null, '127.0.0.1', '2017-11-09 14:24:53', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('13', '6', 'cl_rc_dhb_risk_social_network', '贷后邦社交风险点', 'sn_order1_blacklist_contacts_cnt', '直接联系人在黑名单中数量(直接黑人)', '>=', '5', '10', null, '127.0.0.1', '2017-11-09 14:24:53', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('14', '6', 'cl_rc_dhb_risk_social_network', '贷后邦社交风险点', 'sn_order2_blacklist_contacts_cnt', '间接联系人在黑名单中数量(间接黑人)', '>=', '10', '10', null, '127.0.0.1', '2017-11-09 14:24:53', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('15', '6', 'cl_rc_dhb_risk_social_network', '贷后邦社交风险点', 'sn_order2_blacklist_routers_cnt', '认识间接黑人的直接联系人个数', '>=', '10', '10', null, '127.0.0.1', '2017-11-09 14:24:53', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('16', '6', 'cl_rc_dhb_risk_social_network', '贷后邦社交风险点', 'sn_order2_blacklist_routers_pct', '认识间接黑人的直接联系人比例', '>=', '5', '10', null, '127.0.0.1', '2017-11-09 14:24:53', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('17', '6', 'cl_rc_dhb_risk_social_network', '贷后邦社交风险点', 'sn_score', '葫芦分', '<and<', '0,10', '10', null, '127.0.0.1', '2017-11-09 14:27:41', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('18', '6', 'cl_rc_dhb_risk_blacklist', '贷后邦黑名单', 'idcard_in_blacklist', '身份证是否命中黑名单', 'include', 'true', '10', null, '127.0.0.1', '2017-11-09 14:27:41', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('19', '6', 'cl_rc_dhb_risk_blacklist', '贷后邦黑名单', 'phone_in_blacklist', '手机号是否命中黑名单', 'include', 'true', '10', null, '127.0.0.1', '2017-11-09 14:27:41', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('20', '6', 'cl_rc_dhb_risk_blacklist', '贷后邦黑名单', 'in_court_blacklist', '是否命中法院黑名单', 'include', 'true', '10', null, '127.0.0.1', '2017-11-09 14:27:41', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('21', '6', 'cl_rc_dhb_risk_blacklist', '贷后邦黑名单', 'in_p2p_blacklist', '是否命中网贷黑名单', 'include', 'true', '10', null, '127.0.0.1', '2017-11-09 14:27:41', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('22', '6', 'cl_rc_dhb_risk_blacklist', '贷后邦黑名单', 'in_bank_blacklist', '是否命中银行黑名单', 'include', 'true', '10', null, '127.0.0.1', '2017-11-09 14:27:41', 'string', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('23', '6', 'cl_rc_dhb_history_search', '贷后邦历史查询', 'search_cnt', '历史查询总次数', '>=', '100', '10', null, '127.0.0.1', '2017-11-09 14:32:56', 'int', null, null, '10', null);
-INSERT INTO `arc_rule_engine_config` VALUES ('24', '6', 'cl_rc_dhb_history_search', '贷后邦历史查询', 'org_cnt', '历史查询总机构数', '>=', '20', '10', null, '127.0.0.1', '2017-11-09 14:32:56', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('1', '1', 'cl_operator_basic', '运营商基本信息', 'province', '省份', 'include', '新疆', '10', null, '127.0.0.1', '2018-12-06 12:46:14', 'string', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('2', '1', 'cl_operator_basic', '运营商基本信息', 'reliability', '实名状态', '!=', '1', '10', null, '127.0.0.1', '2018-12-06 12:46:46', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('3', '2', 'cl_magic_black_gray', '魔杖2.0-黑灰名单记录表', 'black_mobile_name_in_blacklist', '手机和姓名是否在黑名单', '=', '1', '10', null, '127.0.0.1', '2018-12-06 12:47:54', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('4', '2', 'cl_magic_black_gray', '魔杖2.0-黑灰名单记录表', 'black_idcard_name_in_blacklist', '身份证和姓名是否在黑名单', '=', '1', '10', null, '127.0.0.1', '2018-12-06 12:48:13', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('5', '2', 'cl_magic_black_gray', '魔杖2.0-黑灰名单记录表', 'gray_idcard_name_in_blacklist', '身份证和姓名是否在灰名单', '=', '1', '10', null, '127.0.0.1', '2018-12-06 13:39:19', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('6', '2', 'cl_magic_black_gray', '魔杖2.0-黑灰名单记录表', 'gray_mobile_name_in_blacklist', '手机和姓名是否在灰名单', '=', '1', '10', null, '127.0.0.1', '2018-12-06 13:39:19', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('7', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_org_cnt_15d', '近15天贷款的机构数', '>=', '30', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('8', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_org_cnt_30d', '近30天贷款的机构数', '>=', '45', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('9', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_org_cnt_90d', '近90天贷款的机构数', '>=', '80', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('10', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_org_cnt_180d', '近180天贷款的机构数', '>=', '120', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('11', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_cnt_15d', '近15天贷款的次数', '>=', '30', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('12', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_cnt_30d', '近30天贷款的次数', '>=', '45', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('13', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_cnt_90d', '近90天贷款的次数', '>=', '80', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('14', '3', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', 'loan_cnt_180d', '近180天贷款的次数', '>=', '120', '10', null, '127.0.0.1', '2018-12-06 13:41:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('15', '4', 'cl_magic_fraudulence_info', '魔杖2.0-欺诈风险名单', 'is_hit', '是否命中', '=', '1', '10', null, '127.0.0.1', '2018-12-06 13:44:44', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('16', '4', 'cl_magic_suspicious_mobile', '魔杖2.0-手机存疑汇总表', 'other_names_cnt', '手机存疑姓名数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('17', '4', 'cl_magic_suspicious_mobile', '魔杖2.0-手机存疑汇总表', 'other_idcards_cnt', '手机存疑身份证数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('18', '4', 'cl_magic_suspicious_mobile', '魔杖2.0-手机存疑汇总表', 'other_idcards_black_cnt', '手机存疑触黑身份证数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('19', '4', 'cl_magic_suspicious_idcard', '魔杖2.0-身份证存疑汇总', 'other_names_cnt', '身份证存疑姓名数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('20', '4', 'cl_magic_suspicious_idcard', '魔杖2.0-身份证存疑汇总', 'other_mobiles_cnt', '身份证存疑手机号码数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('21', '4', 'cl_magic_suspicious_idcard', '魔杖2.0-身份证存疑汇总', 'other_mobiles_black_cnt', '身份证存疑触黑手机号码数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('22', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'mobile_other_devices_cnt', '手机号码使用过的设备数', '>=', '3', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('23', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'idcard_other_devices_cnt', '身份证号码使用过的设备数', '>=', '3', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('24', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'other_devices_cnt', '使用过的设备数', '>=', '3', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('25', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'other_names_cnt', '使用过的设备上登陆的其他姓名数', '>=', '3', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('26', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'other_mobiles_cnt', '使用过的设备上登陆的其他手机号码数', '>=', '3', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('27', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'other_mobiles_black_cnt', '使用过的设备上登陆的其他触黑手机号码数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('28', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'other_idcards_cnt', '使用过的设备上登陆的其他身份证号码数', '>=', '3', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('29', '4', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', 'other_idcards_black_cnt', '使用过的设备上登陆的其他触黑身份证号码数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:49:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('30', '4', 'cl_magic_untrusted', '魔杖2.0-法院失信汇总', 'courtcase_cnt', '法院执行人次数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:51:01', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('31', '4', 'cl_magic_untrusted', '魔杖2.0-法院失信汇总', 'dishonest_cnt', '失信未执行次数', '>', '0', '10', null, '127.0.0.1', '2018-12-06 13:51:01', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('32', '4', 'cl_magic_risk_qq_group', '魔杖2.0-QQ群风险', 'loan_groupcnt', '命中借贷群数量', '>', '1', '10', null, '127.0.0.1', '2018-12-06 13:52:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('33', '4', 'cl_magic_risk_qq_group', '魔杖2.0-QQ群风险', 'installment_groupcnt', '命中分期群数量', '>', '1', '10', null, '127.0.0.1', '2018-12-06 13:52:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('34', '4', 'cl_magic_risk_qq_group', '魔杖2.0-QQ群风险', 'financial_management_groupcnt', '命中理财群数量', '>', '1', '10', null, '127.0.0.1', '2018-12-06 13:52:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('35', '4', 'cl_magic_risk_qq_group', '魔杖2.0-QQ群风险', 'woolen_groupcnt', '命中薅羊毛群数量', '>', '1', '10', null, '127.0.0.1', '2018-12-06 13:52:31', 'int', null, null, '10', null);
+INSERT INTO `arc_rule_engine_config` VALUES  ('36', '4', 'cl_magic_risk_qq_group', '魔杖2.0-QQ群风险', 'gambling_groupcnt', '命中赌博彩票群数量', '>', '1', '10', null, '127.0.0.1', '2018-12-06 13:52:31', 'int', null, null, '10', null);
 
 -- ----------------------------
 -- Table structure for arc_rule_engine_info
@@ -493,16 +515,15 @@ CREATE TABLE `arc_rule_info` (
 -- ----------------------------
 -- Records of arc_rule_info
 -- ----------------------------
-INSERT INTO `arc_rule_info` VALUES ('1', 'cl_user_base_info', '用户详情表', '[{\"name\":\"年龄\",\"nid\":\"age\",\"type\":\"int\"}]', '2017-01-01 11:54:20', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('2', 'cl_zhima', '芝麻信用', '[{\"name\":\"分数\",\"nid\":\"score\",\"type\":\"int\"}]', '2017-01-01 11:55:02', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('3', 'cl_operator_basic', '运营商认证基础信息表', '[{\"name\":\"网龄\",\"nid\":\"extend_phone_age\",\"type\":\"int\"},{\"name\":\"归属地\",\"nid\":\"extend_belongto\",\"type\":\"string\"}]', '2017-01-01 12:02:27', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('4', 'cl_qiancheng_req_log', '浅橙请求记录表', '[{\"name\":\"审核结果\",\"nid\":\"rs_state\",\"type\":\"string\"},{\"name\":\"审核结果描述\",\"nid\":\"rs_desc\",\"type\":\"string\"}]', '2017-01-01 13:39:17', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('5', 'cl_rc_fireeyes_black_log', '火眼黑名单记录表', '[{\"name\":\"同步响应返回是否黑名单内容\",\"nid\":\"is_black\",\"type\":\"string\"}]', '2017-01-01 13:44:27', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('6', 'cl_rc_dhb_user_basic', '贷后邦用户基本信息表', '[{\"name\":\"身份证是否是有效身份证\",\"nid\":\"idcard_validate\",\"type\":\"int\"},{\"name\":\"身份证户籍省份\",\"nid\":\"idcard_province\",\"type\":\"string\"},{\"name\":\"身份证户籍城市\",\"nid\":\"idcard_city\",\"type\":\"string\"},{\"name\":\"身份证户籍地区\",\"nid\":\"idcard_region\",\"type\":\"string\"},{\"name\":\"身份证号记录天数\",\"nid\":\"record_idcard_days\",\"type\":\"int\"}]', '2017-01-01 14:10:13', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('7', 'cl_rc_dhb_risk_social_network', '贷后邦社交风险点', '[{\"name\":\"直接联系人在黑名单中数量(直接黑人)\",\"nid\":\"sn_order1_blacklist_contacts_cnt\",\"type\":\"int\"},{\"name\":\"间接联系人在黑名单中数量(间接黑人)\",\"nid\":\"sn_order2_blacklist_contacts_cnt\",\"type\":\"int\"},{\"name\":\"认识间接黑人的直接联系人个数\",\"nid\":\"sn_order2_blacklist_routers_cnt\",\"type\":\"int\"},{\"name\":\"认识间接黑人的直接联系人比例\",\"nid\":\"sn_order2_blacklist_routers_pct\",\"type\":\"int\"},{\"name\":\"葫芦分\",\"nid\":\"sn_score\",\"type\":\"int\"}]', '2017-01-01 14:10:48', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('8', 'cl_rc_dhb_risk_blacklist', '贷后邦黑名单', '[{\"name\":\"身份证是否命中黑名单\",\"nid\":\"idcard_in_blacklist\",\"type\":\"string\"},{\"name\":\"手机号是否命中黑名单\",\"nid\":\"phone_in_blacklist\",\"type\":\"string\"},{\"name\":\"是否命中法院黑名单\",\"nid\":\"in_court_blacklist\",\"type\":\"string\"},{\"name\":\"是否命中网贷黑名单\",\"nid\":\"in_p2p_blacklist\",\"type\":\"string\"},{\"name\":\"是否命中银行黑名单\",\"nid\":\"in_bank_blacklist\",\"type\":\"string\"}]', '2017-01-01 14:12:06', null, '10');
-INSERT INTO `arc_rule_info` VALUES ('9', 'cl_rc_dhb_history_search', '贷后邦历史查询', '[{\"name\":\"历史查询总次数\",\"nid\":\"search_cnt\",\"type\":\"int\"},{\"name\":\"历史查询总机构数\",\"nid\":\"org_cnt\",\"type\":\"int\"}]', '2017-01-01 14:13:22', null, '10');
-
+INSERT INTO `arc_rule_info` VALUES ('1', 'cl_magic_untrusted', '魔杖2.0-法院失信汇总', '[{\"name\":\"法院执行人次数\",\"nid\":\"courtcase_cnt\",\"type\":\"int\"},{\"name\":\"失信未执行次数\",\"nid\":\"dishonest_cnt\",\"type\":\"int\"}]', '2018-12-06 12:22:41', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('2', 'cl_magic_black_gray', '魔杖2.0-黑灰名单记录表', '[{\"name\":\"手机和姓名是否在黑名单\",\"nid\":\"black_mobile_name_in_blacklist\",\"type\":\"int\"},{\"name\":\"手机和姓名是否在黑名单\",\"nid\":\"black_mobile_name_in_blacklist\",\"type\":\"int\"},{\"name\":\"身份证和姓名是否在黑名单\",\"nid\":\"black_idcard_name_in_blacklist\",\"type\":\"int\"},{\"name\":\"手机和姓名是否在灰名单\",\"nid\":\"gray_mobile_name_in_blacklist\",\"type\":\"int\"},{\"name\":\"身份证和姓名是否在灰名单\",\"nid\":\"gray_idcard_name_in_blacklist\",\"type\":\"int\"}]', '2018-12-06 12:24:25', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('3', 'cl_magic_fraudulence_info', '魔杖2.0-欺诈风险名单', '[{\"name\":\"是否命中\",\"nid\":\"is_hit\",\"type\":\"int\"}]', '2018-12-06 12:24:36', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('4', 'cl_magic_multipoint', '魔杖2.0-多头汇总表', '[{\"name\":\"近15天贷款的机构数\",\"nid\":\"loan_org_cnt_15d\",\"type\":\"int\"},{\"name\":\"近30天贷款的机构数\",\"nid\":\"loan_org_cnt_30d\",\"type\":\"int\"},{\"name\":\"近90天贷款的机构数\",\"nid\":\"loan_org_cnt_90d\",\"type\":\"int\"},{\"name\":\"近180天贷款的机构数\",\"nid\":\"loan_org_cnt_180d\",\"type\":\"int\"},{\"name\":\"近15天贷款的次数\",\"nid\":\"loan_cnt_15d\",\"type\":\"int\"},{\"name\":\"近30天贷款的次数\",\"nid\":\"loan_cnt_30d\",\"type\":\"int\"},{\"name\":\"近90天贷款的次数\",\"nid\":\"loan_cnt_90d\",\"type\":\"int\"},{\"name\":\"近180天贷款的次数\",\"nid\":\"loan_cnt_180d\",\"type\":\"int\"}]', '2018-12-06 12:24:55', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('5', 'cl_magic_risk_qq_group', '魔杖2.0-QQ群风险', '[{\"name\":\"命中借贷群数量\",\"nid\":\"loan_groupcnt\",\"type\":\"int\"},{\"name\":\"命中分期群数量\",\"nid\":\"installment_groupcnt\",\"type\":\"int\"},{\"name\":\"命中理财群数量\",\"nid\":\"financial_management_groupcnt\",\"type\":\"int\"},{\"name\":\"命中薅羊毛群数量\",\"nid\":\"woolen_groupcnt\",\"type\":\"int\"},{\"name\":\"命中赌博彩票群数量\",\"nid\":\"gambling_groupcnt\",\"type\":\"int\"}]', '2018-12-06 12:25:06', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('6', 'cl_magic_suspicious_device', '魔杖2.0-设备存疑汇总表', '[{\"name\":\"手机号码使用过的设备数\",\"nid\":\"mobile_other_devices_cnt\",\"type\":\"int\"},{\"name\":\"身份证号码使用过的设备数\",\"nid\":\"idcard_other_devices_cnt\",\"type\":\"int\"},{\"name\":\"使用过的设备数\",\"nid\":\"other_devices_cnt\",\"type\":\"int\"},{\"name\":\"使用过的设备上登陆的其他姓名数\",\"nid\":\"other_names_cnt\",\"type\":\"int\"},{\"name\":\"使用过的设备上登陆的其他手机号码数\",\"nid\":\"other_mobiles_cnt\",\"type\":\"int\"},{\"name\":\"使用过的设备上登陆的其他触黑手机号码数\",\"nid\":\"other_mobiles_black_cnt\",\"type\":\"int\"},{\"name\":\"使用过的设备上登陆的其他身份证号码数\",\"nid\":\"other_idcards_cnt\",\"type\":\"int\"},{\"name\":\"使用过的设备上登陆的其他触黑身份证号码数\",\"nid\":\"other_idcards_black_cnt\",\"type\":\"int\"}]', '2018-12-06 12:25:26', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('7', 'cl_magic_suspicious_idcard', '魔杖2.0-身份证存疑汇总', '[{\"name\":\"身份证存疑姓名数\",\"nid\":\"other_names_cnt\",\"type\":\"int\"},{\"name\":\"身份证存疑手机号码数\",\"nid\":\"other_mobiles_cnt\",\"type\":\"int\"},{\"name\":\"身份证存疑触黑手机号码数\",\"nid\":\"other_mobiles_black_cnt\",\"type\":\"int\"}]', '2018-12-06 12:25:38', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('8', 'cl_magic_suspicious_mobile', '魔杖2.0-手机存疑汇总表', '[{\"name\":\"手机存疑姓名数\",\"nid\":\"other_names_cnt\",\"type\":\"int\"},{\"name\":\"手机存疑身份证数\",\"nid\":\"other_idcards_cnt\",\"type\":\"int\"},{\"name\":\"手机存疑触黑身份证数\",\"nid\":\"other_idcards_black_cnt\",\"type\":\"int\"}]', '2018-12-06 12:25:49', null, '10');
+INSERT INTO `arc_rule_info` VALUES ('9', 'cl_operator_basic', '运营商基本信息', '[{\"name\":\"省份\",\"nid\":\"province\",\"type\":\"string\"},{\"name\":\"实名状态\",\"nid\":\"reliability\",\"type\":\"int\"}]', '2018-12-06 12:26:10', null, '10');
 
 -- ----------------------------
 -- Table structure for arc_sys_config
@@ -606,8 +627,8 @@ INSERT INTO `arc_sys_config` VALUES (null, '60', '短信批量接口名称', 'sm
 INSERT INTO `arc_sys_config` VALUES (null, '60', '获取短信报告结果接口地址', 'sms_apihost_report', 'https://api.dsdatas.com/smsSend/getReportByOrderNo', '1', '获取短信报告结果接口地址', '1');
 
 
-INSERT INTO `arc_sys_config` VALUES (null, '70', '大圣数据APIKEY', 'apikey', '******', '1', '调用大圣数据接口用', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '70', '大圣数据SECRETKEY', 'secretkey', '******', '1', '调用大圣数据接口用', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '70', '大圣数据APIKEY', 'apikey', '690abc5009eda69f786c380cef51336a', '1', '调用大圣数据接口用', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '70', '大圣数据SECRETKEY', 'secretkey', 'ea108d5b1dc792680172d0e925a69470598ed54d', '1', '调用大圣数据接口用', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '70', '商汤2.0/linkface OCR地址识别地址', 'linkface_idOcr', 'https://api.dsdatas.com/linkface/idOcr', '1', null, '1');
 INSERT INTO `arc_sys_config` VALUES (null, '70', '商汤2.0/linkface 人证对比地址', 'linkface_liVerification', 'https://api.dsdatas.com/linkface/liVerification', '1', null, '1');
 
@@ -869,7 +890,6 @@ CREATE TABLE `arc_sys_menu` (
 -- ----------------------------
 INSERT INTO `arc_sys_menu` VALUES ('1', '0', '工作台', '0', '', 'icon-yonghuxinxi', '00000000001', null, '', '2017-01-01 00:00:00', '', '工作台', '0', 'ShowWorkbench', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('2', '0', '用户管理', '0', '', 'icon-yonghuxinxi', '00000000002', null, '', '2017-01-01 00:00:00', '', '用户信息', '0', 'UserInformation', null, null, null, null);
-INSERT INTO `arc_sys_menu` VALUES ('1001', '0', '信用报告', '0', '', 'icon-xinyong', '00000000002', null, '', '2017-01-01 00:00:00', '', '信用报告', '0', 'CreditReport', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('3', '0', '代理商管理', '0', '', 'icon-dailishang', '00000000003', null, '', '2017-01-01 00:00:00', '', '代理商管理-管理员', '0', 'AgentManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('4', '0', '一级代理商管理', '0', '', 'icon-dailishang', '00000000004', null, '', '2017-01-01 00:00:00', '', '代理商管理-代理商', '0', 'AgentBranchManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('5', '0', '征信引擎', '0', '', 'icon-tongji', '00000000005', null, '', '2017-01-01 00:00:00', '', '第三方征信', '0', 'ThirdPartyInquiry', null, null, null, null);
@@ -969,9 +989,12 @@ INSERT INTO `arc_sys_menu` VALUES ('98', '0', '广告信息', '23', '', '', '000
 INSERT INTO `arc_sys_menu` VALUES ('99', '0', '渠道管理', '24', '', null, '00000000001', null, '', null, '', '渠道管理', '0', 'ChannelManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('100', '0', '渠道信息统计', '24', '', null, '00000000001', null, '', null, '', '渠道信息统计', '0', 'ChannelInformationStatistics', null, null, null, null);
 
-
-INSERT INTO `arc_sys_menu` VALUES ('1002', '0', '运营商报告', '1001', '', null, '00000000001', null, '', '2017-01-01 00:00:00', '', '运营商报告', '0', 'OperatorReport', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1001', '0', '信用报告', '0', '', 'icon-xinyong', '00000000002', null, '', '2018-12-06 00:00:00', '', '信用报告', '0', 'CreditReport', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1002', '0', '运营商报告', '1001', '', null, '00000000001', null, '', '2017-12-06 00:00:00', '', '运营商报告', '0', 'OperatorReport', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1003', '0', '信贷报告', '1001', '', null, '00000000002', null, '', '2017-01-01 00:00:00', '', '信贷报告', '0', 'CreditLoanReport', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1004', '0', '费用管理', '0', '', 'icon-qian', '00000000025', null, '', '2017-01-01 00:00:00', '', '费用管理', '0', 'FeeManage', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1005', '0', '外部数据费用', '1004', '', null, '00000000001', null, '', '2017-01-01 00:00:00', '', '外部数据费用', '0', 'OutsideFee', null, null, null, null);
+
 
 -- ----------------------------
 -- Table structure for arc_sys_role_menu
@@ -1089,10 +1112,11 @@ INSERT INTO `arc_sys_role_menu` VALUES ('97', '1', '97');
 INSERT INTO `arc_sys_role_menu` VALUES ('98', '1', '98');
 INSERT INTO `arc_sys_role_menu` VALUES ('99', '1', '99');
 INSERT INTO `arc_sys_role_menu` VALUES ('100', '1', '100');
-
 INSERT INTO `arc_sys_role_menu` VALUES ('101', '1', '1001');
 INSERT INTO `arc_sys_role_menu` VALUES ('102', '1', '1002');
 INSERT INTO `arc_sys_role_menu` VALUES ('103', '1', '1003');
+INSERT INTO `arc_sys_role_menu` VALUES ('104', '1', '1004');
+INSERT INTO `arc_sys_role_menu` VALUES ('105', '1', '1005');
 
 
 -- ----------------------------
@@ -1306,122 +1330,6 @@ CREATE TABLE `cl_channel` (
 
 -- ----------------------------
 -- Records of cl_channel
--- ----------------------------
-
--- ----------------------------
--- Table structure for cl_operator_basic
--- ----------------------------
-DROP TABLE IF EXISTS `cl_operator_basic`;
-CREATE TABLE `cl_operator_basic` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-  `basic_expenditure` decimal(12,2) DEFAULT NULL COMMENT '当月消费(单位为分)',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `extend_join_dt` datetime DEFAULT NULL COMMENT '入网时间',
-  `basic_all_bonus` int(11) DEFAULT NULL COMMENT '累计积分（可以为0）',
-  `extend_certifed_status` varchar(8) DEFAULT '' COMMENT '实名认证状态',
-  `basic_balance` decimal(12,2) DEFAULT NULL COMMENT '余额（单位为分）',
-  `basic_phone_num` varchar(11) NOT NULL COMMENT '号码',
-  `extend_belongto` varchar(16) DEFAULT '' COMMENT '归属地',
-  `extend_contact_addr` varchar(255) DEFAULT '' COMMENT '联系地址',
-  `extend_phone_age` int(11) DEFAULT 0 COMMENT '网龄',
-  `biz_no` varchar(128) DEFAULT '' COMMENT '业务编号',
-  `basic_user_name` varchar(32) DEFAULT '' COMMENT '姓名',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证基础信息表';
-
--- ----------------------------
--- Records of cl_operator_basic
--- ----------------------------
-
--- ----------------------------
--- Table structure for cl_operator_bills
--- ----------------------------
-DROP TABLE IF EXISTS `cl_operator_bills`;
-CREATE TABLE `cl_operator_bills` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-  `phone_num` varchar(11) DEFAULT '' COMMENT '号码',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `month` datetime DEFAULT NULL COMMENT '语音账单月份',
-  `bill_month_date_start` datetime DEFAULT NULL COMMENT '计费周期-起始日期',
-  `bill_month_date_end` datetime DEFAULT NULL COMMENT '计费周期-结束日期',
-  `bill_month_amt` decimal(12,2) DEFAULT NULL COMMENT '本月费用总额（单位为分）',
-  `biz_no` varchar(128) DEFAULT '' COMMENT '业务编号',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证月账单表';
-
--- ----------------------------
--- Records of cl_operator_bills
--- ----------------------------
-
--- ----------------------------
--- Table structure for cl_operator_req_log
--- ----------------------------
-DROP TABLE IF EXISTS `cl_operator_req_log`;
-CREATE TABLE `cl_operator_req_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
-  `order_no` varchar(50) DEFAULT '' COMMENT '订单号',
-  `resp_order_no` varchar(64) DEFAULT '' COMMENT '同步响应订单号',
-  `resp_code` varchar(10) DEFAULT '' COMMENT '响应码',
-  `resp_params` longtext COMMENT '同步响应结果',
-  -- `notify_params` longtext COMMENT '异步通知结果',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
-  -- `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `business_type`  varchar(50) NULL COMMENT '业务类型 10运营商，20公积金',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证请求记录表';
-
--- ----------------------------
--- Records of cl_operator_req_log
--- ----------------------------
-
--- ----------------------------
--- Table structure for cl_operator_resp_detail
--- ----------------------------
-DROP TABLE IF EXISTS `cl_operator_resp_detail`;
-CREATE TABLE `cl_operator_resp_detail` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `req_log_id` bigint(20) NOT NULL COMMENT '请求记录标识',
-  `order_no` varchar(50) DEFAULT '' COMMENT '订单号',
-  `notify_params` longtext COMMENT '异步通知结果',
-  `notify_time` datetime DEFAULT NULL COMMENT '异步通知时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证响应通知详情表';
-
--- ----------------------------
--- Records of cl_operator_resp_detail
--- ----------------------------
-
--- ----------------------------
--- Table structure for cl_operator_voices
--- ----------------------------
-DROP TABLE IF EXISTS `cl_operator_voices`;
-CREATE TABLE `cl_operator_voices` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
-  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-  `phone_num` varchar(11) DEFAULT '' COMMENT '号码',
-  `voice_place` varchar(32) DEFAULT '' COMMENT '通话地',
-  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
-  `voice_duration` bigint(20) DEFAULT NULL COMMENT '通话时长（单位为秒）',
-  `month` datetime DEFAULT NULL COMMENT '语音账单月份',
-  `voice_type` varchar(32) DEFAULT '' COMMENT '通话类型',
-  `voice_to_number` varchar(20) DEFAULT '' COMMENT '对方号码',
-  `voice_date` datetime DEFAULT NULL COMMENT '时间',
-  `voice_status` varchar(32) DEFAULT '' COMMENT '通话状态',
-  `biz_no` varchar(128) DEFAULT '' COMMENT '业务编号',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证通话记录表';
-
--- ----------------------------
--- Records of cl_operator_voices
 -- ----------------------------
 
 -- ----------------------------
@@ -1754,10 +1662,9 @@ CREATE TABLE `cl_rc_scene_business` (
 -- ----------------------------
 -- Records of cl_rc_scene_business
 -- ----------------------------
-INSERT INTO `cl_rc_scene_business` VALUES ('1', '10', '1', '20', '30', '10', '10', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('2', '10', '2', '10', null, '10', '10', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('3', '10', '3', '10', '2', '10', '10', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('4', '10', '4', '20', '5', '10', '10', '2017-01-01 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('1', '10', '1', '20', '30', '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('2', '10', '2', '20', '30', '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('3', '10', '3', '20', '30', '10', '10', '2018-12-06 00:00:00');
 
 
 -- ----------------------------
@@ -1841,9 +1748,7 @@ CREATE TABLE `cl_rc_tpp` (
 -- ----------------------------
 -- Records of cl_rc_tpp
 -- ----------------------------
-INSERT INTO `cl_rc_tpp` VALUES ('1', '芝麻信用', 'zmxy', '1000743', 'RSA', '{\"privateKey\":\"MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAOD588mHWwjgaVsAdAE2ralhuEwM07C1P4Lph1tvQLwijADSyyDeTpqHEOT78F2dsmpRRqvgLS77cWnegHQw297A76nibBZn4sewefnSMM3ApJAKAi1naEi4NzrM+dHGPZ4Idb3Az7ALfFqKeQ2m7G86RR03kjpqtzcCBwNCLiCNAgMBAAECgYEAnbJXEiJQy24SK3mr1tXu8NXQi25KTIkflbH/8TWQmM9Wd5VKUSXCz0pxqzB2Egjh8Og7s2qWAWK64szWGZvN4YssWFN7Kn0HLput5VmV9pd+KfVx3Lf3BsIfF9AvJeQOTffvOkhaLKPZKhFqg4FBhrEV8gduR9Ai1FyImAXWfUECQQD+yvNQyIsomd0B3W6yf+eWrr4bCbtWCiuIii5/H9PEhxIQLRoYUcPAgnlMrGt9sYbBpBJsE5qfEN1Ln7LgYHjpAkEA4grWESJyPzKPm5VZUVB9aSly6NSRQ9MU4GB6qMgubU9q7vLGAsR9kuM+b70ojePfnkk4jOwcOJfTPCel5hMkBQJBAJGkxU0KNbGxsgmc3+gdAO67WGPwPivCiHv2MPnt4YlXhFXG0kHQi0sBygCwFom07sjF1tn8osgGRdkyondr7fECQQCBCXaSaXuWoCJiyqsmRDCTa9nxGAelFEaCoBDlcQEv3XpJ1cU7pzeYNqlZ2D3iYgcxsNLbf53MoL8xQ+DsqliRAkEA7Tq1edlV24HivSkGbjYEv+fBJA6f99LIHb/FGrneh8i5MXxC9312hNz5CNnfoY1czWfEWdnalK5DlN9GZwz2ew==\",\r\n\"zhimaPublicKey\":\"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbhnWS/fonmssn+yHVrXkS9BCVpZbWruFs/Ajj8J8wU2557JUebK/HYIoB+FkYGHLj3z7gwlRcSRwUbkub/Ov3mW+NBd4XKLCQEweu19ttO+93ebvYFb29JZJ5vTP8XNQmdq5/yAZI+bXgbMoSbIQdmFBi0QgR8hsIywS5qlctoQIDAQAB\"}', '{\"blackList_code\":\"20160906w1010100000032696734\",\"credit_grade_code\":\"20160906w1010100000033754730\"}', '10', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_tpp` VALUES ('2', '大圣数据', 'dsdata', '', 'RSA', 'e8d4434c-9624-4baf-aea7-4de9e4c6', '{\"securityKey\":\"ab39e78ef4ee426481d4f79a027876d4af3158ce2d41a88f405ab617449325ff\"}', '10', '2017-01-01 00:00:00');
--- INSERT INTO `cl_rc_tpp` VALUES ('3', '同盾', 'tongdun', '', 'RSA', '', '{\"partner_code\":\"\",\"partner_key\":\"\",\"app_name\":\"\"}', '20', '2017-01-01 00:00:00');
+INSERT INTO `cl_rc_tpp` VALUES ('1', '魔杖2.0', 'magic', '', '', '', '', '10', '2018-12-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for cl_rc_tpp_business
@@ -1865,12 +1770,9 @@ CREATE TABLE `cl_rc_tpp_business` (
 -- ----------------------------
 -- Records of cl_rc_tpp_business
 -- ----------------------------
-INSERT INTO `cl_rc_tpp_business` VALUES ('1', '1', '芝麻信用评分', 'CreditScoreQuery', '10', '{\"productCode\":\"*******\"}', 'https://zmopenapi.zmxy.com.cn/openapi.do', 'https://zmopenapi.zmxy.com.cn/openapi.do', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_tpp_business` VALUES ('2', '2', '浅橙贷前审核', 'QcRisk', '10', '{\"secretkey\":\"*******\",\"apikey\":\"*******\"}', 'https://api.dsdatas.com/qiancheng/risk/check', '', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_tpp_business` VALUES ('3', '2', '火眼黑名单', 'FireeyesBlack', '10', '{\"secretkey\":\"*******\",\"apikey\":\"*******\",\"channelNo\":\"CH0426533894\",\"interfaceName\":\"fireEyesBlack\"}', 'https://api.dsdatas.com/credit/api/v1/query', '', '2017-01-01 00:00:00');
-INSERT INTO `cl_rc_tpp_business` VALUES ('4', '2', '贷后邦反欺诈', 'DhbSauron', '10', '{\"secretkey\":\"*******\",\"apikey\":\"*******\",\"channelNo\":\"CH1090510419\",\"interfaceName\":\"dhbGetSauronC\"}', 'https://api.dsdatas.com/credit/api/v1/query', '', '2017-01-01 00:00:00');
--- INSERT INTO `cl_rc_tpp_business` VALUES ('5', '3', '获取审核编码', 'TongdunApply', '10', '{\"partner_code\":\"\",\"partner_key\":\"\",\"app_name\":{"ios":"hzsy_ios","and":"hzsy_and","web":"hzsy_web"}}', 'https://api.tongdun.cn/preloan/apply/v5', 'https://apitest.tongdun.cn/preloan/apply/v5', '2017-01-01 00:00:00');
--- INSERT INTO `cl_rc_tpp_business` VALUES ('6', '3', '获取报告详细信息', 'TongdunPreloan', '10', '{\"partner_code\":\"\",\"partner_key\":\"\",\"app_name\":{"ios":"hzsy_ios","and":"hzsy_and","web":"hzsy_web"}}', 'https://api.tongdun.cn/preloan/report/v6', 'https://apitest.tongdun.cn/preloan/report/v6', '2017-01-01 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('1', '1', '魔杖多头', 'MagicMultiInfo', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('2', '1', '魔杖黑灰名单', 'MagicBlackGray', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('3', '1', '魔杖反欺诈', 'MagicAntiFraud', '10', '', '', null, '2018-12-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for cl_sms
@@ -1912,11 +1814,12 @@ CREATE TABLE `cl_sms_tpl` (
 -- ----------------------------
 -- Records of cl_sms_tpl
 -- ----------------------------
-INSERT INTO `cl_sms_tpl` VALUES ('1', 'register', '注册验证码', '尊敬的用户，您的注册验证码为:', 'SMS0012139737', '10');
-INSERT INTO `cl_sms_tpl` VALUES ('2', 'findReg', '找回登录密码', '尊敬的用户，您的密码找回验证码为:', 'SMS2077735631', '10');
-INSERT INTO `cl_sms_tpl` VALUES ('3', 'findPay', '找回交易密码', '尊敬的用户，您的交易密码找回验证码为:', 'SMS1330051260', '10');
-INSERT INTO `cl_sms_tpl` VALUES ('4', 'loanInform', '放款通知', '尊敬的用户,您在{$time}的借款申请已放款成功,请查看您的收款银行卡!', 'SMS1410247964', '10');
-INSERT INTO `cl_sms_tpl` VALUES ('5', 'repayInform', '还款通知', '尊敬的用户,您在{$time}借款{$loan}元,现已执行系统代扣还款成功,请知悉!', 'SMS1526946105', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('1', 'register', '注册验证码', '尊敬的用户，您的注册验证码为:', 'SMS1774090067', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('2', 'findReg', '找回登录密码', '尊敬的用户，您的密码找回验证码为:', 'SMS1999911248', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('3', 'findPay', '找回交易密码', '尊敬的用户，您的交易密码找回验证码为:', 'SMS0157552381', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('4', 'loanInform', '放款通知', '尊敬的用户,您在{$time}的借款申请已放款成功,请查看您的收款银行卡!', 'SMS1525274518', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('5', 'repayInform', '还款通知', '尊敬的用户,您在{$time}借款{$loan}元,现已执行系统代扣还款成功,请知悉!', 'SMS1829478820', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('6', 'delayPlan', '展期通知', '[{$appName}]您的订单已展期成功，新的截止日期{$year}年{$month}月{$day}日', 'SMS0271048174', '10');
 
 -- ----------------------------
 -- Table structure for cl_tongdun_req_log
@@ -2576,3 +2479,16 @@ CREATE TABLE `cl_rc_simple_91zx_count` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='风控数据统计-（简）91征信统计';
+
+
+DROP TABLE IF EXISTS `cl_calls_outside_fee`;
+CREATE TABLE `cl_calls_outside_fee` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `task_id` varchar(64) NOT NULL COMMENT '任务id',
+  `type` TINYINT(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为',
+  `fee` decimal(5,2) NOT NULL COMMENT '收取费用',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='调用外部收据收费表';

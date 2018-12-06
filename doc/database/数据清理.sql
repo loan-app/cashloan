@@ -69,6 +69,7 @@ TRUNCATE TABLE cl_operator_package;
 TRUNCATE TABLE cl_operator_family;
 TRUNCATE TABLE cl_operator_recharge;
 TRUNCATE TABLE cl_operator_report;
+TRUNCATE TABLE cl_operator_report_link;
 TRUNCATE TABLE cl_operator_monthinfo;
 TRUNCATE TABLE cl_operator_voice_1;
 TRUNCATE TABLE cl_operator_voice;
@@ -76,7 +77,6 @@ TRUNCATE TABLE cl_operator_sms_1;
 TRUNCATE TABLE cl_operator_sms;
 TRUNCATE TABLE cl_operator_net_1;
 TRUNCATE TABLE cl_operator_net;
-TRUNCATE TABLE cl_operator_report_link;
 
 -- 魔杖2.0数据
 TRUNCATE TABLE cl_magic_bank_info;
@@ -91,6 +91,8 @@ TRUNCATE TABLE cl_magic_mobile_contact;
 TRUNCATE TABLE cl_magic_multipoint;
 TRUNCATE TABLE cl_magic_multipoint_queried_analyze;
 TRUNCATE TABLE cl_magic_multipoint_queried_info;
+TRUNCATE TABLE cl_magic_req_detail;
+TRUNCATE TABLE cl_magic_req_log;
 TRUNCATE TABLE cl_magic_risk_device;
 TRUNCATE TABLE cl_magic_risk_qq_group;
 TRUNCATE TABLE cl_magic_suspicious_device;
@@ -103,5 +105,5 @@ TRUNCATE TABLE cl_magic_suspicious_other_name;
 TRUNCATE TABLE cl_magic_untrusted;
 TRUNCATE TABLE cl_magic_untrusted_detail;
 
-TRUNCATE TABLE cl_magic_req_detail;
+-- 清理外部数据费用
 TRUNCATE TABLE cl_calls_outside_fee;

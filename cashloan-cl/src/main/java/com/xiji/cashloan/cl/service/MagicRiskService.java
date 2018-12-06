@@ -9,13 +9,13 @@ import com.xiji.cashloan.rc.domain.TppBusiness;
  */
 public interface MagicRiskService {
 
-    int queryAntiFraud(Borrow borrow, TppBusiness business);
+    int queryAntiFraud(Borrow borrow);
 
-    int queryMultiInfo(Borrow borrow, TppBusiness business);
+    int queryMultiInfo(Borrow borrow);
 
-    int queryBlackGray(Borrow borrow, TppBusiness business);
+    int queryBlackGray(Borrow borrow);
 
-    int queryPostLoad(Borrow borrow, TppBusiness business);
+    int queryPostLoad(Borrow borrow);
 
     int magicReportRequest(Borrow borrow, TppBusiness business);
 

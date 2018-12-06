@@ -214,7 +214,13 @@
     </select>
     
      <select id="findColumnByName" resultMap="columnResultMap" parameterType="java.util.HashMap">
-        select table_name,column_name,column_comment,data_type from information_schema.columns where table_schema= (select database())  order by table_name asc;
+        select table_name,column_name,column_comment,data_type from information_schema.columns
+        where table_schema= (select database()) and table_name IN
+         <foreach item="item" index="index" collection="tableNames"
+                  open="(" separator="," close=")">
+             #{item}
+         </foreach>
+        order by table_name asc;
     </select>
     
     <delete id="deleteByRuleId"   parameterType="java.util.HashMap">

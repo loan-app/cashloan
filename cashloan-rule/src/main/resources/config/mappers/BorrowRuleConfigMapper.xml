@@ -117,7 +117,8 @@
          </if>
     </delete>
     <select id="findBorrowRuleId" resultMap="BaseResultMap" parameterType="java.util.HashMap">
-    	select  c.borrow_rule_id,c.rule_sort,e.rule_count as config_sort  from  arc_borrow_rule_config  c LEFT JOIN arc_borrow_rule_engine e on c.borrow_rule_id=e.id where c.rule_id=  #{ruleId,jdbcType=BIGINT}  group by c.borrow_rule_id 
+    	<!-- select  c.borrow_rule_id,c.rule_sort,e.rule_count as config_sort  from  arc_borrow_rule_config  c LEFT JOIN arc_borrow_rule_engine e on c.borrow_rule_id=e.id where c.rule_id=  #{ruleId,jdbcType=BIGINT}  group by c.borrow_rule_id -->
+    	 select  c.borrow_rule_id,c.rule_sort,e.rule_count as config_sort  from  arc_borrow_rule_config  c LEFT JOIN arc_borrow_rule_engine e on c.borrow_rule_id=e.id where c.rule_id=  #{ruleId,jdbcType=BIGINT}
     </select>
     
     

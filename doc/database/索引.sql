@@ -21,6 +21,7 @@ ADD INDEX `user_id` (`user_id`) USING BTREE ;
 
 ALTER TABLE `cl_borrow`
 ADD INDEX `user_id` (`user_id`) USING BTREE ,
+ADD UNIQUE INDEX `userid_createtime` (`user_id`,`create_time`),
 ADD UNIQUE INDEX `order_no` (`order_no`) USING BTREE ;
 
 ALTER TABLE `cl_borrow_progress`
@@ -38,10 +39,6 @@ ADD INDEX `user_id` (`user_id`) USING BTREE;
 
 ALTER TABLE `cl_opinion` 
 ADD INDEX `user_id` (`user_id`) USING BTREE;
-
-ALTER TABLE `cl_operator_voices` 
-ADD INDEX `user_id` (`user_id`) USING BTREE,
-ADD INDEX `phone_num` (`phone_num`) USING BTREE ;
 
 ALTER TABLE `cl_pay_check`
 ADD UNIQUE INDEX `order_no` (`order_no`) USING BTREE ;
@@ -122,3 +119,17 @@ ADD INDEX `user_id` (`user_id`) USING BTREE ;
 ALTER TABLE `cl_zhima`
 ADD UNIQUE INDEX `user_id` (`user_id`) USING BTREE ;
 
+ALTER TABLE `cl_operator_voice`
+ADD INDEX `user_id` (`user_id`) USING BTREE,
+ADD INDEX `mobile` (`mobile`) USING BTREE,
+ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
+
+ALTER TABLE `cl_operator_sms`
+ADD INDEX `user_id` (`user_id`) USING BTREE,
+ADD INDEX `mobile` (`mobile`) USING BTREE,
+ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
+
+ALTER TABLE `cl_operator_net`
+ADD INDEX `user_id` (`user_id`) USING BTREE,
+ADD INDEX `mobile` (`mobile`) USING BTREE,
+ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;

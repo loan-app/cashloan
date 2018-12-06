@@ -26,7 +26,6 @@ public class MoxieSignUtils {
      */
     public static String signSHA1WithRSA(Map<String, String> paramsMap, String privateKey) {
         String signStr = getSortMapParamStr(paramsMap);
-        System.out.println("signStr:" + signStr);
         return signWithRSA(signStr, privateKey, ALGORITHM_SHA1_WITH_RSA);
     }
 

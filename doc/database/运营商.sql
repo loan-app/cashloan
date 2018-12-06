@@ -1,10 +1,8 @@
--- 运营商涉及表改动,最后执行该sql文件,且只有第一次初始化执行
-
--- 删除原运营商基础信息表,重新创建
 DROP TABLE IF EXISTS `cl_operator_basic`;
 CREATE TABLE `cl_operator_basic` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `name` varchar(24) DEFAULT '' COMMENT '姓名',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `idcard` varchar(64) DEFAULT '' COMMENT '证件号',
@@ -23,11 +21,12 @@ CREATE TABLE `cl_operator_basic` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商基本信息';
 
--- 删除原运营商账单表,重新创建
-DROP TABLE IF EXISTS `cl_operator_bills`;
+
+DROP TABLE IF EXISTS `cl_operator_bill`;
 CREATE TABLE `cl_operator_bill` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `bill_month` varchar(32) DEFAULT NULL COMMENT '账单月',
   `bill_start_date` varchar(32) DEFAULT NULL COMMENT '账单日起始日yyyy-MM-dd',
@@ -54,11 +53,11 @@ CREATE TABLE `cl_operator_bill` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-手机账单信息';
 
 
--- 删除原运营商通话记录表,重新创建
-DROP TABLE IF EXISTS `cl_operator_voices`;
+DROP TABLE IF EXISTS `cl_operator_voice`;
 CREATE TABLE `cl_operator_voice` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `bill_month` varchar(32) DEFAULT NULL COMMENT '账单月',
   `time` varchar(32) DEFAULT NULL COMMENT '通话时间',
@@ -73,11 +72,12 @@ CREATE TABLE `cl_operator_voice` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-通话记录信息';
 
--- 删除原运营商认证请求记录表,重新创建
+
 DROP TABLE IF EXISTS `cl_operator_req_log`;
 CREATE TABLE `cl_operator_req_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `task_id` varchar(64) DEFAULT '' COMMENT '任务id',
   `task_state` varchar(2) DEFAULT '' COMMENT '状态，0-发送请求成功 1-任务创建成功 2-授权登录成功 3-授权登录失败 4-采集成功 5-采集失败 6-报告生成成功 7-报告生成失败',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -86,7 +86,7 @@ CREATE TABLE `cl_operator_req_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证请求记录表';
 
--- 删除运营商认证数据详情表,重新创建
+
 DROP TABLE IF EXISTS `cl_operator_resp_detail`;
 CREATE TABLE `cl_operator_resp_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -97,10 +97,12 @@ CREATE TABLE `cl_operator_resp_detail` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商认证结果记录表';
 
--- 新建运营商-亲情网信息表
+
+DROP TABLE IF EXISTS `cl_operator_family`;
 CREATE TABLE `cl_operator_family` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `family_num` tinyint(4) DEFAULT NULL COMMENT '当前手机号下所属亲网编号',
   `long_number` varchar(24) DEFAULT NULL COMMENT '成员手机号',
@@ -113,10 +115,12 @@ CREATE TABLE `cl_operator_family` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-亲情网信息';
 
--- 新建运营商-月份信息表
+
+DROP TABLE IF EXISTS `cl_operator_monthinfo`;
 CREATE TABLE `cl_operator_monthinfo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `month_count` int(11) DEFAULT '0' COMMENT '有通话记录月份数',
   `miss_month_count` int(11) DEFAULT '0' COMMENT '通话记录获取失败月份数',
@@ -126,10 +130,12 @@ CREATE TABLE `cl_operator_monthinfo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-月份信息';
 
--- 新建运营商-流量详情表
+
+DROP TABLE IF EXISTS `cl_operator_net`;
 CREATE TABLE `cl_operator_net` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `bill_month` varchar(32) DEFAULT NULL COMMENT '账单月',
   `time` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00' COMMENT '上网时间',
@@ -144,10 +150,12 @@ CREATE TABLE `cl_operator_net` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-流量详情';
 
--- 新建运营商-套餐信息表
+
+DROP TABLE IF EXISTS `cl_operator_package`;
 CREATE TABLE `cl_operator_package` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `bill_start_date` datetime DEFAULT NULL COMMENT '账单起始日',
   `bill_end_date` datetime DEFAULT NULL COMMENT '账单结束日',
@@ -160,10 +168,12 @@ CREATE TABLE `cl_operator_package` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-套餐信息';
 
--- 新建运营商-充值记录表
+
+DROP TABLE IF EXISTS `cl_operator_recharge`;
 CREATE TABLE `cl_operator_recharge` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `recharge_time` varchar(32) DEFAULT NULL COMMENT '充值时间',
   `amount` int(11) DEFAULT NULL COMMENT '充值金额(单位分)',
@@ -173,10 +183,12 @@ CREATE TABLE `cl_operator_recharge` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-充值记录信息';
 
--- 新建运营商-短信详情表
+
+DROP TABLE IF EXISTS `cl_operator_sms`;
 CREATE TABLE `cl_operator_sms` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `mobile` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号码',
   `bill_month` varchar(32) DEFAULT NULL COMMENT '账单月',
   `time` varchar(32) DEFAULT NULL COMMENT '收/发短信时间',
@@ -191,37 +203,8 @@ CREATE TABLE `cl_operator_sms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-短信详情';
 
--- 新增请求记录id
-ALTER TABLE cl_operator_basic ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_bill ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_family ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_monthinfo ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_net ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_net_1 ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_package ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_recharge ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_sms ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_sms_1 ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_voice ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
-ALTER TABLE cl_operator_voice_1 ADD req_log_id BIGINT(20) NOT NULL COMMENT '请求记录id' AFTER user_id;
 
--- 索引
-ALTER TABLE `cl_operator_voice`
-ADD INDEX `user_id` (`user_id`) USING BTREE,
-ADD INDEX `mobile` (`mobile`) USING BTREE,
-ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
-
-ALTER TABLE `cl_operator_sms`
-ADD INDEX `user_id` (`user_id`) USING BTREE,
-ADD INDEX `mobile` (`mobile`) USING BTREE,
-ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
-
-ALTER TABLE `cl_operator_net`
-ADD INDEX `user_id` (`user_id`) USING BTREE,
-ADD INDEX `mobile` (`mobile`) USING BTREE,
-ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
-
--- 新建运营商报告表
+DROP TABLE IF EXISTS `cl_operator_report`;
 CREATE TABLE `cl_operator_report` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
@@ -233,7 +216,8 @@ CREATE TABLE `cl_operator_report` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商报告表表';
 
--- 新建调用外部数据收费记录表
+
+DROP TABLE IF EXISTS `cl_calls_outside_fee`;
 CREATE TABLE `cl_calls_outside_fee` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
@@ -245,7 +229,8 @@ CREATE TABLE `cl_calls_outside_fee` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='调用外部收据收费表';
 
--- 新增运营商报告查看链接表
+
+DROP TABLE IF EXISTS `cl_operator_report_link`;
 CREATE TABLE `cl_operator_report_link` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
@@ -255,14 +240,3 @@ CREATE TABLE `cl_operator_report_link` (
   `gmt_modified` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商报告查看链接';
-
-DROP TABLE IF EXISTS `cl_magic_req_detail`;
-CREATE TABLE `cl_magic_req_detail` (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
-  `trans_id` varchar(64) DEFAULT '' COMMENT '报告id',
-  `data` longtext COMMENT '返回内容',
-  `type` tinyint(4) NOT NULL COMMENT '类型 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='魔杖2.0-请求详情';

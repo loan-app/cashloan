@@ -55,7 +55,6 @@ import com.xiji.cashloan.core.model.BorrowModel;
 import com.xiji.cashloan.core.model.UserBaseInfoModel;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
 import com.xiji.cashloan.rc.domain.SceneBusinessLog;
-import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.rc.mapper.SceneBusinessLogMapper;
 import com.xiji.cashloan.rc.mapper.SceneBusinessMapper;
 import com.xiji.cashloan.rc.model.TppBusinessModel;
@@ -65,7 +64,6 @@ import com.xiji.cashloan.rc.service.SimpleBorrowCountService;
 import com.xiji.cashloan.rc.service.SimpleContactCountService;
 import com.xiji.cashloan.rc.service.SimpleVoicesCountService;
 import com.xiji.cashloan.rc.service.TppBusinessService;
-import com.xiji.cashloan.rc.service.Zx91DetailService;
 import com.xiji.cashloan.rule.domain.BorrowRuleResult;
 import com.xiji.cashloan.rule.domain.BorrowScoreResult;
 import com.xiji.cashloan.rule.domain.RuleEngine;
@@ -184,19 +182,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Resource
 	private TppBusinessService tppBusinessService;
 	@Resource
-	private DhbReqLogService dhbReqLogService;
-	@Resource
 	private BorrowRepayService borrowRepayService;
 	@Resource
 	private SysConfigService sysConfigService;
 	@Resource
-	private FireeyesBlackLogService fireeyesBlackLogService;
-	@Resource
 	private BorrowScoreResultMapper borrowScoreResultMapper;
 	@Resource
 	private UserBlackInfoMapper userBlackInfoMapper;
-	@Resource
-	private Zx91DetailService zx91DetailService;
 	@Resource
 	private MagicRiskService magicRiskService;
 	
@@ -1683,64 +1675,38 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	public void getThirdServiceData(final Borrow borrow,final String nid,final Long tppId,final String mobileType){
-		//芝麻分
-		if("Magic2.0Report".equals(nid)){
-			logger.info("进入魔杖2.0报告查询");
+		//魔杖-多头报告
+		if("MagicMultiInfo".equals(nid)){
+			logger.info("进入魔杖多头报告查询");
 			Thread t = new Thread(new Runnable(){  
 				public void run(){
-					TppBusiness bussiness = tppBusinessService.findByNid(nid,tppId);
-					int count = magicRiskService.magicReportRequest(borrow, bussiness);
+					int count = magicRiskService.queryMultiInfo(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});  
 			t.start(); 
 			
-		//同盾贷前审核
-		} else if("TongdunApply".equals(nid)){
-			logger.info("进入同盾贷前审核数据查询");
+		//魔杖-反欺诈报告
+		} else if("MagicAntiFraud".equals(nid)){
+			logger.info("进入魔杖反欺诈报告查询");
 			Thread t = new Thread(new Runnable(){
 				public void run(){
-					TppBusiness bussiness = tppBusinessService.findByNid(nid,tppId);
-					int count = tongdunReqLogService.preloanApplyRequest(borrow.getUserId(),borrow,bussiness,mobileType);
+					int count = magicRiskService.queryAntiFraud(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});  
 			t.start(); 
-		//大圣-火眼黑名单
-		} else if ("FireeyesBlack".equals(nid)) {
-			logger.info("进入火眼黑名单查询");
+		//魔杖-黑灰名单
+		} else if ("MagicBlackGray".equals(nid)) {
+			logger.info("进入魔杖黑灰名单查询");
 			Thread t = new Thread(new Runnable() {
 				public void run() {
-					TppBusiness business = tppBusinessService.findByNid(nid,tppId);
-					int count = fireeyesBlackLogService.queryFireeyesBlack(borrow, business);
+					int count = magicRiskService.queryBlackGray(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
 			t.start();
-		//大圣-贷后邦
-		} else if ("DhbSauron".equals(nid)) {
-			logger.info("进入贷后邦_反欺诈信息查询");
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					TppBusiness business = tppBusinessService.findByNid(nid,tppId);
-					int count = dhbReqLogService.queryDhbSauron(borrow, business);
-					syncSceneBusinessLog(borrow.getId(), nid, count);
-				}
-			});
-			t.start();
-		//91征信
-		} else if ("Zx91Query".equals(nid)) {
-			logger.info("进入91征信查询");
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					TppBusiness business = tppBusinessService.findByNid(nid,tppId);
-					UserBaseInfo baseInfo = userBaseInfoService.findByUserId(borrow.getUserId());
-					int count = zx91DetailService.query91zx1003(baseInfo.getIdNo(), baseInfo.getRealName(), borrow.getUserId(), business);
-					syncSceneBusinessLog(borrow.getId(), nid, count);
-				}
-			});
-			t.start();
-		}else {
+		} else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
 	}

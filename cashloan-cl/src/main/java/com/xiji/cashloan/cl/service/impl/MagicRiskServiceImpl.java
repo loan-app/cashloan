@@ -117,8 +117,11 @@ public class MagicRiskServiceImpl implements MagicRiskService {
     @Resource
     private MagicReqDetailMapper magicReqDetailMapper;
 
+    @Resource
+    private MagicReqLogMapper magicReqLogMapper;
+
     @Override
-    public int queryAntiFraud(Borrow borrow, TppBusiness business) {
+    public int queryAntiFraud(Borrow borrow) {
         int i = 0;
         UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
         if(userBaseinfo == null) {
@@ -126,6 +129,11 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             return i;
         }
         Long userId = userBaseinfo.getUserId();
+        MagicReqLog log = new MagicReqLog();
+        log.setBorrowId(borrow.getId());
+        log.setCreateTime(new Date());
+        log.setUserId(borrow.getUserId());
+        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD);
         try {
             String privateKey = Global.getValue("mx_private_key");
             String apiUrl = Global.getValue("mx_risk_url");
@@ -148,57 +156,71 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
             String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
             String resContent = MxCreditRequest.get(getURL, null);
-            JSONObject resJson = JSONObject.parseObject(resContent);
-            if ("0000".equals(resJson.getString("code"))) {
-                //插入收费记录表
-                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
-                String transId = data.getString("trans_id");
-                Date createDate = DateUtil.getNow();
-                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD, CallsOutSideFeeConstant.FEE_ANTI_FRAUD);
-                callsOutSideFeeMapper.save(callsOutSideFee);
-                //插入详情表
-                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD);
-                magicReqDetailMapper.save(magicReqDetail);
-                //法院失信
-                UntrustedInfoBean untrustedInfo = JSONObject.parseObject(data.getString("untrusted_info"), UntrustedInfoBean.class);
-                if (untrustedInfo != null) {
-                    saveUntrustedInfo(untrustedInfo, userId, transId, createDate);
+
+            if(StringUtil.isNotBlank(resContent)){
+                JSONObject resJson = JSONObject.parseObject(resContent);
+                String code = resJson.getString("code");
+                if ("0000".equals(code)) {
+                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                    String transId = data.getString("trans_id");
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setTransId(transId);
+
+                    //插入收费记录表
+                    Date createDate = DateUtil.getNow();
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD, CallsOutSideFeeConstant.FEE_ANTI_FRAUD);
+                    callsOutSideFeeMapper.save(callsOutSideFee);
+                    //插入详情表
+                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD);
+                    magicReqDetailMapper.save(magicReqDetail);
+                    //法院失信
+                    UntrustedInfoBean untrustedInfo = JSONObject.parseObject(data.getString("untrusted_info"), UntrustedInfoBean.class);
+                    if (untrustedInfo != null) {
+                        saveUntrustedInfo(untrustedInfo, userId, transId, createDate);
+                    }
+                    //身份证变更信息
+                    SuspiciousIdcardBean suspiciousIdcard = JSONObject.parseObject(data.getString("suspicious_idcard"), SuspiciousIdcardBean.class);
+                    if(suspiciousIdcard != null) {
+                        saveSuspiciousIdcard(suspiciousIdcard, userId, transId, createDate);
+                    }
+                    //手机号变更信息
+                    SuspiciousMobileBean suspiciousMobile = JSONObject.parseObject(data.getString("suspicious_mobile"), SuspiciousMobileBean.class);
+                    if(suspiciousMobile != null) {
+                        saveSuspiciousMobile(suspiciousMobile, userId, transId, createDate);
+                    }
+                    //设备变更信息
+                    SuspiciousDeviceBean suspiciousDevice = JSONObject.parseObject(data.getString("suspicious_device"), SuspiciousDeviceBean.class);
+                    if(suspiciousDevice != null) {
+                        saveSuspiciousDevice(suspiciousDevice, userId, transId, createDate);
+                    }
+                    //QQ群风险信息
+                    RiskQqgroupBean riskQqgroup = JSONObject.parseObject(data.getString("risk_qqgroup"), RiskQqgroupBean.class);
+                    if(riskQqgroup != null) {
+                        saveRiskQqgroup(riskQqgroup, userId, transId, createDate);
+                    }
+                    //欺诈风险名单
+                    FraudulenceInfoBean fraudulenceInfo = JSONObject.parseObject(data.getString("fraudulence_info"), FraudulenceInfoBean.class);
+                    if(fraudulenceInfo != null) {
+                        saveFraudulenceInfo(fraudulenceInfo, userId, transId, createDate);
+                    }
+                    i = 1;
+                } else {
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setRespParams(resContent);
                 }
-                //身份证变更信息
-                SuspiciousIdcardBean suspiciousIdcard = JSONObject.parseObject(data.getString("suspicious_idcard"), SuspiciousIdcardBean.class);
-                if(suspiciousIdcard != null) {
-                    saveSuspiciousIdcard(suspiciousIdcard, userId, transId, createDate);
-                }
-                //手机号变更信息
-                SuspiciousMobileBean suspiciousMobile = JSONObject.parseObject(data.getString("suspicious_mobile"), SuspiciousMobileBean.class);
-                if(suspiciousMobile != null) {
-                    saveSuspiciousMobile(suspiciousMobile, userId, transId, createDate);
-                }
-                //设备变更信息
-                SuspiciousDeviceBean suspiciousDevice = JSONObject.parseObject(data.getString("suspicious_device"), SuspiciousDeviceBean.class);
-                if(suspiciousDevice != null) {
-                    saveSuspiciousDevice(suspiciousDevice, userId, transId, createDate);
-                }
-                //QQ群风险信息
-                RiskQqgroupBean riskQqgroup = JSONObject.parseObject(data.getString("risk_qqgroup"), RiskQqgroupBean.class);
-                if(riskQqgroup != null) {
-                    saveRiskQqgroup(riskQqgroup, userId, transId, createDate);
-                }
-                //欺诈风险名单
-                FraudulenceInfoBean fraudulenceInfo = JSONObject.parseObject(data.getString("fraudulence_info"), FraudulenceInfoBean.class);
-                if(fraudulenceInfo != null) {
-                    saveFraudulenceInfo(fraudulenceInfo, userId, transId, createDate);
-                }
-                i = 1;
             }
+
         } catch (Exception e) {
             logger.error("用户userId：" + userId + "魔杖2.0-反欺诈同步响应数据错误", e);
         }
+        magicReqLogMapper.save(log);
         return i;
     }
 
     @Override
-    public int queryMultiInfo(Borrow borrow, TppBusiness business) {
+    public int queryMultiInfo(Borrow borrow) {
         int i = 0;
         UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
         if(userBaseinfo == null) {
@@ -206,6 +228,11 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             return i;
         }
         Long userId = userBaseinfo.getUserId();
+        MagicReqLog log = new MagicReqLog();
+        log.setBorrowId(borrow.getId());
+        log.setCreateTime(new Date());
+        log.setUserId(borrow.getUserId());
+        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
         try {
             String privateKey = Global.getValue("mx_private_key");
             String apiUrl = Global.getValue("mx_risk_url");
@@ -228,32 +255,46 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
             String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
             String resContent = MxCreditRequest.get(getURL, null);
-            JSONObject resJson = JSONObject.parseObject(resContent);
-            if ("0000".equals(resJson.getString("code"))) {
-                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
-                String transId = data.getString("trans_id");
-                Date createDate = DateUtil.getNow();
-                //插入详情表
-                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
-                magicReqDetailMapper.save(magicReqDetail);
-                //插入收费记录表
-                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO, CallsOutSideFeeConstant.FEE_MULTI_INFO);
-                callsOutSideFeeMapper.save(callsOutSideFee);
-                //保存数据
-                AuthQueriedDetailBean authQueriedDetail = JSONObject.parseObject(data.getString("auth_queried_detail"), AuthQueriedDetailBean.class);
-                if (authQueriedDetail != null) {
-                    saveMutiInfo(authQueriedDetail, userId, transId, createDate);
+            if(StringUtil.isNotBlank(resContent)) {
+                JSONObject resJson = JSONObject.parseObject(resContent);
+                String code = resJson.getString("code");
+                if ("0000".equals(code)) {
+                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                    String transId = data.getString("trans_id");
+
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setTransId(transId);
+                    Date createDate = DateUtil.getNow();
+                    //插入详情表
+                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
+                    magicReqDetailMapper.save(magicReqDetail);
+                    //插入收费记录表
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO, CallsOutSideFeeConstant.FEE_MULTI_INFO);
+                    callsOutSideFeeMapper.save(callsOutSideFee);
+                    //保存数据
+                    AuthQueriedDetailBean authQueriedDetail = JSONObject.parseObject(data.getString("auth_queried_detail"), AuthQueriedDetailBean.class);
+                    if (authQueriedDetail != null) {
+                        saveMutiInfo(authQueriedDetail, userId, transId, createDate);
+                    }
+                    i = 1;
                 }
-                i = 1;
+                else {
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setRespParams(resContent);
+                }
             }
+
         } catch (Exception e) {
             logger.error("用户userId：" + userId + "魔杖2.0-多头同步响应数据错误", e);
         }
+        magicReqLogMapper.save(log);
         return i;
     }
 
     @Override
-    public int queryBlackGray(Borrow borrow, TppBusiness business) {
+    public int queryBlackGray(Borrow borrow) {
         int i = 0;
         UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
         if(userBaseinfo == null) {
@@ -261,6 +302,11 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             return i;
         }
         Long userId = userBaseinfo.getUserId();
+        MagicReqLog log = new MagicReqLog();
+        log.setBorrowId(borrow.getId());
+        log.setCreateTime(new Date());
+        log.setUserId(borrow.getUserId());
+        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
         try {
             String privateKey = Global.getValue("mx_private_key");
             String apiUrl = Global.getValue("mx_risk_url");
@@ -283,33 +329,45 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
             String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
             String resContent = MxCreditRequest.get(getURL, null);
-            JSONObject resJson = JSONObject.parseObject(resContent);
-            if ("0000".equals(resJson.getString("code"))) {
-                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
-                String transId = data.getString("trans_id");
-                Date createDate = DateUtil.getNow();
-                //插入详情表
-                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
-                magicReqDetailMapper.save(magicReqDetail);
-                //插入收费记录表
-                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY, CallsOutSideFeeConstant.FEE_BLACK_GRAY);
-                callsOutSideFeeMapper.save(callsOutSideFee);
-                //保存数据
-                BlackInfoDetailBean blackInfoDetail = JSONObject.parseObject(data.getString("black_info_detail"), BlackInfoDetailBean.class);
-                GrayInfoDetailBean grayInfoDetail = JSONObject.parseObject(data.getString("gray_info_detail"), GrayInfoDetailBean.class);
-                if (blackInfoDetail != null || grayInfoDetail != null) {
-                    saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
+            if(StringUtil.isNotBlank(resContent)) {
+                JSONObject resJson = JSONObject.parseObject(resContent);
+                String code = resJson.getString("code");
+                if ("0000".equals(code)) {
+                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                    String transId = data.getString("trans_id");
+
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setTransId(transId);
+                    Date createDate = DateUtil.getNow();
+                    //插入详情表
+                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
+                    magicReqDetailMapper.save(magicReqDetail);
+                    //插入收费记录表
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY, CallsOutSideFeeConstant.FEE_BLACK_GRAY);
+                    callsOutSideFeeMapper.save(callsOutSideFee);
+                    //保存数据
+                    BlackInfoDetailBean blackInfoDetail = JSONObject.parseObject(data.getString("black_info_detail"), BlackInfoDetailBean.class);
+                    GrayInfoDetailBean grayInfoDetail = JSONObject.parseObject(data.getString("gray_info_detail"), GrayInfoDetailBean.class);
+                    if (blackInfoDetail != null || grayInfoDetail != null) {
+                        saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
+                    }
+                    i = 1;
+                } else {
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setRespParams(resContent);
                 }
-                i = 1;
             }
         } catch (Exception e) {
             logger.error("用户userId：" + userId + "魔杖2.0-黑灰名单响应数据错误", e);
         }
+        magicReqLogMapper.save(log);
         return i;
     }
 
     @Override
-    public int queryPostLoad(Borrow borrow, TppBusiness business) {
+    public int queryPostLoad(Borrow borrow) {
         int i = 0;
         UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
         if(userBaseinfo == null) {
@@ -317,6 +375,11 @@ public class MagicRiskServiceImpl implements MagicRiskService {
             return i;
         }
         Long userId = userBaseinfo.getUserId();
+        MagicReqLog log = new MagicReqLog();
+        log.setBorrowId(borrow.getId());
+        log.setCreateTime(new Date());
+        log.setUserId(borrow.getUserId());
+        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
         try {
             String privateKey = Global.getValue("mx_private_key");
             String apiUrl = Global.getValue("mx_risk_url");
@@ -339,27 +402,40 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
             String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
             String resContent = MxCreditRequest.get(getURL, null);
-            JSONObject resJson = JSONObject.parseObject(resContent);
-            if ("0000".equals(resJson.getString("code"))) {
-                JSONObject data = JSONObject.parseObject(resJson.getString("data"));
-                String transId = data.getString("trans_id");
-                Date createDate = DateUtil.getNow();
-                //插入详情表
-                MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
-                magicReqDetailMapper.save(magicReqDetail);
-                //插入收费记录表
-                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD, CallsOutSideFeeConstant.FEE_POST_LOAD);
-                callsOutSideFeeMapper.save(callsOutSideFee);
-                //保存数据
-                LoanBehaviorAnalysisBean loanBehaviorAnalysis = JSONObject.parseObject(data.getString("loan_behavior_analysis"), LoanBehaviorAnalysisBean.class);
-                if (loanBehaviorAnalysis != null) {
-                    saveLoanBehaviorAnalysis(loanBehaviorAnalysis, userId, transId, createDate);
+            if(StringUtil.isNotBlank(resContent)) {
+                JSONObject resJson = JSONObject.parseObject(resContent);
+                String code = resJson.getString("code");
+                if ("0000".equals(code)) {
+                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                    String transId = data.getString("trans_id");
+
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setTransId(transId);
+                    Date createDate = DateUtil.getNow();
+                    //插入详情表
+                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
+                    magicReqDetailMapper.save(magicReqDetail);
+                    //插入收费记录表
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD, CallsOutSideFeeConstant.FEE_POST_LOAD);
+                    callsOutSideFeeMapper.save(callsOutSideFee);
+                    //保存数据
+                    LoanBehaviorAnalysisBean loanBehaviorAnalysis = JSONObject.parseObject(data.getString("loan_behavior_analysis"), LoanBehaviorAnalysisBean.class);
+                    if (loanBehaviorAnalysis != null) {
+                        saveLoanBehaviorAnalysis(loanBehaviorAnalysis, userId, transId, createDate);
+                    }
+                    i = 1;
+                } else {
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setRespParams(resContent);
                 }
-                i = 1;
             }
+
         } catch (Exception e) {
             logger.error("用户userId：" + userId + "魔杖2.0-多头同步响应数据错误", e);
         }
+        magicReqLogMapper.save(log);
         return i;
     }
 
