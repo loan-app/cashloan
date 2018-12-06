@@ -3,7 +3,6 @@ import {
   Table,
   Modal
 } from 'antd';
-var confirm = Modal.confirm;
 import ReportLink from "./ReportLink";
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -13,7 +12,6 @@ export default React.createClass({
       loading: false,
       data: [],
       pagination: {},
-      canEdit: true,
       visible: false,
         record:"",
       visibleAdd:false,
@@ -105,52 +103,7 @@ export default React.createClass({
     });
     this.fetch(params);
   },
-  changeStatus(title,record) {
-    var me = this;
-    var selectedRowKeys =me.state.selectedRowKeys;
-    var id = record.id;
-    var status;
-    var msg = "";
-    var tips = "";
-    var trueurl = "";
-      if (title == "加入黑名单") {
-        msg = '加入黑名单';
-        status = '20';
-        tips = '您是否确定加入黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      } else if (title == "解除黑名单") {
-        msg = '解除黑名单成功';
-        status = '10';
-        tips = '您是否确定解除黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      }
-      confirm({
-        title: tips,
-        onOk: function() {
-          Utils.ajaxData({
-            url: trueurl,
-            data: {     
-              id: id, 
-              state:status
-            },
-            method: 'post',
-            callback: (result) => {
-              if(result.code==200){
-                Modal.success({
-                 title: result.msg,
-                });     
-              }else{
-                Modal.error({
-                  title:  result.msg,
-                });
-              }
-              me.refreshList();
-            }
-          });
-        },
-        onCancel: function() {}
-      });
-  },
+
   componentDidMount() {
     this.fetch();
   },
@@ -166,39 +119,7 @@ export default React.createClass({
             this.refs.ReportLink.setFieldsValue(record);
         })
     },
-    checkPayModal(record,title) {
-        var record=record;
-        console.log(record)
-        var me = this;
-        var status;
-        var msg = "查询成功";
-        var tips = "您是否查询支付结果";
-        // Utils.ajaxData({
-        //     url: record.operateUrl,
-        //     data: {
-        //         borrowId: record.borrowId,
-        //     },
-        //     method: 'post',
-        //     callback: (result) => {
-        //         if (result.code == 200) {
-        //             Modal.success({
-        //                 title: result.msg,
-        //             });
-        //             me.refreshList();
-        //         } else {
-        //             Modal.error({
-        //                 title: result.msg,
-        //             });
-        //         }
-        //
-        //     }
-        // });
-        return (
-            <div className="block-panel">
-              <a >adf </a>
-            </div>
-        );
-    },
+
   onRowClick(record) {
     this.setState({
       selectedRowKeys: [record.id],
@@ -248,7 +169,7 @@ export default React.createClass({
              pagination={this.state.pagination}
              loading={this.state.loading}
              onChange={this.handleTableChange}  />
-        <ReportLink ref="ReportLink" visible={state.visibleAdd} title={state.title} hideModal={me.hideModal} record={state.record} />
+            <ReportLink ref="ReportLink" visible={state.visibleAdd} title={state.title} hideModal={me.hideModal} record={state.record} />
          </div>
     );
   }

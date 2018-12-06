@@ -1,31 +1,15 @@
 import React from 'react';
 import {
     Button,
-    Form,
-    Input,
-    InputNumber,
     Modal,
-    Row,
-    Col,
-    Select,
-    Checkbox,
-    Radio,
-    message,
-    DatePicker,
-
+    Col
 } from 'antd';
-const CheckboxGroup = Checkbox.Group
 const createForm = Form.create;
-const FormItem = Form.Item;
-const Option = Select.Option;
-const objectAssign = require('object-assign');
 var ReportLink = React.createClass({
     getInitialState() {
         return {
             checked: true,
             disabled: false,
-            data:"",
-            timeString:"",
             record:""
         };
     },
