@@ -104,52 +104,6 @@ export default React.createClass({
     });
     this.fetch(params);
   },
-  // changeStatus(title,record) {
-  //   var me = this;
-  //   var selectedRowKeys =me.state.selectedRowKeys;
-  //   var id = record.id;
-  //   var status;
-  //   var msg = "";
-  //   var tips = "";
-  //   var trueurl = "";
-  //     if (title == "加入黑名单") {
-  //       msg = '加入黑名单';
-  //       status = '20';
-  //       tips = '您是否确定加入黑名单';
-  //       trueurl = "/modules/manage/user/updateState.htm"
-  //     } else if (title == "解除黑名单") {
-  //       msg = '解除黑名单成功';
-  //       status = '10';
-  //       tips = '您是否确定解除黑名单';
-  //       trueurl = "/modules/manage/user/updateState.htm"
-  //     }
-  //     confirm({
-  //       title: tips,
-  //       onOk: function() {
-  //         Utils.ajaxData({
-  //           url: trueurl,
-  //           data: {
-  //             id: id,
-  //             state:status
-  //           },
-  //           method: 'post',
-  //           callback: (result) => {
-  //             if(result.code==200){
-  //               Modal.success({
-  //                title: result.msg,
-  //               });
-  //             }else{
-  //               Modal.error({
-  //                 title:  result.msg,
-  //               });
-  //             }
-  //             me.refreshList();
-  //           }
-  //         });
-  //       },
-  //       onCancel: function() {}
-  //     });
-  // },
   componentDidMount() {
     this.fetch();
   },
@@ -169,18 +123,13 @@ export default React.createClass({
     } = this.state;
     const rowSelection = {
       selectedRowKeys,
-    }; 
+    };
+
     const hasSelected = selectedRowKeys.length > 0;
 
     var columns = [{
       title: '时间',
       dataIndex: 'gmtCreate',
-    }, {
-      title: '用户标识',
-      dataIndex: "userId",
-    }, {
-      title: '任务id',
-      dataIndex: 'taskId',
     }, {
       title: '调用类型',
       dataIndex: 'type',
