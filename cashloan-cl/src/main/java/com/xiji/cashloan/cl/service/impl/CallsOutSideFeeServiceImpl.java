@@ -2,6 +2,9 @@ package com.xiji.cashloan.cl.service.impl;
 
 import javax.annotation.Resource;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.core.model.CloanUserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,9 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -38,4 +44,20 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 	public CallsOutSideFee getByTaskId(String taskId) {
 		return callsOutSideFeeMapper.getByTaskId(taskId);
 	}
+
+	/**
+	 * 查询收据收费列表
+	 * @param params
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	@Override
+	public Page<CallsOutSideFee> listCallsOutSideFee(Map<String, Object> params, int currentPage,
+								   int pageSize){
+		PageHelper.startPage(currentPage, pageSize);
+		List<CallsOutSideFee> list = callsOutSideFeeMapper.listCallsOutSideFee(params);
+		return (Page<CallsOutSideFee>) list;
+	}
+
 }

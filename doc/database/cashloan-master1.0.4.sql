@@ -717,18 +717,18 @@ INSERT INTO `arc_sys_dict_detail` VALUES ('33', '01', '5千以下', '13', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('34', '02', '5千至1万', '13', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('35', '03', '1万至2万', '13', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('36', '04', '2万以上', '13', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('37', '01', '中国工商银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('38', '02', '中国农业银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('39', '03', '中国银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('40', '04', '中国建设银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('41', '05', '交通银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('42', '06', '中信银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('43', '07', '光大银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('44', '08', '华夏银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('45', '09', '民生银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('46', '10', '广发银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('47', '11', '平安银行', '14', '10');
-INSERT INTO `arc_sys_dict_detail` VALUES ('48', '12', '招商银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('37', '0801020000', '中国工商银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('38', '0801030000', '中国农业银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('39', '0801040000', '中国银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('40', '0801050000', '中国建设银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('41', '0803010000', '交通银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('42', '0803020000', '中信银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('43', '0803030000', '光大银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('44', '0803040000', '华夏银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('45', '0803050000', '民生银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('46', '0803060000', '广发银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('47', '0804100000', '平安银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('48', '0803080000', '招商银行', '14', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('49', '30', '协议参数', '15', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('50', '20', '业务参数', '15', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('51', '10', '系统关键参数', '15', '10');
@@ -747,6 +747,10 @@ INSERT INTO `arc_sys_dict_detail` VALUES ('66', '20', '催收中', '18', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('67', '30', '承诺还款', '18', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('68', '40', '催收成功', '18', '10');
 INSERT INTO `arc_sys_dict_detail` VALUES ('69', '50', '坏账', '18', '10');
+
+INSERT INTO `arc_sys_dict_detail` VALUES ('70', '0803100000', '浦发银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('71', '0803090000', '兴业银行', '14', '10');
+INSERT INTO `arc_sys_dict_detail` VALUES ('72', '0801000000', '邮政储蓄银行', '14', '10');
 
 -- ----------------------------
 -- Table structure for arc_sys_user
@@ -1085,6 +1089,10 @@ INSERT INTO `arc_sys_role_menu` VALUES ('97', '1', '97');
 INSERT INTO `arc_sys_role_menu` VALUES ('98', '1', '98');
 INSERT INTO `arc_sys_role_menu` VALUES ('99', '1', '99');
 INSERT INTO `arc_sys_role_menu` VALUES ('100', '1', '100');
+
+INSERT INTO `arc_sys_role_menu` VALUES ('101', '1', '1001');
+INSERT INTO `arc_sys_role_menu` VALUES ('102', '1', '1002');
+INSERT INTO `arc_sys_role_menu` VALUES ('103', '1', '1003');
 
 
 -- ----------------------------

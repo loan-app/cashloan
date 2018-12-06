@@ -65,7 +65,7 @@ public class PayNotifyTest {
         param.put("bankno","0103");
         param.put("fuorderno","690909545406");
 //        param.put("futporderno","690909545406");
-        String orderNo = "1812041180020668";
+        String orderNo = "1812051161519652";
         String mac = getSign("0002900F0345178","123456",orderNo,"20181129","6228480328744607875","100000");
         param.put("mac",mac);
         param.put("merdt","20181129");

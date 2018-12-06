@@ -2,6 +2,7 @@ package com.xiji.cashloan.api.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class OperatorController extends BaseController {
             Map<String, Object> data = new HashMap<>();
             String url = Global.getValue("mx_operator_url");
             url += "?apiKey=" + Global.getValue("mx_apikey") + "&userId=" + userId + "&phone=" + userBaseInfo.getPhone()
-                    + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + userBaseInfo.getRealName();
+                    + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8");
             data.put("url", url);
 
             respMap.put(Constant.RESPONSE_DATA, data);

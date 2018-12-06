@@ -12,15 +12,15 @@
         <result column="long_number" property="longNumber" jdbcType="VARCHAR" />
         <result column="short_number" property="shortNumber" jdbcType="INTEGER" />
         <result column="member_type" property="memberType" jdbcType="VARCHAR" />
-        <result column="join_time" property="joinTime" jdbcType="VARCHAR" />
-        <result column="expire_time" property="expireTime" jdbcType="VARCHAR" />
+        <result column="join_date" property="joinDate" jdbcType="VARCHAR" />
+        <result column="expire_date" property="expireDate" jdbcType="VARCHAR" />
         <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_time,expire_time,gmt_create,gmt_modified
+        id,user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_date,expire_date,gmt_create,gmt_modified
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -50,11 +50,11 @@
             <if test="memberType != null and memberType != ''">
                 and member_type = #{memberType,jdbcType=VARCHAR}
             </if>
-            <if test="joinTime != null and joinTime != ''">
-                and join_time = #{joinTime,jdbcType=VARCHAR}
+            <if test="joinDate != null and joinDate != ''">
+                and join_date = #{joinDate,jdbcType=VARCHAR}
             </if>
-            <if test="expireTime != null and expireTime != ''">
-                and expire_time = #{expireTime,jdbcType=VARCHAR}
+            <if test="expireDate != null and expireDate != ''">
+                and expire_date = #{expireDate,jdbcType=VARCHAR}
             </if>
             <if test="gmtCreate != null">
                 and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
@@ -67,7 +67,7 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorFamily">
-        insert into cl_operator_family(user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_time,expire_time,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{familyNum,jdbcType=INTEGER},#{longNumber,jdbcType=VARCHAR},#{shortNumber,jdbcType=INTEGER},#{memberType,jdbcType=VARCHAR},#{joinTime,jdbcType=VARCHAR},#{expireTime,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+        insert into cl_operator_family(user_id,req_log_id,mobile,family_num,long_number,short_number,member_type,join_date,expire_date,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{mobile,jdbcType=VARCHAR},#{familyNum,jdbcType=INTEGER},#{longNumber,jdbcType=VARCHAR},#{shortNumber,jdbcType=INTEGER},#{memberType,jdbcType=VARCHAR},#{joinDate,jdbcType=VARCHAR},#{expireDate,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
     </insert>
 
     
@@ -80,8 +80,8 @@
             long_number = #{longNumber,jdbcType=VARCHAR},
             short_number = #{shortNumber,jdbcType=INTEGER},
             member_type = #{memberType,jdbcType=VARCHAR},
-            join_time = #{joinTime,jdbcType=VARCHAR},
-            expire_time = #{expireTime,jdbcType=VARCHAR},
+            join_date = #{joinDate,jdbcType=VARCHAR},
+            expire_date = #{expireDate,jdbcType=VARCHAR},
             gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
             gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
         where id = #{id ,jdbcType=INTEGER}
@@ -112,11 +112,11 @@
             <if test="memberType != null and memberType != '' ">
                 member_type = #{memberType,jdbcType=VARCHAR},                
             </if>
-            <if test="joinTime != null and joinTime != '' ">
-                join_time = #{joinTime,jdbcType=VARCHAR},                
+            <if test="joinDate != null and joinDate != '' ">
+                join_date = #{joinDate,jdbcType=VARCHAR},
             </if>
-            <if test="expireTime != null and expireTime != '' ">
-                expire_time = #{expireTime,jdbcType=VARCHAR},                
+            <if test="expireDate != null and expireDate != '' ">
+                expire_date = #{expireDate,jdbcType=VARCHAR},
             </if>
             <if test="gmtCreate != null">        
                 gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
