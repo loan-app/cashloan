@@ -27,4 +27,5 @@ public interface CallsOutSideFeeService extends BaseService<CallsOutSideFee, Lon
      */
     Page<CallsOutSideFee> listCallsOutSideFee(Map<String, Object> params, int currentPage,
                                    int pageSize);
+
 }

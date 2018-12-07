@@ -15,6 +15,10 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_BLACK_GRAY = 4;
     //魔杖贷后行为
     public static int CALLS_TYPE_POST_LOAD = 5;
+    //发送短信
+    public static int CALLS_TYPE_SEND_MSG = 6;
+    //人脸识别
+    public static int CALLS_TYPE_FACE_DETECT = 7;
 
     //魔蝎运营商费用
     public static double FEE_OPERATOR = 0.1;
@@ -26,4 +30,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_BLACK_GRAY = 0.2;
     //魔杖贷后行为费用
     public static double FEE_POST_LOAD = 0.5;
+    //发送短信费用
+    public static double FEE_SEND_MSG = 0.04;
+    //人脸识别费用
+    public static double FEE_FACE_DETECT = 0.6;
 }

@@ -1,21 +1,14 @@
 package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.domain.UserCardCreditLog;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.cl.model.dsdata.LinkfaceHsTkCreditRequest;
 import com.xiji.cashloan.cl.model.dsdata.LinkfaceIDTkOcrRequest;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
-import com.xiji.cashloan.cl.service.OperatorRespDetailService;
-import com.xiji.cashloan.cl.service.OperatorService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.UserBlackInfoService;
-import com.xiji.cashloan.cl.service.UserCardCreditLogService;
-import com.xiji.cashloan.cl.service.UserContactsService;
-import com.xiji.cashloan.cl.service.UserMessagesService;
+import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.Base64;
@@ -108,6 +101,8 @@ public class UserBaseInfoController extends BaseController {
 
     @Resource
     private UserBlackInfoService userBlackInfoService;
+    @Resource
+    private CallsOutSideFeeService callsOutSideFeeService;
 
     /**
      * @param userId
@@ -351,6 +346,7 @@ public class UserBaseInfoController extends BaseController {
                 userAuthMap.put("userId", userId);
                 UserAuth userAuth = userAuthService.getUserAuth(userAuthMap);
 
+                String taskId = "";
                 double match = 0.0;
                 if (livingImg != null && 30 != Integer.parseInt(userAuth.getIdState())) {
                     logger.info("用户" + user.getLoginName() + "完善个人信息，进入人证识别比对");
@@ -395,6 +391,9 @@ public class UserBaseInfoController extends BaseController {
                         log.setResult(String.valueOf(resultJson.get("code")));
                         log.setConfidence(String.valueOf(match));
                     }*/
+                    if (resultJson.get("request_id") != null) {
+                        taskId = resultJson.get("request_id").toString();
+                    }
                     JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("result_faceid")));
                     log.setResult(String.valueOf(resultJson.get("code")));
                     match = data.getDoubleValue("confidence");
@@ -413,6 +412,8 @@ public class UserBaseInfoController extends BaseController {
                     returnMap.put("idTime", DateUtil.getNow());
                     returnMap.put("userId", userId);
                     userAuthService.updateByUserId(returnMap);
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,taskId, CallsOutSideFeeConstant.CALLS_TYPE_FACE_DETECT,CallsOutSideFeeConstant.FEE_FACE_DETECT);
+                    callsOutSideFeeService.insert(callsOutSideFee);
                     returnMap.clear();
                     if (count > 0) {
                         returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);

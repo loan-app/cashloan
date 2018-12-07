@@ -5,21 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.Sms;
-import com.xiji.cashloan.cl.domain.SmsTpl;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.SmsMapper;
-import com.xiji.cashloan.cl.mapper.SmsTplMapper;
-import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.dsdata.SmsTkCreditRequest;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.ClSmsService;
+import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
@@ -74,7 +66,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
     private UserBaseInfoMapper userBaseInfoMapper;
     @Resource
     private BankCardMapper bankCardMapper;
-    
+	@Resource
+    private CallsOutSideFeeMapper callsOutSideFeeMapper;
 	@Override
 	public BaseMapper<Sms, Long> getMapper() {
 		return smsMapper;
@@ -640,6 +633,9 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 									paramMap.put("resp", "短信已发送");
 									paramMap.put("state", "10");
 									smsMapper.updateByOrderNo(paramMap);
+									UserBaseInfo userBaseInfo = userBaseInfoMapper.getBaseUserByPhone(phone);
+									CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userBaseInfo.getUserId(),orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
+									callsOutSideFeeMapper.save(callsOutSideFee);
 									logger.error("发送短信，phone：" + userPhone + "， type：" + type + "，发送成功");
 								} else {
 									paramMap.put("orderNo", orderNo);

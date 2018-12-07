@@ -479,4 +479,11 @@
             ${id}
         </foreach>
 	</update>
+
+    <select id="getBaseUserByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from cl_user_base_info
+        where phone =#{phone}
+        limit 1
+    </select>
 </mapper>
