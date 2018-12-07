@@ -634,7 +634,11 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 									paramMap.put("state", "10");
 									smsMapper.updateByOrderNo(paramMap);
 									UserBaseInfo userBaseInfo = userBaseInfoMapper.getBaseUserByPhone(phone);
-									CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userBaseInfo.getUserId(),orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
+									Long userId = null;
+									if (userBaseInfo != null && userBaseInfo.getUserId() != null){
+										userId = userBaseInfo.getUserId();
+									}
+									CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
 									callsOutSideFeeMapper.save(callsOutSideFee);
 									logger.error("发送短信，phone：" + userPhone + "， type：" + type + "，发送成功");
 								} else {
