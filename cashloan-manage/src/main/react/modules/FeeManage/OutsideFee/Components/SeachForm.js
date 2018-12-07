@@ -56,6 +56,8 @@ let SeachForm = React.createClass({
           <Option value="3">魔杖多头</Option>
           <Option value="4">魔杖黑灰名单</Option>
           <Option value="5">魔杖贷后行为</Option>
+              <Option value="6">发送短信</Option>
+              <Option value="7">人脸识别</Option>
           </Select>
           </FormItem>
         <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>

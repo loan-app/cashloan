@@ -70,5 +70,11 @@ public interface UserBaseInfoMapper extends BaseMapper<UserBaseInfo,Long> {
 	 * @return
 	 */
 	List<UserBaseInfo> findOhterUserIdNo(@Param("idNo")String idNo, @Param("userId")Long userId);
-	
+
+	/**
+	 * 根据手机号码查询用户id
+ 	 * @param phone
+	 * @return
+	 */
+	UserBaseInfo getBaseUserByPhone(@Param("phone") String phone);
 }

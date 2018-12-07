@@ -133,7 +133,11 @@ export default React.createClass({
               return "魔杖黑灰名单"
           } else if (record.type == 5) {
               return "魔杖贷后行为"
-          } else {
+          } else if (record.type == 6) {
+              return "发送短信"
+          } else if (record.type == 7) {
+              return "人脸识别"
+          }else {
               return "-"
           }
       }
