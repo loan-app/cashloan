@@ -1,9 +1,9 @@
 import React from 'react'
 import {
-  Table,
-  Modal
+    Table,
+    Modal
 } from 'antd';
-var confirm = Modal.confirm;
+import ReportLink from "./ReportLink";
 const objectAssign = require('object-assign');
 export default React.createClass({
   getInitialState() {
@@ -12,8 +12,8 @@ export default React.createClass({
       loading: false,
       data: [],
       pagination: {},
-      canEdit: true,
       visible: false,
+      record:"",
       visibleAdd:false,
     };
   },
@@ -34,18 +34,17 @@ export default React.createClass({
     this.setState({
       canEdit: canEdit,
       visible: true,
-      title: title,
       record: record
     },()=>{
       this.refs.CustomerWin.setFieldsValue(record);
-    });
+  });
   },
   //新增
   addModal(title, record, canEdit){
-      this.setState({
-        visibleAdd:true,
-        title:title,  
-      })
+    this.setState({
+      visibleAdd:true,
+      title:title,
+    })
 
   },
   rowKey(record) {
@@ -104,8 +103,21 @@ export default React.createClass({
     });
     this.fetch(params);
   },
+
   componentDidMount() {
     this.fetch();
+  },
+  //查看弹窗
+  showModal(record,title) {
+
+    this.setState({
+      visibleAdd: true,
+      record: record,
+      title: title
+    },()=>{
+
+      this.refs.ReportLink.setFieldsValue(record);
+  })
   },
 
   onRowClick(record) {
@@ -134,7 +146,7 @@ export default React.createClass({
         title: '操作',
         render: (text, record) => {
             return <div>
-                <a href="javascript:;" onClick={me.showModal.bind(me, '查看详情', record, true)}>查看报告</a>
+                <a href="javascript:;" onClick={me.showModal.bind(me, record, '查看报告', true)}>查看报告</a>
             </div>
         }
         }];
@@ -147,6 +159,7 @@ export default React.createClass({
              pagination={this.state.pagination}
              loading={this.state.loading}
              onChange={this.handleTableChange}  />
+            <ReportLink ref="ReportLink" visible={state.visibleAdd} title={state.title} hideModal={me.hideModal} record={state.record} />
          </div>
     );
   }
