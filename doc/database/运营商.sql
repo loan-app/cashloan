@@ -77,7 +77,6 @@ DROP TABLE IF EXISTS `cl_operator_req_log`;
 CREATE TABLE `cl_operator_req_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
-  `req_log_id` BIGINT(20) NOT NULL COMMENT '请求记录id',
   `task_id` varchar(64) DEFAULT '' COMMENT '任务id',
   `task_state` varchar(2) DEFAULT '' COMMENT '状态，0-发送请求成功 1-任务创建成功 2-授权登录成功 3-授权登录失败 4-采集成功 5-采集失败 6-报告生成成功 7-报告生成失败',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',

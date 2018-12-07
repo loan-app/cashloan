@@ -550,7 +550,7 @@ INSERT INTO `arc_sys_config` VALUES (null, '10', 'api服务域名', 'server_host
 INSERT INTO `arc_sys_config` VALUES (null, '10', 'manage服务域名', 'manage_host', 'http://10.10.2.156:8081', '1', '管理后台域名', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '10', '移动端密钥', 'app_key', '11IhAP24Kb3Bsf7IE14wpl751bQc9VAPsFZ+LdB4riBgg2TDAiEAsSomOO1v8mK2VWhEQh6mttgN1', '1', null, '1');
 INSERT INTO `arc_sys_config` VALUES (null, '10', '版本控制', 'check_version', '1.0.0', '1', 'version版本号', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '10', '规则引擎配置表', 'rule_tables', 'cl_operator_basic,cl_qiancheng_req_log,cl_rc_dhb_history_search,cl_rc_dhb_risk_blacklist,cl_rc_dhb_risk_social_network,cl_rc_dhb_user_basic,cl_rc_fireeyes_black_log,cl_user_base_info,cl_zhima', '1', '规则引擎配置表', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '10', '规则引擎配置表', 'rule_tables', 'cl_operator_basic,cl_magic_untrusted,cl_magic_black_gray,cl_magic_fraudulence_info,cl_magic_multipoint,cl_magic_risk_qq_group,cl_magic_suspicious_device,cl_magic_suspicious_idcard,cl_magic_suspicious_mobile,cl_magic_loan_behavior_analysis', '1', '规则引擎配置表', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '10', 'app是否开启定位', 'is_location', '10', '1', '10开启 20关闭', '1');
 
 INSERT INTO `arc_sys_config` VALUES (null, '20', '当日最大注册用户数', 'day_register_max', '0', '0', '当日最大注册用户数', '1');
