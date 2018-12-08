@@ -1,5 +1,6 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.MagicReqDetail;
 import com.xiji.cashloan.cl.model.CreditLoanUserModel;
@@ -74,22 +75,22 @@ public class CreditLoanReportController extends BaseController {
             //用户运营商反欺诈报告信息
             MagicReqDetail antiFraud = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD);
             if(antiFraud != null) {
-                map.put("antiFraud", antiFraud.getData());
+                map.put("antiFraud", JSONObject.parseObject(antiFraud.getData()));
             }
             //用户多头接待信息
             MagicReqDetail multiIno = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
             if(multiIno != null) {
-                map.put("multiIno", multiIno.getData());
+                map.put("multiInfo", JSONObject.parseObject(multiIno.getData()));
             }
             //用户黑灰名单
             MagicReqDetail blackGray = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
             if(blackGray != null) {
-                map.put("blackGray", blackGray.getData());
+                map.put("blackGray", JSONObject.parseObject(blackGray.getData()));
             }
             //用户贷后欣慰信息
             MagicReqDetail postLoad = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
             if(postLoad != null) {
-                map.put("postLoad", postLoad.getData());
+                map.put("postLoad", JSONObject.parseObject(postLoad.getData()));
             }
         }
         Map<String,Object> result = new HashMap<String,Object>();
