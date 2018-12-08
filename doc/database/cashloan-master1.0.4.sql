@@ -1773,6 +1773,7 @@ CREATE TABLE `cl_rc_tpp_business` (
 INSERT INTO `cl_rc_tpp_business` VALUES ('1', '1', '魔杖多头', 'MagicMultiInfo', '10', '', '', null, '2018-12-06 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('2', '1', '魔杖黑灰名单', 'MagicBlackGray', '10', '', '', null, '2018-12-06 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('3', '1', '魔杖反欺诈', 'MagicAntiFraud', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('4', '1', '魔杖贷后行为', 'MagicPostLoad', '10', '', '', null, '2018-12-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for cl_sms
