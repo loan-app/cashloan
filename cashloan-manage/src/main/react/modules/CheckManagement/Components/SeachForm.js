@@ -44,7 +44,7 @@ let SeachForm = React.createClass({
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
         }
         json = JSON.stringify(json);
-        window.open("/modules/manage/payCheck/export.htm?searchParams="+json);
+        window.open("/modules/manage/payCheck/export.htm?searchParams="+encodeURI(json));
 
     },
     disabledDate(startValue) {

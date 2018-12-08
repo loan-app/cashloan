@@ -33,7 +33,7 @@ let SeachForm = React.createClass({
     },
     handleOut() {
         var params = this.props.form.getFieldsValue();
-        var json = JSON.stringify(params);
+        var json = encodeURI(JSON.stringify(params));
         window.open("/modules/manage/payLog/export.htm?searchParams="+json);
 
     },
