@@ -1706,6 +1706,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			});
 			t.start();
+			//魔杖-贷后行为
+		} else if ("MagicPostLoad".equals(nid)) {
+			logger.info("进入魔杖贷后行为查询");
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					int count = magicRiskService.queryPostLoad(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			t.start();
 		} else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
