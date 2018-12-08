@@ -111,8 +111,8 @@
     </select>
 
     <select id="listModel" resultMap="CreditLoanUserModelMap" parameterType="java.util.HashMap">
-        select u.id user_id,u.real_name,u.phone,u.id_no from cl_user_base_info u left join
-        cl_magic_req_detail mrd on u.id = mrd.user_id and mrd.id != null where 1=1
+        select DISTINCT u.id user_id,u.real_name,u.phone,u.id_no from cl_magic_req_detail mrd  left join
+        cl_user_base_info u on mrd.user_id = u.id where 1=1
         <if test="realName != null and realName != ''">
             and u.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
         </if>
