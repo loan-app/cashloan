@@ -188,6 +188,8 @@ public class BorrowModel extends Borrow {
 			stateStr=("放款审核通过");
 		}else if(AUDIT_LOAN_FAIL.equals(state)){
 			stateStr=("放款审核不通过");
+		}else if(STATE_DELAY_PAY.equals(state)){
+			stateStr=("已展期");
 		}
 		return stateStr;
 	}
@@ -233,7 +235,7 @@ public class BorrowModel extends Borrow {
 		} else if (BorrowModel.AUDIT_LOAN_FAIL.equals(state)) {
 			remarkStr = "很遗憾,审核放款不通过";
 		} else if (BorrowModel.STATE_DELAY_PAY.equals(state)) {
-			remarkStr = "展期成功";
+			remarkStr = "恭喜您,展期成功";
 		}
 		return remarkStr;
 	}
