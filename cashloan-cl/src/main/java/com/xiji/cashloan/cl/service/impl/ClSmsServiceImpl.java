@@ -338,6 +338,14 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 				if (ms > 0){
 					msg = orderNo;
 				}
+                // 保存调用外部数据收费信息记录
+				UserBaseInfo userBaseInfo = userBaseInfoMapper.getBaseUserByPhone(phone);
+				Long userId = null;
+				if (userBaseInfo != null && userBaseInfo.getUserId() != null){
+					userId = userBaseInfo.getUserId();
+				}
+				CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
+				callsOutSideFeeMapper.save(callsOutSideFee);
 			} else {
 				String message = resultJson.getString("message");
 				sms.setContent(message);
@@ -633,13 +641,13 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 									paramMap.put("resp", "短信已发送");
 									paramMap.put("state", "10");
 									smsMapper.updateByOrderNo(paramMap);
-									UserBaseInfo userBaseInfo = userBaseInfoMapper.getBaseUserByPhone(phone);
-									Long userId = null;
-									if (userBaseInfo != null && userBaseInfo.getUserId() != null){
-										userId = userBaseInfo.getUserId();
-									}
-									CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
-									callsOutSideFeeMapper.save(callsOutSideFee);
+//									UserBaseInfo userBaseInfo = userBaseInfoMapper.getBaseUserByPhone(phone);
+//									Long userId = null;
+//									if (userBaseInfo != null && userBaseInfo.getUserId() != null){
+//										userId = userBaseInfo.getUserId();
+//									}
+//									CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
+//									callsOutSideFeeMapper.save(callsOutSideFee);
 									logger.error("发送短信，phone：" + userPhone + "， type：" + type + "，发送成功");
 								} else {
 									paramMap.put("orderNo", orderNo);
