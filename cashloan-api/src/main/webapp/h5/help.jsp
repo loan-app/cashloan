@@ -163,7 +163,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">借款人需要满足什么条件？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>年龄：18-60周岁；拥有稳定的收入来源；无不良的信用记录。</p>
+							<p>年龄：21-40周岁；拥有稳定的收入来源；无不良的信用记录。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -328,7 +328,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">被拒绝后是否可以再次申请？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>可以再次申请，一天之后即可申请重新借款。</p>
+							<p>可以再次申请，15天之后即可申请重新借款。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -339,7 +339,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">审核通过后的打款时间？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>审核通过后一般30分钟即可收到打款。</p>
+							<p>审核通过后一般15分钟即可收到打款。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
