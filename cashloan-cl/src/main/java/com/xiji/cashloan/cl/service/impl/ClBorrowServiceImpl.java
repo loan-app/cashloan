@@ -971,15 +971,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				feeDetail.put("title", feeMap.get("interestName"));
 				feeDetail.put("value", feeMap.get("interest"));
 				feeDetailList.add(feeDetail);
-				
 				map.put("feeDetailList", feeDetailList);
 				
 				map.put("timeLimit", days[i]);
-				map.put("amount", fee);
+				map.put("amount", amount);
 
 				//IOS端返回数据
 				Map<String, Object> iosFeeMap = getFeeMap(fee);
-				map.putAll(feeMap);
+				map.put("feeDetail", feeMap);
 				list.add(map);
 			}
 		}

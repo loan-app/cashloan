@@ -65,3 +65,6 @@ update `arc_sys_config` set value='10' where code='zhima_auth';
 
 -- 修改调用外部收据收费表用户标识字段
 ALTER TABLE `cl_calls_outside_fee` change user_id `user_id` bigint(20) DEFAULT  NULL COMMENT '用户标识';
+
+-- 配置修改,修改借款额度
+update `arc_sys_config` set value=1000,remark='借款额度(500,1000)' where code='borrow_credit';
