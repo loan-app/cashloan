@@ -921,6 +921,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		Map<String, Object> feeMap = getFeeMap(fee);
 		feeMap.put("fee", BigDecimalUtil.decimal(fee, 2));
+		String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+		if ("10".equals(beheadFee)) {// 启用
+			feeMap.put("realAmount", amount - fee);
+		} else {
+			feeMap.put("realAmount", amount);
+		}
 		return feeMap;
 	}
 	
@@ -969,7 +975,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				map.put("feeDetailList", feeDetailList);
 				
 				map.put("timeLimit", days[i]);
-				map.put("amount", amount);
+				map.put("amount", fee);
+
+				//IOS端返回数据
+				Map<String, Object> iosFeeMap = getFeeMap(fee);
+				map.putAll(feeMap);
 				list.add(map);
 			}
 		}
