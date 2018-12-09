@@ -68,3 +68,6 @@ ALTER TABLE `cl_calls_outside_fee` change user_id `user_id` bigint(20) DEFAULT  
 
 -- 配置修改,修改借款额度
 update `arc_sys_config` set value=1000,remark='借款额度(500,1000)' where code='borrow_credit';
+
+-- 新增自动审核成功,是否人工审核配置 2018.12.9
+INSERT INTO `arc_sys_config` VALUES (null, '10', '人工审核开关', 'arc_sys_config', '10', '1', '机审通过,人工审核开关 10-启用 20-禁用', '1');

@@ -368,6 +368,12 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     if(creditCard != null) {
                         saveCreditCard(creditCard, userId, transId, createDate);
                     }
+                    //黑灰名单信息
+                    BlackInfoDetailBean blackInfoDetail = JSONObject.parseObject(data.getString("black_info_detail"), BlackInfoDetailBean.class);
+                    GrayInfoDetailBean grayInfoDetail = JSONObject.parseObject(data.getString("gray_info_detail"), GrayInfoDetailBean.class);
+                    if (blackInfoDetail != null || grayInfoDetail != null) {
+                        saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
+                    }
                     i = 1;
                 } else {
                     log.setRespCode(code);

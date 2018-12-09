@@ -152,14 +152,14 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 		String qualifiedSql="";//qualified返回值中的语句
 		int qualifiedCount=4;//基础必填项数量
 		//芝麻信用sql语句拼接，需要sys_config表里设置的zhima_auth属性，10-去除 20-选填 30-必填
-		String zhima_auth=Global.getValue("zhima_auth");
-		if("30".equals(zhima_auth)){
-			resultSql="+IF (zhima_state = 30, 1, 0)";
-			qualifiedSql="+IF (zhima_state = 30, 1, 0)";
-			qualifiedCount++;
-		}else if("20".equals(zhima_auth)){
-			resultSql="+IF (zhima_state = 30, 1, 0)";
-		}
+//		String zhima_auth=Global.getValue("zhima_auth");
+//		if("30".equals(zhima_auth)){
+//			resultSql="+IF (zhima_state = 30, 1, 0)";
+//			qualifiedSql="+IF (zhima_state = 30, 1, 0)";
+//			qualifiedCount++;
+//		}else if("20".equals(zhima_auth)){
+//			resultSql="+IF (zhima_state = 30, 1, 0)";
+//		}
 		//芝麻信用sql拼接结束
 		//拼接整个sql
 		String sql="	SELECT ("

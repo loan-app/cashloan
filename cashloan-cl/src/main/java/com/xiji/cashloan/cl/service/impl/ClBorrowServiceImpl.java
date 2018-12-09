@@ -1866,23 +1866,31 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,remark);
 			}
 		} else if(BorrowRuleResult.RESULT_TYPE_PASS.equals(resultType)){
-			int result = modifyState(borrow.getId(), BorrowModel.STATE_AUTO_PASS,BorrowModel.STATE_PRE);
-			logger.info("自动审核通过result: "+result);
-			if(result == 1){
-				savePressState(borrow, BorrowModel.STATE_AUTO_PASS,remark);
-			}
-			if (!"10".equals(Global.getValue("manual_loan"))) { // 系统配置的是否放款审核
-				// 放款
-				borrowLoan(borrow, new Date());
+			if(!"20".equals(Global.getValue("review_loan"))) {
+				int result = modifyState(borrow.getId(), BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_PRE);
+				logger.info("自动审核通过,人工复审开关打开,待人工复审result: "+result);
+				if(result == 1) {
+					//状态修改为待人工复审
+					savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,remark);
+				}
 			} else {
-				// 待放款审核
-				result = modifyState(borrow.getId(), BorrowModel.WAIT_AUDIT_LOAN,BorrowModel.STATE_AUTO_PASS);
-				logger.info("自动审核通过 待放款审核result: "+result);
-				if(result == 1){
-					savePressState(borrow, BorrowModel.WAIT_AUDIT_LOAN,"");
+				int result = modifyState(borrow.getId(), BorrowModel.STATE_AUTO_PASS,BorrowModel.STATE_PRE);
+				if(result == 1) {
+					logger.info("自动审核通过result: "+result);
+					savePressState(borrow, BorrowModel.STATE_AUTO_PASS,remark);
+					if (!"10".equals(Global.getValue("manual_loan"))) { // 系统配置的是否放款审核
+						// 放款
+						borrowLoan(borrow, new Date());
+					} else {
+						// 待放款审核
+						result = modifyState(borrow.getId(), BorrowModel.WAIT_AUDIT_LOAN,BorrowModel.STATE_AUTO_PASS);
+						logger.info("自动审核通过 待放款审核result: "+result);
+						if(result == 1){
+							savePressState(borrow, BorrowModel.WAIT_AUDIT_LOAN,"");
+						}
+					}
 				}
 			}
-			
 		}
 	}
  
@@ -2020,8 +2028,26 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				if (resultList == null || resultList.isEmpty()) {
 					logger.info("风控审核重触发，borrowId："+borrow.getId()+"进入规则审核流程");
 					rcBorrowRuleVerify(borrowId);
-				} else if (BorrowModel.STATE_AUTO_PASS.equals(borrow.getState())
-						|| BorrowModel.STATE_PASS.equals(borrow.getState())) {
+				} else if (BorrowModel.STATE_AUTO_PASS.equals(borrow.getState())) {
+					if(!"20".equals(Global.getValue("review_loan"))) {
+						modifyState(borrow.getId(), BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_AUTO_PASS);
+						//状态修改为待人工复审
+						logger.info("自动审核通过,人工复审开关打开,待人工复审");
+						savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,StringUtil.EMPTY);
+					} else {
+						if (!"10".equals(Global.getValue("manual_loan")))  { //系统配置的是否放款审核
+							logger.info("风控审核重触发，borrowId："+borrow.getId()+"进入放款流程");
+							borrowLoan(borrow, DateUtil.getNow());
+						} else {
+							//待放款审核
+							int result = modifyState(borrow.getId(), BorrowModel.WAIT_AUDIT_LOAN,borrow.getState());
+							logger.info("待放款审核result: "+result);
+							if(result == 1){
+								savePressState(borrow, BorrowModel.WAIT_AUDIT_LOAN,"");
+							}
+						}
+					}
+				} else if (BorrowModel.STATE_PASS.equals(borrow.getState())) {
 					if (!"10".equals(Global.getValue("manual_loan")))  { //系统配置的是否放款审核
 						logger.info("风控审核重触发，borrowId："+borrow.getId()+"进入放款流程");
 						borrowLoan(borrow, DateUtil.getNow());
