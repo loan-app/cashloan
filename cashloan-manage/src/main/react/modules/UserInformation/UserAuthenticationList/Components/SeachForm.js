@@ -74,13 +74,13 @@ let SeachForm = React.createClass({
                         <Option value="30">已认证</Option>
                     </Select>
         </FormItem>
-        <FormItem label="芝麻授信状态:">
-                    <Select style={{ width: 100 }} {...getFieldProps('zhimaState',{initialValue: ''})} placeholder='请选择...'>
-                        <Option value="10">未授信</Option>
-                        <Option value="20">授信中</Option>
-                        <Option value="30">已授信</Option>
-                    </Select>
-        </FormItem>
+        {/*<FormItem label="芝麻授信状态:">*/}
+                    {/*<Select style={{ width: 100 }} {...getFieldProps('zhimaState',{initialValue: ''})} placeholder='请选择...'>*/}
+                        {/*<Option value="10">未授信</Option>*/}
+                        {/*<Option value="20">授信中</Option>*/}
+                        {/*<Option value="30">已授信</Option>*/}
+                    {/*</Select>*/}
+        {/*</FormItem>*/}
         <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
         <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
       </Form>

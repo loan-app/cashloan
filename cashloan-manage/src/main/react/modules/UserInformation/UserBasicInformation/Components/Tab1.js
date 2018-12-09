@@ -299,11 +299,11 @@ var Tab1 = React.createClass({
                     <Input {...getFieldProps('phoneState', { initialValue: '' }) } disabled={props.canEdit} />
                   </FormItem>
                 </Col>
-                <Col span="8">
-                  <FormItem {...formItemLayout} label="芝麻授信状态：">
-                    <Input {...getFieldProps('zhimaState', { initialValue: '' }) } disabled={props.canEdit} />
-                  </FormItem>
-                </Col>
+                {/*<Col span="8">*/}
+                  {/*<FormItem {...formItemLayout} label="芝麻授信状态：">*/}
+                    {/*<Input {...getFieldProps('zhimaState', { initialValue: '' }) } disabled={props.canEdit} />*/}
+                  {/*</FormItem>*/}
+                {/*</Col>*/}
               </Row>
             </div>
             <Show ref='Show' title={state.tit} visible={state.visible} recordSoure={props.recordSoure} num={state.num} hidden={this.hidden} />
