@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
@@ -220,153 +221,6 @@ public class MagicRiskServiceImpl implements MagicRiskService {
     }
 
     @Override
-    public int queryMultiInfo(Borrow borrow) {
-        int i = 0;
-        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
-        if(userBaseinfo == null) {
-            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
-            return i;
-        }
-        Long userId = userBaseinfo.getUserId();
-        MagicReqLog log = new MagicReqLog();
-        log.setBorrowId(borrow.getId());
-        log.setCreateTime(new Date());
-        log.setUserId(borrow.getUserId());
-        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
-        try {
-            String privateKey = Global.getValue("mx_private_key");
-            String apiUrl = Global.getValue("mx_risk_url");
-            /** 请求参数 */
-            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_MULTI_INFO);
-
-            /** 业务参数 */
-            Map<String, String> bizParams = new HashMap<>();
-            bizParams.put("name", userBaseinfo.getRealName());
-            bizParams.put("mobile", userBaseinfo.getPhone());
-            bizParams.put("idcard", userBaseinfo.getIdNo());
-            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
-
-            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
-
-            //签名
-            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
-
-            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
-
-            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
-            String resContent = MxCreditRequest.get(getURL, null);
-            if(StringUtil.isNotBlank(resContent)) {
-                JSONObject resJson = JSONObject.parseObject(resContent);
-                String code = resJson.getString("code");
-                if ("0000".equals(code)) {
-                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
-                    String transId = data.getString("trans_id");
-
-                    log.setRespCode(code);
-                    log.setRespTime(new Date());
-                    log.setTransId(transId);
-                    Date createDate = DateUtil.getNow();
-                    //插入详情表
-                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
-                    magicReqDetailMapper.save(magicReqDetail);
-                    //插入收费记录表
-                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO, CallsOutSideFeeConstant.FEE_MULTI_INFO);
-                    callsOutSideFeeMapper.save(callsOutSideFee);
-                    //保存数据
-                    AuthQueriedDetailBean authQueriedDetail = JSONObject.parseObject(data.getString("auth_queried_detail"), AuthQueriedDetailBean.class);
-                    if (authQueriedDetail != null) {
-                        saveMutiInfo(authQueriedDetail, userId, transId, createDate);
-                    }
-                    i = 1;
-                }
-                else {
-                    log.setRespCode(code);
-                    log.setRespTime(new Date());
-                    log.setRespParams(resContent);
-                }
-            }
-
-        } catch (Exception e) {
-            logger.error("用户userId：" + userId + "魔杖2.0-多头同步响应数据错误", e);
-        }
-        magicReqLogMapper.save(log);
-        return i;
-    }
-
-    @Override
-    public int queryBlackGray(Borrow borrow) {
-        int i = 0;
-        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
-        if(userBaseinfo == null) {
-            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
-            return i;
-        }
-        Long userId = userBaseinfo.getUserId();
-        MagicReqLog log = new MagicReqLog();
-        log.setBorrowId(borrow.getId());
-        log.setCreateTime(new Date());
-        log.setUserId(borrow.getUserId());
-        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
-        try {
-            String privateKey = Global.getValue("mx_private_key");
-            String apiUrl = Global.getValue("mx_risk_url");
-            /** 请求参数 */
-            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_BLACK_GRAY);
-
-            /** 业务参数 */
-            Map<String, String> bizParams = new HashMap<>();
-            bizParams.put("name", userBaseinfo.getRealName());
-            bizParams.put("mobile", userBaseinfo.getPhone());
-            bizParams.put("idcard", userBaseinfo.getIdNo());
-            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
-
-            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
-
-            //签名
-            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
-
-            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
-
-            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
-            String resContent = MxCreditRequest.get(getURL, null);
-            if(StringUtil.isNotBlank(resContent)) {
-                JSONObject resJson = JSONObject.parseObject(resContent);
-                String code = resJson.getString("code");
-                if ("0000".equals(code)) {
-                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
-                    String transId = data.getString("trans_id");
-
-                    log.setRespCode(code);
-                    log.setRespTime(new Date());
-                    log.setTransId(transId);
-                    Date createDate = DateUtil.getNow();
-                    //插入详情表
-                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
-                    magicReqDetailMapper.save(magicReqDetail);
-                    //插入收费记录表
-                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY, CallsOutSideFeeConstant.FEE_BLACK_GRAY);
-                    callsOutSideFeeMapper.save(callsOutSideFee);
-                    //保存数据
-                    BlackInfoDetailBean blackInfoDetail = JSONObject.parseObject(data.getString("black_info_detail"), BlackInfoDetailBean.class);
-                    GrayInfoDetailBean grayInfoDetail = JSONObject.parseObject(data.getString("gray_info_detail"), GrayInfoDetailBean.class);
-                    if (blackInfoDetail != null || grayInfoDetail != null) {
-                        saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
-                    }
-                    i = 1;
-                } else {
-                    log.setRespCode(code);
-                    log.setRespTime(new Date());
-                    log.setRespParams(resContent);
-                }
-            }
-        } catch (Exception e) {
-            logger.error("用户userId：" + userId + "魔杖2.0-黑灰名单响应数据错误", e);
-        }
-        magicReqLogMapper.save(log);
-        return i;
-    }
-
-    @Override
     public int queryPostLoad(Borrow borrow) {
         int i = 0;
         UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
@@ -434,6 +288,95 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
         } catch (Exception e) {
             logger.error("用户userId：" + userId + "魔杖2.0-多头同步响应数据错误", e);
+        }
+        magicReqLogMapper.save(log);
+        return i;
+    }
+
+    @Override
+    public int queryApply(Borrow borrow) {
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if(userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+            return i;
+        }
+        Long userId = userBaseinfo.getUserId();
+        MagicReqLog log = new MagicReqLog();
+        log.setBorrowId(borrow.getId());
+        log.setCreateTime(new Date());
+        log.setUserId(borrow.getUserId());
+        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_APPLY);
+        try {
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_APPLY);
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            if(StringUtil.isNotBlank(resContent)) {
+                JSONObject resJson = JSONObject.parseObject(resContent);
+                String code = resJson.getString("code");
+                if ("0000".equals(code)) {
+                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                    String transId = data.getString("trans_id");
+
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setTransId(transId);
+                    Date createDate = DateUtil.getNow();
+                    //插入详情表
+                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_APPLY);
+                    magicReqDetailMapper.save(magicReqDetail);
+                    //插入收费记录表
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_APPLY, CallsOutSideFeeConstant.FEE_APPLY);
+                    callsOutSideFeeMapper.save(callsOutSideFee);
+                    //保存数据
+                    //用户联系人信息
+                    MobileInfoBean mobileInfo = JSONObject.parseObject(data.getString("mobile_info"), MobileInfoBean.class);
+                    if (mobileInfo != null) {
+                        saveMobileInfo(mobileInfo, userId, transId, createDate);
+                    }
+                    //多头信息
+                    AuthQueriedDetailBean authQueriedDetail = JSONObject.parseObject(data.getString("auth_queried_detail"), AuthQueriedDetailBean.class);
+                    if (authQueriedDetail != null) {
+                        saveMutiInfo(authQueriedDetail, userId, transId, createDate);
+                    }
+                    //app安装情况
+                    List<RiskDeviceBean> riskDevices = JSONArray.parseArray(data.getString("risk_device"), RiskDeviceBean.class);
+
+                    if (riskDevices != null && riskDevices.size() > 0) {
+                        saveRiskDevice(riskDevices, userId, transId, createDate);
+                    }
+                    //信用卡逾期信息
+                    CreditCardBean creditCard = JSONObject.parseObject(data.getString("credit_card"), CreditCardBean.class);
+                    if(creditCard != null) {
+                        saveCreditCard(creditCard, userId, transId, createDate);
+                    }
+                    i = 1;
+                } else {
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setRespParams(resContent);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("用户userId：" + userId + "魔杖2.0-申请准入响应数据错误", e);
         }
         magicReqLogMapper.save(log);
         return i;
@@ -517,18 +460,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
                     MobileInfoBean mobileInfo = data.getMobileInfo();
                     if (mobileInfo != null) {
-                        //处理用户通讯录信息
-                        MagicMobileContact magicMobileContact = ObjectConvertUtil.getMagicMobileContact(mobileInfo);
-                        magicMobileContact.setUserId(userId);
-                        magicMobileContact.setTransId(transId);
-                        magicMobileContact.setCreateTime(createDate);
-                        magicMobileContactMapper.save(magicMobileContact);
-                        //处理用户亲密联系人信息
-                        MagicIntimateContact magicIntimateContact = ObjectConvertUtil.getMagicIntimateContact(mobileInfo);
-                        magicIntimateContact.setUserId(userId);
-                        magicIntimateContact.setTransId(transId);
-                        magicIntimateContact.setCreateTime(createDate);
-                        magicIntimateContactMapper.save(magicIntimateContact);
+                        saveMobileInfo(mobileInfo, userId, transId, createDate);
                     }
 
                     //处理用户多头信息
@@ -571,18 +503,13 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     //处理设备指纹风险信息
                     List<RiskDeviceBean> riskDevices = data.getRiskDevice();
                     if (riskDevices != null && riskDevices.size() > 0) {
-                        List<MagicRiskDevice> magicRiskDevices = ObjectConvertUtil.getMagicRiskDeviceList(riskDevices, userId, transId, createDate);
-                        magicRiskDeviceMapper.saveBatch(magicRiskDevices);
+                        saveRiskDevice(riskDevices, userId, transId, createDate);
                     }
 
                     //处理信用卡违约信息
                     CreditCardBean creditCard = data.getCreditCard();
                     if (creditCard != null) {
-                        MagicCreditCardOverdue magicCreditCardOverdue = ObjectConvertUtil.getMagicCreditCardOverdue(creditCard);
-                        magicCreditCardOverdue.setUserId(userId);
-                        magicCreditCardOverdue.setTransId(transId);
-                        magicCreditCardOverdue.setCreateTime(createDate);
-                        magicCreditCardOverdueMapper.save(magicCreditCardOverdue);
+                        saveCreditCard(creditCard, userId, transId, createDate);
                     }
 
                     //处理贷后行为信息
@@ -788,5 +715,33 @@ public class MagicRiskServiceImpl implements MagicRiskService {
         magicFraudulenceInfo.setTransId(transId);
         magicFraudulenceInfo.setCreateTime(createDate);
         magicFraudulenceInfoMapper.save(magicFraudulenceInfo);
+    }
+
+    private void saveMobileInfo(MobileInfoBean mobileInfo, Long userId, String transId, Date createDate) throws Exception {
+        //处理用户通讯录信息
+        MagicMobileContact magicMobileContact = ObjectConvertUtil.getMagicMobileContact(mobileInfo);
+        magicMobileContact.setUserId(userId);
+        magicMobileContact.setTransId(transId);
+        magicMobileContact.setCreateTime(createDate);
+        magicMobileContactMapper.save(magicMobileContact);
+        //处理用户亲密联系人信息
+        MagicIntimateContact magicIntimateContact = ObjectConvertUtil.getMagicIntimateContact(mobileInfo);
+        magicIntimateContact.setUserId(userId);
+        magicIntimateContact.setTransId(transId);
+        magicIntimateContact.setCreateTime(createDate);
+        magicIntimateContactMapper.save(magicIntimateContact);
+    }
+
+    private void saveRiskDevice(List<RiskDeviceBean> riskDevices, Long userId, String transId, Date createDate) throws Exception {
+        List<MagicRiskDevice> magicRiskDevices = ObjectConvertUtil.getMagicRiskDeviceList(riskDevices, userId, transId, createDate);
+        magicRiskDeviceMapper.saveBatch(magicRiskDevices);
+    }
+
+    private void saveCreditCard(CreditCardBean creditCard, Long userId, String transId, Date createDate) throws Exception {
+        MagicCreditCardOverdue magicCreditCardOverdue = ObjectConvertUtil.getMagicCreditCardOverdue(creditCard);
+        magicCreditCardOverdue.setUserId(userId);
+        magicCreditCardOverdue.setTransId(transId);
+        magicCreditCardOverdue.setCreateTime(createDate);
+        magicCreditCardOverdueMapper.save(magicCreditCardOverdue);
     }
 }

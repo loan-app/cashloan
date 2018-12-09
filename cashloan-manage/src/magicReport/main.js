@@ -44,30 +44,36 @@ Vue.component('my-page', {
     },
     data() {
         return {
-            headerData: {},
+            headerData: {
+                personInfo: {},
+                matchScore: 0
+            },
             tabData1: {},
             tabData2: {},
             tabData3: {},
             tabData4: {},
-            tabData5: {},
+            tabData5: {
+                blackInfoDetail: {},
+                grayInfoDetail: {}
+            },
         }
     },
     methods: {
         getData() {
             const searchParam = "/modules/manage/credit/loan/report/detail.htm" + window.location.search;
-            console.log(searchParam);
             // 请求数据
-                axios.get(searchParam).then(res => {
-                    if (res && res.data.code === 200) {
-                        this.headerData = res.data.data.blackGray.person_info;
-                        this.tabData1 = res.data.data.multiInfo.auth_queried_detail;
-                        this.tabData2 = res.data.data.antiFraud.untrusted_info;
-                        this.tabData3 = res.data.data.antiFraud.risk_qqgroup;
-                        this.tabData4 = res.data.data.antiFraud;
-                        this.tabData5 = res.data.data.blackGray;
-                    }
-                });
-
+            axios.get(searchParam).then(res => {
+                if (res && res.data.code === 200) {
+                    this.headerData.personInfo = res.data.data.apply.person_info;
+                    this.headerData.matchScore = res.data.data.apply.mobile_info.match_score;
+                    this.tabData1 = res.data.data.apply.auth_queried_detail;
+                    this.tabData2 = res.data.data.antiFraud.untrusted_info;
+                    this.tabData3 = res.data.data.antiFraud.risk_qqgroup;
+                    this.tabData4 = res.data.data.antiFraud;
+                    this.tabData5.blackInfoDetail = res.data.data.apply.black_info_detail;
+                    this.tabData5.grayInfoDetail = res.data.data.apply.gray_info_detail;
+                }
+            });
         }
     }
 });

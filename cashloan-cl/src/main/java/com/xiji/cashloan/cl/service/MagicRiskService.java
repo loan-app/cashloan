@@ -11,11 +11,9 @@ public interface MagicRiskService {
 
     int queryAntiFraud(Borrow borrow);
 
-    int queryMultiInfo(Borrow borrow);
-
-    int queryBlackGray(Borrow borrow);
-
     int queryPostLoad(Borrow borrow);
+
+    int queryApply(Borrow borrow);
 
     int magicReportRequest(Borrow borrow, TppBusiness business);
 

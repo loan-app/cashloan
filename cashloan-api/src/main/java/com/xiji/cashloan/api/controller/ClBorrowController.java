@@ -397,9 +397,8 @@ public class ClBorrowController extends BaseController {
 		borrow.setUserId(1L);
 		borrow.setId(1L);
 		int i = magicRiskService.queryAntiFraud(borrow);
-		int i2 = magicRiskService.queryMultiInfo(borrow);
+		int i2 = magicRiskService.queryApply(borrow);
 		int i3 = magicRiskService.queryPostLoad(borrow);
-		int i4 = magicRiskService.queryBlackGray(borrow);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");

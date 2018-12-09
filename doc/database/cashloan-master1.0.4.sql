@@ -550,7 +550,7 @@ INSERT INTO `arc_sys_config` VALUES (null, '10', 'api服务域名', 'server_host
 INSERT INTO `arc_sys_config` VALUES (null, '10', 'manage服务域名', 'manage_host', 'http://10.10.2.156:8081', '1', '管理后台域名', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '10', '移动端密钥', 'app_key', '11IhAP24Kb3Bsf7IE14wpl751bQc9VAPsFZ+LdB4riBgg2TDAiEAsSomOO1v8mK2VWhEQh6mttgN1', '1', null, '1');
 INSERT INTO `arc_sys_config` VALUES (null, '10', '版本控制', 'check_version', '1.0.0', '1', 'version版本号', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '10', '规则引擎配置表', 'rule_tables', 'cl_user_base_info,cl_operator_basic,cl_magic_untrusted,cl_magic_black_gray,cl_magic_fraudulence_info,cl_magic_multipoint,cl_magic_risk_qq_group,cl_magic_suspicious_device,cl_magic_suspicious_idcard,cl_magic_suspicious_mobile,cl_magic_loan_behavior_analysis', '1', '规则引擎配置表', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '10', '规则引擎配置表', 'rule_tables', 'cl_user_base_info,cl_operator_basic,cl_magic_untrusted,cl_magic_black_gray,cl_magic_fraudulence_info,cl_magic_multipoint,cl_magic_risk_qq_group,cl_magic_suspicious_device,cl_magic_suspicious_idcard,cl_magic_suspicious_mobile,cl_magic_loan_behavior_analysis,cl_magic_mobile_contact,cl_magic_intimate_contact,cl_magic_credit_card_overdue,cl_magic_risk_device', '1', '规则引擎配置表', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '10', 'app是否开启定位', 'is_location', '10', '1', '10开启 20关闭', '1');
 
 INSERT INTO `arc_sys_config` VALUES (null, '20', '当日最大注册用户数', 'day_register_max', '0', '0', '当日最大注册用户数', '1');
@@ -1770,10 +1770,9 @@ CREATE TABLE `cl_rc_tpp_business` (
 -- ----------------------------
 -- Records of cl_rc_tpp_business
 -- ----------------------------
-INSERT INTO `cl_rc_tpp_business` VALUES ('1', '1', '魔杖多头', 'MagicMultiInfo', '10', '', '', null, '2018-12-06 00:00:00');
-INSERT INTO `cl_rc_tpp_business` VALUES ('2', '1', '魔杖黑灰名单', 'MagicBlackGray', '10', '', '', null, '2018-12-06 00:00:00');
-INSERT INTO `cl_rc_tpp_business` VALUES ('3', '1', '魔杖反欺诈', 'MagicAntiFraud', '10', '', '', null, '2018-12-06 00:00:00');
-INSERT INTO `cl_rc_tpp_business` VALUES ('4', '1', '魔杖贷后行为', 'MagicPostLoad', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('1', '1', '魔杖申请准入', 'MagicApply', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('2', '1', '魔杖反欺诈', 'MagicAntiFraud', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('3', '1', '魔杖贷后行为', 'MagicPostLoad', '10', '', '', null, '2018-12-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for cl_sms
@@ -2487,7 +2486,7 @@ CREATE TABLE `cl_calls_outside_fee` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
   `task_id` varchar(64) NOT NULL COMMENT '任务id',
-  `type` TINYINT(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为',
+  `type` TINYINT(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖申请准入 5-魔杖贷后行为',
   `fee` decimal(5,2) NOT NULL COMMENT '收取费用',
   `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
   `gmt_modified` datetime DEFAULT NULL COMMENT '更新时间',

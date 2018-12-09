@@ -1685,11 +1685,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	
 	public void getThirdServiceData(final Borrow borrow,final String nid,final Long tppId,final String mobileType){
 		//魔杖-多头报告
-		if("MagicMultiInfo".equals(nid)){
-			logger.info("进入魔杖多头报告查询");
+		if("MagicApply".equals(nid)){
+			logger.info("进入魔杖申请准入报告查询");
 			Thread t = new Thread(new Runnable(){  
 				public void run(){
-					int count = magicRiskService.queryMultiInfo(borrow);
+					int count = magicRiskService.queryApply(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});  
@@ -1705,17 +1705,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			});  
 			t.start(); 
-		//魔杖-黑灰名单
-		} else if ("MagicBlackGray".equals(nid)) {
-			logger.info("进入魔杖黑灰名单查询");
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					int count = magicRiskService.queryBlackGray(borrow);
-					syncSceneBusinessLog(borrow.getId(), nid, count);
-				}
-			});
-			t.start();
-			//魔杖-贷后行为
+		//魔杖-贷后行为
 		} else if ("MagicPostLoad".equals(nid)) {
 			logger.info("进入魔杖贷后行为查询");
 			Thread t = new Thread(new Runnable() {

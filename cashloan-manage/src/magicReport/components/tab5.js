@@ -106,16 +106,16 @@ let tab5 = {
     methods: {},
     computed: {
         blackList() {
-            return this.data.black_info_detail || {};
+            return this.data.blackInfoDetail;
         },
         grayList() {
-            return this.data.gray_info_detail || {};
+            return this.data.grayInfoDetail;
         },
         blackListRecord() {
-            return ((this.data.black_info_detail || {}).blacklist_record) || {};
+            return this.data.blackInfoDetail.blacklist_record || {};
         },
         grayListRecord() {
-            return ((this.data.gray_info_detail || {}).graylist_record) || {};
+            return this.data.grayInfoDetail.graylist_record || {};
         }
     }
     // ...

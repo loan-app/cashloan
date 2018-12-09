@@ -78,16 +78,11 @@ public class CreditLoanReportController extends BaseController {
                 map.put("antiFraud", JSONObject.parseObject(antiFraud.getData()));
             }
             //用户多头接待信息
-            MagicReqDetail multiIno = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_MULTI_INFO);
+            MagicReqDetail multiIno = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_APPLY);
             if(multiIno != null) {
-                map.put("multiInfo", JSONObject.parseObject(multiIno.getData()));
+                map.put("apply", JSONObject.parseObject(multiIno.getData()));
             }
-            //用户黑灰名单
-            MagicReqDetail blackGray = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
-            if(blackGray != null) {
-                map.put("blackGray", JSONObject.parseObject(blackGray.getData()));
-            }
-            //用户贷后欣慰信息
+            //用户贷后行为信息
             MagicReqDetail postLoad = magicReqDetailService.getLastRecord(userId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
             if(postLoad != null) {
                 map.put("postLoad", JSONObject.parseObject(postLoad.getData()));

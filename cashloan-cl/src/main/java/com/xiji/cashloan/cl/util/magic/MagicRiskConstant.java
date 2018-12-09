@@ -28,4 +28,6 @@ public class MagicRiskConstant {
     public static String METHOD_MAGICWAND2_MULTI_INFO = "moxie.api.risk.magicwand2.multi-info";
     //魔杖贷后行为
     public static String METHOD_MAGICWAND2_POST_LOAD = "moxie.api.risk.magicwand2.post-load";
+    //魔杖申请注入
+    public static String METHOD_MAGICWAND2_APPLY = "moxie.api.risk.magicwand2.application";
 }

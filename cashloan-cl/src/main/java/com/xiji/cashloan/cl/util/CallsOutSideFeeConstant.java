@@ -9,10 +9,12 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_OPERATOR = 1;
     //魔杖反欺诈
     public static int CALLS_TYPE_ANTI_FRAUD = 2;
+    //魔杖申请准入
+    public static int CALLS_TYPE_APPLY = 3;
     //魔杖多头
-    public static int CALLS_TYPE_MULTI_INFO = 3;
+//    public static int CALLS_TYPE_MULTI_INFO = 3;
     //魔杖黑灰名单
-    public static int CALLS_TYPE_BLACK_GRAY = 4;
+//    public static int CALLS_TYPE_BLACK_GRAY = 4;
     //魔杖贷后行为
     public static int CALLS_TYPE_POST_LOAD = 5;
     //发送短信
@@ -24,10 +26,12 @@ public class CallsOutSideFeeConstant {
     public static double FEE_OPERATOR = 0.1;
     //魔杖反欺诈费用
     public static double FEE_ANTI_FRAUD = 0.2;
-    //魔杖多头费用
-    public static double FEE_MULTI_INFO = 0.3;
-    //魔杖黑灰名单费用
-    public static double FEE_BLACK_GRAY = 0.2;
+    //魔杖申请准入费用
+    public static double FEE_APPLY = 1;
+//    //魔杖多头费用
+//    public static double FEE_MULTI_INFO = 0.3;
+//    //魔杖黑灰名单费用
+//    public static double FEE_BLACK_GRAY = 0.2;
     //魔杖贷后行为费用
     public static double FEE_POST_LOAD = 0.5;
     //发送短信费用

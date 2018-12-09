@@ -49,7 +49,7 @@ export default React.createClass({
 
   },
   rowKey(record) {
-    return record.userId;
+    return record.id;
   },
 
   //分页
@@ -128,9 +128,7 @@ export default React.createClass({
           } else if (record.type == 2) {
               return "魔杖反欺诈"
           } else if (record.type == 3) {
-              return "魔杖多头"
-          } else if (record.type == 4) {
-              return "魔杖黑灰名单"
+              return "魔杖申请准入"
           } else if (record.type == 5) {
               return "魔杖贷后行为"
           } else if (record.type == 6) {
@@ -148,8 +146,8 @@ export default React.createClass({
     var state = this.state;
     return (
       <div className="block-panel">
-           <Table columns={columns} rowKey={this.rowKey}  
-             onRowClick={this.onRowClick}  
+           <Table columns={columns} rowKey={this.rowKey}
+             onRowClick={this.onRowClick}
              dataSource={this.state.data}
              pagination={this.state.pagination}
              loading={this.state.loading}
