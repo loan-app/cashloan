@@ -233,20 +233,6 @@ export default React.createClass({
           return "-"
         }
       }
-    }, {
-      title: '芝麻授信状态',
-      dataIndex: 'zhimaState',
-      render: (text, record)=>{
-        if(record.zhimaState==10){
-          return "未授信"
-        }else if(record.zhimaState==20){
-          return "授信中"
-        }else if(record.zhimaState==30){
-          return "已授信"
-        }else{
-          return "-"
-        }
-      }
     }];
     var state = this.state;
     return (
