@@ -19,7 +19,6 @@ import com.xiji.cashloan.cl.service.ClSmsService;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
-import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.model.BorrowModel;
@@ -76,14 +75,13 @@ public class ChargeController extends BaseController {
 	public void paymentNotify(HttpServletRequest request) throws Exception {
 		PaymentNotifyModel model = parseParam(request);
 
-		String key = Global.getValue("protocol_mchntcd_key");
 		String jsonMsg = JSON.toJSONString(model);
 		if (logger.isDebugEnabled()) {
 			logger.debug("代扣 - 异步通知：" + jsonMsg);
 		}
 
 		String orderNo = model.getMchntOrderId();
-		if (!model.checkSign(key)) {
+		if (!model.checkSign()) {
 			logger.error("验签失败" + orderNo);
 			//需要抛异常，否则服务的返回http响应吗是200，则支付调用方认为服务调用成功
 			response.setStatus(400);

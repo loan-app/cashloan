@@ -43,10 +43,10 @@ public class FuiouAgreementPayHelper extends BasePay {
     public BindXmlBeanResp bindMsg(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String privatekey = Global.getValue("protocol_privatekey");
-        String payUrl = Global.getValue("protocol_bindmsg_url");
-        String mchntcd = Global.getValue("protocol_mchntcd");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String privatekey = Global.getValue("fuiou_protocol_privatekey");
+        String payUrl = Global.getValue("fuiou_protocol_bindmsg_url");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.sendMsgSignStr(key);
         String resp = null;//返回值
@@ -98,10 +98,10 @@ public class FuiouAgreementPayHelper extends BasePay {
     public BindXmlBeanResp bindCommit(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String privatekey = Global.getValue("protocol_privatekey");
-        String payUrl = Global.getValue("protocol_bindcommit_url");
-        String mchntcd = Global.getValue("protocol_mchntcd");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String privatekey = Global.getValue("fuiou_protocol_privatekey");
+        String payUrl = Global.getValue("fuiou_protocol_bindcommit_url");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.proBindSignStr(key);
         String resp = null;//返回值
@@ -156,10 +156,10 @@ public class FuiouAgreementPayHelper extends BasePay {
     public BindXmlBeanResp unbind(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String privatekey = Global.getValue("protocol_privatekey");
-        String payUrl = Global.getValue("protocol_unbind_url");
-        String mchntcd = Global.getValue("protocol_mchntcd");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String privatekey = Global.getValue("fuiou_protocol_privatekey");
+        String payUrl = Global.getValue("fuiou_protocol_unbind_url");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.proUnBindSignStr(key);
         String orderNo = OrderNoUtil.getSerialNumber();
@@ -212,10 +212,10 @@ public class FuiouAgreementPayHelper extends BasePay {
     public BindXmlBeanResp bindQuery(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String privatekey = Global.getValue("protocol_privatekey");
-        String payUrl = Global.getValue("protocol_bindquery_url");
-        String mchntcd = Global.getValue("protocol_mchntcd");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String privatekey = Global.getValue("fuiou_protocol_privatekey");
+        String payUrl = Global.getValue("fuiou_protocol_bindquery_url");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.querySignStr(key);
         String orderNo = OrderNoUtil.getSerialNumber();
@@ -272,10 +272,10 @@ public class FuiouAgreementPayHelper extends BasePay {
     public OrderXmlBeanResp repayment(OrderXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         OrderXmlBeanResp bindResult = new OrderXmlBeanResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String privatekey = Global.getValue("protocol_privatekey");
-        String payUrl = Global.getValue("protocol_order_url");
-        String mchntcd = Global.getValue("protocol_mchntcd");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String privatekey = Global.getValue("fuiou_protocol_privatekey");
+        String payUrl = Global.getValue("fuiou_protocol_order_url");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.signStr(key);
         // 获取系统参数中支付启用状态
@@ -333,9 +333,9 @@ public class FuiouAgreementPayHelper extends BasePay {
      */
     public QryByFuiouOrderResp queryOrderId(QryByFuiouOrderReq beanReq) {
         QryByFuiouOrderResp bindResult = new QryByFuiouOrderResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String mchntcd = Global.getValue("protocol_mchntcd");
-        String payUrl = Global.getValue("protocol_queryorderid_url");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
+        String payUrl = Global.getValue("fuiou_protocol_queryorderid_url");
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.querySignStr(key);
         String orderNo = OrderNoUtil.getSerialNumber();
@@ -383,9 +383,9 @@ public class FuiouAgreementPayHelper extends BasePay {
      */
     public OrderQryResp checkResult(OrderQryByMSsn beanReq) {
         OrderQryResp bindResult = new OrderQryResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String mchntcd = Global.getValue("protocol_mchntcd");
-        String payUrl = Global.getValue("protocol_checkresult_url");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
+        String payUrl = Global.getValue("fuiou_protocol_checkresult_url");
         beanReq.setMchntCd(mchntcd);
         beanReq.setVersion("3.0");
         String signStr = beanReq.querySign(key);
@@ -433,9 +433,9 @@ public class FuiouAgreementPayHelper extends BasePay {
      */
     public BankCardResp cardBinQuery(BankCardReq beanReq) {
         BankCardResp bindResult = new BankCardResp();
-        String key = Global.getValue("protocol_mchntcd_key");
-        String mchntcd = Global.getValue("protocol_mchntcd");
-        String payUrl = Global.getValue("protocol_cardbinquery_url");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        String mchntcd = Global.getValue("fuiou_protocol_mchntcd");
+        String payUrl = Global.getValue("fuiou_protocol_cardbinquery_url");
 
         beanReq.setMchntCd(mchntcd);
         String signStr = beanReq.querySign(key);
@@ -502,7 +502,7 @@ public class FuiouAgreementPayHelper extends BasePay {
         if (payLog == null) {
             return orderInfo;
         }
-        String key = Global.getValue("protocol_mchntcd_key");
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
         //优先使用支付号查询
         if (StringUtil.isNotEmpty(payLog.getPayOrderNo())) {
             QryByFuiouOrderReq beanReq = new QryByFuiouOrderReq();

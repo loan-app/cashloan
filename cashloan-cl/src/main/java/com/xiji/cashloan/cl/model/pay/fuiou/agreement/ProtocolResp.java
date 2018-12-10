@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.fuiou.agreement;
 
+import com.xiji.cashloan.core.common.context.Global;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -20,5 +21,9 @@ public class ProtocolResp {
 
     public boolean error() {
         return StringUtils.startsWith(errorCode, "300");
+    }
+
+    public String getkey() {
+        return Global.getValue("fuiou_protocol_mchntcd_key");
     }
 }

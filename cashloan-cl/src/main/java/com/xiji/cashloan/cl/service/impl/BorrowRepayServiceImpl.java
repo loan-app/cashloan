@@ -925,7 +925,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			beanreq.setMchntOrderId(log.getOrderNo());
 			FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
 			OrderQryResp resp = payHelper.checkResult(beanreq);
-			String key = Global.getValue("protocol_mchntcd_key");
+			String key = Global.getValue("fuiou_protocol_mchntcd_key");
 			if (resp.checkReturn() && resp.checkSign(key)) {
 				// 更新订单状态
 				repaymentNotify(log,PayLogModel.STATE_PAYMENT_SUCCESS,
@@ -953,7 +953,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Borrow borrow = clBorrowService.getById(borrowId);
 		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
 		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-		String key = Global.getValue("protocol_mchntcd_key");
+		String key = Global.getValue("fuiou_protocol_mchntcd_key");
 
 		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
 		paramRepayMap.put("borrowId", borrowId);

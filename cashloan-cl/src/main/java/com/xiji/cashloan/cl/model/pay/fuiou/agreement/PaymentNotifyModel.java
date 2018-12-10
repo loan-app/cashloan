@@ -10,7 +10,7 @@ import com.xiji.cashloan.core.common.util.StringUtil;
  * @Date: 2018/11/28 10:41
  * @Description:
  */
-public class PaymentNotifyModel {
+public class PaymentNotifyModel extends ProtocolResp{
     private String version;//VERSION
     private String type;//TYPE
     private String mchntCd;//商户号
@@ -146,8 +146,8 @@ public class PaymentNotifyModel {
         return buffer.toString();
     }
 
-    public boolean checkSign(String key) {
-        return StringUtil.equalsIgnoreCase(MD5.MD5Encode(this.signReturnMsg(key)),sign);
+    public boolean checkSign() {
+        return StringUtil.equalsIgnoreCase(MD5.MD5Encode(this.signReturnMsg(getkey())),sign);
     }
 
     public boolean checkReturn() {

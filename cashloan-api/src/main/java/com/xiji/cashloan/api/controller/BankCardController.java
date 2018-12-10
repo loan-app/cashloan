@@ -409,7 +409,7 @@ public class BankCardController extends BaseController {
         FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
         BankCardResp resp = payHelper.cardBinQuery(beanreq);
         String bank = "";
-		String key = Global.getValue("protocol_mchntcd_key");
+		String key = Global.getValue("fuiou_protocol_mchntcd_key");
         if (resp.checkReturn() && resp.checkSign(key)) {
 			bank = StringUtil.isNull(resp.getCnm());
         }
