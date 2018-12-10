@@ -71,7 +71,7 @@ public class ContractService {
             String customerName = user.get("real_name").toString();
             String sfz = user.get("id_no").toString();
             String mobile = user.get("phone").toString();
-            
+            String appName = Global.getValue("appName");
             
             
             html = FreemarkerUtil.fillTemplate(html, MapUtil.array2Map(new Object[][]{
@@ -84,7 +84,8 @@ public class ContractService {
                 {"penalty", Double.parseDouble(penalty)*100},
                 {"customerName", customerName},
                 {"amount",borrow.get("amount")},
-                {"fee",borrow.get("fee")}
+                {"fee",borrow.get("fee")},
+                {"appName",appName}
             }));
 
             String s = File.separator;

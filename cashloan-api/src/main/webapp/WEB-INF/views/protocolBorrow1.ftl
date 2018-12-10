@@ -1,8 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>借 款 合 同</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="#7CD88E"/>
+	<title>【哆啦a借用户借款协议】</title>
+	<script src="/static/js/mobile.js"></script>
+    <script src="/static/js/zepto.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/general.css"/>
     <style type="text/css">
         * {
             font-family: SimSun;
@@ -29,30 +36,20 @@
         </strong>
     </p>
 
-    <p style="margin-bottom: 10px; text-align: center; line-height: 32px">
-        <strong></strong>
-        <strong>
-            <span style="">编号：</span>
-        </strong>
-				<span style="text-decoration: underline;">
-					<span style="font-size: 16px">${htno}</span>
-				</span>
-    </p>
-
     <p style="line-height: 32px">
-        <span style="font-size: 16px">甲方（资金借入方）：</span>${customerName}
+        <span style="font-size: 16px">甲方（资金借入方）：</span>${datas.customerName}
     </p>
 
     <p style="margin-bottom: 10px; line-height: 32px">
-        <span style="font-size: 16px">身份证号码：</span>${sfz}
-    </p>
-    
-    <p style="margin-bottom: 10px; line-height: 32px">
-        <span style="font-size: 16px">手机号码：</span>${mobile}
+        <span style="font-size: 16px">身份证号码：</span>${datas.sfz}
     </p>
 
     <p style="margin-bottom: 10px; line-height: 32px">
-        <span style="font-size: 16px">乙方（居间服务方）：${appName}</span>
+        <span style="font-size: 16px">手机号码：</span>${datas.mobile}
+    </p>
+
+    <p style="margin-bottom: 10px; line-height: 32px">
+        <span style="font-size: 16px">乙方（居间服务方）：${datas.appName}</span>
     </p>
 
     <p style="line-height: 32px">
@@ -62,21 +59,21 @@
     <p style="text-indent: 32px; line-height: 32px">
         <span style="font-size: 16px">(1)甲方为具备完全民事行为能力的中华人民共和国大陆地区居民</span>
         <span style="font-size: 16px">甲方为具备完全民事行为能力的中华人民共和国大陆地区居民,</span>
-        <span style="font-size: 16px">“花不花”注册用户，具有一定资金需求.</span>
+        <span style="font-size: 16px">“${datas.appName}”注册用户，具有一定资金需求.</span>
     </p>
 
     <p style="text-indent: 32px; line-height: 32px">
-        <span style="font-size: 16px">(2)乙方系互联网金融信息服务平台“${appName}”运营方,</span>
-        <span style="font-size: 16px">乙方系互联网金融信息服务平台“${appName}”运营方,</span>
+        <span style="font-size: 16px">(2)乙方系互联网金融信息服务平台“${datas.appName}”运营方,</span>
+        <span style="font-size: 16px">乙方系互联网金融信息服务平台“${datas.appName}”运营方,</span>
         <span style="font-size: 16px">能够通过其平台为甲方借款事项提供信息中介服务.</span>
     </p>
 
     <p style="text-indent: 32px; line-height: 32px">
         <span style="font-size: 16px">(3)甲方在申请使用本服务前应充分阅读、理解本协议的全部内容,</span>
         <span style="font-size: 16px">甲方在申请使用本服务前应充分阅读、理解本协议的全部内容,</span>
-    	<span style="font-size: 16px">甲方在本平台上的账户和密码是识别甲方身份及指令的唯一标志,</span>
-    	<span style="font-size: 16px">任何使用甲方的账户和密码在乙方平台上作出的指示均是不可撤销的,</span>
-    	<span style="font-size: 16px">本平台对依照该指示进行的操作行为及其结果不承担任何责任.</span>
+        <span style="font-size: 16px">甲方在本平台上的账户和密码是识别甲方身份及指令的唯一标志,</span>
+        <span style="font-size: 16px">任何使用甲方的账户和密码在乙方平台上作出的指示均是不可撤销的,</span>
+        <span style="font-size: 16px">本平台对依照该指示进行的操作行为及其结果不承担任何责任.</span>
     </p>
 
     <p style="margin: 10px 0; line-height: 32px; background: white">
@@ -88,11 +85,11 @@
 
     <p style="text-indent: 32px; line-height: 32px">
         <span style="font-size: 16px">1.1</span>
-				<span style="font-size: 16px">借款本金金额：
+        <span style="font-size: 16px">借款本金金额：
 					<a name="OLE_LINK8"></a>甲方本次借款本金总金额为人民币
 					<a name="OLE_LINK6"></a>
 					<span style="text-decoration: underline;">
-						<span style="text-decoration: underline">${amount}</span>
+						<span style="text-decoration: underline">${datas.amount}</span>
 					</span>元。
 				</span>
     </p>
@@ -104,9 +101,9 @@
 
     <p style="text-indent: 32px; line-height: 32px">
         <span style="font-size: 16px">1.3</span>
-				<span style="font-size: 16px">借款期限：自<span style="text-decoration: underline"> ${fromDate} </span>起至<a name="OLE_LINK4"></a>
-                    <span style="text-decoration: underline"> ${endDate} </span>止，共计<span style="text-decoration: underline;">
-						<span style="text-decoration: underline"> ${dayCnt} </span>
+        <span style="font-size: 16px">借款期限：自<span style="text-decoration: underline"> ${datas.fromDate} </span>起至<a name="OLE_LINK4"></a>
+                    <span style="text-decoration: underline"> ${datas.endDate} </span>止，共计<span style="text-decoration: underline;">
+						<span style="text-decoration: underline"> ${datas.dayCnt} </span>
 					</span>天
 				</span>
     </p>
@@ -123,8 +120,8 @@
     <p style="line-height: 32px">
 
         <span style="font-size: 16px">乙方为甲方和出借人（互联网投资理财用户）双方提供撮合、信息咨询、信用评估与管理、合同签订,</span>
-    	<span style="font-size: 16px">促成双方交易、还款提醒、账户管理、提前还款、还款特殊情况下还款处理诉讼协助等相关咨询服务,</span>
-    	<span style="font-size: 16px">甲方同意乙方可收取一定比例的服务费，包括信息服务费、咨询费、信用评审费、管理费等.</span>
+        <span style="font-size: 16px">促成双方交易、还款提醒、账户管理、提前还款、还款特殊情况下还款处理诉讼协助等相关咨询服务,</span>
+        <span style="font-size: 16px">甲方同意乙方可收取一定比例的服务费，包括信息服务费、咨询费、信用评审费、管理费等.</span>
     </p>
 
     <p style="margin: 10px 0; text-indent: 32px; line-height: 32px; background: white">
@@ -134,7 +131,7 @@
     <p style="margin: 10px 0; text-indent: 32px; line-height: 32px; background: white">
         <span style="font-size: 16px">2.2</span>
         <span style="font-size: 16px">乙方就向甲方提供本协议项下服务收取甲方服务费，金额为人民币</span>
-        <span style="font-size: 16px"> ${fee} </span>
+        <span style="font-size: 16px"> ${datas.fee} </span>
         <span style="font-size: 16px">元</span>
     </p>
 
@@ -159,14 +156,14 @@
     <p style="line-height: 32px">
         <span style="font-size: 16px">3.2</span>
         <span style="font-size: 16px">甲方应当于</span>
-				<span style="text-decoration: underline;">
-					${endDate}
+        <span style="text-decoration: underline;">
+		${endDate}
 				</span>
-				<span style="font-size: 16px">前共计偿还
+        <span style="font-size: 16px">前共计偿还
 					<a name="OLE_LINK9"></a>借款本息人民币
 				</span>
-				<span style="text-decoration: underline;">
-					<span style="font-size: 16pxtext-decoration: underline">${amount}</span>
+        <span style="text-decoration: underline;">
+					<span style="font-size: 16pxtext-decoration: underline">${datas.amount}</span>
 				</span>
         <span style="font-size: 16px">元</span>
         <span style="font-size: 16px">。</span>
@@ -181,7 +178,7 @@
     <p style="line-height: 32px">
         <span style="font-size: 16px">3.4</span>
         <span style="font-size: 16px">若甲方的还款金额不足时，借款债务的清偿顺序依次为：逾期利息，综合费用，本金.</span>
-    
+
     </p>
 
     <p style="margin: 10px 0; line-height: 32px; background: white">
@@ -206,7 +203,7 @@
     </p>
 
     <p style="line-height: 32px">
-        
+
         <span style="font-size: 16px">甲方承诺不会将本协议项下的债务以任何形式转让给任何其他方,</span>
         <span style="font-size: 16px">如转让亦不对乙方及出借人发生任何法律上的效力.</span>
     </p>
@@ -256,12 +253,12 @@
     </p>
 
     <p style="text-indent: 32px; line-height: 32px; background: white">
-		<span style="font-size: 16px">（1）甲方的不良信用信息记录将被上传至经中国人民银行批准并依法设立的各类型征信数据机构</span>
+        <span style="font-size: 16px">（1）甲方的不良信用信息记录将被上传至经中国人民银行批准并依法设立的各类型征信数据机构</span>
     </p>
 
     <p style="text-indent: 32px; line-height: 32px; background: white">
         <span style="font-size: 16px">（2）甲方应当于还款逾期之日起,</span>
-        <span style="font-size: 16px">每日按照借款本金金额的${penalty}%承担逾期违约金直至全部款项偿还完毕之日.</span>
+        <span style="font-size: 16px">每日按照借款本金金额的${datas.penalty}%承担逾期违约金直至全部款项偿还完毕之日.</span>
     </p>
 
     <p style="margin: 10px 0; line-height: 32px; background: white">
@@ -377,3 +374,5 @@
 </div>
 </body>
 </html>
+
+
