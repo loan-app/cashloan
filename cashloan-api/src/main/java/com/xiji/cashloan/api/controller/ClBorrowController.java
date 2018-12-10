@@ -1,38 +1,15 @@
 package com.xiji.cashloan.api.controller;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.xiji.cashloan.cl.service.MagicRiskService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import tool.util.DateUtil;
-import tool.util.NumberUtil;
-import tool.util.StringUtil;
-
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
+import com.xiji.cashloan.api.util.StringSplit;
 import com.xiji.cashloan.cl.domain.QianchengReqlog;
 import com.xiji.cashloan.cl.model.ClBorrowModel;
 import com.xiji.cashloan.cl.model.IndexModel;
 import com.xiji.cashloan.cl.model.QianchengReqlogModel;
 import com.xiji.cashloan.cl.model.RepayModel;
 import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.MagicRiskService;
 import com.xiji.cashloan.cl.service.OperatorReqLogService;
 import com.xiji.cashloan.cl.service.QianchengReqlogService;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -49,8 +26,27 @@ import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
 import com.xiji.cashloan.rc.model.TppBusinessModel;
 import com.xiji.cashloan.rc.service.SceneBusinessLogService;
-
 import credit.ApiSignUtil;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.DateUtil;
+import tool.util.NumberUtil;
+import tool.util.StringUtil;
 
 /**
  * 借款申请风控接口执行记录
@@ -84,8 +80,6 @@ public class ClBorrowController extends BaseController {
 	/**
 	 * 查询借款列表
 	 * @param userId
-	 * @param current
-	 * @param pageSize
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/api/act/borrow/findAll.htm")
@@ -130,7 +124,6 @@ public class ClBorrowController extends BaseController {
 	
 	/**
 	 * 查询订单
-	 * @param search
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/api/act/borrow/findBorrow.htm", method = RequestMethod.POST)
@@ -213,7 +206,6 @@ public class ClBorrowController extends BaseController {
 	 * @param amount
 	 * @param timeLimit
 	 * @param tradePwd
-	 * @param userId
 	 * @param cardId
 	 * @param client
 	 * @param address
@@ -356,8 +348,57 @@ public class ClBorrowController extends BaseController {
 		request.setAttribute("datas", result);
 		return "protocolBorrow";
 	}
-	
-	
+
+	/**
+	 * 借款协议预览
+	 *
+	 * @param amount
+	 * @param timeLimit
+	 * @return
+	 */
+	@RequestMapping(value = "/api/act/borrow/protocolPreview1.htm")
+	public String protocolPreview1(@RequestParam(value = "amount") double amount,
+		@RequestParam(value = "timeLimit") String timeLimit) {
+		String userId = request.getParameter("userId");
+		if(StringUtil.isBlank(userId)  || NumberUtil.getLong(userId) == 0 ){
+			throw new BussinessException(StringUtil.isNull(Constant.FAIL_CODE_VALUE),"请先登录");
+		}
+
+		UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(NumberUtil.getLong(userId));
+		// 根据借款金额和借款期限，返回其余费用明细
+		Map<String, Object> map = clBorrowService.choice(amount, timeLimit);
+
+		String penaltyFee = Global.getValue("penalty_fee");
+		String[] penaltyFees = penaltyFee.split(",");
+
+		String penalty = "2";
+		for (String string : penaltyFees) {
+			String[] penaltyParams = string.split("-");
+			if (penaltyParams.length==2) {
+				if (Integer.parseInt(penaltyParams[0])==(Integer.parseInt(timeLimit))) {
+					penalty = penaltyParams[1];
+				}
+			}
+		}
+		String appName = Global.getValue("appName");
+		Date now = DateUtil.getNow(); // 当前时间
+		Date repayTime = DateUtil.rollDay(now, Integer.parseInt(timeLimit) - 1); // 还款日期
+		Map<String, Object> result  = new HashMap<>();
+		result.put("customerName",userBaseInfo.getRealName());
+		result.put("sfz",userBaseInfo.getIdNo());
+		result.put("mobile",userBaseInfo.getPhone());
+		result.put("amount", StringSplit.stirngSplitZero(Double.toString(amount)));
+		result.put("dayCnt",timeLimit);
+		result.put("fromDate", DateUtil.dateStr(now, "yyyy年MM月dd日"));
+		result.put("endDate",DateUtil.dateStr(repayTime, "yyyy年MM月dd日"));
+		result.put("penalty",Double.parseDouble(penalty)*100);
+		result.put("fee",StringSplit.stirngSplitZero(StringUtil.isNull(map.get("fee"))));
+		result.put("appName",appName);
+
+		request.setAttribute("datas", result);
+		return "protocolBorrow1";
+	}
+
 	/**
 	 * 借款详情—合同信息
 	 * @param borrowId

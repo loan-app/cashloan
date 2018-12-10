@@ -14,17 +14,17 @@ INSERT INTO `arc_sys_config` VALUES (null, '90', '魔蝎apikey', 'mx_apikey', '2
 INSERT INTO `arc_sys_config` VALUES (null, '90', '魔蝎获取运营商加强数据URL', 'mx_operator_mxdata', 'https://api.51datakey.com/carrier/v3/mobiles/{mobile}/mxdata-ex', '1', '魔蝎运营商数据加强版请求url', '1');
 
 -- 富有支付相关配置 2018-11-28日添加
-INSERT INTO `arc_sys_config` VALUES (null, 80, '富有验证码接口', 'protocol_bindmsg_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/bindMsg.pay', 1, '发送短信验证码接口-绑卡', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '协议卡绑定', 'protocol_bindcommit_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/bindCommit.pay', 1, '协议卡绑定', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '协议解绑接口', 'protocol_unbind_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/unbind.pay', 1, '协议解绑接口', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '协议卡查询', 'protocol_bindquery_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/bindQuery.pay', 1, '协议卡查询', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '协议支付接口', 'protocol_order_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/order.pay', 1, '协议支付接口', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '富友订单号查询', 'protocol_queryorderid_url', 'http://www-1.fuiou.com:18670/mobile_pay/findPay/queryOrderId.pay', 1, '订单结果查询接口(富友订单号)', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '商户订单号查询', 'protocol_checkresult_url', 'http://www-1.fuiou.com:18670/mobile_pay/checkInfo/checkResult.pay', 1, '订单结果查询接口(商户订单号)', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '卡Bin查询接口', 'protocol_cardbinquery_url', 'http://www-1.fuiou.com:18670/mobile_pay/findPay/cardBinQuery.pay', 1, '商户支持卡 Bin 查询接口', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, 'RSA私钥', 'protocol_privatekey', '\"\"', 1, 'RSA私钥', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '商户号', 'protocol_mchntcd', '0002900F0096235', 1, '商户号', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '商户密钥', 'protocol_mchntcd_key', '5old71wihg2tqjug9kkpxnhx9hiujoqj', 1, '商户密钥', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '富有验证码接口', 'fuiou_protocol_bindmsg_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/bindMsg.pay', 1, '发送短信验证码接口-绑卡', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '协议卡绑定', 'fuiou_protocol_bindcommit_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/bindCommit.pay', 1, '协议卡绑定', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '协议解绑接口', 'fuiou_protocol_unbind_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/unbind.pay', 1, '协议解绑接口', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '协议卡查询', 'fuiou_protocol_bindquery_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/bindQuery.pay', 1, '协议卡查询', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '协议支付接口', 'fuiou_protocol_order_url', 'http://www-1.fuiou.com:18670/mobile_pay/newpropay/order.pay', 1, '协议支付接口', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '富友订单号查询', 'fuiou_protocol_queryorderid_url', 'http://www-1.fuiou.com:18670/mobile_pay/findPay/queryOrderId.pay', 1, '订单结果查询接口(富友订单号)', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '商户订单号查询', 'fuiou_protocol_checkresult_url', 'http://www-1.fuiou.com:18670/mobile_pay/checkInfo/checkResult.pay', 1, '订单结果查询接口(商户订单号)', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '卡Bin查询接口', 'fuiou_protocol_cardbinquery_url', 'http://www-1.fuiou.com:18670/mobile_pay/findPay/cardBinQuery.pay', 1, '商户支持卡 Bin 查询接口', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, 'RSA私钥', 'fuiou_protocol_privatekey', '\"\"', 1, 'RSA私钥', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '商户号', 'fuiou_protocol_mchntcd', '0002900F0096235', 1, '商户号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '商户密钥', 'fuiou_protocol_mchntcd_key', '5old71wihg2tqjug9kkpxnhx9hiujoqj', 1, '商户密钥', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '支付是否开启', 'fuiou_switch', '1', 1, '1开2关', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '商户号', 'fuiou_merid', '0002900F0345178', 1, '商户号', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '商户密码', 'fuiou_pwd', '123456', 1, '商户密码', 1);
@@ -62,6 +62,7 @@ update `arc_sys_config` set value='0.25',remark='综合费用集合(0.098,0.12,0
 update `arc_sys_config` set value='https://api.megvii.com/faceid/v3/ocridcard' where code='linkface_idOcr';
 update `arc_sys_config` set value='https://api.megvii.com/faceid/v2/verify' where code='linkface_liVerification';
 update `arc_sys_config` set value='10' where code='zhima_auth';
+update `arc_sys_config` set value='/api/act/borrow/protocolPreview1.htm?protocol=me' where code='protocol_borrow';
 
 -- 修改调用外部收据收费表用户标识字段
 ALTER TABLE `cl_calls_outside_fee` change user_id `user_id` bigint(20) DEFAULT  NULL COMMENT '用户标识';
@@ -131,3 +132,9 @@ CREATE TABLE `cl_xinyan_loan_report` (
 	`resp_time` DATETIME DEFAULT NULL COMMENT '响应时间',
 	PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT = '新颜-小额网贷报告';
+
+ALTER TABLE cl_calls_outside_fee add cast_type tinyint(4) NOT NULL COMMENT '费用类型 0：消费，1：充值';
+
+ALTER TABLE cl_calls_outside_fee add phone CHAR(16) NOT NULL comment '手机号码';
+
+ALTER TABLE cl_calls_outside_fee change type type tinyint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别';

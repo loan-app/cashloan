@@ -263,7 +263,7 @@ public class OperatorController extends BaseController {
                     //插入调用外部数据接口费用表
                     CallsOutSideFee callsOutSideFee = callsOutSideFeeService.getByTaskId(taskId);
                     if(callsOutSideFee == null) {
-                        callsOutSideFee = new CallsOutSideFee(userId, taskId, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR);
+                        callsOutSideFee = new CallsOutSideFee(userId, taskId, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,mobile);
                         callsOutSideFeeService.insert(callsOutSideFee);
                     }
                     //修改认证状态为认证完成

@@ -13,8 +13,8 @@ import java.util.Map;
 public class ApiServiceTest {
 
     public static void main(String[] args) {
-//        testfindProgress();
-        testconfirmPay();
+        testfindProgress();
+//        testconfirmPay();
     }
 
 

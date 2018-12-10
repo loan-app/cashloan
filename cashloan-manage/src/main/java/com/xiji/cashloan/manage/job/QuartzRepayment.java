@@ -215,7 +215,7 @@ public class QuartzRepayment implements Job {
 				beanReq.setBackUrl(Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
 				beanReq.setRem1("还款" + borrow.getOrderNo());
 				beanReq.setRem2("repayment_" + borrow.getOrderNo());
-				String key = Global.getValue("protocol_mchntcd_key");
+				String key = Global.getValue("fuiou_protocol_mchntcd_key");
 				OrderXmlBeanResp resp = payHelper.repayment(beanReq);
 				String payMsg = "";
 				String payOrderNo = "";

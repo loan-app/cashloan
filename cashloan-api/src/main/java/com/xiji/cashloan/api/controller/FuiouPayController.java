@@ -230,7 +230,7 @@ public class FuiouPayController extends BaseController {
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
-            String key = Global.getValue("protocol_mchntcd_key");
+            String key = Global.getValue("fuiou_protocol_mchntcd_key");
             if (orderXmlBeanResp.checkSign(key)) {
                 resp.getOutputStream().write(result.getBytes("utf8"));
             }else {
@@ -252,7 +252,7 @@ public class FuiouPayController extends BaseController {
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
-            String key = Global.getValue("protocol_mchntcd_key");
+            String key = Global.getValue("fuiou_protocol_mchntcd_key");
             if (bindXmlBeanResp.checkSign(key)) {
                 resp.getOutputStream().write(result.getBytes("utf8"));
             }else {
@@ -288,7 +288,7 @@ public class FuiouPayController extends BaseController {
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
-            String key = Global.getValue("protocol_mchntcd_key");
+            String key = Global.getValue("fuiou_protocol_mchntcd_key");
             if (bindXmlBeanResp.checkSign(key)) {
                 resp.getOutputStream().write(result.getBytes("utf8"));
             }else {
@@ -312,7 +312,7 @@ public class FuiouPayController extends BaseController {
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
-            String key = Global.getValue("protocol_mchntcd_key");
+            String key = Global.getValue("fuiou_protocol_mchntcd_key");
             if (bankCardResp.checkSign(key)) {
                 resp.getOutputStream().write(result.getBytes("utf8"));
             }else {
