@@ -62,6 +62,7 @@ update `arc_sys_config` set value='0.25',remark='综合费用集合(0.098,0.12,0
 update `arc_sys_config` set value='https://api.megvii.com/faceid/v3/ocridcard' where code='linkface_idOcr';
 update `arc_sys_config` set value='https://api.megvii.com/faceid/v2/verify' where code='linkface_liVerification';
 update `arc_sys_config` set value='10' where code='zhima_auth';
+update `arc_sys_config` set value='/api/act/borrow/protocolPreview1.htm?protocol=me' where code='protocol_borrow';
 
 -- 修改调用外部收据收费表用户标识字段
 ALTER TABLE `cl_calls_outside_fee` change user_id `user_id` bigint(20) DEFAULT  NULL COMMENT '用户标识';
