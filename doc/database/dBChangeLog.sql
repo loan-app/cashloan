@@ -70,4 +70,64 @@ ALTER TABLE `cl_calls_outside_fee` change user_id `user_id` bigint(20) DEFAULT  
 update `arc_sys_config` set value=1000,remark='借款额度(500,1000)' where code='borrow_credit';
 
 -- 新增自动审核成功,是否人工审核配置 2018.12.9
-INSERT INTO `arc_sys_config` VALUES (null, '10', '人工审核开关', 'arc_sys_config', '10', '1', '机审通过,人工审核开关 10-启用 20-禁用', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '10', '人工审核开关', 'review_loan', '10', '1', '机审通过,人工审核开关 10-启用 20-禁用', '1');
+
+-- 新建新颜请求记录表和小额网贷报告表
+DROP TABLE IF EXISTS `cl_xinyan_req_log`;
+CREATE TABLE `cl_xinyan_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `trans_id` varchar(64) DEFAULT NULL COMMENT '申请订单号',
+  `trade_no` varchar(64) DEFAULT '' COMMENT '同步响应订单号',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `is_success` TINYINT(1) DEFAULT NULL COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `resp_params` mediumtext COMMENT '同步响应结果',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` TINYINT(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
+  `type` TINYINT(2) DEFAULT NULL COMMENT '类型 1-小额网贷',
+  `data_code` varchar(10) DEFAULT NULL COMMENT 'data响应码 0-查询成功 1-查询未命中 9-其他异常',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='新颜请求记录表';
+
+DROP TABLE IF EXISTS `cl_xinyan_loan_report`;
+CREATE TABLE `cl_xinyan_loan_report` (
+	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+	`user_id` BIGINT (20) DEFAULT NULL COMMENT '用户id',
+	`trade_` VARCHAR (64) DEFAULT '' COMMENT '交易订单号',
+	`score` VARCHAR (50) DEFAULT NULL COMMENT '分数',
+	`cur_max_credit` VARCHAR (50) DEFAULT NULL COMMENT '本业务最大授信额度',
+	`cur_avg_credit` VARCHAR (50) DEFAULT NULL COMMENT '本业务平均授信额度',
+	`cur_loan_cnt_30d` VARCHAR (50) DEFAULT NULL COMMENT '本业务近1个月贷款笔数',
+	`cur_loan_cnt_90d` VARCHAR (50) DEFAULT NULL COMMENT '本业务近3个月贷款笔数',
+	`cur_loan_cnt_180d` VARCHAR (50) DEFAULT NULL COMMENT '本业务近6个月贷款笔数',
+	`cur_loan_total_cnt` VARCHAR (50) DEFAULT NULL COMMENT '本业务贷款总笔数',
+	`cur_loan_org_total_cnt` VARCHAR (50) DEFAULT NULL COMMENT '本业务贷款机构数',
+	`cur_last_to_end_loan` VARCHAR (50) DEFAULT NULL COMMENT '本业务最近一次贷款距今天数',
+	`cur_loan_clear_cnt` VARCHAR (50) DEFAULT NULL COMMENT '本业务贷款已结清笔数',
+	`cur_overdue_cnt_30d` VARCHAR (50) DEFAULT NULL COMMENT '本业务贷款逾期订单数（M0+）',
+	`cur_overdue_cnt_60d` VARCHAR (50) DEFAULT NULL COMMENT '本业务贷款逾期订单数（M1+）',
+	`query_org_cnt` VARCHAR (50) DEFAULT NULL COMMENT '查询多头机构数',
+	`query_cnt` VARCHAR (50) DEFAULT NULL COMMENT '总查询次数',
+	`last_to_end_days` VARCHAR (50) DEFAULT NULL COMMENT '最近查询时间距今天数',
+	`query_cnt_30d` VARCHAR (50) DEFAULT NULL COMMENT '近1个月查询多头',
+	`query_cnt_90d` VARCHAR (50) DEFAULT NULL COMMENT '近3个月查询多头',
+	`query_cnt_180d` VARCHAR (50) DEFAULT NULL COMMENT '近6个月查询多头',
+	`loan_clear_num` VARCHAR (50) DEFAULT NULL COMMENT '贷款已结清笔数',
+	`overdue_cnt_30d` VARCHAR (50) DEFAULT NULL COMMENT '贷款逾期订单数（M0+）',
+	`overdue_cnt_60d` VARCHAR (50) DEFAULT NULL COMMENT '贷款逾期订单数（M1+）',
+	`work_day_not_overdue_amount_radio_30d` VARCHAR (50) DEFAULT NULL COMMENT '最近1个月工作日全部产品非逾期借贷在总借贷中金额占比',
+	`not_overdue_order_radio_180d` VARCHAR (50) DEFAULT NULL COMMENT '最近6个月全部时间全部产品非逾期借贷在总借贷中订单数占比',
+	`overdue_order_radio_90d` VARCHAR (50) DEFAULT NULL COMMENT '最近3个月全部时间消费金融类在全部产品中借贷确定逾期订单数占比',
+	`max_loan_rate_12m` VARCHAR (50) DEFAULT NULL COMMENT '最近一年新增平台全部时间全部产品最大借贷费率',
+	`avg_loan_rate_12m` VARCHAR (50) DEFAULT NULL COMMENT '最近12个月全部时间超短期现金贷平均借贷费率',
+	`overdue_org_cnt_6m` VARCHAR (50) DEFAULT NULL COMMENT '最近半年新增平台全部时间全部产品平均借贷确定逾期平台数',
+	`dd_overdue_days_20time` VARCHAR (50) DEFAULT NULL COMMENT '最近20次全部时间全部产品最大借贷疑似逾期天数',
+	`dd_work_day_overdue_days_3time` VARCHAR (50) DEFAULT NULL COMMENT '最近3次工作日全部产品平均借贷疑似逾期天数',
+	`dd_overdue_days_12m` VARCHAR (50) DEFAULT NULL COMMENT '最近一年新增平台全部时间全部产品平均还款疑似逾期天数',
+	`dd_max_overdue_days_3m` VARCHAR (50) DEFAULT NULL COMMENT '最近3个月全部时间全部产品最大还款疑似逾期天数',
+	`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
+	`resp_time` DATETIME DEFAULT NULL COMMENT '响应时间',
+	PRIMARY KEY (`id`)
+) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT = '新颜-小额网贷报告';

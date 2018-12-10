@@ -191,6 +191,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private UserBlackInfoMapper userBlackInfoMapper;
 	@Resource
 	private MagicRiskService magicRiskService;
+	@Resource
+	private XinyanRiskService xinyanRiskService;
 	
 	public BaseMapper<Borrow, Long> getMapper() {
 		return clBorrowMapper;
@@ -1711,6 +1713,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			Thread t = new Thread(new Runnable() {
 				public void run() {
 					int count = magicRiskService.queryPostLoad(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			t.start();
+			//新颜小额网贷报告
+		} else if ("XinyanLoan".equals(nid)) {
+			logger.info("进入魔杖贷后行为查询");
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					int count = xinyanRiskService.queryLoan(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
