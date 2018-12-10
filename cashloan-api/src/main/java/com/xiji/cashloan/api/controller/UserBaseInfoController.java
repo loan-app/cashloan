@@ -412,7 +412,7 @@ public class UserBaseInfoController extends BaseController {
                     returnMap.put("idTime", DateUtil.getNow());
                     returnMap.put("userId", userId);
                     userAuthService.updateByUserId(returnMap);
-                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,taskId, CallsOutSideFeeConstant.CALLS_TYPE_FACE_DETECT,CallsOutSideFeeConstant.FEE_FACE_DETECT);
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,taskId, CallsOutSideFeeConstant.CALLS_TYPE_FACE_DETECT,CallsOutSideFeeConstant.FEE_FACE_DETECT,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,info.getPhone());
                     callsOutSideFeeService.insert(callsOutSideFee);
                     returnMap.clear();
                     if (count > 0) {
