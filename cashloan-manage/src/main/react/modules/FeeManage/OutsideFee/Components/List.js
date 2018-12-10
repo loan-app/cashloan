@@ -120,6 +120,9 @@ export default React.createClass({
       title: '时间',
       dataIndex: 'gmtCreate',
     }, {
+          title: '手机号码',
+          dataIndex: 'phone',
+      },{
       title: '调用类型',
       dataIndex: 'type',
       render: (text, record)=> {
@@ -140,7 +143,7 @@ export default React.createClass({
           }
       }
     }, {
-      title: '收取费用',
+      title: '费用',
       dataIndex: "fee",
     }];
     var state = this.state;

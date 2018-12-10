@@ -71,3 +71,10 @@ update `arc_sys_config` set value=1000,remark='借款额度(500,1000)' where cod
 
 -- 新增自动审核成功,是否人工审核配置 2018.12.9
 INSERT INTO `arc_sys_config` VALUES (null, '10', '人工审核开关', 'arc_sys_config', '10', '1', '机审通过,人工审核开关 10-启用 20-禁用', '1');
+
+
+ALTER TABLE cl_calls_outside_fee add cast_type tinyint(4) NOT NULL COMMENT '费用类型 0：消费，1：充值';
+
+ALTER TABLE cl_calls_outside_fee add phone CHAR(16) NOT NULL comment '手机号码';
+
+ALTER TABLE cl_calls_outside_fee change type type tinyint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别';

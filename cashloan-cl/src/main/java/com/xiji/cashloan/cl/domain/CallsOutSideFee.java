@@ -51,17 +51,29 @@ import java.util.Date;
     */
     private Date gmtModified;
 
+    /**
+     * 费用类型
+     */
+    private Integer castType;
+
+    /**
+     * 手机号
+     */
+    private String phone;
+
     public CallsOutSideFee() {
         super();
     }
 
-    public CallsOutSideFee(Long userId, String taskId, Integer type, Double fee) {
+    public CallsOutSideFee(Long userId, String taskId, Integer type, Double fee,Integer castType,String phone) {
         super();
         this.userId = userId;
         this.taskId = taskId;
         this.type = type;
         this.fee = fee;
         this.gmtCreate = DateUtil.getNow();
+        this.castType = castType;
+        this.phone = phone;
     }
 
     /**
@@ -119,7 +131,7 @@ import java.util.Date;
     }
 
     /**
-    * 获取调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为
+    * 获取调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为 ,6-发送短信，7-人脸识别
     *
     * @return 调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为
     */
@@ -128,7 +140,7 @@ import java.util.Date;
     }
 
     /**
-    * 设置调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为
+    * 设置调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别
     * 
     * @param type 要设置的调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为
     */
@@ -188,6 +200,38 @@ import java.util.Date;
     */
     public void setGmtModified(Date gmtModified){
         this.gmtModified = gmtModified;
+    }
+
+    /**
+     * 获取费用类型
+     * @return
+     */
+    public Integer getCastType() {
+        return castType;
+    }
+
+    /**
+     * 设置费用类型
+     * @param castType
+     */
+    public void setCastType(Integer castType){
+        this.castType = castType;
+    }
+
+    /**
+     * 获取手机号
+     * @return
+     */
+    public String getPhone(){
+        return phone;
+    }
+
+    /**
+     * 设置手机号
+     * @param phone
+     */
+    public void setPhone(String phone){
+        this.phone = phone;
     }
 
 }

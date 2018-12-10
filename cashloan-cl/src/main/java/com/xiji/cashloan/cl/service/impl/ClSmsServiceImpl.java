@@ -344,7 +344,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 				if (userBaseInfo != null && userBaseInfo.getUserId() != null){
 					userId = userBaseInfo.getUserId();
 				}
-				CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG);
+				CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,orderNo, CallsOutSideFeeConstant.CALLS_TYPE_SEND_MSG,CallsOutSideFeeConstant.FEE_SEND_MSG,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,phone);
 				callsOutSideFeeMapper.save(callsOutSideFee);
 			} else {
 				String message = resultJson.getString("message");

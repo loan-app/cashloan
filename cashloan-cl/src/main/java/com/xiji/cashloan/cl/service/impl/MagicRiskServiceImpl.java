@@ -170,7 +170,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
                     //插入收费记录表
                     Date createDate = DateUtil.getNow();
-                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD, CallsOutSideFeeConstant.FEE_ANTI_FRAUD);
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD, CallsOutSideFeeConstant.FEE_ANTI_FRAUD,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,userBaseinfo.getPhone());
                     callsOutSideFeeMapper.save(callsOutSideFee);
                     //插入详情表
                     MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_ANTI_FRAUD);
@@ -271,7 +271,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD);
                     magicReqDetailMapper.save(magicReqDetail);
                     //插入收费记录表
-                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD, CallsOutSideFeeConstant.FEE_POST_LOAD);
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_POST_LOAD, CallsOutSideFeeConstant.FEE_POST_LOAD,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,userBaseinfo.getPhone());
                     callsOutSideFeeMapper.save(callsOutSideFee);
                     //保存数据
                     LoanBehaviorAnalysisBean loanBehaviorAnalysis = JSONObject.parseObject(data.getString("loan_behavior_analysis"), LoanBehaviorAnalysisBean.class);
@@ -344,7 +344,7 @@ public class MagicRiskServiceImpl implements MagicRiskService {
                     MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_APPLY);
                     magicReqDetailMapper.save(magicReqDetail);
                     //插入收费记录表
-                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_APPLY, CallsOutSideFeeConstant.FEE_APPLY);
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_APPLY, CallsOutSideFeeConstant.FEE_APPLY,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,userBaseinfo.getPhone());
                     callsOutSideFeeMapper.save(callsOutSideFee);
                     //保存数据
                     //用户联系人信息

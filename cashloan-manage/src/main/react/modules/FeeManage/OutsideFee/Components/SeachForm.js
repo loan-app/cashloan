@@ -19,7 +19,7 @@ let SeachForm = React.createClass({
     },
   handleQuery() {
     var params = this.props.form.getFieldsValue();
-    var json = {endTime:'',startTime:'',type: params.type};
+    var json = {endTime:'',startTime:'',type: params.type,castType:params.castType};
     if(params.gmtCreate){
           json.startTime = (DateFormat.formatDate(params.gmtCreate[0])).substring(0,10);
           json.endTime = (DateFormat.formatDate(params.gmtCreate[1])).substring(0,10);
@@ -58,6 +58,14 @@ let SeachForm = React.createClass({
           <Option value="6">发送短信</Option>
           <Option value="7">人脸识别</Option>
           </Select>
+          </FormItem>
+
+          <FormItem label="费用类型:">
+              <Select style={{ width: 100 }} {...getFieldProps('castType',{initialValue: ''})} placeholder='请选择...'>
+                  <Option value="">全部</Option>
+                  <Option value="0">消费</Option>
+                  <Option value="1">充值</Option>
+              </Select>
           </FormItem>
         <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
           <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
