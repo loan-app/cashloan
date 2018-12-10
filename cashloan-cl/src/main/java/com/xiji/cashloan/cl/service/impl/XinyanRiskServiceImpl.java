@@ -2,13 +2,16 @@ package com.xiji.cashloan.cl.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.XinyanLoanReport;
 import com.xiji.cashloan.cl.domain.XinyanReqLog;
+import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
 import com.xiji.cashloan.cl.mapper.XinyanLoanReportMapper;
 import com.xiji.cashloan.cl.mapper.XinyanReqLogMapper;
 import com.xiji.cashloan.cl.model.xinyan.XinyanConstant;
 import com.xiji.cashloan.cl.model.xinyan.XinyanRequest;
 import com.xiji.cashloan.cl.service.XinyanRiskService;
+import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.cl.util.xinyan.MD5Utils;
 import com.xiji.cashloan.cl.util.xinyan.SecurityUtil;
 import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
@@ -46,6 +49,9 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
 
     @Resource
     private UserBaseInfoMapper userBaseInfoMapper;
+
+    @Resource
+    private CallsOutSideFeeMapper callsOutSideFeeMapper;
 
 
     @Override
@@ -108,6 +114,11 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
                     log.setTradeNo(dataJson.getString("trade_no"));
                     if ("0".equals(dataJson.getString("code"))) {
                         log.setIsFee(1);
+                        //插入收费记录表
+                        CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, dataJson.getString("trade_no"), CallsOutSideFeeConstant.CALLS_TYPE_XINYAN_LOAN,
+                                CallsOutSideFeeConstant.FEE_XINYAN_LOAN, CallsOutSideFeeConstant.CAST_TYPE_CONSUME, userBaseinfo.getPhone());
+                        callsOutSideFeeMapper.save(callsOutSideFee);
+                        //插入报告
                         i = saveLoanReport(String.valueOf(dataJson.get("result_detail")), borrow.getUserId(), dataJson.getString("trade_no"), respTime);
                     } else if("1".equals(dataJson.getString("code"))) {
                         i = 1;
