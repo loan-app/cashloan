@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_xinyan_loan_report表:新颜小额网贷报告模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.XinyanLoanReportMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.XinyanLoanReport">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+        <result column="score" property="score" jdbcType="VARCHAR" />
+        <result column="cur_max_credit" property="curMaxCredit" jdbcType="VARCHAR" />
+        <result column="cur_avg_credit" property="curAvgCredit" jdbcType="VARCHAR" />
+        <result column="cur_loan_cnt_30d" property="curLoanCnt30d" jdbcType="VARCHAR" />
+        <result column="cur_loan_cnt_90d" property="curLoanCnt90d" jdbcType="VARCHAR" />
+        <result column="cur_loan_cnt_180d" property="curLoanCnt180d" jdbcType="VARCHAR" />
+        <result column="cur_loan_total_cnt" property="curLoanTotalCnt" jdbcType="VARCHAR" />
+        <result column="cur_loan_org_total_cnt" property="curLoanOrgTotalCnt" jdbcType="VARCHAR" />
+        <result column="cur_last_to_end_loan" property="curLastToEndLoan" jdbcType="VARCHAR" />
+        <result column="cur_loan_clear_cnt" property="curLoanClearCnt" jdbcType="VARCHAR" />
+        <result column="cur_overdue_cnt_30d" property="curOverdueCnt30d" jdbcType="VARCHAR" />
+        <result column="cur_overdue_cnt_more_30d" property="curOverdueCntMore30d" jdbcType="VARCHAR" />
+        <result column="query_org_cnt" property="queryOrgCnt" jdbcType="VARCHAR" />
+        <result column="query_cnt" property="queryCnt" jdbcType="VARCHAR" />
+        <result column="last_to_end_days" property="lastToEndDays" jdbcType="VARCHAR" />
+        <result column="query_cnt_30d" property="queryCnt30d" jdbcType="VARCHAR" />
+        <result column="query_cnt_90d" property="queryCnt90d" jdbcType="VARCHAR" />
+        <result column="query_cnt_180d" property="queryCnt180d" jdbcType="VARCHAR" />
+        <result column="loan_clear_num" property="loanClearNum" jdbcType="VARCHAR" />
+        <result column="overdue_cnt_30d" property="overdueCnt30d" jdbcType="VARCHAR" />
+        <result column="overdue_cnt_more_30d" property="overdueCntMore30d" jdbcType="VARCHAR" />
+        <result column="work_day_not_overdue_amount_radio_30d" property="workDayNotOverdueAmountRadio30d" jdbcType="VARCHAR" />
+        <result column="not_overdue_order_radio_180d" property="notOverdueOrderRadio180d" jdbcType="VARCHAR" />
+        <result column="overdue_order_radio_90d" property="overdueOrderRadio90d" jdbcType="VARCHAR" />
+        <result column="max_loan_rate_12m" property="maxLoanRate12m" jdbcType="VARCHAR" />
+        <result column="avg_loan_rate_12m" property="avgLoanRate12m" jdbcType="VARCHAR" />
+        <result column="overdue_org_cnt_6m" property="overdueOrgCnt6m" jdbcType="VARCHAR" />
+        <result column="dd_overdue_days_20time" property="ddOverdueDays20time" jdbcType="VARCHAR" />
+        <result column="dd_work_day_overdue_days_3time" property="ddWorkDayOverdueDays3time" jdbcType="VARCHAR" />
+        <result column="dd_overdue_days_12m" property="ddOverdueDays12m" jdbcType="VARCHAR" />
+        <result column="dd_max_overdue_days_3m" property="ddMaxOverdueDays3m" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="resp_time" property="respTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,trade_no,score,cur_max_credit,cur_avg_credit,cur_loan_cnt_30d,cur_loan_cnt_90d,cur_loan_cnt_180d,cur_loan_total_cnt,cur_loan_org_total_cnt,cur_last_to_end_loan,cur_loan_clear_cnt,cur_overdue_cnt_30d,cur_overdue_cnt_more_30d,query_org_cnt,query_cnt,last_to_end_days,query_cnt_30d,query_cnt_90d,query_cnt_180d,loan_clear_num,overdue_cnt_30d,overdue_cnt_more_30d,work_day_not_overdue_amount_radio_30d,not_overdue_order_radio_180d,overdue_order_radio_90d,max_loan_rate_12m,avg_loan_rate_12m,overdue_org_cnt_6m,dd_overdue_days_20time,dd_work_day_overdue_days_3time,dd_overdue_days_12m,dd_max_overdue_days_3m,create_time,resp_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="tradeNo != null and tradeNo != ''">
+                and trade_no = #{tradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="score != null and score != ''">
+                and score = #{score,jdbcType=VARCHAR}
+            </if>
+            <if test="curMaxCredit != null and curMaxCredit != ''">
+                and cur_max_credit = #{curMaxCredit,jdbcType=VARCHAR}
+            </if>
+            <if test="curAvgCredit != null and curAvgCredit != ''">
+                and cur_avg_credit = #{curAvgCredit,jdbcType=VARCHAR}
+            </if>
+            <if test="curLoanCnt30d != null and curLoanCnt30d != ''">
+                and cur_loan_cnt_30d = #{curLoanCnt30d,jdbcType=VARCHAR}
+            </if>
+            <if test="curLoanCnt90d != null and curLoanCnt90d != ''">
+                and cur_loan_cnt_90d = #{curLoanCnt90d,jdbcType=VARCHAR}
+            </if>
+            <if test="curLoanCnt180d != null and curLoanCnt180d != ''">
+                and cur_loan_cnt_180d = #{curLoanCnt180d,jdbcType=VARCHAR}
+            </if>
+            <if test="curLoanTotalCnt != null and curLoanTotalCnt != ''">
+                and cur_loan_total_cnt = #{curLoanTotalCnt,jdbcType=VARCHAR}
+            </if>
+            <if test="curLoanOrgTotalCnt != null and curLoanOrgTotalCnt != ''">
+                and cur_loan_org_total_cnt = #{curLoanOrgTotalCnt,jdbcType=VARCHAR}
+            </if>
+            <if test="curLastToEndLoan != null and curLastToEndLoan != ''">
+                and cur_last_to_end_loan = #{curLastToEndLoan,jdbcType=VARCHAR}
+            </if>
+            <if test="curLoanClearCnt != null and curLoanClearCnt != ''">
+                and cur_loan_clear_cnt = #{curLoanClearCnt,jdbcType=VARCHAR}
+            </if>
+            <if test="curOverdueCnt30d != null and curOverdueCnt30d != ''">
+                and cur_overdue_cnt_30d = #{curOverdueCnt30d,jdbcType=VARCHAR}
+            </if>
+            <if test="curOverdueCntMore30d != null and curOverdueCntMore30d != ''">
+                and cur_overdue_cnt_more_30d = #{curOverdueCntMore30d,jdbcType=VARCHAR}
+            </if>
+            <if test="queryOrgCnt != null and queryOrgCnt != ''">
+                and query_org_cnt = #{queryOrgCnt,jdbcType=VARCHAR}
+            </if>
+            <if test="queryCnt != null and queryCnt != ''">
+                and query_cnt = #{queryCnt,jdbcType=VARCHAR}
+            </if>
+            <if test="lastToEndDays != null and lastToEndDays != ''">
+                and last_to_end_days = #{lastToEndDays,jdbcType=VARCHAR}
+            </if>
+            <if test="queryCnt30d != null and queryCnt30d != ''">
+                and query_cnt_30d = #{queryCnt30d,jdbcType=VARCHAR}
+            </if>
+            <if test="queryCnt90d != null and queryCnt90d != ''">
+                and query_cnt_90d = #{queryCnt90d,jdbcType=VARCHAR}
+            </if>
+            <if test="queryCnt180d != null and queryCnt180d != ''">
+                and query_cnt_180d = #{queryCnt180d,jdbcType=VARCHAR}
+            </if>
+            <if test="loanClearNum != null and loanClearNum != ''">
+                and loan_clear_num = #{loanClearNum,jdbcType=VARCHAR}
+            </if>
+            <if test="overdueCnt30d != null and overdueCnt30d != ''">
+                and overdue_cnt_30d = #{overdueCnt30d,jdbcType=VARCHAR}
+            </if>
+            <if test="overdueCntMore30d != null and overdueCntMore30d != ''">
+                and overdue_cnt_more_30d = #{overdueCntMore30d,jdbcType=VARCHAR}
+            </if>
+            <if test="workDayNotOverdueAmountRadio30d != null and workDayNotOverdueAmountRadio30d != ''">
+                and work_day_not_overdue_amount_radio_30d = #{workDayNotOverdueAmountRadio30d,jdbcType=VARCHAR}
+            </if>
+            <if test="notOverdueOrderRadio180d != null and notOverdueOrderRadio180d != ''">
+                and not_overdue_order_radio_180d = #{notOverdueOrderRadio180d,jdbcType=VARCHAR}
+            </if>
+            <if test="overdueOrderRadio90d != null and overdueOrderRadio90d != ''">
+                and overdue_order_radio_90d = #{overdueOrderRadio90d,jdbcType=VARCHAR}
+            </if>
+            <if test="maxLoanRate12m != null and maxLoanRate12m != ''">
+                and max_loan_rate_12m = #{maxLoanRate12m,jdbcType=VARCHAR}
+            </if>
+            <if test="avgLoanRate12m != null and avgLoanRate12m != ''">
+                and avg_loan_rate_12m = #{avgLoanRate12m,jdbcType=VARCHAR}
+            </if>
+            <if test="overdueOrgCnt6m != null and overdueOrgCnt6m != ''">
+                and overdue_org_cnt_6m = #{overdueOrgCnt6m,jdbcType=VARCHAR}
+            </if>
+            <if test="ddOverdueDays20time != null and ddOverdueDays20time != ''">
+                and dd_overdue_days_20time = #{ddOverdueDays20time,jdbcType=VARCHAR}
+            </if>
+            <if test="ddWorkDayOverdueDays3time != null and ddWorkDayOverdueDays3time != ''">
+                and dd_work_day_overdue_days_3time = #{ddWorkDayOverdueDays3time,jdbcType=VARCHAR}
+            </if>
+            <if test="ddOverdueDays12m != null and ddOverdueDays12m != ''">
+                and dd_overdue_days_12m = #{ddOverdueDays12m,jdbcType=VARCHAR}
+            </if>
+            <if test="ddMaxOverdueDays3m != null and ddMaxOverdueDays3m != ''">
+                and dd_max_overdue_days_3m = #{ddMaxOverdueDays3m,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="respTime != null">
+                and resp_time = #{respTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.XinyanLoanReport">
+        insert into cl_xinyan_loan_report(user_id,trade_no,score,cur_max_credit,cur_avg_credit,cur_loan_cnt_30d,cur_loan_cnt_90d,cur_loan_cnt_180d,cur_loan_total_cnt,cur_loan_org_total_cnt,cur_last_to_end_loan,cur_loan_clear_cnt,cur_overdue_cnt_30d,cur_overdue_cnt_more_30d,query_org_cnt,query_cnt,last_to_end_days,query_cnt_30d,query_cnt_90d,query_cnt_180d,loan_clear_num,overdue_cnt_30d,overdue_cnt_more_30d,work_day_not_overdue_amount_radio_30d,not_overdue_order_radio_180d,overdue_order_radio_90d,max_loan_rate_12m,avg_loan_rate_12m,overdue_org_cnt_6m,dd_overdue_days_20time,dd_work_day_overdue_days_3time,dd_overdue_days_12m,dd_max_overdue_days_3m,create_time,resp_time)values(#{userId,jdbcType=BIGINT},#{tradeNo,jdbcType=VARCHAR},#{score,jdbcType=VARCHAR},#{curMaxCredit,jdbcType=VARCHAR},#{curAvgCredit,jdbcType=VARCHAR},#{curLoanCnt30d,jdbcType=VARCHAR},#{curLoanCnt90d,jdbcType=VARCHAR},#{curLoanCnt180d,jdbcType=VARCHAR},#{curLoanTotalCnt,jdbcType=VARCHAR},#{curLoanOrgTotalCnt,jdbcType=VARCHAR},#{curLastToEndLoan,jdbcType=VARCHAR},#{curLoanClearCnt,jdbcType=VARCHAR},#{curOverdueCnt30d,jdbcType=VARCHAR},#{curOverdueCntMore30d,jdbcType=VARCHAR},#{queryOrgCnt,jdbcType=VARCHAR},#{queryCnt,jdbcType=VARCHAR},#{lastToEndDays,jdbcType=VARCHAR},#{queryCnt30d,jdbcType=VARCHAR},#{queryCnt90d,jdbcType=VARCHAR},#{queryCnt180d,jdbcType=VARCHAR},#{loanClearNum,jdbcType=VARCHAR},#{overdueCnt30d,jdbcType=VARCHAR},#{overdueCntMore30d,jdbcType=VARCHAR},#{workDayNotOverdueAmountRadio30d,jdbcType=VARCHAR},#{notOverdueOrderRadio180d,jdbcType=VARCHAR},#{overdueOrderRadio90d,jdbcType=VARCHAR},#{maxLoanRate12m,jdbcType=VARCHAR},#{avgLoanRate12m,jdbcType=VARCHAR},#{overdueOrgCnt6m,jdbcType=VARCHAR},#{ddOverdueDays20time,jdbcType=VARCHAR},#{ddWorkDayOverdueDays3time,jdbcType=VARCHAR},#{ddOverdueDays12m,jdbcType=VARCHAR},#{ddMaxOverdueDays3m,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{respTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.XinyanLoanReport">
+        update cl_xinyan_loan_report set 
+            user_id = #{userId,jdbcType=BIGINT},
+            trade_no = #{tradeNo,jdbcType=VARCHAR},
+            score = #{score,jdbcType=VARCHAR},
+            cur_max_credit = #{curMaxCredit,jdbcType=VARCHAR},
+            cur_avg_credit = #{curAvgCredit,jdbcType=VARCHAR},
+            cur_loan_cnt_30d = #{curLoanCnt30d,jdbcType=VARCHAR},
+            cur_loan_cnt_90d = #{curLoanCnt90d,jdbcType=VARCHAR},
+            cur_loan_cnt_180d = #{curLoanCnt180d,jdbcType=VARCHAR},
+            cur_loan_total_cnt = #{curLoanTotalCnt,jdbcType=VARCHAR},
+            cur_loan_org_total_cnt = #{curLoanOrgTotalCnt,jdbcType=VARCHAR},
+            cur_last_to_end_loan = #{curLastToEndLoan,jdbcType=VARCHAR},
+            cur_loan_clear_cnt = #{curLoanClearCnt,jdbcType=VARCHAR},
+            cur_overdue_cnt_30d = #{curOverdueCnt30d,jdbcType=VARCHAR},
+            cur_overdue_cnt_more_30d = #{curOverdueCntMore30d,jdbcType=VARCHAR},
+            query_org_cnt = #{queryOrgCnt,jdbcType=VARCHAR},
+            query_cnt = #{queryCnt,jdbcType=VARCHAR},
+            last_to_end_days = #{lastToEndDays,jdbcType=VARCHAR},
+            query_cnt_30d = #{queryCnt30d,jdbcType=VARCHAR},
+            query_cnt_90d = #{queryCnt90d,jdbcType=VARCHAR},
+            query_cnt_180d = #{queryCnt180d,jdbcType=VARCHAR},
+            loan_clear_num = #{loanClearNum,jdbcType=VARCHAR},
+            overdue_cnt_30d = #{overdueCnt30d,jdbcType=VARCHAR},
+            overdue_cnt_more_30d = #{overdueCntMore30d,jdbcType=VARCHAR},
+            work_day_not_overdue_amount_radio_30d = #{workDayNotOverdueAmountRadio30d,jdbcType=VARCHAR},
+            not_overdue_order_radio_180d = #{notOverdueOrderRadio180d,jdbcType=VARCHAR},
+            overdue_order_radio_90d = #{overdueOrderRadio90d,jdbcType=VARCHAR},
+            max_loan_rate_12m = #{maxLoanRate12m,jdbcType=VARCHAR},
+            avg_loan_rate_12m = #{avgLoanRate12m,jdbcType=VARCHAR},
+            overdue_org_cnt_6m = #{overdueOrgCnt6m,jdbcType=VARCHAR},
+            dd_overdue_days_20time = #{ddOverdueDays20time,jdbcType=VARCHAR},
+            dd_work_day_overdue_days_3time = #{ddWorkDayOverdueDays3time,jdbcType=VARCHAR},
+            dd_overdue_days_12m = #{ddOverdueDays12m,jdbcType=VARCHAR},
+            dd_max_overdue_days_3m = #{ddMaxOverdueDays3m,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            resp_time = #{respTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_xinyan_loan_report
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="tradeNo != null and tradeNo != '' ">
+                trade_no = #{tradeNo,jdbcType=VARCHAR},                
+            </if>
+            <if test="score != null and score != '' ">
+                score = #{score,jdbcType=VARCHAR},                
+            </if>
+            <if test="curMaxCredit != null and curMaxCredit != ''">
+                cur_max_credit = #{curMaxCredit,jdbcType=VARCHAR},
+            </if>
+            <if test="curAvgCredit != null and curAvgCredit != '' ">
+                cur_avg_credit = #{curAvgCredit,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLoanCnt30d != null and curLoanCnt30d != '' ">
+                cur_loan_cnt_30d = #{curLoanCnt30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLoanCnt90d != null and curLoanCnt90d != '' ">
+                cur_loan_cnt_90d = #{curLoanCnt90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLoanCnt180d != null and curLoanCnt180d != '' ">
+                cur_loan_cnt_180d = #{curLoanCnt180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLoanTotalCnt != null and curLoanTotalCnt != '' ">
+                cur_loan_total_cnt = #{curLoanTotalCnt,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLoanOrgTotalCnt != null and curLoanOrgTotalCnt != '' ">
+                cur_loan_org_total_cnt = #{curLoanOrgTotalCnt,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLastToEndLoan != null and curLastToEndLoan != '' ">
+                cur_last_to_end_loan = #{curLastToEndLoan,jdbcType=VARCHAR},                
+            </if>
+            <if test="curLoanClearCnt != null and curLoanClearCnt != '' ">
+                cur_loan_clear_cnt = #{curLoanClearCnt,jdbcType=VARCHAR},                
+            </if>
+            <if test="curOverdueCnt30d != null and curOverdueCnt30d != ''">
+                cur_overdue_cnt_30d = #{curOverdueCnt30d,jdbcType=VARCHAR},
+            </if>
+            <if test="curOverdueCntMore30d != null and curOverdueCntMore30d != '' ">
+                cur_overdue_cnt_more_30d = #{curOverdueCntMore30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="queryOrgCnt != null and queryOrgCnt != '' ">
+                query_org_cnt = #{queryOrgCnt,jdbcType=VARCHAR},                
+            </if>
+            <if test="queryCnt != null and queryCnt != '' ">
+                query_cnt = #{queryCnt,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastToEndDays != null and lastToEndDays != '' ">
+                last_to_end_days = #{lastToEndDays,jdbcType=VARCHAR},                
+            </if>
+            <if test="queryCnt30d != null and queryCnt30d != '' ">
+                query_cnt_30d = #{queryCnt30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="queryCnt90d != null and queryCnt90d != '' ">
+                query_cnt_90d = #{queryCnt90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="queryCnt180d != null and queryCnt180d != '' ">
+                query_cnt_180d = #{queryCnt180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="loanClearNum != null and loanClearNum != '' ">
+                loan_clear_num = #{loanClearNum,jdbcType=VARCHAR},                
+            </if>
+            <if test="overdueCnt30d != null and overdueCnt30d != '' ">
+                overdue_cnt_30d = #{overdueCnt30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="overdueCntMore30d != null and overdueCntMore30d != '' ">
+                overdue_cnt_more_30d = #{overdueCntMore30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="workDayNotOverdueAmountRadio30d != null and workDayNotOverdueAmountRadio30d != '' ">
+                work_day_not_overdue_amount_radio_30d = #{workDayNotOverdueAmountRadio30d,jdbcType=VARCHAR},                
+            </if>
+            <if test="notOverdueOrderRadio180d != null and notOverdueOrderRadio180d != '' ">
+                not_overdue_order_radio_180d = #{notOverdueOrderRadio180d,jdbcType=VARCHAR},                
+            </if>
+            <if test="overdueOrderRadio90d != null and overdueOrderRadio90d != '' ">
+                overdue_order_radio_90d = #{overdueOrderRadio90d,jdbcType=VARCHAR},                
+            </if>
+            <if test="maxLoanRate12m != null and maxLoanRate12m != '' ">
+                max_loan_rate_12m = #{maxLoanRate12m,jdbcType=VARCHAR},                
+            </if>
+            <if test="avgLoanRate12m != null and avgLoanRate12m != '' ">
+                avg_loan_rate_12m = #{avgLoanRate12m,jdbcType=VARCHAR},                
+            </if>
+            <if test="overdueOrgCnt6m != null and overdueOrgCnt6m != '' ">
+                overdue_org_cnt_6m = #{overdueOrgCnt6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddOverdueDays20time != null and ddOverdueDays20time != '' ">
+                dd_overdue_days_20time = #{ddOverdueDays20time,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddWorkDayOverdueDays3time != null and ddWorkDayOverdueDays3time != '' ">
+                dd_work_day_overdue_days_3time = #{ddWorkDayOverdueDays3time,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddOverdueDays12m != null and ddOverdueDays12m != '' ">
+                dd_overdue_days_12m = #{ddOverdueDays12m,jdbcType=VARCHAR},                
+            </if>
+            <if test="ddMaxOverdueDays3m != null and ddMaxOverdueDays3m != '' ">
+                dd_max_overdue_days_3m = #{ddMaxOverdueDays3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="respTime != null">        
+                resp_time = #{respTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_xinyan_loan_report
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_xinyan_loan_report
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_xinyan_loan_report
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

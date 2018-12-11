@@ -30,10 +30,7 @@ import java.util.Map;
  * Created by szb on 18/11/21.
  */
 public class MxCreditRequest {
-    private static final int CONNECT_TIMEOUT = 8000;
-    private static final int SOCKET_TIMEOUT = 20000;
     private static ContentType CONTENT_TYPE = ContentType.create("application/json", "utf-8");
-    private static RequestConfig REQUEST_CONFIG;
 
     private static Logger logger = LoggerFactory.getLogger(MxCreditRequest.class);
 
@@ -64,9 +61,9 @@ public class MxCreditRequest {
 
     private static InputStream getIs(String url, Map<String, String> headers)
             throws Exception {
-        CloseableHttpClient httpclient = createClient(url);
+        CloseableHttpClient httpclient = HttpUtils.createClient(url);
         HttpGet getRequest = new HttpGet(url);
-        getRequest.setConfig(REQUEST_CONFIG);
+        getRequest.setConfig(HttpUtils.getRequestConfig());
 
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -81,9 +78,9 @@ public class MxCreditRequest {
 
     private static InputStream postIs(String url, Map<String, String> headers, String jsonString)
             throws Exception {
-        CloseableHttpClient httpclient = createClient(url);
+        CloseableHttpClient httpclient = HttpUtils.createClient(url);
         HttpPost postRequest = new HttpPost(url);
-        postRequest.setConfig(REQUEST_CONFIG);
+        postRequest.setConfig(HttpUtils.getRequestConfig());
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 postRequest.setHeader(entry.getKey(), entry.getValue());
@@ -100,29 +97,4 @@ public class MxCreditRequest {
 
         return respIs;
     }
-
-    public static CloseableHttpClient createClient(String url) {
-        try {
-            if (url.startsWith("https://")) {
-                SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-                    //信任所有
-                    public boolean isTrusted(X509Certificate[] chain,
-                                             String authType) throws CertificateException {
-                        return true;
-                    }
-
-                }).build();
-                SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
-                return HttpClientBuilder.create().setSSLSocketFactory(sslsf).build();
-            }
-        } catch (Exception e) {
-            logger.warn("CertificateException", e);
-        }
-        return HttpClients.createDefault();
-    }
-
-    static {
-        REQUEST_CONFIG = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
-    }
-
 }

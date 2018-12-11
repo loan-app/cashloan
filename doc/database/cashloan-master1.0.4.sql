@@ -1665,6 +1665,7 @@ CREATE TABLE `cl_rc_scene_business` (
 INSERT INTO `cl_rc_scene_business` VALUES ('1', '10', '1', '20', '30', '10', '10', '2018-12-06 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('2', '10', '2', '20', '30', '10', '10', '2018-12-06 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('3', '10', '3', '20', '30', '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('4', '10', '4', '20', '30', '10', '10', '2018-12-06 00:00:00');
 
 
 -- ----------------------------
@@ -1749,6 +1750,7 @@ CREATE TABLE `cl_rc_tpp` (
 -- Records of cl_rc_tpp
 -- ----------------------------
 INSERT INTO `cl_rc_tpp` VALUES ('1', '魔杖2.0', 'magic', '', '', '', '', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp` VALUES ('2', '新颜小额网贷报告', 'xinyan', '', '', '', '', '10', '2018-12-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for cl_rc_tpp_business
@@ -1773,6 +1775,7 @@ CREATE TABLE `cl_rc_tpp_business` (
 INSERT INTO `cl_rc_tpp_business` VALUES ('1', '1', '魔杖申请准入', 'MagicApply', '10', '', '', null, '2018-12-06 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('2', '1', '魔杖反欺诈', 'MagicAntiFraud', '10', '', '', null, '2018-12-06 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('3', '1', '魔杖贷后行为', 'MagicPostLoad', '10', '', '', null, '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('4', '2', '新颜小额网贷报告', 'XinyanLoan', '10', '', '', null, '2018-12-06 00:00:00');
 
 -- ----------------------------
 -- Table structure for cl_sms

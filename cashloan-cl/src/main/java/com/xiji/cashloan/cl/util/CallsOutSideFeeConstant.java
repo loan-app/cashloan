@@ -21,6 +21,8 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_SEND_MSG = 6;
     //人脸识别
     public static int CALLS_TYPE_FACE_DETECT = 7;
+    //新颜小额网贷报告
+    public static int CALLS_TYPE_XINYAN_LOAN = 8;
 
     //魔蝎运营商费用
     public static double FEE_OPERATOR = -0.1;
@@ -38,6 +40,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_SEND_MSG = -0.04;
     //人脸识别费用
     public static double FEE_FACE_DETECT = -0.6;
+    //新颜小额网贷费用
+    public static double FEE_XINYAN_LOAN = -1;
 
     /**
      * 消费
