@@ -150,12 +150,12 @@ CREATE TABLE `cl_name_blacklist` (
   `dimensionValue` varchar(64) NOT NULL DEFAULT '' COMMENT '类别对应的值',
   `source` varchar(16) NOT NULL DEFAULT '' COMMENT '来源',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态 0:正常，1:删除',
-  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP),
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
   KEY `idx_dimensionValue` (`dimensionValue`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单');;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单';
 
 DROP TABLE IF EXISTS `cl_name_whitelist`;
 CREATE TABLE `cl_name_whitelist` (
@@ -166,7 +166,7 @@ CREATE TABLE `cl_name_whitelist` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态 0:正常，1:删除',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
   KEY `idx_dimensionValue` (`dimensionValue`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='白名单';
