@@ -68,8 +68,9 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	/**
 	 * 信用额度修改
 	 * 
-	 * @param borrow
-	 * @param state
+	 * @param userId
+	 * @param amount
+	 * @param type
 	 */
 	int modifyCredit(Long userId, double amount, String type);
 

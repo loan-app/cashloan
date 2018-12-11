@@ -205,7 +205,7 @@ var Lookdetails = React.createClass({
         <Row>
               <Col span="18">
               <FormItem  {...formItemLayout} label="审批意见:">
-                  <Select  {...getFieldProps('state1', { initialValue: "27" }) } disabled={!props.canEdit}>
+                  <Select  {...getFieldProps('state1', { initialValue: '' }) } disabled={!props.canEdit}>
                       <Option value="27">人工复审拒绝</Option>
                       <Option value="26">人工复审通过</Option>
                   </Select>
