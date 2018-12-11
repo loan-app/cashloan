@@ -78,4 +78,33 @@ ALTER TABLE cl_calls_outside_fee add cast_type tinyint(4) NOT NULL COMMENT '费�
 
 ALTER TABLE cl_calls_outside_fee add phone CHAR(16) NOT NULL comment '手机号码';
 
-ALTER TABLE cl_calls_outside_fee change type type tinyint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别';
+ALTER TABLE cl_calls_outside_fee change type type tinyint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别';;
+
+--黑名单接口 2018-12-10
+DROP TABLE IF EXISTS `cl_name_blacklist`;
+CREATE TABLE `cl_name_blacklist` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+  `dimensionKey` varchar(8) NOT NULL DEFAULT '' COMMENT '类别：01-身份证、02-手机号、等',
+  `dimensionValue` varchar(64) NOT NULL DEFAULT '' COMMENT '类别对应的值',
+  `source` varchar(16) NOT NULL DEFAULT '' COMMENT '来源',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态 0:正常，1:删除',
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP),
+  `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
+  KEY `idx_dimensionValue` (`dimensionValue`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单');;
+
+DROP TABLE IF EXISTS `cl_name_whitelist`;
+CREATE TABLE `cl_name_whitelist` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+  `dimensionKey` varchar(8) NOT NULL DEFAULT '' COMMENT '类别：01-身份证、02-手机号、等',
+  `dimensionValue` varchar(64) NOT NULL DEFAULT '' COMMENT '类别对应的值',
+  `source` varchar(16) NOT NULL DEFAULT '' COMMENT '来源',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态 0:正常，1:删除',
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
+  KEY `idx_dimensionValue` (`dimensionValue`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='白名单';
