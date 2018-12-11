@@ -2,6 +2,9 @@ package com.xiji.cashloan.cl.service.impl;
 
 import javax.annotation.Resource;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.model.XinyanLoanUserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,9 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.cl.mapper.XinyanLoanReportMapper;
 import com.xiji.cashloan.cl.domain.XinyanLoanReport;
 import com.xiji.cashloan.cl.service.XinyanLoanReportService;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,5 +39,16 @@ public class XinyanLoanReportServiceImpl extends BaseServiceImpl<XinyanLoanRepor
 	public BaseMapper<XinyanLoanReport, Long> getMapper() {
 		return xinyanLoanReportMapper;
 	}
-	
+
+	@Override
+	public Page<XinyanLoanUserModel> listUser(Map<String, Object> params, int currentPage, int pageSize) {
+		PageHelper.startPage(currentPage, pageSize);
+		List<XinyanLoanUserModel> list = xinyanLoanReportMapper.listModel(params);
+		return (Page<XinyanLoanUserModel>) list;
+	}
+
+	@Override
+	public XinyanLoanReport getLastRecord(Long userId) {
+		return xinyanLoanReportMapper.getLastRecord(userId);
+	}
 }

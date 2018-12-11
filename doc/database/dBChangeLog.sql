@@ -170,3 +170,7 @@ CREATE TABLE `cl_name_whitelist` (
   UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
   KEY `idx_dimensionValue` (`dimensionValue`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='白名单';
+
+-- 新增小额网贷报告菜单
+INSERT INTO `arc_sys_menu` VALUES ('1006', '0', '小额网贷报告', '1001', '', null, '00000000003', null, '', '2017-01-01 00:00:00', '', '小额网贷报告', '0', 'XinyanLoanReport', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES ('106', '1', '1006');

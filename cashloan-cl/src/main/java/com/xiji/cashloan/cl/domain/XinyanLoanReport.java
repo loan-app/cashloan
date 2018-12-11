@@ -80,7 +80,7 @@ import java.util.Date;
     private String curLoanClearCnt;
 
     /**
-    * 本业务贷款逾期订单数（30天）
+    * 本业务贷款逾期订单数（30天内）
     */
     private String curOverdueCnt30d;
 

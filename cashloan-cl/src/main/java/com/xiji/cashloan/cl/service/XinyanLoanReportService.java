@@ -1,7 +1,11 @@
 package com.xiji.cashloan.cl.service;
 
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.model.XinyanLoanUserModel;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.cl.domain.XinyanLoanReport;
+
+import java.util.Map;
 
 /**
  * 新颜小额网贷报告Service
@@ -12,4 +16,7 @@ import com.xiji.cashloan.cl.domain.XinyanLoanReport;
  */
 public interface XinyanLoanReportService extends BaseService<XinyanLoanReport, Long>{
 
+    Page<XinyanLoanUserModel> listUser(Map<String, Object> params, int currentPage, int pageSize);
+
+    XinyanLoanReport getLastRecord(Long userId);
 }

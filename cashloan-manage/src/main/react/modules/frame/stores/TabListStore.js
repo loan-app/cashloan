@@ -97,7 +97,8 @@ export default Reflux.createStore({
   					'NoteMould',
 					'OperatorReport',
 					'CreditLoanReport',
-					'OutsideFee'
+					'OutsideFee',
+					'XinyanLoanReport'
 			];
 
 			var routeNames3 = [

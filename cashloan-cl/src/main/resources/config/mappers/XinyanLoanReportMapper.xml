@@ -41,6 +41,14 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="resp_time" property="respTime" jdbcType="TIMESTAMP" />
     </resultMap>
+
+    <!--返回用户的基本信息Map-->
+    <resultMap id="XinyanLoanUserModelMap"   type="com.xiji.cashloan.cl.model.XinyanLoanUserModel">
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="id_no" property="idNo" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
@@ -341,5 +349,27 @@
         from cl_xinyan_loan_report
         <include refid="searchBy"/>
     </select>
-    
+
+
+    <select id="listModel" resultMap="XinyanLoanUserModelMap" parameterType="java.util.HashMap">
+        select DISTINCT u.id user_id,u.real_name,u.phone,u.id_no from cl_xinyan_loan_report xinyan  left join
+        cl_user_base_info u on xinyan.user_id = u.id where 1=1
+        <if test="realName != null and realName != ''">
+            and u.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="phone != null and phone != ''">
+            and u.phone like concat("%",#{phone,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="idNo != null and idNo != ''">
+            and u.id_no like concat("%",#{idNo,jdbcType=VARCHAR},"%")
+        </if>
+    </select>
+
+    <select id="getLastRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_xinyan_loan_report
+        where user_id = #{userId,jdbcType=BIGINT}
+        order by create_time desc limit 1
+    </select>
 </mapper>
