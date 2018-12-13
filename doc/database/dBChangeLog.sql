@@ -174,3 +174,11 @@ CREATE TABLE `cl_name_whitelist` (
 -- 新增小额网贷报告菜单
 INSERT INTO `arc_sys_menu` VALUES ('1006', '0', '小额网贷报告', '1001', '', null, '00000000003', null, '', '2017-01-01 00:00:00', '', '小额网贷报告', '0', 'XinyanLoanReport', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES ('106', '1', '1006');
+
+-- 新颜请求相关配置
+update arc_sys_config set value = 'cl_user_base_info,cl_operator_basic,cl_magic_untrusted,cl_magic_black_gray,cl_magic_fraudulence_info,cl_magic_multipoint,cl_magic_risk_qq_group,cl_magic_suspicious_device,cl_magic_suspicious_idcard,cl_magic_suspicious_mobile,cl_magic_loan_behavior_analysis,cl_magic_mobile_contact,cl_magic_intimate_contact,cl_magic_credit_card_overdue,cl_magic_risk_device,cl_xinyan_loan_report' where code = 'rule_tables';
+
+INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜商户号', 'xy_member_id', '8000013189', '1', '新颜商户号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜终端号', 'xy_terminal_id', '8000013189', '1', '新颜终端号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜小额网贷请求地址', 'xy_loan_url', 'https://test.xinyan.com/product/integrity/v1/loans', '1', '新颜小额网贷请求地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜私钥密码', 'xy_pfx_pwd', '217526', '1', '新颜私钥密码', '1');
