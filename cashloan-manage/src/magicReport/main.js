@@ -37,9 +37,6 @@ const page = `
 Vue.component('my-page', {
     created() {
         // ajax
-        setTimeout(() => {
-            this.getData();
-        },3000)
     },
     template: page,
     components: {
@@ -101,7 +98,6 @@ Vue.component('my-page', {
                     this.tabData7.intimateContacts180Ratio = this.getIntimateContacts180Ratio(res.data.data.apply.mobile_info);
 
                     this.tabData6 = this.getTabData6(res.data.data.apply.risk_device);
-                    console.log(this.tabData6);
                 }
             });
         },
