@@ -227,7 +227,14 @@ public class BankCardController extends BaseController {
 					ServletUtils.writeToResponse(response, result);
 				}else {
 					result.put(Constant.RESPONSE_CODE,Constant.FAIL_CODE_VALUE);
-					result.put(Constant.RESPONSE_CODE_MSG,"发送失败");
+					data.put("countDown", countDown);
+					if (StringUtil.isNotEmpty(resp.getResponseMsg())) {
+						result.put(Constant.RESPONSE_CODE_MSG,resp.getResponseMsg());
+						message = resp.getResponseMsg();
+					} else {
+						result.put(Constant.RESPONSE_CODE_MSG,"发送失败");
+						message = "发送失败";
+					}
 				}
 				clSmsService.saveSmsBankCard(resp.checkReturn(),phone, type,resp.getResponseMsg());
 			}
