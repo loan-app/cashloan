@@ -37,6 +37,7 @@ const page = `
 Vue.component('my-page', {
     created() {
         // ajax
+        this.getData();
     },
     template: page,
     components: {
@@ -73,30 +74,41 @@ Vue.component('my-page', {
             // 请求数据
             axios.get(searchParam).then(res => {
                 if (res && res.data.code === 200) {
-                    this.headerData.personInfo = res.data.data.apply.person_info;
-                    this.headerData.matchScore = res.data.data.apply.mobile_info.match_score;
+                    this.headerData = {
+                        personInfo: res.data.data.apply.person_info,
+                        matchScore: res.data.data.apply.mobile_info.match_score
+                    };
+
+                    //tabData1
                     this.tabData1 = res.data.data.apply.auth_queried_detail;
+                    //tabData2
                     this.tabData2 = res.data.data.antiFraud.untrusted_info;
+                    //tabData3
                     this.tabData3 = res.data.data.antiFraud.risk_qqgroup;
+                    //tabData4
                     this.tabData4 = res.data.data.antiFraud;
-                    this.tabData5.blackInfoDetail = res.data.data.apply.black_info_detail;
-                    this.tabData5.grayInfoDetail = res.data.data.apply.gray_info_detail;
+                    //tabData5
+                    this.tabData5 = {
+                        blackInfoDetail: res.data.data.apply.black_info_detail,
+                        grayInfoDetail: res.data.data.apply.gray_info_detail
+                    };
 
                     //tabData7
-                    this.tabData7.contacts30 = this.getContacts30(res.data.data.apply.mobile_info);
-                    this.tabData7.contacts90 = this.getContacts90(res.data.data.apply.mobile_info);
-                    this.tabData7.contacts180 = this.getContacts180(res.data.data.apply.mobile_info);
-                    this.tabData7.intimateContacts30 = this.getIntimateContacts30(res.data.data.apply.mobile_info);
-                    this.tabData7.intimateContacts90 = this.getIntimateContacts90(res.data.data.apply.mobile_info);
-                    this.tabData7.intimateContacts180 = this.getIntimateContacts180(res.data.data.apply.mobile_info);
-
-                    this.tabData7.contacts30Ratio = this.getContacts30Ratio(res.data.data.apply.mobile_info);
-                    this.tabData7.contacts90Ratio = this.getContacts90Ratio(res.data.data.apply.mobile_info);
-                    this.tabData7.contacts180Ratio = this.getContacts180Ratio(res.data.data.apply.mobile_info);
-                    this.tabData7.intimateContacts30Ratio = this.getIntimateContacts30Ratio(res.data.data.apply.mobile_info);
-                    this.tabData7.intimateContacts90Ratio = this.getIntimateContacts90Ratio(res.data.data.apply.mobile_info);
-                    this.tabData7.intimateContacts180Ratio = this.getIntimateContacts180Ratio(res.data.data.apply.mobile_info);
-
+                    this.tabData7 = {
+                        contacts30: this.getContacts30(res.data.data.apply.mobile_info),
+                        contacts90: this.getContacts90(res.data.data.apply.mobile_info),
+                        contacts180: this.getContacts180(res.data.data.apply.mobile_info),
+                        intimateContacts30: this.getIntimateContacts30(res.data.data.apply.mobile_info),
+                        intimateContacts90: this.getIntimateContacts90(res.data.data.apply.mobile_info),
+                        intimateContacts180: this.getIntimateContacts180(res.data.data.apply.mobile_info),
+                        contacts30Ratio: this.getContacts30Ratio(res.data.data.apply.mobile_info),
+                        contacts90Ratio: this.getContacts90Ratio(res.data.data.apply.mobile_info),
+                        contacts180Ratio: this.getContacts180Ratio(res.data.data.apply.mobile_info),
+                        intimateContacts30Ratio: this.getIntimateContacts30Ratio(res.data.data.apply.mobile_info),
+                        intimateContacts90Ratio: this.getIntimateContacts90Ratio(res.data.data.apply.mobile_info),
+                        intimateContacts180Ratio: this.getIntimateContacts180Ratio(res.data.data.apply.mobile_info)
+                    };
+                    //tabData6
                     this.tabData6 = this.getTabData6(res.data.data.apply.risk_device);
                 }
             });
