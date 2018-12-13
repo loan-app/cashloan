@@ -93,9 +93,6 @@ public class OperatorController extends BaseController {
             UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
 
             //上数运营商
-            OperatorReqLog operatorReqLog = new OperatorReqLog(userId, StringUtil.EMPTY, OperatorReqLog.STATE_INITIATE_REQ);
-            operatorReqLogService.insert(operatorReqLog);
-
             Map<String, Object> data = new HashMap<>();
             String url = Global.getValue("mx_operator_url");
             url += "?apiKey=" + Global.getValue("mx_apikey") + "&userId=" + userId + "&phone=" + userBaseInfo.getPhone()

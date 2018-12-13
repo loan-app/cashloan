@@ -167,11 +167,11 @@ var Tab1 = React.createClass({
                     <Input {...getFieldProps('channelName', { initialValue: '' }) } disabled={props.canEdit} />
                   </FormItem>
                 </Col>
-                <Col span="8">
-                  <FormItem {...formItemLayout} label="芝麻分：">
-                    <Input {...getFieldProps('score', { initialValue: '' }) } disabled={props.canEdit} />
-                  </FormItem>
-                </Col>
+                {/*<Col span="8">*/}
+                  {/*<FormItem {...formItemLayout} label="芝麻分：">*/}
+                    {/*<Input {...getFieldProps('score', { initialValue: '' }) } disabled={props.canEdit} />*/}
+                  {/*</FormItem>*/}
+                {/*</Col>*/}
               </Row>
               <Row>
                 <Col span="8">

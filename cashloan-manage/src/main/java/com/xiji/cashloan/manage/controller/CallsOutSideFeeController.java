@@ -7,6 +7,7 @@ import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.model.CloanUserModel;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import org.springframework.context.annotation.Scope;
@@ -28,7 +29,7 @@ import java.util.Map;
  */
 @Scope("prototype")
 @Controller
-public class CallsOutSideFeeController {
+public class CallsOutSideFeeController extends BaseController {
 
     @Resource
     protected HttpServletResponse response;

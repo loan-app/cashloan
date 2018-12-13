@@ -22,7 +22,7 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 
 /**
- *
+ * 广告
  * @author:wnb
  * @date:2018/12/03
  */

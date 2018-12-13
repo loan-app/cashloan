@@ -33,6 +33,7 @@ var NoteMessage = require('../../NewsRecord/NoteMessage/index');//系统参数�
 var OperatorReport = require('../../CreditReport/OperatorReport/index');//信用报告,运营商报告
 var CreditLoanReport = require('../../CreditReport/CreditLoanReport/index');//信用报告,信贷报告
 var OutsideFee = require('../../FeeManage/OutsideFee/index'); //费用管理 外部数据费用
+var XinyanLoanReport = require('../../CreditReport/XinyanLoanReport/index'); //信用报告 小额网贷报告
 
 module.exports = {
   RepaymentPlanList,
@@ -69,5 +70,6 @@ module.exports = {
   NoteMessage,
   OperatorReport,
   CreditLoanReport,
-  OutsideFee
+  OutsideFee,
+  XinyanLoanReport
 }

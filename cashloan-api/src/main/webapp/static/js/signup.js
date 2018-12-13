@@ -1,3 +1,14 @@
+var u = navigator.userAgent;
+window.browser = {};
+window.browser.iPhone = u.indexOf('iPhone') > -1;
+window.browser.android = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;//android or uc
+window.browser.ipad = u.indexOf('iPad') > -1;
+window.browser.isclient = u.indexOf('lyWb') > -1;
+window.browser.ios = u.match(/Mac OS/); //ios
+window.browser.width = window.innerWidth;
+window.browser.height = window.innerHeight;
+window.browser.wx = u.match(/MicroMessenger/);
+
 $(function() {
   var close = function(e) {
     $(this).parents('.popup').hide();
@@ -17,7 +28,8 @@ $(function() {
   var show_download = function(msg) {
     $('.tips').show().find('h2').text(msg);
     $('.yes').on('click', function() {
-      window.location.href = "https://www.pgyer.com/hBvX";
+      //window.location.href = "https://www.pgyer.com/hBvX";
+      window.location.href = getInvite_a();
     });
   };
 
@@ -156,3 +168,23 @@ $(function() {
     return false;
   });   
 });
+
+function getInvite_a(){
+  return downLoad();
+  //return "http://www.pgyer.com//app//qrcodeHistory//c5163bba43277a844f499515fa3fb83da934fb50cc645029ef5321255ec83ad9";
+}
+
+function downLoad() {
+  if (window.browser.iPhone || window.browser.ipad || window.browser.ios) {
+    return iosDownload();
+  } else {
+    return androidDownload();
+  }
+}
+
+function iosDownload() {
+  return "https://fir.im/zkdm";
+}
+function androidDownload() {
+  return "https://fir.im/zkdx";
+}
