@@ -203,8 +203,8 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
         base64str = base64str.replaceAll("\r\n", "");//重要 避免出现换行空格符
         System.out.println("base64str:" + base64str);
         /** rsa加密 **/
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("8000013189_pri.pfx");
+        String pfxName = Global.getValue("xy_pfx_name");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(pfxName);
 
         String dataContent = RsaCodingUtil.encryptByPriPfxFile(base64str, inputStream, pfxpwd);// 加密数据
 

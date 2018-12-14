@@ -155,7 +155,7 @@ CREATE TABLE `cl_name_blacklist` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
   KEY `idx_dimensionValue` (`dimensionValue`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单';
 
 DROP TABLE IF EXISTS `cl_name_whitelist`;
 CREATE TABLE `cl_name_whitelist` (
@@ -169,7 +169,7 @@ CREATE TABLE `cl_name_whitelist` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_dimensionValue_dimensionKey_source` (`dimensionValue`,`dimensionKey`,`source`),
   KEY `idx_dimensionValue` (`dimensionValue`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='白名单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='白名单';
 
 -- 新增小额网贷报告菜单
 INSERT INTO `arc_sys_menu` VALUES ('1006', '0', '小额网贷报告', '1001', '', null, '00000000003', null, '', '2017-01-01 00:00:00', '', '小额网贷报告', '0', 'XinyanLoanReport', null, null, null, null);
@@ -182,3 +182,4 @@ INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜商户号', 'xy_member_
 INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜终端号', 'xy_terminal_id', '8000013189', '1', '新颜终端号', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜小额网贷请求地址', 'xy_loan_url', 'https://test.xinyan.com/product/integrity/v1/loans', '1', '新颜小额网贷请求地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜私钥密码', 'xy_pfx_pwd', '217526', '1', '新颜私钥密码', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜私钥文件名称', 'xy_pfx_name', '8000013189_pri.pfx', '1', '新颜私钥文件名称', '1');

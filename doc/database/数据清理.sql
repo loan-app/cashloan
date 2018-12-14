@@ -107,3 +107,7 @@ TRUNCATE TABLE cl_magic_untrusted_detail;
 
 -- 清理外部数据费用
 TRUNCATE TABLE cl_calls_outside_fee;
+
+-- 清理新颜数据
+TRUNCATE TABLE cl_xinyan_req_log;
+TRUNCATE TABLE cl_xinyan_loan_report;

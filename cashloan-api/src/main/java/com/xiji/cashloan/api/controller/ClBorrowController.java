@@ -8,10 +8,7 @@ import com.xiji.cashloan.cl.model.ClBorrowModel;
 import com.xiji.cashloan.cl.model.IndexModel;
 import com.xiji.cashloan.cl.model.QianchengReqlogModel;
 import com.xiji.cashloan.cl.model.RepayModel;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.MagicRiskService;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
-import com.xiji.cashloan.cl.service.QianchengReqlogService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
@@ -76,6 +73,8 @@ public class ClBorrowController extends BaseController {
 	private UserBaseInfoService userBaseInfoService;
 	@Resource
 	private MagicRiskService magicRiskService;
+	@Resource
+	private XinyanRiskService xinyanRiskService;
 	
 	/**
 	 * 查询借款列表
@@ -440,6 +439,22 @@ public class ClBorrowController extends BaseController {
 		int i = magicRiskService.queryAntiFraud(borrow);
 		int i2 = magicRiskService.queryApply(borrow);
 		int i3 = magicRiskService.queryPostLoad(borrow);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+
+	/**
+	 * 测试新颜数据
+	 */
+	@RequestMapping(value = "/api/act/borrow/testXinyan.htm")
+	public void testXinyan() {
+		Borrow borrow = new Borrow();
+		borrow.setUserId(1L);
+		borrow.setId(1L);
+		int i = xinyanRiskService.queryLoan(borrow);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
