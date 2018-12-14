@@ -564,7 +564,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			progress.setState(progress.getStr());
 			progress.setType("20");
 			if (day>0) {
-				progress.setRemark(progress.getRemark()+"，请等待"+day+"天后可再次申请借款");
+				progress.setRemark("很遗憾,您未通过审核,请等待"+day+"天后可再次申请借款");
 			}else if(BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState())){
 				progress.setRemark("很遗憾，您未通过审核");
 			}
@@ -591,7 +591,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			progress.setStr(progress.getState());
 			progress.setState(progress.getStr());
 			progress.setType("20");
-			progress.setRemark(progress.getRemark()+",请等待"+day+"天后可再次申请借款");
+			progress.setRemark("很遗憾,您未通过审核,请等待"+day+"天后可再次申请借款");
 			list.add(progress);
 
 			progress = pgList.get(0);
