@@ -1329,7 +1329,22 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 //			}
 //		}.start();
 //	}
-
+	public boolean judge(long borrowId) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("borrowId", borrowId);
+		map.put("scenes", PayLogModel.SCENES_LOANS);
+		List<PayLog> plist = payLogMapper.listSelective(map);
+		boolean flag = true;
+		for (PayLog payLog : plist) {
+			if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
+				|| PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())
+				|| PayLogModel.STATE_PAYMENT_SUCCESS.equals(payLog.getState())) {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
+	}
 	/**
 	 * 借款标放款
 	 *
@@ -1364,6 +1379,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				model.setEntseq(borrow.getOrderNo());//借款号
 				model.setMemo(borrow.getOrderNo() + "付款");
 				model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
+				boolean flag  = judge(borrow.getId());
+				if(!flag){
+					logger.error("放款支付终止，存在待支付或者待审核状态或者支付成功的支付记录，借款id："+borrow.getId());
+					return;
+				}
 				FuiouHelper fuiouHelper = new FuiouHelper();
 				PayforrspModel result = fuiouHelper.payment(model);
 

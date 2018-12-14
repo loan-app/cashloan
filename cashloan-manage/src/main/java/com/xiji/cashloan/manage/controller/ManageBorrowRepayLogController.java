@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -124,7 +125,12 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 
 		Date date = DateUtil.getNow();
 		String orderNo = OrderNoUtil.getSerialNumber();
-		
+		if (borrow.getFee() < NumberUtils.toDouble(amount)) {
+			Map<String,Object> result = new HashMap<String, Object>();
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "付款金额超过综合服务费了，请调整支付金额！");
+			ServletUtils.writeToResponse(response, result);
+		}
 //		PaymentModel payment = new PaymentModel(orderNo);
 //		payment.setDt_order(DateUtil.dateStr3(date));
 //		if ("dev".equals(Global.getValue("app_environment"))) {
@@ -172,7 +178,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 
 		if (payResult.acceptSuccess() || payResult.success()) { //受理成功
 			payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-		} else if (payResult.error()) { // 疑似重复订单，待人工审核
+		} else if (payResult.error()) { // 接口调用异常，待人工审核
 			payLog.setState(PayLogModel.STATE_PENDING_REVIEW);
 //					payLog.setConfirmCode(payment.getConfirm_code());
 			payLog.setUpdateTime(DateUtil.getNow());
