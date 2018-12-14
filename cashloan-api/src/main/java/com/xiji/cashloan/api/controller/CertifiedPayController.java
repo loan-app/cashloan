@@ -1,20 +1,5 @@
 package com.xiji.cashloan.api.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import tool.util.DateUtil;
-import tool.util.StringUtil;
-
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.PayReqLog;
@@ -33,6 +18,16 @@ import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.cl.service.ProfitAmountService;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import tool.util.DateUtil;
+import tool.util.StringUtil;
 
 /**
  * 连连支付 - 认证支付
@@ -71,7 +66,7 @@ public class CertifiedPayController extends BaseController {
 	 * @param request
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/pay/lianlian/certifiedNotify.htm")
+//	@RequestMapping(value = "/pay/lianlian/certifiedNotify.htm")
 	public void certifiedPayNotify(HttpServletRequest request) throws Exception {
 		String params = getRequestParams(request);
 		logger.info("连连认证支付 - 异步通知" + params);
