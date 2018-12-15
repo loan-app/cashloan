@@ -303,12 +303,13 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 					values = new ArrayList<String>();
 					values.add(dimensionKey);
 					values.add(dimensionValue);
-					paramMap.put("dimensionkey", dimensionKey);
-					paramMap.put("dimensionvalue", dimensionValue);
-					paramMap.put("source", source);
-					NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
-					if(nameBlack == null) {
-						if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+					if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+						paramMap.clear();
+						paramMap.put("dimensionkey", dimensionKey);
+						paramMap.put("dimensionvalue", dimensionValue);
+						paramMap.put("source", source);
+						NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
+						if(nameBlack == null) {
 							nameBlack = new NameBlacklist();
 							nameBlack.setCreatetime(date);
 							nameBlack.setLastmodifytime(date);
@@ -331,10 +332,10 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 							}
 							values.add("已处理");
 						} else {
-							values.add("未处理，格式错误");
+							values.add("未处理，已存在对应信息");
 						}
-					} else if(nameBlack != null) {
-						values.add("未处理，已存在对应信息");
+					}else {
+						values.add("未处理，格式错误");
 					}
 					nameInfos.add(values);
 				}
@@ -346,12 +347,13 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 					values = new ArrayList<String>();
 					values.add(dimensionKey);
 					values.add(dimensionValue);
-					paramMap.put("dimensionkey", dimensionKey);
-					paramMap.put("dimensionvalue", dimensionValue);
-					paramMap.put("source", source);
-					NameWhitelist nameWhite = nameWhitelistMapper.findSelective(paramMap);
-					if(nameWhite == null) {
-						if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+					if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+						paramMap.clear();
+						paramMap.put("dimensionkey", dimensionKey);
+						paramMap.put("dimensionvalue", dimensionValue);
+						paramMap.put("source", source);
+						NameWhitelist nameWhite = nameWhitelistMapper.findSelective(paramMap);
+						if(nameWhite == null) {
 							nameWhite = new NameWhitelist();
 							nameWhite.setCreatetime(date);
 							nameWhite.setLastmodifytime(date);
@@ -373,11 +375,11 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 								userInfoIds.add(userInfo.getId());
 							}
 							values.add("已处理");
-						} else {
-							values.add("未处理，格式错误");
+						} else if(nameWhite != null) {
+							values.add("未处理，已存在对应信息");
 						}
-					} else if(nameWhite != null) {
-						values.add("未处理，已存在对应信息");
+					} else {
+						values.add("未处理，格式错误");
 					}
 					nameInfos.add(values);
 				}
