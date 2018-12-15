@@ -15,6 +15,7 @@ export default React.createClass({
       canEdit: true,
       visible: false,
       visibleAdd:false,
+        totalFee:null
     };
   },
   componentWillReceiveProps(nextProps, nextState) {
@@ -61,6 +62,7 @@ export default React.createClass({
     });
     this.refreshList();
   },
+
   fetch(params = {}) {
     this.setState({
       loading: true
@@ -75,17 +77,20 @@ export default React.createClass({
     Utils.ajaxData({
       url: '/modules/manage/calls/outside/fee/list.htm',
       data: params,
+
       callback: (result) => {
         const pagination = this.state.pagination;
         pagination.current = params.current;
         pagination.pageSize = params.pageSize;
         pagination.total = result.page.total;
+
         if (!pagination.current) {
           pagination.current = 1
         };
         this.setState({
           loading: false,
           data: result.data,
+            totalFee:result.data[0] ? result.data[0].totalFee:'0.00',
           pagination
         });
       }
@@ -149,6 +154,11 @@ export default React.createClass({
     var state = this.state;
     return (
       <div className="block-panel">
+          <div className="actionBtns" style={{ marginBottom: 16 }}>
+              <span> 消费总金额：{this.state.totalFee}</span>
+              <dev></dev>
+          </div>
+
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}
              dataSource={this.state.data}

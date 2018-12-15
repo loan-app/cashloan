@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -28,4 +29,10 @@ public interface CallsOutSideFeeService extends BaseService<CallsOutSideFee, Lon
     Page<CallsOutSideFee> listCallsOutSideFee(Map<String, Object> params, int currentPage,
                                    int pageSize);
 
+    /**
+     * 获取总消费
+     * @param castType
+     * @return
+     */
+    BigDecimal getTotalFee(Integer castType);
 }

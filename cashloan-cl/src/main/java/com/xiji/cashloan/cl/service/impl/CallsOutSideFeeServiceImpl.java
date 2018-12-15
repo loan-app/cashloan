@@ -15,6 +15,7 @@ import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -57,8 +58,22 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 								   int pageSize){
 		PageHelper.startPage(currentPage, pageSize);
 		List<CallsOutSideFee> list = callsOutSideFeeMapper.listCallsOutSideFee(params);
+
+		BigDecimal totalFee = this.getTotalFee(0);
+		for (CallsOutSideFee outSideFee : list){
+			outSideFee.setTotalFee(totalFee);
+		}
 		return (Page<CallsOutSideFee>) list;
 	}
 
+	/**
+	 * 获取总消费
+	 * @param castType
+	 * @return
+	 */
+	@Override
+	public BigDecimal getTotalFee(Integer castType){
+		return callsOutSideFeeMapper.getTotalFee(castType);
+	}
 
 }
