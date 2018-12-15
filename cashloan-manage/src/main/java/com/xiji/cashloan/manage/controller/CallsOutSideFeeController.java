@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,4 +58,19 @@ public class CallsOutSideFeeController extends BaseController {
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
         ServletUtils.writeToResponse(response,result);
     }
+
+//    /**
+//     * 总消费金额
+//     */
+//    @SuppressWarnings("unchecked")
+//    @RequestMapping(value="/modules/manage/calls/outside/getTotalFee.htm",method={RequestMethod.GET,RequestMethod.POST})
+//    @RequiresPermission(code = "modules:manage:calls:outside:fee:getTotalFee",name = "总消费金额")
+//    public void getTotalFee(){
+//        BigDecimal totalFee = callsOutSideFeeService.getTotalFee(0);
+//        Map<String,Object> result = new HashMap<String,Object>();
+//        result.put(Constant.RESPONSE_DATA, totalFee);
+//        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+//        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+//        ServletUtils.writeToResponse(response,result);
+//    }
 }

@@ -155,4 +155,10 @@
         </where>
         order by  gmt_create desc
     </select>
+
+    <select id="getTotalFee" resultType="decimal" parameterType="integer">
+        SELECT SUM(fee) as totalFee
+        FROM cl_calls_outside_fee
+        WHERE cast_type = #{castType}
+    </select>
 </mapper>

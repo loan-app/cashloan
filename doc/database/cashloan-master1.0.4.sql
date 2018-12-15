@@ -993,7 +993,7 @@ INSERT INTO `arc_sys_menu` VALUES ('1001', '0', '信用报告', '0', '', 'icon-x
 INSERT INTO `arc_sys_menu` VALUES ('1002', '0', '运营商报告', '1001', '', null, '00000000001', null, '', '2017-12-06 00:00:00', '', '运营商报告', '0', 'OperatorReport', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1003', '0', '信贷报告', '1001', '', null, '00000000002', null, '', '2017-01-01 00:00:00', '', '信贷报告', '0', 'CreditLoanReport', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1004', '0', '费用管理', '0', '', 'icon-qian', '00000000025', null, '', '2017-01-01 00:00:00', '', '费用管理', '0', 'FeeManage', null, null, null, null);
-INSERT INTO `arc_sys_menu` VALUES ('1005', '0', '外部数据费用', '1004', '', null, '00000000001', null, '', '2017-01-01 00:00:00', '', '外部数据费用', '0', 'OutsideFee', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1005', '0', '数据费用', '1004', '', null, '00000000001', null, '', '2017-01-01 00:00:00', '', '数据费用', '0', 'OutsideFee', null, null, null, null);
 
 
 -- ----------------------------

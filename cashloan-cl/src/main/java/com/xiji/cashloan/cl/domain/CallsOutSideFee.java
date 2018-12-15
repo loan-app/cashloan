@@ -3,6 +3,7 @@ package com.xiji.cashloan.cl.domain;
 import com.xiji.cashloan.core.common.util.DateUtil;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -60,6 +61,11 @@ import java.util.Date;
      * 手机号
      */
     private String phone;
+
+    /**
+     * 总金额
+     */
+    private BigDecimal totalFee;
 
     public CallsOutSideFee() {
         super();
@@ -234,4 +240,12 @@ import java.util.Date;
         this.phone = phone;
     }
 
+    public void setTotalFee(BigDecimal totalFee){
+        this.totalFee = totalFee;
+    }
+
+
+    public BigDecimal getTotalFee(){
+        return totalFee;
+    }
 }

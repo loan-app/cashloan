@@ -25,11 +25,11 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_XINYAN_LOAN = 8;
 
     //魔蝎运营商费用
-    public static double FEE_OPERATOR = -0.1;
+    public static double FEE_OPERATOR = -0.7;
     //魔杖反欺诈费用
-    public static double FEE_ANTI_FRAUD = -0.2;
+    public static double FEE_ANTI_FRAUD = -0.4;
     //魔杖申请准入费用
-    public static double FEE_APPLY = -1;
+    public static double FEE_APPLY = -0.6;
 //    //魔杖多头费用
 //    public static double FEE_MULTI_INFO = 0.3;
 //    //魔杖黑灰名单费用
@@ -37,9 +37,9 @@ public class CallsOutSideFeeConstant {
     //魔杖贷后行为费用
     public static double FEE_POST_LOAD = -0.5;
     //发送短信费用
-    public static double FEE_SEND_MSG = -0.04;
+    public static double FEE_SEND_MSG = -0.06;
     //人脸识别费用
-    public static double FEE_FACE_DETECT = -0.6;
+    public static double FEE_FACE_DETECT = -0.8;
     //新颜小额网贷费用
     public static double FEE_XINYAN_LOAN = -1;
 

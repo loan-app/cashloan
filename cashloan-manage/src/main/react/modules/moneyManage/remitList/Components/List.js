@@ -259,17 +259,19 @@ export default React.createClass({
         }, {
             title: '反馈',
             dataIndex: "remark",
-        },{
-            title: '操作',
-            dataIndex: "",
-            render: (value,record) => {
-                return(
-                   <div style={{ textAlign: "left" }}>
-                        {record.scenes == '30' && record.state == '10' ? <a href="#" onClick={me.checkPayModal.bind(me,record, '查询支付结果', false)}>查询支付结果</a> : '-'}
-                   </div>  
-                )
-            }
-         }]; 
+        }
+        // ,{
+        //     title: '操作',
+        //     dataIndex: "",
+        //     render: (value,record) => {
+        //         return(
+        //            <div style={{ textAlign: "left" }}>
+        //                 {record.scenes == '30' && record.state == '10' ? <a href="#" onClick={me.checkPayModal.bind(me,record, '查询支付结果', false)}>查询支付结果</a> : '-'}
+        //            </div>
+        //         )
+        //     }
+        //  }
+        ];
 
         var state = this.state;
         return (
