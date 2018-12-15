@@ -37,19 +37,19 @@ let SeachForm = React.createClass({
     } = this.props.form;
     return (
       <Form inline >
-        <FormItem label="真实姓名：">
-          <Input  {...getFieldProps('realName') } />
+        <FormItem label="类别：">
+          <Select size="large" style={{width:160}}  {...getFieldProps('dimensionkey')} >
+            <Option value="">全部</Option>
+            <Option value="01">身份证号</Option>
+            <Option value="02">手机号</Option>
+          </Select>
         </FormItem>
-        <FormItem label="身份证号码：">
-          <Input  {...getFieldProps('idNo') } />
+        <FormItem label="对应值：">
+          <Input  {...getFieldProps('dimensionvalue') } />
         </FormItem>
-        <FormItem label="手机号：">
-          <Input  {...getFieldProps('phone') } />
-        </FormItem>
-         <FormItem label="类型：">
-           <Select size="large" style={{width:160}}   {...getFieldProps('type') } >
-                  <Option value="">全部</Option>
-                  <Option value="10">黑名单</Option> 
+        <FormItem label="类型：">
+           <Select size="large" style={{width:160}}  {...getFieldProps('type',{initialValue: '10'})} >
+                  <Option value="10">黑名单</Option>
                   <Option value="20">白名单</Option> 
             </Select>
         </FormItem>

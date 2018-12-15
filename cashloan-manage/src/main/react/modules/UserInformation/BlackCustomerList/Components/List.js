@@ -19,6 +19,7 @@ export default React.createClass({
       },
       canEdit: true,
       visible: false,
+      nameType: ''
     };
   },
   componentWillReceiveProps(nextProps, nextState) {
@@ -60,11 +61,11 @@ export default React.createClass({
       params = {
         pageSize: 10,
         current: 1,
-        searchParams:JSON.stringify({idNo:'',realName:''})
+        searchParams:JSON.stringify({dimensionkey:'', dimensionvalue:'', type:'10'})
       }
     }
     if(!params.searchParams){
-      params.searchParams=JSON.stringify({idNo:'',realName:''})
+      params.searchParams=JSON.stringify({dimensionkey:'', dimensionvalue:'', type:'10'})
     }
     Utils.ajaxData({
       url: '/modules/manage/userBlack/listInfo.htm',
@@ -77,9 +78,11 @@ export default React.createClass({
         if (!pagination.current) {
           pagination.current = 1
         };
+        const searchJSON = JSON.parse(params.searchParams);
         this.setState({
           loading: false,
           data: result.data,
+          nameType: searchJSON.type,
           pagination
         });
       }
@@ -157,37 +160,37 @@ export default React.createClass({
       selectedRowKeys
     } = this.state;
     const rowSelection = {
-
       selectedRowKeys,
-
     };
     const hasSelected = selectedRowKeys.length > 0;
+    var state = this.state;
     var columns = [{
-      title: '真实姓名',
-      dataIndex: 'realName'
+      title: '类别',
+      dataIndex: 'dimensionkey',
+      render(text,record){
+        return record.dimensionkey == '01' ? '身份证号':'手机号';
+      }
     }, {
-      title: '身份证号码',
-      dataIndex: 'idNo'
-    }, {
-      title: '手机号码',
-      dataIndex: 'phone'
+      title: '对应值',
+      dataIndex: 'dimensionvalue'
     }, {
       title: '类型',
-      dataIndex: 'typeStr'
+      render() {
+        return state.nameType == 10 ? '黑名单':'白名单';
+      }
     }, {
       title: '导入时间',
-      dataIndex: "createTime",
+      dataIndex: "createtime"
     }, {
       title: '操作',
       render(text,record){
           return  (
               <div style={{ textAlign: "left" }}>
-                  {record.typeStr == '黑名单' | record.typeStr == '白名单' ? <a href="#" onClick={me.delt.bind(me, '删除',record)}>删除</a>  : '-'}       
+                  -
               </div>
           )
       }
     }];
-    var state = this.state;
     return (
       <div className="block-panel">
         <div className="actionBtns" style={{ marginBottom: 16 }}>

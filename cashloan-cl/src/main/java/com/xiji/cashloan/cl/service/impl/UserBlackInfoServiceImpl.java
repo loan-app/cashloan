@@ -9,7 +9,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 
+import com.xiji.cashloan.cl.domain.NameBlackWhiteUser;
+import com.xiji.cashloan.cl.domain.NameBlacklist;
+import com.xiji.cashloan.cl.domain.NameWhitelist;
 import com.xiji.cashloan.cl.domain.UserBlackInfo;
+import com.xiji.cashloan.cl.mapper.NameBlacklistMapper;
+import com.xiji.cashloan.cl.mapper.NameWhitelistMapper;
 import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -57,6 +62,13 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
     private UserBaseInfoMapper userBaseInfoMapper;
     @Resource
     private UserAuthMapper userAuthMapper;
+	@Resource
+	private NameBlacklistMapper nameBlacklistMapper;
+	@Resource
+	private NameWhitelistMapper nameWhitelistMapper;
+
+	private static final String DIMENSION_KEY_IDNO = "01";
+	private static final String DIMENSION_KEY_PHONE = "02";
 
 	@Override
 	public BaseMapper<UserBlackInfo, Long> getMapper() {
@@ -64,11 +76,18 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 	}
 
 	@Override
-	public Page<UserBlackInfo> listInfo(Map<String, Object> params,
+	public Page<NameBlackWhiteUser> listInfo(Map<String, Object> params,
 			int currentPage, int pageSize) {
 		PageHelper.startPage(currentPage, pageSize);
-		List<UserBlackInfo> list = userBlackInfoMapper.listSelective(params);
-		return (Page<UserBlackInfo>) list;
+		List<NameBlackWhiteUser> nameBlackWhiteUsers = new ArrayList<>();
+		if(params != null && params.size() > 0) {
+			if("10".equals(params.get("type").toString())) {
+				nameBlackWhiteUsers = nameBlacklistMapper.queryByParams(params);
+			} else {
+				nameBlackWhiteUsers = nameWhitelistMapper.queryByParams(params);
+			}
+		}
+		return (Page<NameBlackWhiteUser>) nameBlackWhiteUsers;
 	}
 
 	@Override
@@ -188,28 +207,34 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 	 */
 	public void validUserBlackInfo(UserBaseInfo baseInfo){
 		Map<String,Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("idNo", baseInfo.getIdNo());
-		paramMap.put("realName", baseInfo.getRealName());
-		paramMap.put("phone", baseInfo.getPhone());
-		paramMap.put("type", "20");
-		
 		//查询白名单用户
-		List<UserBlackInfo> info = userBlackInfoMapper.listSelective(paramMap);
-		if(info.size()>0){
+		paramMap.put("dimensionkey", DIMENSION_KEY_IDNO);
+		paramMap.put("dimensionvalue", baseInfo.getIdNo());
+		List<NameWhitelist> nameWhitelists1 = nameWhitelistMapper.listSelective(paramMap);
+		paramMap.clear();
+		paramMap.put("dimensionkey", DIMENSION_KEY_PHONE);
+		paramMap.put("dimensionvalue", baseInfo.getPhone());
+		List<NameWhitelist> nameWhitelists2 = nameWhitelistMapper.listSelective(paramMap);
+		if(nameWhitelists1.size() > 0 || nameWhitelists2.size() > 0){
 			baseInfo.setState(UserBaseInfoModel.USER_STATE_WHITE);
 			baseInfo.setBlackReason("白名单用户");
 			userBaseInfoMapper.update(baseInfo);
 		}
 		
 		//查询黑名单用户
-		paramMap.put("type", "10");
-		info = userBlackInfoMapper.listSelective(paramMap);
-		if(info.size()>0){
+		paramMap.clear();
+		paramMap.put("dimensionkey", DIMENSION_KEY_IDNO);
+		paramMap.put("dimensionvalue", baseInfo.getIdNo());
+		List<NameBlacklist> nameBlacklists1 = nameBlacklistMapper.listSelective(paramMap);
+		paramMap.clear();
+		paramMap.put("dimensionkey", DIMENSION_KEY_PHONE);
+		paramMap.put("dimensionvalue", baseInfo.getPhone());
+		List<NameBlacklist> nameBlacklists2 = nameBlacklistMapper.listSelective(paramMap);
+		if(nameBlacklists1.size() > 0 || nameBlacklists2.size() > 0) {
 			baseInfo.setState(UserBaseInfoModel.USER_STATE_BLACK);
 			baseInfo.setBlackReason("黑名单用户");
 			userBaseInfoMapper.update(baseInfo);
 		}
-		
 		//出于安全性考虑，请勿改变查询顺序，避免因为数据重复造成某些用户错误进入黑名单，直接放款
 	}
 
@@ -244,7 +269,131 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 		
 		
 	}
-	
+
+	@Override
+	public List<List<String>> importUserInfoNew(MultipartFile userInfoFile, String type) throws Exception {
+		List<List<String>> nameInfos = new ArrayList<List<String>>();
+		List<String> values = new ArrayList<String>();
+		String source = "IP";
+		values.add("类别");
+		values.add("对应值");
+		values.add("处理结果");
+		nameInfos.add(values);
+		Workbook book = null;
+		if (StringUtil.isNotBlank(userInfoFile.getOriginalFilename()) && userInfoFile.getOriginalFilename().endsWith(".xls")) {
+			book = new HSSFWorkbook(userInfoFile.getInputStream());
+		} else if (StringUtil.isNotBlank(userInfoFile.getOriginalFilename()) && userInfoFile.getOriginalFilename().endsWith(".xlsx")) {
+			book = new XSSFWorkbook(userInfoFile.getInputStream());
+		}else{
+			logger.error("文件格式错误"+userInfoFile.getOriginalFilename());
+		}
+
+		Date date = new Date();
+
+		if (book != null) {
+			Sheet sheet = book.getSheetAt(0);
+			int lostRowNum = sheet.getLastRowNum();
+			Map<String,Object> paramMap = new HashMap<String, Object>();
+			List<Long> userInfoIds = new ArrayList<Long>();
+			if("10".equals(type)) {
+				for (int i = 1; i <= lostRowNum; i++) {
+					Row row = sheet.getRow(i);
+					String dimensionKey = getCellValue(row,0);
+					String dimensionValue = getCellValue(row,1);
+					values = new ArrayList<String>();
+					values.add(dimensionKey);
+					values.add(dimensionValue);
+					paramMap.put("dimensionkey", dimensionKey);
+					paramMap.put("dimensionvalue", dimensionValue);
+					paramMap.put("source", source);
+					NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
+					if(nameBlack == null) {
+						if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+							nameBlack = new NameBlacklist();
+							nameBlack.setCreatetime(date);
+							nameBlack.setLastmodifytime(date);
+							nameBlack.setDimensionkey(dimensionKey);
+							nameBlack.setDimensionvalue(dimensionValue);
+							nameBlack.setSource(source);
+							nameBlack.setStatus(0);
+							nameBlacklistMapper.save(nameBlack);
+
+							//需要更新的用户信息
+							paramMap.clear();
+							if(StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey)) {
+								paramMap.put("idNo", row.getCell(1).toString());
+							} else {
+								paramMap.put("phone", row.getCell(1).toString());
+							}
+							UserBaseInfo userInfo = userBaseInfoMapper.findSelective(paramMap);
+							if(userInfo != null){
+								userInfoIds.add(userInfo.getId());
+							}
+							values.add("已处理");
+						} else {
+							values.add("未处理，格式错误");
+						}
+					} else if(nameBlack != null) {
+						values.add("未处理，已存在对应信息");
+					}
+					nameInfos.add(values);
+				}
+			} else {
+				for (int i = 1; i <= lostRowNum; i++) {
+					Row row = sheet.getRow(i);
+					String dimensionKey = getCellValue(row,0);
+					String dimensionValue = getCellValue(row,1);
+					values = new ArrayList<String>();
+					values.add(dimensionKey);
+					values.add(dimensionValue);
+					paramMap.put("dimensionkey", dimensionKey);
+					paramMap.put("dimensionvalue", dimensionValue);
+					paramMap.put("source", source);
+					NameWhitelist nameWhite = nameWhitelistMapper.findSelective(paramMap);
+					if(nameWhite == null) {
+						if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+							nameWhite = new NameWhitelist();
+							nameWhite.setCreatetime(date);
+							nameWhite.setLastmodifytime(date);
+							nameWhite.setDimensionkey(dimensionKey);
+							nameWhite.setDimensionvalue(dimensionValue);
+							nameWhite.setSource(source);
+							nameWhite.setStatus(0);
+							nameWhitelistMapper.save(nameWhite);
+
+							//需要更新的用户信息
+							paramMap.clear();
+							if(StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey)) {
+								paramMap.put("idNo", row.getCell(1).toString());
+							} else {
+								paramMap.put("phone", row.getCell(1).toString());
+							}
+							UserBaseInfo userInfo = userBaseInfoMapper.findSelective(paramMap);
+							if(userInfo != null){
+								userInfoIds.add(userInfo.getId());
+							}
+							values.add("已处理");
+						} else {
+							values.add("未处理，格式错误");
+						}
+					} else if(nameWhite != null) {
+						values.add("未处理，已存在对应信息");
+					}
+					nameInfos.add(values);
+				}
+			}
+			if(userInfoIds.size()>0){
+				if("10".equals(type)){
+					userBaseInfoMapper.updateBlackIdNos(userInfoIds);
+				}else if("20".equals(type)){
+					userBaseInfoMapper.updateWhiteIdNos(userInfoIds);
+				}
+			}
+
+		}
+		return nameInfos;
+	}
+
 	private int CheckRowError(Row row,int i,List<String> values){
 		for(int j=0;j<i;j++){
 			row.getCell(j).setCellType(row.getCell(j).CELL_TYPE_STRING);

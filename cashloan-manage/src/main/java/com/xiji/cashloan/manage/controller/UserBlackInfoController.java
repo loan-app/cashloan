@@ -15,6 +15,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xiji.cashloan.cl.domain.NameBlackWhiteUser;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
@@ -66,7 +67,7 @@ public class UserBlackInfoController extends BaseController {
 		Map<String,Object> result = new HashMap<String,Object>();
 		if(StringUtil.isNotBlank(type) && ("10".equals(type) || "20".equals(type)) &&
 				userInfoFile!=null && (userInfoFile.getOriginalFilename().endsWith(".xls") || userInfoFile.getOriginalFilename().endsWith(".xlsx"))){
-			List<List<String>> resultList = userBlackInfoService.importUserInfo(userInfoFile,type);
+			List<List<String>> resultList = userBlackInfoService.importUserInfoNew(userInfoFile,type);
 	    	String title = "导入结果";
 	    	RepayExcelModel report = new RepayExcelModel();
 			String fileName = report.saveExcelByList1(resultList, title, userInfoFile.getOriginalFilename(),request);
@@ -108,7 +109,7 @@ public class UserBlackInfoController extends BaseController {
 			@RequestParam(value = "pageSize") int pageSize,
 			HttpServletResponse response) throws Exception {
 		Map<String,Object> searchMap = JSONObject.parseObject(search);
-		Page<UserBlackInfo> page = userBlackInfoService.listInfo(searchMap,current, pageSize);
+		Page<NameBlackWhiteUser> page = userBlackInfoService.listInfo(searchMap,current, pageSize);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_DATA, page.getResult());
 		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
@@ -123,7 +124,7 @@ public class UserBlackInfoController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/userBlack/deleteBlack.htm", method = RequestMethod.POST)
-	public void deleteBlack(@RequestParam(value = "id") Long id) throws Exception {
+	public void deleteBlack(@RequestParam(value = "id") Long id, @RequestParam(value = "type") String type) throws Exception {
 		int rtValue = userBlackInfoService.deleteByID(id);
 		Map<String,Object> result = new HashMap<String,Object>();
 		if(rtValue>0){

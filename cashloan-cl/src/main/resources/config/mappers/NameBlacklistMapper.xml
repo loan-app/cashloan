@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_name_blacklist表:黑名单模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.NameBlacklistMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.NameBlacklist">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="dimensionkey" property="dimensionkey" jdbcType="VARCHAR" />
+        <result column="dimensionvalue" property="dimensionvalue" jdbcType="VARCHAR" />
+        <result column="source" property="source" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="lastmodifytime" property="lastmodifytime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="BlackUserMap" type="com.xiji.cashloan.cl.domain.NameBlackWhiteUser">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="dimensionkey" property="dimensionkey" jdbcType="VARCHAR" />
+        <result column="dimensionvalue" property="dimensionvalue" jdbcType="VARCHAR" />
+        <result column="source" property="source" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="lastmodifytime" property="lastmodifytime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,dimensionkey,dimensionvalue,source,status,createtime,lastmodifytime 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="dimensionkey != null and dimensionkey != ''">
+                and dimensionkey = #{dimensionkey,jdbcType=VARCHAR}
+            </if>
+            <if test="dimensionvalue != null and dimensionvalue != '' ">
+                and dimensionvalue like CONCAT('%',#{dimensionvalue,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="source != null and source != ''">
+                and source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastmodifytime != null">
+                and lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.NameBlacklist">
+        insert into cl_name_blacklist(dimensionkey,dimensionvalue,source,status,createtime,lastmodifytime)values(#{dimensionkey,jdbcType=VARCHAR},#{dimensionvalue,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createtime,jdbcType=TIMESTAMP},#{lastmodifytime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.NameBlacklist">
+        update cl_name_blacklist set 
+            dimensionkey = #{dimensionkey,jdbcType=VARCHAR},
+            dimensionvalue = #{dimensionvalue,jdbcType=VARCHAR},
+            source = #{source,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            createtime = #{createtime,jdbcType=TIMESTAMP},
+            lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_name_blacklist
+          <set>
+            <if test="dimensionkey != null and dimensionkey != '' ">
+                dimensionkey = #{dimensionkey,jdbcType=VARCHAR},                
+            </if>
+            <if test="dimensionvalue != null and dimensionvalue != '' ">
+                dimensionvalue = #{dimensionvalue,jdbcType=VARCHAR},                
+            </if>
+            <if test="source != null and source != '' ">
+                source = #{source,jdbcType=VARCHAR},                
+            </if>
+            <if test="status != null">        
+                status = #{status,jdbcType=INTEGER},                
+            </if>
+            <if test="createtime != null">        
+                createtime = #{createtime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="lastmodifytime != null">        
+                lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_name_blacklist
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_name_blacklist
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_name_blacklist
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="queryByParams" resultMap="BlackUserMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_name_blacklist
+        <include refid="searchBy"/>
+    </select>
+</mapper>

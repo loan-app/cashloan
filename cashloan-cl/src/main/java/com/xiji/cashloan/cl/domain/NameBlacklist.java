@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 白名单实体
+ * 黑名单实体
  * 
- * @author king
+ * @author szb
  * @version 1.0.0
- * @date 2018-12-10 19:12:43
+ * @date 2018-12-14 17:22:38
  */
- public class Whitelist implements Serializable {
+ public class NameBlacklist implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,16 +40,14 @@ import java.util.Date;
     private Integer status;
 
     /**
-    * 
+    * 创建时间
     */
     private Date createtime;
 
     /**
-    * 
+    * 最后更新时间
     */
     private Date lastmodifytime;
-
-    private String nameType;
 
     /**
     * 获取主键Id
@@ -175,13 +173,5 @@ import java.util.Date;
     */
     public void setLastmodifytime(Date lastmodifytime){
         this.lastmodifytime = lastmodifytime;
-    }
-
-    public String getNameType() {
-        return "20";
-    }
-
-    public void setNameType(String nameType) {
-        this.nameType = nameType;
     }
 }

@@ -3,6 +3,7 @@ package com.xiji.cashloan.cl.service;
 import java.util.List;
 import java.util.Map;
 
+import com.xiji.cashloan.cl.domain.NameBlackWhiteUser;
 import com.xiji.cashloan.cl.domain.UserBlackInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +30,7 @@ public interface UserBlackInfoService extends BaseService<UserBlackInfo, Long>{
 	 * @param pageSize
 	 * @return
 	 */
-	Page<UserBlackInfo> listInfo(Map<String, Object> params, int currentPage,int pageSize);
+	Page<NameBlackWhiteUser> listInfo(Map<String, Object> params, int currentPage, int pageSize);
 	
 	/**
 	 * 查询列表
@@ -72,4 +73,10 @@ public interface UserBlackInfoService extends BaseService<UserBlackInfo, Long>{
 	 * @param state
 	 */
 	void deleteBlackOrWhiteInfo(Long userId,String state);
+
+	/**
+	 * 导入黑名单
+	 * @param userInfoFile
+	 */
+	List<List<String>> importUserInfoNew(MultipartFile userInfoFile,String type) throws Exception;
 }
