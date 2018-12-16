@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="#7CD88E"/>
-	<title>【哆啦a借用户借款协议】</title>
+	<title>【鲁班.柒号用户借款协议】</title>
 	<script src="/static/js/mobile.js"></script>
     <script src="/static/js/zepto.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/general.css"/>

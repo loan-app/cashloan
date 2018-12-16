@@ -111,7 +111,7 @@ let Login = React.createClass({
                             <div className="m-loginbox">
                                 <div className="lbinner" id="J_body_bg">
                                     <div className="login-form">
-                                        <div className="login-hd">小微贷</div>
+                                        <div className="login-hd">智能管理</div>
                                         <div className="login_input">
                                             <Form inline-block onSubmit={this.handleSubmit} form={this.props.form}>
                                                 <FormItem>

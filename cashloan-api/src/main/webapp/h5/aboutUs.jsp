@@ -9,7 +9,7 @@
 	<meta name="format-detection" content="telephone=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="#7CD88E" />
-	<title>【&nbsp;关于哆啦a借】</title>
+	<title>【&nbsp;关于鲁班.柒号】</title>
 	<script>
 		var _hmt = _hmt || [];
 		(function () {
@@ -66,7 +66,7 @@
 			<p class="_color">
 				<br>
 			</p>
-			<p class="_color">哆啦a借为用户打造一个极速金融借贷平台，用户可以在这里快速申请贷款，放款快捷，为用户轻松解决资金问题。</p>
+			<p class="_color">鲁班.柒号为用户打造一个极速金融借贷平台，用户可以在这里快速申请贷款，放款快捷，为用户轻松解决资金问题。</p>
 			<h2 style="margin: 10px auto 5px; font-size: 13px; color: rgb(102, 102, 102); white-space: normal; background-color: rgb(255, 255, 255);">功能介绍</h2>
 			<p class="_color">【一分钟认证】刷脸即可认证借钱，简单快捷</p>
 			<p class="_color">【10分钟放款】认证简单，10分钟放款</p>
