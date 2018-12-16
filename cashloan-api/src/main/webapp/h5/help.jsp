@@ -116,10 +116,10 @@ body {
 								src="/static/images/top.png"
 								width="100%" /><img class="v_center"
 								src="/static/images/right.png"
-								width="60%" /></span> <span class="_333 v_center"> 什么是哆啦a借？</span>
+								width="60%" /></span> <span class="_333 v_center"> 什么是鲁班.柒号？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>哆啦a借是一款简单便捷的无抵押纯信用借款产品，借款用户只需进行线上简单认证即可申请借款，认证一般3分钟即可完成。申请通过后，最快10分钟到账，操作简单，服务费用低。</p>
+							<p>鲁班.柒号是一款简单便捷的无抵押纯信用借款产品，借款用户只需进行线上简单认证即可申请借款，认证一般3分钟即可完成。申请通过后，最快10分钟到账，操作简单，服务费用低。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -130,7 +130,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">可借额度是多少？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>用户注册后哆啦a借初始额度默认为1000元，需要通过所有认证才能激活哆啦a借并申请借款。具体可借额度由您提供的信息，在审核之后确定。</p>
+							<p>用户注册后鲁班.柒号初始额度默认为1000元，需要通过所有认证才能激活鲁班.柒号并申请借款。具体可借额度由您提供的信息，在审核之后确定。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -185,7 +185,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">申请一笔借款需要哪些步骤？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>用本人实名认证的手机号注册哆啦a借-&gt;完成必要4步认证-&gt;申请借款额度与期限-&gt;等待审核-&gt;等待打款-&gt;收到打款。</p>
+							<p>用本人实名认证的手机号注册鲁班.柒号-&gt;完成必要4步认证-&gt;申请借款额度与期限-&gt;等待审核-&gt;等待打款-&gt;收到打款。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -196,7 +196,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">借款申请需要做哪些认证？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>用户注册哆啦a借之后，会默认获得1000元的借款额度。用户需要做一些认证才能激活额度，具体认证事项如下：个人信息、紧急联系人、手机运营商、收款银行卡绑定必要4步认证，也可以补充工作信息认证、更多信息增加审批通过率。做完这些信息认证之后即可申请借款。</p>
+							<p>用户注册鲁班.柒号之后，会默认获得1000元的借款额度。用户需要做一些认证才能激活额度，具体认证事项如下：个人信息、紧急联系人、手机运营商、收款银行卡绑定必要4步认证，也可以补充工作信息认证、更多信息增加审批通过率。做完这些信息认证之后即可申请借款。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -218,7 +218,7 @@ body {
 								width="60%" /></span> <span class="_333 v_center">为什么会读取联系人失败？</span>
 						</h3>
 						<div class="_hidden padding info em__9">
-							<p>由于您没有授权哆啦a借读取联系人的权限。①ios用户，可以通过设置-&gt;隐私-&gt;通讯录-&gt;哆啦a借开启权限；②安卓用户，具体设置方式根据机型不同而不同。可以到设置里面开启读取权限。</p>
+							<p>由于您没有授权鲁班.柒号读取联系人的权限。①ios用户，可以通过设置-&gt;隐私-&gt;通讯录-&gt;鲁班.柒号开启权限；②安卓用户，具体设置方式根据机型不同而不同。可以到设置里面开启读取权限。</p>
 						</div>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
@@ -253,17 +253,6 @@ body {
 						<div class="_hidden padding info em__9">
 							<p>对于很多ios用户，下载app之后打开app会发现没有数据，这是因为ios10系统新增了无线助理功能，可以通过如下方式解决：设置-蜂窝移动网络-无线局域网助理-打开，再去登陆那些软件，当有弹窗要记得点允许就ok了。</p>
 						</div>
-						<%--<h3 class="em_1 _cursor">--%>
-							<%--<span class="_inline_block _wraper"><img--%>
-								<%--class="_hidden v_center"--%>
-								<%--src="/static/images/top.png"--%>
-								<%--width="100%" /><img class="v_center"--%>
-								<%--src="/static/images/right.png"--%>
-								<%--width="60%" /></span> <span class="_333 v_center">芝麻信用是必须的吗？</span>--%>
-						<%--</h3>--%>
-						<%--<div class="_hidden padding info em__9">--%>
-							<%--<p>哆啦a借产品目前要求用户必须有芝麻信用且授权哆啦a借读取您的芝麻信用分数。否则无法完成借款。</p>--%>
-						<%--</div>--%>
 						<h3 class="em_1 _cursor">
 							<span class="_inline_block _wraper"><img
 								class="_hidden v_center"
@@ -373,8 +362,8 @@ body {
 						</h3>
 
 						<div class="_hidden padding info em__9">
-							<p>① 【推荐-银行卡转账还款】，用户可打开哆啦a借，进入还款点击银行卡转账，将还款金额转至银行账户中并备注好您的手机和手机号码； ②
-								【支付宝还款】，用户可打开哆啦a借，进入还款点击支付宝转账，将还款金额转至支付宝账户中并备注好您的手机和手机号码；
+							<p>① 【推荐-银行卡转账还款】，用户可打开鲁班.柒号，进入还款点击银行卡转账，将还款金额转至银行账户中并备注好您的手机和手机号码； ②
+								【支付宝还款】，用户可打开鲁班.柒号，进入还款点击支付宝转账，将还款金额转至支付宝账户中并备注好您的手机和手机号码；
 								③【平台代扣】，在还款日之前将所需还款金额放在绑定银行卡，还款日平台将会在四个时间段进行扣款（每天10:00，13:00，16:00，20:00），扣款成功后会给您发送短信。
 							</p>
 						</div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>还款方式</title>
     <meta name="keywords" content="贷款,小额借钱,借贷,贷款app,急用钱,短期快速放贷,极速借款借钱,小额贷款">
-    <meta name="description" content="哆啦a借专注于为个人提供正规小额贷款、无抵押贷款、个人贷款、闪电借钱等服务">
+    <meta name="description" content="鲁班.柒号专注于为个人提供正规小额贷款、无抵押贷款、个人贷款、闪电借钱等服务">
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
     <script src="/static/js/flexable.js"></script>
