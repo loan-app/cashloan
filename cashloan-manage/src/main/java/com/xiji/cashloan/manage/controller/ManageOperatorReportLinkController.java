@@ -2,6 +2,7 @@ package com.xiji.cashloan.manage.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.domain.OperatorReportLink;
 import com.xiji.cashloan.cl.model.ManageOperatorReportLinkModel;
 import com.xiji.cashloan.cl.service.OperatorReportLinkService;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -78,9 +79,9 @@ public class ManageOperatorReportLinkController extends ManageBaseController{
         String reportLink = StringUtil.EMPTY;
         JSONObject resJson = new JSONObject();
         if (userBaseInfo != null) {
-            ManageOperatorReportLinkModel lastRecord = operatorReportLinkService.getLastRecord(userId);
+            OperatorReportLink lastRecord = operatorReportLinkService.getLastRecord(userId);
             if(lastRecord != null) {
-                reportLink = lastRecord.getOperateUrl();
+                reportLink = lastRecord.getMessage();
             }
         }
         Map<String,Object> result = new HashMap<>();

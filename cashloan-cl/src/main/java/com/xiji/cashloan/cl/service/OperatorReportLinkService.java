@@ -17,5 +17,5 @@ import java.util.Map;
 public interface OperatorReportLinkService extends BaseService<OperatorReportLink, Long>{
     Page<ManageOperatorReportLinkModel> page(int current, int pageSize, Map<String, Object> searchMap);
 
-    ManageOperatorReportLinkModel getLastRecord(Long userId);
+    OperatorReportLink getLastRecord(Long userId);
 }

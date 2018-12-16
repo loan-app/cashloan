@@ -46,7 +46,7 @@ public class OperatorReportLinkServiceImpl extends BaseServiceImpl<OperatorRepor
 	}
 
 	@Override
-	public ManageOperatorReportLinkModel getLastRecord(Long userId) {
+	public OperatorReportLink getLastRecord(Long userId) {
 		return operatorReportLinkMapper.getLastRecord(userId);
 	}
 
