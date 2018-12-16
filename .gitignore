@@ -47,6 +47,8 @@ hs_err_pid*
 
 .metadata/
 Servers/
-*/.gitignore
+
 
 node_modules/
+
+.cache/

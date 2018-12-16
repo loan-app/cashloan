@@ -4,6 +4,7 @@ import {
     Tabs
 } from 'antd';
 import XinyanDetail from './XinyanDetail'
+import OperatorDetail from './OperatorDetail'
 
 const objectAssign = require('object-assign');
 const TabPane = Tabs.TabPane;
@@ -100,11 +101,10 @@ var Tab8 = React.createClass({
             title: '收益总奖金（元）',
             dataIndex: "agentAmount",
         }];
-        return (<div className="block-panel">
+        return (<div className="block-panel card-container">
                 <Tabs onTabClick={this.handleTabClick} >
-                    <TabPane tab="运营商报告" key='1'>
-
-                        <iframe style={{border:0,width:"100%",height:630,}} src= {'/build/magicReport/index.html?userId=3'} />
+                    <TabPane type="card" tab="运营商报告" key='1'>
+                        <OperatorDetail userId={this.props.record.userId}></OperatorDetail>
                     </TabPane>
                     <TabPane tab="信贷报告" key='2'>
                         <iframe style={{border:0,width:"100%",height:630,}} src= {'/build/magicReport/index.html?userId=' + this.props.record.userId} />
