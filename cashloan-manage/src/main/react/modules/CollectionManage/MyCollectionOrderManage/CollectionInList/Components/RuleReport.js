@@ -67,7 +67,7 @@ var RuleReport = React.createClass({
       title: '字段描述',
       dataIndex: 'colName',
       render: (text,render) => {
-        return state.resultList[0].tbName + '/' + text
+        return render.tbName + '/' + text
       }
     }, {
       title: '运算符',
