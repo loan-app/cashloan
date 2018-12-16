@@ -44,4 +44,10 @@ public class OperatorReportLinkServiceImpl extends BaseServiceImpl<OperatorRepor
 			.page(searchMap);
 		return page;
 	}
+
+	@Override
+	public ManageOperatorReportLinkModel getLastRecord(Long userId) {
+		return operatorReportLinkMapper.getLastRecord(userId);
+	}
+
 }

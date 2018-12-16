@@ -127,4 +127,12 @@
         </trim>
         order by link.id desc
     </select>
+
+    <select id="getLastRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_report_link
+        where user_id = #{userId,jdbcType=BIGINT}
+        order by create_time desc limit 1
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.model.ManageOperatorReportLinkModel;
 import com.xiji.cashloan.cl.service.OperatorReportLinkService;
@@ -12,6 +13,9 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import com.xiji.cashloan.core.service.UserBaseInfoService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -29,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ManageOperatorReportLinkController extends ManageBaseController{
     @Resource
     private OperatorReportLinkService operatorReportLinkService;
+    @Resource
+    private UserBaseInfoService userBaseInfoService;
     /**
      * @param current
      * @param pageSize
@@ -63,5 +69,25 @@ public class ManageOperatorReportLinkController extends ManageBaseController{
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
         ServletUtils.writeToResponse(response, result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value="/modules/manage/operator/reportLink/detail.htm",method={RequestMethod.GET,RequestMethod.POST})
+    public void page(@RequestParam(value = "userId") Long userId) throws Exception {
+        UserBaseInfo userBaseInfo = userBaseInfoService.getById(userId);
+        String reportLink = StringUtil.EMPTY;
+        JSONObject resJson = new JSONObject();
+        if (userBaseInfo != null) {
+            ManageOperatorReportLinkModel lastRecord = operatorReportLinkService.getLastRecord(userId);
+            if(lastRecord != null) {
+                reportLink = lastRecord.getOperateUrl();
+            }
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("reportLink", reportLink);
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
+        ServletUtils.writeToResponse(response,result);
+
     }
 }

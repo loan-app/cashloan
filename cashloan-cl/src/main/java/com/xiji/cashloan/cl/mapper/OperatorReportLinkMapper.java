@@ -25,4 +25,5 @@ public interface OperatorReportLinkMapper extends BaseMapper<OperatorReportLink,
      */
     List<ManageOperatorReportLinkModel> page(Map<String, Object> searchMap);
 
+    ManageOperatorReportLinkModel getLastRecord(Long userId);
 }
