@@ -32,7 +32,7 @@ var RuleReport = React.createClass({
 
     Utils.ajaxData({
       url: '/modules/manage/review/findResult.htm',
-      data: { borrowId: record.id },
+      data: { borrowId: record.borrowId },
       callback: (result) => {
         var data = result.data;
         for(var i = 0; i < data.ruleList.length; i++){

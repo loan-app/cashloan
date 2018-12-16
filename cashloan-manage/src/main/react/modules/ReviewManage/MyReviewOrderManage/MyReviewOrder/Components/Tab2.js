@@ -53,7 +53,7 @@ var Tab2 = React.createClass({
       params = {
         pageSize: 10,
         current: 1,
-        userId: this.props.record.userId,
+        userId: this.props.record.borrowUserId,
       }
     }
     var data = this.state.data;

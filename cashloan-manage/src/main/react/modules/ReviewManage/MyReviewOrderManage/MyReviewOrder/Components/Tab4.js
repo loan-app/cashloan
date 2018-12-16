@@ -38,7 +38,7 @@ var Tab4 = React.createClass({
       params = {
         pageSize: 5,
         current: 1,
-        userId: this.props.record.userId,
+        userId: this.props.record.borrowUserId,
       }
     }
     Utils.ajaxData({

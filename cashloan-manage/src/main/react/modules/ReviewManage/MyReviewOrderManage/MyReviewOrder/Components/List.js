@@ -83,7 +83,7 @@ export default React.createClass({
             Utils.ajaxData({
                 url: '/modules/manage/cl/cluser/detail.htm',
                 data: {
-                    userId: record.userId
+                    userId: record.borrowUserId
                 },
                 callback: (result) => {
                     if (result.code == 200) {

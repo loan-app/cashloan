@@ -120,9 +120,6 @@ var Lookdetails = React.createClass({
       <Modal title={props.title} visible={props.visible} onCancel={this.handleCancel} width="1200" footer={props.title == "查看" ? [modalBtnstwo] : [modalBtns]} maskClosable={false} >
 
         <Tabs onTabClick={this.handleTabClick}  activekey={this.state.activekey}  >
-          <TabPane tab="信用报告" key="8">
-            <Tab8 userId={props.record.userId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
-          </TabPane>
           <TabPane tab="基本信息" key="1">
             <Tab1  ref="Tab1" record={props.record} dataForm={props.dataForm} canEdit={props.canEdit} visible={props.visible} recordSoure={props.recordSoure} activekey={this.state.activekey}/>
           </TabPane>
@@ -137,6 +134,9 @@ var Lookdetails = React.createClass({
           </TabPane>
           <TabPane tab="通话记录" key="4">
             <Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="信用报告" key="8">
+            <Tab8 userId={props.record.borrowUserId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
           </TabPane>
         </Tabs>
         <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit}/>
