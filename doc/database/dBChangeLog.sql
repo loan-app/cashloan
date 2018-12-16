@@ -221,3 +221,7 @@ CREATE TABLE `cl_manual_review_order` (
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `borrow_id` (`borrow_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人工审核订单表';
+
+-- 删除广告菜单权限
+delete from arc_sys_role_menu where menu_id = 23;
+delete from arc_sys_role_menu where menu_id = 98;
