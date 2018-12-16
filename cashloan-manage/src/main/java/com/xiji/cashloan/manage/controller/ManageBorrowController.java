@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
@@ -355,12 +356,17 @@ public class ManageBorrowController extends ManageBaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/modules/manage/borrow/verifyBorrow.htm")
-	public void verifyBorrow(@RequestParam(value = "borrowId") Long borrowId,
-			@RequestParam(value = "state") String state,
-			@RequestParam(value = "remark") String remark) throws Exception {
-		Map<String,Object> result = new HashMap<String,Object>(); 
+	public void verifyBorrow(HttpServletRequest request, @RequestParam(value = "borrowId") Long borrowId,
+							 @RequestParam(value = "state") String state,
+							 @RequestParam(value = "remark") String remark) throws Exception {
+		Map<String,Object> result = new HashMap<String,Object>();
+		SysUser curUser = null;
+		Object obj = request.getSession().getAttribute("SysUser");
+		if(obj != null){
+			curUser = (SysUser) obj;
+		}
 		try{
-		    int msg =clBorrowService.manualVerifyBorrow(borrowId, state, remark);
+		    int msg =clBorrowService.manualVerifyBorrow(borrowId, state, remark, curUser.getId());
 			if(msg==1){
 				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "复审成功");

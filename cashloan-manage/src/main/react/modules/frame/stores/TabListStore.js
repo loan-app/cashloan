@@ -129,6 +129,9 @@ export default Reflux.createStore({
 					'TimedTaskLog',
 					'LoanInformation',
 					'ShowWorkbench',
+					'ReviewPersonnelList',
+					'ReviewTotalOrderList',
+					'MyReviewOrder'
 			];
 
 			if (routeNames1.indexOf(tabId)>-1) {

@@ -3,32 +3,9 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.BorrowProgress;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.domain.PayLog;
-import com.xiji.cashloan.cl.domain.QianchengReqlog;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.OperatorReqLogMapper;
-import com.xiji.cashloan.cl.mapper.PayLogMapper;
-import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
-import com.xiji.cashloan.cl.mapper.QianchengReqlogMapper;
-import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
-import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
-import com.xiji.cashloan.cl.mapper.UserInviteMapper;
-import com.xiji.cashloan.cl.model.BorrowProgressModel;
-import com.xiji.cashloan.cl.model.ClBorrowModel;
-import com.xiji.cashloan.cl.model.IndexModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
-import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.RepayModel;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.*;
+import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
@@ -193,11 +170,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private MagicRiskService magicRiskService;
 	@Resource
 	private XinyanRiskService xinyanRiskService;
+	@Resource
+	private ManualReviewOrderMapper manualReviewOrderMapper;
 	
 	public BaseMapper<Borrow, Long> getMapper() {
 		return clBorrowMapper;
 	}
-    
+
 	@Override
 	public boolean isCanBorrow(Borrow borrow,String tradePwd) {
     	
@@ -1508,9 +1487,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 人工复审
 	 */
 	@Override
-	public int manualVerifyBorrow(Long borrowId, String state, String remark) {
+	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+
 		if (borrow != null) {
 			if(!borrow.getState().equals(BorrowModel.STATE_NEED_REVIEW)){
 				logger.error("人工复审失败,当前状态不是待人工复审");
@@ -1525,6 +1505,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				throw new BussinessException("复审失败,当前状态不是待人工复审");
 			}
 			savePressState(borrow, state,"");
+			//更新审核表
+			map.put("userId", userId);
+			map.put("reviewTime", DateUtil.getNow());
+			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManageReviewModel.RESULT_TYPE_REFUSED);
+			manualReviewOrderMapper.reviewState(map);
 			if (BorrowModel.STATE_REFUSED.equals(state)|| BorrowModel.STATE_AUTO_REFUSED.equals(state)) {
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
@@ -1897,6 +1882,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			int result = modifyState(borrow.getId(), BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_PRE);
 			logger.info("自动审核未决待人工复审result: "+result);
 			if(result == 1){
+				//插入人工审核订单表
+				manualReviewOrderMapper.save(getManualReviewOrder(borrow.getId(), userInfo));
 				savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,remark);
 			}
 		} else if(BorrowRuleResult.RESULT_TYPE_PASS.equals(resultType)){
@@ -1904,6 +1891,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				int result = modifyState(borrow.getId(), BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_PRE);
 				logger.info("自动审核通过,人工复审开关打开,待人工复审result: "+result);
 				if(result == 1) {
+					//插入人工审核订单表
+					manualReviewOrderMapper.save(getManualReviewOrder(borrow.getId(), userInfo));
 					//状态修改为待人工复审
 					savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,remark);
 				}
@@ -2042,8 +2031,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public void reVerifyBorrowData(Long borrowId) {
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 		List<SceneBusinessLog> sceneLogList = sceneBusinessLogMapper.findSceneLogByBorrowId(borrowId);
-		if(borrow.getState().equals(BorrowModel.STATE_PRE)){
-			if (borrow != null && sceneLogList != null && !sceneLogList.isEmpty()){
+		if(borrow != null && borrow.getState().equals(BorrowModel.STATE_PRE)){
+			UserBaseInfo userInfo = userBaseInfoMapper.findByPrimary(borrow.getUserId());
+			if (sceneLogList != null && !sceneLogList.isEmpty()){
 				logger.info("风控审核重触发，borrowId："+borrow.getId()+"进入征信数据重获取流程");
 				
 				for(SceneBusinessLog log : sceneLogList){
@@ -2065,6 +2055,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				} else if (BorrowModel.STATE_AUTO_PASS.equals(borrow.getState())) {
 					if(!"20".equals(Global.getValue("review_loan"))) {
 						modifyState(borrow.getId(), BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_AUTO_PASS);
+						//插入人工审核订单表
+						manualReviewOrderMapper.save(getManualReviewOrder(borrow.getId(), userInfo));
 						//状态修改为待人工复审
 						logger.info("自动审核通过,人工复审开关打开,待人工复审");
 						savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,StringUtil.EMPTY);
@@ -2267,5 +2259,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		returnMap.put("infoAuthFee", infoAuthFee);
 		returnMap.put("interest", interest);
 		return returnMap;
+	}
+
+	private ManualReviewOrder getManualReviewOrder(Long borrowId, UserBaseInfo userInfo) {
+		ManualReviewOrder manualReviewOrder = new ManualReviewOrder();
+		manualReviewOrder.setCreateTime(DateUtil.getNow());
+		manualReviewOrder.setBorrowId(borrowId);
+		manualReviewOrder.setBorrowName(userInfo.getRealName());
+		manualReviewOrder.setPhone(userInfo.getPhone());
+		manualReviewOrder.setState(ManualReviewOrderModel.STATE_ORDER_PRE);
+		return manualReviewOrder;
 	}
 }

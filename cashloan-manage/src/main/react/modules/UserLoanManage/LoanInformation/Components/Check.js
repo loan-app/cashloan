@@ -123,6 +123,9 @@ var Check = React.createClass({
       <Modal title={props.title} visible={props.visible} onCancel={this.handleCancel} width="1200" footer={props.title == "查看详情" ? [modalBtnstwo] : [modalBtns]} maskClosable={false} >
 
         <Tabs onTabClick={this.handleTabClick}  activekey={this.state.activekey}  >
+          <TabPane tab="信用报告" key="8">
+            <Tab8 userId={props.record.userId} ref="Tab8" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+          </TabPane>
           <TabPane tab="规则报告" key='1'>
             <RuleReport ref='RuleReport' record={this.props.record} visible={props.visible} activeKey1={this.state.activekey}/>
           </TabPane>
@@ -143,9 +146,6 @@ var Check = React.createClass({
           </TabPane>
           <TabPane tab="邀请记录" key="7">
             <Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
-          </TabPane>
-          <TabPane tab="信用报告" key="8">
-            <Tab8 userId={props.record.userId} ref="Tab8" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
         </Tabs>
       </Modal>

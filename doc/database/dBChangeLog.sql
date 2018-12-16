@@ -183,3 +183,41 @@ INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜终端号', 'xy_termina
 INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜小额网贷请求地址', 'xy_loan_url', 'https://test.xinyan.com/product/integrity/v1/loans', '1', '新颜小额网贷请求地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜私钥密码', 'xy_pfx_pwd', '217526', '1', '新颜私钥密码', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '100', '新颜私钥文件名称', 'xy_pfx_name', '8000013189_pri.pfx', '1', '新颜私钥文件名称', '1');
+
+-- 删除人工复审菜单
+delete from arc_sys_role_menu where menu_id = 50;
+
+-- 信审人员管理,配单相关
+INSERT INTO `arc_sys_role` VALUES ('8', '审核管理员', 'reviewer',  '2017-01-01 00:00:00', 'system', '2017-01-01 00:00:00', 'system', '审核管理员', '0');
+INSERT INTO `arc_sys_role` VALUES ('9', '审核专员', 'reviewSpecialist',  '2017-01-01 00:00:00', 'system', '2017-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
+
+INSERT INTO `arc_sys_menu` VALUES ('1008', '0', '审核人员管理', '0', '', 'icon-renyuan', '00000000015', null, '', '2017-01-01 00:00:00', '', '审核人员管理', '0', 'ReviewPersonnelManage', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1009', '0', '审核订单管理', '0', '', 'icon-dingdan', '00000000015', null, '', '2017-01-01 00:00:00', '', '审核订单管理', '0', 'ReviewOrderListManage', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1010', '0', '我的审核订单', '0', '', 'icon-wodedingdan', '00000000015', null, '', '2017-01-01 00:00:00', '', '我的审核订单', '0', 'MyReviewOrderManage', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1011', '0', '信审员', '1008', '', null, '00000000001', null, '', '2017-01-01 00:00:00', '', '信审员列表', '0', 'ReviewPersonnelList', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1012', '0', '审核总订单', '1009', '', null, '00000000001', null, '', null, '', '审核总订单列表', '0', 'ReviewTotalOrderList', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1013', '0', '我的订单', '1010', '', null, '00000000001', null, '', null, '', '我的信审订单', '0', 'MyReviewOrder', null, null, null, null);
+
+INSERT INTO `arc_sys_role_menu` VALUES ('108', '1', '1008');
+INSERT INTO `arc_sys_role_menu` VALUES ('109', '1', '1009');
+INSERT INTO `arc_sys_role_menu` VALUES ('110', '1', '1010');
+INSERT INTO `arc_sys_role_menu` VALUES ('111', '1', '1011');
+INSERT INTO `arc_sys_role_menu` VALUES ('112', '1', '1012');
+INSERT INTO `arc_sys_role_menu` VALUES ('113', '1', '1013');
+
+DROP TABLE IF EXISTS `cl_manual_review_order`;
+CREATE TABLE `cl_manual_review_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '审核人id',
+  `user_name` varchar(20) DEFAULT '' COMMENT '审核人姓名',
+  `borrow_name` varchar(20) DEFAULT '' COMMENT '借款人姓名',
+  `phone` varchar(20) DEFAULT '' COMMENT '借款人手机号',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款id',
+  `state` varchar(2) DEFAULT '10' COMMENT '订单状态   10未分配，11待审核，20审核通过，30审核拒绝',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注说明',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `review_time` datetime DEFAULT NULL COMMENT '审核时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`) USING BTREE,
+  KEY `borrow_id` (`borrow_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人工审核订单表';

@@ -31,6 +31,9 @@ var LoanInformation = require('../../UserLoanManage/LoanInformation/index');//�
 // var ProductMng = require('../../RepaymentAllocation/ProductMng/index');//产品管理
 // var PreviewRepaymentPlan = require('../../RepaymentAllocation/PreviewRepaymentPlan/index');//还款计划预览
 var ShowWorkbench = require('../../Public/Workbench/Index');
+var ReviewPersonnelList = require('../../ReviewManage/ReviewPersonnelManage/ReviewPersonnelList/index');//审核人员管理-审核人员列表
+var ReviewTotalOrderList = require('../../ReviewManage/ReviewOrderListManage/ReviewTotalOrderList/index');//审核订单管理-审核总订单
+var MyReviewOrder = require('../../ReviewManage/MyReviewOrderManage/MyReviewOrder/index');//我的审核订单-审核订单
 module.exports = {
   OrdinaryUserList,
   AgentList,
@@ -58,5 +61,8 @@ module.exports = {
   TimedTaskList,
   TimedTaskLog,
   LoanInformation,
-  ShowWorkbench
+  ShowWorkbench,
+  ReviewPersonnelList,
+  ReviewTotalOrderList,
+  MyReviewOrder
 }
