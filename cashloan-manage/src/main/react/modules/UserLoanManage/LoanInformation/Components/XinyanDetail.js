@@ -35,14 +35,12 @@ var Lookdetails = React.createClass({
         };
     },
     componentWillMount() {
-        console.log("xinyan...");
         Utils.ajaxData({
             url: '/modules/manage/xinyan/loan/report/detail.htm',
             data: {
-                userId: this.props.record.userId
+                userId: this.props.userId
             },
             callback: (result) => {
-                console.log(result);
                 this.setState({
                     formData: result.data
                 })
@@ -54,9 +52,6 @@ var Lookdetails = React.createClass({
         this.props.hideModal();
     },
     render() {
-        console.log('render');
-        console.log(this.state.formData);
-        console.log(this.props.form);
         var props = this.props;
         var state = this.state;
         var modalBtns = [

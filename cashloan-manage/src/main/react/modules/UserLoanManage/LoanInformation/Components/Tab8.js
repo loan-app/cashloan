@@ -101,16 +101,17 @@ var Tab8 = React.createClass({
             title: '收益总奖金（元）',
             dataIndex: "agentAmount",
         }];
-        return (<div className="block-panel card-container">
-                <Tabs onTabClick={this.handleTabClick} >
-                    <TabPane type="card" tab="运营商报告" key='1'>
+        return (<div className="block-panel">
+                <Tabs type="card" onTabClick={this.handleTabClick}>
+                    <TabPane tab="运营商报告" key='1'>
                         <OperatorDetail userId={this.props.record.userId}></OperatorDetail>
                     </TabPane>
                     <TabPane tab="信贷报告" key='2'>
-                        <iframe style={{border:0,width:"100%",height:630,}} src= {'/build/magicReport/index.html?userId=' + this.props.record.userId} />
+                        <iframe style={{border: 0, width: "100%", height: 630,}}
+                                src={'/build/magicReport/index.html?userId=' + this.props.record.userId}/>
                     </TabPane>
                     <TabPane tab="小额网贷报告" key="3">
-                        <XinyanDetail visible={true} title={'XX'} record={this.props.record}/>
+                        <XinyanDetail visible={true} title={'XX'} userId={this.props.record.userId}/>
                     </TabPane>
                 </Tabs>
             </div>
