@@ -17,7 +17,7 @@ import Tab2 from './Tab2';
 import Tab3 from './Tab3';
 import Tab6 from './Tab6';
 import Tab7 from './Tab7';
-import Tab8 from './Tab8';
+import Tab8 from '../../../common/LoanReport/Tab8';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
