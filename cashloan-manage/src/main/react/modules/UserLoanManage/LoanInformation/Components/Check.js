@@ -145,7 +145,7 @@ var Check = React.createClass({
             <Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
           <TabPane tab="信用报告" key="8">
-            <Tab8 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+            <Tab8 userId={props.record.userId} ref="Tab8" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
         </Tabs>
       </Modal>

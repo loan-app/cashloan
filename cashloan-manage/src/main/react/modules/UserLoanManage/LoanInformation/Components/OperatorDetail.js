@@ -22,7 +22,6 @@ var OperatorDetail = React.createClass({
                 userId: this.props.userId
             },
             callback: (result) => {
-                console.log(result);
                 this.setState({
                     reportLink: result.reportLink
                 });

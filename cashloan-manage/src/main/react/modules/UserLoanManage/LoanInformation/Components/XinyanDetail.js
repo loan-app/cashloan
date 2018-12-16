@@ -13,19 +13,8 @@ import {
 
 const createForm = Form.create;
 const FormItem = Form.Item;
-const Option = Select.Option;
 const objectAssign = require('object-assign');
 
-let treeData = [];
-/*Utils.ajaxData({
- url: '/modules/system/checkboxoffices.htm',
- method: 'get',
- type: 'json',
- callback: (result) => {
- let data = result.data;
- treeData = data;
- }
- });*/
 
 var Lookdetails = React.createClass({
     getInitialState() {
