@@ -81,29 +81,32 @@ var Tab3 = React.createClass({
       }
     });
   },
-  render() {
-    var columns = [{
-      title: '用户号码',
-      dataIndex: "phoneNum",
-    }, {
-      title: '对方号码',
-      dataIndex: "voiceToNumber",
-    }, {
-      title: '通话时间',
-      dataIndex: "voiceDate",
-    }, {
-      title: '通话时长(秒)',
-      dataIndex: "voiceDuration",
-    }, {
-      title: '通话地',
-      dataIndex: "voicePlace",
-    }, {
-      title: '通话状态',
-      dataIndex: "voiceStatus",
-    }, {
-      title: '通话类型',
-      dataIndex: "voiceType",
-    }];
+    render() {
+        var columns = [{
+            title: '用户号码',
+            dataIndex: "mobile",
+        }, {
+            title: '对方号码',
+            dataIndex: "peerNumber",
+        }, {
+            title: '通话时间',
+            dataIndex: "time",
+        }, {
+            title: '通话时长(秒)',
+            dataIndex: "duration",
+        }, {
+            title: '通话地',
+            dataIndex: "location",
+        }, {
+            title: '通话状态',
+            dataIndex: "locationType",
+        }, {
+            title: '通话类型',
+            dataIndex: "dialType",
+            render(text, record) {
+                return record.dialType == 'DIAL' ? '主叫' : '被叫'
+            }
+        }];
     return (<div className="block-panel">
               <div id='scrolling' onScroll={this.scrolling} style={{height: 300,  overflow: 'scroll'}}>
                       <Table columns={columns} rowKey={this.rowKey}  
