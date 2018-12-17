@@ -3,19 +3,20 @@ import {
   Table,
 } from 'antd';
 const objectAssign = require('object-assign');
-var Tab6 = React.createClass({
+var Tab9 = React.createClass({
   getInitialState() {
     return {
       loading: false,
       data: [],
       pagination: {},
+      selectedRowKeys: [],
     };
   },
   rowKey(record) {
-    return record.id;
+    return record.inviteId;
   },
   componentWillReceiveProps(nextProps){
-    if(nextProps.activeKey1 == '6'){
+    if(nextProps.activeKey == '9'){
       this.fetch();
     }
   },
@@ -23,7 +24,7 @@ var Tab6 = React.createClass({
     const pager = this.state.pagination;
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
-    pager.userId = this.props.record.userId,
+    pager.userId = this.props.record.borrowUserId,
     this.setState({
       pagination: pager,
     });
@@ -36,13 +37,13 @@ var Tab6 = React.createClass({
     if (!params.pageSize) {
       var params = {};
       params = {
-        pageSize: 5,
+        pageSize: 10,
         current: 1,
         userId: this.props.record.borrowUserId,
       }
     }
     Utils.ajaxData({
-      url: '/modules/manage/borrow/listBorrowLog.htm',
+      url: '/modules/manage/operatorVoiceCnt/listVoiceCnt.htm',
       data: params,
       callback: (result) => {
         const pagination = this.state.pagination;
@@ -60,40 +61,55 @@ var Tab6 = React.createClass({
       }
     });
   },
+  onRowClick(record) {
+      var id = record.inviteId;
+      this.setState({
+          selectedRowKeys: [id],
+          records: record
+      });
+  },
   render() {
+    const rowSelection = {
+        selectedRowKeys: this.state.selectedRowKeys,
+    };
     var columns = [{
-      title: '订单号',
-      dataIndex: "orderNo",
+      title: '运营商号码',
+      dataIndex: "peerNum",
     }, {
-      title: '借款金额（元）',
-      dataIndex: "amount",
+      title: '运营商',
+      dataIndex: "peerName",
     }, {
-      title: '借款期限（天）',
-      dataIndex: "timeLimit",
+      title: '号码归属地',
+      dataIndex: "city",
     }, {
-      title: '借款时间',
-      dataIndex: "createTime",
+      title: '通讯录联系号码',
+      dataIndex: "contactPhone",
     }, {
-      title: '综合费用（元）',
-      dataIndex: "fee",
+        title: '通讯录联系人姓名',
+        dataIndex: "contactName",
+    },{
+        title: '近6个月联系次数/联系时间',
+        dataIndex: "callCntNum",
+    },{
+        title: '近6个月主叫次数/主叫时间',
+        dataIndex: "dialCntNum",
+    },{
+        title: '近6个月被叫次数/被叫时间',
+        dataIndex: "dialedCntNum",
     }, {
-      title: '实际到账金额（元）',
-      dataIndex: "realAmount",
-    }, {
-      title: '实际还款金额（元）',
-      dataIndex: "repayAmount",
-    }, {
-      title: '状态',
-      dataIndex: "stateStr",
+      title: '统计时间',
+      dataIndex: "createtime",
     }];
     return (<div className="block-panel">
               <Table columns={columns} rowKey={this.rowKey}  
               dataSource={this.state.data}
+              onRowClick={this.onRowClick}
               pagination={this.state.pagination}
               loading={this.state.loading}
               onChange={this.handleTableChange}  />
+              {/**<Tab9 records={this.state.records} ref="Tab9" /> */}
           </div>
     );
   }
 });
-export default Tab6;
+export default Tab9;

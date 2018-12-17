@@ -18,6 +18,7 @@ import Tab3 from './Tab3';
 import Tab4 from './Tab4';
 import Tab5 from './Tab5';
 import Tab7 from './Tab7';
+import Tab9 from './Tab9';
 import Tab8 from '../../../../common/LoanReport/Tab8';
 
 const createForm = Form.create;
@@ -137,6 +138,9 @@ var Lookdetails = React.createClass({
           </TabPane>
           <TabPane tab="信用报告" key="8">
             <Tab8 userId={props.record.borrowUserId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="通话详情统计" key="9">
+            <Tab9 ref="Tab9" record={props.record}  canEdit={props.canEdit} activeKey={this.state.activekey}/>
           </TabPane>
         </Tabs>
         <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit}/>
