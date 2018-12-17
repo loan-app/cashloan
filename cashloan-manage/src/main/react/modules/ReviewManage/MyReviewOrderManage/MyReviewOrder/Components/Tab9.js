@@ -16,7 +16,7 @@ var Tab9 = React.createClass({
     return record.inviteId;
   },
   componentWillReceiveProps(nextProps){
-    if(nextProps.activeKey1 == '9'){
+    if(nextProps.activeKey == '9'){
       this.fetch();
     }
   },
