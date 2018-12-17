@@ -1,38 +1,36 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.PayLog;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.PayLogMapper;
+import com.xiji.cashloan.cl.model.ManagePayLogModel;
+import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
+import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransreqModel;
+import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransrspModel;
+import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
+import com.xiji.cashloan.cl.service.PayLogService;
+import com.xiji.cashloan.cl.util.fuiou.FuiouDateUtil;
+import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.JsonUtil;
+import com.xiji.cashloan.core.domain.Borrow;
+import com.xiji.cashloan.core.model.BorrowModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
-import com.xiji.cashloan.cl.domain.PayLog;
-import com.xiji.cashloan.cl.model.PayLogModel;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import tool.util.DateUtil;
 import tool.util.StringUtil;
-
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.PayLogMapper;
-import com.xiji.cashloan.cl.model.ManagePayLogModel;
-import com.xiji.cashloan.cl.model.pay.lianlian.ConfirmPaymentModel;
-import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
-import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.core.common.context.Constant;
-import com.xiji.cashloan.core.common.context.Global;
-import com.xiji.cashloan.core.common.mapper.BaseMapper;
-import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.core.common.util.JsonUtil;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
-import com.xiji.cashloan.core.domain.Borrow;
-import com.xiji.cashloan.core.model.BorrowModel;
 
 
 /**
@@ -103,35 +101,60 @@ public class PayLogServiceImpl extends BaseServiceImpl<PayLog, Long> implements 
 		}
 		return false;
 	}
-	
+	@Override
+	public Map<String, Object> checkPay(Long id) {
+		PayLog payLog = payLogMapper.findByPrimary(id);
+		Map<String, Object> checkMap = new HashedMap();
+		QrytransreqModel model = new QrytransreqModel();
+		model.setOrderno(payLog.getOrderNo());
+		model.setVer(FuiouConstant.DAIFU_PAYFOR_VERSION);
+		model.setBusicd(FuiouConstant.DAIFU_PAYFOR_DAIFU_TYPE);
+		model.setStartdt(FuiouDateUtil.getDate(14));
+		model.setEnddt(FuiouDateUtil.getDate(1));
+		FuiouHelper fuiouHelper = new FuiouHelper();
+		QrytransrspModel result = fuiouHelper.queryPayment(model);
+		if (result != null) {
+			if (StringUtil.equalsIgnoreCase(result.getRet(), FuiouConstant.DAIFU_RESPONSE_NO_SENDREQ_CODE)) {
+				checkMap.put("msg", "没有查询到交易请求");
+				Map<String, Object> paramMap = new HashMap<>();
+				paramMap.put("id", id);
+				paramMap.put("state", "50");
+				paramMap.put("remark", payLog.getRemark()+"|未查到符合条件的记录");
+				payLogMapper.updateSelective(paramMap);
+			}else {
+				checkMap.put("msg", "正在处理中！");
+			}
+		}
+		return checkMap;
+	}
 	/**
 	 * 调用连连支付接口进行支付
 	 * @param payLog
 	 */
 	private void confirmPayment(PayLog payLog){
 		// 场景设定支付通知地址
-		String notifyUrl = "";
-		if (PayLogModel.SCENES_LOANS.equals(payLog.getScenes())) {
-			notifyUrl = Global.getValue("server_host") + "/pay/lianlian/paymentNotify.htm";
-		} else if (PayLogModel.SCENES_PROFIT.equals(payLog.getScenes())) {
-			notifyUrl = Global.getValue("server_host") + "/pay/lianlian/profitNotify.htm";
-		} else if (PayLogModel.SCENES_REFUND.equals(payLog.getScenes())) {
-			notifyUrl = Global.getValue("server_host") + "/pay/lianlian/refundNotify.htm";
-		}
-		
-		String orderNo = OrderNoUtil.getSerialNumber();
-		ConfirmPaymentModel confirmPayment = new ConfirmPaymentModel(orderNo);
-		confirmPayment.setNo_order(payLog.getOrderNo());
-		confirmPayment.setConfirm_code(payLog.getConfirmCode());
-		confirmPayment.setNotify_url(notifyUrl);
-		LianLianHelper helper = new LianLianHelper();
-		confirmPayment = (ConfirmPaymentModel) helper.confirmPayment(confirmPayment);
-		
-		if (confirmPayment.checkReturn()) {
-			logger.info("确认支付 " + payLog.getOrderNo());
-		} else {
-			logger.error("确认付款异常,原因：" + confirmPayment.getRet_msg());
-		}
+//		String notifyUrl = "";
+//		if (PayLogModel.SCENES_LOANS.equals(payLog.getScenes())) {
+//			notifyUrl = Global.getValue("server_host") + "/pay/lianlian/paymentNotify.htm";
+//		} else if (PayLogModel.SCENES_PROFIT.equals(payLog.getScenes())) {
+//			notifyUrl = Global.getValue("server_host") + "/pay/lianlian/profitNotify.htm";
+//		} else if (PayLogModel.SCENES_REFUND.equals(payLog.getScenes())) {
+//			notifyUrl = Global.getValue("server_host") + "/pay/lianlian/refundNotify.htm";
+//		}
+//
+//		String orderNo = OrderNoUtil.getSerialNumber();
+//		ConfirmPaymentModel confirmPayment = new ConfirmPaymentModel(orderNo);
+//		confirmPayment.setNo_order(payLog.getOrderNo());
+//		confirmPayment.setConfirm_code(payLog.getConfirmCode());
+//		confirmPayment.setNotify_url(notifyUrl);
+//		LianLianHelper helper = new LianLianHelper();
+//		confirmPayment = (ConfirmPaymentModel) helper.confirmPayment(confirmPayment);
+//
+//		if (confirmPayment.checkReturn()) {
+//			logger.info("确认支付 " + payLog.getOrderNo());
+//		} else {
+//			logger.error("确认付款异常,原因：" + confirmPayment.getRet_msg());
+//		}
 	}
 
 	@Override
@@ -242,7 +265,6 @@ public class PayLogServiceImpl extends BaseServiceImpl<PayLog, Long> implements 
 	 * @param amount
 	 * @param cardNo
 	 * @param bank
-	 * @param type
 	 * @return
 	 */
 	@Override

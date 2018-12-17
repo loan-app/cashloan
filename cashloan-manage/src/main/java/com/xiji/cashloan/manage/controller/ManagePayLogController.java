@@ -131,26 +131,20 @@ public class ManagePayLogController extends ManageBaseController {
 	 */
 	@RequestMapping(value = "/modules/manage/pay/log/auditPay.htm", method = RequestMethod.POST)
 	public void audit(@RequestParam(value = "id") Long id,@RequestParam(value = "state") String state) {
-		
-		boolean flag = false;
 		String msg = Constant.OPERATION_FAIL;
 
-		Map<String, Object> checkMap = payLogService.checkPayLogState(id,state);
+//		Map<String, Object> checkMap = payLogService.checkPayLogState(id,state);
 		
-		if (checkMap.isEmpty()) {
-			flag = payLogService.auditPay(id,state);
-		}else{
-			msg = String.valueOf(checkMap.get("msg"));
-		}
-		
+//		if (checkMap.isEmpty()) {
+//			flag = payLogService.auditPay(id,state);
+//		}else{
+//			msg = String.valueOf(checkMap.get("msg"));
+//		}
+		Map<String, Object> checkMap = payLogService.checkPay(id);
+		msg = String.valueOf(checkMap.get("msg"));
 		Map<String, Object> result = new HashMap<String, Object>();
-		if (flag) {
-			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-		} else {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, msg);
-		}
+		result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, msg);
 		ServletUtils.writeToResponse(response, result);
 
 	}

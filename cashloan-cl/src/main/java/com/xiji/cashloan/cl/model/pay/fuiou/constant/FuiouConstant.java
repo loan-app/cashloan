@@ -56,6 +56,10 @@ public class FuiouConstant {
      * 只有 AP01 交易有，代表富友受理成功
      */
     public static final String DAIFU_RESPONSE_ACCEPTSUCCESS_CODE = "000000";
+    /**
+     * 没有发送请求
+     */
+    public static final String DAIFU_RESPONSE_NO_SENDREQ_CODE = "200029";
 
     public static String charset = "UTF-8";
     public static String SIGNTP = "MD5";
