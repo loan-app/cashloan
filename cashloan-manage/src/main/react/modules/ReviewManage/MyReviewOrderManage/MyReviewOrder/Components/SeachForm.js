@@ -46,6 +46,16 @@ let SeachForm = React.createClass({
                      <Option value="22">待人工复审</Option>
                      <Option value="26">人工复审通过</Option>
                      <Option value="27">人工复审不通过</Option>
+                     <Option value="301">待放款审核</Option>
+                     <Option value="302">放款审核通过</Option>
+                     <Option value="303">放款审核不通过</Option>
+                     <Option value="30">放款成功</Option>
+                     <Option value="31">放款失败</Option>
+                     <Option value="40">还款成功</Option>
+                     <Option value="41">还款成功-金额减免</Option>
+                     <Option value="43">还款处理中</Option>
+                     <Option value="50">逾期</Option>
+                     <Option value="90">坏账</Option>
                  </Select>
              </FormItem>
                 <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
