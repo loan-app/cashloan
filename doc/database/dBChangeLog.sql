@@ -228,3 +228,22 @@ delete from arc_sys_role_menu where menu_id = 98;
 
 -- 展期提醒短信模板修改
 update cl_sms_tpl set tpl = '您的订单已展期成功，新的截止日期{$year}年{$month}月{$day}日',number = 'SMS1193783392' where type = 'delayPlan';
+
+DROP TABLE IF EXISTS `cl_operator_voice_cnt`;
+CREATE TABLE `cl_operator_voice_cnt` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `req_log_id` bigint(20) NOT NULL COMMENT '请求记录id',
+  `peer_num` varchar(32) NOT NULL DEFAULT '' COMMENT '运营商号码',
+  `peer_name` varchar(64) NOT NULL DEFAULT '' COMMENT '运营商',
+  `city` varchar(32) NOT NULL DEFAULT '' COMMENT '号码归属地',
+  `contact_phone` varchar(32) NOT NULL DEFAULT '' COMMENT '通讯录联系号码',
+  `contact_name` varchar(64) NOT NULL DEFAULT '' COMMENT '通讯录联系人姓名',
+  `call_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '联系次数/时间(秒)',
+  `dial_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '主叫次数/时间(秒)',
+  `dialed_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '被叫次数/时间(秒)',
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='通话详情统计';

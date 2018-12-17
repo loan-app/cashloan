@@ -70,6 +70,8 @@ public class OperatorController extends BaseController {
     private CallsOutSideFeeService callsOutSideFeeService;
     @Resource
     private OperatorReportLinkService operatorReportLinkService;
+    @Resource
+    private OperatorVoiceCntService operatorVoiceCntService;
 
     private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -281,6 +283,7 @@ public class OperatorController extends BaseController {
                         logger.debug("report event. result={}, message={}", result, message);
                     }
                 } else {
+                    final Date updateTime = new Date();
                     //状态修改为 报告生成成功
                     updateOperatorLogState(operatorReqLog.getId(), "report.true", StringUtil.EMPTY, timestamp);
                     //保存运营商报告链接
@@ -307,6 +310,11 @@ public class OperatorController extends BaseController {
                                     updateMap.put("report", result);
                                     operatorReportService.updateSelective(updateMap);
                                 }
+
+                                int start = DateUtil.getNowTime();
+                                operatorVoiceCntService.paserReportDetail(result, userId, updateTime, reqLogId);
+                                int end = DateUtil.getNowTime();
+                                logger.info("保存userId" + userId + "运营商报告，详情统计，耗时" + (end - start) + "秒");
                             } catch (Exception e) {
                                 // 运营商报告保存失败
                                 logger.error("严重问题，userId:" + userId + "运营商数据报告保存失败", e);
@@ -319,6 +327,14 @@ public class OperatorController extends BaseController {
         }
         writeMessage(response, HttpServletResponse.SC_CREATED, "success");
     }
+//    @RequestMapping(value = "/api/moxie/voiceCnt.htm")
+//    public void testOperatorReport() throws Exception {
+//        String res = "";
+//        long userId = 1;
+//        Date updateTime = new Date();
+//        long reqLogId= 12022L;
+//        operatorVoiceCntService.paserReportDetail(res, userId, updateTime, reqLogId);
+//    }
 
     private void updateOperatorLogState(long id, String eventName, String message, long respTime) {
         OperatorReqLog updateReqLog = new OperatorReqLog();

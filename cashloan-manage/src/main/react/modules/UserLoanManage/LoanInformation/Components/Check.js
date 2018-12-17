@@ -17,6 +17,7 @@ import Tab2 from './Tab2';
 import Tab3 from './Tab3';
 import Tab6 from './Tab6';
 import Tab7 from './Tab7';
+import Tab9 from './Tab9';
 import Tab8 from '../../../common/LoanReport/Tab8';
 
 const createForm = Form.create;
@@ -144,8 +145,11 @@ var Check = React.createClass({
           <TabPane tab="借款记录" key="6">
             <Tab6 record={props.record} ref="Tab6" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
-          <TabPane tab="邀请记录" key="7">
-            <Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+          {/*<TabPane tab="邀请记录" key="7">*/}
+            {/*<Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>*/}
+          {/*</TabPane>*/}
+          <TabPane tab="通话详情统计" key="9">
+            <Tab9 record={props.record} ref="Tab9" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
         </Tabs>
       </Modal>
