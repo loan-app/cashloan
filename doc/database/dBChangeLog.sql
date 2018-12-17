@@ -225,3 +225,6 @@ CREATE TABLE `cl_manual_review_order` (
 -- 删除广告菜单权限
 delete from arc_sys_role_menu where menu_id = 23;
 delete from arc_sys_role_menu where menu_id = 98;
+
+-- 展期提醒短信模板修改
+update cl_sms_tpl set tpl = '您的订单已展期成功，新的截止日期{$year}年{$month}月{$day}日',number = 'SMS1193783392' where type = 'delayPlan';

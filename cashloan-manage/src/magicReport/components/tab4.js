@@ -6,7 +6,7 @@ let tabHtml4 = `
             <RadioGroup v-model="type" type="button">
                 <Radio label="idCard">身份证存疑</Radio>
                 <Radio label="mobile">手机存疑</Radio>
-                <Radio label="device">设备指纹</Radio>
+                <Radio label="device">设备存疑</Radio>
             </RadioGroup>
         </div>
         
