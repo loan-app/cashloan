@@ -260,6 +260,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		}
 		if("delayPlan".equals(smsType)){
 			String appName = Global.getValue("appName");
+			appName = StringUtil.EMPTY;
 			message = ret(smsType);
 			message = message
 				.replace("{$appName}", appName)
