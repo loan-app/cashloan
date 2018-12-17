@@ -57,7 +57,7 @@ let tabHtml4 = `
                     </Card>
                 </div>
                 
-                <div v-if="type == '设备存疑'">
+                <div v-if="type == 'device'">
                     <Card @click.native="card = 31" style="margin-bottom: 20px; cursor: pointer">
                         <div>使用过的设备上登陆的其他姓名数</div> <h3>{{ device.other_names_cnt }}</h3>
                     </Card>
