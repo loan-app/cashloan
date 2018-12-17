@@ -226,6 +226,9 @@ CREATE TABLE `cl_manual_review_order` (
 delete from arc_sys_role_menu where menu_id = 23;
 delete from arc_sys_role_menu where menu_id = 98;
 
+-- 展期提醒短信模板修改
+update cl_sms_tpl set tpl = '您的订单已展期成功，新的截止日期{$year}年{$month}月{$day}日',number = 'SMS1193783392' where type = 'delayPlan';
+
 DROP TABLE IF EXISTS `cl_operator_voice_cnt`;
 CREATE TABLE `cl_operator_voice_cnt` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',

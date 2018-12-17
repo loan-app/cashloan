@@ -32,7 +32,7 @@ var Tab2 = React.createClass({
       params = {
         pageSize: 10,
         current: this.state.pagination.current + 1,
-        userId: this.props.record.userId,
+        userId: this.props.record.borrowUserId,
       }
       this.setState({
         pagination: {

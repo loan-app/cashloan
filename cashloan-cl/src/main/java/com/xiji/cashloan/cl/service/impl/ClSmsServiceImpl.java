@@ -259,11 +259,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 					.replace("{$bankCardNo}", StringUtil.isNull(map.get("bankCardNo")));
 		}
 		if("delayPlan".equals(smsType)){
-			String appName = Global.getValue("appName");
-			appName = StringUtil.EMPTY;
 			message = ret(smsType);
 			message = message
-				.replace("{$appName}", appName)
 				.replace(
 					"{$year}",
 					DateUtil.dateStr(DateUtil.valueOf(
