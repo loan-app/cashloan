@@ -301,7 +301,7 @@
                 state = #{state,jdbcType=VARCHAR},
             </if>
             <if test="remark != null and remark != '' ">
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="reviewTime != null">
                 review_time = #{reviewTime,jdbcType=TIMESTAMP}
