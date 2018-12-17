@@ -64,12 +64,12 @@ let tabHtml4 = `
                     
                     <Card @click.native="card = 32" style="margin-bottom: 20px; cursor: pointer">
                         <div>使用过的设备上登陆的其他手机号码数</div> <h3>{{ device.other_mobiles_cnt }}</h3>
-                        <div style="text-align: right">处黑手机号码数：{{ device.other_mobiles_black_cnt }}</div>
+                        <div style="text-align: right">触黑手机号码数：{{ device.other_mobiles_black_cnt }}</div>
                     </Card>
                     
                     <Card @click.native="card = 33" style="margin-bottom: 20px; cursor: pointer">
                         <div>使用过的设备上登陆的其他身份证号码数</div> <h3>{{ device.other_idcards_cnt }}</h3>
-                        <div style="text-align: right">处黑身份证号码数：{{ device.other_idcards_black_cnt }}</div>
+                        <div style="text-align: right">触黑身份证号码数：{{ device.other_idcards_black_cnt }}</div>
                     </Card>
                     
                     <Card @click.native="card = 34" style="margin-bottom: 20px; cursor: pointer">
