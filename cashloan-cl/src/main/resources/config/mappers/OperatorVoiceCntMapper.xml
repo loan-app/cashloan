@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_operator_voice_cnt表:通话详情统计模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.OperatorVoiceCntMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.OperatorVoiceCnt">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
+        <result column="peer_num" property="peerNum" jdbcType="VARCHAR" />
+        <result column="peer_name" property="peerName" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+        <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+        <result column="call_cnt_num" property="callCntNum" jdbcType="VARCHAR" />
+        <result column="dial_cnt_num" property="dialCntNum" jdbcType="VARCHAR" />
+        <result column="dialed_cnt_num" property="dialedCntNum" jdbcType="VARCHAR" />
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+        <result column="lastmodifytime" property="lastmodifytime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,req_log_id,peer_num,peer_name,city,contact_phone,contact_name,call_cnt_num,dial_cnt_num,dialed_cnt_num,createtime,lastmodifytime
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="reqLogId != null">
+                and req_log_id = #{reqLogId,jdbcType=BIGINT}
+            </if>
+            <if test="peerNum != null and peerNum != ''">
+                and peer_num = #{peerNum,jdbcType=VARCHAR}
+            </if>
+            <if test="peerName != null and peerName != ''">
+                and peer_name = #{peerName,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="contactPhone != null and contactPhone != ''">
+                and contact_phone = #{contactPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="contactName != null and contactName != ''">
+                and contact_name = #{contactName,jdbcType=VARCHAR}
+            </if>
+            <if test="callCntNum != null and callCntNum != ''">
+                and call_cnt_num = #{callCntNum,jdbcType=VARCHAR}
+            </if>
+            <if test="dialCntNum != null and dialCntNum != ''">
+                and dial_cnt_num = #{dialCntNum,jdbcType=VARCHAR}
+            </if>
+            <if test="dialedCntNum != null and dialedCntNum != ''">
+                and dialed_cnt_num = #{dialedCntNum,jdbcType=VARCHAR}
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastmodifytime != null">
+                and lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorVoiceCnt">
+        insert into cl_operator_voice_cnt(user_id,req_log_id,peer_num,peer_name,city,contact_phone,contact_name,call_cnt_num,dial_cnt_num,dialed_cnt_num,createtime,lastmodifytime)values(#{userId,jdbcType=BIGINT},#{reqLogId,jdbcType=BIGINT},#{peerNum,jdbcType=VARCHAR},#{peerName,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{contactPhone,jdbcType=VARCHAR},#{contactName,jdbcType=VARCHAR},#{callCntNum,jdbcType=VARCHAR},#{dialCntNum,jdbcType=VARCHAR},#{dialedCntNum,jdbcType=VARCHAR},#{createtime,jdbcType=TIMESTAMP},#{lastmodifytime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorVoiceCnt">
+        update cl_operator_voice_cnt set 
+            user_id = #{userId,jdbcType=BIGINT},
+            req_log_id = #{reqLogId,jdbcType=BIGINT},
+            peer_num = #{peerNum,jdbcType=VARCHAR},
+            peer_name = #{peerName,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            contact_name = #{contactName,jdbcType=VARCHAR},
+            call_cnt_num = #{callCntNum,jdbcType=VARCHAR},
+            dial_cnt_num = #{dialCntNum,jdbcType=VARCHAR},
+            dialed_cnt_num = #{dialedCntNum,jdbcType=VARCHAR},
+            createtime = #{createtime,jdbcType=TIMESTAMP},
+            lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_operator_voice_cnt
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+              <if test="reqLogId != null">
+                  req_log_id = #{reqLogId,jdbcType=BIGINT},
+            </if>
+            <if test="peerNum != null and peerNum != '' ">
+                peer_num = #{peerNum,jdbcType=VARCHAR},                
+            </if>
+            <if test="peerName != null and peerName != '' ">
+                peer_name = #{peerName,jdbcType=VARCHAR},                
+            </if>
+            <if test="city != null and city != '' ">
+                city = #{city,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactPhone != null and contactPhone != '' ">
+                contact_phone = #{contactPhone,jdbcType=VARCHAR},                
+            </if>
+            <if test="contactName != null and contactName != '' ">
+                contact_name = #{contactName,jdbcType=VARCHAR},                
+            </if>
+            <if test="callCntNum != null and callCntNum != '' ">
+                call_cnt_num = #{callCntNum,jdbcType=VARCHAR},                
+            </if>
+            <if test="dialCntNum != null and dialCntNum != '' ">
+                dial_cnt_num = #{dialCntNum,jdbcType=VARCHAR},                
+            </if>
+            <if test="dialedCntNum != null and dialedCntNum != '' ">
+                dialed_cnt_num = #{dialedCntNum,jdbcType=VARCHAR},                
+            </if>
+            <if test="createtime != null">        
+                createtime = #{createtime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="lastmodifytime != null">        
+                lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_voice_cnt
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_voice_cnt
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_voice_cnt
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="countTable" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT COUNT(1) FROM information_schema.TABLES WHERE table_name = #{tableName,jdbcType=VARCHAR} and TABLE_SCHEMA = database()
+    </select>
+    <!-- 创建分表 -->
+    <select id="createTable">
+        CREATE TABLE ${tableName} (
+          `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+          `user_id` bigint(20) NOT NULL COMMENT '用户id',
+          `req_log_id` bigint(20) NOT NULL COMMENT '请求记录id',
+          `peer_num` varchar(32) NOT NULL DEFAULT '' COMMENT '运营商号码',
+          `peer_name` varchar(64) NOT NULL DEFAULT '' COMMENT '运营商',
+          `city` varchar(32) NOT NULL DEFAULT '' COMMENT '号码归属地',
+          `contact_phone` varchar(32) NOT NULL DEFAULT '' COMMENT '通讯录联系号码',
+          `contact_name` varchar(64) NOT NULL DEFAULT '' COMMENT '通讯录联系人姓名',
+          `call_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '联系次数/时间(秒)',
+          `dial_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '主叫次数/时间(秒)',
+          `dialed_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '被叫次数/时间(秒)',
+          `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+          PRIMARY KEY (`id`),
+          KEY `idx_user_id` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='通话详情统计';
+    </select>
+
+    <insert id="saveShard">
+       insert into ${tableName}(user_id,req_log_id,peer_num,peer_name,city,contact_phone,contact_name,call_cnt_num,dial_cnt_num,dialed_cnt_num,createtime)
+       values(#{item.userId,jdbcType=BIGINT},#{item.reqLogId,jdbcType=BIGINT},#{item.peerNum,jdbcType=VARCHAR},#{item.peerName,jdbcType=VARCHAR},#{item.city,jdbcType=VARCHAR},#{item.contactPhone,jdbcType=VARCHAR},#{item.contactName,jdbcType=VARCHAR},#{item.callCntNum,jdbcType=VARCHAR},#{item.dialCntNum,jdbcType=VARCHAR},#{item.dialedCntNum,jdbcType=VARCHAR},#{item.createtime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getLastRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        where user_id = #{userId,jdbcType=BIGINT}
+        order by createtime desc limit 1
+    </select>
+
+    <select id="listShardSelective" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="params.userId != null">
+                and user_id = #{params.userId,jdbcType=BIGINT}
+            </if>
+            <if test="params.reqLogId != null">
+                and req_log_id = #{params.reqLogId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>
