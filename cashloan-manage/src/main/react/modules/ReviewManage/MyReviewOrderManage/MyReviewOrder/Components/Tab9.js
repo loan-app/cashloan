@@ -3,19 +3,20 @@ import {
   Table,
 } from 'antd';
 const objectAssign = require('object-assign');
-var Tab5 = React.createClass({
+var Tab9 = React.createClass({
   getInitialState() {
     return {
       loading: false,
       data: [],
       pagination: {},
+      selectedRowKeys: [],
     };
   },
   rowKey(record) {
-    return record.id;
+    return record.inviteId;
   },
   componentWillReceiveProps(nextProps){
-    if(nextProps.activekey == '6'){
+    if(nextProps.activeKey1 == '9'){
       this.fetch();
     }
   },
@@ -36,13 +37,13 @@ var Tab5 = React.createClass({
     if (!params.pageSize) {
       var params = {};
       params = {
-        pageSize: 5,
+        pageSize: 10,
         current: 1,
         userId: this.props.record.borrowUserId,
       }
     }
     Utils.ajaxData({
-      url: '/modules/manage/msg/listMessages.htm',
+      url: '/modules/manage/operatorVoiceCnt/listVoiceCnt.htm',
       data: params,
       callback: (result) => {
         const pagination = this.state.pagination;
@@ -60,28 +61,55 @@ var Tab5 = React.createClass({
       }
     });
   },
+  onRowClick(record) {
+      var id = record.inviteId;
+      this.setState({
+          selectedRowKeys: [id],
+          records: record
+      });
+  },
   render() {
+    const rowSelection = {
+        selectedRowKeys: this.state.selectedRowKeys,
+    };
     var columns = [{
-      title: '对方姓名',
-      dataIndex: "name",
+      title: '运营商号码',
+      dataIndex: "peerNum",
     }, {
-      title: '对方号码',
-      dataIndex: "phone",
+      title: '运营商',
+      dataIndex: "peerName",
     }, {
-      title: '收发时间',
-      dataIndex: "time",
+      title: '号码归属地',
+      dataIndex: "city",
     }, {
-      title: '收发类型',
-      dataIndex: "type",
+      title: '通讯录联系号码',
+      dataIndex: "contactPhone",
+    }, {
+        title: '通讯录联系人姓名',
+        dataIndex: "contactName",
+    },{
+        title: '近6个月联系次数/联系时间',
+        dataIndex: "callCntNum",
+    },{
+        title: '近6个月主叫次数/主叫时间',
+        dataIndex: "dialCntNum",
+    },{
+        title: '近6个月被叫次数/被叫时间',
+        dataIndex: "dialedCntNum",
+    }, {
+      title: '统计时间',
+      dataIndex: "createtime",
     }];
     return (<div className="block-panel">
               <Table columns={columns} rowKey={this.rowKey}  
               dataSource={this.state.data}
+              onRowClick={this.onRowClick}
               pagination={this.state.pagination}
               loading={this.state.loading}
               onChange={this.handleTableChange}  />
+              {/**<Tab9 records={this.state.records} ref="Tab9" /> */}
           </div>
     );
   }
 });
-export default Tab5;
+export default Tab9;

@@ -23,7 +23,7 @@ var Tab4 = React.createClass({
     const pager = this.state.pagination;
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
-    pager.userId = this.props.record.userId,
+    pager.userId = this.props.record.borrowUserId,
     this.setState({
       pagination: pager,
     });
