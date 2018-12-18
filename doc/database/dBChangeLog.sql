@@ -247,3 +247,6 @@ CREATE TABLE `cl_operator_voice_cnt` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='通话详情统计';
+
+-- 修改推广链接
+update arc_sys_config set value = '/h5/invite.jsp' where code = 'h5_invite';

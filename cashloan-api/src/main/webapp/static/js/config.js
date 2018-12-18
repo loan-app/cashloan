@@ -20,10 +20,12 @@ function downLoad() {
 }
 
 function iosDownload() {
-    return "https://fir.im/zkdm";
+    //return "https://fir.im/zkdm";
+    return "https://xmvip.vip/vTf9y1";
 }
 function androidDownload() {
-    return "https://fir.im/zkdx";
+    //return "https://fir.im/zkdx";
+    return "https://xmvip.vip/rjYQc4";
 }
 
 //邀请页面App下载的地址
