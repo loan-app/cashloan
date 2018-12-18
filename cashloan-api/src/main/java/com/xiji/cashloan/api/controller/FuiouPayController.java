@@ -8,12 +8,10 @@ import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QryByFuiouOrderReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QryByFuiouOrderResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransrspModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
@@ -222,20 +220,19 @@ public class FuiouPayController extends BaseController {
             beanReq.setRem3(rem3);
             beanReq.setOrderAliveTime(orderalivetime);
             beanReq.setUserIp(userip);
-//            beanReq.setNeedSendMsg(needsendmsg);
-
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            OrderXmlBeanResp orderXmlBeanResp = payHelper.repayment(beanReq);
-            String result = JSON.toJSONString(orderXmlBeanResp);
-            logger.info(result);
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("utf8");
-            String key = Global.getValue("fuiou_protocol_mchntcd_key");
-            if (orderXmlBeanResp.checkSign(key)) {
-                resp.getOutputStream().write(result.getBytes("utf8"));
-            }else {
+            String result = "";
+//            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
+//            OrderXmlBeanResp orderXmlBeanResp = payHelper.repayment(beanReq);
+//            result = JSON.toJSONString(orderXmlBeanResp);
+//            logger.info(result);
+//            resp.setContentType("application/json");
+//            resp.setCharacterEncoding("utf8");
+//            String key = Global.getValue("fuiou_protocol_mchntcd_key");
+//            if (orderXmlBeanResp.checkSign(key)) {
+//                resp.getOutputStream().write(result.getBytes("utf8"));
+//            }else {
                 resp.getOutputStream().write(("sign异常|"+result).getBytes("utf8"));
-            }
+//            }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             resp.getOutputStream().write(e.getMessage().getBytes("utf8"));
@@ -364,8 +361,9 @@ public class FuiouPayController extends BaseController {
             model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
 
             FuiouHelper fuiouHelper = new FuiouHelper();
-            PayforrspModel qrytransrspModel = fuiouHelper.payment(model);
-            String result = orderNo+"|"+JSON.toJSONString(qrytransrspModel);
+            String result = "";
+//            PayforrspModel qrytransrspModel = fuiouHelper.payment(model);
+//            result = orderNo+"|"+JSON.toJSONString(qrytransrspModel);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
