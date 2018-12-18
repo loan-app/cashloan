@@ -233,7 +233,7 @@
               <span class="textRight">一周</span>
             </p>
             <h2>申请条件</h2>
-            <p>1.  18周岁-60周岁</p>
+            <p>1.  18周岁-40周岁</p>
             <p>2.  手机固定使用>9个月</p>
           </div>
           <a class="regBtn" href="http://www.unidata.xin/v2/#/apply/login?id=10007068">注册<br/>领钱</a>
