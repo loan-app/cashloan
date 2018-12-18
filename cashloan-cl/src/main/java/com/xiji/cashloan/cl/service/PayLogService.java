@@ -55,7 +55,7 @@ public interface PayLogService extends BaseService<PayLog, Long>{
 	 * @return
 	 */
 	boolean auditPay(Long id,String state);
-
+	Map<String, Object> checkPay(Long id);
 	/**
 	 * 校验付款状态是否指定状态
 	 * 
