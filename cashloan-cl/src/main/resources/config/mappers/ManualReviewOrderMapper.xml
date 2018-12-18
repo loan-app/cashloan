@@ -201,10 +201,12 @@
                 user_id = #{userId,jdbcType=BIGINT}
             </if>
             <if test="startTime != null">
-                and date_format(review_time, '%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
+                <![CDATA[ AND DATE_FORMAT(create_time, '%Y-%m-%d') >=
+            	 DATE_FORMAT(#{startTime,jdbcType=TIMESTAMP},'%Y-%m-%d')]]>
             </if>
             <if test="endTime != null">
-                and date_format(review_time, '%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
+                <![CDATA[ AND DATE_FORMAT(create_time, '%Y-%m-%d') <=
+            	 DATE_FORMAT(#{endTime,jdbcType=TIMESTAMP},'%Y-%m-%d')]]>
             </if>
         </trim>
     </select>
