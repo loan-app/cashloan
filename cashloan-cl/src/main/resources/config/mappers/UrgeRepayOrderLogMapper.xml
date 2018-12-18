@@ -133,11 +133,15 @@
                 user_id = #{userId,jdbcType=BIGINT}
             </if>
             <if test="startTime != null">
-                and date_format(create_time, '%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
+                <![CDATA[ AND DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(#{startTime,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')]]>
+--                 and date_format(create_time, '%Y-%m-%d %H:%i:%s') &gt;= #{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime != null">
-                and date_format(create_time, '%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
+                <![CDATA[ AND DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(#{endTime,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')]]>
+--                 and date_format(create_time, '%Y-%m-%d %H:%i:%s') &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
+
+
         </trim>
     </select>
     

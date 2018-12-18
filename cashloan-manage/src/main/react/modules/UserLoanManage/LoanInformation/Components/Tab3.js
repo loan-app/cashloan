@@ -103,6 +103,9 @@ var Tab3 = React.createClass({
     }, {
       title: '通话类型',
       dataIndex: "dialType",
+        render(text, record) {
+            return record.dialType == 'DIAL' ? '主叫' : '被叫'
+        }
     }];
     return (<div className="block-panel">
               <div id='scrolling' onScroll={this.scrolling} style={{height: 300,  overflow: 'scroll'}}>
