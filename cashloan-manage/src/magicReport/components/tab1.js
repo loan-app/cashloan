@@ -25,7 +25,7 @@ const tabHtml1 = `
         <Card :bordered="false">
             <p slot="title">多头信息 - 机构类型</p>
             <RadioGroup @on-change="changeType" v-model="type" type="button" slot="extra">
-                <Radio v-for="{org_type} in radios" :label="org_type" :key="org_type">{{ org_type }}</Radio>
+                <Radio v-for="{org_type} in radios" :label="org_type" :key="org_type">{{orgTypeMap[org_type]}}</Radio>
             </RadioGroup>
             <h6>多平台借贷分析-近X天贷款申请次数</h6>
             <div id="ecahrtsBar1" style="height: 300px"></div>
@@ -86,7 +86,7 @@ let tab1 = {
             ],
             series : [
                 {
-                    name:'近15天贷款申请',
+                    name:'贷款申请次数',
                     type:'bar',
                     barWidth: '60%',
                     data: []
@@ -186,6 +186,7 @@ let tab1 = {
             ecahrtsBar1: '',
             ecahrtsBar2: '',
             ecahrtsBar3: '',
+            orgTypeMap: { ZHENGXIN: '征信机构', DATACOVERGE: '数据平台', BANK: '银行', CUSTOMER_FINANCE: '消费金融', CASH_LOAN: '现金贷', P2P: 'P2P理财', CREDITPAY: '信用支付', CONSUMSTAGE: '消费分期', COMPENSATION: '信用卡代偿', DIVERSION: '导流平台', 其它: '其它' },
             // 表格1
             columns1: [
                 {
@@ -194,11 +195,13 @@ let tab1 = {
                 },
                 {
                     title: '查询机构类型',
-                    key: 'org_type'
+                    key: 'org_type',
+                    render: (h, params) => h('span', this.orgTypeMap[params.row.org_type])
                 },
                 {
                     title: '是否为本机构',
-                    key: 'is_self'
+                    key: 'is_self',
+                    render: (h, params) => h('span', params.row.is_self ? '是' : '否')
                 }
             ],
             type: ''

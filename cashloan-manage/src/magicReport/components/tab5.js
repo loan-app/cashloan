@@ -7,7 +7,7 @@ let tabHtml5 = `
             <TabPane label="黑名单信息">
                 <div>
                     手机和姓名是否在黑名单
-                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="blackList.mobile_name_in_blacklist"/>
+                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="blackList.mobile_name_in_blacklist==true"/>
                     <Icon color="#ed3f14" type="md-close-circle" v-else/>
                 </div>
                 
@@ -17,8 +17,8 @@ let tabHtml5 = `
                 
                 <div>
                     身份证和姓名是否在黑名单
-                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="blackList.idcard_name_in_blacklist"/>
-                    <Icon color="#ed3f14" type="md-close-circle" />
+                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="blackList.idcard_name_in_blacklist==true"/>
+                    <Icon color="#ed3f14" type="md-close-circle" v-else/>
                 </div>
                 
                 <div>
@@ -48,7 +48,7 @@ let tabHtml5 = `
             <TabPane label="灰名单信息">
                 <div>
                     手机和姓名是否在灰名单
-                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="grayList.mobile_name_in_gray"/>
+                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="grayList.mobile_name_in_gray==true"/>
                     <Icon color="#ed3f14" type="md-close-circle" v-else/>
                 </div>
                 
@@ -58,8 +58,8 @@ let tabHtml5 = `
                 
                 <div>
                     身份证和姓名是否在灰名单
-                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="grayList.idcard_name_in_gray"/>
-                    <Icon color="#ed3f14" type="md-close-circle" />
+                    <Icon color="#19be6b" type="md-checkmark-circle" v-if="grayList.idcard_name_in_gray==true"/>
+                    <Icon color="#ed3f14" type="md-close-circle" v-else/>
                 </div>
                 
                 <div>

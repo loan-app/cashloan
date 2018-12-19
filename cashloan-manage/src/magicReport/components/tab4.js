@@ -137,6 +137,7 @@ let tab4 = {
         return {
             type: 'idCard',
             card: 1,
+            orgTypeMap: { ZHENGXIN: '征信机构', DATACOVERGE: '数据平台', BANK: '银行', CUSTOMER_FINANCE: '消费金融', CASH_LOAN: '现金贷', P2P: 'P2P理财', CREDITPAY: '信用支付', CONSUMSTAGE: '消费分期', COMPENSATION: '信用卡代偿', DIVERSION: '导流平台', 其它: '其它' },
             // 表格1
             nameNum: [
                 {
@@ -165,10 +166,10 @@ let tab4 = {
                     title: '运营商',
                     key: 'carrier'
                 },
-
                 {
-                    id: '是否命中黑灰名单',
-                    key: 'isblack'
+                    title: '是否命中黑灰名单',
+                    key: 'isblack',
+                    render: (h, params) => h('span', params.row.isblack ? '命中' : '未命中')
                 },
             ],
             mobileIdCardColumn: [
@@ -183,7 +184,8 @@ let tab4 = {
                 },
                 {
                     title: '是否命中黑灰名单',
-                    key: 'isblack'
+                    key: 'isblack',
+                    render: (h, params) => h('span', params.row.isblack == true ? '命中' : '未命中')
                 },
             ],
             mechanism: [
@@ -193,7 +195,8 @@ let tab4 = {
                 },
                 {
                     title: '机构类型',
-                    key: 'org_type'
+                    key: 'org_type',
+                    render: (h, params) => h('span', this.orgTypeMap[params.row.org_type])
                 },
             ]
         }

@@ -25,7 +25,8 @@ const headerHtml = `
     </Col>
     <Col span="3">
         涉黑评分
-        <div style="font-size: 32px">{{ data.matchScore }}</div>
+        <div style="font-size: 32px" v-if="data.matchScore>40">{{ data.matchScore }}</div>
+        <div style="font-size: 32px; color:#ed3f14" v-else>{{ data.matchScore }}(危险)</div>
     </Col>
 </Row>
 `;
