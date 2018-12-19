@@ -20,10 +20,12 @@ function downLoad() {
 }
 
 function iosDownload() {
-    return "https://fir.im/zkdm";
+    //return "https://fir.im/zkdm";
+    return "https://xmvip.vip/vTf9y1";
 }
 function androidDownload() {
-    return "https://fir.im/zkdx";
+    //return "https://fir.im/zkdx";
+    return "https://xmvip.vip/rjYQc4";
 }
 
 //邀请页面App下载的地址
@@ -49,7 +51,7 @@ function getIndex_img3(){
 }
 //帮助中心客服电话
 function getPhone(){
-    return '010-59054504。';
+    return '15519557269。';
 }
 //支付宝账号
 function getAirpay(){
