@@ -247,3 +247,7 @@ CREATE TABLE `cl_operator_voice_cnt` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='通话详情统计';
+
+INSERT INTO `arc_sys_config` VALUES (null, '20', '信德数聚appid', 'xinde_data_appId', 'c614780e6f19c43e2d1af3f81bcfba9addb32922', '1', '信德数聚appid', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '信德数聚secret', 'xinde_data_appSecret', '68753208ba1abf4a2c0bc2871ae644ea79cabca2', '1', '信德数聚secret', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '信德数聚url', 'xinde_data_url', 'https://api.xindedata.com/v1/task', '1', 'url', '1');

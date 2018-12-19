@@ -1,4 +1,4 @@
-package com.xiji.cashloan.api.controller;
+package com.xiji.cashloan.api.controllerdev;
 
 import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_blacklist_xinde_data表:信德数聚灰名单模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.BlacklistXindeDataMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.BlacklistXindeData">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+        <result column="is_lastloan_refused" property="isLastloanRefused" jdbcType="VARCHAR" />
+        <result column="total_loan_count" property="totalLoanCount" jdbcType="INTEGER" />
+        <result column="total_overdue_count" property="totalOverdueCount" jdbcType="INTEGER" />
+        <result column="longest_overdue_paid" property="longestOverduePaid" jdbcType="VARCHAR" />
+        <result column="current_overdue_count" property="currentOverdueCount" jdbcType="INTEGER" />
+        <result column="current_overdue_amount" property="currentOverdueAmount" jdbcType="INTEGER" />
+        <result column="over_due90_contacts_count" property="overDue90ContactsCount" jdbcType="INTEGER" />
+        <result column="longest_overdue_unpaid" property="longestOverdueUnpaid" jdbcType="VARCHAR" />
+        <result column="last_loan_refuse_reason" property="lastLoanRefuseReason" jdbcType="VARCHAR" />
+        <result column="last_loan_refuse_time" property="lastLoanRefuseTime" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="first_loan_time" property="firstLoanTime" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,borrow_id,phone,id_card,is_lastloan_refused,total_loan_count,total_overdue_count,longest_overdue_paid,current_overdue_count,current_overdue_amount,over_due90_contacts_count,longest_overdue_unpaid,last_loan_refuse_reason,last_loan_refuse_time,remark,first_loan_time,create_time,last_modify_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="borrowId != null">
+                and borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="idCard != null and idCard != ''">
+                and id_card = #{idCard,jdbcType=VARCHAR}
+            </if>
+            <if test="isLastloanRefused != null and isLastloanRefused != ''">
+                and is_lastloan_refused = #{isLastloanRefused,jdbcType=VARCHAR}
+            </if>
+            <if test="totalLoanCount != null">
+                and total_loan_count = #{totalLoanCount,jdbcType=INTEGER}
+            </if>
+            <if test="totalOverdueCount != null">
+                and total_overdue_count = #{totalOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="longestOverduePaid != null and longestOverduePaid != ''">
+                and longest_overdue_paid = #{longestOverduePaid,jdbcType=VARCHAR}
+            </if>
+            <if test="currentOverdueCount != null">
+                and current_overdue_count = #{currentOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="currentOverdueAmount != null">
+                and current_overdue_amount = #{currentOverdueAmount,jdbcType=INTEGER}
+            </if>
+            <if test="overDue90ContactsCount != null">
+                and over_due90_contacts_count = #{overDue90ContactsCount,jdbcType=INTEGER}
+            </if>
+            <if test="longestOverdueUnpaid != null and longestOverdueUnpaid != ''">
+                and longest_overdue_unpaid = #{longestOverdueUnpaid,jdbcType=VARCHAR}
+            </if>
+            <if test="lastLoanRefuseReason != null and lastLoanRefuseReason != ''">
+                and last_loan_refuse_reason = #{lastLoanRefuseReason,jdbcType=VARCHAR}
+            </if>
+            <if test="lastLoanRefuseTime != null and lastLoanRefuseTime != ''">
+                and last_loan_refuse_time = #{lastLoanRefuseTime,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="firstLoanTime != null and firstLoanTime != ''">
+                and first_loan_time = #{firstLoanTime,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastModifyTime != null">
+                and last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BlacklistXindeData">
+        insert into cl_blacklist_xinde_data(borrow_id,phone,id_card,is_lastloan_refused,total_loan_count,total_overdue_count,longest_overdue_paid,current_overdue_count,current_overdue_amount,over_due90_contacts_count,longest_overdue_unpaid,last_loan_refuse_reason,last_loan_refuse_time,remark,first_loan_time,create_time,last_modify_time)values(#{borrowId,jdbcType=BIGINT},#{phone,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{isLastloanRefused,jdbcType=VARCHAR},#{totalLoanCount,jdbcType=INTEGER},#{totalOverdueCount,jdbcType=INTEGER},#{longestOverduePaid,jdbcType=VARCHAR},#{currentOverdueCount,jdbcType=INTEGER},#{currentOverdueAmount,jdbcType=INTEGER},#{overDue90ContactsCount,jdbcType=INTEGER},#{longestOverdueUnpaid,jdbcType=VARCHAR},#{lastLoanRefuseReason,jdbcType=VARCHAR},#{lastLoanRefuseTime,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{firstLoanTime,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{lastModifyTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.BlacklistXindeData">
+        update cl_blacklist_xinde_data set 
+            borrow_id = #{borrowId,jdbcType=BIGINT},
+            phone = #{phone,jdbcType=VARCHAR},
+            id_card = #{idCard,jdbcType=VARCHAR},
+            is_lastloan_refused = #{isLastloanRefused,jdbcType=VARCHAR},
+            total_loan_count = #{totalLoanCount,jdbcType=INTEGER},
+            total_overdue_count = #{totalOverdueCount,jdbcType=INTEGER},
+            longest_overdue_paid = #{longestOverduePaid,jdbcType=VARCHAR},
+            current_overdue_count = #{currentOverdueCount,jdbcType=INTEGER},
+            current_overdue_amount = #{currentOverdueAmount,jdbcType=INTEGER},
+            over_due90_contacts_count = #{overDue90ContactsCount,jdbcType=INTEGER},
+            longest_overdue_unpaid = #{longestOverdueUnpaid,jdbcType=VARCHAR},
+            last_loan_refuse_reason = #{lastLoanRefuseReason,jdbcType=VARCHAR},
+            last_loan_refuse_time = #{lastLoanRefuseTime,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            first_loan_time = #{firstLoanTime,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_blacklist_xinde_data
+          <set>
+            <if test="borrowId != null">        
+                borrow_id = #{borrowId,jdbcType=BIGINT},                
+            </if>
+            <if test="phone != null and phone != '' ">
+                phone = #{phone,jdbcType=VARCHAR},                
+            </if>
+            <if test="idCard != null and idCard != '' ">
+                id_card = #{idCard,jdbcType=VARCHAR},                
+            </if>
+            <if test="isLastloanRefused != null and isLastloanRefused != '' ">
+                is_lastloan_refused = #{isLastloanRefused,jdbcType=VARCHAR},                
+            </if>
+            <if test="totalLoanCount != null">        
+                total_loan_count = #{totalLoanCount,jdbcType=INTEGER},                
+            </if>
+            <if test="totalOverdueCount != null">        
+                total_overdue_count = #{totalOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="longestOverduePaid != null and longestOverduePaid != '' ">
+                longest_overdue_paid = #{longestOverduePaid,jdbcType=VARCHAR},                
+            </if>
+            <if test="currentOverdueCount != null">        
+                current_overdue_count = #{currentOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="currentOverdueAmount != null">        
+                current_overdue_amount = #{currentOverdueAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="overDue90ContactsCount != null">        
+                over_due90_contacts_count = #{overDue90ContactsCount,jdbcType=INTEGER},                
+            </if>
+            <if test="longestOverdueUnpaid != null and longestOverdueUnpaid != '' ">
+                longest_overdue_unpaid = #{longestOverdueUnpaid,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastLoanRefuseReason != null and lastLoanRefuseReason != '' ">
+                last_loan_refuse_reason = #{lastLoanRefuseReason,jdbcType=VARCHAR},                
+            </if>
+            <if test="lastLoanRefuseTime != null and lastLoanRefuseTime != '' ">
+                last_loan_refuse_time = #{lastLoanRefuseTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="remark != null and remark != '' ">
+                remark = #{remark,jdbcType=VARCHAR},                
+            </if>
+            <if test="firstLoanTime != null and firstLoanTime != '' ">
+                first_loan_time = #{firstLoanTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="lastModifyTime != null">        
+                last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_blacklist_xinde_data
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_blacklist_xinde_data
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_blacklist_xinde_data
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

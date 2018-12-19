@@ -3,14 +3,52 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.*;
-import com.xiji.cashloan.cl.mapper.*;
-import com.xiji.cashloan.cl.model.*;
+import com.xiji.cashloan.cl.domain.BankCard;
+import com.xiji.cashloan.cl.domain.BorrowProgress;
+import com.xiji.cashloan.cl.domain.BorrowRepay;
+import com.xiji.cashloan.cl.domain.BorrowRepayLog;
+import com.xiji.cashloan.cl.domain.ManualReviewOrder;
+import com.xiji.cashloan.cl.domain.OperatorReport;
+import com.xiji.cashloan.cl.domain.PayLog;
+import com.xiji.cashloan.cl.domain.QianchengReqlog;
+import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
+import com.xiji.cashloan.cl.mapper.BankCardMapper;
+import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
+import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
+import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.ManualReviewOrderMapper;
+import com.xiji.cashloan.cl.mapper.OperatorReqLogMapper;
+import com.xiji.cashloan.cl.mapper.PayLogMapper;
+import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
+import com.xiji.cashloan.cl.mapper.QianchengReqlogMapper;
+import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
+import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
+import com.xiji.cashloan.cl.mapper.UserInviteMapper;
+import com.xiji.cashloan.cl.model.BorrowProgressModel;
+import com.xiji.cashloan.cl.model.ClBorrowModel;
+import com.xiji.cashloan.cl.model.IndexModel;
+import com.xiji.cashloan.cl.model.ManageBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
+import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
+import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.RepayModel;
+import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
+import com.xiji.cashloan.cl.service.BorrowRepayService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.ClSmsService;
+import com.xiji.cashloan.cl.service.MagicRiskService;
+import com.xiji.cashloan.cl.service.RcQianchenService;
+import com.xiji.cashloan.cl.service.TongdunReqLogService;
+import com.xiji.cashloan.cl.service.UserAuthService;
+import com.xiji.cashloan.cl.service.XinyanRiskService;
+import com.xiji.cashloan.cl.service.ZhimaService;
+import com.xiji.cashloan.cl.service.impl.assist.xindedata.XindeDataTask;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -66,9 +104,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.annotation.Resource;
-
-import com.xiji.cashloan.cl.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -172,7 +210,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private XinyanRiskService xinyanRiskService;
 	@Resource
 	private ManualReviewOrderMapper manualReviewOrderMapper;
-	
+	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+
 	public BaseMapper<Borrow, Long> getMapper() {
 		return clBorrowMapper;
 	}
@@ -2006,10 +2045,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 		}
 	}
-	
+
+	/**
+	 * 执行异步任务
+	 */
+	private void submitTask(Borrow borrow) {
+		//调用德信数聚灰名单
+		fixedThreadPool.submit(new XindeDataTask(borrow));
+	}
+
 	@Override
 	public void verifyBorrowData(long borrowId, String mobileType) {
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+		submitTask(borrow);//提交异步任务
 		List<SceneBusinessLog> sceneLogList = sceneBusinessLogMapper.findSceneLogByBorrowId(borrowId);
 		
 		if(borrow != null){
