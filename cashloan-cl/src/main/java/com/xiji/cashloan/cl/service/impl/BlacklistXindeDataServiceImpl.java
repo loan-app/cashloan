@@ -1,16 +1,16 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import com.xiji.cashloan.cl.domain.BlacklistXindeData;
+import com.xiji.cashloan.cl.mapper.BlacklistXindeDataMapper;
+import com.xiji.cashloan.cl.service.BlacklistXindeDataService;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import com.xiji.cashloan.core.common.mapper.BaseMapper;
-import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.cl.mapper.BlacklistXindeDataMapper;
-import com.xiji.cashloan.cl.domain.BlacklistXindeData;
-import com.xiji.cashloan.cl.service.BlacklistXindeDataService;
 
 
 /**
@@ -33,5 +33,11 @@ public class BlacklistXindeDataServiceImpl extends BaseServiceImpl<BlacklistXind
 	public BaseMapper<BlacklistXindeData, Long> getMapper() {
 		return blacklistXindeDataMapper;
 	}
-	
+
+	@Override
+	public BlacklistXindeData findBlackData(long borrowId) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("borrowId", borrowId);
+		return blacklistXindeDataMapper.findSelective(paramMap);
+	}
 }

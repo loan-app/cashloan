@@ -31,23 +31,22 @@ public class XindeDataTaskTest {
         Map<String, Object> sc = new HashMap<>();
         sc.put("appid", appId);
         sc.put("time", time);
-        sc.put("xyz", time);
-        sc.put("rex", time);
 
         Map<String, Object> param = new HashMap<>();
         param.put("type", "blackList");
-        param.put("phoneNo", "15738158820");
         param.put("userID", "410402199003165591");
+        param.put("phoneNo", "13822735161");
+
         String signature = SHAUtils.decrypt(SHAUtils.getOrderByLexicographic(sc,secret));
 
         url = url+"?appid=" + appId + "&time=" + time+"&signature=" + signature;
         System.out.println(url);
 //        param.put("userID", "");//可选
         String resp = HttpsUtil.postStrClient(url, JSON.toJSONString(param));
+        System.out.println(resp);
         XindeResponse response = (XindeResponse) JSON.parseObject(resp, XindeResponse.class);
-        if (resp != null) {
+        if (response != null) {
             System.out.println(response.getTid());
         }
-        System.out.println(resp);
     }
 }

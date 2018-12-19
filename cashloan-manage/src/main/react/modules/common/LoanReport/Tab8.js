@@ -5,6 +5,7 @@ import {
 } from 'antd';
 import XinyanDetail from './XinyanDetail'
 import OperatorDetail from './OperatorDetail'
+import XindeBlacklist from './XindeBlacklist'
 
 const objectAssign = require('object-assign');
 const TabPane = Tabs.TabPane;
@@ -25,6 +26,9 @@ var Tab8 = React.createClass({
                     </TabPane>
                     <TabPane tab="小额网贷报告" key="3">
                         <XinyanDetail userId={this.props.userId}/>
+                    </TabPane>
+                    <TabPane tab="信德数聚（灰名单信息）" key="4">
+                        <XindeBlacklist borrowId={this.props.borrowId}/>
                     </TabPane>
                 </Tabs>
             </div>

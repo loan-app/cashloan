@@ -11,5 +11,5 @@ import com.xiji.cashloan.cl.domain.BlacklistXindeData;
  * @date 2018-12-19 12:47:55
  */
 public interface BlacklistXindeDataService extends BaseService<BlacklistXindeData, Long>{
-
+    BlacklistXindeData findBlackData(long borrowId);
 }
