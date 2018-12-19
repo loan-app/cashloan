@@ -222,12 +222,12 @@ var Tab1 = React.createClass({
           <Row>
             <Col span="8">
               <FormItem {...formItemLayout} label="紧急联系人姓名：">
-                <Input {...getFieldProps('urgentName', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('urgentName', { initialValue: '' }) } />
               </FormItem>
             </Col>
             <Col span="8">
               <FormItem {...formItemLayout} label="紧急联系人联系方式：">
-                <Input {...getFieldProps('urgentPhone', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('urgentPhone', { initialValue: '' }) } />
               </FormItem>
             </Col>
             <Col span="8">
@@ -239,12 +239,12 @@ var Tab1 = React.createClass({
           <Row>
             <Col span="8">
               <FormItem {...formItemLayout} label="其他联系人姓名：">
-                <Input {...getFieldProps('otherName', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('otherName', { initialValue: '' }) }  />
               </FormItem>
             </Col>
             <Col span="8">
               <FormItem {...formItemLayout} label="其他联系人联系方式：">
-                <Input {...getFieldProps('otherPhone', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('otherPhone', { initialValue: '' }) }  />
               </FormItem>
             </Col>
             <Col span="8">
@@ -256,17 +256,17 @@ var Tab1 = React.createClass({
           <Row>
             <Col span="8">
               <FormItem {...formItemLayout} label="其他联系人姓名：">
-                <Input {...getFieldProps('otherThirdName', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('otherThirdName', { initialValue: '' }) }  />
               </FormItem>
             </Col>
             <Col span="8">
               <FormItem {...formItemLayout} label="其他联系人联系方式：">
-                <Input {...getFieldProps('otherThirdPhone', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('otherThirdPhone', { initialValue: '' }) }  />
               </FormItem>
             </Col>
             <Col span="8">
               <FormItem {...formItemLayout} label="其他联系人与本人关系：">
-                <Input {...getFieldProps('otherThirdRelation', { initialValue: '' }) } disabled={true} />
+                <Input {...getFieldProps('otherThirdRelation', { initialValue: '' }) }  />
               </FormItem>
             </Col>
           </Row>

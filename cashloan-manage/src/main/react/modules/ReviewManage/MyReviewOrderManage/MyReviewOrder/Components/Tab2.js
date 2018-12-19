@@ -1,7 +1,14 @@
 import React from 'react';
 import {
   Table,
+  Input,
+  Form,
+  Row,
+  Col,
+  Button,
 } from 'antd';
+const createForm = Form.create;
+const FormItem = Form.Item;
 const objectAssign = require('object-assign');
 var Tab2 = React.createClass({
   getInitialState() {
@@ -32,7 +39,7 @@ var Tab2 = React.createClass({
       params = {
         pageSize: 10,
         current: this.state.pagination.current + 1,
-        userId: this.props.record.borrowUserId,
+        userId: this.props.record.id,
       }
       this.setState({
         pagination: {
@@ -53,7 +60,7 @@ var Tab2 = React.createClass({
       params = {
         pageSize: 10,
         current: 1,
-        userId: this.props.record.borrowUserId,
+        userId: this.props.record.id,
       }
     }
     var data = this.state.data;
@@ -81,7 +88,44 @@ var Tab2 = React.createClass({
       }
     });
   },
+
+  handleQuery(){
+    var params = this.props.form.getFieldsValue();
+    if (!params.pageSize) {
+      params.pageSize = 10;
+      params.current = 1;
+    }
+    Utils.ajaxData({
+      url: '/modules/manage/msg/listContacts.htm',
+      data: params,
+      callback: (result) => {
+        this.setState({
+          loading: false,
+          data: result.data?result.data.list:[],
+        });
+      }
+    });
+  },
+
+  handleReset(){
+    this.props.form.resetFields();
+    this.fetch();
+  },
+
   render() {
+    var props = this.props;
+    var state = this.state;
+    const {
+        getFieldProps
+        } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        span: 9
+      },
+      wrapperCol: {
+        span: 14
+      },
+    };
     var columns = [{
       title: '姓名',
       dataIndex: "name",
@@ -96,15 +140,36 @@ var Tab2 = React.createClass({
       dataIndex: "sumDuration",
     }];
     return (<div className="block-panel">
-              <div id='scrolling' onScroll={this.scrolling} style={{height: 300,  overflow: 'scroll'}}>
-                      <Table columns={columns} rowKey={this.rowKey}  
-                      dataSource={this.state.data}
-                      pagination={false}
-                      loading={this.state.loading}
-                      onChange={this.handleTableChange}  />
-              </div>
+          <div>
+            <Input {...getFieldProps('userId', { initialValue: this.props.record.id }) } type="hidden" />
+            <Row>
+              <Col span="8">
+                <FormItem {...formItemLayout} label="姓名">
+                  <Input {...getFieldProps('name', { initialValue: '' }) }  />
+                </FormItem>
+              </Col>
+              <Col span="8">
+                <FormItem {...formItemLayout} label="手机号码：">
+                  <Input {...getFieldProps('phone', { initialValue: '' }) }  />
+                </FormItem>
+              </Col>
+              <Col {...formItemLayout} span="8">
+                <FormItem>
+                  <Button type="primary" onClick={this.handleQuery} style={{marginRight:'10'}}>查询</Button>
+                  <Button type="reset" onClick={this.handleReset} >重置</Button>
+                </FormItem>
+              </Col>
+            </Row>
           </div>
+          <div id='scrolling' onScroll={this.scrolling} style={{height: 300,  overflow: 'scroll'}}>
+            <Table columns={columns} rowKey={this.rowKey}
+                   dataSource={this.state.data}
+                   pagination={false}
+                   loading={this.state.loading} />
+          </div>
+        </div>
     );
   }
 });
+Tab2 = createForm()(Tab2);
 export default Tab2;
