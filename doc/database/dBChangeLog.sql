@@ -251,9 +251,9 @@ CREATE TABLE `cl_operator_voice_cnt` (
 -- 修改推广链接
 update arc_sys_config set value = '/h5/invite.jsp' where code = 'h5_invite';
 
-INSERT INTO `arc_sys_config` VALUES (null, '20', '信德数聚appid', 'xinde_data_appId', 'c614780e6f19c43e2d1af3f81bcfba9addb32922', '1', '信德数聚appid', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '20', '信德数聚secret', 'xinde_data_appSecret', '68753208ba1abf4a2c0bc2871ae644ea79cabca2', '1', '信德数聚secret', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '20', '信德数聚url', 'xinde_data_url', 'https://api.xindedata.com/v1/task', '1', 'url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '信德数聚appid', 'xinde_data_appId', 'c614780e6f19c43e2d1af3f81bcfba9addb32922', '1', '信德数聚appid', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '信德数聚secret', 'xinde_data_appSecret', '68753208ba1abf4a2c0bc2871ae644ea79cabca2', '1', '信德数聚secret', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '信德数聚url', 'xinde_data_url', 'https://api.xindedata.com/v1/task', '1', 'url', '1');
 
 CREATE TABLE `cl_blacklist_xinde_data` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
