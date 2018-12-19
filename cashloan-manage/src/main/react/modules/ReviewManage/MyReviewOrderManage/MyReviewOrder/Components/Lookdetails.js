@@ -137,7 +137,7 @@ var Lookdetails = React.createClass({
             <Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
           </TabPane>
           <TabPane tab="信用报告" key="8">
-            <Tab8 userId={props.record.borrowUserId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
+            <Tab8 userId={props.record.borrowUserId}  borrowId={props.record.borrowId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
           </TabPane>
           <TabPane tab="通话详情统计" key="9">
             <Tab9 ref="Tab9" record={props.record}  canEdit={props.canEdit} activeKey={this.state.activekey}/>

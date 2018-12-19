@@ -250,3 +250,31 @@ CREATE TABLE `cl_operator_voice_cnt` (
 
 -- 修改推广链接
 update arc_sys_config set value = '/h5/invite.jsp' where code = 'h5_invite';
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '信德数聚appid', 'xinde_data_appId', 'c614780e6f19c43e2d1af3f81bcfba9addb32922', '1', '信德数聚appid', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '信德数聚secret', 'xinde_data_appSecret', '68753208ba1abf4a2c0bc2871ae644ea79cabca2', '1', '信德数聚secret', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '信德数聚url', 'xinde_data_url', 'https://api.xindedata.com/v1/task', '1', 'url', '1');
+
+CREATE TABLE `cl_blacklist_xinde_data` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+  `borrow_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '借款id',
+  `phone` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号',
+  `id_card` varchar(24) NOT NULL DEFAULT '' COMMENT '身份证号',
+  `is_lastloan_refused` varchar(8) NOT NULL DEFAULT 'false' COMMENT '最后一次申请是否被拒贷 true: 是；false: 否',
+  `total_loan_count` int(4) NOT NULL DEFAULT '0' COMMENT '历史借款次数(所有的借款次数，包含当前借款)',
+  `total_overdue_count` int(4) NOT NULL DEFAULT '0' COMMENT '历史逾期次数(所有的逾期次数，包含当前逾期)',
+  `longest_overdue_paid` varchar(16) NOT NULL DEFAULT '' COMMENT '已经还清的历史逾期最长时间，M1:小于1月; M2:大于1月，小于2月; M3:大于2月，小于3月; M4:3月及以上',
+  `current_overdue_count` int(4) NOT NULL DEFAULT '0' COMMENT '当前处于逾期状态的借款笔数',
+  `current_overdue_amount` int(4) NOT NULL DEFAULT '0' COMMENT '当前逾期总金额，0: 0(没有逾期); 1:[0,100]; 2:[100,500); 3:[500,1000); 4:[1000,2000); 5:[2000,4000); 6:[4000,6000); 7:[6000,10000); 8:>=10000',
+  `over_due90_contacts_count` int(4) NOT NULL DEFAULT '0' COMMENT '有逾期90天以上运营商联系人个数',
+  `longest_overdue_unpaid` varchar(16) NOT NULL DEFAULT '' COMMENT '当前最长逾期时间(不包括已经还清的)，M1:小于1月; M2:大于1月，小于2月; M3:大于2月，小于3月; M4:3月及以上',
+  `last_loan_refuse_reason` varchar(16) NOT NULL DEFAULT '' COMMENT '最后一次拒贷原因',
+  `last_loan_refuse_time` varchar(16) NOT NULL DEFAULT '' COMMENT '最后一次拒贷时间',
+  `remark` text COMMENT '其他详情',
+  `first_loan_time` varchar(32) NOT NULL DEFAULT '',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modify_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_phone_idcard` (`phone`,`id_card`),
+  KEY `borrow_id` (`borrow_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='信德数聚灰名单结果';
