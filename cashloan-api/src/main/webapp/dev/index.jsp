@@ -28,10 +28,10 @@ table {
 							<td width="200" class="bg_gray" align="right">支付index页面：&nbsp;&nbsp;</td>
 							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<a style="text-decoration: underline" href="../fuiou/index.jsp">支付index页面</a></td>
 						</tr>
-						<%--<tr>--%>
-							<%--<td width="200" class="bg_gray" align="right">查询绑卡：&nbsp;&nbsp;</td>--%>
-							<%--<td class="bg_yellow2" align="left">&nbsp;&nbsp;<a style="text-decoration: underline" href="new_protocol_query.jsp">查询绑卡</a></td>--%>
-						<%--</tr>--%>
+						<tr>
+							<td width="200" class="bg_gray" align="right">修复通话详情数据：&nbsp;&nbsp;</td>
+							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<a style="text-decoration: underline" href="operatorVoiceCntFix.jsp">修复通话详情数据</a></td>
+						</tr>
 						<%--<tr>--%>
 							<%--<td width="200" class="bg_gray" align="right">解除绑卡：&nbsp;&nbsp;</td>--%>
 							<%--<td class="bg_yellow2" align="left">&nbsp;&nbsp;<a style="text-decoration: underline" href="new_protocol_unbind.jsp">解除绑卡</a></td>--%>
