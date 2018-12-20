@@ -72,7 +72,7 @@ public class UserMessagesServiceImpl extends BaseServiceImpl<UserMessages, Long>
 	@Override
 	public int saveShardUserMsg(UserMessages userMessages){
 
-		String tableName = ShardTableUtil.generateTableNameById("cl_user_messages",userMessages.getUserId(),3);
+		String tableName = ShardTableUtil.generateTableNameById("cl_user_messages",userMessages.getUserId(),30000);
 		int countTable = clUserMessagesMapper.countTable(tableName);
 		if (countTable == 0) {
 			clUserMessagesMapper.createTable(tableName);
