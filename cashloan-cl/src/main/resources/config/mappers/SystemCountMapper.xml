@@ -120,4 +120,22 @@
     		) t 
     	GROUP BY create_time
     </select>
+
+    <!-- 注册用户总数-->
+	<select id="totalRegister" resultType="java.lang.Integer">
+		select count(id) from cl_user
+		where 1=1
+	</select>
+
+    <!--统计借款申请的数量-->
+	<select id="totalBorrow" resultType="java.lang.Double" parameterType="java.util.HashMap">
+		select count(id) from cl_borrow
+		where 1=1
+	</select>
+
+	<!-- 统计借款申请通过的数量 -->
+	<select id="totalBorrowPass" resultType="java.lang.Double" parameterType="java.util.HashMap">
+		select count(id) from cl_borrow_progress
+		where  state in ('20','26')
+	</select>
 </mapper>

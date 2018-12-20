@@ -1,11 +1,8 @@
 package com.xiji.cashloan.api.controller;
 
-import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.cl.domain.AppList;
-import com.xiji.cashloan.cl.domain.UserMessages;
 import com.xiji.cashloan.cl.service.AppListService;
 import com.xiji.cashloan.core.common.context.Constant;
-import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import org.springframework.context.annotation.Scope;
@@ -39,7 +36,7 @@ public class AppListController extends BaseController {
      * @param userId
      * @throws ParseException
      */
-    @RequestMapping(value = "/api/app/list/addAppList.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/act/app/list/addAppList.htm", method = RequestMethod.POST)
     public void addAppList(@RequestParam(value="appList", required = true) String appList, @RequestParam(value = "userId", required = true) String userId) throws ParseException {
         AppList list = new AppList();
         list.setCreateTime(new Date());
