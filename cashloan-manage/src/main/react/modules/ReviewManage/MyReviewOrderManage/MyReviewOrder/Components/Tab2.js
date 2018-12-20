@@ -39,7 +39,7 @@ var Tab2 = React.createClass({
       params = {
         pageSize: 10,
         current: this.state.pagination.current + 1,
-        userId: this.props.record.id,
+        userId: this.props.record.borrowUserId,
       }
       this.setState({
         pagination: {
@@ -60,7 +60,7 @@ var Tab2 = React.createClass({
       params = {
         pageSize: 10,
         current: 1,
-        userId: this.props.record.id,
+        userId: this.props.record.borrowUserId,
       }
     }
     var data = this.state.data;
@@ -141,7 +141,7 @@ var Tab2 = React.createClass({
     }];
     return (<div className="block-panel">
           <div>
-            <Input {...getFieldProps('userId', { initialValue: this.props.record.id }) } type="hidden" />
+            <Input {...getFieldProps('userId', { initialValue: this.props.record.borrowUserId }) } type="hidden" />
             <Row>
               <Col span="8">
                 <FormItem {...formItemLayout} label="姓名">
