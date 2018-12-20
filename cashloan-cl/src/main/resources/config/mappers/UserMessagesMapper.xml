@@ -9,13 +9,14 @@
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="time" property="time" jdbcType="TIMESTAMP" />
         <result column="type" property="type" jdbcType="VARCHAR" />
-        <result column="isReceive" property="isReceive" jdbcType="VARCHAR" />
+        <!--<result column="isReceive" property="isReceive" jdbcType="VARCHAR" />-->
         <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,name,phone,time,type,user_id 
+        id,name,phone,time,type,user_id,content
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -44,7 +45,7 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.UserMessages">
-        insert into cl_user_messages(name,phone,time,type,user_id)values(#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{time,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER})
+        insert into cl_user_messages(name,phone,time,type,user_id,content)values(#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{time,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{content,jdbcType=VARCHAR})
     </insert>
 
     
@@ -65,8 +66,11 @@
                 type = #{type,jdbcType=VARCHAR},                
             </if>
             <if test="userId != null and userId != '' ">        
-                user_id = #{userId,jdbcType=INTEGER}                
+                user_id = #{userId,jdbcType=INTEGER},
             </if>
+              <if test="content != null and content != ''">
+                  content = #{content,jdbcType=VARCHAR}
+              </if>
         </set>    
         where id = #{id ,jdbcType=INTEGER}
     </update>
@@ -92,5 +96,42 @@
         from cl_user_messages
         <include refid="searchBy"/>
     </select>
-    
+
+    <insert id="saveShard">
+        insert into ${tableName}(
+        user_id,
+        name,
+        phone,
+        time,
+        type,
+        content
+        )values(
+        #{userMessages.userId,jdbcType=BIGINT},
+        #{userMessages.name,jdbcType=VARCHAR},
+        #{userMessages.phone,jdbcType=VARCHAR},
+        #{userMessages.time,jdbcType=TIMESTAMP},
+        #{userMessages.type,jdbcType=VARCHAR},
+        #{userMessages.content,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="countTable" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT COUNT(1) FROM information_schema.TABLES WHERE table_name = #{tableName,jdbcType=VARCHAR} and TABLE_SCHEMA = database()
+    </select>
+
+
+    <select id="createTable">
+        CREATE TABLE ${tableName} (
+        `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+        `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+        `name` varchar(20) DEFAULT '' COMMENT '短信收发人',
+        `phone` varchar(20) DEFAULT '' COMMENT '手机号码',
+        `time` datetime DEFAULT NULL COMMENT '收发时间',
+        `type` varchar(2) DEFAULT '' COMMENT '收发标识，10发20收',
+        `content` text COMMENT '短信内容',
+         PRIMARY KEY (`id`),
+         INDEX `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户短信表';
+
+    </select>
 </mapper>

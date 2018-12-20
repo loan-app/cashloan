@@ -3,6 +3,7 @@ package com.xiji.cashloan.cl.service;
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.UserMessages;
 import com.xiji.cashloan.core.common.service.BaseService;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户资料--联系人Service
@@ -25,5 +26,13 @@ public interface UserMessagesService extends BaseService<UserMessages, Long>{
 	 * @return
 	 */
 	Page<UserMessages> listMessages(long userId, int current, int pageSize);
+
+
+	/**
+	 * 用户短信(分表)新增
+	 * @param userMessages
+	 * @return
+	 */
+	int saveShardUserMsg(UserMessages userMessages);
 
 }

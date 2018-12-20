@@ -49,6 +49,11 @@ import java.util.Date;
     private String type;
 
 	/**
+	 * 短信内容
+	 */
+	private String content;
+
+	/**
 	 * 获取主键Id
 	 * @return id
 	 */
@@ -136,12 +141,30 @@ import java.util.Date;
 		return type;
 	}
 
+
 	/**
 	 * 设置收发标识，10发20收
 	 * @param type
 	 */
+
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * 获取短信内容
+	 * @return
+	 */
+	public String getContent() {
+		return content;
+	}
+
+	/**
+	 * 设置短信
+	 * @param content
+	 */
+	public void setContent(String content){
+		this.content = content;
 	}
 
 }

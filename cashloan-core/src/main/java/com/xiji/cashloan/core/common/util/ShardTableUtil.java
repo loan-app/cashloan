@@ -20,6 +20,7 @@ public class ShardTableUtil {
 		tables.add("cl_operator_sms");
 		tables.add("cl_operator_net");
 		tables.add("cl_operator_voice_cnt");
+		tables.add("cl_user_messages");
 	}
 	
 	/**

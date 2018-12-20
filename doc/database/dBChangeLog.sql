@@ -278,3 +278,9 @@ CREATE TABLE `cl_blacklist_xinde_data` (
   UNIQUE KEY `idx_phone_idcard` (`phone`,`id_card`),
   KEY `borrow_id` (`borrow_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='信德数聚灰名单结果';
+
+-- 添加用户短信内容
+ALTER table cl_user_messages ADD content text COMMENT '短信内容';
+
+-- 给用户短信表添加 索引
+ALTER TABLE cl_user_messages ADD INDEX user_id ( `user_id` ) ;
