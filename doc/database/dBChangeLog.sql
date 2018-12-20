@@ -238,7 +238,7 @@ CREATE TABLE `cl_operator_voice_cnt` (
   `peer_name` varchar(64) NOT NULL DEFAULT '' COMMENT '运营商',
   `city` varchar(32) NOT NULL DEFAULT '' COMMENT '号码归属地',
   `contact_phone` varchar(32) NOT NULL DEFAULT '' COMMENT '通讯录联系号码',
-  `contact_name` varchar(64) NOT NULL DEFAULT '' COMMENT '通讯录联系人姓名',
+  `contact_name` varchar(64) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '通讯录联系人姓名',
   `call_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '联系次数/时间(秒)',
   `dial_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '主叫次数/时间(秒)',
   `dialed_cnt_num` varchar(32) NOT NULL DEFAULT '' COMMENT '被叫次数/时间(秒)',
@@ -246,7 +246,7 @@ CREATE TABLE `cl_operator_voice_cnt` (
   `lastModifyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='通话详情统计';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPRESSED COMMENT='通话详情统计';
 
 -- 修改推广链接
 update arc_sys_config set value = '/h5/invite.jsp' where code = 'h5_invite';
