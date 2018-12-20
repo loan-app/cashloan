@@ -297,7 +297,7 @@ CREATE TABLE `cl_blacklist_task` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modify_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `borrow_id` (`task_name`)
+  KEY `task_name` (`task_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单外部数据调用任务';
 
 CREATE TABLE `cl_blacklist_common_data` (
