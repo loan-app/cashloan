@@ -34,8 +34,8 @@ public class XindeDataTaskTest {
 
         Map<String, Object> param = new HashMap<>();
         param.put("type", "blackList");
-        param.put("userID", "410402199003165591");
-        param.put("phoneNo", "13822735161");
+        param.put("userID", "440883199211101977");
+        param.put("phoneNo", "13554968975");
 
         String signature = SHAUtils.decrypt(SHAUtils.getOrderByLexicographic(sc,secret));
 

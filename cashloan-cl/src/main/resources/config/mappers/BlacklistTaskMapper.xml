@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_blacklist_task表:黑名单任务模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.BlacklistTaskMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.BlacklistTask">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+        <result column="task_type" property="taskType" jdbcType="VARCHAR" />
+        <result column="task_version" property="taskVersion" jdbcType="INTEGER" />
+        <result column="task_data" property="taskData" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="yn" property="yn" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,task_name,task_type,task_version,task_data,remark,yn,create_time,last_modify_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="taskName != null and taskName != ''">
+                and task_name = #{taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="taskType != null and taskType != ''">
+                and task_type = #{taskType,jdbcType=VARCHAR}
+            </if>
+            <if test="taskVersion != null">
+                and task_version = #{taskVersion,jdbcType=INTEGER}
+            </if>
+            <if test="taskData != null and taskData != ''">
+                and task_data = #{taskData,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="yn != null">
+                and yn = #{yn,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastModifyTime != null">
+                and last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BlacklistTask">
+        insert into cl_blacklist_task(task_name,task_type,task_version,task_data,remark,yn,create_time,last_modify_time)values(#{taskName,jdbcType=VARCHAR},#{taskType,jdbcType=VARCHAR},#{taskVersion,jdbcType=INTEGER},#{taskData,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{yn,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{lastModifyTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.BlacklistTask">
+        update cl_blacklist_task set 
+            task_name = #{taskName,jdbcType=VARCHAR},
+            task_type = #{taskType,jdbcType=VARCHAR},
+            task_version = #{taskVersion,jdbcType=INTEGER},
+            task_data = #{taskData,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            yn = #{yn,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_blacklist_task
+          <set>
+            <if test="taskName != null and taskName != '' ">
+                task_name = #{taskName,jdbcType=VARCHAR},                
+            </if>
+            <if test="taskType != null and taskType != '' ">
+                task_type = #{taskType,jdbcType=VARCHAR},                
+            </if>
+            <if test="taskVersion != null">        
+                task_version = #{taskVersion,jdbcType=INTEGER},                
+            </if>
+            <if test="taskData != null and taskData != '' ">
+                task_data = #{taskData,jdbcType=VARCHAR},                
+            </if>
+            <if test="remark != null and remark != '' ">
+                remark = #{remark,jdbcType=VARCHAR},                
+            </if>
+            <if test="yn != null">        
+                yn = #{yn,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="lastModifyTime != null">        
+                last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_blacklist_task
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_blacklist_task
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_blacklist_task
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

@@ -275,6 +275,44 @@ CREATE TABLE `cl_blacklist_xinde_data` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modify_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_phone_idcard` (`phone`,`id_card`),
+  UNIQUE KEY `idx_phone_idcard_borrowid` (`phone`,`id_card`,`borrow_id`),
   KEY `borrow_id` (`borrow_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='信德数聚灰名单结果';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='信德数聚灰名单结果';
+
+--2018-12-20
+CREATE TABLE `cl_blacklist_task` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+  `task_name` varchar(32) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `task_type` varchar(32) NOT NULL DEFAULT '' COMMENT '任务类型',
+  `task_version` int(4) NOT NULL DEFAULT '1' COMMENT '任务版本',
+  `task_data` text COMMENT '任务代码数据',
+  `remark` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
+  `yn` tinyint(4) NOT NULL DEFAULT '2' COMMENT '是否有效：1-有效;2-无效',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modify_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `borrow_id` (`task_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='黑名单外部数据调用任务';
+
+CREATE TABLE `cl_blacklist_common_data` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
+  `borrow_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '借款id',
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户的id',
+  `phone` varchar(24) NOT NULL DEFAULT '' COMMENT '手机号',
+  `name` varchar(16) NOT NULL DEFAULT '' COMMENT '姓名',
+  `id_card` varchar(24) NOT NULL DEFAULT '' COMMENT '身份证号',
+  `black_type` int(4) NOT NULL DEFAULT '0' COMMENT '0-正常，1-黑名单，2-灰名单',
+  `data_msg` text COMMENT '数据详情',
+  `source` varchar(32) NOT NULL DEFAULT '' COMMENT '黑名来源',
+  `remark` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modify_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_phone_idcard_borrowid` (`phone`,`id_card`,`borrow_id`),
+  KEY `borrow_id` (`borrow_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='外部黑名单数据';
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信appid', 'paipaixin_data_appId', 'key2cf89a6900644d80b36fe25ccc67968e', '1', '拍拍信appid', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信secret', 'paipaixin_data_appSecret', 'nqw2bTruB5311OIytF8qyv5LSDy4shO5g89eebQ4zAXSIYV7L2kKuMs9f6OfEmL0', '1', '拍拍信secret', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信url', 'paipaixin_blacklist_url', 'https://api.ppcredit.com/router/rest', '1', '拍拍信url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信黑名单method', 'paipaixin_blacklist_method', 'ppc.risklist.query.v1', '1', '拍拍信黑名单method', '1');

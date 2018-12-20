@@ -16,6 +16,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -423,4 +424,7 @@ public class HttpsUtil {
 		}
 	}
 
+	public static boolean error(String result) {
+		return StringUtils.startsWith(result, "300");
+	}
 }

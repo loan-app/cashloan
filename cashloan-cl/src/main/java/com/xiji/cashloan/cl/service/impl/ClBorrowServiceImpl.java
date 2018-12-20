@@ -8,7 +8,6 @@ import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.ManualReviewOrder;
-import com.xiji.cashloan.cl.domain.OperatorReport;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.QianchengReqlog;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
@@ -33,7 +32,6 @@ import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
 import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.RepayModel;
-import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
@@ -48,7 +46,10 @@ import com.xiji.cashloan.cl.service.TongdunReqLogService;
 import com.xiji.cashloan.cl.service.UserAuthService;
 import com.xiji.cashloan.cl.service.XinyanRiskService;
 import com.xiji.cashloan.cl.service.ZhimaService;
-import com.xiji.cashloan.cl.service.impl.assist.xindedata.XindeDataTask;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistBaseTask;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistProcess;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistUtil;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.XindeDataTask;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -2051,6 +2052,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 */
 	private void submitTask(Borrow borrow) {
 		//调用德信数聚灰名单
+		Map<String, BlacklistProcess> taskMap = BlacklistUtil.getBaseTaskHashMap();
+		for (Map.Entry<String, BlacklistProcess> entry : taskMap.entrySet()) {
+			BlacklistProcess task = entry.getValue();
+			if (task != null) {
+				fixedThreadPool.submit(new BlacklistBaseTask(task,borrow));
+			}
+		}
 		fixedThreadPool.submit(new XindeDataTask(borrow));
 	}
 

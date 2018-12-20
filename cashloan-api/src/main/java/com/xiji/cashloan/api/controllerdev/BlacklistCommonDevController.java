@@ -1,10 +1,13 @@
 package com.xiji.cashloan.api.controllerdev;
 
 import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.impl.assist.blacklist.XindeDataTask;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistBaseTask;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistProcess;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.Borrow;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.annotation.Resource;
@@ -25,19 +28,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @Scope("prototype")
-public class XindApiController extends BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(XindApiController.class);
+public class BlacklistCommonDevController extends BaseController {
+    private static final Logger logger = LoggerFactory.getLogger(BlacklistCommonDevController.class);
     @Resource
     private ClBorrowService clBorrowService;
     private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
-    @RequestMapping(value = "/xind/task.htm",method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/blacklist/common/submitTask.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void task(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String borrowId = req.getParameter("borrowId");
             logger.info(borrowId);
             Borrow borrow = clBorrowService.findByPrimary(Long.parseLong(borrowId));
-            fixedThreadPool.submit(new XindeDataTask(borrow));
+            Map<String, BlacklistProcess> taskMap = BlacklistUtil.getBaseTaskHashMap();
+            for (Map.Entry<String, BlacklistProcess> entry : taskMap.entrySet()) {
+                BlacklistProcess task = entry.getValue();
+                if (task != null) {
+                    fixedThreadPool.submit(new BlacklistBaseTask(task,borrow));
+                }
+            }
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
             resp.getOutputStream().write("success".getBytes("utf8"));

@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.service.impl.assist.xindedata;
+package com.xiji.cashloan.cl.service.impl.assist.blacklist;
 
 import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.cl.domain.BlacklistXindeData;
