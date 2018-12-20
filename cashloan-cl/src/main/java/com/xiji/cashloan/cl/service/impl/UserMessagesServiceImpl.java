@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.xiji.cashloan.core.common.util.ShardTableUtil;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -61,5 +63,22 @@ public class UserMessagesServiceImpl extends BaseServiceImpl<UserMessages, Long>
 		}
 		return (Page<UserMessages>)list;
 	}
-	
+
+	/**
+	 * 用户短信(分表)新增
+	 * @param userMessages
+	 * @return
+	 */
+	@Override
+	public int saveShardUserMsg(UserMessages userMessages){
+
+		String tableName = ShardTableUtil.generateTableNameById("cl_user_messages",userMessages.getUserId(),30000);
+		int countTable = clUserMessagesMapper.countTable(tableName);
+		if (countTable == 0) {
+			clUserMessagesMapper.createTable(tableName);
+		}
+		return clUserMessagesMapper.saveShard(tableName,userMessages);
+	}
+
+
 }

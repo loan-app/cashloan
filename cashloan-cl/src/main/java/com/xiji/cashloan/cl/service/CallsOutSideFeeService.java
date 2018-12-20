@@ -31,8 +31,8 @@ public interface CallsOutSideFeeService extends BaseService<CallsOutSideFee, Lon
 
     /**
      * 获取总消费
-     * @param castType
+     * @param params
      * @return
      */
-    BigDecimal getTotalFee(Integer castType);
+    BigDecimal getTotalFee(Map<String, Object> params);
 }

@@ -1,9 +1,12 @@
 package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.domain.UserCardCreditLog;
+import com.xiji.cashloan.cl.domain.UserMessages;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.cl.model.dsdata.LinkfaceHsTkCreditRequest;
 import com.xiji.cashloan.cl.model.dsdata.LinkfaceIDTkOcrRequest;
@@ -28,11 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -582,18 +581,31 @@ public class UserBaseInfoController extends BaseController {
             @RequestParam(value = "info", required = true) String encodedInfo,
             @RequestParam(value = "userId", required = true) String userId)
             throws ParseException {
-		/*String info = new String(Base64.decode(encodedInfo));
+		String info = new String(Base64.decode(encodedInfo));
 		List<Map<String, Object>> infos = JsonUtil.parse(info, List.class);
-		for (Map<String, Object> map : infos) {
-			UserMessages clUserMessages = new UserMessages();
-			clUserMessages.setName(map.get("name") + "");
-			clUserMessages.setPhone(map.get("phone") + "");
-			clUserMessages.setTime(new Date(
-					Long.parseLong(map.get("time") + "")));
-			clUserMessages.setType(map.get("type") + "");
-			clUserMessages.setUserId(Long.parseLong(userId));
-			userMessagesService.insert(clUserMessages);
-		}*/
+		if (CollectionUtil.isNotEmpty(infos)){
+            for (Map<String, Object> map : infos) {
+                UserMessages clUserMessages = new UserMessages();
+                clUserMessages.setName(map.get("name") + "");
+                clUserMessages.setPhone(map.get("phone") + "");
+                clUserMessages.setTime(new Date(Long.parseLong(map.get("time") + "")));
+                clUserMessages.setType(map.get("type") + "");
+                clUserMessages.setUserId(Long.parseLong(userId));
+                clUserMessages.setContent(map.get("content")+"");
+                userMessagesService.saveShardUserMsg(clUserMessages);
+            }
+        }
+
+//        for (int i =0 ;i < 10 ;i++){
+//            UserMessages clUserMessages = new UserMessages();
+//            clUserMessages.setName("wnb");
+//            clUserMessages.setPhone("18296134271");
+//            clUserMessages.setTime(new Date());
+//            clUserMessages.setType("20");
+//            clUserMessages.setUserId(8L);
+//            clUserMessages.setContent("終於成功了");
+//            userMessagesService.saveShardUserMsg(clUserMessages);
+//        }
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         returnMap.put(Constant.RESPONSE_CODE_MSG, "保存成功");

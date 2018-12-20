@@ -34,9 +34,9 @@ public interface CallsOutSideFeeMapper extends BaseMapper<CallsOutSideFee, Long>
 
     /**
      * 获取总消费
-     * @param castType
+     * @param params
      * @return
      */
-    BigDecimal getTotalFee(Integer castType);
+    BigDecimal getTotalFee(Map<String, Object> params);
 
 }

@@ -30,7 +30,7 @@ public interface SystemCountMapper {
 	Integer countLogin(Map<String, Object> param);
 	
 	/**
-	 * 统计当日借款申请通过的数量
+	 * 统计当日借款申请的数量
 	 * @param param 
 	 * @return
 	 */
@@ -123,4 +123,22 @@ public interface SystemCountMapper {
 	 * @return
 	 */
 	List<Map<String,Object>> countFifteenDaysRealRepay();
+
+	/**
+	 * 统计注册用户数量
+	 * @return
+	 */
+	Integer totalRegister();
+
+	/**
+	 * 统计借款申请的数量
+	 * @return
+	 */
+	double totalBorrow();
+
+	/**
+	 * 统计借款申请通过的数量
+	 * @return
+	 */
+	double totalBorrowPass();
 }
