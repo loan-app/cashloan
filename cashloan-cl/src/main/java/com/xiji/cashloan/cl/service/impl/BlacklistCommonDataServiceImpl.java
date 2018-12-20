@@ -64,7 +64,6 @@ public class BlacklistCommonDataServiceImpl extends BaseServiceImpl<BlacklistCom
 		if (countTable == 0) {
 			blacklistCommonDataMapper.createTable(tableName);
 		}
-		blacklistCommonDataMapper.saveShard(tableName, data);
-		return 0;
+		return blacklistCommonDataMapper.saveShard(tableName, data);
 	}
 }
