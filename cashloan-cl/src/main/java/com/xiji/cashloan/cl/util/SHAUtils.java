@@ -20,16 +20,18 @@ public class SHAUtils {
     public static void main(String[] args) throws Exception {
         Map<String, Object> map=new HashMap<String,Object>();
         String key="1234567890";//key值
-        map.put("one","param_one");
-        map.put("two","param_two");
-        map.put("three","param_three");//所要加密的字符串
-        map.put("","xxxxx");//所要加密的字符串
-        map.put("three2","param_three");//所要加密的字符串
-        map.put("three3","param_three");//所要加密的字符串
-        map.put("three4","param_three");//所要加密的字符串
+//        map.put("one","param_one");
+//        map.put("two","param_two");
+//        map.put("three","param_three");//所要加密的字符串
+        map.put("appkey","1");//所要加密的字符串
+        map.put("timestamp","2");//所要加密的字符串
+        map.put("method","3");//所要加密的字符串
+        map.put("sign_method","4");//所要加密的字符串
         //获取信息摘要 - 参数字典排序后字符串
         String preDecryptStr = getOrderByLexicographic(map,key);
-        System.out.println(decrypt(preDecryptStr));
+        String preDecryptStrx = getOrderByLexicographic(map);
+        System.out.println(preDecryptStr);
+        System.out.println(preDecryptStrx);
     }
 
     public static String decrypt(String decrypt)  throws Exception{
@@ -63,13 +65,15 @@ public class SHAUtils {
     public static String getOrderByLexicographic(Map<String,Object> maps,String key){
         return splitParams(lexicographicOrder(getParamsName(maps)),maps,key);
     }
-
+    public static String getOrderByLexicographic(Map<String,Object> maps){
+        return splitParams(lexicographicOrder(getParamsName(maps)),maps);
+    }
     /**
      * 获取参数名称 key
      * @param maps 参数key-value map集合
      * @return
      */
-    private static List<String> getParamsName(Map<String,Object> maps){
+    public static List<String> getParamsName(Map<String,Object> maps){
         List<String> paramNames = new ArrayList<String>();
         for(Map.Entry<String,Object> entry : maps.entrySet()){
             paramNames.add(entry.getKey());
@@ -82,7 +86,7 @@ public class SHAUtils {
      * @param paramNames 参数名称List集合
      * @return 排序后的参数名称List集合
      */
-    private static List<String> lexicographicOrder(List<String> paramNames){
+    public static List<String> lexicographicOrder(List<String> paramNames){
         Collections.sort(paramNames);
         return paramNames;
     }
@@ -106,7 +110,20 @@ public class SHAUtils {
             }
         }
         paramStr.append(key);
-        System.out.println(paramStr.toString());
+//        System.out.println(paramStr.toString());
+        return paramStr.toString();
+    }
+
+    public static String splitParams(List<String> paramNames,Map<String,Object> maps){
+        StringBuilder paramStr = new StringBuilder();
+        for(String paramName : paramNames){
+            paramStr.append(paramName);
+            for(Map.Entry<String,Object> entry : maps.entrySet()){
+                if(StringUtil.equals(paramName,entry.getKey())){
+                    paramStr.append(String.valueOf(entry.getValue()));
+                }
+            }
+        }
         return paramStr.toString();
     }
 }
