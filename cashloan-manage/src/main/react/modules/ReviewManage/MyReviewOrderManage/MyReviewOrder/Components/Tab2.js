@@ -162,6 +162,7 @@ var Tab2 = React.createClass({
             </Row>
           </div>
           <div id='scrolling' onScroll={this.scrolling} style={{height: 300,  overflow: 'scroll'}}>
+            <div style={{ textAlign: "right" }}>总数: {this.state.pagination.total} </div>
             <Table columns={columns} rowKey={this.rowKey}
                    dataSource={this.state.data}
                    pagination={false}
