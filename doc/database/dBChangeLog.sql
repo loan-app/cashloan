@@ -316,7 +316,7 @@ CREATE TABLE `cl_blacklist_common_data` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_phone_idcard_borrowid` (`phone`,`id_card`,`borrow_id`),
   KEY `borrow_id` (`borrow_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='外部黑名单数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='外部黑名单数据';
 
 INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信appid', 'paipaixin_data_appId', 'key2cf89a6900644d80b36fe25ccc67968e', '1', '拍拍信appid', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信secret', 'paipaixin_data_appSecret', 'nqw2bTruB5311OIytF8qyv5LSDy4shO5g89eebQ4zAXSIYV7L2kKuMs9f6OfEmL0', '1', '拍拍信secret', '1');
