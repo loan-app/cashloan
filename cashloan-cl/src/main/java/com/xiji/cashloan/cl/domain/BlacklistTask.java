@@ -169,18 +169,18 @@ import java.util.Date;
     }
 
     /**
-    * 获取是否有效：1-有效;0-无效
+    * 获取是否有效：1-有效;2-无效
     *
-    * @return 是否有效：1-有效;0-无效
+    * @return 是否有效：1-有效;2-无效
     */
     public Integer getYn(){
         return yn;
     }
 
     /**
-    * 设置是否有效：1-有效;0-无效
+    * 设置是否有效：1-有效;2-无效
     * 
-    * @param yn 要设置的是否有效：1-有效;0-无效
+    * @param yn 要设置的是否有效：1-有效;2-无效
     */
     public void setYn(Integer yn){
         this.yn = yn;
