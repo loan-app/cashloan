@@ -254,6 +254,9 @@ export default React.createClass({
               批量分配审核员
             </Button>
           </div>
+          <div  className="devTotal" style={{ marginBottom: 16, align: "right"}}>
+              <span >订单总数:</span> {this.state.pagination.total}
+          </div>
            <Table columns={columns} rowKey={this.rowKey}  
              rowSelection={rowSelection}
              onRowClick={this.onRowClick}  

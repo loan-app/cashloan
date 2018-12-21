@@ -134,11 +134,11 @@ public interface SystemCountMapper {
 	 * 统计借款申请的数量
 	 * @return
 	 */
-	double totalBorrow();
+	Integer totalBorrowApply();
 
 	/**
 	 * 统计借款申请通过的数量
 	 * @return
 	 */
-	double totalBorrowPass();
+	Integer totalBorrowApplyPass();
 }

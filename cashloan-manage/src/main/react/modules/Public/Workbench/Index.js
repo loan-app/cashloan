@@ -171,6 +171,18 @@ export default React.createClass({
                                         <span className='blk-number'>{formsTotal.borrowRepayHistory}</span>笔
                                     </div>
                                 </Col>
+                                <Col span='12'>
+                                    <div className='blk-bottom'>
+                                        <span className='blk-title'>历史总注册量</span>
+                                        <span className='blk-number'>{formsTotal.registerHistory}</span>
+                                    </div>
+                                </Col>
+                                <Col span='12'>
+                                    <div className='blk-bottom'>
+                                        <span className='blk-title'>历史总申请量</span>
+                                        <span className='blk-number'>{formsTotal.borrowApplyHistory}</span>
+                                    </div>
+                                </Col>
                             </Row>
                         </div>
                     </div>

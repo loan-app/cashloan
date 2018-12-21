@@ -196,7 +196,6 @@ public class ManageUserController extends ManageBaseController{
 	
 	/**
 	 * 用户认证信息列表
-	 * @param search
 	 * @param currentPage
 	 * @param pageSize
 	 */

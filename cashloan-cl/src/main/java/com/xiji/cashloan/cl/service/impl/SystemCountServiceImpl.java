@@ -198,6 +198,14 @@ public class SystemCountServiceImpl implements SystemCountService {
 		Integer borrowRepayHistory = systemCountMapper.countBorrowRepayHistory();
 		rtMap.put("borrowRepayHistory", borrowRepayHistory);
 
+		// 统计借款申请的数量
+		Integer borrowApplyHistory = systemCountMapper.totalBorrowApply();
+		rtMap.put("borrowApplyHistory",borrowApplyHistory);
+
+		// 统计注册用户数量
+		Integer registerHistory = systemCountMapper.totalRegister();
+		rtMap.put("registerHistory",registerHistory);
+
 		return rtMap;
 	}
 
