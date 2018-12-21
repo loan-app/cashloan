@@ -190,6 +190,9 @@
             <if test="params.borrowId != null">
                 and borrow_id = #{params.borrowId,jdbcType=BIGINT}
             </if>
+            <if test="params.source != null">
+                and source = #{params.source,jdbcType=VARCHAR}
+            </if>
         </trim>
     </select>
 </mapper>

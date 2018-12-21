@@ -12,7 +12,7 @@ import com.xiji.cashloan.core.common.service.BaseService;
  */
 public interface BlacklistCommonDataService extends BaseService<BlacklistCommonData, Long>{
 
-    BlacklistCommonData findByBorrowId(Long borrowId);
+    BlacklistCommonData findByBorrowId(Long borrowId,String source);
 
     int saveShard(BlacklistCommonData data);
 }

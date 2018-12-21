@@ -42,9 +42,10 @@ public class BlacklistCommonDataServiceImpl extends BaseServiceImpl<BlacklistCom
 		return ShardTableUtil.generateTableNameById(shard_tableName, borrowId, shardId);
 	}
 	@Override
-	public BlacklistCommonData findByBorrowId(Long borrowId) {
+	public BlacklistCommonData findByBorrowId(Long borrowId,String source) {
 		String tableName = getShardTableName(borrowId) ;
 		Map<String,Object> map = new HashMap<>();
+		map.put("source", source);
 		map.put("borrowId", borrowId);
 		List<BlacklistCommonData> result = blacklistCommonDataMapper.listShardSelective(tableName, map);
 		if (CollectionUtil.isNotEmpty(result)) {

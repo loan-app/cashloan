@@ -6,6 +6,7 @@ import {
 import XinyanDetail from './XinyanDetail'
 import OperatorDetail from './OperatorDetail'
 import XindeBlacklist from './XindeBlacklist'
+import PaipaixinView from './PaipaixinView'
 
 const objectAssign = require('object-assign');
 const TabPane = Tabs.TabPane;
@@ -29,6 +30,9 @@ var Tab8 = React.createClass({
                     </TabPane>
                     <TabPane tab="信德数聚（灰名单信息）" key="4">
                         <XindeBlacklist borrowId={this.props.borrowId}/>
+                    </TabPane>
+                    <TabPane tab="拍拍信（黑名单）" key="5">
+                        <PaipaixinView borrowId={this.props.borrowId}/>
                     </TabPane>
                 </Tabs>
             </div>
