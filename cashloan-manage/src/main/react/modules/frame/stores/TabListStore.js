@@ -131,6 +131,7 @@ export default Reflux.createStore({
 					'ShowWorkbench',
 					'ReviewPersonnelList',
 					'ReviewTotalOrderList',
+					'BlackTaskManager',
 					'MyReviewOrder'
 			];
 

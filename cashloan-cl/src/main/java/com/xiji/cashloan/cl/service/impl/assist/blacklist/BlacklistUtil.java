@@ -46,7 +46,7 @@ public class BlacklistUtil {
                     lock.lock();
                     if (CollectionUtil.isNotEmpty(list)) {
                         for (BlacklistTask task : list) {
-                            if (task.getYn() == 0) {
+                            if (task.getYn() == 2) {
                                 baseTaskHashMap.remove(task.getTaskName());
                                 continue;
                             }
