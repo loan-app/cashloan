@@ -322,3 +322,8 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信appid', 'paipaixin_da
 INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信secret', 'paipaixin_data_appSecret', 'nqw2bTruB5311OIytF8qyv5LSDy4shO5g89eebQ4zAXSIYV7L2kKuMs9f6OfEmL0', '1', '拍拍信secret', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信url', 'paipaixin_blacklist_url', 'https://api.ppcredit.com/router/rest', '1', '拍拍信url', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '拍拍信黑名单method', 'paipaixin_blacklist_method', 'ppc.risklist.query.v1', '1', '拍拍信黑名单method', '1');
+
+INSERT INTO `arc_sys_menu` VALUES ('1014', '0', '任务管理', '0', '', 'icon-tongji', '00000000022', null, '', '2017-01-01 00:00:00', '', '任务管理', '0', 'TaskManageController', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1015', '0', '黑名单任务', '1014', '', null, '00000000001', null, '', null, '', '黑名单任务', '0', 'BlackTaskManager', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES ('114', '1', '1014');
+INSERT INTO `arc_sys_role_menu` VALUES ('115', '1', '1015');
