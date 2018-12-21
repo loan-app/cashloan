@@ -1498,3 +1498,10 @@
     overflow:hidden; 
     text-overflow:ellipsis;
 }
+
+.devTotal{
+    color: #87e8de;
+    align-items: right;
+    font-size: 20px;
+
+}

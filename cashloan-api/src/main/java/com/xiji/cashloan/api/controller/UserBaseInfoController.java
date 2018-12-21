@@ -1,7 +1,6 @@
 package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.UserAuth;
