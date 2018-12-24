@@ -24,7 +24,6 @@ import tool.util.StringUtil;
 public class BlacklistUtil {
     private static final Logger logger = Logger.getLogger(BlacklistUtil.class);
     private static final Map<String, BlacklistProcess> baseTaskHashMap = new HashMap<>();
-    private static BlacklistTaskService blacklistTaskService;
     private static ReentrantLock lock = new ReentrantLock();
     private static ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
     public static Map<String, BlacklistProcess> getBaseTaskHashMap() {
