@@ -24,7 +24,6 @@ import tool.util.StringUtil;
 public class BlacklistUtil {
     private static final Logger logger = Logger.getLogger(BlacklistUtil.class);
     private static final Map<String, BlacklistProcess> baseTaskHashMap = new HashMap<>();
-    private static BlacklistTaskService blacklistTaskService;
     private static ReentrantLock lock = new ReentrantLock();
     private static ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
     public static Map<String, BlacklistProcess> getBaseTaskHashMap() {
@@ -33,8 +32,8 @@ public class BlacklistUtil {
     public static void initConfig() {
         logger.info("初始化系统BlacklistUtil...");
         // 初始化系统BlacklistUtil
-        int initialDelay = 0;    //1分钟
-        int delay = 1;           //5分钟
+        int initialDelay = 10;    //10秒
+        int delay = 3 * 60;           //5分钟
         executorService.scheduleWithFixedDelay(new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +69,7 @@ public class BlacklistUtil {
                                         baseTaskHashMap.put(taskName,baseTask);
                                     }
                                 } catch (Exception e) {
-                                    logger.error("blacklistUtil groovy 初始化失败，taskName:"+task.getTaskName(),e);
+                                      logger.error("blacklistUtil groovy 初始化失败，taskName:"+task.getTaskName(),e);
                                 }
                             }
                         }
@@ -80,7 +79,7 @@ public class BlacklistUtil {
                 }
             }
 
-        }), initialDelay, delay, TimeUnit.MINUTES);
+        }), initialDelay, delay, TimeUnit.SECONDS);
     }
 
 }

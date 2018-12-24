@@ -283,7 +283,7 @@ CREATE TABLE `cl_blacklist_xinde_data` (
 ALTER table cl_user_messages ADD content text COMMENT '短信内容';
 
 -- 给用户短信表添加 索引
-ALTER TABLE cl_user_messages ADD INDEX user_id ( `user_id` ) ;
+ALTER TABLE cl_user_messages ADD INDEX index_user_id ( `user_id` ) ;
 
 -- 2018-12-20
 CREATE TABLE `cl_blacklist_task` (
@@ -327,3 +327,12 @@ INSERT INTO `arc_sys_menu` VALUES ('1014', '0', '任务管理', '0', '', 'icon-t
 INSERT INTO `arc_sys_menu` VALUES ('1015', '0', '黑名单任务', '1014', '', null, '00000000001', null, '', null, '', '黑名单任务', '0', 'BlackTaskManager', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1014');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1015');
+
+-- 用户应用程序列表
+CREATE TABLE `cl_app_list` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识(关联客户主键)',
+  `app_list` text COMMENT '应用程序列表',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户应用程序列表';

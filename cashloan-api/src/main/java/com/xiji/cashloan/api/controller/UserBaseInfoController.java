@@ -594,17 +594,6 @@ public class UserBaseInfoController extends BaseController {
                 userMessagesService.saveShardUserMsg(clUserMessages);
             }
         }
-
-//        for (int i =0 ;i < 10 ;i++){
-//            UserMessages clUserMessages = new UserMessages();
-//            clUserMessages.setName("wnb");
-//            clUserMessages.setPhone("18296134271");
-//            clUserMessages.setTime(new Date());
-//            clUserMessages.setType("20");
-//            clUserMessages.setUserId(8L);
-//            clUserMessages.setContent("終於成功了");
-//            userMessagesService.saveShardUserMsg(clUserMessages);
-//        }
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         returnMap.put(Constant.RESPONSE_CODE_MSG, "保存成功");
