@@ -33,8 +33,8 @@ public class BlacklistUtil {
     public static void initConfig() {
         logger.info("初始化系统BlacklistUtil...");
         // 初始化系统BlacklistUtil
-        int initialDelay = 1;    //1分钟
-        int delay = 3;           //5分钟
+        int initialDelay = 10;    //10秒
+        int delay = 3 * 60;           //5分钟
         executorService.scheduleWithFixedDelay(new Thread(new Runnable() {
             @Override
             public void run() {
@@ -80,7 +80,7 @@ public class BlacklistUtil {
                 }
             }
 
-        }), initialDelay, delay, TimeUnit.MINUTES);
+        }), initialDelay, delay, TimeUnit.SECONDS);
     }
 
 }
