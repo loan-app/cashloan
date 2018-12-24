@@ -33,8 +33,8 @@ public class BlacklistUtil {
     public static void initConfig() {
         logger.info("初始化系统BlacklistUtil...");
         // 初始化系统BlacklistUtil
-        int initialDelay = 0;    //1分钟
-        int delay = 1;           //5分钟
+        int initialDelay = 1;    //1分钟
+        int delay = 3;           //5分钟
         executorService.scheduleWithFixedDelay(new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +70,7 @@ public class BlacklistUtil {
                                         baseTaskHashMap.put(taskName,baseTask);
                                     }
                                 } catch (Exception e) {
-                                    logger.error("blacklistUtil groovy 初始化失败，taskName:"+task.getTaskName(),e);
+                                      logger.error("blacklistUtil groovy 初始化失败，taskName:"+task.getTaskName(),e);
                                 }
                             }
                         }
