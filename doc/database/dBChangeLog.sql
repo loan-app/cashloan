@@ -285,7 +285,7 @@ ALTER table cl_user_messages ADD content text COMMENT '短信内容';
 -- 给用户短信表添加 索引
 ALTER TABLE cl_user_messages ADD INDEX user_id ( `user_id` ) ;
 
---2018-12-20
+-- 2018-12-20
 CREATE TABLE `cl_blacklist_task` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',
   `task_name` varchar(32) NOT NULL DEFAULT '' COMMENT '任务名称',
