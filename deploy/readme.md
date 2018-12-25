@@ -1,4 +1,4 @@
-# cashloan
+
 在服务器上配置本机的ssh key，方法如下：
 可以搜下获取ssh公钥
 本地 cat ~/.ssh/id_rsa.pub 复制里面的内容
