@@ -9,9 +9,9 @@ import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
 import com.xiji.cashloan.cl.mapper.XinyanLoanReportMapper;
 import com.xiji.cashloan.cl.mapper.XinyanReqLogMapper;
 import com.xiji.cashloan.cl.model.xinyan.XinyanConstant;
-import com.xiji.cashloan.cl.model.xinyan.XinyanRequest;
 import com.xiji.cashloan.cl.service.XinyanRiskService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.token.HttpRestUtils;
 import com.xiji.cashloan.cl.util.xinyan.MD5Utils;
 import com.xiji.cashloan.cl.util.xinyan.SecurityUtil;
 import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
@@ -100,7 +100,7 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
             params.put("terminal_id", terminalId);
             params.put("data_type", "json");
             params.put("data_content", data);
-            String result = XinyanRequest.post(url, headers, params);
+            String result = HttpRestUtils.postForm(url, headers, params);
             if (StringUtil.isNotBlank(result)) {
                 JSONObject resJson = JSONObject.parseObject(result);
                 log.setRespCode(String.valueOf(resJson.get("errorCode")));

@@ -2,7 +2,7 @@ package com.jiya.cashloan.xinyan;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.xiji.cashloan.cl.model.xinyan.XinyanRequest;
+import com.xiji.cashloan.cl.util.token.HttpRestUtils;
 import com.xiji.cashloan.cl.util.xinyan.MD5Utils;
 import com.xiji.cashloan.cl.util.xinyan.SecurityUtil;
 import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
@@ -89,7 +89,7 @@ public class XinYanTest {
         params.put("data_type", "json");
         params.put("data_content", data_content);
 
-        String result = XinyanRequest.post(url, headers, params);
+        String result = HttpRestUtils.postForm(url, headers, params);
         System.out.println("请求返回：" + result);
 
         /** ================处理返回结果============= **/

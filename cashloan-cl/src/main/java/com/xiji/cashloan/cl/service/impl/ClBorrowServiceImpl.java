@@ -24,14 +24,7 @@ import com.xiji.cashloan.cl.mapper.QianchengReqlogMapper;
 import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
 import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
 import com.xiji.cashloan.cl.mapper.UserInviteMapper;
-import com.xiji.cashloan.cl.model.BorrowProgressModel;
-import com.xiji.cashloan.cl.model.ClBorrowModel;
-import com.xiji.cashloan.cl.model.IndexModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
-import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
-import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.RepayModel;
+import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
@@ -2290,7 +2283,37 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		return code;
 	}
-	
+
+	@Override
+	public List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name) {
+		UserBaseInfo user = userBaseInfoMapper.findByUserId(userId);
+		List<YixinShareModel> yixinShareModels = clBorrowMapper.queryDataForYixin(userId);
+		for (YixinShareModel model : yixinShareModels) {
+			model.setIdNo(idNo);
+			model.setName(name);
+			if("OVERDUE".equals(model.getLoanStatus())) {
+				model.setOverdueM3(0);
+				model.setOverdueM6(0);
+				int i = (Integer.valueOf(model.getOverdueStatus()) + 29) / 30;
+				if(i > 3) {
+					model.setOverdueM3(1);
+				} else if(i > 6) {
+					model.setOverdueM6(1);
+				}
+				if(i > 6) {
+					model.setOverdueStatus("M6+");
+				} else {
+					model.setOverdueStatus("M" + i);
+				}
+			} else {
+				model.setOverdueM3(null);
+				model.setOverdueM6(null);
+				model.setOverdueStatus(null);
+			}
+		}
+		return yixinShareModels;
+	}
+
 	private Map<String,Object> getFeeMap(double fee){
 		Map<String,Object> feeMap=new HashMap<>();
 		String fee_map = Global.getValue("fee_map");

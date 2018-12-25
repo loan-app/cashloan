@@ -5,12 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.model.BorrowProgressModel;
-import com.xiji.cashloan.cl.model.ClBorrowModel;
-import com.xiji.cashloan.cl.model.IndexModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
-import com.xiji.cashloan.cl.model.RepayModel;
+import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.Borrow;
 
@@ -315,4 +310,12 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 */
 	int auditBorrowLoan(Long borrowId, String state, String remark,Long userId);
 
+	/**
+	 * 共享数据给宜信
+	 * @param userId
+	 * @param idNo
+	 * @param name
+     * @return
+     */
+	List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name);
 }
