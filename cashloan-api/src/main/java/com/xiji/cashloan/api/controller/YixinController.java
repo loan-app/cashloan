@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class YixinController {
 
     @RequestMapping(value = "/api/yixin/riskShareData.htm")
     public void rishShareData(HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                              HttpServletResponse response) throws Exception {
         String params = request.getParameter("params");
         String strParam = StringUtil.EMPTY;
         if (StringUtil.isNotBlank(params)) {
@@ -59,7 +60,7 @@ public class YixinController {
         }
         JSONObject returnJson = new JSONObject();
         JSONObject dataJson = new JSONObject();
-        if(StringUtil.isBlank(strParam)) {
+        if (StringUtil.isBlank(strParam)) {
             returnJson.put("success", Boolean.FALSE);
         } else {
             JSONObject json = JSONObject.parseObject(strParam);
@@ -69,15 +70,17 @@ public class YixinController {
             param.put("realName", name);
             param.put("idNo", idNo);
             UserBaseInfo user = userBaseInfoService.findSelective(param);
-            if(user != null) {
+            if (user != null) {
                 List<YixinShareModel> yixinShareModels = clBorrowService.queryDataForYixin(user.getId(), idNo, name);
                 JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(yixinShareModels));
                 dataJson.put("loanRecords", jsonArray);
                 dataJson.put("riskResults", new JSONArray());
             }
             returnJson.put("success", Boolean.TRUE);
-            returnJson.put("data", dataJson);
+            String strData = encrypt(dataJson.toJSONString(), Global.getValue("yixin_sign"));
+            returnJson.put("data", strData);
         }
+
 
         PrintWriter writer = response.getWriter();
         writer.print(returnJson);
@@ -101,6 +104,7 @@ public class YixinController {
 
     /**
      * RC4从密文解密为明文，输入是经过Base64的；如果解密失败，返回值是null
+     *
      * @param encodedText
      * @param rc4Key
      * @return
@@ -123,6 +127,38 @@ public class YixinController {
             printWriter.write(content);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 对明文进行RC4加密、URL编码.
+     *
+     * @param text 明文
+     * @return 密文
+     */
+    public static String encrypt(String text, String rc4Key) throws UnsupportedEncodingException {
+        /** RC4加密 */
+        String textEncrypted = encode(text, rc4Key);
+        /** URL编码 */
+        String textEncryptedEncoded = URLEncoder.encode(textEncrypted, "UTF-8");
+        return textEncryptedEncoded;
+    }
+
+    /**
+     * RC4加密明文（可能包含汉字），输出是经过Base64的；如果加密失败，返回值是null
+     *
+     * @param plainText
+     * @param rc4Key
+     * @return
+     */
+    public static final String encode(final String plainText, final String rc4Key) {
+        try {
+            final Cipher c1 = Cipher.getInstance(RC4);
+            c1.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(rc4Key.getBytes(), RC4));
+            return new String(Base64.encodeBase64(c1.doFinal(plainText.getBytes(UTF8))));
+        } catch (final Throwable t) {
+            t.printStackTrace();
+            return null;
         }
     }
 }
