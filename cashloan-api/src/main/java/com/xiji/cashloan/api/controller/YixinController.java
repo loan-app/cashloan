@@ -77,6 +77,7 @@ public class YixinController {
                 dataJson.put("riskResults", new JSONArray());
             }
             returnJson.put("success", Boolean.TRUE);
+            logger.info("返回给宜信加密前数据:" + dataJson.toJSONString());
             String strData = encrypt(dataJson.toJSONString(), Global.getValue("yixin_sign"));
             returnJson.put("data", strData);
         }
