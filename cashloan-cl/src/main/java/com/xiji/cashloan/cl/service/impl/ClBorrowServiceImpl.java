@@ -2289,24 +2289,23 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		for (YixinShareModel model : yixinShareModels) {
 			model.setIdNo(idNo);
 			model.setName(name);
+			model.setOverdueM3(null);
+			model.setOverdueM6(null);
 			if("OVERDUE".equals(model.getLoanStatus())) {
-				model.setOverdueM3(0);
-				model.setOverdueM6(0);
-				int i = (Integer.valueOf(model.getOverdueStatus()) + 29) / 30;
-				if(i > 3) {
-					model.setOverdueM3(1);
-				} else if(i > 6) {
-					model.setOverdueM6(1);
+				if(StringUtil.isNotBlank(model.getOverdueStatus())) {
+					int i = (Integer.valueOf(model.getOverdueStatus()) + 29) / 30;
+					if(i > 6) {
+						model.setOverdueM3(1);
+						model.setOverdueM6(1);
+					} if(i > 3) {
+						model.setOverdueM3(1);
+					}
+					if(i > 6) {
+						model.setOverdueStatus("M6+");
+					} else {
+						model.setOverdueStatus("M" + i);
+					}
 				}
-				if(i > 6) {
-					model.setOverdueStatus("M6+");
-				} else {
-					model.setOverdueStatus("M" + i);
-				}
-			} else {
-				model.setOverdueM3(null);
-				model.setOverdueM6(null);
-				model.setOverdueStatus(null);
 			}
 		}
 		return yixinShareModels;
