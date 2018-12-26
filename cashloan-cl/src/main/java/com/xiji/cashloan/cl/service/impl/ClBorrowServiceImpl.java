@@ -2285,7 +2285,6 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 	@Override
 	public List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name) {
-		UserBaseInfo user = userBaseInfoMapper.findByUserId(userId);
 		List<YixinShareModel> yixinShareModels = clBorrowMapper.queryDataForYixin(userId);
 		for (YixinShareModel model : yixinShareModels) {
 			model.setIdNo(idNo);

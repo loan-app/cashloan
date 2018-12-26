@@ -637,12 +637,12 @@
     <select id="queryDataForYixin" resultMap="YixinShareModelMap" parameterType="java.lang.Long">
         select date_format(b.create_time, '%Y%m%d') loan_date,
         '(1000,5000]' loan_amount,
-        (case when b.state &gt;= 30 and b.state &lt; 100 then 'ACCEPT' when b.state &lt; 27 and b.state = 301 and b.state = 302 then 'IN_PROGRESS' when b.state = 27 and b.state = 303 then 'REJECT' end) approval_status,
-        (case when b.state = 50 and b.state = 90 then 'OVERDUE' else 'NORMAL' end) loan_status,
-        (case when b.state = 50 and b.state = 90 then '(1000,5000]' else 0 end) overdue_amount,
-        (case when b.state = 50 and b.state = 90 then r.penalty_day else 0 end) overdue_status,
-        (case when b.state = 50 and b.state = 90 then 1 else null end) overdue_tatol,
+        (case when b.state &gt;= 30 and b.state &lt; 100 then 'ACCEPT' when b.state &lt; 27 or b.state = 301 or b.state = 302 then 'IN_PROGRESS' when b.state = 27 or b.state = 303 then 'REJECT' end) approval_status,
+        (case when b.state = 50 or b.state = 90 then 'OVERDUE' else 'NORMAL' end) loan_status,
+        (case when b.state = 50 or b.state = 90 then '(1000,5000]' else 0 end) overdue_amount,
+        (case when b.state = 50 or b.state = 90 then r.penalty_day else 0 end) overdue_status,
+        (case when b.state = 50 or b.state = 90 then 1 else null end) overdue_tatol,
         1 periods, 'CREDIT' loan_type from cl_borrow b left join cl_urge_repay_order r
-        on b.id = r.borrow_id where b.user_id = 1;
+        on b.id = r.borrow_id where b.user_id = #{userId ,jdbcType=BIGINT};
     </select>
 </mapper>
