@@ -30,15 +30,7 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.MagicRiskService;
-import com.xiji.cashloan.cl.service.RcQianchenService;
-import com.xiji.cashloan.cl.service.TongdunReqLogService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.XinyanRiskService;
-import com.xiji.cashloan.cl.service.ZhimaService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistBaseTask;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistProcess;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistUtil;
@@ -202,6 +194,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private MagicRiskService magicRiskService;
 	@Resource
 	private XinyanRiskService xinyanRiskService;
+	@Resource
+	private YixinRiskService yixinRiskService;
 	@Resource
 	private ManualReviewOrderMapper manualReviewOrderMapper;
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
@@ -1729,44 +1723,49 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		//魔杖-多头报告
 		if("MagicApply".equals(nid)){
 			logger.info("进入魔杖申请准入报告查询");
-			Thread t = new Thread(new Runnable(){  
+			fixedThreadPool.execute(new Runnable() {
 				public void run(){
 					int count = magicRiskService.queryApply(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
-			});  
-			t.start(); 
-			
+			});
+
 		//魔杖-反欺诈报告
 		} else if("MagicAntiFraud".equals(nid)){
 			logger.info("进入魔杖反欺诈报告查询");
-			Thread t = new Thread(new Runnable(){
-				public void run(){
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
 					int count = magicRiskService.queryAntiFraud(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
-			});  
-			t.start(); 
+			});
 		//魔杖-贷后行为
 		} else if ("MagicPostLoad".equals(nid)) {
 			logger.info("进入魔杖贷后行为查询");
-			Thread t = new Thread(new Runnable() {
+			fixedThreadPool.execute(new Runnable() {
 				public void run() {
 					int count = magicRiskService.queryPostLoad(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-			t.start();
 			//新颜小额网贷报告
 		} else if ("XinyanLoan".equals(nid)) {
-			logger.info("进入魔杖贷后行为查询");
-			Thread t = new Thread(new Runnable() {
+			logger.info("进入新颜小额网贷报告查询");
+			fixedThreadPool.execute(new Runnable() {
 				public void run() {
 					int count = xinyanRiskService.queryLoan(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-			t.start();
+			//宜信风险评估报告
+		} else if ("YixinRisk".equals(nid)) {
+			logger.info("进入宜信风险评估查询");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = yixinRiskService.queryRisk(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
 		} else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}

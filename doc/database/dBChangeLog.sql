@@ -341,3 +341,8 @@ CREATE TABLE `cl_app_list` (
 INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信用户名', 'yixin_user_name', 'jiya_testusr', '1', '宜信用户名', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信调用秘钥', 'yixin_sign', '1aea54c5af220130', '1', '宜信调用秘钥', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信风险评估调用url', 'yixin_risk_url', 'https://starapi.zhichengcredit.com/submit', '1', '宜信风险评估调用url', '1');
+
+-- 宜信风险评估加入到借款策略中
+INSERT INTO `cl_rc_tpp` VALUES ('3', '风险评估', 'yixin', '', '', '', '', '10', '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('5', '3', 'YX风险评估', 'YixinRisk', '10', '', '', null, '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('5', '10', '5', '20', '7', '10', '10', '2018-12-26 00:00:00');
