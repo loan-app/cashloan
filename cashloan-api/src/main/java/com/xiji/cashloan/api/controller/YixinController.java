@@ -7,7 +7,6 @@ import com.xiji.cashloan.cl.model.YixinShareModel;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
-import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
 import org.apache.commons.codec.binary.Base64;

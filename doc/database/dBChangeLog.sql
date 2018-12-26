@@ -336,3 +336,8 @@ CREATE TABLE `cl_app_list` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户应用程序列表';
+
+-- 宜信风险评估接口相关配置
+INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信用户名', 'yixin_user_name', 'jiya_testusr', '1', '宜信用户名', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信调用秘钥', 'yixin_sign', '1aea54c5af220130', '1', '宜信调用秘钥', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信风险评估调用url', 'yixin_risk_url', 'https://starapi.zhichengcredit.com/submit', '1', '宜信风险评估调用url', '1');
