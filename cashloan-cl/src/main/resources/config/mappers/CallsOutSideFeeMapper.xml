@@ -159,7 +159,6 @@
     <select id="getTotalFee" resultType="decimal" parameterType="java.util.HashMap">
         SELECT SUM(fee) as totalFee
         FROM cl_calls_outside_fee
-        WHERE
         <where>
             <trim prefixOverrides="and">
                 <if test="type != null">
