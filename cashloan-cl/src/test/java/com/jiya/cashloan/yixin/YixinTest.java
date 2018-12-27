@@ -31,8 +31,36 @@ public class YixinTest {
 
     private static String API_HOST = "https://starapi.zhichengcredit.com/submit";
 
+    private static String API_NAME_2 = "fraud.screening.advance.api";
+
+
     public static void main(String[] args) throws Exception {
         query();
+//        screen();
+    }
+
+    private static void screen() throws Exception {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("user_name", USER_NAME);
+        paramMap.put("sign", SIGN);
+        paramMap.put("api_name", API_NAME_2);
+        paramMap.put("query_reason", QUERY_REASON);
+
+        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("id_no", "210114194312102227");
+//        jsonObject.put("name", "测试三");
+//        jsonObject.put("amount_business", "0");
+//        jsonObject.put("mobile", "15850696589");
+        jsonObject.put("id_no", "130823199301106510");
+        jsonObject.put("name", "宋昱龙");
+        jsonObject.put("amount_business", "0");
+        jsonObject.put("mobile", "13785391523");
+
+        paramMap.put("params", jsonObject.toJSONString());
+
+
+        String result = HttpRestUtils.postForm(API_HOST, null, paramMap);
+        System.out.println(result);
     }
 
     public static void query() throws Exception {
@@ -51,8 +79,11 @@ public class YixinTest {
         paramMap.put("query_reason", QUERY_REASON);
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id_no", "542301198001015308");
-        jsonObject.put("name", "测试二");
+        //宋昱龙  130823199301106510
+        jsonObject.put("id_no", "130823199301106510");
+        jsonObject.put("name", "宋昱龙");
+//        jsonObject.put("id_no", "542301198001015308");
+//        jsonObject.put("name", "测试二");
 
         paramMap.put("params", jsonObject.toJSONString());
 

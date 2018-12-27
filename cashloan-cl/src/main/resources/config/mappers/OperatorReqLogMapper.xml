@@ -123,4 +123,10 @@
 		ORDER BY id DESC limit 1;
 	</select>
 
+    <select id="queryLastReqLog" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from cl_operator_req_log where user_id = #{userId,jdbcType=BIGINT} and task_id is not null
+        and task_id != '' order by id desc limit 1
+    </select>
+
 </mapper>

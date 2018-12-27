@@ -197,6 +197,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Resource
 	private YixinRiskService yixinRiskService;
 	@Resource
+	private PinganRiskService pinganRiskService;
+	@Resource
 	private ManualReviewOrderMapper manualReviewOrderMapper;
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1763,6 +1765,24 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			fixedThreadPool.execute(new Runnable() {
 				public void run() {
 					int count = yixinRiskService.queryRisk(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			//宜信欺诈甄别
+		} else if ("YixinFraud".equals(nid)) {
+			logger.info("进入宜信欺诈甄别查询");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = yixinRiskService.queryFraud(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			//凭安染黑度统计
+		} else if ("PinganGrayscaleStat".equals(nid)) {
+			logger.info("进入凭安染黑度统计查询");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = pinganRiskService.queryGrayscaleStat(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});

@@ -338,11 +338,82 @@ CREATE TABLE `cl_app_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户应用程序列表';
 
 -- 宜信风险评估接口相关配置
-INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信用户名', 'yixin_user_name', 'jiya_testusr', '1', '宜信用户名', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信调用秘钥', 'yixin_sign', '1aea54c5af220130', '1', '宜信调用秘钥', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '110', '宜信风险评估调用url', 'yixin_risk_url', 'https://starapi.zhichengcredit.com/submit', '1', '宜信风险评估调用url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信用户名', 'yixin_user_name', 'jiya_testusr', '1', '宜信用户名', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信调用秘钥', 'yixin_sign', '1aea54c5af220130', '1', '宜信调用秘钥', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信风险评估调用url', 'yixin_risk_url', 'https://starapi.zhichengcredit.com/submit', '1', '宜信风险评估调用url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信风险评估接口名称', 'yixin_risk_api_name', 'credit.evaluation.share.api', '1', '宜信风险评估接口名称', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信欺诈甄别接口名称', 'yixin_fraud_api_name', 'fraud.screening.advance.api', '1', '宜信欺诈甄别接口名称', '1');
 
--- 宜信风险评估加入到借款策略中
-INSERT INTO `cl_rc_tpp` VALUES ('3', '风险评估', 'yixin', '', '', '', '', '10', '2018-12-26 00:00:00');
+-- 宜信风险评估 欺诈甄别加入到借款策略中
+INSERT INTO `cl_rc_tpp` VALUES ('3', 'YX', 'yixin', '', '', '', '', '10', '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('5', '3', 'YX风险评估', 'YixinRisk', '10', '', '', null, '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('5', '10', '5', '20', '7', '10', '10', '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('6', '3', 'YX欺诈甄别', 'YixinFraud', '10', '', '', null, '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('6', '10', '6', '20', '7', '10', '10', '2018-12-26 00:00:00');
+
+-- 宜信风险评估建表
+DROP TABLE IF EXISTS `cl_yixin_req_log`;
+CREATE TABLE `cl_yixin_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '同步响应流水号',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `resp_msg` mediumtext COMMENT '同步响应结果',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-风险评估',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宜信请求记录';
+
+DROP TABLE IF EXISTS `cl_yixin_risk_report`;
+CREATE TABLE `cl_yixin_risk_report` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宜信风险评估';
+
+-- 凭安染黑度统计接口
+DROP TABLE IF EXISTS `cl_pingan_req_log`;
+CREATE TABLE `cl_pingan_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `resp_msg` mediumtext COMMENT '同步响应message',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-染黑度统计',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='凭安请求记录';
+
+DROP TABLE IF EXISTS `cl_pingan_grayscale`;
+CREATE TABLE `cl_pingan_grayscale` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='凭安染黑度统计';
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '凭安vkey', 'pingan_vkey', '120181225001', '1', '凭安vkey', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '凭安染黑度统计url', 'pingan_grayscale_stat_url', 'https://jrapi.pacra.cn/service?t=grayscale_stat', '1', '凭安染黑度统计url', '1');
+
+-- 修改外部费用表结构
+ALTER TABLE `cl_calls_outside_fee` change task_id `task_id` varchar(64) DEFAULT  NULL COMMENT '任务id';
+
+-- 凭安染黑度统计加入到借款策略中
+INSERT INTO `cl_rc_tpp` VALUES ('4', 'PA', 'pingan', '', '', '', '', '10', '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('7', '4', 'PA染黑统计', 'PinganGrayscaleStat', '10', '', '', null, '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '20', '7', '10', '10', '2018-12-26 00:00:00');

@@ -34,4 +34,5 @@ public interface OperatorReqLogMapper extends BaseMapper<OperatorReqLog,Long> {
 	 */
 	OperatorReqLog findLastRecord(Map<String, Object> paramMap);
 
+	OperatorReqLog queryLastReqLog(Long userId);
 }

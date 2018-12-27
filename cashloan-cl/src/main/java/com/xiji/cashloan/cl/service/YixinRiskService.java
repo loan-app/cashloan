@@ -9,4 +9,6 @@ import com.xiji.cashloan.core.domain.Borrow;
 public interface YixinRiskService {
 
     int queryRisk(Borrow borrow);
+
+    int queryFraud(Borrow borrow);
 }
