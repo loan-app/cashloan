@@ -48,7 +48,10 @@ let SeachForm = React.createClass({
              <Select style={{ width: 170 }} {...getFieldProps('state',{initialValue: ''})} placeholder='请选择...'>
                         <Option value="">全部</Option>
                         <Option value="20">自动审核通过</Option>
+                        <Option value="21">自动审核不通过</Option>
+                        <Option value="22">待人工复审</Option>
                         <Option value="26">人工复审通过</Option>
+                        <Option value="27">人工复审不通过</Option>
                         <Option value="301">待放款审核</Option>
 	   		            <Option value="302">放款审核通过</Option>
 	   		            <Option value="303">放款审核不通过</Option>
