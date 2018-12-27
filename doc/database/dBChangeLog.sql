@@ -417,3 +417,16 @@ ALTER TABLE `cl_calls_outside_fee` change task_id `task_id` varchar(64) DEFAULT 
 INSERT INTO `cl_rc_tpp` VALUES ('4', 'PA', 'pingan', '', '', '', '', '10', '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('7', '4', 'PA染黑统计', 'PinganGrayscaleStat', '10', '', '', null, '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '20', '7', '10', '10', '2018-12-26 00:00:00');
+
+-- 宜信欺诈甄别
+DROP TABLE IF EXISTS `cl_yixin_fraud`;
+CREATE TABLE `cl_yixin_fraud` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宜信欺诈甄别';
