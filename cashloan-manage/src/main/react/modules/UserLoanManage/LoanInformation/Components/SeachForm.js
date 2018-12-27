@@ -12,7 +12,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        params.type = "repay";
+        //params.type = "repay";
         this.props.passParams({
             searchParams: JSON.stringify(params),
             pageSize: 10,
@@ -24,7 +24,8 @@ let SeachForm = React.createClass({
         this.props.passParams({
             pageSize: 10,
             current: 1,
-            searchParams: JSON.stringify({type:"repay"}),
+            //searchParams: JSON.stringify({type:"repay"}),
+            searchParams: JSON.stringify({}),
         });
     },
     render() {
