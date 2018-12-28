@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.OperatorReportLink;
 import com.xiji.cashloan.cl.model.ManageOperatorReportLinkModel;
 import com.xiji.cashloan.cl.service.OperatorReportLinkService;
+import com.xiji.cashloan.cl.service.OperatorReportService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.JsonUtil;
@@ -36,6 +37,8 @@ public class ManageOperatorReportLinkController extends ManageBaseController{
     private OperatorReportLinkService operatorReportLinkService;
     @Resource
     private UserBaseInfoService userBaseInfoService;
+    @Resource
+    private OperatorReportService operatorReportService;
     /**
      * @param current
      * @param pageSize
@@ -86,6 +89,22 @@ public class ManageOperatorReportLinkController extends ManageBaseController{
         }
         Map<String,Object> result = new HashMap<>();
         result.put("reportLink", reportLink);
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
+        ServletUtils.writeToResponse(response,result);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value="/modules/manage/operator/report.htm",method={RequestMethod.GET,RequestMethod.POST})
+    public void operatorReport(@RequestParam(value = "userId") Long userId) throws Exception {
+        UserBaseInfo userBaseInfo = userBaseInfoService.getById(userId);
+        JSONObject resJson = new JSONObject();
+        if (userBaseInfo != null) {
+            resJson = operatorReportService.getReportByUserId(userId);
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("data", resJson);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
         ServletUtils.writeToResponse(response,result);
