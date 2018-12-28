@@ -1,8 +1,8 @@
 package com.xiji.cashloan.cl.mapper;
 
+import com.xiji.cashloan.cl.domain.YixinRiskReport;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
-import com.xiji.cashloan.cl.domain.YixinRiskReport;
 
 /**
  * 宜信风险评估Dao
@@ -14,6 +14,12 @@ import com.xiji.cashloan.cl.domain.YixinRiskReport;
 @RDBatisDao
 public interface YixinRiskReportMapper extends BaseMapper<YixinRiskReport, Long> {
 
-    
+
+    /**
+     * 根据用户id 获取最近一条风险评估
+     * @param userId
+     * @return
+     */
+    YixinRiskReport getRecentlyYixinRiskReport(Long userId);
 
 }
