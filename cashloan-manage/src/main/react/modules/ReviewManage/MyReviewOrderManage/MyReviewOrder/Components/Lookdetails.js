@@ -20,6 +20,7 @@ import Tab5 from './Tab5';
 import Tab7 from './Tab7';
 import Tab9 from './Tab9';
 import Tab8 from '../../../../common/LoanReport/Tab8';
+import Operator from './Operator';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -38,7 +39,7 @@ var Lookdetails = React.createClass({
      this.changeTabState();
     // this.refs.Tab1.resetFields();
     this.props.hideModal();
-    
+
   },
 
   changeTabState() {
@@ -115,7 +116,7 @@ var Lookdetails = React.createClass({
         span: 20
       },
     };
-    
+
 
     return (
       <Modal title={props.title} visible={props.visible} onCancel={this.handleCancel} width="1200" footer={props.title == "查看" ? [modalBtnstwo] : [modalBtns]} maskClosable={false} >
@@ -123,6 +124,9 @@ var Lookdetails = React.createClass({
         <Tabs onTabClick={this.handleTabClick}  activekey={this.state.activekey}  >
           <TabPane tab="基本信息" key="1">
             <Tab1  ref="Tab1" record={props.record} dataForm={props.dataForm} canEdit={props.canEdit} visible={props.visible} recordSoure={props.recordSoure} activekey={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="运营商信息" key='Operator'>
+            <Operator record={props.record} visible={props.visible} activekey={this.state.activekey}/>
           </TabPane>
           <TabPane tab="规则报告" key='2'>
             <RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>

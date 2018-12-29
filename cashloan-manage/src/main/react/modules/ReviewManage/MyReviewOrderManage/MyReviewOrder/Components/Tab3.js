@@ -58,7 +58,7 @@ var Tab3 = React.createClass({
     }
     var data = this.state.data;
     Utils.ajaxData({
-      url: '/modules/manage/msg/listRecords.htm',
+      url: '/tamodules/manage/msg/listRecords.htm',
       data: params,
       callback: (result) => {
         const pagination = this.state.pagination;
