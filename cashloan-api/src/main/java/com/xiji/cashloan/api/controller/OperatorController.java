@@ -97,8 +97,11 @@ public class OperatorController extends BaseController {
             //上数运营商
             Map<String, Object> data = new HashMap<>();
             String url = Global.getValue("mx_operator_url");
+            String backUrl = Global.getValue("server_host") + "/api/operatorReturnback.htm";
+            backUrl = "&backUrl=" + URLEncoder.encode(backUrl, "UTF-8");
             url += "?apiKey=" + Global.getValue("mx_apikey") + "&userId=" + userId + "&phone=" + userBaseInfo.getPhone()
-                    + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8");
+                    + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8") + backUrl;
+
             data.put("url", url);
 
             respMap.put(Constant.RESPONSE_DATA, data);
@@ -108,6 +111,14 @@ public class OperatorController extends BaseController {
         }
 
         ServletUtils.writeToResponse(response, respMap);
+    }
+
+    /**
+     * 运营商验证，在用户提交完验证信息之后访问的接口，修改状态为认证中
+     */
+    @RequestMapping(value = "/api/operatorReturnback.htm")
+    public String operatorReturnback() {
+        return "operatorReturnback";
     }
 
 
