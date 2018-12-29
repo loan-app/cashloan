@@ -78,6 +78,11 @@ import java.util.Date;
     */
     private Date lastmodifytime;
 
+    /**
+     * 最近联系时间
+     */
+    private Date lastContactTime;
+
 
     /**
     * 获取主键Id
@@ -301,5 +306,13 @@ import java.util.Date;
 
     public void setReqLogId(Long reqLogId) {
         this.reqLogId = reqLogId;
+    }
+
+    public Date getLastContactTime() {
+        return lastContactTime;
+    }
+
+    public void setLastContactTime(Date lastContactTime) {
+        this.lastContactTime = lastContactTime;
     }
 }

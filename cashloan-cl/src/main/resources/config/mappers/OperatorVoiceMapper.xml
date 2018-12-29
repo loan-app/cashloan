@@ -269,4 +269,9 @@
       location as call_addr,'' as contact_addr, location_type as called_type
       from ${tableName} where req_log_id = #{reqLogId,jdbcType=BIGINT}
     </select>
+
+    <select id="getLastContactTime" resultType="java.util.Map">
+        select peer_number,max(time) last_contact_time from ${tableName}
+        where user_id = #{userId, jdbcType=BIGINT} group by peer_number;
+    </select>
 </mapper>

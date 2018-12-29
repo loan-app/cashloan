@@ -8,6 +8,7 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,4 +64,12 @@ public interface OperatorVoiceMapper extends BaseMapper<OperatorVoice, Long> {
      * @return
      */
     List<PinganCallDetailsModel> queryPinganVoiceDetail(@Param("tableName") String tableName, @Param("reqLogId") Long reqLogId);
+
+    /**
+     * 获取每个号码的最后通话时间
+     * @param tableName
+     * @param userId
+     * @return
+     */
+    List<Map<String, String>> getLastContactTime(@Param("tableName") String tableName, @Param("userId") Long userId);
 }

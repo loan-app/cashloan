@@ -430,3 +430,6 @@ CREATE TABLE `cl_yixin_fraud` (
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宜信欺诈甄别';
+
+-- 通话详情统计表新增最后联系时间字段
+alter table `cl_operator_voice_cnt` add column `last_contact_time` datetime  default null comment '最后联系时间';
