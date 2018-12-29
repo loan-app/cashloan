@@ -1,5 +1,8 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.xiji.cashloan.cl.domain.PinganGrayscale;
+import com.xiji.cashloan.cl.service.PinganGrayscaleService;
 import com.xiji.cashloan.cl.service.YixinRiskReportService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.ServletUtils;
@@ -17,24 +20,34 @@ import java.util.Map;
 
 /**
  *
- * 宜信风险评估Controller
+ * 凭安报告
  * @author wnb
- * @date 2018/12/28
+ * @date: 2018/12/29
+ *
  */
 @Controller
 @Scope("prototype")
-public class YixinRiskReportCotroller  {
+public class PinganGrayscaleController {
+
+    @Resource
+    private PinganGrayscaleService pinganGrayscaleService;
 
     @Resource
     private YixinRiskReportService yixinRiskReportService;
-    @RequestMapping(value="/modules/manage/yixin/risk/report/list.htm",method={RequestMethod.GET,RequestMethod.POST})
-    @RequiresPermission(code = "modules:manage:yixin:risk:report:list",name = "最近一次宜信风险评估报告")
+    @RequestMapping(value="/modules/manage/pingan/grayscale/report.htm",method={RequestMethod.GET,RequestMethod.POST})
+    @RequiresPermission(code = "modules:manage:pingan:grayscale:report",name = "最近一次凭安报告")
     public void list(@RequestParam(value="userId",required=true)Long userId, HttpServletResponse response) {
-        Map<String,String> map = yixinRiskReportService.getRecentlyYixinRiskReportMap(userId);
+
+        PinganGrayscale pinganGrayscale = pinganGrayscaleService.getPinganGrayscale(userId);
+        JSON json = null;
+        if (pinganGrayscale != null && pinganGrayscale.getData() != null){
+            json = JSON.parseObject(pinganGrayscale.getData());
+        }
         Map<String, Object> result = new HashMap<>();
-        result.put(Constant.RESPONSE_DATA, map);
+        result.put(Constant.RESPONSE_DATA, json);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
         ServletUtils.writeToResponse(response, result);
     }
+
 }

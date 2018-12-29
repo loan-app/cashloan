@@ -1,7 +1,7 @@
 package com.xiji.cashloan.cl.service;
 
-import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.cl.domain.PinganGrayscale;
+import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
  * 凭安染黑度统计Service
@@ -12,4 +12,9 @@ import com.xiji.cashloan.cl.domain.PinganGrayscale;
  */
 public interface PinganGrayscaleService extends BaseService<PinganGrayscale, Long>{
 
+    /**
+     * 查询最近一次凭安报告
+     * @return
+     */
+    PinganGrayscale getPinganGrayscale(Long userId);
 }
