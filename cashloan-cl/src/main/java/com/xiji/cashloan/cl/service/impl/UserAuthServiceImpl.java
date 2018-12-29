@@ -1,19 +1,5 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
-import com.xiji.cashloan.core.common.util.StringUtil;
-import com.xiji.cashloan.core.domain.UserBaseInfo;
-import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
@@ -23,6 +9,7 @@ import com.xiji.cashloan.cl.domain.OperatorRespDetail;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.model.UserAuthModel;
+import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.service.OperatorReqLogService;
 import com.xiji.cashloan.cl.service.OperatorRespDetailService;
 import com.xiji.cashloan.cl.service.OperatorService;
@@ -31,6 +18,17 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
+import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户认证信息表ServiceImpl
@@ -145,12 +143,17 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 		return userAuthMapper.findSelective(map);
 	}
 
+	/**
+	 * 借款申请条件
+	 * @param paramMap
+	 * @return
+	 */
 	@Override
 	public Map<String, Object> getAuthState(Map<String, Object> paramMap) {
 		//定义需要的变量
 		String resultSql="";//result返回值中的语句
 		String qualifiedSql="";//qualified返回值中的语句
-		int qualifiedCount=4;//基础必填项数量
+		int qualifiedCount=5;//基础必填项数量
 		//芝麻信用sql语句拼接，需要sys_config表里设置的zhima_auth属性，10-去除 20-选填 30-必填
 //		String zhima_auth=Global.getValue("zhima_auth");
 //		if("30".equals(zhima_auth)){
@@ -176,7 +179,8 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				+ "(IF (id_state = 30, 1, 0) +"
 				+ "IF (phone_state = 30, 1, 0) +"
 				+ "IF (contact_state = 30, 1, 0) +"
-				+ "IF (bank_card_state = 30, 1, 0) "
+				+ "IF (bank_card_state = 30, 1, 0) +"
+				+ "IF (work_info_state = 30, 1, 0) "
 				+ qualifiedSql
 				+ ") = "
 				+ qualifiedCount

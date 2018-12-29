@@ -1,16 +1,5 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
 import com.xiji.cashloan.cl.service.BorrowRepayLogService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
@@ -22,6 +11,15 @@ import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.rc.service.TppBusinessService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -71,7 +69,7 @@ public class ManageBorrowTest extends ManageBaseController{
 			) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>();
 		Borrow borrow = new Borrow(1l, amount, timeLimit, cardId, "", "", "","");
-		borrow = clBorrowService.rcBorrowApply(borrow,"","");
+		borrow = clBorrowService.rcBorrowApply(borrow,"BEE2D38199B4E26D15235E0D7D3390D3","");
 		if (borrow != null && borrow.getId() > 0) {
 			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "申请成功");
