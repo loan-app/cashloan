@@ -30,7 +30,7 @@ public class YixinRiskReportCotroller  {
     @RequestMapping(value="/modules/manage/yixin/risk/report/list.htm",method={RequestMethod.GET,RequestMethod.POST})
     @RequiresPermission(code = "modules:manage:yixin:risk:report:list",name = "最近一次宜信风险评估报告")
     public void list(@RequestParam(value="userId",required=true)Long userId, HttpServletResponse response) {
-        Map<String,String> map = yixinRiskReportService.getRecentlyYixinRiskReportMap(userId);
+        Map<String,Object> map = yixinRiskReportService.getRecentlyYixinRiskReportMap(userId);
         Map<String, Object> result = new HashMap<>();
         result.put(Constant.RESPONSE_DATA, map);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);

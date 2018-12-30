@@ -19,6 +19,6 @@ public interface YixinRiskReportService extends BaseService<YixinRiskReport, Lon
      * @param userId
      * @return
      */
-    Map<String,String> getRecentlyYixinRiskReportMap(Long userId);
+    Map<String,Object> getRecentlyYixinRiskReportMap(Long userId);
 
 }

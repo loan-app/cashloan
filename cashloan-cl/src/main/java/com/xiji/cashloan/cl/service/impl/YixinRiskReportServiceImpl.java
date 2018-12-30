@@ -47,7 +47,7 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 	 * @return
 	 */
 	@Override
-	public Map<String,String> getRecentlyYixinRiskReportMap(Long userId){
+	public Map<String,Object> getRecentlyYixinRiskReportMap(Long userId){
 		YixinRiskReport yixinRiskReport = yixinRiskReportMapper.getRecentlyYixinRiskReport(userId);
 		if (yixinRiskReport == null || yixinRiskReport.getData() == null){
 			return null;
@@ -96,7 +96,7 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 			}
 		}
 
-		Map<String,String> map = new HashedMap();
+		Map<String,Object> map = new HashedMap();
 		// 借款机构数
 		int countCorporateBorrower = borrowOrgNames.size();
 		// 审批机构数
@@ -117,7 +117,7 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
         // M6历史逾期数
 		map.put("countOverdueHistoryM6",countOverdueHistoryM6+"");
         // 风险评估报告
-		map.put("yixinRiskReport",yixinRiskReport.getData());
+		map.put("yixinRiskReport",JSON.parseObject(yixinRiskReport.getData()));
      return map;
 	}
 
