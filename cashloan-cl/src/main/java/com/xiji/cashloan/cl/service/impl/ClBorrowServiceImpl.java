@@ -11,19 +11,7 @@ import com.xiji.cashloan.cl.domain.ManualReviewOrder;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.QianchengReqlog;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.ManualReviewOrderMapper;
-import com.xiji.cashloan.cl.mapper.OperatorReqLogMapper;
-import com.xiji.cashloan.cl.mapper.PayLogMapper;
-import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
-import com.xiji.cashloan.cl.mapper.QianchengReqlogMapper;
-import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
-import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
-import com.xiji.cashloan.cl.mapper.UserInviteMapper;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
@@ -200,6 +188,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private PinganRiskService pinganRiskService;
 	@Resource
 	private ManualReviewOrderMapper manualReviewOrderMapper;
+	@Resource
+	private OperatorVoiceCntMapper operatorVoiceCntMapper;
+	@Resource
+	private OperatorVoiceMapper operatorVoiceMapper;
+
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
 	public BaseMapper<Borrow, Long> getMapper() {
@@ -1670,9 +1663,37 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	@Override
-	public ClBorrowModel rcBorrowApply(Borrow borrow,String tradePwd,String mobileType) throws Exception {
+	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType) throws Exception {
 		ClBorrowModel clBorrow = new ClBorrowModel();
 		Borrow realBorrow = null;
+		// 处理用户通话详情统计
+		fixedThreadPool.execute(new Runnable() {
+			public void run(){
+				String tableName1 = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
+				int count = operatorVoiceCntMapper.countNotNull(tableName1, borrow.getUserId());
+				if(count == 0) {
+					String tableName2 = ShardTableUtil.generateTableNameById("cl_operator_voice", borrow.getUserId(), 30000);
+					Map<String, Date> lastContactMap = new HashMap<>();
+					List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, borrow.getUserId());
+					if(lastContactTimes != null) {
+						for (Map<String, String> lastContactTime : lastContactTimes) {
+							lastContactMap.put(lastContactTime.get("peer_number"), DateUtil.parse(lastContactTime.get("last_contact_time"), "yyyy-MM-dd HH:mm:ss"));
+						}
+					}
+
+					if(lastContactMap.size() > 0) {
+						for (String key : lastContactMap.keySet()) {
+							Map<String, Object> updateMap = new HashMap<>();
+							updateMap.put("tableName", tableName1);
+							updateMap.put("userId", borrow.getUserId());
+							updateMap.put("peerNumber", key);
+							updateMap.put("lastContactTime", lastContactMap.get(key));
+							operatorVoiceCntMapper.updateLastContactTime(updateMap);
+						}
+					}
+				}
+			}
+		});
 		// 校验用户是否符合借款条件
 		boolean isCanBorrow = isCanBorrow(borrow,tradePwd);
 		if(isCanBorrow){

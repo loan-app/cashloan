@@ -14,7 +14,6 @@ import com.xiji.cashloan.cl.util.MobileUtil;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import java.util.Date;
@@ -82,19 +81,6 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
 						}
 					}
 
-					String tableName2 = ShardTableUtil.generateTableNameById("cl_operator_voice", userId, 30000);
-					int countTable2 = operatorVoiceMapper.countTable(tableName2);
-					if(countTable2 == 0) {
-						operatorVoiceMapper.createTable(tableName2);
-					}
-					Map<String, Date> lastContactMap = new HashMap<>();
-					List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, userId);
-					if(lastContactTimes != null) {
-						for (Map<String, String> lastContactTime : lastContactTimes) {
-							lastContactMap.put(lastContactTime.get("peer_number"), DateUtil.parse(lastContactTime.get("last_contact_time"), "yyyy-MM-dd HH:mm:ss"));
-						}
-					}
-
 					for (OperatorVoiceCntMeta meta : cntMetas) {
 						OperatorVoiceCnt voiceCnt = new OperatorVoiceCnt();
 						voiceCnt.setCity(meta.getCity());
@@ -115,7 +101,6 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
 						voiceCnt.setDialedCntNum(meta.getDialedCnt6m()+"/"+meta.getDialedTime6m()+"(秒)");
 						voiceCnt.setCreatetime(createTime);
 
-						voiceCnt.setLastContactTime(lastContactMap.get(meta.getPeerNum()));
 						operatorVoiceCntMapper.saveShard(tableName, voiceCnt);
 					}
 				}

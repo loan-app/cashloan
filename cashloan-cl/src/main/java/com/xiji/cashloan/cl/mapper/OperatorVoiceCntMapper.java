@@ -47,6 +47,9 @@ public interface OperatorVoiceCntMapper extends BaseMapper<OperatorVoiceCnt, Lon
         @Param("tableName") String tableName,
         @Param("params") Map<String, Object> params);
 
-    OperatorVoiceCnt getLastRecord(@Param("tableName") String tableName,@Param("userId")Long userId);
+    OperatorVoiceCnt getLastRecord(@Param("tableName") String tableName, @Param("userId") Long userId);
 
+    int countNotNull(@Param("tableName") String tableName1, @Param("userId") Long userId);
+
+    void updateLastContactTime(Map<String, Object> updateMap);
 }
