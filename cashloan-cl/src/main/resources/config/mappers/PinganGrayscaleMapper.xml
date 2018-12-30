@@ -101,5 +101,14 @@
         from cl_pingan_grayscale
         <include refid="searchBy"/>
     </select>
+
+    <select id="getPinganGrayscale" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_pingan_grayscale
+        where user_id = #{userId}
+        order by id desc
+        limit 1
+    </select>
     
 </mapper>

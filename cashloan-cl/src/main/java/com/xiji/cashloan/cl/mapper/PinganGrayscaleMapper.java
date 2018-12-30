@@ -1,8 +1,8 @@
 package com.xiji.cashloan.cl.mapper;
 
+import com.xiji.cashloan.cl.domain.PinganGrayscale;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
-import com.xiji.cashloan.cl.domain.PinganGrayscale;
 
 /**
  * 凭安染黑度统计Dao
@@ -14,6 +14,10 @@ import com.xiji.cashloan.cl.domain.PinganGrayscale;
 @RDBatisDao
 public interface PinganGrayscaleMapper extends BaseMapper<PinganGrayscale, Long> {
 
-    
 
+    /**
+     * 查询最近一次凭安报告
+     * @return
+     */
+    PinganGrayscale getPinganGrayscale(Long userId);
 }

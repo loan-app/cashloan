@@ -1,16 +1,15 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import javax.annotation.Resource;
-
+import com.xiji.cashloan.cl.domain.PinganGrayscale;
+import com.xiji.cashloan.cl.mapper.PinganGrayscaleMapper;
+import com.xiji.cashloan.cl.service.PinganGrayscaleService;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.xiji.cashloan.core.common.mapper.BaseMapper;
-import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.cl.mapper.PinganGrayscaleMapper;
-import com.xiji.cashloan.cl.domain.PinganGrayscale;
-import com.xiji.cashloan.cl.service.PinganGrayscaleService;
+import javax.annotation.Resource;
 
 
 /**
@@ -33,5 +32,13 @@ public class PinganGrayscaleServiceImpl extends BaseServiceImpl<PinganGrayscale,
 	public BaseMapper<PinganGrayscale, Long> getMapper() {
 		return pinganGrayscaleMapper;
 	}
-	
+
+	/**
+	 * 查询最近一次凭安报告
+	 * @return
+	 */
+	@Override
+	public PinganGrayscale getPinganGrayscale(Long userId){
+		return pinganGrayscaleMapper.getPinganGrayscale(userId);
+	}
 }
