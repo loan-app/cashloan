@@ -20,7 +20,7 @@ import Tab5 from './Tab5';
 import Tab7 from './Tab7';
 import Tab9 from './Tab9';
 import Tab8 from '../../../../common/LoanReport/Tab8';
-import Operator from './Operator';
+import Operator from '../../../../common/OperatorInfo/Operator';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -128,24 +128,25 @@ var Lookdetails = React.createClass({
           <TabPane tab="运营商信息" key='Operator'>
             <Operator record={props.record} visible={props.visible} activekey={this.state.activekey}/>
           </TabPane>
-          <TabPane tab="规则报告" key='2'>
-            <RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>
+          <TabPane tab="信用报告" key="8">
+            <Tab8 userId={props.record.borrowUserId}  borrowId={props.record.borrowId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
           </TabPane>
           {/*<TabPane tab="同盾决策引擎审核结果" key="7">
             <Tab7 ref="Tab7" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
           </TabPane>*/}
-          <TabPane tab="通讯录" key="3">
-            <Tab2 ref="Tab2" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
-          </TabPane>
-          <TabPane tab="通话记录" key="4">
-            <Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
-          </TabPane>
-          <TabPane tab="信用报告" key="8">
-            <Tab8 userId={props.record.borrowUserId}  borrowId={props.record.borrowId} ref="Tab8" canEdit={props.canEdit} activeKey={this.state.activekey}/>
-          </TabPane>
           <TabPane tab="通话详情统计" key="9">
             <Tab9 ref="Tab9" record={props.record}  canEdit={props.canEdit} activeKey={this.state.activekey}/>
           </TabPane>
+          <TabPane tab="通讯录" key="3">
+            <Tab2 ref="Tab2" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
+          </TabPane>
+          {/*<TabPane tab="通话记录" key="4">*/}
+            {/*<Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>*/}
+          {/*</TabPane>*/}
+          <TabPane tab="规则报告" key='2'>
+            <RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>
+          </TabPane>
+
         </Tabs>
         <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit}/>
       </Modal>
