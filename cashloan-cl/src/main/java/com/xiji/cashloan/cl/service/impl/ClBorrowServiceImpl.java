@@ -1530,7 +1530,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			//更新审核表
 			map.put("userId", userId);
 			map.put("reviewTime", DateUtil.getNow());
-			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManageReviewModel.RESULT_TYPE_REFUSED);
+			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManualReviewOrderModel.STATE_ORDER_REFUSED);
 			manualReviewOrderMapper.reviewState(map);
 			if (BorrowModel.STATE_REFUSED.equals(state)|| BorrowModel.STATE_AUTO_REFUSED.equals(state)) {
 				// 审核不通过返回信用额度
