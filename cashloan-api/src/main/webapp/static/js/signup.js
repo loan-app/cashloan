@@ -131,8 +131,12 @@ $(function() {
                   }, 1000);
               } 
               else {
-                show(data.msg);
-                changeImg();
+                if(data.msg == '该手机号已经注册') {
+                  show_download('该手机号已注册,请下载APP登录吧!');
+                } else {
+                  show(data.msg);
+                  changeImg();
+                }
               }
     	      }
     	    })
