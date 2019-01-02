@@ -63,9 +63,9 @@
 
     <div class="popup tips" style="display:none">
         <div class="overlay"></div>
-        <div class="dialog">
+        <div class="dialog" style="height: 3.3rem;">
         <span class="close"></span>
-        <h2 id="confirm">...</h2>
+        <h2 id="confirm" style="height: 1.8rem; line-height: 0.9rem; margin-top: 0.4rem">...</h2>
         <p>
             <a href="javascript:;" class="yes">确定</a>
         </p>
