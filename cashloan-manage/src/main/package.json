@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack-dev-server react/main.js --devtool eval --progress --hot --inline --colors --content-base webapp/build",
+    "start": "webpack-dev-server react/main.js --devtool eval --progress --hot --inline --colors",
     "deploy": "set NODE_ENV=production && webpack --config webpack.production.config.js && cp -R ../magicReport webapp/build"
   },
   "dependencies": {

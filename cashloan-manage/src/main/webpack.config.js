@@ -15,15 +15,14 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
     inline: true,
-    contentBase: './webapp/build',
+    contentBase: './webapp/',
     progress: true,
     port: 8000,
-    proxy: {
-     '\*': {
-    	 target: 'http://127.0.0.1:8081',
-       secure: false
-     }
-    } 
+    proxy: [{
+        // context: ['/system/user', '/modules/manage'],
+        context: url => !url.includes('bundle.js'),
+        target: 'http://47.110.61.233:8081',
+    }]
   },
   entry: [
     'webpack-dev-server/client?http://localhost:8000',
@@ -31,7 +30,7 @@ module.exports = {
     path.resolve(__dirname, 'react/main.js')
   ],
   output: {
-    path: __dirname + '/webapp/build',
+    path: __dirname + '/webapp/',
     publicPath: '/build',
     filename: './bundle.js',
     chunkFilename: "[id].bundle.js"

@@ -1,305 +1,254 @@
 import React from 'react';
 import {
-  Modal,
-  Form,
-  Input,
-  Row,
-  Col,
+    Modal,
+    Form,
+    Table,
+    Input,
+    Row,
+    Col,
 } from 'antd';
 import Show from './Show'
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const objectAssign = require('object-assign');
 const userbaseTit = {
-  color: '#2db7f5',
-  textAlign: 'center',
-  fontSize: '14px',
-  marginBottom: '10px',
-  display: 'block',
-  width: '150px',
+    color: '#2db7f5',
+    textAlign: 'center',
+    fontSize: '14px',
+    marginBottom: '10px',
+    display: 'block',
+    width: '150px',
 }
 var Tab1 = React.createClass({
-  getInitialState() {
-    return {
-      visible: false,
-      num: 0
-    };
-  },
-  hidden(){
-    this.setState({
-      visible: false,
-      num: 0
-    })
-  },
-  show(num){
-    this.setState({
-      visible: true,
-      num: num,
-      tit: '照片'
-    })
-  },
-  render() {
-    var props = this.props;
-    var state = this.state;
-    const {
-        getFieldProps
-    } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        span: 9
-      },
-      wrapperCol: {
-        span: 14
-      },
-    };
-    const formItemLayout2 = {
-      labelCol: {
-        span: 5
-      },
-      wrapperCol: {
-        span: 19
-      },
-    };
-    var aItem = [];
-    if (props.recordSoure && props.recordSoure.workImgArr) {
-      aItem = [];
-      for (var i = 0; i < props.recordSoure.workImgArr.length; i++) {
-        aItem.push(<a key={i} style={{ marginRight: '10px' }} href={props.recordSoure.workImgArr[i]} target="_blank"><img src={props.recordSoure.workImgArr[i]} style={{ width: 150, height: 150 }} /></a>);
-      }
-    }
-    return (
-      <Form horizontal form={this.props.form} style={{ marginTop: '20' }}>
-        {props.recordSoure ?
-          <div>
-            <div className="uploadFile" style={{ paddingLeft: '20' }}>
-              <div className="img" style={{ height: '210' }}>
-                <span style={userbaseTit}>人脸照片</span>
-                {props.recordSoure.userbase.livingImg ? <a href='javascript:;' onClick={this.show.bind(this,0)} ><img src={props.recordSoure.userbase.livingImg} style={{ width: 150, height: 150 }} /></a> : <span>暂无</span>}
-              </div>
-              <div className="img" style={{ height: '210' }}>
-                <span style={userbaseTit}>身份证正面</span>
-                {props.recordSoure.userbase.frontImg ? <a href='javascript:;' onClick={this.show.bind(this,1)} ><img src={props.recordSoure.userbase.frontImg} style={{ width: 150, height: 150 }} /></a> : <span>暂无</span>}
-              </div>
-              <div className="img" style={{ height: '210' }}>
-                <span style={userbaseTit}>身份证背面</span>
-                {props.recordSoure.userbase.backImg ? <a href='javascript:;' onClick={this.show.bind(this,2)} ><img src={props.recordSoure.userbase.backImg} style={{ width: 150, height: 150 }} /></a> : <span>暂无</span>}
-              </div>
-              <div className="img" style={{ height: '210',width:'500'  }}>
-            	<span style={userbaseTit}>工作照</span>
-            	{aItem}
-              </div>
-            </div>
-          </div>
-          : null}
-        <div className="navLine-wrap-left">
-          <h2>基本信息</h2>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="真实姓名：">
-                <Input {...getFieldProps('realName', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="性别：">
-                <Input {...getFieldProps('sex', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="年龄：">
-                <Input {...getFieldProps('age', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="身份证号码：">
-                <Input {...getFieldProps('idNo', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="银行卡号：">
-                <Input {...getFieldProps('cardNo', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="所属银行：">
-                <Input {...getFieldProps('bank', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="联系电话：">
-                <Input {...getFieldProps('phone', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="注册时间：">
-                <Input {...getFieldProps('registTime', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="14">
-              <FormItem {...formItemLayout2} label="居住地址：">
-                <Input {...getFieldProps('liveAddr', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="14">
-              <FormItem {...formItemLayout2} label="注册所在地：">
-                <Input {...getFieldProps('registerAddr', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="10">
-              <FormItem {...formItemLayout2} label="注册地经纬度：">
-                <Input {...getFieldProps('registerCoordinate', { initialValue: '' }) } disabled={props.canEdit} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="注册客户端：">
-                <Input {...getFieldProps('registerClient', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="学历：">
-                <Input {...getFieldProps('education', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="常用邮箱：">
-                <Input {...getFieldProps('email', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="淘宝账号：">
-                <Input {...getFieldProps('taobao', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="微信账号：">
-                <Input {...getFieldProps('wechat', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="QQ账号：">
-                <Input {...getFieldProps('qq', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <h2>单位信息</h2>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="单位名称：">
-                <Input {...getFieldProps('companyName', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="单位电话：">
-                <Input {...getFieldProps('companyPhone', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="工作年限：">
-                <Input {...getFieldProps('workingYears', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
+    getInitialState() {
+        return {
+            visible: false,
+            num: 0
+        };
+    },
+    hidden() {
+        this.setState({
+            visible: false,
+            num: 0
+        })
+    },
+    show(num) {
+        this.setState({
+            visible: true,
+            num: num,
+            tit: '照片'
+        })
+    },
+    render() {
+        var props = this.props;
+        var state = this.state;
+        const {
+            getFieldProps
+        } = this.props.form;
+        const data = this.props.dataForm;
+        console.log(data);
+        const formItemLayout = {
+            labelCol: {
+                span: 9
+            },
+            wrapperCol: {
+                span: 14
+            },
+        };
+        const formItemLayout2 = {
+            labelCol: {
+                span: 5
+            },
+            wrapperCol: {
+                span: 19
+            },
+        };
+        var aItem = [];
+        if (props.recordSoure && props.recordSoure.workImgArr) {
+            aItem = [];
+            for (var i = 0; i < props.recordSoure.workImgArr.length; i++) {
+                aItem.push(<a key={i} style={{marginRight: '10px'}} href={props.recordSoure.workImgArr[i]}
+                              target="_blank"><img src={props.recordSoure.workImgArr[i]}
+                                                   style={{width: 150, height: 150}}/></a>);
+            }
+        }
+        return (
+            <Form horizontal form={this.props.form} style={{marginTop: '20'}}>
+                {props.recordSoure ?
+                    <div>
+                        <div className="uploadFile" style={{paddingLeft: '20'}}>
+                            <div className="img" style={{height: '210'}}>
+                                <span style={userbaseTit}>人脸照片</span>
+                                {props.recordSoure.userbase.livingImg ?
+                                    <a href='javascript:;' onClick={this.show.bind(this, 0)}><img
+                                        src={props.recordSoure.userbase.livingImg}
+                                        style={{width: 150, height: 150}}/></a> : <span>暂无</span>}
+                            </div>
+                            <div className="img" style={{height: '210'}}>
+                                <span style={userbaseTit}>身份证正面</span>
+                                {props.recordSoure.userbase.frontImg ?
+                                    <a href='javascript:;' onClick={this.show.bind(this, 1)}><img
+                                        src={props.recordSoure.userbase.frontImg}
+                                        style={{width: 150, height: 150}}/></a> : <span>暂无</span>}
+                            </div>
+                            <div className="img" style={{height: '210'}}>
+                                <span style={userbaseTit}>身份证背面</span>
+                                {props.recordSoure.userbase.backImg ?
+                                    <a href='javascript:;' onClick={this.show.bind(this, 2)}><img
+                                        src={props.recordSoure.userbase.backImg}
+                                        style={{width: 150, height: 150}}/></a> : <span>暂无</span>}
+                            </div>
+                            <div className="img" style={{height: '210', width: '500'}}>
+                                <span style={userbaseTit}>工作照</span>
+                                {aItem}
+                            </div>
+                        </div>
+                    </div>
+                    : null}
+                <div className="navLine-wrap-left ant-table ant-table-middle ant-table-bordered">
+                    <h2>基本信息</h2>
+                    <table style={{margin: '6px 0 20px'}}>
+                        <tbody>
+                        <tr>
+                            <td style={{textAlign: 'right', width: '12%'}}>真实姓名</td>
+                            <td style={{width: '21%'}}>{data.realName}</td>
 
-          </Row>
-          <Row>
-            <Col span="14">
-              <FormItem {...formItemLayout2} label="单位地址：">
-                <Input {...getFieldProps('companyAddr', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <h2>联系人信息</h2>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="紧急联系人姓名：">
-                <Input {...getFieldProps('urgentName', { initialValue: '' }) } />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="紧急联系人联系方式：">
-                <Input {...getFieldProps('urgentPhone', { initialValue: '' }) } />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="紧急联系人与本人关系：">
-                <Input {...getFieldProps('urgentRelation', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="其他联系人姓名：">
-                <Input {...getFieldProps('otherName', { initialValue: '' }) }  />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="其他联系人联系方式：">
-                <Input {...getFieldProps('otherPhone', { initialValue: '' }) }  />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="其他联系人与本人关系：">
-                <Input {...getFieldProps('otherRelation', { initialValue: '' }) } disabled={true} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="其他联系人姓名：">
-                <Input {...getFieldProps('otherThirdName', { initialValue: '' }) }  />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="其他联系人联系方式：">
-                <Input {...getFieldProps('otherThirdPhone', { initialValue: '' }) }  />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="其他联系人与本人关系：">
-                <Input {...getFieldProps('otherThirdRelation', { initialValue: '' }) }  />
-              </FormItem>
-            </Col>
-          </Row>
-          <h2>认证状态</h2>
-          <Row>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="身份认证状态：">
-                <Input {...getFieldProps('idState', { initialValue: '' }) } disabled={props.canEdit} />
-              </FormItem>
-            </Col>
-            <Col span="8">
-              <FormItem {...formItemLayout} label="银行卡认证状态：">
-                <Input {...getFieldProps('bankCardState', { initialValue: '' }) } disabled={props.canEdit} />
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-        	<Col span="8">
-        	  <FormItem {...formItemLayout} label="运营商认证状态：">
-                <Input {...getFieldProps('phoneState', { initialValue: '' }) } disabled={props.canEdit} />
-              </FormItem>
-            </Col>
-            {/*<Col span="8">*/}
-              {/*<FormItem {...formItemLayout} label="芝麻授信状态：">*/}
-                {/*<Input {...getFieldProps('zhimaState', { initialValue: '' }) } disabled={props.canEdit} />*/}
-              {/*</FormItem>*/}
-            {/*</Col>*/}
-          </Row>
-        </div>
-        <Show ref='Show' visible={state.visible} recordSoure={props.recordSoure} num={state.num} hidden={this.hidden} />
-      </Form>
-    );
-  }
+                            <td style={{textAlign: 'right', width: '12%'}}>性别</td>
+                            <td style={{width: '21%'}}>{data.sex}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>年龄</td>
+                            <td style={{width: '22%'}}>{data.age}</td>
+                        </tr>
+                        <tr className={'table-tr-gray'}>
+                            <td style={{textAlign: 'right'}}>身份证号码</td>
+                            <td>{data.idNo}</td>
+
+                            <td style={{textAlign: 'right'}}>银行卡号</td>
+                            <td>{data.cardNo}</td>
+
+                            <td style={{textAlign: 'right'}}>所属银行</td>
+                            <td>{data.bank}</td>
+                        </tr>
+                        <tr>
+                            <td style={{textAlign: 'right'}}>联系电话</td>
+                            <td>{data.phone}</td>
+
+                            <td style={{textAlign: 'right'}}>注册时间</td>
+                            <td colSpan={3}>{data.registTime}</td>
+                        </tr>
+                        <tr className={'table-tr-gray'}>
+                            <td style={{textAlign: 'right'}}>居住地址</td>
+                            <td colSpan={5}>{data.liveAddr}</td>
+                        </tr>
+                        <tr>
+                            <td style={{textAlign: 'right'}}>注册所在地</td>
+                            <td colSpan={3}>{data.registerAddr}</td>
+
+                            <td style={{textAlign: 'right'}}>注册地经纬度</td>
+                            <td>{data.registerCoordinate}</td>
+
+                        </tr>
+                        <tr className={'table-tr-gray'}>
+                            <td style={{textAlign: 'right'}}>注册客户端</td>
+                            <td>{data.registerClient}</td>
+
+                            <td style={{textAlign: 'right'}}>学历</td>
+                            <td>{data.education}</td>
+
+                            <td style={{textAlign: 'right'}}>常用邮箱</td>
+                            <td>{data.email}</td>
+                        </tr>
+                        <tr>
+                            <td style={{textAlign: 'right'}}>淘宝账号</td>
+                            <td>{data.taobao}</td>
+
+                            <td style={{textAlign: 'right'}}>微信账号</td>
+                            <td>{data.wechat}</td>
+
+                            <td style={{textAlign: 'right'}}>QQ账号</td>
+                            <td>{data.qq}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>单位信息</h2>
+                    <table style={{margin: '6px 0 20px'}}>
+                        <tbody>
+                        <tr>
+                            <td style={{textAlign: 'right', width: '12%'}}>单位名称</td>
+                            <td style={{width: '21%'}}>{data.companyName}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>单位电话</td>
+                            <td style={{width: '21%'}}>{data.companyPhone}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>工作年限</td>
+                            <td style={{width: '22%'}}>{data.workingYears}</td>
+                        </tr>
+                        <tr >
+                            <td style={{textAlign: 'right'}}>单位地址</td>
+                            <td colSpan={5}>{data.companyAddr}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>联系人信息</h2>
+                    <table style={{margin: '6px 0 20px'}}>
+                        <tbody>
+                        <tr>
+                            <td style={{textAlign: 'right', width: '12%'}}>紧急联系人姓名</td>
+                            <td style={{width: '21%'}}>{data.urgentName}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>紧急联系人联系方式</td>
+                            <td style={{width: '21%'}}>{data.urgentPhone}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>紧急联系人与本人关系</td>
+                            <td style={{width: '22%'}}>{data.urgentRelation}</td>
+                        </tr>
+                        <tr >
+                            <td style={{textAlign: 'right'}}>其他联系人姓名</td>
+                            <td>{data.otherName}</td>
+
+                            <td style={{textAlign: 'right'}}>其他联系人联系方式</td>
+                            <td>{data.otherPhone}</td>
+
+                            <td style={{textAlign: 'right'}}>其他联系人与本人关系</td>
+                            <td>{data.otherRelation}</td>
+                        </tr>
+                        <tr>
+                            <td style={{textAlign: 'right'}}>其他联系人姓名</td>
+                            <td>{data.otherThirdName}</td>
+
+                            <td style={{textAlign: 'right'}}>其他联系人联系方式</td>
+                            <td>{data.otherThirdPhone}</td>
+
+                            <td style={{textAlign: 'right'}}>其他联系人与本人关系</td>
+                            <td>{data.otherThirdRelation}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>认证状态</h2>
+                    <table style={{margin: '6px 0 20px'}}>
+                        <tbody>
+                        <tr>
+                            <td style={{textAlign: 'right', width: '12%'}}>身份认证状态</td>
+                            <td style={{width: '21%'}}>{data.idState}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>银行卡认证状态</td>
+                            <td style={{width: '21%'}}>{data.bankCardState}</td>
+
+                            <td style={{textAlign: 'right', width: '12%'}}>运营商认证状态</td>
+                            <td style={{width: '22%'}}>{data.phoneState}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <Show ref='Show' visible={state.visible} recordSoure={props.recordSoure} num={state.num}
+                      hidden={this.hidden}/>
+            </Form>
+        );
+    }
 });
 Tab1 = createForm()(Tab1);
 export default Tab1;
