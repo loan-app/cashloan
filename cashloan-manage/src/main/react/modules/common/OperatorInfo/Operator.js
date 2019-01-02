@@ -170,6 +170,8 @@ var Operator = React.createClass({
         }];
         const behavior_check_html = (
             <Table size="middle" bordered
+                   style={{marginBottom: '50px'}}
+                   pagination={false}
                    dataSource={behavior_check}
                    columns={behavior_check_columns}
                    rowClassName={(record, index) => index % 2 ? '' : 'table-tr-gray'}
@@ -276,7 +278,7 @@ var Operator = React.createClass({
         );
 
         // 用户查询信息检测
-        const check_black_info = data.check_search_info || {};
+        const check_black_info = data.check_black_info || {};
         const check_black_info_html = (
             <div className="ant-table ant-table-middle ant-table-bordered" style={mb20}>
                 <table>
@@ -284,7 +286,7 @@ var Operator = React.createClass({
                     <tr>
                         <td rowSpan="6" className={'table-td-title'}>黑名单信息</td>
                         <td style={width30}>黑中介分数</td>
-                        <td>{check_black_info.phone_gray_score}</td>
+                        <td style={{ color: check_black_info.phone_gray_score < 40 ? '#ff3c3c' : ''}}>{check_black_info.phone_gray_score}</td>
                     </tr>
                     <tr className={'table-tr-gray'}>
                         <td>直接联系人中黑名单人数</td>

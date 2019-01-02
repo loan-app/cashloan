@@ -5,8 +5,8 @@ import {
 } from 'antd';
 import XinyanDetail from '../XinyanDetail/XinyanDetail';
 import OperatorDetail from './OperatorDetail';
-import XindeBlacklist from './XindeBlacklist';
-import PaipaixinView from './PaipaixinView';
+import XindeBlacklist from './XinDe/XindeBlacklist';
+import PaipaixinView from './PaiPaiXin/PaipaixinView';
 import YXAF from './YXAF/Credit-YXAF';
 import AntiFraud from './AntiFraud/AntiFraud';
 import PinAn from './PinAn/PinAn';
@@ -23,7 +23,7 @@ var Tab8 = React.createClass({
     render() {
         return (<div className="block-panel">
                 <Tabs type="card">
-                    <TabPane tab="宜信阿福" key='YXAF'>
+                    <TabPane tab="借贷评估" key='YXAF'>
                         <YXAF userId={this.props.userId}></YXAF>
                     </TabPane>
                     <TabPane tab="反欺诈" key='AntiFraud'>
@@ -36,19 +36,19 @@ var Tab8 = React.createClass({
                         {/*<iframe style={{border: 0, width: "100%", height: 630,}}*/}
                                 {/*src={'/build/magicReport/index.html?userId=' + this.props.userId}/>*/}
                     {/*</TabPane>*/}
-                    <TabPane tab="小额网贷报告" key="3">
+                    <TabPane tab="小额网贷" key="3">
                         <XinyanDetail userId={this.props.userId}/>
                     </TabPane>
-                    <TabPane tab="最近一次凭安报告" key="PinAn">
+                    <TabPane tab="用户染黑" key="PinAn">
                         <PinAn userId={this.props.userId}/>
                     </TabPane>
 
-                    {/*<TabPane tab="信德数聚（灰名单信息）" key="4">*/}
-                        {/*<XindeBlacklist borrowId={this.props.borrowId}/>*/}
-                    {/*</TabPane>*/}
-                    {/*<TabPane tab="拍拍信（黑名单）" key="5">*/}
-                        {/*<PaipaixinView borrowId={this.props.borrowId}/>*/}
-                    {/*</TabPane>*/}
+                    <TabPane tab="灰名单信息" key="4">
+                        <XindeBlacklist borrowId={this.props.borrowId}/>
+                    </TabPane>
+                    <TabPane tab="黑名单信息" key="5">
+                        <PaipaixinView borrowId={this.props.borrowId}/>
+                    </TabPane>
                 </Tabs>
             </div>
         );

@@ -225,7 +225,7 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
                                 Integer total_amount = beJson.getInteger("total_amount");
                                 double totalAmount = 0.00;
                                 if(total_amount != null) {
-                                    totalAmount =  Double.valueOf(df.format((double)total_amount / 10));
+                                    totalAmount =  Double.valueOf(df.format((double)total_amount / 100));
                                 }
                                 consumJson.put("total_amount", totalAmount);
 

@@ -88,7 +88,7 @@ var Operator = React.createClass({
 
     render() {
         const props = this.props;
-        const data = this.state.data;
+        const data = this.state.data || {};
 
         //
         const yixinRiskReport = data.yixinRiskReport || {};
@@ -181,6 +181,8 @@ var Operator = React.createClass({
         }];
         const loanRecords_html = (
             <Table size="middle" bordered
+                   style={{marginBottom: '50px'}}
+                   pagination={false}
                    dataSource={loanRecords}
                    columns={loanRecords_columns}
                    rowClassName={(record, index) => index % 2 ? '' : 'table-tr-gray'}
@@ -250,7 +252,7 @@ var Operator = React.createClass({
         );
 
         return (<div className="block-panel">
-                <h1 style={{fontSize: '24px', textAlign: 'center', marginBottom: '20px'}}>致诚阿福信用评估报告</h1>
+                <h1 style={{fontSize: '24px', textAlign: 'center', marginBottom: '20px'}}>借贷评估报告</h1>
                 <h2 className={'loanRecord-h2'}>借款记录</h2>
                 <Row gutter={16}>
                     <Col span={8}><div className={'loanRecord-blueBlock'}><span className={'fontTitle'}>借款机构数</span> <span className="font blue">{data.countCorporateBorrower}</span> 家</div></Col>
