@@ -3,10 +3,12 @@ package com.xiji.cashloan.cl.mapper;
 
 import com.xiji.cashloan.cl.domain.OperatorVoice;
 import com.xiji.cashloan.cl.model.OperatorVoiceModel;
+import com.xiji.cashloan.cl.model.PinganCallDetailsModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -55,4 +57,19 @@ public interface OperatorVoiceMapper extends BaseMapper<OperatorVoice, Long> {
 
     OperatorVoiceModel operatorVoicesCount1(@Param("tableName1") String tableName1, @Param("userId") Long userId, @Param("phone") String phone);
 
+    /**
+     * 根据用户id,请求记录id,查询通话详情
+     * @param tableName
+     * @param reqLogId
+     * @return
+     */
+    List<PinganCallDetailsModel> queryPinganVoiceDetail(@Param("tableName") String tableName, @Param("reqLogId") Long reqLogId);
+
+    /**
+     * 获取每个号码的最后通话时间
+     * @param tableName
+     * @param userId
+     * @return
+     */
+    List<Map<String, String>> getLastContactTime(@Param("tableName") String tableName, @Param("userId") Long userId);
 }

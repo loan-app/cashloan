@@ -7,6 +7,7 @@ import com.xiji.cashloan.cl.domain.OperatorVoiceCnt;
 import com.xiji.cashloan.cl.domain.UserContacts;
 import com.xiji.cashloan.cl.domain.operator.OperatorVoiceCntMeta;
 import com.xiji.cashloan.cl.mapper.OperatorVoiceCntMapper;
+import com.xiji.cashloan.cl.mapper.OperatorVoiceMapper;
 import com.xiji.cashloan.cl.mapper.UserContactsMapper;
 import com.xiji.cashloan.cl.service.OperatorVoiceCntService;
 import com.xiji.cashloan.cl.util.MobileUtil;
@@ -44,6 +45,8 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
     private OperatorVoiceCntMapper operatorVoiceCntMapper;
 	@Resource
 	private UserContactsMapper userContactsMapper;
+	@Resource
+	private OperatorVoiceMapper operatorVoiceMapper;
 
 	@Override
 	public BaseMapper<OperatorVoiceCnt, Long> getMapper() {
@@ -97,6 +100,7 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
 						voiceCnt.setDialCntNum(meta.getDialCnt6m()+"/"+meta.getDialTime6m()+"(秒)");
 						voiceCnt.setDialedCntNum(meta.getDialedCnt6m()+"/"+meta.getDialedTime6m()+"(秒)");
 						voiceCnt.setCreatetime(createTime);
+
 						operatorVoiceCntMapper.saveShard(tableName, voiceCnt);
 					}
 				}

@@ -97,8 +97,8 @@ var Tab9 = React.createClass({
         title: '近6个月被叫次数/被叫时间',
         dataIndex: "dialedCntNum",
     }, {
-      title: '统计时间',
-      dataIndex: "createtime",
+      title: '最近通话时间',
+      dataIndex: "lastContactTime",
     }];
     return (<div className="block-panel">
               <Table columns={columns} rowKey={this.rowKey}  

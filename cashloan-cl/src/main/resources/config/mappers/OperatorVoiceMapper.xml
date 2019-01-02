@@ -24,7 +24,17 @@
         <id column="totalCount" property="totalCount" jdbcType="INTEGER"/>
         <id column="sumDuration" property="sumDuration" jdbcType="BIGINT"/>
     </resultMap>
-    
+
+    <resultMap id="PinganModelMap" type="com.xiji.cashloan.cl.model.PinganCallDetailsModel">
+        <result column="call_time" property="call_time" jdbcType="VARCHAR" />
+        <result column="duration" property="duration" jdbcType="VARCHAR" />
+        <result column="call_model" property="call_model" jdbcType="VARCHAR" />
+        <result column="contact" property="contact" jdbcType="VARCHAR" />
+        <result column="call_addr" property="call_addr" jdbcType="VARCHAR" />
+        <result column="contact_addr" property="contact_addr" jdbcType="VARCHAR" />
+        <result column="called_type" property="called_type" jdbcType="VARCHAR" />
+    </resultMap>
+
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
         id,user_id,req_log_id,mobile,bill_month,time,peer_number,location,location_type,duration,dial_type,fee,gmt_create,gmt_modified
@@ -195,7 +205,8 @@
         `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
         PRIMARY KEY (`id`),
         INDEX `user_id` (`user_id`) USING BTREE,
-        INDEX `mobile` (`mobile`) USING BTREE
+        INDEX `mobile` (`mobile`) USING BTREE,
+        INDEX `req_log_id` (`req_log_id`) USING BTREE,
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-通话记录信息';
     </select>
 
@@ -252,5 +263,15 @@
         SELECT COUNT(peer_number)AS totalCount,IFNULL(SUM(duration),0)AS sumDuration
         from ${tableName1}
         where user_id = #{userId,jdbcType=BIGINT} and peer_number = #{phone,jdbcType=VARCHAR}
+    </select>
+    <select id="queryPinganVoiceDetail" resultMap="PinganModelMap">
+      select time as call_time, duration, if(dial_type='DIALED',"被叫","主叫") as call_model, peer_number as contact,
+      location as call_addr,'' as contact_addr, location_type as called_type
+      from ${tableName} where req_log_id = #{reqLogId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getLastContactTime" resultType="java.util.Map">
+        select peer_number,max(time) last_contact_time from ${tableName}
+        where user_id = #{userId, jdbcType=BIGINT} group by peer_number;
     </select>
 </mapper>

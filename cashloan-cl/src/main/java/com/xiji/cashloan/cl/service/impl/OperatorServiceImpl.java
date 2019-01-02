@@ -116,6 +116,7 @@ public class OperatorServiceImpl implements OperatorService {
                                     operatorPackage.setMobile(mobile);
                                     operatorPackage.setGmtCreate(createTime);
                                     operatorPackage.setReqLogId(reqLogId);
+                                    operatorPackage.setGmtModified(createTime);
                                     operatorPackageMapper.save(operatorPackage);
                                 }
                             }
@@ -137,6 +138,7 @@ public class OperatorServiceImpl implements OperatorService {
                                     operatorFamily.setMobile(mobile);
                                     operatorFamily.setGmtCreate(createTime);
                                     operatorFamily.setReqLogId(reqLogId);
+                                    operatorFamily.setGmtModified(createTime);
                                     operatorFamilyMapper.save(operatorFamily);
                                 }
                             }
@@ -153,6 +155,7 @@ public class OperatorServiceImpl implements OperatorService {
                             operatorRecharge.setGmtCreate(createTime);
                             operatorRecharge.setMobile(mobile);
                             operatorRecharge.setReqLogId(reqLogId);
+                            operatorRecharge.setGmtModified(createTime);
                             operatorRechargeMapper.save(operatorRecharge);
                         }
                     }
@@ -167,6 +170,7 @@ public class OperatorServiceImpl implements OperatorService {
                             operatorBill.setUserId(userId);
                             operatorBill.setReqLogId(reqLogId);
                             operatorBill.setMobile(mobile);
+                            operatorBill.setGmtModified(createTime);
                             operatorBillMapper.save(operatorBill);
                         }
                     }
@@ -181,6 +185,7 @@ public class OperatorServiceImpl implements OperatorService {
                             operatorMonthInfo.setUserId(userId);
                             operatorMonthInfo.setMobile(mobile);
                             operatorMonthInfo.setReqLogId(reqLogId);
+                            operatorMonthInfo.setGmtModified(createTime);
                             operatorMonthInfoMapper.save(operatorMonthInfo);
                         }
                     }
@@ -207,6 +212,7 @@ public class OperatorServiceImpl implements OperatorService {
                                     operatorVoice.setMobile(mobile);
                                     operatorVoice.setGmtCreate(createTime);
                                     operatorVoice.setReqLogId(reqLogId);
+                                    operatorVoice.setGmtModified(createTime);
                                     operatorVoiceMapper.saveShard(tableName, operatorVoice);
                                 }
                             }
@@ -256,6 +262,7 @@ public class OperatorServiceImpl implements OperatorService {
                                     operatorSms.setMobile(mobile);
                                     operatorSms.setGmtCreate(createTime);
                                     operatorSms.setReqLogId(reqLogId);
+                                    operatorSms.setGmtModified(createTime);
                                     operatorSmsMapper.saveShard(tableName, operatorSms);
                                 }
                             }
@@ -284,6 +291,7 @@ public class OperatorServiceImpl implements OperatorService {
                                     operatorNet.setMobile(mobile);
                                     operatorNet.setGmtCreate(createTime);
                                     operatorNet.setReqLogId(reqLogId);
+                                    operatorNet.setGmtModified(createTime);
                                     operatorNetMapper.saveShard(tableName, operatorNet);
                                 }
                             }

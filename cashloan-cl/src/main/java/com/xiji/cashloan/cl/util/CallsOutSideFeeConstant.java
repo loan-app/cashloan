@@ -23,6 +23,12 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_FACE_DETECT = 7;
     //新颜小额网贷报告
     public static int CALLS_TYPE_XINYAN_LOAN = 8;
+    //宜信阿福风险评估
+    public static int CALLS_TYPE_YIXIN_RISK = 9;
+    //宜信阿福欺诈甄别
+    public static int CALLS_TYPE_YIXIN_FRAUD = 10;
+    //凭安染黑度统计
+    public static int CALLS_TYPE_GRAYSCALE_STAT = 11;
 
     //魔蝎运营商费用
     public static double FEE_OPERATOR = -0.7;
@@ -42,6 +48,12 @@ public class CallsOutSideFeeConstant {
     public static double FEE_FACE_DETECT = -0.8;
     //新颜小额网贷费用
     public static double FEE_XINYAN_LOAN = -1;
+    //宜信阿福风险评估费用
+    public static double FEE_YIXIN_RISK = -0.4;
+    //宜信阿福风险甄别费用
+    public static double FEE_YIXIN_FRAUD = -0.2;
+    //凭安染黑度统计值接口费用
+    public static double FEE_GRAYSCALE_STAT = -0.4;
 
     /**
      * 消费

@@ -1,0 +1,30 @@
+.loanRecord-h2 {
+    border-left: 5px solid #1aaaff;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.loanRecord-blueBlock {
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background: #ecf9ff;
+}
+.loanRecord-blueBlock .fontTitle {
+    position: relative;
+    top: -15px;
+}
+.loanRecord-blueBlock .font {
+    font-size: 36px;
+    margin: 0 5px 0 10px;
+    font-weight: bold;
+    vertical-align: baseline;
+}
+
+.loanRecord-blueBlock .font.red {
+    color: #fb6363;
+}
+
+.loanRecord-blueBlock .font.blue {
+    color: #19aaff;
+}

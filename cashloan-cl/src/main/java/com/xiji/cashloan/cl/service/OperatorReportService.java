@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.cl.domain.OperatorReport;
 
@@ -27,4 +28,11 @@ public interface OperatorReportService extends BaseService<OperatorReport, Long>
      * @return
      */
     public int updateSelective(Map<String, Object> params);
+
+    /**
+     * 给管理后台封装运营商数据
+     * @param userId
+     * @return
+     */
+    JSONObject getReportByUserId(Long userId);
 }

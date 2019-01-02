@@ -22,6 +22,5 @@ import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 @RDBatisDao
 public interface UserEmerContactsMapper extends BaseMapper<UserEmerContacts,Long> {
 
-	public List<UserEmerContacts> getUserEmerContactsByUserId(Map<String,Object> paramMap);
 
 }

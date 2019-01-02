@@ -3,13 +3,9 @@ package com.xiji.cashloan.cl.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.xiji.cashloan.cl.model.ClBorrowModel;
-import com.xiji.cashloan.cl.model.IndexModel;
+import com.xiji.cashloan.cl.model.*;
 import org.apache.ibatis.annotations.Param;
 
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
-import com.xiji.cashloan.cl.model.RepayModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import com.xiji.cashloan.core.domain.Borrow;
@@ -256,4 +252,11 @@ public interface ClBorrowMapper extends BaseMapper<Borrow,Long> {
 	 */
 	
 	int updatesub(Borrow borrow);
+
+	/**
+	 * 共享数据给宜信
+	 * @param userId
+	 * @return
+     */
+	List<YixinShareModel> queryDataForYixin(Long userId);
 }

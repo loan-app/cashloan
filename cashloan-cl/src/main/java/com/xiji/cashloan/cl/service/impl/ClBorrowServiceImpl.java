@@ -11,41 +11,14 @@ import com.xiji.cashloan.cl.domain.ManualReviewOrder;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.QianchengReqlog;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.ManualReviewOrderMapper;
-import com.xiji.cashloan.cl.mapper.OperatorReqLogMapper;
-import com.xiji.cashloan.cl.mapper.PayLogMapper;
-import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
-import com.xiji.cashloan.cl.mapper.QianchengReqlogMapper;
-import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
-import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
-import com.xiji.cashloan.cl.mapper.UserInviteMapper;
-import com.xiji.cashloan.cl.model.BorrowProgressModel;
-import com.xiji.cashloan.cl.model.ClBorrowModel;
-import com.xiji.cashloan.cl.model.IndexModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
-import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
-import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.RepayModel;
+import com.xiji.cashloan.cl.mapper.*;
+import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.MagicRiskService;
-import com.xiji.cashloan.cl.service.RcQianchenService;
-import com.xiji.cashloan.cl.service.TongdunReqLogService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.XinyanRiskService;
-import com.xiji.cashloan.cl.service.ZhimaService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistBaseTask;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistProcess;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistUtil;
@@ -210,7 +183,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Resource
 	private XinyanRiskService xinyanRiskService;
 	@Resource
+	private YixinRiskService yixinRiskService;
+	@Resource
+	private PinganRiskService pinganRiskService;
+	@Resource
 	private ManualReviewOrderMapper manualReviewOrderMapper;
+	@Resource
+	private OperatorVoiceCntMapper operatorVoiceCntMapper;
+	@Resource
+	private OperatorVoiceMapper operatorVoiceMapper;
+
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
 	public BaseMapper<Borrow, Long> getMapper() {
@@ -1548,7 +1530,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			//更新审核表
 			map.put("userId", userId);
 			map.put("reviewTime", DateUtil.getNow());
-			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManageReviewModel.RESULT_TYPE_REFUSED);
+			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManualReviewOrderModel.STATE_ORDER_REFUSED);
 			manualReviewOrderMapper.reviewState(map);
 			if (BorrowModel.STATE_REFUSED.equals(state)|| BorrowModel.STATE_AUTO_REFUSED.equals(state)) {
 				// 审核不通过返回信用额度
@@ -1681,9 +1663,37 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	@Override
-	public ClBorrowModel rcBorrowApply(Borrow borrow,String tradePwd,String mobileType) throws Exception {
+	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType) throws Exception {
 		ClBorrowModel clBorrow = new ClBorrowModel();
 		Borrow realBorrow = null;
+		// 处理用户通话详情统计
+		fixedThreadPool.execute(new Runnable() {
+			public void run(){
+				String tableName1 = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
+				int count = operatorVoiceCntMapper.countNotNull(tableName1, borrow.getUserId());
+				if(count == 0) {
+					String tableName2 = ShardTableUtil.generateTableNameById("cl_operator_voice", borrow.getUserId(), 30000);
+					Map<String, Date> lastContactMap = new HashMap<>();
+					List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, borrow.getUserId());
+					if(lastContactTimes != null) {
+						for (Map<String, String> lastContactTime : lastContactTimes) {
+							lastContactMap.put(lastContactTime.get("peer_number"), DateUtil.parse(lastContactTime.get("last_contact_time"), "yyyy-MM-dd HH:mm:ss"));
+						}
+					}
+
+					if(lastContactMap.size() > 0) {
+						for (String key : lastContactMap.keySet()) {
+							Map<String, Object> updateMap = new HashMap<>();
+							updateMap.put("tableName", tableName1);
+							updateMap.put("userId", borrow.getUserId());
+							updateMap.put("peerNumber", key);
+							updateMap.put("lastContactTime", lastContactMap.get(key));
+							operatorVoiceCntMapper.updateLastContactTime(updateMap);
+						}
+					}
+				}
+			}
+		});
 		// 校验用户是否符合借款条件
 		boolean isCanBorrow = isCanBorrow(borrow,tradePwd);
 		if(isCanBorrow){
@@ -1736,44 +1746,67 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		//魔杖-多头报告
 		if("MagicApply".equals(nid)){
 			logger.info("进入魔杖申请准入报告查询");
-			Thread t = new Thread(new Runnable(){  
+			fixedThreadPool.execute(new Runnable() {
 				public void run(){
 					int count = magicRiskService.queryApply(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
-			});  
-			t.start(); 
-			
+			});
+
 		//魔杖-反欺诈报告
 		} else if("MagicAntiFraud".equals(nid)){
 			logger.info("进入魔杖反欺诈报告查询");
-			Thread t = new Thread(new Runnable(){
-				public void run(){
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
 					int count = magicRiskService.queryAntiFraud(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
-			});  
-			t.start(); 
+			});
 		//魔杖-贷后行为
 		} else if ("MagicPostLoad".equals(nid)) {
 			logger.info("进入魔杖贷后行为查询");
-			Thread t = new Thread(new Runnable() {
+			fixedThreadPool.execute(new Runnable() {
 				public void run() {
 					int count = magicRiskService.queryPostLoad(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-			t.start();
 			//新颜小额网贷报告
 		} else if ("XinyanLoan".equals(nid)) {
-			logger.info("进入魔杖贷后行为查询");
-			Thread t = new Thread(new Runnable() {
+			logger.info("进入新颜小额网贷报告查询");
+			fixedThreadPool.execute(new Runnable() {
 				public void run() {
 					int count = xinyanRiskService.queryLoan(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-			t.start();
+			//宜信风险评估报告
+		} else if ("YixinRisk".equals(nid)) {
+			logger.info("进入宜信风险评估查询");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = yixinRiskService.queryRisk(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			//宜信欺诈甄别
+		} else if ("YixinFraud".equals(nid)) {
+			logger.info("进入宜信欺诈甄别查询");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = yixinRiskService.queryFraud(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			//凭安染黑度统计
+		} else if ("PinganGrayscaleStat".equals(nid)) {
+			logger.info("进入凭安染黑度统计查询");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = pinganRiskService.queryGrayscaleStat(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
 		} else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
@@ -2290,7 +2323,35 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		return code;
 	}
-	
+
+	@Override
+	public List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name) {
+		List<YixinShareModel> yixinShareModels = clBorrowMapper.queryDataForYixin(userId);
+		for (YixinShareModel model : yixinShareModels) {
+			model.setIdNo(idNo);
+			model.setName(name);
+			model.setOverdueM3(null);
+			model.setOverdueM6(null);
+			if("OVERDUE".equals(model.getLoanStatus())) {
+				if(StringUtil.isNotBlank(model.getOverdueStatus())) {
+					int i = (Integer.valueOf(model.getOverdueStatus()) + 29) / 30;
+					if(i > 6) {
+						model.setOverdueM3(1);
+						model.setOverdueM6(1);
+					} if(i > 3) {
+						model.setOverdueM3(1);
+					}
+					if(i > 6) {
+						model.setOverdueStatus("M6+");
+					} else {
+						model.setOverdueStatus("M" + i);
+					}
+				}
+			}
+		}
+		return yixinShareModels;
+	}
+
 	private Map<String,Object> getFeeMap(double fee){
 		Map<String,Object> feeMap=new HashMap<>();
 		String fee_map = Global.getValue("fee_map");

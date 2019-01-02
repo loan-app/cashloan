@@ -22,15 +22,15 @@ public class Create {
 		// 数据库连接信息
 		String url = "jdbc:mysql://localhost:3306/cashloan_master1.0.4?useUnicode=true&characterEncoding=utf8";
 		String MysqlUser = "root";
-		String mysqlPassword = "xxxx";
+		String mysqlPassword = "zyx123456";
 		
 		// 数据库及数据表名称
 		String database = "cashloan_master1.0.4";
-		String table = "cl_operator_report";
+		String table = "cl_yixin_fraud";
 		
 		// 配置作者及Domain说明
 		String classAuthor = "szb";
-		String functionName = "运营商报告";
+		String functionName = "宜信欺诈甄别";
  
 		// 公共包路径 (例如 BaseDao、 BaseService、 BaseServiceImpl)
 		String commonName ="com.xiji.cashloan.core.common";
@@ -43,7 +43,7 @@ public class Create {
 		String db="mysql";
 		
 		//类名前缀
-		String classNamePrefix = "operatorReport";
+		String classNamePrefix = "yixinFraud";
 
 		try {
 			MybatisGenerate.generateCode(db,url, MysqlUser, mysqlPassword, database, table,commonName,packageName,batisName,moduleName,classAuthor,functionName,classNamePrefix);
