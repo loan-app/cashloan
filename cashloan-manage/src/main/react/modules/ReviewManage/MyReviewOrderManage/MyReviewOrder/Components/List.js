@@ -240,7 +240,7 @@ export default React.createClass({
             title: '手机号码',
             dataIndex: "phone"
         }, {
-            title: '订单生成时间',
+            title: '借款时间',
             dataIndex: 'borrowTime'
         }, {
             title: '借款金额(元)',
@@ -251,6 +251,9 @@ export default React.createClass({
         }, {
             title: '实际到账金额(元)',
             dataIndex: "realAmount"
+        }, {
+            title: '渠道',
+            dataIndex: 'channelName',
         }, {
             title: '备注',
             dataIndex: 'remark'

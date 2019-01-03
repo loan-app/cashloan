@@ -84,6 +84,11 @@ public class ManualReviewOrderModel extends ManualReviewOrder {
      */
     private String stateStr;
 
+    /**
+     * 渠道名称
+     */
+    private String channelName;
+
     public Double getRealAmount() {
         return realAmount;
     }
@@ -179,5 +184,13 @@ public class ManualReviewOrderModel extends ManualReviewOrder {
 
     public void setStateStr(String stateStr) {
         this.stateStr = stateStr;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }

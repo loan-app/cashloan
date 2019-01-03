@@ -191,9 +191,6 @@ export default React.createClass({
       title: '真实姓名',
       dataIndex: 'borrowName',
     }, {
-      title: '订单号',
-      dataIndex: 'orderNo',
-    }, {
       title: '手机号码',
       dataIndex: "phone",
     }, {
@@ -217,6 +214,9 @@ export default React.createClass({
     }, {
       title: '审核人',
       dataIndex: 'userName',
+    }, {
+      title: '渠道',
+      dataIndex: 'channelName',
     }, {
       title: '审核状态',
       dataIndex: 'state',
