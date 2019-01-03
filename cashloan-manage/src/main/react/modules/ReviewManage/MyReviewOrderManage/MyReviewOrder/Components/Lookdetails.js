@@ -142,9 +142,9 @@ var Lookdetails = React.createClass({
           {/*<TabPane tab="通话记录" key="4">*/}
             {/*<Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>*/}
           {/*</TabPane>*/}
-          <TabPane tab="规则报告" key='2'>
-            <RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>
-          </TabPane>
+          {/*<TabPane tab="规则报告" key='2'>*/}
+          {/*<RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>*/}
+          {/*</TabPane>*/}
 
         </Tabs>
         <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit} title={props.title}/>
