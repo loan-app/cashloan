@@ -180,17 +180,23 @@ public class BankCardController extends BaseController {
 				}
 			}
 		}
-
+        Map<String,Object> result=new HashMap<String,Object>();
 		if(!StringUtil.isNumber(cardNo) || cardNo.length() <15 || cardNo.length() > 30   ){
-			Map<String,Object> result=new HashMap<String,Object>();
 			result.put(Constant.RESPONSE_CODE,Constant.FAIL_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG,"银行卡号格式有误");
 			ServletUtils.writeToResponse(response,result);
 			return ;
 		}
-		Map<String,Object> result=new HashMap<String,Object>();
+
 		User user = cloanUserService.getById(NumberUtil.getLong(userId));
 		UserBaseInfo baseInfo = userInfoService.findByUserId(NumberUtil.getLong(userId));
+        if(!StringUtil.equalsIgnoreCase(mobileNo,baseInfo.getPhone())){
+            result.put(Constant.RESPONSE_CODE,Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG,"请保证银行预留手机号和注册账号一致");
+            ServletUtils.writeToResponse(response,result);
+            return ;
+        }
+
 		String type = "bindCard";
 		String phone = mobileNo;
 		String message = this.check(phone, type);
