@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-cd ..
+cd ../cashloan-manage/src/main/
+npm run deploy
+cd ../../../
+
 mvn clean package install
 #iphost=10.247.31.142
 iphost=47.110.61.233
@@ -12,3 +15,4 @@ ssh root@$iphost  << EOF
     sh $rootDist/start.sh
     exit;
 EOF
+
