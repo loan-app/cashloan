@@ -442,3 +442,7 @@ update cl_rc_tpp_business set state = '20' where nid in ('MagicApply', 'MagicPos
 
 -- 系统版本号修改为1.0.3
 update arc_sys_config set value = '1.0.3' where code = 'check_version';
+
+-- 删除信用报告菜单
+delete from arc_sys_menu where id in (1001,1002,1003,1006);
+delete from arc_sys_role_menu where menu_id in (1001,1002,1003,1006);
