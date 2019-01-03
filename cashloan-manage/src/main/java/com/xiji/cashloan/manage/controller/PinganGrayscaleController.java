@@ -1,6 +1,7 @@
 package com.xiji.cashloan.manage.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.domain.PinganGrayscale;
 import com.xiji.cashloan.cl.service.PinganGrayscaleService;
 import com.xiji.cashloan.cl.service.YixinRiskReportService;
@@ -39,7 +40,7 @@ public class PinganGrayscaleController {
     public void list(@RequestParam(value="userId",required=true)Long userId, HttpServletResponse response) {
 
         PinganGrayscale pinganGrayscale = pinganGrayscaleService.getPinganGrayscale(userId);
-        JSON json = null;
+        JSONObject json = new JSONObject();
         if (pinganGrayscale != null && pinganGrayscale.getData() != null){
             json = JSON.parseObject(pinganGrayscale.getData());
         }
