@@ -57,7 +57,6 @@ var Lookdetails = React.createClass({
     let me = this;
     let params = this.refs.ManualReviewForm.getFieldsValue();
     let record = this.props.record;
-    console.log("record",record)
     this.refs.ManualReviewForm.validateFields((errors, values) => {
       if (!!errors) {
         //console.log('Errors in form!!!');
@@ -148,7 +147,7 @@ var Lookdetails = React.createClass({
           </TabPane>
 
         </Tabs>
-        <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit}/>
+        <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit} title={props.title}/>
       </Modal>
     );
   }

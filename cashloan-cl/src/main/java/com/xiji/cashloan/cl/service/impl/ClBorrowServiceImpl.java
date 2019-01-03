@@ -223,7 +223,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		authMap.put("userId", userId);
 		Map<String,Object> auth = userAuthService.getAuthState(authMap);
 	    if (StringUtil.isBlank(auth)||Integer.parseInt(auth.get("qualified").toString())==0) {
-	    	throw new SimpleMessageException("资料未完善，无法借款");
+	    	throw new SimpleMessageException("工作信息可能未完善，无法借款，请完善资料");
 		}
 	    
 	    //1.5 用户是否有未完成的借款

@@ -3,7 +3,12 @@ import {  Button, Form, Input, Row , Col, Select  } from 'antd';
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 let FromBox = React.createClass({
+    getSValue(sData) {
+        sData.value = (sData.value == '20') ? '人工审核通过' : '人工复审拒绝';
+        return sData;
+    },
     render() {
         let { getFieldProps } = this.props.form;
         let props = this.props;
@@ -26,7 +31,7 @@ let FromBox = React.createClass({
                         <Select  {...getFieldProps('state1', { initialValue: "27" }) } disabled={!props.canEdit}>
                             <Option value="27">人工复审拒绝</Option>
                             <Option value="26">人工复审通过</Option>
-                        </Select>) : (<Input type="text" disabled={!props.canEdit} {...getFieldProps('stateStr') } />)}
+                        </Select>) : (<Input type="text" disabled={!props.canEdit}  { ...this.getSValue(getFieldProps('state')) } />)}
                     </FormItem>
                     </Col>
                 </Row>

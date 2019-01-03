@@ -235,7 +235,7 @@
         select
         o.id,o.user_id,o.user_name,o.phone,o.borrow_name,b.id as borrow_id,b.user_id as borrow_user_id,b.order_no,b.amount,
         b.time_limit,b.create_time as borrow_time,o.state,o.create_time,o.review_time,b.real_amount,b.interest,b.info_auth_fee,
-        b.service_fee,b.fee,b.state as borrow_state
+        b.service_fee,b.fee,b.state as borrow_state,o.remark as remark
         from cl_manual_review_order o left join cl_borrow b
         on o.borrow_id = b.id
         <trim prefix="where" prefixOverrides="and|or">

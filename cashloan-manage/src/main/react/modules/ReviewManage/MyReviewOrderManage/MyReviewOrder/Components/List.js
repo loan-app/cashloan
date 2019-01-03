@@ -234,9 +234,6 @@ export default React.createClass({
             openEdit = false;
         }
         var columns = [{
-            title: '订单号',
-            dataIndex: 'orderNo'
-        }, {
             title: '真实姓名',
             dataIndex: 'borrowName'
         }, {
@@ -255,17 +252,8 @@ export default React.createClass({
             title: '实际到账金额(元)',
             dataIndex: "realAmount"
         }, {
-            title: '利息(元)',
-            dataIndex: "interest"
-        }, {
-            title: '信息认证费(元)',
-            dataIndex: "infoAuthFee",
-        }, {
-            title: '服务费(元)',
-            dataIndex: "serviceFee",
-        }, {
-            title: '费用(元)',
-            dataIndex: 'fee'
+            title: '备注',
+            dataIndex: 'remark'
         }, {
             title: '状态',
             dataIndex: "stateStr",

@@ -47,7 +47,6 @@ var Tab1 = React.createClass({
             getFieldProps
         } = this.props.form;
         const data = this.props.dataForm;
-        console.log(data);
         const formItemLayout = {
             labelCol: {
                 span: 9
