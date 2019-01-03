@@ -559,6 +559,80 @@ public class MagicRiskServiceImpl implements MagicRiskService {
 
     }
 
+    @Override
+    public int queryBlackGray(Borrow borrow) {
+        int i = 0;
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if(userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+            return i;
+        }
+        Long userId = userBaseinfo.getUserId();
+        MagicReqLog log = new MagicReqLog();
+        log.setBorrowId(borrow.getId());
+        log.setCreateTime(new Date());
+        log.setUserId(borrow.getUserId());
+        log.setType(CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
+        try {
+            String privateKey = Global.getValue("mx_private_key");
+            String apiUrl = Global.getValue("mx_risk_url");
+            /** 请求参数 */
+            Map<String, String> reqParams = getReqParams(MagicRiskConstant.METHOD_MAGICWAND2_BLACK_GRAY);
+
+            /** 业务参数 */
+            Map<String, String> bizParams = new HashMap<>();
+            bizParams.put("name", userBaseinfo.getRealName());
+            bizParams.put("mobile", userBaseinfo.getPhone());
+            bizParams.put("idcard", userBaseinfo.getIdNo());
+            String bizContent = new ObjectMapper().writeValueAsString(bizParams);
+
+            reqParams.put(MagicRiskConstant.REQ_BIZ_CONTENT, bizContent);
+
+            //签名
+            String sign = MoxieSignUtils.signSHA1WithRSA(reqParams, privateKey);
+
+            reqParams.put(MagicRiskConstant.REQ_SIGN, sign);
+
+            String getURL = MagicRiskUtils.getWholeGetURL(apiUrl, reqParams);
+            String resContent = MxCreditRequest.get(getURL, null);
+            if(StringUtil.isNotBlank(resContent)) {
+                JSONObject resJson = JSONObject.parseObject(resContent);
+                String code = resJson.getString("code");
+                if ("0000".equals(code)) {
+                    JSONObject data = JSONObject.parseObject(resJson.getString("data"));
+                    String transId = data.getString("trans_id");
+
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setTransId(transId);
+                    Date createDate = DateUtil.getNow();
+                    //插入详情表
+                    MagicReqDetail magicReqDetail = new MagicReqDetail(userId, transId, resJson.getString("data"), CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY);
+                    magicReqDetailMapper.save(magicReqDetail);
+                    //插入收费记录表
+                    CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, transId, CallsOutSideFeeConstant.CALLS_TYPE_BLACK_GRAY, CallsOutSideFeeConstant.FEE_BLACK_GRAY,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,userBaseinfo.getPhone());
+                    callsOutSideFeeMapper.save(callsOutSideFee);
+                    //保存数据
+                    //黑灰名单信息
+                    BlackInfoDetailBean blackInfoDetail = JSONObject.parseObject(data.getString("black_info_detail"), BlackInfoDetailBean.class);
+                    GrayInfoDetailBean grayInfoDetail = JSONObject.parseObject(data.getString("gray_info_detail"), GrayInfoDetailBean.class);
+                    if (blackInfoDetail != null || grayInfoDetail != null) {
+                        saveBlackGrayInfo(blackInfoDetail, grayInfoDetail, userId, transId, createDate);
+                    }
+                    i = 1;
+                } else {
+                    log.setRespCode(code);
+                    log.setRespTime(new Date());
+                    log.setRespParams(resContent);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("用户userId：" + userId + "魔杖2.0-黑灰名单响应数据错误", e);
+        }
+        magicReqLogMapper.save(log);
+        return i;
+    }
+
     private Map<String, String> getReqParams(String method) {
         Map<String, String> reqParams = new HashMap<>();
         reqParams.put(MagicRiskConstant.REQ_METHOD, method);

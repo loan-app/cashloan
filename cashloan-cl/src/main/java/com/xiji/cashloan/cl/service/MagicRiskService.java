@@ -18,4 +18,6 @@ public interface MagicRiskService {
     int magicReportRequest(Borrow borrow, TppBusiness business);
 
     void saveMagicRisk(String res, Long userId);
+
+    int queryBlackGray(Borrow borrow);
 }

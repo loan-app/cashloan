@@ -38,7 +38,7 @@ let FromBox = React.createClass({
                 <Row>
                     <Col span="24">
                     <FormItem  {...formItemLayout} label="备注说明:">
-                        <Input disabled={!props.canEdit} type="textarea" placeholder="" rows={4} style={{ width: "500px", height: "40px" }}   {...getFieldProps('remark', { initialValue: '',rules:[{ max: 50,message: '不能超过50个字符' }] }) } />
+                        <Input disabled={!props.canEdit} type="textarea" placeholder="" rows={4} style={{ width: "500px", height: "40px" }}   {...getFieldProps('remark', { initialValue: '',rules:[{ max: 20,message: '不能超过20个字符' }] }) } />
                     </FormItem>
                     </Col>
                 </Row>

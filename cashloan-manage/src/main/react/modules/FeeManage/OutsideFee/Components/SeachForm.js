@@ -52,11 +52,16 @@ let SeachForm = React.createClass({
           <Select style={{ width: 100 }} {...getFieldProps('type',{initialValue: ''})} placeholder='请选择...'>
           <Option value="">全部</Option>
           <Option value="1">运营商</Option>
-          <Option value="2">魔杖反欺诈</Option>
-          <Option value="3">魔杖申请准入</Option>
-          <Option value="5">魔杖贷后行为</Option>
+          <Option value="2">反欺诈</Option>
+          <Option value="3">申请准入</Option>
+          <Option value="4">黑灰名单</Option>
+          <Option value="5">贷后行为</Option>
           <Option value="6">发送短信</Option>
           <Option value="7">人脸识别</Option>
+          <Option value="8">小额网贷</Option>
+          <Option value="9">借贷评估</Option>
+          <Option value="10">欺诈甄别</Option>
+          <Option value="11">染黑统计</Option>
           </Select>
           </FormItem>
 

@@ -134,15 +134,25 @@ export default React.createClass({
           if (record.type == 1) {
               return "运营商"
           } else if (record.type == 2) {
-              return "魔杖反欺诈"
+              return "反欺诈"
           } else if (record.type == 3) {
-              return "魔杖申请准入"
+              return "申请准入"
+          } else if (record.type == 4) {
+              return "黑灰名单"
           } else if (record.type == 5) {
               return "魔杖贷后行为"
           } else if (record.type == 6) {
               return "发送短信"
           } else if (record.type == 7) {
               return "人脸识别"
+          } else if (record.type == 8) {
+              return "小额网贷"
+          } else if (record.type == 9) {
+              return "借贷评估"
+          } else if (record.type == 10) {
+              return "欺诈甄别"
+          } else if (record.type == 11) {
+              return "染黑统计"
           }else {
               return "-"
           }

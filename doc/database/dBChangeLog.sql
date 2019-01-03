@@ -434,3 +434,8 @@ CREATE TABLE `cl_yixin_fraud` (
 -- 通话详情统计表新增最后联系时间字段
 alter table `cl_operator_voice_cnt` add column `last_contact_time` datetime  default null comment '最后联系时间';
 alter table `cl_operator_voice_cnt_1` add column `last_contact_time` datetime  default null comment '最后联系时间';
+
+-- 魔蝎黑灰名单
+INSERT INTO `cl_rc_tpp_business` VALUES ('8', '1', '黑灰名单', 'MagicBlackGray', '10', '', '', null, '2019-01-03 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('8', '10', '8', '20', '7', '10', '10', '2019-01-03 00:00:00');
+update cl_rc_tpp_business set state = '20' where nid in ('MagicApply', 'MagicPostLoad');
