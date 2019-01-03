@@ -40,6 +40,15 @@ const orgType = {
     FACTORING: '保理',
 };
 
+//查询原因
+const queryReason = {
+    LOAN_AUDIT: '贷款审批',
+    LOAN_MANAGE: '贷后管理',
+    CREDIT_CARD_AUDIT: '信用卡审批',
+    GUARANTEE_AUDIT: '担保资格审查',
+    PRE_GUARANTEE_AUDIT: '保前审查',
+};
+
 // 借款类型
 const loanType = {
     CREDIT: '信用',
@@ -209,6 +218,12 @@ var Operator = React.createClass({
             title: '查询原因',
             dataIndex: 'queryReason',
             key: 'queryReason',
+            filters: Object.keys(queryReason).map(value => ({
+                text: queryReason[value],
+                value
+            })),
+            onFilter: (value, record) => record.queryReason === value,
+            render: (text, record, index) => queryReason[text]
         }, {
             title: '最近查询时间',
             dataIndex: 'time',
