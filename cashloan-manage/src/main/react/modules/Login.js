@@ -98,7 +98,6 @@ let Login = React.createClass({
                     <div className="g-bd">
                         <div className="m-loginbg" style={{ height: this.state.height }}>
                             <img src="/dev/images/bg-logo.png" />
-                            <img src="/dev/images/support.png" />
                         </div>
                         <div className="m-bgwrap" style={{ cursor: "pointer" }}></div>
                         <div className='center'>
