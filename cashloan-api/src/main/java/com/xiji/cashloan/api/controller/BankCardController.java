@@ -213,7 +213,7 @@ public class BankCardController extends BaseController {
 				beanReq.setCardNo(cardNo);
 				beanReq.setIdType("0");
 				beanReq.setIdCard(baseInfo.getIdNo());
-				beanReq.setMobileNo(baseInfo.getPhone());
+				beanReq.setMobileNo(phone);
 
 				FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
 				BindXmlBeanResp resp = payHelper.bindMsg(beanReq);//调富有接口发送验证码，同时验证四要素，卡号，证件类型，身份证，手机号，

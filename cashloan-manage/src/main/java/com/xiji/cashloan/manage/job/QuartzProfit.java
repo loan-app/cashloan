@@ -112,7 +112,7 @@ public class QuartzProfit implements Job {
 					} else {
 						model.setAmt(AmtUtil.convertAmtToBranch(profitAmount.getNoCashed()));
 					}
-					model.setMobile(baseInfo.getPhone());
+					model.setMobile(bankCard.getPhone());
 					model.setEntseq(profitAmount.getId()+"付款");
 					model.setMemo(profitAmount.getId() + "付款");
 					model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);

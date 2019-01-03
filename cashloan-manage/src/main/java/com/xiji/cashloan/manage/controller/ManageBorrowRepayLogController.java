@@ -158,7 +158,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		} else {
 			model.setAmt(AmtUtil.convertAmtToBranch(amount));
 		}
-		model.setMobile(baseInfo.getPhone());
+		model.setMobile(bankCard.getPhone());
 		model.setEntseq(borrow.getOrderNo());//借款号
 		model.setMemo(borrow.getOrderNo() + "付款");
 		model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
