@@ -439,3 +439,6 @@ alter table `cl_operator_voice_cnt_1` add column `last_contact_time` datetime  d
 INSERT INTO `cl_rc_tpp_business` VALUES ('8', '1', '黑灰名单', 'MagicBlackGray', '10', '', '', null, '2019-01-03 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('8', '10', '8', '20', '7', '10', '10', '2019-01-03 00:00:00');
 update cl_rc_tpp_business set state = '20' where nid in ('MagicApply', 'MagicPostLoad');
+
+-- 系统版本号修改为1.0.3
+update arc_sys_config set value = '1.0.3' where code = 'check_version';
