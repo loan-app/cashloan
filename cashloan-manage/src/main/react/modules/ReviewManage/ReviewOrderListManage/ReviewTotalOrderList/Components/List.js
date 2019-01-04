@@ -215,6 +215,9 @@ export default React.createClass({
       title: '审核人',
       dataIndex: 'userName',
     }, {
+      title: '备注',
+      dataIndex: 'remark'
+    }, {
       title: '渠道',
       dataIndex: 'channelName',
     }, {

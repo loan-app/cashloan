@@ -82,23 +82,20 @@ var Tab9 = React.createClass({
       title: '号码归属地',
       dataIndex: "city",
     }, {
-      title: '通讯录联系号码',
-      dataIndex: "contactPhone",
+      title: '最近通话时间',
+      dataIndex: "lastContactTime",
     }, {
         title: '通讯录联系人姓名',
         dataIndex: "contactName",
-    },{
+    }, {
         title: '近6个月联系次数/联系时间',
         dataIndex: "callCntNum",
-    },{
+    }, {
         title: '近6个月主叫次数/主叫时间',
         dataIndex: "dialCntNum",
-    },{
+    }, {
         title: '近6个月被叫次数/被叫时间',
         dataIndex: "dialedCntNum",
-    }, {
-      title: '最近通话时间',
-      dataIndex: "lastContactTime",
     }];
     return (<div className="block-panel">
               <Table columns={columns} rowKey={this.rowKey}  

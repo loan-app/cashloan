@@ -6,6 +6,20 @@ import {
 } from 'antd';
 
 const objectAssign = require('object-assign');
+const orgTypeMap = {
+    ZHENGXIN: '征信机构',
+    DATACOVERGE: '数据平台',
+    BANK: '银行',
+    CUSTOMER_FINANCE: '消费金融',
+    CASH_LOAN: '现金贷',
+    P2P: 'P2P理财',
+    CREDITPAY: '信用支付',
+    CONSUMSTAGE: '消费分期',
+    COMPENSATION: '信用卡代偿',
+    DIVERSION: '导流平台',
+    其它: '其它'
+};
+
 var Operator = React.createClass({
     getInitialState() {
         return {
@@ -246,7 +260,7 @@ var Operator = React.createClass({
                         </tr>
                         <tr className={'table-tr-gray'}>
                             <td>查询过该用户的企业类型</td>
-                            <td>{String(check_search_info.searched_org_type)}</td>
+                            <td>{check_search_info.searched_org_type.map(key => orgTypeMap[key]).toString()}</td>
                         </tr>
                         <tr>
                             <td>身份证组合过的其他姓名</td>
@@ -270,7 +284,7 @@ var Operator = React.createClass({
                         </tr>
                         <tr className={'table-tr-gray'}>
                             <td>电话号码注册过的企业类型</td>
-                            <td>{String(check_search_info.register_org_type)}</td>
+                            <td>{check_search_info.register_org_type.map(key => orgTypeMap[key]).toString()}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -286,7 +300,7 @@ var Operator = React.createClass({
                     <tr>
                         <td rowSpan="6" className={'table-td-title'}>黑名单信息</td>
                         <td style={width30}>黑中介分数</td>
-                        <td style={{ color: check_black_info.phone_gray_score < 40 ? '#ff3c3c' : ''}}>{check_black_info.phone_gray_score}</td>
+                        <td style={{ color: check_black_info.phone_gray_score < 40 ? '#ff3c3c' : ''}}>{check_black_info.phone_gray_score} {check_black_info.phone_gray_score < 40 ? '40分以下为高风险人群' : ''}</td>
                     </tr>
                     <tr className={'table-tr-gray'}>
                         <td>直接联系人中黑名单人数</td>
