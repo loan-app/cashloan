@@ -113,35 +113,7 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		PageHelper.startPage(current, pageSize);
 		Page<Map<String, Object>> result = (Page<Map<String, Object>>) channelMapper.countOne(paramMap);
 		List<Map<String, Object>> one = result.getResult();
-		
-		//关联的是渠道id，传进来的搜索条件是渠道名称，这边转换下
-		for (Map<String, Object> map : one) {
-			if(paramMap.get("name")!=null){
-				paramMap.put("channelId", map.get("channelId"));
-			}
-			List<Map<String, Object>> two=channelMapper.countTwo(paramMap);
-			List<Map<String, Object>> three=channelMapper.countThree(paramMap);
-			List<Map<String, Object>> four=channelMapper.countFour(paramMap);
-			List<Map<String, Object>> five=channelMapper.countFive(paramMap);
-			List<Map<String, Object>> six=channelMapper.countSix(paramMap);
-			List<Map<String, Object>> seven=channelMapper.countSeven(paramMap);
-			List<Map<String, Object>> eight=channelMapper.countEight(paramMap);
-			//渠道标识，渠道名称
-			//注册人数
-			count(map, two, "registerCount", "countTwo");
-			//借款人数
-			count(map, three, "borrowMember", "countThree");
-			//借款次数
-			count(map, four, "borrowCount", "countFour");
-			//借款金额
-			count(map, five, "borrowAmout", "countFive");
-			//首贷放款笔数
-			count(map, six, "newPayCount", "countSix");
-			//再贷放款笔数
-			count(map, seven, "repeatPayCount", "countSeven");
-			//放款成功金额
-			count(map, eight, "payAccount", "countEight");
-		}
+		countResult(one, paramMap);
 		return result;
 	}
 	
@@ -259,12 +231,52 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		}
 		return list;
 	}
-	
+
+	@Override
+	public List<Map<String, Object>> oneChannelUserCount(Map<String, Object> paramMap, int current, int pageSize) {
+		PageHelper.startPage(current, pageSize);
+		Page<Map<String, Object>> result = (Page<Map<String, Object>>) channelMapper.countOneByName(paramMap);
+		List<Map<String, Object>> one = result.getResult();
+		countResult(one, paramMap);
+		return result;
+	}
+
 	public String listToString(List<String> list, String separator) {    
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < list.size(); i++) {
 			sb.append(list.get(i)).append(separator);    
 		}
 		return sb.toString().substring(0,sb.toString().length()-1);
+	}
+
+	private void countResult(List<Map<String, Object>> one, Map<String, Object> paramMap) {
+		//关联的是渠道id，传进来的搜索条件是渠道名称，这边转换下
+		for (Map<String, Object> map : one) {
+			if(paramMap.get("name")!=null){
+				paramMap.put("channelId", map.get("channelId"));
+			}
+			List<Map<String, Object>> two=channelMapper.countTwo(paramMap);
+			List<Map<String, Object>> three=channelMapper.countThree(paramMap);
+			List<Map<String, Object>> four=channelMapper.countFour(paramMap);
+			List<Map<String, Object>> five=channelMapper.countFive(paramMap);
+			List<Map<String, Object>> six=channelMapper.countSix(paramMap);
+			List<Map<String, Object>> seven=channelMapper.countSeven(paramMap);
+			List<Map<String, Object>> eight=channelMapper.countEight(paramMap);
+			//渠道标识，渠道名称
+			//注册人数
+			count(map, two, "registerCount", "countTwo");
+			//借款人数
+			count(map, three, "borrowMember", "countThree");
+			//借款次数
+			count(map, four, "borrowCount", "countFour");
+			//借款金额
+			count(map, five, "borrowAmout", "countFive");
+			//首贷放款笔数
+			count(map, six, "newPayCount", "countSix");
+			//再贷放款笔数
+			count(map, seven, "repeatPayCount", "countSeven");
+			//放款成功金额
+			count(map, eight, "payAccount", "countEight");
+		}
 	}
 }

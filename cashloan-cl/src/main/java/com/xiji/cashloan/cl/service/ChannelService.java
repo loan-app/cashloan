@@ -96,4 +96,9 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	 * @return
 	 */
 	List<Map<String, Object>> conversion(Map<String, Object> searchMap) throws Exception;
+
+	/**
+	 * 渠道用户统计-单一渠道链接
+	 */
+	List<Map<String,Object>> oneChannelUserCount(Map<String, Object> paramMap,int current, int pageSize);
 }

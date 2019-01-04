@@ -97,4 +97,9 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * 放款成功金额
 	 */
 	List<Map<String, Object>> countEight(Map<String,Object> paramMap);
+
+	/**
+	 * 单一渠道名称count
+     */
+	List<Map<String, Object>> countOneByName(Map<String,Object> paramMap);
 }

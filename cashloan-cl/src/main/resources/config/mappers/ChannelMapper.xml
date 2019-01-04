@@ -331,5 +331,24 @@
 		 </trim>
  		GROUP BY user.channel_id
  	</select>
- 
+
+	<!-- 单一渠道名称count -->
+	<select id="countOneByName" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select id as channelId,name,code
+		from cl_channel
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="code !='' and code !=null">
+				code like  concat("%",#{code,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="name !='' and name !=null">
+				and name = #{name, jdbcType=VARCHAR}
+			</if>
+			<if test="linker !='' and linker !=null">
+				and linker  like  concat("%",#{linker,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="phone !='' and phone !=null">
+				and phone like  concat("%",#{phone,jdbcType=VARCHAR},"%")
+			</if>
+		</trim>
+	</select>
 </mapper>

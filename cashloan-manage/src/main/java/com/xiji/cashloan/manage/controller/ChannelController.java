@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.system.domain.SysRole;
+import com.xiji.cashloan.system.domain.SysUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -41,6 +44,8 @@ public class ChannelController extends ManageBaseController {
 
 	@Resource
 	private ChannelService channelService;
+
+	private static final String ROLE_QUDAO = "QuDao";
 
 	/**
 	 * 保存
@@ -209,12 +214,22 @@ public class ChannelController extends ManageBaseController {
 	public void channelUserCount(
 			@RequestParam(value="searchParams",required=false) String searchParams,
 			@RequestParam(value = "current") int current,
-			@RequestParam(value = "pageSize") int pageSize) throws Exception {
+			@RequestParam(value = "pageSize") int pageSize, HttpServletRequest request) throws Exception {
 		Map<String, Object> searchMap = new HashMap<>();
 		if (!StringUtils.isEmpty(searchParams)) {
 			searchMap = JsonUtil.parse(searchParams, Map.class);
 		}
-		Page<Map<String,Object>> page = (Page<Map<String, Object>>) channelService.channelUserCount(searchMap,current,pageSize);
+		Page<Map<String,Object>> page = new Page<>();
+		SysRole sysRole = getRoleForLoginUser(request);
+		SysUser loginUser = getLoginUser(request);
+		//临时解决方案,如果用户角色为QuDao,根据登录用户名,去查询渠道的统计信息
+		if(ROLE_QUDAO.equals(sysRole.getNid())) {
+			String name = loginUser.getName();
+			searchMap.put("name", name);
+			page = (Page<Map<String, Object>>) channelService.oneChannelUserCount(searchMap,current,pageSize);
+		} else {
+			page = (Page<Map<String, Object>>) channelService.channelUserCount(searchMap,current,pageSize);
+		}
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_DATA, page);
