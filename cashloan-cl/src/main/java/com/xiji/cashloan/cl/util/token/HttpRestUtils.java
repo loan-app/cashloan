@@ -67,4 +67,13 @@ public class HttpRestUtils {
         return HttpUtils.convertStreamToString(respIs);
     }
 
+    public static String pinganRequest(String url, MultipartEntityBuilder builder) throws Exception {
+        CloseableHttpClient httpclient = HttpUtils.createClient(url);
+        HttpPost postRequest = new HttpPost(url);
+        postRequest.setEntity(builder.build());
+        HttpResponse httpResponse = httpclient.execute(postRequest);
+        InputStream respIs = httpResponse.getEntity().getContent();
+
+        return HttpUtils.convertStreamToString(respIs);
+    }
 }

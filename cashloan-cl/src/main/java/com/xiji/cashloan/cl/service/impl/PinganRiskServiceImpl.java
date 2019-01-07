@@ -16,11 +16,15 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,12 +90,19 @@ public class PinganRiskServiceImpl implements PinganRiskService {
             operatorVoiceMapper.createTable(tableName);
         }
         List<PinganCallDetailsModel> details = operatorVoiceMapper.queryPinganVoiceDetail(tableName, operatorReqLog.getId());
-
         JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(details));
-        paramMap.put("call_details", jsonArray.toJSONString());
+
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        ContentType contentType = ContentType.MULTIPART_FORM_DATA.withCharset("UTF-8");
+        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            builder.addPart(entry.getKey(), new StringBody(entry.getValue().toString(), contentType));
+        }
+        builder.addBinaryBody("call_details", new ByteArrayInputStream(jsonArray.toJSONString().getBytes()));
+
+//        paramMap.put("call_details", jsonArray.toJSONString());
         try {
             logger.debug("凭安请求数据:" + JSON.toJSONString(paramMap));
-            String result = HttpRestUtils.postForm(API_HOST, null, paramMap);
+            String result = HttpRestUtils.pinganRequest(API_HOST, builder);
             logger.debug("凭安返回数据:" + result);
             if (StringUtil.isNotBlank(result)) {
                 JSONObject resJson = JSONObject.parseObject(result);
