@@ -54,8 +54,8 @@ let FromBox = React.createClass({
                    <Col span="24">
                        <FormItem  {...formItemLayout} label="是否加入黑名单:">
                            {props.title != "查看" ? (
-                               <Checkbox   {...getFieldProps('isBlack', { initialValue: false }) }/>
-                               ) : (<Input type="checkbox" disabled={!props.canEdit} checked={ getFieldProps('isBlack2') }  />)}
+                               <Checkbox {...getFieldProps('isBlack', { initialValue: false })} />
+                               ) : (<Checkbox disabled={!props.canEdit} { ...getFieldProps('isBlack2', { valuePropName: 'checked' }) } />)}
                        </FormItem>
                    </Col>
                </Row>
