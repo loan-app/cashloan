@@ -167,12 +167,13 @@ export default React.createClass({
                             dataForm:dataForm
                         })
                         me.refs.Lookdetails.refs.Tab1.setFieldsValue(dataForm);
+                        record.isBlack2 = result.data.userbase.state != "10" ? true : false;
                     }
                 }
             });
             //console.log(record);
             record.state1 = title == "人工复审" ? "27" : record.state;
-            record.isBlack = record.isBlack;
+            record.isBlack = title == "人工复审" ? true : false;
             this.refs.Lookdetails.refs.ManualReviewForm.setFieldsValue(record);
         })
     },

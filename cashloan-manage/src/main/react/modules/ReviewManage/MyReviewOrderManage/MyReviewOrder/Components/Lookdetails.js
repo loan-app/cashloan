@@ -53,17 +53,17 @@ var Lookdetails = React.createClass({
         title: tips,
         onOk: function () {
           Utils.ajaxData({
-            // url: '/modules/manage/borrow/verifyBorrow.htm',
-            // data: { borrowId: record.borrowId, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark,isBlack :params.state1 == "0" ? "20" :params.isBlack},
-            // callback: (result) => {
-            //   if (result.code == 200) {
-            //     me.handleCancel();
-            //   };
-            //   let resType = result.code == 200 ? 'success' : 'warning';
-            //   Modal[resType]({
-            //     title: result.msg,
-            //   });
-            // }
+            url: '/modules/manage/borrow/verifyBorrow.htm',
+            data: { borrowId: record.borrowId, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark,isBlack :params.state1 == "0" ? "20" :params.isBlack},
+            callback: (result) => {
+              if (result.code == 200) {
+                me.handleCancel();
+              };
+              let resType = result.code == 200 ? 'success' : 'warning';
+              Modal[resType]({
+                title: result.msg,
+              });
+            }
           });
         },
         onCancel: function () { }

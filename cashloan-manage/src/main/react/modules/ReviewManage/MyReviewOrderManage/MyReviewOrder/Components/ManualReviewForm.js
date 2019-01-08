@@ -11,18 +11,15 @@ let FromBox = React.createClass({
         return sData;
     },
 
-    getBlackValue(sblack) {
-        sblack.value = (sblack.value == '10') ? '加入黑名单' : '不加入黑名单';
-        return sblack;
-    },
+    // getBlackValue(sblack) {
+    //     sblack.value = sblack.value ? '黑名单用户' : '非黑名单用户';
+    //     return sblack;
+    // },
 
-    onchange(e){
-        console.log(e.target.checked ? '10' : '20');
-        this.setState({isBlack:e.target.checked ? '10' : '20'});
-    },
     render() {
         let { getFieldProps } = this.props.form;
         let props = this.props;
+        console.log(props);
         const formItemLayout = {
             labelCol: {
                 span: 8
@@ -53,39 +50,12 @@ let FromBox = React.createClass({
                     </FormItem>
                     </Col>
                 </Row>
-
-               {/*<Row>*/}
-                   {/*<Col span="24">*/}
-                       {/*<FormItem  {...formItemLayout} label="是否加入黑名单:">*/}
-                           {/*{props.title != "查看" ? (*/}
-                               {/*<Select  {...getFieldProps('isBlack1', { initialValue: "20" }) } disabled={!props.canEdit}>*/}
-                                   {/*<Option value="20">不加入黑名单</Option>*/}
-                                   {/*<Option value="10">加入黑名单</Option>*/}
-                               {/*</Select>) : (<Input type="text" disabled={!props.canEdit}  { ...this.getBlackValue(getFieldProps('isBlack')) } />)}*/}
-                       {/*</FormItem>*/}
-                   {/*</Col>*/}
-               {/*</Row>*/}
-               {/*<Row>*/}
-                   {/*<Col span="24">*/}
-                       {/*<FormItem  {...formItemLayout} label="是否加入黑名单:">*/}
-
-                           {/*/!*<input name="isBlack1" type="checkbox" >*!/*/}
-                           {/*{props.title != "查看" ? (*/}
-                               {/*<Checkbox onChange={onChange} value ={props.isBlack1}>加入黑名单</Checkbox>,*/}
-                                   {/*mountNode) : (<Input type="text" disabled={!props.canEdit}  { ...this.getBlackValue(getFieldProps('isBlack')) } />)}*/}
-                       {/*</FormItem>*/}
-                   {/*</Col>*/}
-               {/*</Row>*/}
-
                <Row>
                    <Col span="24">
                        <FormItem  {...formItemLayout} label="是否加入黑名单:">
-
                            {props.title != "查看" ? (
-
-                               <Checkbox  {...getFieldProps('isBlack', { initialValue: false }) } onChange={this.onchange} />
-
-                               ) : (<Input type="text" disabled={!props.canEdit}  { ...this.getBlackValue(getFieldProps('isBlack')) } />)}
+                               <Checkbox   {...getFieldProps('isBlack', { initialValue: false }) }/>
+                               ) : (<Input type="checkbox" disabled={!props.canEdit} checked={ getFieldProps('isBlack2') }  />)}
                        </FormItem>
                    </Col>
                </Row>
