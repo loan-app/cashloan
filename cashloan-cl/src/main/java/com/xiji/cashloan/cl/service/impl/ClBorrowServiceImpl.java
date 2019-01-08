@@ -3,14 +3,7 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.BorrowProgress;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.domain.ManualReviewOrder;
-import com.xiji.cashloan.cl.domain.PayLog;
-import com.xiji.cashloan.cl.domain.QianchengReqlog;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
+import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
@@ -30,11 +23,7 @@ import com.xiji.cashloan.core.common.exception.BussinessException;
 import com.xiji.cashloan.core.common.exception.SimpleMessageException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.core.common.util.DateUtil;
-import com.xiji.cashloan.core.common.util.NidGenerator;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
-import com.xiji.cashloan.core.common.util.ShardTableUtil;
-import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.common.util.*;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
@@ -48,22 +37,9 @@ import com.xiji.cashloan.rc.mapper.SceneBusinessLogMapper;
 import com.xiji.cashloan.rc.mapper.SceneBusinessMapper;
 import com.xiji.cashloan.rc.model.TppBusinessModel;
 import com.xiji.cashloan.rc.model.TppServiceInfoModel;
-import com.xiji.cashloan.rc.service.SceneBusinessLogService;
-import com.xiji.cashloan.rc.service.SimpleBorrowCountService;
-import com.xiji.cashloan.rc.service.SimpleContactCountService;
-import com.xiji.cashloan.rc.service.SimpleVoicesCountService;
-import com.xiji.cashloan.rc.service.TppBusinessService;
-import com.xiji.cashloan.rule.domain.BorrowRuleResult;
-import com.xiji.cashloan.rule.domain.BorrowScoreResult;
-import com.xiji.cashloan.rule.domain.RuleEngine;
-import com.xiji.cashloan.rule.domain.RuleEngineConfig;
-import com.xiji.cashloan.rule.domain.RuleEngineInfo;
-import com.xiji.cashloan.rule.mapper.BorrowRuleEngineMapper;
-import com.xiji.cashloan.rule.mapper.BorrowRuleResultMapper;
-import com.xiji.cashloan.rule.mapper.BorrowScoreResultMapper;
-import com.xiji.cashloan.rule.mapper.RuleEngineConfigMapper;
-import com.xiji.cashloan.rule.mapper.RuleEngineInfoMapper;
-import com.xiji.cashloan.rule.mapper.RuleEngineMapper;
+import com.xiji.cashloan.rc.service.*;
+import com.xiji.cashloan.rule.domain.*;
+import com.xiji.cashloan.rule.mapper.*;
 import com.xiji.cashloan.rule.model.ManageReviewModel;
 import com.xiji.cashloan.rule.model.ManageRuleResultModel;
 import com.xiji.cashloan.rule.model.srule.client.RulesExecutorUtil;
@@ -71,22 +47,17 @@ import com.xiji.cashloan.rule.model.srule.model.SimpleRule;
 import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tool.util.BigDecimalUtil;
+
+import javax.annotation.Resource;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -1509,7 +1480,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 人工复审
 	 */
 	@Override
-	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId) {
+	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,String isBlack) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 
@@ -1535,6 +1506,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if (BorrowModel.STATE_REFUSED.equals(state)|| BorrowModel.STATE_AUTO_REFUSED.equals(state)) {
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
+				// 将用户加入黑名单
+				if ("10".equals(isBlack)){
+					this.joinBlackList(userId);
+				}
 			}
 			// 人工复审成功 放款
 			if (BorrowModel.STATE_PASS.equals(state)) {
@@ -1554,6 +1529,31 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			throw new BussinessException("复审失败，当前标不存在");
 		}
 		return code;
+	}
+
+	/**
+	 * 将用户加入黑名单
+	 * @param userId
+	 */
+	private void joinBlackList(Long userId){
+		UserBaseInfo userBaseInfo = userBaseInfoMapper.findByUserId(userId);
+		if (userBaseInfo == null){
+			return;
+		}
+
+		// 将用户信息状态为黑名单
+		List list = new ArrayList();
+		list.add(userId);
+		userBaseInfoMapper.updateBlackIdNos(list);
+
+		// 将用户信息加入黑名单库中
+		UserBlackInfo userBlackInfo = new UserBlackInfo();
+		userBlackInfo.setCreateTime(new Date());
+		userBlackInfo.setIdNo(userBaseInfo.getIdNo());
+		userBlackInfo.setPhone(userBaseInfo.getPhone());
+		userBlackInfo.setRealName(userBaseInfo.getRealName());
+		userBlackInfo.setType(UserBaseInfoModel.USER_STATE_BLACK);
+		userBlackInfoMapper.save(userBlackInfo);
 	}
 
 	private String findBorrowDay(long userId) {

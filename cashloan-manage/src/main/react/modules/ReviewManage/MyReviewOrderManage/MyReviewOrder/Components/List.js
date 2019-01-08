@@ -1,6 +1,7 @@
 import React from 'react'
-import { Table, Modal, Icon } from 'antd';
+import {Table} from 'antd';
 import Lookdetails from "./Lookdetails"
+
 const objectAssign = require('object-assign');
 export default React.createClass({
     getInitialState() {
@@ -171,6 +172,7 @@ export default React.createClass({
             });
             //console.log(record);
             record.state1 = title == "人工复审" ? "27" : record.state;
+            record.isBlack = record.isBlack;
             this.refs.Lookdetails.refs.ManualReviewForm.setFieldsValue(record);
         })
     },

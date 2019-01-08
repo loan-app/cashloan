@@ -1,13 +1,9 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.model.ManageBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
@@ -22,18 +18,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import tool.util.DateUtil;
 import tool.util.StringUtil;
 
-import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
-import com.xiji.cashloan.cl.service.BorrowProgressService;
-import com.xiji.cashloan.cl.service.BorrowRepayLogService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.PayLogService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 借款信息表Controller
@@ -358,7 +351,8 @@ public class ManageBorrowController extends ManageBaseController {
 	@RequestMapping(value="/modules/manage/borrow/verifyBorrow.htm")
 	public void verifyBorrow(HttpServletRequest request, @RequestParam(value = "borrowId") Long borrowId,
 							 @RequestParam(value = "state") String state,
-							 @RequestParam(value = "remark") String remark) throws Exception {
+							 @RequestParam(value = "remark") String remark,
+							 @RequestParam(value = "isBlack")String isBlack) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>();
 		SysUser curUser = null;
 		Object obj = request.getSession().getAttribute("SysUser");
@@ -366,7 +360,7 @@ public class ManageBorrowController extends ManageBaseController {
 			curUser = (SysUser) obj;
 		}
 		try{
-		    int msg =clBorrowService.manualVerifyBorrow(borrowId, state, remark, curUser.getId());
+		    int msg =clBorrowService.manualVerifyBorrow(borrowId, state, remark, curUser.getId(),isBlack);
 			if(msg==1){
 				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "复审成功");

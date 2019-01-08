@@ -1,23 +1,8 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Col,
-  Select,
-  Tabs,
-} from 'antd';
-
-import RuleReport from './RuleReport';
+import {Form, Modal, Select, Tabs,} from 'antd';
 import ManualReviewForm from './ManualReviewForm'
 import Tab1 from './Tab1';
 import Tab2 from './Tab2';
-import Tab3 from './Tab3';
-import Tab4 from './Tab4';
-import Tab5 from './Tab5';
-import Tab7 from './Tab7';
 import Tab9 from './Tab9';
 import Tab8 from '../../../../common/LoanReport/Tab8';
 import Operator from '../../../../common/OperatorInfo/Operator';
@@ -56,6 +41,7 @@ var Lookdetails = React.createClass({
 
     let me = this;
     let params = this.refs.ManualReviewForm.getFieldsValue();
+    console.log(params);
     let record = this.props.record;
     this.refs.ManualReviewForm.validateFields((errors, values) => {
       if (!!errors) {
@@ -67,17 +53,17 @@ var Lookdetails = React.createClass({
         title: tips,
         onOk: function () {
           Utils.ajaxData({
-            url: '/modules/manage/borrow/verifyBorrow.htm',
-            data: { borrowId: record.borrowId, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark },
-            callback: (result) => {
-              if (result.code == 200) {
-                me.handleCancel();
-              };
-              let resType = result.code == 200 ? 'success' : 'warning';
-              Modal[resType]({
-                title: result.msg,
-              });
-            }
+            // url: '/modules/manage/borrow/verifyBorrow.htm',
+            // data: { borrowId: record.borrowId, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark,isBlack :params.state1 == "0" ? "20" :params.isBlack},
+            // callback: (result) => {
+            //   if (result.code == 200) {
+            //     me.handleCancel();
+            //   };
+            //   let resType = result.code == 200 ? 'success' : 'warning';
+            //   Modal[resType]({
+            //     title: result.msg,
+            //   });
+            // }
           });
         },
         onCancel: function () { }

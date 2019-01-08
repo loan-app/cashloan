@@ -1,23 +1,11 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Col,
-  Select,
-  Tabs,
-} from 'antd';
+import {Form, Modal, Select, Tabs,} from 'antd';
 
 import RuleReport from './RuleReport';
 import ManualReviewForm from './ManualReviewForm'
 import Tab1 from './Tab1';
 import Tab2 from './Tab2';
 import Tab3 from './Tab3';
-import Tab4 from './Tab4';
-import Tab5 from './Tab5';
-import Tab7 from './Tab7';
 import Tab8 from '../../../common/LoanReport/Tab8';
 
 const createForm = Form.create;
@@ -67,7 +55,7 @@ var Lookdetails = React.createClass({
         onOk: function () {
           Utils.ajaxData({
             url: '/modules/manage/borrow/verifyBorrow.htm',
-            data: { borrowId: record.id, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark },
+            data: { borrowId: record.id, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark},
             callback: (result) => {
               if (result.code == 200) {
                 me.handleCancel();

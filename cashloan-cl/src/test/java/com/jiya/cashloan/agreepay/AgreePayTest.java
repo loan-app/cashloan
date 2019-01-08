@@ -4,30 +4,22 @@ import com.alibaba.fastjson.JSON;
 import com.fuiou.mpay.encrypt.DESCoderFUIOU;
 import com.fuiou.mpay.encrypt.RSAUtils;
 import com.fuiou.util.MD5;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QryByFuiouOrderReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QryByFuiouOrderResp;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.cl.util.fuiou.XMapUtil;
 import com.xiji.cashloan.cl.util.fuiou.XmlBeanUtils;
 import com.xiji.cashloan.core.common.util.HttpsUtil;
 import com.xiji.cashloan.core.common.util.OrderNoUtil;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tool.util.DateUtil;
 import tool.util.StringUtil;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Auther: king
@@ -50,10 +42,10 @@ public class AgreePayTest {
     }
     public static void main(String[] args) {
 //        testBindMsg();
-//        testBindCommit();
+        testBindCommit();
 //        testbindQuery();
 //        testunBind();
-        testRepayment();
+//        testRepayment();
 //        testQueryOrderId();
 //        testCheckResult();
 //        testcardBinQuery();
@@ -163,6 +155,11 @@ public class AgreePayTest {
         System.out.println(JSON.toJSON(resp));
     }
 
+    /**
+     * 发送短信验证码接口
+     * @param beanReq
+     * @return
+     */
     public static BindXmlBeanResp bindMsg(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
@@ -215,6 +212,11 @@ public class AgreePayTest {
         return bindResult;
     }
 
+    /**
+     * 协议卡绑定
+     * @param beanReq
+     * @return
+     */
     public static BindXmlBeanResp bindCommit(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
@@ -271,7 +273,7 @@ public class AgreePayTest {
 
     /**
      * 查询签约结果
-     *
+     * 协议卡查询
      * @return
      */
     public static BindXmlBeanResp bindQuery(BindXmlBeanReq beanReq) {
@@ -326,7 +328,11 @@ public class AgreePayTest {
         return bindResult;
     }
 
-
+    /**
+     * 协议解绑接口
+     * @param beanReq
+     * @return
+     */
     public static BindXmlBeanResp unbind(BindXmlBeanReq beanReq) {
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         BindXmlBeanResp bindResult = new BindXmlBeanResp();
@@ -379,6 +385,11 @@ public class AgreePayTest {
         return bindResult;
     }
 
+    /**
+     * 协议支付接口
+     * @param beanReq
+     * @return
+     */
     public static OrderXmlBeanResp repayment(OrderXmlBeanReq beanReq){
         beanReq.setVersion(FuiouConstant.PROTOCOL_VERSION);
         OrderXmlBeanResp bindResult = new OrderXmlBeanResp();
@@ -437,7 +448,11 @@ public class AgreePayTest {
         return bindResult;
     }
 
-
+    /**
+     * 订单结果查询接口
+     * @param beanReq
+     * @return
+     */
     public static QryByFuiouOrderResp queryOrderId(QryByFuiouOrderReq beanReq){
         QryByFuiouOrderResp bindResult = new QryByFuiouOrderResp();
         String key = "5old71wihg2tqjug9kkpxnhx9hiujoqj";
@@ -484,7 +499,11 @@ public class AgreePayTest {
         return bindResult;
     }
 
-
+    /**
+     * 订单结果查询接口（商户订单号）
+     * @param beanReq
+     * @return
+     */
     public static OrderQryResp checkResult(OrderQryByMSsn beanReq){
         OrderQryResp bindResult = new OrderQryResp();
         String key = "5old71wihg2tqjug9kkpxnhx9hiujoqj";
@@ -532,6 +551,12 @@ public class AgreePayTest {
 //        modifyReqLog(orderNo,resp);
         return bindResult;
     }
+
+    /**
+     * 商户支持卡 Bin 查询接口
+     * @param beanReq
+     * @return
+     */
     public static BankCardResp cardBinQuery(BankCardReq beanReq) {
         BankCardResp bindResult = new BankCardResp();
         String key = "5old71wihg2tqjug9kkpxnhx9hiujoqj";

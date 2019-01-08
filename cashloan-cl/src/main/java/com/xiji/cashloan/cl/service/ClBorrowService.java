@@ -1,13 +1,13 @@
 package com.xiji.cashloan.cl.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.Borrow;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 借款信息表Service
@@ -166,7 +166,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param remark
 	 * @return 
 	 */
-	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId);
+	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,String isBlack);
 	
 	/**
 	 * 借款部分还款信息
