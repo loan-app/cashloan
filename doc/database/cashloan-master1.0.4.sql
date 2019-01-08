@@ -2162,7 +2162,7 @@ CREATE TABLE `cl_user_messages` (
   `time` datetime DEFAULT NULL COMMENT '收发时间',
   `type` varchar(2) DEFAULT '' COMMENT '收发标识，10发20收',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户短信表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户短信表';
 
 -- ----------------------------
 -- Records of cl_user_messages

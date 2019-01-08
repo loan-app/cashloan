@@ -162,4 +162,12 @@ public class YixinController {
             return null;
         }
     }
+
+    public static void main(String[] args) throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id_no", "330327198211304274");
+        jsonObject.put("name", "李希梁");
+        String strData = encrypt(jsonObject.toJSONString(), "4e6c59f09de5767e");
+        System.out.println(strData);
+    }
 }

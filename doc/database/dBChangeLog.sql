@@ -280,7 +280,7 @@ CREATE TABLE `cl_blacklist_xinde_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='信德数聚灰名单结果';
 
 -- 添加用户短信内容
-ALTER table cl_user_messages ADD content text COMMENT '短信内容';
+ALTER table cl_user_messages ADD content text CHARACTER SET utf8mb4 COMMENT '短信内容';
 
 -- 给用户短信表添加 索引
 ALTER TABLE cl_user_messages ADD INDEX index_user_id ( `user_id` ) ;
@@ -443,3 +443,6 @@ update cl_rc_tpp_business set state = '20' where nid in ('MagicApply', 'MagicPos
 -- 删除信用报告菜单
 delete from arc_sys_menu where id in (1001,1002,1003,1006);
 delete from arc_sys_role_menu where menu_id in (1001,1002,1003,1006);
+
+-- 修改app_list长度
+ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用程序列表';

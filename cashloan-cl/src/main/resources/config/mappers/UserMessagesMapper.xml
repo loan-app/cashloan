@@ -128,10 +128,10 @@
         `phone` varchar(20) DEFAULT '' COMMENT '手机号码',
         `time` datetime DEFAULT NULL COMMENT '收发时间',
         `type` varchar(2) DEFAULT '' COMMENT '收发标识，10发20收',
-        `content` text COMMENT '短信内容',
+        `content` text CHARACTER SET utf8mb4 COMMENT '短信内容',
          PRIMARY KEY (`id`),
          INDEX `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户短信表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户短信表';
 
     </select>
 </mapper>
