@@ -103,10 +103,10 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 							OperatorRespDetail operatorRespDetail = new OperatorRespDetail(operatorReqLog.getId(), operatorReqLog.getTaskId(), result);
 							operatorRespDetailService.insert(operatorRespDetail);
 						} else {
-							OperatorRespDetail updateDetail = new OperatorRespDetail();
-							updateDetail.setId(oldDetail.getId());
-							updateDetail.setOperatorData(result);
-							operatorRespDetailService.updateById(updateDetail);
+							Map<String, Object> updateMap = new HashMap<>();
+							updateMap.put("id", oldDetail.getId());
+							updateMap.put("operatorData", result);
+							operatorRespDetailService.updateSelective(updateMap);
 						}
 						operatorService.saveOperatorInfos(result, userAuth.getUserId(),DateUtil.getNow(), baseInfo.getPhone(), operatorReqLog.getId());
 					} else {
