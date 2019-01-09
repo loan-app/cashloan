@@ -7,7 +7,7 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="req_log_id" property="reqLogId" jdbcType="BIGINT" />
         <result column="task_id" property="taskId" jdbcType="VARCHAR" />
-        <result column="operator_data" property="operatorData" jdbcType="VARCHAR" />
+        <result column="operator_data" property="operatorData" jdbcType="LONGVARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
     
@@ -29,7 +29,7 @@
                 and task_id = #{taskId,jdbcType=VARCHAR}
             </if>
             <if test="operatorData != null and operatorData != '' ">
-                and operator_data = #{operatorData,jdbcType=VARCHAR}
+                and operator_data = #{operatorData,jdbcType=LONGVARCHAR}
             </if>
             <if test="createTime != null">
                 and create_time = #{createTime,jdbcType=TIMESTAMP}
@@ -39,7 +39,7 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorRespDetail">
-        insert into cl_operator_resp_detail(req_log_id,task_id,operator_data,create_time)values(#{reqLogId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{operatorData,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+        insert into cl_operator_resp_detail(req_log_id,task_id,operator_data,create_time)values(#{reqLogId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{operatorData,jdbcType=LONGVARCHAR},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     
@@ -47,7 +47,7 @@
         update cl_operator_resp_detail set 
             req_log_id = #{reqLogId,jdbcType=BIGINT},
             task_id = #{taskId,jdbcType=VARCHAR},
-            operator_data = #{operatorData,jdbcType=VARCHAR},
+            operator_data = #{operatorData,jdbcType=LONGVARCHAR},
             create_time = #{createTime,jdbcType=TIMESTAMP}
         where id = #{id ,jdbcType=INTEGER}
     </update>
@@ -63,7 +63,7 @@
                 task_id = #{taskId,jdbcType=VARCHAR},
             </if>
             <if test="operatorData != null and operatorData != '' ">
-                operator_data = #{operatorData,jdbcType=VARCHAR},
+                operator_data = #{operatorData,jdbcType=LONGVARCHAR},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP}

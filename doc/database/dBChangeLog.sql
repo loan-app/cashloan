@@ -142,7 +142,7 @@ ALTER TABLE cl_calls_outside_fee change type type tinyint(4) NOT NULL COMMENT '�
 -- 屏蔽代理商管理菜单
 delete from arc_sys_role_menu where menu_id in (3,4,30,31,32,33,34,35,36,37,38);
 
---黑名单接口 2018-12-10
+-- 黑名单接口 2018-12-10
 DROP TABLE IF EXISTS `cl_name_blacklist`;
 CREATE TABLE `cl_name_blacklist` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增字段',

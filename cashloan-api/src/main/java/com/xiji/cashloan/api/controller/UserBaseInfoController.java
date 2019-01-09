@@ -515,12 +515,15 @@ public class UserBaseInfoController extends BaseController {
             buffer.append(list.get(0).getResPath()).append(";");
         }
 
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("workingImg", StringUtil.isNull(buffer));
-        if (info != null) {
-            paramMap.put("id", info.getId());
+        boolean flag = true;
+        if(StringUtil.isNotBlank(buffer)) {
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("workingImg", buffer.toString());
+            if (info != null) {
+                paramMap.put("id", info.getId());
+            }
+            flag = userBaseInfoService.updateSelective(paramMap);
         }
-        boolean flag = userBaseInfoService.updateSelective(paramMap);
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if (flag) {
