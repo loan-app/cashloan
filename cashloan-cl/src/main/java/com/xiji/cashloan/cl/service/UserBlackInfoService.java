@@ -1,15 +1,14 @@
 package com.xiji.cashloan.cl.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.NameBlackWhiteUser;
 import com.xiji.cashloan.cl.domain.UserBlackInfo;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.github.pagehelper.Page;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 黑名单Service
@@ -74,6 +73,26 @@ public interface UserBlackInfoService extends BaseService<UserBlackInfo, Long>{
 	 */
 	void deleteBlackOrWhiteInfo(Long userId,String state);
 
+	/**
+	 * 删除黑/白名单状态
+	 * @param userId
+	 * @param state
+	 */
+	void deleteBlackOrWhite(Long userId, String state,String type);
+
+	/**
+	 * 添加黑名单状态
+	 * @param userId
+	 * @param state
+	 */
+	void addNameBlack(Long userId, String state);
+
+	/**
+	 * 添加白名单状态
+	 * @param userId
+	 * @param state
+	 */
+	void addNameWhite(Long userId, String state);
 	/**
 	 * 导入黑名单
 	 * @param userInfoFile

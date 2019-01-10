@@ -59,8 +59,8 @@ public class ManageBorrowController extends ManageBaseController {
 	
 	/**
 	 *借款信息列表
-	 * @param search
-	 * @param currentPage
+	 * @param searchParams
+	 * @param current
 	 * @param pageSize
 	 */
 	@RequestMapping(value="/modules/manage/borrow/list.htm",method={RequestMethod.GET,RequestMethod.POST})
@@ -80,7 +80,7 @@ public class ManageBorrowController extends ManageBaseController {
 
 	/**
 	 *借款进度列表
-	 * @param search
+	 * @param searchParams
 	 * @param currentPage
 	 * @param pageSize
 	 */
@@ -142,7 +142,7 @@ public class ManageBorrowController extends ManageBaseController {
  
 	/**
 	 * 借款审核列表     
-	 * @param search
+	 * @param searchParams
 	 * @param currentPage
 	 * @param pageSize
 	 */
@@ -205,8 +205,8 @@ public class ManageBorrowController extends ManageBaseController {
 	
 	/**
 	 * 借款还款信息列表     
-	 * @param search
-	 * @param currentPage
+	 * @param searchParams
+	 * @param current
 	 * @param pageSize
 	 */
 	@RequestMapping(value="/modules/manage/borrow/borrowRepayList.htm",method={RequestMethod.GET,RequestMethod.POST})
@@ -301,9 +301,7 @@ public class ManageBorrowController extends ManageBaseController {
 
 	/**
 	 * 借款还款信息详细页面      
-	 * @param search
-	 * @param currentPage
-	 * @param pageSize
+	 * @param borrowId
 	 */
 	@RequestMapping(value="/modules/manage/borrow/borrowRepayContent.htm",method={RequestMethod.GET,RequestMethod.POST})
 	@RequiresPermission(code = "modules:manage:borrow:borrowRepayContent",name = "借款还款信息详细页面    ")
@@ -378,8 +376,6 @@ public class ManageBorrowController extends ManageBaseController {
 
 	/**
 	 * 重新发起审核
-	 * @param request
-	 * @param response
 	 * @param borrowId
 	 */
 	@RequestMapping(value = "/modules/manage/borrow/reVerifyBorrowData.htm",method=RequestMethod.POST)
