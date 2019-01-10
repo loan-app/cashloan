@@ -136,3 +136,6 @@ ADD INDEX `req_log_id` (`req_log_id`) USING BTREE;
 
 ALTER TABLE `cl_operator_resp_detail`
 ADD INDEX `task_id` (`task_id`) USING BTREE ;
+
+ALTER TABLE `cl_operator_report`
+ADD INDEX `user_id` (`user_id`) USING BTREE ;
