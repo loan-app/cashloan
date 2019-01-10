@@ -1,14 +1,7 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.NameBlackWhiteUser;
 import com.xiji.cashloan.cl.domain.NameBlacklist;
 import com.xiji.cashloan.cl.domain.NameWhitelist;
@@ -16,6 +9,15 @@ import com.xiji.cashloan.cl.domain.UserBlackInfo;
 import com.xiji.cashloan.cl.mapper.NameBlacklistMapper;
 import com.xiji.cashloan.cl.mapper.NameWhitelistMapper;
 import com.xiji.cashloan.cl.mapper.UserAuthMapper;
+import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
+import com.xiji.cashloan.cl.service.UserBlackInfoService;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import com.xiji.cashloan.core.model.UserBaseInfoModel;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,16 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
-import com.xiji.cashloan.cl.service.UserBlackInfoService;
-import com.xiji.cashloan.core.common.mapper.BaseMapper;
-import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.core.common.util.StringUtil;
-import com.xiji.cashloan.core.domain.UserBaseInfo;
-import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
-import com.xiji.cashloan.core.model.UserBaseInfoModel;
+import javax.annotation.Resource;
+import java.util.*;
 
 
 /**
@@ -67,8 +61,8 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 	@Resource
 	private NameWhitelistMapper nameWhitelistMapper;
 
-	private static final String DIMENSION_KEY_IDNO = "01";
-	private static final String DIMENSION_KEY_PHONE = "02";
+//	private static final String DIMENSION_KEY_IDNO = "01";
+//	private static final String DIMENSION_KEY_PHONE = "02";
 
 	@Override
 	public BaseMapper<UserBlackInfo, Long> getMapper() {
@@ -201,18 +195,16 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 	
 	/**
 	 * 黑名单操作
-	 * @param idNo
-	 * @param userId
-	 * @param realName
+	 * @param baseInfo
 	 */
 	public void validUserBlackInfo(UserBaseInfo baseInfo){
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		//查询白名单用户
-		paramMap.put("dimensionkey", DIMENSION_KEY_IDNO);
+		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
 		paramMap.put("dimensionvalue", baseInfo.getIdNo());
 		List<NameWhitelist> nameWhitelists1 = nameWhitelistMapper.listSelective(paramMap);
 		paramMap.clear();
-		paramMap.put("dimensionkey", DIMENSION_KEY_PHONE);
+		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
 		paramMap.put("dimensionvalue", baseInfo.getPhone());
 		List<NameWhitelist> nameWhitelists2 = nameWhitelistMapper.listSelective(paramMap);
 		if(nameWhitelists1.size() > 0 || nameWhitelists2.size() > 0){
@@ -223,11 +215,11 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 		
 		//查询黑名单用户
 		paramMap.clear();
-		paramMap.put("dimensionkey", DIMENSION_KEY_IDNO);
+		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
 		paramMap.put("dimensionvalue", baseInfo.getIdNo());
 		List<NameBlacklist> nameBlacklists1 = nameBlacklistMapper.listSelective(paramMap);
 		paramMap.clear();
-		paramMap.put("dimensionkey", DIMENSION_KEY_PHONE);
+		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
 		paramMap.put("dimensionvalue", baseInfo.getPhone());
 		List<NameBlacklist> nameBlacklists2 = nameBlacklistMapper.listSelective(paramMap);
 		if(nameBlacklists1.size() > 0 || nameBlacklists2.size() > 0) {
@@ -274,7 +266,7 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 	public List<List<String>> importUserInfoNew(MultipartFile userInfoFile, String type) throws Exception {
 		List<List<String>> nameInfos = new ArrayList<List<String>>();
 		List<String> values = new ArrayList<String>();
-		String source = "IP";
+		// String source = "IP";
 		values.add("类别");
 		values.add("对应值");
 		values.add("处理结果");
@@ -303,11 +295,11 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 					values = new ArrayList<String>();
 					values.add(dimensionKey);
 					values.add(dimensionValue);
-					if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+					if((StringUtil.equals(BlacklistConstant.DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(BlacklistConstant.DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
 						paramMap.clear();
 						paramMap.put("dimensionkey", dimensionKey);
 						paramMap.put("dimensionvalue", dimensionValue);
-						paramMap.put("source", source);
+						paramMap.put("source", BlacklistConstant.SOURCE_IP);
 						NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
 						if(nameBlack == null) {
 							nameBlack = new NameBlacklist();
@@ -315,13 +307,13 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 							nameBlack.setLastmodifytime(date);
 							nameBlack.setDimensionkey(dimensionKey);
 							nameBlack.setDimensionvalue(dimensionValue);
-							nameBlack.setSource(source);
-							nameBlack.setStatus(0);
+							nameBlack.setSource(BlacklistConstant.SOURCE_IP);
+							nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
 							nameBlacklistMapper.save(nameBlack);
 
 							//需要更新的用户信息
 							paramMap.clear();
-							if(StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey)) {
+							if(StringUtil.equals(BlacklistConstant.DIMENSION_KEY_IDNO, dimensionKey)) {
 								paramMap.put("idNo", row.getCell(1).toString());
 							} else {
 								paramMap.put("phone", row.getCell(1).toString());
@@ -347,11 +339,11 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 					values = new ArrayList<String>();
 					values.add(dimensionKey);
 					values.add(dimensionValue);
-					if((StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+					if((StringUtil.equals(BlacklistConstant.DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(BlacklistConstant.DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
 						paramMap.clear();
 						paramMap.put("dimensionkey", dimensionKey);
 						paramMap.put("dimensionvalue", dimensionValue);
-						paramMap.put("source", source);
+						paramMap.put("source", BlacklistConstant.SOURCE_IP);
 						NameWhitelist nameWhite = nameWhitelistMapper.findSelective(paramMap);
 						if(nameWhite == null) {
 							nameWhite = new NameWhitelist();
@@ -359,13 +351,13 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 							nameWhite.setLastmodifytime(date);
 							nameWhite.setDimensionkey(dimensionKey);
 							nameWhite.setDimensionvalue(dimensionValue);
-							nameWhite.setSource(source);
-							nameWhite.setStatus(0);
+							nameWhite.setSource(BlacklistConstant.SOURCE_IP);
+							nameWhite.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
 							nameWhitelistMapper.save(nameWhite);
 
 							//需要更新的用户信息
 							paramMap.clear();
-							if(StringUtil.equals(DIMENSION_KEY_IDNO, dimensionKey)) {
+							if(StringUtil.equals(BlacklistConstant.DIMENSION_KEY_IDNO, dimensionKey)) {
 								paramMap.put("idNo", row.getCell(1).toString());
 							} else {
 								paramMap.put("phone", row.getCell(1).toString());

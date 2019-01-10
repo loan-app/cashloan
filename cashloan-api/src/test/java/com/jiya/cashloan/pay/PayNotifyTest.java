@@ -3,6 +3,7 @@ package com.jiya.cashloan.pay;
 import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.cl.util.fuiou.MD5Util;
 import com.xiji.cashloan.core.common.util.HttpsUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,8 +58,8 @@ public class PayNotifyTest {
      * 测试放款通知。付款成功。只需要改下orderNo 其他的可以不用改
      */
     public static void testPaymentNotify() {
-        //String url = "http://47.110.61.233:8080/pay/fuiou/paymentNotify.htm";
-        String url = "http://jy.xyhuigou.com/pay/fuiou/paymentNotify.htm";
+        String url = "http://47.110.61.233:8080/pay/fuiou/paymentNotify.htm";
+        //String url = "http://jy.xyhuigou.com/pay/fuiou/paymentNotify.htm";
         Map<String,String> param = new HashMap<String, String>();
         param.put("accntnm","陈纯洪");
         param.put("accntno","6228480328744607875");
@@ -66,7 +67,7 @@ public class PayNotifyTest {
         param.put("bankno","0103");
         param.put("fuorderno","690909545406");
 //        param.put("futporderno","690909545406");
-        String orderNo = "1812181818414130";
+        String orderNo = "1901071603484555";
         String mac = getSign("0002900F0345178","123456",orderNo,"20181129","6228480328744607875","100000");
         param.put("mac",mac);
         param.put("merdt","20181129");

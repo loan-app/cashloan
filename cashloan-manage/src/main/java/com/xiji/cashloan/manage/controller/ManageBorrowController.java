@@ -352,7 +352,7 @@ public class ManageBorrowController extends ManageBaseController {
 	public void verifyBorrow(HttpServletRequest request, @RequestParam(value = "borrowId") Long borrowId,
 							 @RequestParam(value = "state") String state,
 							 @RequestParam(value = "remark") String remark,
-							 @RequestParam(value = "isBlack")String isBlack) throws Exception {
+							 @RequestParam(value = "isBlack")Boolean isBlack) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>();
 		SysUser curUser = null;
 		Object obj = request.getSession().getAttribute("SysUser");

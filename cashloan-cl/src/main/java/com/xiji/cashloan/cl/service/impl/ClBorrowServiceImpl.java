@@ -12,10 +12,7 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
-import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistBaseTask;
-import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistProcess;
-import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistUtil;
-import com.xiji.cashloan.cl.service.impl.assist.blacklist.XindeDataTask;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -163,6 +160,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private OperatorVoiceCntMapper operatorVoiceCntMapper;
 	@Resource
 	private OperatorVoiceMapper operatorVoiceMapper;
+	@Resource
+	private NameBlacklistMapper nameBlacklistMapper;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1112,7 +1111,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	/**
 	 * 修改标的状态
 	 * 
-	 * @param borrow
+	 * @param preState
 	 * @param state
 	 */
 	@Override
@@ -1156,8 +1155,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	/**
 	 * 信用额度修改
 	 * 
-	 * @param borrow
-	 * @param state
+	 * @param amount
+	 * @param type
 	 */
 	@Override
 	public int modifyCredit(Long userId, double amount, String type) {
@@ -1480,7 +1479,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 人工复审
 	 */
 	@Override
-	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,String isBlack) {
+	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 
@@ -1507,8 +1506,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
 				// 将用户加入黑名单
-				if ("10".equals(isBlack)){
-					this.joinBlackList(userId);
+				if (isBlack){
+					this.joinBlackList(borrow.getUserId());
 				}
 			}
 			// 人工复审成功 放款
@@ -1544,16 +1543,54 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		// 将用户信息状态为黑名单
 		List list = new ArrayList();
 		list.add(userId);
-		userBaseInfoMapper.updateBlackIdNos(list);
+		int countUpdateBlack = userBaseInfoMapper.updateBlackIdNos(list);
+		if (countUpdateBlack != 1){
+			throw new BussinessException("更新用户信息状态为黑名单失败 userId ==>"+userId);
+		}
 
-		// 将用户信息加入黑名单库中
-		UserBlackInfo userBlackInfo = new UserBlackInfo();
-		userBlackInfo.setCreateTime(new Date());
-		userBlackInfo.setIdNo(userBaseInfo.getIdNo());
-		userBlackInfo.setPhone(userBaseInfo.getPhone());
-		userBlackInfo.setRealName(userBaseInfo.getRealName());
-		userBlackInfo.setType(UserBaseInfoModel.USER_STATE_BLACK);
-		userBlackInfoMapper.save(userBlackInfo);
+		// 将用户手机号加入黑名单库中
+		Map<String,Object> paramMap = new HashMap();
+		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+		paramMap.put("dimensionvalue",userBaseInfo.getPhone());
+		paramMap.put("source", BlacklistConstant.SOURCE_ADD);
+		NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
+		if (nameBlack != null){
+			logger.info("手机号加入黑名单未处理，已存在对应信息 nameBlack ==> "+ nameBlack);
+			return;
+		}
+		nameBlack = new NameBlacklist();
+		nameBlack.setCreatetime(new Date());
+		nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
+		nameBlack.setDimensionvalue(userBaseInfo.getPhone());
+		nameBlack.setLastmodifytime(new Date());
+		nameBlack.setSource(BlacklistConstant.SOURCE_ADD);
+		nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+		int countNameBlackPhone = nameBlacklistMapper.save(nameBlack);
+		if (countNameBlackPhone != 1){
+			throw new BussinessException("用户添加手机号黑名单失败 nameBlack ==>"+nameBlack);
+		}
+
+        // 将用户身份证加入黑名单库中
+        paramMap.clear();
+        paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+        paramMap.put("dimensionvalue",userBaseInfo.getIdNo());
+        paramMap.put("source", BlacklistConstant.SOURCE_ADD);
+        nameBlack = nameBlacklistMapper.findSelective(paramMap);
+        if (nameBlack != null){
+            logger.info("身份证号加入黑名单未处理，已存在对应信息 nameBlack ==> "+ nameBlack);
+            return;
+        }
+        nameBlack = new NameBlacklist();
+        nameBlack.setCreatetime(new Date());
+        nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_IDNO);
+        nameBlack.setDimensionvalue(userBaseInfo.getIdNo());
+        nameBlack.setLastmodifytime(new Date());
+        nameBlack.setSource(BlacklistConstant.SOURCE_ADD);
+        nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+        int countNameBlackIdNo = nameBlacklistMapper.save(nameBlack);
+        if (countNameBlackIdNo != 1){
+            throw new BussinessException("用户添加身份证黑名单失败 nameBlack ==>"+nameBlack);
+        }
 	}
 
 	private String findBorrowDay(long userId) {
@@ -1929,7 +1966,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 规则命中审核不通过或者人工复审时，对借款的处理
 	 * @param resultType
 	 * @param borrow
-	 * @param flag 是否需要处理额度
+	 * @param remark 备注
 	 */
 	public void handleBorrow(String resultType,Borrow borrow,String remark){
 		UserBaseInfo userInfo = userBaseInfoService.findByUserId(borrow.getUserId());
