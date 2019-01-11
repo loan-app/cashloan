@@ -39,7 +39,7 @@ public class CallsOutSideFeeConstant {
 //    //魔杖多头费用
 //    public static double FEE_MULTI_INFO = 0.3;
 //    //魔杖黑灰名单费用
-    public static double FEE_BLACK_GRAY = 0.2;
+    public static double FEE_BLACK_GRAY = -0.2;
     //魔杖贷后行为费用
     public static double FEE_POST_LOAD = -0.5;
     //发送短信费用
