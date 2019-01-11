@@ -1990,7 +1990,7 @@ CREATE TABLE `cl_user_base_info` (
   `company_name` varchar(50) DEFAULT '' COMMENT '公司名称',
   `company_phone` varchar(32) DEFAULT '' COMMENT '公司电话',
   `company_addr` varchar(255) DEFAULT '' COMMENT '公司地址',
-  `company_detail_addr` varchar(64) DEFAULT '' COMMENT '公司详细地址',
+  `company_detail_addr` varchar(255) DEFAULT '' COMMENT '公司详细地址',
   `company_coordinate` varchar(100) DEFAULT '' COMMENT '公司坐标(经度,纬度)',
   `salary` varchar(30) DEFAULT '' COMMENT '月薪范围',
   `working_years` varchar(30) DEFAULT '' COMMENT '工作年限',
@@ -2162,7 +2162,7 @@ CREATE TABLE `cl_user_messages` (
   `time` datetime DEFAULT NULL COMMENT '收发时间',
   `type` varchar(2) DEFAULT '' COMMENT '收发标识，10发20收',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户短信表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8utf8mb4 COMMENT='用户短信表';
 
 -- ----------------------------
 -- Records of cl_user_messages
