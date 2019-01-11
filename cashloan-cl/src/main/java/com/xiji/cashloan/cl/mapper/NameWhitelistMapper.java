@@ -1,9 +1,9 @@
 package com.xiji.cashloan.cl.mapper;
 
 import com.xiji.cashloan.cl.domain.NameBlackWhiteUser;
+import com.xiji.cashloan.cl.domain.NameWhitelist;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
-import com.xiji.cashloan.cl.domain.NameWhitelist;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +20,11 @@ public interface NameWhitelistMapper extends BaseMapper<NameWhitelist, Long> {
 
 
     List<NameBlackWhiteUser> queryByParams(Map<String, Object> params);
+
+    /**
+     * 更新白名单状态
+     * @param params
+     * @return
+     */
+    Integer updateNameWhitelistStatus(Map<String,Object> params);
 }

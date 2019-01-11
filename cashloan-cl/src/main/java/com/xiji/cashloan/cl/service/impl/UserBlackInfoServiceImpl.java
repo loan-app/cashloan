@@ -202,10 +202,12 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 		//查询白名单用户
 		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
 		paramMap.put("dimensionvalue", baseInfo.getIdNo());
+		paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
 		List<NameWhitelist> nameWhitelists1 = nameWhitelistMapper.listSelective(paramMap);
 		paramMap.clear();
 		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
 		paramMap.put("dimensionvalue", baseInfo.getPhone());
+		paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
 		List<NameWhitelist> nameWhitelists2 = nameWhitelistMapper.listSelective(paramMap);
 		if(nameWhitelists1.size() > 0 || nameWhitelists2.size() > 0){
 			baseInfo.setState(UserBaseInfoModel.USER_STATE_WHITE);
@@ -217,10 +219,12 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 		paramMap.clear();
 		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
 		paramMap.put("dimensionvalue", baseInfo.getIdNo());
+		paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
 		List<NameBlacklist> nameBlacklists1 = nameBlacklistMapper.listSelective(paramMap);
 		paramMap.clear();
 		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
 		paramMap.put("dimensionvalue", baseInfo.getPhone());
+		paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
 		List<NameBlacklist> nameBlacklists2 = nameBlacklistMapper.listSelective(paramMap);
 		if(nameBlacklists1.size() > 0 || nameBlacklists2.size() > 0) {
 			baseInfo.setState(UserBaseInfoModel.USER_STATE_BLACK);
@@ -255,12 +259,185 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 					params.put("idNo", baseInfo.getIdNo());
 					userBlackInfoMapper.deleteByIdNo(params);
 				}
-				
+
+
 			}
 		}
-		
-		
+
+
 	}
+
+	/**
+	 * 删除黑/白名单状态
+	 * @param userId
+	 * @param state
+	 */
+	@Override
+	public void deleteBlackOrWhite(Long userId, String state,String type){
+
+		if(StringUtil.isNotBlank(state) && UserBaseInfoModel.USER_STATE_NOBLACK.equals(state) && userId != null && userId > 0) {
+			UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(userId);
+			Date date = new Date();
+			Map<String,Object> paramsPhone = new HashMap<String, Object>();
+			paramsPhone.put("dimensionkey",BlacklistConstant.DIMENSION_KEY_PHONE);
+			paramsPhone.put("dimensionvalue",baseInfo.getPhone());
+			paramsPhone.put("status",BlacklistConstant.BLACK_LIST_STATUS_DELETE);
+			paramsPhone.put("lastmodifytime",date);
+
+
+			Map<String,Object> paramsIdNo = new HashMap<String, Object>();
+				paramsIdNo.put("dimensionkey",BlacklistConstant.DIMENSION_KEY_IDNO);
+				paramsIdNo.put("dimensionvalue",baseInfo.getIdNo());
+				paramsIdNo.put("status",BlacklistConstant.BLACK_LIST_STATUS_DELETE);
+			    paramsIdNo.put("lastmodifytime",date);
+
+			// 删除黑名单
+			if("black".equals(type)){
+				if (StringUtil.isNotBlank(baseInfo.getPhone())){
+					nameBlacklistMapper.updateNameBlacklistStatus(paramsPhone);
+				}
+				if (StringUtil.isNotBlank(baseInfo.getIdNo())){
+					nameBlacklistMapper.updateNameBlacklistStatus(paramsIdNo);
+				}
+			}
+
+			// 删除白名单
+			if ("white".equals(type)){
+				if (StringUtil.isNotBlank(baseInfo.getPhone())){
+					nameWhitelistMapper.updateNameWhitelistStatus(paramsPhone);
+				}
+				if (StringUtil.isNotBlank(baseInfo.getIdNo())){
+					nameWhitelistMapper.updateNameWhitelistStatus(paramsIdNo);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * 添加黑名单
+	 * @param userId
+	 * @param state
+	 */
+	@Override
+	public void addNameBlack(Long userId, String state){
+		if(StringUtil.isNotBlank(state) && UserBaseInfoModel.USER_STATE_BLACK.equals(state) && userId != null && userId > 0) {
+			UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(userId);
+			Date date = new Date();
+
+			// 添加手机号黑名单
+			Map<String, Object> paramsPhone = new HashMap<String, Object>();
+			paramsPhone.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+			paramsPhone.put("dimensionvalue", baseInfo.getPhone());
+			paramsPhone.put("status", BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+			paramsPhone.put("lastmodifytime", date);
+			nameBlacklistMapper.updateNameBlacklistStatus(paramsPhone);
+
+			paramsPhone.clear();
+			paramsPhone.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+			paramsPhone.put("dimensionvalue", baseInfo.getPhone());
+			paramsPhone.put("source", BlacklistConstant.SOURCE_ADD);
+			NameBlacklist nameBlacklistPhone = nameBlacklistMapper.findSelective(paramsPhone);
+			if (nameBlacklistPhone == null) {
+				nameBlacklistPhone = new NameBlacklist();
+				nameBlacklistPhone.setSource(BlacklistConstant.SOURCE_ADD);
+				nameBlacklistPhone.setLastmodifytime(date);
+				nameBlacklistPhone.setCreatetime(date);
+				nameBlacklistPhone.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+				nameBlacklistPhone.setDimensionvalue(baseInfo.getPhone());
+				nameBlacklistPhone.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
+				nameBlacklistMapper.save(nameBlacklistPhone);
+			}
+
+			// 添加身份证黑名单
+			Map<String, Object> paramsIdNo = new HashMap<String, Object>();
+			paramsIdNo.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+			paramsIdNo.put("dimensionvalue", baseInfo.getIdNo());
+			paramsIdNo.put("status", BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+			paramsIdNo.put("lastmodifytime", date);
+			nameBlacklistMapper.updateNameBlacklistStatus(paramsIdNo);
+
+			paramsIdNo.clear();
+			paramsIdNo.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+			paramsIdNo.put("dimensionvalue", baseInfo.getIdNo());
+			paramsIdNo.put("source", BlacklistConstant.SOURCE_ADD);
+			NameBlacklist nameBlacklistIdNo = nameBlacklistMapper.findSelective(paramsIdNo);
+			if (nameBlacklistIdNo == null) {
+				nameBlacklistIdNo = new NameBlacklist();
+				nameBlacklistIdNo.setSource(BlacklistConstant.SOURCE_ADD);
+				nameBlacklistIdNo.setLastmodifytime(date);
+				nameBlacklistIdNo.setCreatetime(date);
+				nameBlacklistIdNo.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+				nameBlacklistIdNo.setDimensionvalue(baseInfo.getIdNo());
+				nameBlacklistIdNo.setDimensionkey(BlacklistConstant.DIMENSION_KEY_IDNO);
+				nameBlacklistMapper.save(nameBlacklistIdNo);
+			}
+		}
+	}
+
+
+	/**
+	 * 添加白名单状态
+	 * @param userId
+	 * @param state
+	 */
+	@Override
+	public void addNameWhite(Long userId, String state){
+		if(StringUtil.isNotBlank(state) && UserBaseInfoModel.USER_STATE_WHITE.equals(state) && userId != null && userId > 0) {
+			UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(userId);
+			Date date = new Date();
+
+			// 添加手机号白名单
+			Map<String, Object> paramsPhone = new HashMap<String, Object>();
+			paramsPhone.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+			paramsPhone.put("dimensionvalue", baseInfo.getPhone());
+			paramsPhone.put("status", BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+			paramsPhone.put("lastmodifytime", date);
+			nameWhitelistMapper.updateNameWhitelistStatus(paramsPhone);
+
+			paramsPhone.clear();
+			paramsPhone.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+			paramsPhone.put("dimensionvalue", baseInfo.getPhone());
+			paramsPhone.put("source", BlacklistConstant.SOURCE_ADD);
+			NameWhitelist nameWhitelistPhone = nameWhitelistMapper.findSelective(paramsPhone);
+			if (nameWhitelistPhone == null) {
+				nameWhitelistPhone = new NameWhitelist();
+				nameWhitelistPhone.setSource(BlacklistConstant.SOURCE_ADD);
+				nameWhitelistPhone.setLastmodifytime(date);
+				nameWhitelistPhone.setCreatetime(date);
+				nameWhitelistPhone.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+				nameWhitelistPhone.setDimensionvalue(baseInfo.getPhone());
+				nameWhitelistPhone.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
+				nameWhitelistMapper.save(nameWhitelistPhone);
+			}
+
+			// 添加身份证白名单
+			Map<String, Object> paramsIdNo = new HashMap<String, Object>();
+			paramsIdNo.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+			paramsIdNo.put("dimensionvalue", baseInfo.getIdNo());
+			paramsIdNo.put("status", BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+			paramsIdNo.put("lastmodifytime", date);
+			nameBlacklistMapper.updateNameBlacklistStatus(paramsIdNo);
+
+			paramsIdNo.clear();
+			paramsIdNo.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+			paramsIdNo.put("dimensionvalue", baseInfo.getIdNo());
+			paramsIdNo.put("source", BlacklistConstant.SOURCE_ADD);
+			NameWhitelist nameWhitelistIdNo = nameWhitelistMapper.findSelective(paramsIdNo);
+			if (nameWhitelistIdNo == null) {
+				nameWhitelistIdNo = new NameWhitelist();
+				nameWhitelistIdNo.setSource(BlacklistConstant.SOURCE_ADD);
+				nameWhitelistIdNo.setLastmodifytime(date);
+				nameWhitelistIdNo.setCreatetime(date);
+				nameWhitelistIdNo.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+				nameWhitelistIdNo.setDimensionvalue(baseInfo.getIdNo());
+				nameWhitelistIdNo.setDimensionkey(BlacklistConstant.DIMENSION_KEY_IDNO);
+				nameWhitelistMapper.save(nameWhitelistIdNo);
+			}
+		}
+	}
+
+
 
 	@Override
 	public List<List<String>> importUserInfoNew(MultipartFile userInfoFile, String type) throws Exception {
@@ -296,6 +473,13 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 					values.add(dimensionKey);
 					values.add(dimensionValue);
 					if((StringUtil.equals(BlacklistConstant.DIMENSION_KEY_IDNO, dimensionKey) || StringUtil.equals(BlacklistConstant.DIMENSION_KEY_PHONE, dimensionKey)) && StringUtil.isNotBlank(dimensionValue)) {
+						paramMap.clear();
+						paramMap.put("dimensionkey", dimensionKey);
+						paramMap.put("dimensionvalue", dimensionValue);
+						paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+						paramMap.put("lastmodifytime",new Date());
+						nameBlacklistMapper.updateNameBlacklistStatus(paramMap);
+
 						paramMap.clear();
 						paramMap.put("dimensionkey", dimensionKey);
 						paramMap.put("dimensionvalue", dimensionValue);

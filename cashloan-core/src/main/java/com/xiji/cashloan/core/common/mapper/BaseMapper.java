@@ -43,9 +43,7 @@ public interface BaseMapper<T, ID extends Serializable> {
 	/**
 	 * 更新数据
 	 * 
-	 * @param e
-	 *            新数据
-	 * @param conditions
+	 * @param paramMap
 	 *            更新条件
 	 */
 	int updateSelective(Map<String, Object> paramMap);
@@ -53,8 +51,7 @@ public interface BaseMapper<T, ID extends Serializable> {
 	/**
 	 * 获取一条记录
 	 * 
-	 * @param conditions
-	 *            查询条件
+	 * @param paramMap 查询条件
 	 * @return 查询结果
 	 */
 	T findSelective(Map<String, Object> paramMap);

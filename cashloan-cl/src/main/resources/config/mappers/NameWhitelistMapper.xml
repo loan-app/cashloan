@@ -126,4 +126,11 @@
         from cl_name_whitelist
         <include refid="searchBy"/>
     </select>
+
+
+    <update id="updateNameWhitelistStatus"  parameterType="java.util.HashMap">
+        update cl_name_whitelist
+        set status = #{status,jdbcType=INTEGER},lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}
+        where dimensionkey = #{dimensionkey,jdbcType=VARCHAR} and dimensionvalue = #{dimensionvalue,jdbcType=VARCHAR}
+    </update>
 </mapper>

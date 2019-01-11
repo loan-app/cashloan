@@ -237,7 +237,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	    if(loanCeiling<0 ||( repayTotal> 0 && repayTotal >= loanCeiling) ){
 	    	throw new SimpleMessageException("今日借款已达上限，请明天再来！");
 	    }
-	    
+
 	    //1.12 近6个月月均话费
 //	    SimpleVoicesCount simpleVoicesCount = simpleVoicesCountService.findByUserId(userId);
 //	    if(null!=simpleVoicesCount&&simpleVoicesCount.getCountTwo()<=2000){
@@ -1547,49 +1547,60 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		if (countUpdateBlack != 1){
 			throw new BussinessException("更新用户信息状态为黑名单失败 userId ==>"+userId);
 		}
+		Date date = new Date();
 
 		// 将用户手机号加入黑名单库中
 		Map<String,Object> paramMap = new HashMap();
 		paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
 		paramMap.put("dimensionvalue",userBaseInfo.getPhone());
+		paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_DELETE);
+		paramMap.put("lastmodifytime",date);
+		nameBlacklistMapper.updateNameBlacklistStatus(paramMap);
+
+		paramMap.clear();
+        paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+        paramMap.put("dimensionvalue",userBaseInfo.getPhone());
 		paramMap.put("source", BlacklistConstant.SOURCE_ADD);
 		NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
-		if (nameBlack != null){
-			logger.info("手机号加入黑名单未处理，已存在对应信息 nameBlack ==> "+ nameBlack);
-			return;
-		}
-		nameBlack = new NameBlacklist();
-		nameBlack.setCreatetime(new Date());
-		nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
-		nameBlack.setDimensionvalue(userBaseInfo.getPhone());
-		nameBlack.setLastmodifytime(new Date());
-		nameBlack.setSource(BlacklistConstant.SOURCE_ADD);
-		nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
-		int countNameBlackPhone = nameBlacklistMapper.save(nameBlack);
-		if (countNameBlackPhone != 1){
-			throw new BussinessException("用户添加手机号黑名单失败 nameBlack ==>"+nameBlack);
+		if (nameBlack == null){
+			nameBlack = new NameBlacklist();
+			nameBlack.setCreatetime(new Date());
+			nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
+			nameBlack.setDimensionvalue(userBaseInfo.getPhone());
+			nameBlack.setLastmodifytime(new Date());
+			nameBlack.setSource(BlacklistConstant.SOURCE_ADD);
+			nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+			int countNameBlackPhone = nameBlacklistMapper.save(nameBlack);
+			if (countNameBlackPhone != 1){
+				throw new BussinessException("用户添加手机号黑名单失败 nameBlack ==>"+nameBlack);
+			}
 		}
 
         // 将用户身份证加入黑名单库中
         paramMap.clear();
         paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
         paramMap.put("dimensionvalue",userBaseInfo.getIdNo());
+		paramMap.put("status",BlacklistConstant.BLACK_LIST_STATUS_DELETE);
+		paramMap.put("lastmodifytime",date);
+		nameBlacklistMapper.updateNameBlacklistStatus(paramMap);
+
+		paramMap.clear();
+        paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+        paramMap.put("dimensionvalue",userBaseInfo.getIdNo());
         paramMap.put("source", BlacklistConstant.SOURCE_ADD);
         nameBlack = nameBlacklistMapper.findSelective(paramMap);
-        if (nameBlack != null){
-            logger.info("身份证号加入黑名单未处理，已存在对应信息 nameBlack ==> "+ nameBlack);
-            return;
-        }
-        nameBlack = new NameBlacklist();
-        nameBlack.setCreatetime(new Date());
-        nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_IDNO);
-        nameBlack.setDimensionvalue(userBaseInfo.getIdNo());
-        nameBlack.setLastmodifytime(new Date());
-        nameBlack.setSource(BlacklistConstant.SOURCE_ADD);
-        nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
-        int countNameBlackIdNo = nameBlacklistMapper.save(nameBlack);
-        if (countNameBlackIdNo != 1){
-            throw new BussinessException("用户添加身份证黑名单失败 nameBlack ==>"+nameBlack);
+        if (nameBlack == null){
+			nameBlack = new NameBlacklist();
+			nameBlack.setCreatetime(new Date());
+			nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_IDNO);
+			nameBlack.setDimensionvalue(userBaseInfo.getIdNo());
+			nameBlack.setLastmodifytime(new Date());
+			nameBlack.setSource(BlacklistConstant.SOURCE_ADD);
+			nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+			int countNameBlackIdNo = nameBlacklistMapper.save(nameBlack);
+			if (countNameBlackIdNo != 1){
+				throw new BussinessException("用户添加身份证黑名单失败 nameBlack ==>"+nameBlack);
+			}
         }
 	}
 
