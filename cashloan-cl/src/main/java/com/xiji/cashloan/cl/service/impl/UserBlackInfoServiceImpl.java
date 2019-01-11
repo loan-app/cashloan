@@ -292,7 +292,7 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 			    paramsIdNo.put("lastmodifytime",date);
 
 			// 删除黑名单
-			if(UserBaseInfoModel.USER_STATE_NOBLACK.equals(baseInfo.getState()) && "black".equals(type)){
+			if("black".equals(type)){
 				if (StringUtil.isNotBlank(baseInfo.getPhone())){
 					nameBlacklistMapper.updateNameBlacklistStatus(paramsPhone);
 				}
@@ -302,7 +302,7 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 			}
 
 			// 删除白名单
-			if (UserBaseInfoModel.USER_STATE_NOBLACK.equals(baseInfo.getState()) && "white".equals(type)){
+			if ("white".equals(type)){
 				if (StringUtil.isNotBlank(baseInfo.getPhone())){
 					nameWhitelistMapper.updateNameWhitelistStatus(paramsPhone);
 				}
@@ -315,7 +315,7 @@ public class UserBlackInfoServiceImpl extends BaseServiceImpl<UserBlackInfo, Lon
 
 
 	/**
-	 * 添加黑名单状态
+	 * 添加黑名单
 	 * @param userId
 	 * @param state
 	 */

@@ -81,14 +81,14 @@ public interface UserBlackInfoService extends BaseService<UserBlackInfo, Long>{
 	void deleteBlackOrWhite(Long userId, String state,String type);
 
 	/**
-	 * 添加黑名单状态
+	 * 添加黑名单
 	 * @param userId
 	 * @param state
 	 */
 	void addNameBlack(Long userId, String state);
 
 	/**
-	 * 添加白名单状态
+	 * 添加白名单
 	 * @param userId
 	 * @param state
 	 */

@@ -237,7 +237,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	    if(loanCeiling<0 ||( repayTotal> 0 && repayTotal >= loanCeiling) ){
 	    	throw new SimpleMessageException("今日借款已达上限，请明天再来！");
 	    }
-	    
+
 	    //1.12 近6个月月均话费
 //	    SimpleVoicesCount simpleVoicesCount = simpleVoicesCountService.findByUserId(userId);
 //	    if(null!=simpleVoicesCount&&simpleVoicesCount.getCountTwo()<=2000){
@@ -1557,6 +1557,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		paramMap.put("lastmodifytime",date);
 		nameBlacklistMapper.updateNameBlacklistStatus(paramMap);
 
+		paramMap.clear();
+        paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+        paramMap.put("dimensionvalue",userBaseInfo.getPhone());
 		paramMap.put("source", BlacklistConstant.SOURCE_ADD);
 		NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
 		if (nameBlack == null){
@@ -1581,6 +1584,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		paramMap.put("lastmodifytime",date);
 		nameBlacklistMapper.updateNameBlacklistStatus(paramMap);
 
+		paramMap.clear();
+        paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_IDNO);
+        paramMap.put("dimensionvalue",userBaseInfo.getIdNo());
         paramMap.put("source", BlacklistConstant.SOURCE_ADD);
         nameBlack = nameBlacklistMapper.findSelective(paramMap);
         if (nameBlack == null){
