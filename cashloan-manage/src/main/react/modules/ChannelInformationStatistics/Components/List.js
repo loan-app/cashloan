@@ -1,9 +1,7 @@
 import React from 'react'
-import {
-    Table,
-    Modal
-} from 'antd';
+import {Modal, Table} from 'antd';
 import AddWin from './AddWin'
+
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -219,6 +217,18 @@ export default React.createClass({
                    </div>
                 )
             }*/
+        },{
+            title:"首逾率（%）",
+            dataIndex:"countFirstPassRate",
+            render(text, record) {
+                return record.countFirstPassRate + "%"
+            }
+        },{
+            title:"逾期率（%）",
+            dataIndex:"overdueRate",
+            render(text, record) {
+                return record.overdueRate + "%"
+            }
         }];
        
         var state = this.state;

@@ -1,14 +1,14 @@
 package com.xiji.cashloan.cl.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 渠道信息Dao
@@ -42,7 +42,7 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	List<ChannelModel> page(Map<String, Object> paramMap);
 	/**
 	 * 渠道用户信息统计
-	 * @param paramMap
+	 * @param searchMap
 	 * @return
 	 */
 	Page<ChannelCountModel> channelUserList(Map<String, Object> searchMap);
@@ -102,4 +102,25 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * 单一渠道名称count
      */
 	List<Map<String, Object>> countOneByName(Map<String,Object> paramMap);
+
+	/**
+	 * 首贷逾期数
+	 * @param paramMap
+	 * @return
+	 */
+	List<Map<String, Object>> countFirstMortgageOverdue(Map<String,Object> paramMap);
+
+	/**
+	 * 逾期总数
+	 * @param paramMap
+	 * @return
+	 */
+	List<Map<String, Object>> countMortgageOverdue(Map<String,Object> paramMap);
+
+	/**
+	 * 单一渠道放款总笔数
+	 * @param paramMap
+	 * @return
+	 */
+	List<Map<String, Object>> countLending(Map<String,Object> paramMap);
 }

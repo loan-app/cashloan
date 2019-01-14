@@ -52,7 +52,7 @@
    	</sql>
    	
    	<select id="dayData" resultType="com.xiji.cashloan.cl.model.SystemDayData" parameterType="java.util.Map">
-   		select  T.date,
+   		select  distinct T.date,
 				T.userCount,
 				T.borrowCount,
 				T.loanCount,
@@ -113,7 +113,7 @@
 					<![CDATA[ and p.time <= #{endDate,jdbcType=VARCHAR} ]]> 
 				</if>
 			</where>
-		) T GROUP BY T.date ORDER BY T.date DESC 
+		) T ORDER BY T.date DESC
    	</select>
    	
    	<!-- 每日通过率 -->

@@ -1,28 +1,23 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.xiji.cashloan.cl.domain.Channel;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.UserAuthMapper;
-import com.xiji.cashloan.cl.model.ChannelModel;
-import com.xiji.cashloan.cl.service.ChannelService;
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.mapper.ChannelMapper;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.model.ChannelCountModel;
+import com.xiji.cashloan.cl.model.ChannelModel;
+import com.xiji.cashloan.cl.service.ChannelService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import org.springframework.stereotype.Service;
+import tool.util.BigDecimalUtil;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * @author wnb
@@ -262,6 +257,35 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			List<Map<String, Object>> six=channelMapper.countSix(paramMap);
 			List<Map<String, Object>> seven=channelMapper.countSeven(paramMap);
 			List<Map<String, Object>> eight=channelMapper.countEight(paramMap);
+			List<Map<String,Object>> countFirstMortgageOverdue = channelMapper.countFirstMortgageOverdue(paramMap);
+			List<Map<String,Object>> countMortgageOverdue = channelMapper.countMortgageOverdue(paramMap);
+			List<Map<String,Object>> countLending = channelMapper.countLending(paramMap);
+
+			List<Map<String,Object>> countFirstPassRate = this.calculateOverdueRate(countFirstMortgageOverdue,six,"countFirstMortgageOverdue","countSix");
+//			for(Map<String,Object> firstMap : countFirstMortgageOverdue){
+//				Map<String,Object> firstPassRateMap = new HashMap<>();
+//				for(Map<String,Object> sexMap : six){
+//					Integer firstMortgageOverdue = (Integer) firstMap.get("channelId") == null ? 0 : (Integer) firstMap.get("channelId");
+//					Integer firstMortgage = (Integer) sexMap.get("channelId") == null ? 0 :(Integer) sexMap.get("channelId");
+//					Integer firstPassRate = (Integer) firstMortgage == 0 ? 0:(firstMortgageOverdue/firstMortgage);
+//					firstPassRateMap.put("channelId",firstPassRate);
+//				}
+//				countFirstPassRate.add(firstPassRateMap);
+//			}
+
+            List<Map<String,Object>> overdueRate = this.calculateOverdueRate(countMortgageOverdue,countLending,"countMortgageOverdue","countLending");
+//			for(Map<String,Object> mortgageOverdueMap : countMortgageOverdue){
+//				Map<String,Object> overdueRateMap = new HashMap<>();
+//				for(Map<String,Object> lendingMap : countLending){
+//					Integer overdue = (Integer) mortgageOverdueMap.get("channelId") == null ? 0:(Integer) mortgageOverdueMap.get("channelId");
+//					Integer lendingInteger = (Integer) lendingMap.get("channelId") == null ? 0 :(Integer) lendingMap.get("channelId");
+//					Integer overdueRateIntegert = (Integer) lendingInteger == 0 ? 0: (overdue/lendingInteger);
+//				    overdueRateMap.put("channelId",overdueRateIntegert);
+//				}
+//				overdueRate.add(overdueRateMap);
+//			}
+
+
 			//渠道标识，渠道名称
 			//注册人数
 			count(map, two, "registerCount", "countTwo");
@@ -277,6 +301,35 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			count(map, seven, "repeatPayCount", "countSeven");
 			//放款成功金额
 			count(map, eight, "payAccount", "countEight");
+			//首逾率
+			count(map,countFirstPassRate,"countFirstPassRate","countFirstMortgageOverdue");
+			//逾期率
+			count(map,overdueRate,"overdueRate","countMortgageOverdue");
 		}
+	}
+
+
+	/**
+	 * 计算逾期率
+	 * @param overdueList
+	 * @param lendingList
+	 * @return
+	 */
+	private List<Map<String,Object>> calculateOverdueRate(List<Map<String,Object>> overdueList,List<Map<String,Object>> lendingList,String overdueKey,String lendingKey){
+		List<Map<String,Object>> overdueRate = new ArrayList<>();
+		for(Map<String,Object> overdueMap : overdueList){
+			Map<String,Object> overdueRateMap = new HashMap<>();
+			for(Map<String,Object> lendingMap : lendingList){
+				if (overdueMap.get("channelId") != null && lendingMap.get("channelId") != null && (overdueMap.get("channelId") +"").equals(lendingMap.get("channelId")+"")){
+					Long overdue = (Long) overdueMap.get(overdueKey) == null ? 0L:(Long) overdueMap.get(overdueKey);
+					Long lendingInteger = (Long) lendingMap.get(lendingKey) == null ? 0L :(Long) lendingMap.get(lendingKey);
+					Double overdueRateIntegert =  lendingInteger == 0L ? 0.00f: BigDecimalUtil.decimal(overdue.floatValue()/lendingInteger.floatValue()*100,2);
+					overdueRateMap.put(overdueKey,overdueRateIntegert);
+					overdueRateMap.put("channelId",overdueMap.get("channelId"));
+				}
+			}
+			overdueRate.add(overdueRateMap);
+		}
+		return overdueRate;
 	}
 }

@@ -1,9 +1,9 @@
 package com.xiji.cashloan.cl.model;
 
-import java.util.Date;
-
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import tool.util.BigDecimalUtil;
+
+import java.util.Date;
 /**
  * @author wnb
  * @date 2018/11/30
@@ -46,6 +46,25 @@ public class ManageBRepayModel extends BorrowRepay {
 	 * 借款时间
 	 */
 	private Date borrowTime;
+
+	/**
+	 * 放款本金
+	 */
+	private Double realAmount;
+
+	/**
+	 *
+	 * 利息
+	 *
+	 */
+	private Double fee;
+
+	/**
+	 *
+	 * 渠道名称
+	 */
+	private String channelName;
+
 
 	public String getRealName() {
 		return realName;
@@ -103,9 +122,32 @@ public class ManageBRepayModel extends BorrowRepay {
 	public void setBorrowTime(Date borrowTime) {
 		this.borrowTime = borrowTime;
 	}
-	
-	
-	
-	 
-	
+
+
+	public Double getRealAmount() {
+		return realAmount;
+	}
+
+	public void setRealAmount(Double realAmount) {
+		this.realAmount = realAmount;
+	}
+
+	public Double getFee() {
+		return fee;
+	}
+
+	public void setFee(Double fee) {
+		this.fee = fee;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+
+
+
 }
