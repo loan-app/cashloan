@@ -202,6 +202,9 @@ export default React.createClass({
             title:"再贷放款笔数",
             dataIndex:"repeatPayCount",
         },{
+            title:"放款笔数",
+            dataIndex:"loanCount",
+        },{
             title:'放款成功金额',
             dataIndex: 'payAccount'
         /*},{
@@ -218,16 +221,22 @@ export default React.createClass({
                 )
             }*/
         },{
-            title:"首逾率（%）",
+            title:"首逾率",
             dataIndex:"countFirstPassRate",
             render(text, record) {
                 return record.countFirstPassRate + "%"
             }
         },{
-            title:"逾期率（%）",
+            title:"逾期率",
             dataIndex:"overdueRate",
             render(text, record) {
                 return record.overdueRate + "%"
+            }
+        },{
+            title:"放款率",
+            dataIndex:"loanRate",
+            render(text, record) {
+                return record.loanRate + "%"
             }
         }];
        

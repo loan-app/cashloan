@@ -1,14 +1,13 @@
 package com.xiji.cashloan.cl.mapper;
 
-import java.util.List;
-import java.util.Map;
-
-import com.xiji.cashloan.cl.model.UserAuthModel;
-import org.apache.ibatis.annotations.Param;
-
 import com.xiji.cashloan.cl.domain.UserAuth;
+import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Dao
@@ -102,6 +101,11 @@ public interface UserAuthMapper extends BaseMapper<UserAuth,Long> {
 	 */
 	String workCount(String channelId);
 
-	
+	/**
+	 * 根据时间更新认证状态
+	 * @param userAuth
+	 * @return
+	 */
+	int updateAuthByTime(Map<String, Object> userAuth);
 
 }

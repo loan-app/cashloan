@@ -3,50 +3,15 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.BorrowProgress;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.domain.PayLog;
-import com.xiji.cashloan.cl.domain.PayReqLog;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrderLog;
-import com.xiji.cashloan.cl.domain.UserInvite;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.PayLogMapper;
-import com.xiji.cashloan.cl.mapper.PayReqLogMapper;
-import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
-import com.xiji.cashloan.cl.mapper.ProfitLogMapper;
-import com.xiji.cashloan.cl.mapper.UserInviteMapper;
-import com.xiji.cashloan.cl.model.AlipayModel;
-import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
-import com.xiji.cashloan.cl.model.BorrowRepayModel;
-import com.xiji.cashloan.cl.model.ManageBRepayModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.RepayExcelModel;
-import com.xiji.cashloan.cl.model.UrgeRepayOrderModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QueryPayOrderInfo;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.*;
+import com.xiji.cashloan.cl.model.*;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.service.ProfitLogService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderLogService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -69,13 +34,6 @@ import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.domain.CreditLog;
 import com.xiji.creditrank.cr.mapper.CreditLogMapper;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -83,6 +41,10 @@ import org.springframework.web.multipart.MultipartFile;
 import tool.util.BigDecimalUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 还款计划ServiceImpl
@@ -571,6 +533,16 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	@Override
 	public List<ManageBRepayModel> listAllModel(Map<String, Object> params) {
 		List<ManageBRepayModel> list = borrowRepayMapper.listModel(params);
+
+		for(ManageBRepayModel manageBRepayModel : list){
+			if ("10".equals(manageBRepayModel.getState())){
+				manageBRepayModel.setStateStr("已还款");
+			}else if ("20".equals(manageBRepayModel.getState())){
+				manageBRepayModel.setStateStr("未还款");
+			}else {
+				manageBRepayModel.setStateStr("-");
+			}
+		}
 		return list;
 	}
 

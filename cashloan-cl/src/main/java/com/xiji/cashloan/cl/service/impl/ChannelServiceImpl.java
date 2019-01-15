@@ -260,32 +260,12 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			List<Map<String,Object>> countFirstMortgageOverdue = channelMapper.countFirstMortgageOverdue(paramMap);
 			List<Map<String,Object>> countMortgageOverdue = channelMapper.countMortgageOverdue(paramMap);
 			List<Map<String,Object>> countLending = channelMapper.countLending(paramMap);
-
+			// 首逾率
 			List<Map<String,Object>> countFirstPassRate = this.calculateOverdueRate(countFirstMortgageOverdue,six,"countFirstMortgageOverdue","countSix");
-//			for(Map<String,Object> firstMap : countFirstMortgageOverdue){
-//				Map<String,Object> firstPassRateMap = new HashMap<>();
-//				for(Map<String,Object> sexMap : six){
-//					Integer firstMortgageOverdue = (Integer) firstMap.get("channelId") == null ? 0 : (Integer) firstMap.get("channelId");
-//					Integer firstMortgage = (Integer) sexMap.get("channelId") == null ? 0 :(Integer) sexMap.get("channelId");
-//					Integer firstPassRate = (Integer) firstMortgage == 0 ? 0:(firstMortgageOverdue/firstMortgage);
-//					firstPassRateMap.put("channelId",firstPassRate);
-//				}
-//				countFirstPassRate.add(firstPassRateMap);
-//			}
-
-            List<Map<String,Object>> overdueRate = this.calculateOverdueRate(countMortgageOverdue,countLending,"countMortgageOverdue","countLending");
-//			for(Map<String,Object> mortgageOverdueMap : countMortgageOverdue){
-//				Map<String,Object> overdueRateMap = new HashMap<>();
-//				for(Map<String,Object> lendingMap : countLending){
-//					Integer overdue = (Integer) mortgageOverdueMap.get("channelId") == null ? 0:(Integer) mortgageOverdueMap.get("channelId");
-//					Integer lendingInteger = (Integer) lendingMap.get("channelId") == null ? 0 :(Integer) lendingMap.get("channelId");
-//					Integer overdueRateIntegert = (Integer) lendingInteger == 0 ? 0: (overdue/lendingInteger);
-//				    overdueRateMap.put("channelId",overdueRateIntegert);
-//				}
-//				overdueRate.add(overdueRateMap);
-//			}
-
-
+            // 逾期率
+			List<Map<String,Object>> overdueRate = this.calculateOverdueRate(countMortgageOverdue,countLending,"countMortgageOverdue","countLending");
+            // 放款率
+            List<Map<String,Object>> loanRate = this.calculateOverdueRate(countLending,two,"countLending","countTwo");
 			//渠道标识，渠道名称
 			//注册人数
 			count(map, two, "registerCount", "countTwo");
@@ -305,6 +285,10 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			count(map,countFirstPassRate,"countFirstPassRate","countFirstMortgageOverdue");
 			//逾期率
 			count(map,overdueRate,"overdueRate","countMortgageOverdue");
+			//放款数
+			count(map,countLending,"loanCount","countLending");
+			//放款率
+			count(map,loanRate,"loanRate","countLending");
 		}
 	}
 

@@ -65,6 +65,11 @@ public class ManageBRepayModel extends BorrowRepay {
 	 */
 	private String channelName;
 
+	/**
+	 * 还款状态
+	 */
+	private String stateStr;
+
 
 	public String getRealName() {
 		return realName;
@@ -148,6 +153,11 @@ public class ManageBRepayModel extends BorrowRepay {
 		this.channelName = channelName;
 	}
 
+	public String getStateStr() {
+		return stateStr;
+	}
 
-
+	public void setStateStr(String stateStr) {
+		this.stateStr = stateStr;
+	}
 }

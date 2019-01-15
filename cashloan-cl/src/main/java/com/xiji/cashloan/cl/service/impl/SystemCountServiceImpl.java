@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.impl;
 
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,19 +13,27 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
+=======
+>>>>>>> ef1f89cf99340a4b2743258b96995a3f6b5b77b6
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.SystemCountService;
+<<<<<<< HEAD
 import org.apache.http.client.utils.DateUtils;
+=======
+import com.xiji.cashloan.core.common.util.DateUtil;
+>>>>>>> ef1f89cf99340a4b2743258b96995a3f6b5b77b6
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
-
 import tool.util.BigDecimalUtil;
 import tool.util.StringUtil;
 
-import com.xiji.cashloan.core.common.util.DateUtil;
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * 首页系统数据统计
@@ -224,6 +233,12 @@ public class SystemCountServiceImpl implements SystemCountService {
 		rtMap.put("todayDeferredCnt", todayDeferredCnt);
 
 		rtMap.put("todayOverdueRate", String.format("%.2f", todayOverdueRate));
+
+        if (register > 0){
+        	rtMap.put("borrowRate",BigDecimalUtil.decimal(borrowLoan/register*100,2));
+		}else {
+        	rtMap.put("borrowRate",0);
+		}
 
 		return rtMap;
 	}

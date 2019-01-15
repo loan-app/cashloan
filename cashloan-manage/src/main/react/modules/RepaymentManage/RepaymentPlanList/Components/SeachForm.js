@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Form, Input, Select, Message,DatePicker } from 'antd';
+import {Button, DatePicker, Form, Input, Message, Select} from 'antd';
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -30,6 +31,12 @@ let SeachForm = React.createClass({
             pageSize: 10,
             current: 1,
         });
+    },
+    handleOut() {
+        var params = this.props.form.getFieldsValue();
+        var json = encodeURI(JSON.stringify(params));
+        window.open("/modules/manage/repayment/plan/export.htm?searchParams="+json);
+
     },
     disabledDate(startValue) {
         var today = new Date();
@@ -62,6 +69,7 @@ let SeachForm = React.createClass({
                 </FormItem>
                 <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
                 <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
+                <FormItem><Button onClick={this.handleOut}>导出</Button></FormItem>
             </Form>
         );
     }
