@@ -152,6 +152,33 @@ export default React.createClass({
                         </div>
                     </div>
                 </div>
+
+                <div className="block-panel">
+                    <h2 className="navLine-title">逾期统计</h2>
+                    <div className='blk-top'>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日应还</div>
+                            <div className='blk-number'>{formsToday.todayShouldCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日结清</div>
+                            <div className='blk-number'>{formsToday.todayRepayCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日待还</div>
+                            <div className='blk-number'>{formsToday.todayNotRepayCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日展期</div>
+                            <div className='blk-number'>{formsToday.todayDeferredCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日逾期率</div>
+                            <div className='blk-number'>{formsToday.todayOverdueRate}<span style={{ fontSize: '12px' }}>% </span></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <div className="data-panel">
                         <div className="block-panel">
