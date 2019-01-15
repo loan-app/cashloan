@@ -446,3 +446,5 @@ delete from arc_sys_role_menu where menu_id in (1001,1002,1003,1006);
 
 -- 修改app_list长度
 ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用程序列表';
+-- 添加认证更新周期数据
+INSERT INTO `arc_sys_config` VALUES (null, '110', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');

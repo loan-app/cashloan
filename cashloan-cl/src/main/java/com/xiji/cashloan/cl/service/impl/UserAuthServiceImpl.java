@@ -196,5 +196,14 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 	public int updatePhoneState(Map<String, Object> userAuth) {
 		return userAuthMapper.updatePhoneState(userAuth);
 	}
-	
+
+	/**
+	 * 根据时间更新认证状态
+	 * @param userAuth
+	 * @return
+	 */
+	@Override
+	public int updateAuthByTime(Map<String, Object> userAuth){
+		return userAuthMapper.updateAuthByTime(userAuth);
+	}
 }
