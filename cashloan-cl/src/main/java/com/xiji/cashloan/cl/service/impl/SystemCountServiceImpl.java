@@ -1,26 +1,18 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.service.SystemCountService;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
-
 import tool.util.BigDecimalUtil;
 import tool.util.StringUtil;
 
-import com.xiji.cashloan.core.common.util.DateUtil;
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * 首页系统数据统计
@@ -185,6 +177,12 @@ public class SystemCountServiceImpl implements SystemCountService {
 
 		Integer borrowRepay = systemCountMapper.countBorrowRepay(param);
 		rtMap.put("borrowRepay", borrowRepay);
+
+        if (register > 0){
+        	rtMap.put("borrowRate",BigDecimalUtil.decimal(borrowLoan/register*100,2));
+		}else {
+        	rtMap.put("borrowRate",0);
+		}
 
 		return rtMap;
 	}
