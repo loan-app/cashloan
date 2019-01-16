@@ -567,7 +567,7 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '逾期利率', 'penalty_fee', 
 INSERT INTO `arc_sys_config` VALUES (null, '20', '逾期罚金上限', 'penalty_amout_max', '0.5', '1', '超过本金一定比例后不再计算罚金', '1');
 
 INSERT INTO `arc_sys_config` VALUES (null, '20', '平台名称', 'title', '现金贷', '1', null, '1');
-INSERT INTO `arc_sys_config` VALUES (null, '20', '平台电话', 'phone', '13333333333', '1', null, '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '平台电话', 'telephone', '13333333333', '1', null, '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '手机号码号段', 'phone_number_segment', '134,135,136,137,138,139,147,150,151,152,157,158,159,178,182,183,184,187,188,130,131,132,145,155,156,171,175,176,185,186,133,149,153,173,177,180,181,189,170', '1', '用于校验手机号码格式', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '借款失败后再次借款间隔（天）', 'again_borrow', '15', '1', '', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '平台收款账户信息-收款人', 'repay_collection_info_name', '', '1', '用于还款登记', '1');

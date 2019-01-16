@@ -50,7 +50,7 @@ function getIndex_img3(){
     return "/static/images/txtBtm.png";
 }
 //帮助中心客服电话
-function getPhone(){
+function getTelephone(){
     return '15519557269。';
 }
 //支付宝账号

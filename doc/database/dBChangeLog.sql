@@ -449,4 +449,10 @@ ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用�
 -- 添加认证更新周期数据
 INSERT INTO `arc_sys_config` VALUES (null, '110', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');
 
-INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 0/1 * ?', 'com.xiji.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
+INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 1/1 * ?', 'com.xiji.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
+
+
+INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '10', '强制更新版本号', 'mandatory_update_version', '1.0.0', '1', '系统强制更新版本号', '1');
+
+

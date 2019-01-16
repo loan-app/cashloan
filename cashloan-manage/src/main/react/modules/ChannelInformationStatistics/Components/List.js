@@ -205,6 +205,9 @@ export default React.createClass({
             title:"放款笔数",
             dataIndex:"loanCount",
         },{
+            title:"逾期笔数",
+            dataIndex:"overdueCount",
+        },{
             title:'放款成功金额',
             dataIndex: 'payAccount'
         /*},{

@@ -289,6 +289,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			count(map,countLending,"loanCount","countLending");
 			//放款率
 			count(map,loanRate,"loanRate","countLending");
+			//逾期数
+			count(map,countMortgageOverdue,"overdueCount","countMortgageOverdue");
 		}
 	}
 
