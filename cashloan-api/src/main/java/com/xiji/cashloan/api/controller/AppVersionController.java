@@ -95,15 +95,16 @@ public class AppVersionController extends BaseController {
 			data.put("lastResult",lastResult);
 			data.put("updateResult",updateResult);
 			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-			result.put(Constant.RESPONSE_DATA, data);
 			result.put(Constant.RESPONSE_CODE_MSG, "对比成功");
 		} catch (Exception e) {
 			data.put("lastResult","");
 			data.put("updateResult","");
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_DATA, data);
 			result.put(Constant.RESPONSE_CODE_MSG, "对比失败");
 		}
+
+		result.put(Constant.RESPONSE_DATA, data);
+		result.put("downloadUrl",Global.getValue("last_version_download_url"));
 		ServletUtils.writeToResponse(response, result);
 	}
 }

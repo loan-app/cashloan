@@ -164,7 +164,7 @@
         select u.id,c.`code`,c.`name`,c.id as cl_channel_id,0 as registerCount ,b.borrowMember,b.borrowCount ,b.borrowAmout,b.badRate,b.payCount,b.payAccount
 		     from  cl_channel c   JOIN  cl_user u  on c.id=u.channel_id    join  
          (select b.user_id,1 as borrowMember, sum(b.amount) as borrowAmout,count(1)  as borrowCount, sum(CASE b.state  when 50  THEN 1   when 90  THEN 1  ELSE  0 end ) as badRate, 
-          sum(CASE  when  b.state in (30,40,41,50,90)  THEN  1    ELSE  0 end ) as	payCount,sum(CASE  when  b.state in (30,40,41,50,90)  THEN  b.real_amount    ELSE  0 end ) as payAccount  
+          sum(CASE  when  b.state in (30,40,41,50,90)  THEN  1    ELSE  0 end ) as	payCount,sum(CASE  when  b.state in (30,40,41,50,90)  THEN  b.real_amount    ELSE  0 end ) as payAccount
           from   cl_borrow  b  group by b.user_id ) b  on u.id=b.user_id
           
            <trim prefix="where" prefixOverrides="and|or">
@@ -283,7 +283,7 @@
  	
  	<!-- 首贷放款笔数 -->
  	<select id="countSix" parameterType="java.util.HashMap" resultType="java.util.HashMap">
- 		select user.channel_id as channelId,count(distinct user.id) as countSix from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,50,90) and b.again='10') temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
+ 		select user.channel_id as channelId,count(distinct user.id) as countSix from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and b.again='10') temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
  		<trim prefix="where" prefixOverrides="and|or">
 			 <if test="beforeTime != null ">
 			    and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP} 
@@ -300,7 +300,7 @@
  	
  	<!-- 再贷放款笔数 -->
  	<select id="countSeven" parameterType="java.util.HashMap" resultType="java.util.HashMap">
- 		select user.channel_id as channelId,count(user.id) as countSeven from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,50,90) and b.again='20') temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
+ 		select user.channel_id as channelId,count(user.id) as countSeven from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and b.again='20') temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
  		<trim prefix="where" prefixOverrides="and|or">
 			 <if test="beforeTime != null ">
 			    and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP} 
@@ -317,7 +317,7 @@
  	
  	<!-- 放款成功金额 -->
  	<select id="countEight" parameterType="java.util.HashMap" resultType="java.util.HashMap">
- 		select user.channel_id as channelId,sum(temp.real_amount) as countEight from (select b.user_id,b.real_amount,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,50,90)) temp LEFT JOIN cl_user user on temp.user_id=user.id 
+ 		select user.channel_id as channelId,sum(temp.real_amount) as countEight from (select b.user_id,b.real_amount,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90)) temp LEFT JOIN cl_user user on temp.user_id=user.id
  		<trim prefix="where" prefixOverrides="and|or">
 			 <if test=" beforeTime !=null ">
 			    and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP} 
@@ -354,7 +354,7 @@
 
 	<!-- 单一渠道首贷逾期数 -->
 	<select id="countFirstMortgageOverdue" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		select user.channel_id as channelId,count(distinct temp.user_id) as countFirstMortgageOverdue from (select b.user_id,b.real_amount,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (50,90) and b.again ='10') temp LEFT JOIN cl_user user on temp.user_id=user.id
+		select user.channel_id as channelId,count(distinct temp.user_id) as countFirstMortgageOverdue from (select b.user_id,b.real_amount,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and re.penalty_day > 0 and b.again ='10') temp LEFT JOIN cl_user user on temp.user_id=user.id
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test=" beforeTime !=null ">
 				and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
@@ -371,7 +371,7 @@
 
     <!-- 单一渠道逾期总数 -->
 	<select id="countMortgageOverdue" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		select user.channel_id as channelId,count(temp.user_id) as countMortgageOverdue from (select b.user_id,b.real_amount,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (50,90)) temp LEFT JOIN cl_user user on temp.user_id=user.id
+		select user.channel_id as channelId,count(temp.user_id) as countMortgageOverdue from (select b.user_id,b.real_amount,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and re.penalty_day > 0) temp LEFT JOIN cl_user user on temp.user_id=user.id
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test=" beforeTime !=null ">
 				and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
@@ -389,7 +389,7 @@
 
     <!-- 单一渠道放贷总数-->
 	<select id="countLending" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		select user.channel_id as channelId,count(user.id) as countLending from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,50,90)) temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
+		select user.channel_id as channelId,count(user.id) as countLending from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90)) temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="beforeTime != null ">
 				and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
