@@ -1,26 +1,21 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-
+import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
+import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.service.SystemCountService;
+import com.xiji.cashloan.core.common.util.DateUtil;
+import org.apache.http.client.utils.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
-
 import tool.util.BigDecimalUtil;
 import tool.util.StringUtil;
 
-import com.xiji.cashloan.core.common.util.DateUtil;
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * 首页系统数据统计
@@ -38,6 +33,9 @@ public class SystemCountServiceImpl implements SystemCountService {
 
 	@Resource
 	private SystemCountMapper systemCountMapper;
+
+	@Resource
+	private BorrowRepayMapper borrowRepayMapper;
 
 	public Map<String,Object> reBuildMap(List<Map<String,Object>> maps){
 		if(maps!=null){
@@ -185,6 +183,44 @@ public class SystemCountServiceImpl implements SystemCountService {
 
 		Integer borrowRepay = systemCountMapper.countBorrowRepay(param);
 		rtMap.put("borrowRepay", borrowRepay);
+
+		Map<String, Object> borrowRepayParams = new HashMap<>();
+		borrowRepayParams.put("startTime", DateUtils.formatDate(new Date(), "yyyy-MM-dd"));
+		borrowRepayParams.put("endTime", DateUtils.formatDate(new Date(), "yyyy-MM-dd"));
+		List<ManageBRepayModel> brs = borrowRepayMapper.listModel(borrowRepayParams);
+
+		int todayShouldCnt =  brs.size();
+		int todayRepayCnt = 0;
+		int todayNotRepayCnt = 0;
+		int todayDeferredCnt = 0;
+		for (ManageBRepayModel br : brs) {
+			if ("10".equals(br.getState())) {
+				todayRepayCnt++;
+			}
+			if ("20".equals(br.getState())) {
+				todayNotRepayCnt++;
+			}
+			if ("30".equals(br.getState())) {
+				todayDeferredCnt++;
+			}
+		}
+		double todayOverdueRate = 0;
+		if (todayShouldCnt != 0) {
+			todayOverdueRate = todayNotRepayCnt * 100 / (double) todayShouldCnt;
+		}
+
+		rtMap.put("todayShouldCnt", todayShouldCnt);
+		rtMap.put("todayRepayCnt", todayRepayCnt);
+		rtMap.put("todayNotRepayCnt", todayNotRepayCnt);
+		rtMap.put("todayDeferredCnt", todayDeferredCnt);
+
+		rtMap.put("todayOverdueRate", String.format("%.2f", todayOverdueRate));
+
+        if (register > 0){
+        	rtMap.put("borrowRate",BigDecimalUtil.decimal(borrowLoan/register*100,2));
+		}else {
+        	rtMap.put("borrowRate",0);
+		}
 
 		return rtMap;
 	}

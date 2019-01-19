@@ -21,7 +21,8 @@ module.exports = {
     proxy: [{
         // context: ['/system/user', '/modules/manage'],
         context: url => !url.includes('bundle.js'),
-        target: 'http://47.110.61.233:8081',
+         // target: 'http://47.110.61.233:8081',
+        target: 'http://localhost:8080',
     }]
   },
   entry: [

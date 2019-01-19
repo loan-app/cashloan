@@ -442,5 +442,9 @@
    		AND TO_DAYS(u.regist_time) <![CDATA[ <= ]]> TO_DAYS(#{endTime,jdbcType=BIGINT}) 
    		AND u.channel_id = #{channelId,jdbcType=BIGINT}
     </select>
-    
+
+
+    <update id="updateAuthByTime"  parameterType="java.util.HashMap">
+        update cl_user_auth  set phone_state=#{phoneState}  ,phone_time = NOW() where  phone_state = '30' and phone_time <![CDATA[ <= ]]> #{updateAuthTime}
+    </update>
 </mapper>

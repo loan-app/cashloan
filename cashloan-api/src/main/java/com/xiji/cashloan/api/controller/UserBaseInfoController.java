@@ -428,7 +428,7 @@ public class UserBaseInfoController extends BaseController {
                     }
                 } else {
                     returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                    returnMap.put(Constant.RESPONSE_CODE_MSG, "认证失败，请重新认证");
+                    returnMap.put(Constant.RESPONSE_CODE_MSG, "认证失败，请到光线充足处重新认证");
                 }
             }
         } else {

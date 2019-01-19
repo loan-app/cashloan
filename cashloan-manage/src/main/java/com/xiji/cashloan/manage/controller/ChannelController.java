@@ -1,12 +1,10 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.domain.Channel;
+import com.xiji.cashloan.cl.model.ChannelCountModel;
+import com.xiji.cashloan.cl.model.ChannelModel;
+import com.xiji.cashloan.cl.service.ChannelService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
@@ -20,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.domain.Channel;
-import com.xiji.cashloan.cl.model.ChannelCountModel;
-import com.xiji.cashloan.cl.model.ChannelModel;
-import com.xiji.cashloan.cl.service.ChannelService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 渠道信息Controller
@@ -207,7 +205,10 @@ public class ChannelController extends ManageBaseController {
 	
 	/**
 	 * 统计渠道用户信息
-	 * chenxy
+	 * @param pageSize
+	 * @param current
+	 * @param searchParams
+	 *
 	 * 2017年7月19日 20:49:47
 	 */
 	@RequestMapping(value = "/modules/manage/promotion/channel/channelUserCount.htm", method = {RequestMethod.POST,RequestMethod.GET})

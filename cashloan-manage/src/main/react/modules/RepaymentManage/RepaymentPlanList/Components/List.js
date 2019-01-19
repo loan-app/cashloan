@@ -1,9 +1,10 @@
 import React from 'react'
-import {Table, Modal, Icon} from 'antd';
+import {Table} from 'antd';
 import Lookdetails from "./Lookdetails";
+import AddWin from "./AddWin";
+
 var repaymentTypeText={'10':'待审核', '20': '审核中' ,'30': '通过','40' :'已拒绝' ,'50': '还款中', '60' :'还款完成', '70': '逾期'}
 const objectAssign = require('object-assign');
-import AddWin from "./AddWin";
 export default React.createClass({
     getInitialState() {
         return {
@@ -207,6 +208,15 @@ export default React.createClass({
         }, {
             title: '应还款日期',
             dataIndex: 'repayTime'
+        },{
+            title: '利息',
+            dataIndex: 'fee'
+        },{
+            title: '放款本金',
+            dataIndex: 'realAmount'
+        },{
+            title: '渠道',
+            dataIndex: 'channelName'
         }, {
             title: '还款状态',
             dataIndex: "state",

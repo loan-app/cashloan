@@ -1,22 +1,19 @@
 package com.xiji.cashloan.manage.listener;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.xiji.cashloan.manage.domain.QuartzInfo;
+import com.xiji.cashloan.manage.model.QuartzInfoModel;
+import com.xiji.cashloan.manage.model.QuartzManager;
+import com.xiji.cashloan.manage.service.QuartzInfoService;
+import org.apache.log4j.Logger;
+import tool.util.BeanUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
-
-import org.apache.log4j.Logger;
-
-import tool.util.BeanUtil;
-
-import com.xiji.cashloan.manage.domain.QuartzInfo;
-import com.xiji.cashloan.manage.model.QuartzInfoModel;
-import com.xiji.cashloan.manage.model.QuartzManager;
-import com.xiji.cashloan.manage.service.QuartzInfoService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -65,7 +62,6 @@ public class QuartzListener implements ServletContextListener,HttpSessionAttribu
 				Object cl = Class.forName(clName).newInstance();
 				QuartzManager.addJob(quartzInfo.getCode(), cl.getClass(),quartzInfo.getCycle());
 			}
-			
 			// 启动所有定时任务			
 			QuartzManager.startJobs();
 
