@@ -1264,7 +1264,7 @@ CREATE TABLE `cl_borrow_progress` (
 -- ----------------------------
 -- Records of cl_borrow_progress
 -- ----------------------------
-modules/manage/borrow/repay/list.htm
+
 -- ----------------------------
 -- Table structure for cl_borrow_repay
 -- ----------------------------
