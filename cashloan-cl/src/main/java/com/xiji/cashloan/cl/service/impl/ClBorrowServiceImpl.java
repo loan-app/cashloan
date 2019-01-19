@@ -164,6 +164,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private NameBlacklistMapper nameBlacklistMapper;
 	@Resource
 	private BorrowOperatorLogService borrowOperatorLogService;
+	@Resource
+	private DecisionService decisionService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1830,6 +1832,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public void rcBorrowRuleVerify(Long borrowId){
 		Borrow borrow = getById(borrowId);
+		//计算借款订单对应决策数据的值
+		decisionService.saveBorrowDecision(borrow);
+
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);
 		List<RuleEngine> ruleEngieList = ruleEngineMapper.listSelective(paramMap);

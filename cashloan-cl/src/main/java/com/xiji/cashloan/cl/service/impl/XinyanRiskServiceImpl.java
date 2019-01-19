@@ -230,6 +230,7 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
                         log.setType(XinyanConstant.XWLD_TYPE);
                         log.setIsFee(0);
                         log.setDataCode(dataJson.getString("code"));
+                        log.setTransId(dataJson.getString("trans_id"));
                         log.setTradeNo(dataJson.getString("trade_no"));
                         if ("0".equals(dataJson.getString("code"))) {
                             log.setIsFee(1);
