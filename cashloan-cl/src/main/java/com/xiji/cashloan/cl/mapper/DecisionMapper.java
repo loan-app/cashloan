@@ -14,6 +14,7 @@ import com.xiji.cashloan.cl.domain.Decision;
 @RDBatisDao
 public interface DecisionMapper extends BaseMapper<Decision, Long> {
 
+    int saveSelective(Decision decision);
     
 
 }

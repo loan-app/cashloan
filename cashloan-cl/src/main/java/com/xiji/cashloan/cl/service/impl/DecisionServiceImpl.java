@@ -8,12 +8,15 @@ import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.DecisionService;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
@@ -25,7 +28,8 @@ import java.util.Map;
  * Created by szb on 19/1/12.
  */
 @Service
-public class DecisionServiceImpl implements DecisionService {
+@Transactional(rollbackFor = Exception.class)
+public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> implements DecisionService {
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -61,6 +65,11 @@ public class DecisionServiceImpl implements DecisionService {
     private PinganGrayscaleMapper pinganGrayscaleMapper;
     @Resource
     private DecisionMapper decisionMapper;
+
+    @Override
+    public BaseMapper<Decision, Long> getMapper() {
+        return decisionMapper;
+    }
 
 
     @Override
@@ -165,7 +174,7 @@ public class DecisionServiceImpl implements DecisionService {
         PinganGrayscale pinganGrayscale = pinganGrayscaleMapper.findSelective(queryMap);
         setPinganGrayscale(pinganGrayscale, decision);
 
-        i = decisionMapper.save(decision);
+        i = decisionMapper.saveSelective(decision);
         return i;
     }
 
@@ -495,19 +504,16 @@ public class DecisionServiceImpl implements DecisionService {
                             decision.setMxProvince(value);
                             break;
                         case "city":
-                            decision.setMxCity(jsonObject.getString(value));
+                            decision.setMxCity(value);
                             break;
                         case "region":
-                            decision.setMxRegion(jsonObject.getString(value));
+                            decision.setMxRegion(value);
                             break;
                         case "native_place":
-                            decision.setMxNativePlace(jsonObject.getString(value));
-                            break;
-                        case "in_time":
-                            decision.setMxInTime(jsonObject.getString(value));
+                            decision.setMxNativePlace(value);
                             break;
                         case "bill_certification_day":
-                            decision.setMxBillCertificationDay(jsonObject.getString(value));
+                            decision.setMxBillCertificationDay(value);
                             break;
                         default:
                             break;
@@ -520,6 +526,14 @@ public class DecisionServiceImpl implements DecisionService {
                     if ("reliability".equals(jsonObject.getString("key"))) {
                         String reliability = jsonObject.getString("value");
                         decision.setMxIsReliability("实名认证".equals(reliability) ? 1 : 0);
+                    }
+                    if ("in_time".equals(jsonObject.getString("key"))) {
+                        String inTime = jsonObject.getString("value");
+                        decision.setMxInTime(inTime);
+                    }
+                    if ("bill_certification_day".equals(jsonObject.getString("key"))) {
+                        String billCertDay = jsonObject.getString("value");
+                        decision.setMxBillCertificationDay(billCertDay);
                     }
                 }
                 //处理基础信息检测项
@@ -652,6 +666,7 @@ public class DecisionServiceImpl implements DecisionService {
                             break;
                         case "contact_loan":
                             decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
+                            decision.setMxContactLoan(checkResult);
                             break;
                         case "regular_circle":
                             decision.setMxRegularCircle(checkResult);
