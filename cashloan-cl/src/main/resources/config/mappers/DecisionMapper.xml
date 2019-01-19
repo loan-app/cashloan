@@ -2149,5 +2149,1578 @@
         from cl_decision
         <include refid="searchBy"/>
     </select>
-    
+
+    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.Decision">
+        insert into cl_decision
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="borrowId != null">
+                borrow_id,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="contactNum != null">
+                contact_num,
+            </if>
+            <if test="contactSensitiveNum != null">
+                contact_sensitive_num,
+            </if>
+            <if test="mxIsNameAndIdcardInCourtBlack != null">
+                mx_is_name_and_idcard_in_court_black,
+            </if>
+            <if test="mxIsNameAndIdcardInFinanceBlack != null">
+                mx_is_name_and_idcard_in_finance_black,
+            </if>
+            <if test="mxIsNameAndMobileInFinanceBlack != null">
+                mx_is_name_and_mobile_in_finance_black,
+            </if>
+            <if test="mxSearchedOrgCnt != null">
+                mx_searched_org_cnt,
+            </if>
+            <if test="mxIdcardWithOtherPhoneNum != null">
+                mx_idcard_with_other_phone_num,
+            </if>
+            <if test="mxPhoneNoVoiceDays != null">
+                mx_phone_no_voice_days,
+            </if>
+            <if test="mxContactLoanSituation != null">
+                mx_contact_loan_situation,
+            </if>
+            <if test="mxFiveMonthVoiceSituation != null">
+                mx_five_month_voice_situation,
+            </if>
+            <if test="mxFiveMonthBillLessThan20Num != null">
+                mx_five_month_bill_less_than_20_num,
+            </if>
+            <if test="mxContactMatchingVoiceSituation != null">
+                mx_contact_matching_voice_situation,
+            </if>
+            <if test="mxIsReliability != null">
+                mx_is_reliability,
+            </if>
+            <if test="mxProvince != null and mxProvince != '' ">
+                mx_province,
+            </if>
+            <if test="mxCity != null and mxCity != '' ">
+                mx_city,
+            </if>
+            <if test="mxRegion != null and mxRegion != '' ">
+                mx_region,
+            </if>
+            <if test="mxNativePlace != null and mxNativePlace != '' ">
+                mx_native_place,
+            </if>
+            <if test="mxInTime != null and mxInTime != '' ">
+                mx_in_time,
+            </if>
+            <if test="mxBillCertificationDay != null and mxBillCertificationDay != '' ">
+                mx_bill_certification_day,
+            </if>
+            <if test="mxIdcardCheck != null and mxIdcardCheck != '' ">
+                mx_idcard_check,
+            </if>
+            <if test="mxEmailCheck != null and mxEmailCheck != '' ">
+                mx_email_check,
+            </if>
+            <if test="mxAddressCheck != null and mxAddressCheck != '' ">
+                mx_address_check,
+            </if>
+            <if test="mxCallDataCheck != null and mxCallDataCheck != '' ">
+                mx_call_data_check,
+            </if>
+            <if test="mxIdcardMatch != null and mxIdcardMatch != '' ">
+                mx_idcard_match,
+            </if>
+            <if test="mxNameMatch != null and mxNameMatch != '' ">
+                mx_name_match,
+            </if>
+            <if test="mxMobileSilence3m != null and mxMobileSilence3m != '' ">
+                mx_mobile_silence_3m,
+            </if>
+            <if test="mxMobileSilence6m != null and mxMobileSilence6m != '' ">
+                mx_mobile_silence_6m,
+            </if>
+            <if test="mxArrearageRisk3m != null and mxArrearageRisk3m != '' ">
+                mx_arrearage_risk_3m,
+            </if>
+            <if test="mxArrearageRisk6m != null and mxArrearageRisk6m != '' ">
+                mx_arrearage_risk_6m,
+            </if>
+            <if test="mxBindingRisk != null and mxBindingRisk != '' ">
+                mx_binding_risk,
+            </if>
+            <if test="mxRegularCircle != null and mxRegularCircle != '' ">
+                mx_regular_circle,
+            </if>
+            <if test="mxPhoneUsedTime != null and mxPhoneUsedTime != '' ">
+                mx_phone_used_time,
+            </if>
+            <if test="mxPhonePowerOff != null and mxPhonePowerOff != '' ">
+                mx_phone_power_off,
+            </if>
+            <if test="mxContactEachOther != null and mxContactEachOther != '' ">
+                mx_contact_each_other,
+            </if>
+            <if test="mxContactMacao != null and mxContactMacao != '' ">
+                mx_contact_macao,
+            </if>
+            <if test="mxContact110 != null and mxContact110 != '' ">
+                mx_contact_110,
+            </if>
+            <if test="mxContact120 != null and mxContact120 != '' ">
+                mx_contact_120,
+            </if>
+            <if test="mxContactLawyer != null and mxContactLawyer != '' ">
+                mx_contact_lawyer,
+            </if>
+            <if test="mxContactCourt != null and mxContactCourt != '' ">
+                mx_contact_court,
+            </if>
+            <if test="mxContactLoan != null and mxContactLoan != '' ">
+                mx_contact_loan,
+            </if>
+            <if test="mxContactBank != null and mxContactBank != '' ">
+                mx_contact_bank,
+            </if>
+            <if test="mxContactCreditCard != null and mxContactCreditCard != '' ">
+                mx_contact_credit_card,
+            </if>
+            <if test="mxContactCollection != null and mxContactCollection != '' ">
+                mx_contact_collection,
+            </if>
+            <if test="mxContactNight != null and mxContactNight != '' ">
+                mx_contact_night,
+            </if>
+            <if test="mxDwellUsedTime != null and mxDwellUsedTime != '' ">
+                mx_dwell_used_time,
+            </if>
+            <if test="mxEbusinessInfo != null and mxEbusinessInfo != '' ">
+                mx_ebusiness_info,
+            </if>
+            <if test="mxPersonEbusinessInfo != null and mxPersonEbusinessInfo != '' ">
+                mx_person_ebusiness_info,
+            </if>
+            <if test="mxVirtualBuying != null and mxVirtualBuying != '' ">
+                mx_virtual_buying,
+            </if>
+            <if test="mxLotteryBuying != null and mxLotteryBuying != '' ">
+                mx_lottery_buying,
+            </if>
+            <if test="mxPersonAddrChanged != null and mxPersonAddrChanged != '' ">
+                mx_person_addr_changed,
+            </if>
+            <if test="mxSchoolStatus != null and mxSchoolStatus != '' ">
+                mx_school_status,
+            </if>
+            <if test="mxEducationInfo != null and mxEducationInfo != '' ">
+                mx_education_info,
+            </if>
+            <if test="mxWorkAddrInfo != null and mxWorkAddrInfo != '' ">
+                mx_work_addr_info,
+            </if>
+            <if test="mxLiveAddrInfo != null and mxLiveAddrInfo != '' ">
+                mx_live_addr_info,
+            </if>
+            <if test="mxSchoolAddrInfo != null and mxSchoolAddrInfo != '' ">
+                mx_school_addr_info,
+            </if>
+            <if test="mxPhoneCall != null and mxPhoneCall != '' ">
+                mx_phone_call,
+            </if>
+            <if test="mxFriendNum3m != null and mxFriendNum3m != '' ">
+                mx_friend_num_3m,
+            </if>
+            <if test="mxGoodFriendNum3m != null and mxGoodFriendNum3m != '' ">
+                mx_good_friend_num_3m,
+            </if>
+            <if test="mxFriendCityCenter3m != null and mxFriendCityCenter3m != '' ">
+                mx_friend_city_center_3m,
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter3m != null and mxIsCityMatchFriendCityCenter3m != '' ">
+                mx_is_city_match_friend_city_center_3m,
+            </if>
+            <if test="mxInterPeerNum3m != null and mxInterPeerNum3m != '' ">
+                mx_inter_peer_num_3m,
+            </if>
+            <if test="mxFriendNum6m != null and mxFriendNum6m != '' ">
+                mx_friend_num_6m,
+            </if>
+            <if test="mxGoodFriendNum6m != null and mxGoodFriendNum6m != '' ">
+                mx_good_friend_num_6m,
+            </if>
+            <if test="mxFriendCityCenter6m != null and mxFriendCityCenter6m != '' ">
+                mx_friend_city_center_6m,
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter6m != null and mxIsCityMatchFriendCityCenter6m != '' ">
+                mx_is_city_match_friend_city_center_6m,
+            </if>
+            <if test="mxInterPeerNum6m != null and mxInterPeerNum6m != '' ">
+                mx_inter_peer_num_6m,
+            </if>
+            <if test="mxSearchedOrgType != null and mxSearchedOrgType != '' ">
+                mx_searched_org_type,
+            </if>
+            <if test="mxIdcardWithOtherNames != null and mxIdcardWithOtherNames != '' ">
+                mx_idcard_with_other_names,
+            </if>
+            <if test="mxIdcardWithOtherPhones != null and mxIdcardWithOtherPhones != '' ">
+                mx_idcard_with_other_phones,
+            </if>
+            <if test="mxPhoneWithOtherNames != null and mxPhoneWithOtherNames != '' ">
+                mx_phone_with_other_names,
+            </if>
+            <if test="mxPhoneWithOtherIdcards != null and mxPhoneWithOtherIdcards != '' ">
+                mx_phone_with_other_idcards,
+            </if>
+            <if test="mxRegisterOrgCnt != null">
+                mx_register_org_cnt,
+            </if>
+            <if test="mxRegisterOrgType != null and mxRegisterOrgType != '' ">
+                mx_register_org_type,
+            </if>
+            <if test="mxArisedOpenWeb != null and mxArisedOpenWeb != '' ">
+                mx_arised_open_web,
+            </if>
+            <if test="mxPhoneGrayScore != null">
+                mx_phone_gray_score,
+            </if>
+            <if test="mxContactsClass1BlacklistCnt != null">
+                mx_contacts_class1_blacklist_cnt,
+            </if>
+            <if test="mxContactsClass2BlacklistCnt != null">
+                mx_contacts_class2_blacklist_cnt,
+            </if>
+            <if test="mxContactsClass1Cnt != null">
+                mx_contacts_class1_cnt,
+            </if>
+            <if test="mxContactsRouterCnt != null">
+                mx_contacts_router_cnt,
+            </if>
+            <if test="mxContactsRouterRatio != null">
+                mx_contacts_router_ratio,
+            </if>
+            <if test="yxOverdueHistoryCount != null">
+                yx_overdue_history_count,
+            </if>
+            <if test="yxOverdueHistoryM3Count != null">
+                yx_overdue_history_m3_count,
+            </if>
+            <if test="yxOverdueHistoryM6Count != null">
+                yx_overdue_history_m6_count,
+            </if>
+            <if test="yxAm20NoAccept != null">
+                yx_am20_no_accept,
+            </if>
+            <if test="mxCourtcaseCnt != null">
+                mx_courtcase_cnt,
+            </if>
+            <if test="mxDishonestCnt != null">
+                mx_dishonest_cnt,
+            </if>
+            <if test="mxIdcardOtherNamesCnt != null">
+                mx_idcard_other_names_cnt,
+            </if>
+            <if test="mxIdcardOtherMobilesCnt != null">
+                mx_idcard_other_mobiles_cnt,
+            </if>
+            <if test="mxIdcardOtherMobilesBlackCnt != null">
+                mx_idcard_other_mobiles_black_cnt,
+            </if>
+            <if test="mxMobileOtherNamesCnt != null">
+                mx_mobile_other_names_cnt,
+            </if>
+            <if test="mxMobileOtherIdcardsCnt != null">
+                mx_mobile_other_idcards_cnt,
+            </if>
+            <if test="mxMobileOtherIdcardsBlackCnt != null">
+                mx_mobile_other_idcards_black_cnt,
+            </if>
+            <if test="mxOtherDevicesCnt != null">
+                mx_other_devices_cnt,
+            </if>
+            <if test="mxMobileOtherDevicesCnt != null">
+                mx_mobile_other_devices_cnt,
+            </if>
+            <if test="mxIdcardOtherDevicesCnt != null">
+                mx_idcard_other_devices_cnt,
+            </if>
+            <if test="mxDeviceOtherNamesCnt != null">
+                mx_device_other_names_cnt,
+            </if>
+            <if test="mxDeviceOtherMobilesCnt != null">
+                mx_device_other_mobiles_cnt,
+            </if>
+            <if test="mxDeviceOtherMobilesBlackCnt != null">
+                mx_device_other_mobiles_black_cnt,
+            </if>
+            <if test="mxDeviceOtherIdcardsCnt != null">
+                mx_device_other_idcards_cnt,
+            </if>
+            <if test="mxDeviceOtherIdcardsBlackCnt != null">
+                mx_device_other_idcards_black_cnt,
+            </if>
+            <if test="mxBlackMobileNameInBlacklist != null">
+                mx_black_mobile_name_in_blacklist,
+            </if>
+            <if test="mxBlackIdcardNameInBlacklist != null">
+                mx_black_idcard_name_in_blacklist,
+            </if>
+            <if test="mxGrayMobileNameInBlacklist != null">
+                mx_gray_mobile_name_in_blacklist,
+            </if>
+            <if test="mxGrayIdcardNameInBlacklist != null">
+                mx_gray_idcard_name_in_blacklist,
+            </if>
+            <if test="mxFraudIsHit != null">
+                mx_fraud_is_hit,
+            </if>
+            <if test="mxFraudHitType != null and mxFraudHitType != '' ">
+                mx_fraud_hit_type,
+            </if>
+            <if test="xdIsLastloanRefused != null and xdIsLastloanRefused != '' ">
+                xd_is_lastloan_refused,
+            </if>
+            <if test="xdTotalLoanCount != null">
+                xd_total_loan_count,
+            </if>
+            <if test="xdTotalOverdueCount != null">
+                xd_total_overdue_count,
+            </if>
+            <if test="xdLongestOverduePaid != null and xdLongestOverduePaid != '' ">
+                xd_longest_overdue_paid,
+            </if>
+            <if test="xdCurrentOverdueCount != null">
+                xd_current_overdue_count,
+            </if>
+            <if test="xdCurrentOverdueAmount != null">
+                xd_current_overdue_amount,
+            </if>
+            <if test="xdOverDue90ContactsCount != null">
+                xd_over_due90_contacts_count,
+            </if>
+            <if test="xdLongestOverdueUnpaid != null and xdLongestOverdueUnpaid != '' ">
+                xd_longest_overdue_unpaid,
+            </if>
+            <if test="xdLastLoanRefuseReason != null and xdLastLoanRefuseReason != '' ">
+                xd_last_loan_refuse_reason,
+            </if>
+            <if test="xdLastLoanRefuseTime != null and xdLastLoanRefuseTime != '' ">
+                xd_last_loan_refuse_time,
+            </if>
+            <if test="xdRemark != null and xdRemark != '' ">
+                xd_remark,
+            </if>
+            <if test="xdFirstLoanTime != null and xdFirstLoanTime != '' ">
+                xd_first_loan_time,
+            </if>
+            <if test="ppxIsBlack != null">
+                ppx_is_black,
+            </if>
+            <if test="ppxIsAlert != null">
+                ppx_is_alert,
+            </if>
+            <if test="ppxOverdueFirstTime != null and ppxOverdueFirstTime != '' ">
+                ppx_overdue_first_time,
+            </if>
+            <if test="ppxOverdueLastTime != null and ppxOverdueLastTime != '' ">
+                ppx_overdue_last_time,
+            </if>
+            <if test="ppxTotalOverdueCount != null">
+                ppx_total_overdue_count,
+            </if>
+            <if test="ppxCurrentOverdueAmount != null">
+                ppx_current_overdue_amount,
+            </if>
+            <if test="ppxCurrentOverdueDays != null">
+                ppx_current_overdue_days,
+            </if>
+            <if test="ppxHistoryOverdueAmount != null">
+                ppx_history_overdue_amount,
+            </if>
+            <if test="ppxHistoryOverdueDays != null">
+                ppx_history_overdue_days,
+            </if>
+            <if test="ppxFraudFirstTime != null and ppxFraudFirstTime != '' ">
+                ppx_fraud_first_time,
+            </if>
+            <if test="ppxFraudLastTime != null and ppxFraudLastTime != '' ">
+                ppx_fraud_last_time,
+            </if>
+            <if test="ppxTotalFraudCount != null">
+                ppx_total_fraud_count,
+            </if>
+            <if test="ppxNegativeFirstTime != null and ppxNegativeFirstTime != '' ">
+                ppx_negative_first_time,
+            </if>
+            <if test="ppxNegativeLastTime != null and ppxNegativeLastTime != '' ">
+                ppx_negative_last_time,
+            </if>
+            <if test="ppxTotalNegativeCount != null">
+                ppx_total_negative_count,
+            </if>
+            <if test="xyLoansScore != null and xyLoansScore != '' ">
+                xy_loans_score,
+            </if>
+            <if test="xyLoansCredibility != null and xyLoansCredibility != '' ">
+                xy_loans_credibility,
+            </if>
+            <if test="xyLoansCount != null and xyLoansCount != '' ">
+                xy_loans_count,
+            </if>
+            <if test="xyLoansSettleCount != null and xyLoansSettleCount != '' ">
+                xy_loans_settle_count,
+            </if>
+            <if test="xyLoansOverdueCount != null and xyLoansOverdueCount != '' ">
+                xy_loans_overdue_count,
+            </if>
+            <if test="xyLoansOrgCount != null and xyLoansOrgCount != '' ">
+                xy_loans_org_count,
+            </if>
+            <if test="xyConsfinOrgCount != null and xyConsfinOrgCount != '' ">
+                xy_consfin_org_count,
+            </if>
+            <if test="xyLoansCashCount != null and xyLoansCashCount != '' ">
+                xy_loans_cash_count,
+            </if>
+            <if test="xyLatestOneMonth != null and xyLatestOneMonth != '' ">
+                xy_latest_one_month,
+            </if>
+            <if test="xyLatestThreeMonth != null and xyLatestThreeMonth != '' ">
+                xy_latest_three_month,
+            </if>
+            <if test="xyLatestSixMonth != null and xyLatestSixMonth != '' ">
+                xy_latest_six_month,
+            </if>
+            <if test="xyHistorySucFee != null and xyHistorySucFee != '' ">
+                xy_history_suc_fee,
+            </if>
+            <if test="xyHistoryFailFee != null and xyHistoryFailFee != '' ">
+                xy_history_fail_fee,
+            </if>
+            <if test="xyHistorySucMinusFailNum != null">
+                xy_history_suc_minus_fail_num,
+            </if>
+            <if test="xyLatestOneMonthSuc != null and xyLatestOneMonthSuc != '' ">
+                xy_latest_one_month_suc,
+            </if>
+            <if test="xyLatestOneMonthFail != null and xyLatestOneMonthFail != '' ">
+                xy_latest_one_month_fail,
+            </if>
+            <if test="xyLatestOneMonthSucMinusFailNum != null">
+                xy_latest_one_month_suc_minus_fail_num,
+            </if>
+            <if test="xyLoansLongTime != null and xyLoansLongTime != '' ">
+                xy_loans_long_time,
+            </if>
+            <if test="xyLoansLatestTime != null and xyLoansLatestTime != '' ">
+                xy_loans_latest_time,
+            </if>
+            <if test="paL1wwdcnTNumsCon != null">
+                pa_l1wwdcn_t_nums_con,
+            </if>
+            <if test="paL1wwdcnTNumsConBank != null">
+                pa_l1wwdcn_t_nums_con_bank,
+            </if>
+            <if test="paL1wwdcnTNumsConCf != null">
+                pa_l1wwdcn_t_nums_con_cf,
+            </if>
+            <if test="paL1wwdcnTNumsConF != null">
+                pa_l1wwdcn_t_nums_con_f,
+            </if>
+            <if test="paL1wwdcnTNumsConIf != null">
+                pa_l1wwdcn_t_nums_con_if,
+            </if>
+            <if test="paL1wwdcnTNumsConOrg != null">
+                pa_l1wwdcn_t_nums_con_org,
+            </if>
+            <if test="paL1wwdcnTTimesIn != null">
+                pa_l1wwdcn_t_times_in,
+            </if>
+            <if test="paL1wwdcnTTimesOut != null">
+                pa_l1wwdcn_t_times_out,
+            </if>
+            <if test="paL2wwdcnTNumsConOrgType != null">
+                pa_l2wwdcn_t_nums_con_org_type,
+            </if>
+            <if test="paL3wwdcnTNumsConIf != null">
+                pa_l3wwdcn_t_nums_con_if,
+            </if>
+            <if test="paL1mwdcnTNumsCon != null">
+                pa_l1mwdcn_t_nums_con,
+            </if>
+            <if test="paL1mwdcnTNumsConBank != null">
+                pa_l1mwdcn_t_nums_con_bank,
+            </if>
+            <if test="paL1mwdcnTNumsConCf != null">
+                pa_l1mwdcn_t_nums_con_cf,
+            </if>
+            <if test="paL1mwdcnTNumsConF != null">
+                pa_l1mwdcn_t_nums_con_f,
+            </if>
+            <if test="paL1mwdcnTNumsConIf != null">
+                pa_l1mwdcn_t_nums_con_if,
+            </if>
+            <if test="paL1mwdcnTNumsConOrg != null">
+                pa_l1mwdcn_t_nums_con_org,
+            </if>
+            <if test="paL1mwdcnTTimesIn != null">
+                pa_l1mwdcn_t_times_in,
+            </if>
+            <if test="paL1mwdcnTTimesOut != null">
+                pa_l1mwdcn_t_times_out,
+            </if>
+            <if test="paL2mwdcnTTimesIn != null">
+                pa_l2mwdcn_t_times_in,
+            </if>
+            <if test="paL2mwdcnTNumsIn != null">
+                pa_l2mwdcn_t_nums_in,
+            </if>
+            <if test="paL2mwdcnTaxTimesIn != null">
+                pa_l2mwdcn_tax_times_in,
+            </if>
+            <if test="paL2mwdcnMaxTimesCon != null">
+                pa_l2mwdcn_max_times_con,
+            </if>
+            <if test="paL2mencnTTaysCon != null">
+                pa_l2mencn_t_tays_con,
+            </if>
+            <if test="paL3mwdcnTNumsCon != null">
+                pa_l3mwdcn_t_nums_con,
+            </if>
+            <if test="paL3mwdcnTNumsConBank != null">
+                pa_l3mwdcn_t_nums_con_bank,
+            </if>
+            <if test="paL3mwdcnTNumsConCf != null">
+                pa_l3mwdcn_t_nums_con_cf,
+            </if>
+            <if test="paL3mwdcnTNumsConF != null">
+                pa_l3mwdcn_t_nums_con_f,
+            </if>
+            <if test="paL3mwdcnTNumsConIf != null">
+                pa_l3mwdcn_t_nums_con_if,
+            </if>
+            <if test="paL3mencnTNumsConOrg != null">
+                pa_l3mencn_t_nums_con_org,
+            </if>
+            <if test="paL3mwdcnTNumsConOrg != null">
+                pa_l3mwdcn_t_nums_con_org,
+            </if>
+            <if test="paL3mwdcnTTimesIn != null">
+                pa_l3mwdcn_t_times_in,
+            </if>
+            <if test="paL3mwdcnTTimesOut != null">
+                pa_l3mwdcn_t_times_out,
+            </if>
+            <if test="paL3mwdcnAddTNumsInOrg != null">
+                pa_l3mwdcn_add_t_nums_in_org,
+            </if>
+            <if test="paL3mwdcnMaxDaysIn != null">
+                pa_l3mwdcn_max_days_in,
+            </if>
+            <if test="paL4mwdcnTNumsConOrgType != null">
+                pa_l4mwdcn_t_nums_con_org_type,
+            </if>
+            <if test="paL4mwdcnTTimesInNonBank != null">
+                pa_l4mwdcn_t_times_in_non_bank,
+            </if>
+            <if test="paL4mwdcnTDurCon != null">
+                pa_l4mwdcn_t_dur_con,
+            </if>
+            <if test="paL4mwdcnTTimesCon != null">
+                pa_l4mwdcn_t_times_con,
+            </if>
+            <if test="paL4mwdcnTNumsConF != null">
+                pa_l4mwdcn_t_nums_con_f,
+            </if>
+            <if test="paL4mwdcnTDurIn != null">
+                pa_l4mwdcn_t_dur_in,
+            </if>
+            <if test="paL4mwdcnTDurInMaxTimes != null">
+                pa_l4mwdcn_t_dur_in_max_times,
+            </if>
+            <if test="paL4mwdcnTNumsInF != null">
+                pa_l4mwdcn_t_nums_in_f,
+            </if>
+            <if test="paL5mwdcnTDaysCon != null">
+                pa_l5mwdcn_t_days_con,
+            </if>
+            <if test="paL5mwdcnTDurInF != null">
+                pa_l5mwdcn_t_dur_in_f,
+            </if>
+            <if test="paL5mwdcmTDurCon != null">
+                pa_l5mwdcm_t_dur_con,
+            </if>
+            <if test="paL5mwdcnTNumsConIf != null">
+                pa_l5mwdcn_t_nums_con_if,
+            </if>
+            <if test="paAllwdcnTNumsCon != null">
+                pa_allwdcn_t_nums_con,
+            </if>
+            <if test="paAllwdcnTNumsConBank != null">
+                pa_allwdcn_t_nums_con_bank,
+            </if>
+            <if test="paAllwdcnTNumsConCf != null">
+                pa_allwdcn_t_nums_con_cf,
+            </if>
+            <if test="paAllwdcnTNumsConF != null">
+                pa_allwdcn_t_nums_con_f,
+            </if>
+            <if test="paAllwdcnTNumsConIf != null">
+                pa_allwdcn_t_nums_con_if,
+            </if>
+            <if test="paAllwdcnTNumsConOrg != null">
+                pa_allwdcn_t_nums_con_org,
+            </if>
+            <if test="paAllwdcnTTimesIn != null">
+                pa_allwdcn_t_times_in,
+            </if>
+            <if test="paAllwdcnTTimesOut != null">
+                pa_allwdcn_t_times_out,
+            </if>
+            <if test="paAllwdcnTDurInF != null">
+                pa_allwdcn_t_dur_in_f,
+            </if>
+            <if test="paAllwdcmMaxOrgTypeIn != null">
+                pa_allwdcm_max_org_type_in,
+            </if>
+            <if test="paAlldtcnwkAdur != null">
+                pa_alldtcnwk_adur,
+            </if>
+            <if test="paAllwdcnAdur != null">
+                pa_allwdcn_adur,
+            </if>
+            <if test="paL1mdtcnAdur != null">
+                pa_l1mdtcn_adur,
+            </if>
+            <if test="paL1mwdcnAdur != null">
+                pa_l1mwdcn_adur,
+            </if>
+            <if test="paAllmncnrtNumsCon != null">
+                pa_allmncnrt_nums_con,
+            </if>
+            <if test="paL1wwdcnrtNumsCon != null">
+                pa_l1wwdcnrt_nums_con,
+            </if>
+            <if test="paL2mwdcnNumsCon != null">
+                pa_l2mwdcn_nums_con,
+            </if>
+            <if test="paL2wwdcnwkNumsCon != null">
+                pa_l2wwdcnwk_nums_con,
+            </if>
+            <if test="paAllwdcnADurOneNums != null">
+                pa_allwdcn_a_dur_one_nums,
+            </if>
+            <if test="paL4mwdcnADurOneNums != null">
+                pa_l4mwdcn_a_dur_one_nums,
+            </if>
+            <if test="paL6mwdcnADurOneNums != null">
+                pa_l6mwdcn_a_dur_one_nums,
+            </if>
+            <if test="paL1mdtcnwkRankCount != null">
+                pa_l1mdtcnwk_rank_count,
+            </if>
+            <if test="paL1wdtcnrtRankCount != null">
+                pa_l1wdtcnrt_rank_count,
+            </if>
+            <if test="paL2mdtcnRankCount != null">
+                pa_l2mdtcn_rank_count,
+            </if>
+            <if test="paL3wwdcnwkRankCount != null">
+                pa_l3wwdcnwk_rank_count,
+            </if>
+            <if test="paL1mevcnrtSepcialHourCount != null">
+                pa_l1mevcnrt_sepcial_hour_count,
+            </if>
+            <if test="paL1mmncnwkSepcialHourCount != null">
+                pa_l1mmncnwk_sepcial_hour_count,
+            </if>
+            <if test="paL1wevcnSepcialHourCount != null">
+                pa_l1wevcn_sepcial_hour_count,
+            </if>
+            <if test="paL1wwdcnrtSepcialHourCount != null">
+                pa_l1wwdcnrt_sepcial_hour_count,
+            </if>
+            <if test="paL2mevcnSepcialHourCount != null">
+                pa_l2mevcn_sepcial_hour_count,
+            </if>
+            <if test="paL2mevcnrtSepcialHourCount != null">
+                pa_l2mevcnrt_sepcial_hour_count,
+            </if>
+            <if test="paL2mwdcnSepcialHourCount != null">
+                pa_l2mwdcn_sepcial_hour_count,
+            </if>
+            <if test="paL3mevcnSepcialHourCount != null">
+                pa_l3mevcn_sepcial_hour_count,
+            </if>
+            <if test="paL3mwdcnrtSepcialHourCount != null">
+                pa_l3mwdcnrt_sepcial_hour_count,
+            </if>
+            <if test="paL6mwdcnwkSepcialHourCount != null">
+                pa_l6mwdcnwk_sepcial_hour_count,
+            </if>
+            <if test="paL2mdtcnActiveDaysCount != null">
+                pa_l2mdtcn_active_days_count,
+            </if>
+            <if test="paL2wwdcnActiveDaysCount != null">
+                pa_l2wwdcn_active_days_count,
+            </if>
+            <if test="paL3mwdcnrtActiveDaysCount != null">
+                pa_l3mwdcnrt_active_days_count,
+            </if>
+            <if test="paL2wdtcnMaxTimesIn != null">
+                pa_l2wdtcn_max_times_in,
+            </if>
+            <if test="paL2wevcnMaxDaysOfOneNumberCount != null">
+                pa_l2wevcn_max_days_of_one_number_count,
+            </if>
+            <if test="paL3mwdcnrtMaxDaysOfOneNumberCount != null">
+                pa_l3mwdcnrt_max_days_of_one_number_count,
+            </if>
+            <if test="paL3wwdcnMaxDaysOfOneNumberCount != null">
+                pa_l3wwdcn_max_days_of_one_number_count,
+            </if>
+            <if test="paL2wwdcnADurOneNumsIn != null">
+                pa_l2wwdcn_a_dur_one_nums_in,
+            </if>
+            <if test="paL2wwdcnTTimesIn != null">
+                pa_l2wwdcn_t_times_in,
+            </if>
+            <if test="paL3mwdcnADurIn != null">
+                pa_l3mwdcn_a_dur_in,
+            </if>
+            <if test="paL1mevcnrtTDur != null">
+                pa_l1mevcnrt_t_dur,
+            </if>
+            <if test="paL1mmncnwkTDur != null">
+                pa_l1mmncnwk_t_dur,
+            </if>
+            <if test="paL2mevcnTDur != null">
+                pa_l2mevcn_t_dur,
+            </if>
+            <if test="paL2mwdcnrtTDur != null">
+                pa_l2mwdcnrt_t_dur,
+            </if>
+            <if test="paL3mevcnTDur != null">
+                pa_l3mevcn_t_dur,
+            </if>
+            <if test="paL3mwdcnrtTDur != null">
+                pa_l3mwdcnrt_t_dur,
+            </if>
+            <if test="paL6mwdcnwkTDur != null">
+                pa_l6mwdcnwk_t_dur,
+            </if>
+            <if test="paL4mwdcnTDur != null">
+                pa_l4mwdcn_t_dur,
+            </if>
+            <if test="paL6mwdcnMinTtvDaysIn != null">
+                pa_l6mwdcn_min_ttv_days_in,
+            </if>
+            <if test="paL6mwdcnTDurF != null">
+                pa_l6mwdcn_t_dur_f,
+            </if>
+            <if test="paAll25acfriDur != null">
+                pa_all25acfri_dur,
+            </if>
+            <if test="paAllwdacwkDur != null">
+                pa_allwdacwk_dur,
+            </if>
+            <if test="paAll25acTimes != null">
+                pa_all25ac_times,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastModifyTime != null">
+                last_modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="borrowId != null">
+                #{borrowId,jdbcType=BIGINT},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+            <if test="contactNum != null">
+                #{contactNum,jdbcType=INTEGER},
+            </if>
+            <if test="contactSensitiveNum != null">
+                #{contactSensitiveNum,jdbcType=INTEGER},
+            </if>
+            <if test="mxIsNameAndIdcardInCourtBlack != null">
+                #{mxIsNameAndIdcardInCourtBlack,jdbcType=INTEGER},
+            </if>
+            <if test="mxIsNameAndIdcardInFinanceBlack != null">
+                #{mxIsNameAndIdcardInFinanceBlack,jdbcType=INTEGER},
+            </if>
+            <if test="mxIsNameAndMobileInFinanceBlack != null">
+                #{mxIsNameAndMobileInFinanceBlack,jdbcType=INTEGER},
+            </if>
+            <if test="mxSearchedOrgCnt != null">
+                #{mxSearchedOrgCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxIdcardWithOtherPhoneNum != null">
+                #{mxIdcardWithOtherPhoneNum,jdbcType=INTEGER},
+            </if>
+            <if test="mxPhoneNoVoiceDays != null">
+                #{mxPhoneNoVoiceDays,jdbcType=INTEGER},
+            </if>
+            <if test="mxContactLoanSituation != null">
+                #{mxContactLoanSituation,jdbcType=INTEGER},
+            </if>
+            <if test="mxFiveMonthVoiceSituation != null">
+                #{mxFiveMonthVoiceSituation,jdbcType=INTEGER},
+            </if>
+            <if test="mxFiveMonthBillLessThan20Num != null">
+                #{mxFiveMonthBillLessThan20Num,jdbcType=INTEGER},
+            </if>
+            <if test="mxContactMatchingVoiceSituation != null">
+                #{mxContactMatchingVoiceSituation,jdbcType=INTEGER},
+            </if>
+            <if test="mxIsReliability != null">
+                #{mxIsReliability,jdbcType=INTEGER},
+            </if>
+            <if test="mxProvince != null and mxProvince != '' ">
+                #{mxProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="mxCity != null and mxCity != '' ">
+                #{mxCity,jdbcType=VARCHAR},
+            </if>
+            <if test="mxRegion != null and mxRegion != '' ">
+                #{mxRegion,jdbcType=VARCHAR},
+            </if>
+            <if test="mxNativePlace != null and mxNativePlace != '' ">
+                #{mxNativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="mxInTime != null and mxInTime != '' ">
+                #{mxInTime,jdbcType=VARCHAR},
+            </if>
+            <if test="mxBillCertificationDay != null and mxBillCertificationDay != '' ">
+                #{mxBillCertificationDay,jdbcType=VARCHAR},
+            </if>
+            <if test="mxIdcardCheck != null and mxIdcardCheck != '' ">
+                #{mxIdcardCheck,jdbcType=VARCHAR},
+            </if>
+            <if test="mxEmailCheck != null and mxEmailCheck != '' ">
+                #{mxEmailCheck,jdbcType=VARCHAR},
+            </if>
+            <if test="mxAddressCheck != null and mxAddressCheck != '' ">
+                #{mxAddressCheck,jdbcType=VARCHAR},
+            </if>
+            <if test="mxCallDataCheck != null and mxCallDataCheck != '' ">
+                #{mxCallDataCheck,jdbcType=VARCHAR},
+            </if>
+            <if test="mxIdcardMatch != null and mxIdcardMatch != '' ">
+                #{mxIdcardMatch,jdbcType=VARCHAR},
+            </if>
+            <if test="mxNameMatch != null and mxNameMatch != '' ">
+                #{mxNameMatch,jdbcType=VARCHAR},
+            </if>
+            <if test="mxMobileSilence3m != null and mxMobileSilence3m != '' ">
+                #{mxMobileSilence3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxMobileSilence6m != null and mxMobileSilence6m != '' ">
+                #{mxMobileSilence6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxArrearageRisk3m != null and mxArrearageRisk3m != '' ">
+                #{mxArrearageRisk3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxArrearageRisk6m != null and mxArrearageRisk6m != '' ">
+                #{mxArrearageRisk6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxBindingRisk != null and mxBindingRisk != '' ">
+                #{mxBindingRisk,jdbcType=VARCHAR},
+            </if>
+            <if test="mxRegularCircle != null and mxRegularCircle != '' ">
+                #{mxRegularCircle,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPhoneUsedTime != null and mxPhoneUsedTime != '' ">
+                #{mxPhoneUsedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPhonePowerOff != null and mxPhonePowerOff != '' ">
+                #{mxPhonePowerOff,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactEachOther != null and mxContactEachOther != '' ">
+                #{mxContactEachOther,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactMacao != null and mxContactMacao != '' ">
+                #{mxContactMacao,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContact110 != null and mxContact110 != '' ">
+                #{mxContact110,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContact120 != null and mxContact120 != '' ">
+                #{mxContact120,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactLawyer != null and mxContactLawyer != '' ">
+                #{mxContactLawyer,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactCourt != null and mxContactCourt != '' ">
+                #{mxContactCourt,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactLoan != null and mxContactLoan != '' ">
+                #{mxContactLoan,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactBank != null and mxContactBank != '' ">
+                #{mxContactBank,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactCreditCard != null and mxContactCreditCard != '' ">
+                #{mxContactCreditCard,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactCollection != null and mxContactCollection != '' ">
+                #{mxContactCollection,jdbcType=VARCHAR},
+            </if>
+            <if test="mxContactNight != null and mxContactNight != '' ">
+                #{mxContactNight,jdbcType=VARCHAR},
+            </if>
+            <if test="mxDwellUsedTime != null and mxDwellUsedTime != '' ">
+                #{mxDwellUsedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="mxEbusinessInfo != null and mxEbusinessInfo != '' ">
+                #{mxEbusinessInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPersonEbusinessInfo != null and mxPersonEbusinessInfo != '' ">
+                #{mxPersonEbusinessInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="mxVirtualBuying != null and mxVirtualBuying != '' ">
+                #{mxVirtualBuying,jdbcType=VARCHAR},
+            </if>
+            <if test="mxLotteryBuying != null and mxLotteryBuying != '' ">
+                #{mxLotteryBuying,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPersonAddrChanged != null and mxPersonAddrChanged != '' ">
+                #{mxPersonAddrChanged,jdbcType=VARCHAR},
+            </if>
+            <if test="mxSchoolStatus != null and mxSchoolStatus != '' ">
+                #{mxSchoolStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="mxEducationInfo != null and mxEducationInfo != '' ">
+                #{mxEducationInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="mxWorkAddrInfo != null and mxWorkAddrInfo != '' ">
+                #{mxWorkAddrInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="mxLiveAddrInfo != null and mxLiveAddrInfo != '' ">
+                #{mxLiveAddrInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="mxSchoolAddrInfo != null and mxSchoolAddrInfo != '' ">
+                #{mxSchoolAddrInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPhoneCall != null and mxPhoneCall != '' ">
+                #{mxPhoneCall,jdbcType=VARCHAR},
+            </if>
+            <if test="mxFriendNum3m != null and mxFriendNum3m != '' ">
+                #{mxFriendNum3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxGoodFriendNum3m != null and mxGoodFriendNum3m != '' ">
+                #{mxGoodFriendNum3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxFriendCityCenter3m != null and mxFriendCityCenter3m != '' ">
+                #{mxFriendCityCenter3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter3m != null and mxIsCityMatchFriendCityCenter3m != '' ">
+                #{mxIsCityMatchFriendCityCenter3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxInterPeerNum3m != null and mxInterPeerNum3m != '' ">
+                #{mxInterPeerNum3m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxFriendNum6m != null and mxFriendNum6m != '' ">
+                #{mxFriendNum6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxGoodFriendNum6m != null and mxGoodFriendNum6m != '' ">
+                #{mxGoodFriendNum6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxFriendCityCenter6m != null and mxFriendCityCenter6m != '' ">
+                #{mxFriendCityCenter6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter6m != null and mxIsCityMatchFriendCityCenter6m != '' ">
+                #{mxIsCityMatchFriendCityCenter6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxInterPeerNum6m != null and mxInterPeerNum6m != '' ">
+                #{mxInterPeerNum6m,jdbcType=VARCHAR},
+            </if>
+            <if test="mxSearchedOrgType != null and mxSearchedOrgType != '' ">
+                #{mxSearchedOrgType,jdbcType=VARCHAR},
+            </if>
+            <if test="mxIdcardWithOtherNames != null and mxIdcardWithOtherNames != '' ">
+                #{mxIdcardWithOtherNames,jdbcType=VARCHAR},
+            </if>
+            <if test="mxIdcardWithOtherPhones != null and mxIdcardWithOtherPhones != '' ">
+                #{mxIdcardWithOtherPhones,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPhoneWithOtherNames != null and mxPhoneWithOtherNames != '' ">
+                #{mxPhoneWithOtherNames,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPhoneWithOtherIdcards != null and mxPhoneWithOtherIdcards != '' ">
+                #{mxPhoneWithOtherIdcards,jdbcType=VARCHAR},
+            </if>
+            <if test="mxRegisterOrgCnt != null">
+                #{mxRegisterOrgCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxRegisterOrgType != null and mxRegisterOrgType != '' ">
+                #{mxRegisterOrgType,jdbcType=VARCHAR},
+            </if>
+            <if test="mxArisedOpenWeb != null and mxArisedOpenWeb != '' ">
+                #{mxArisedOpenWeb,jdbcType=VARCHAR},
+            </if>
+            <if test="mxPhoneGrayScore != null">
+                #{mxPhoneGrayScore,jdbcType=DECIMAL},
+            </if>
+            <if test="mxContactsClass1BlacklistCnt != null">
+                #{mxContactsClass1BlacklistCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxContactsClass2BlacklistCnt != null">
+                #{mxContactsClass2BlacklistCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxContactsClass1Cnt != null">
+                #{mxContactsClass1Cnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxContactsRouterCnt != null">
+                #{mxContactsRouterCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxContactsRouterRatio != null">
+                #{mxContactsRouterRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="yxOverdueHistoryCount != null">
+                #{yxOverdueHistoryCount,jdbcType=INTEGER},
+            </if>
+            <if test="yxOverdueHistoryM3Count != null">
+                #{yxOverdueHistoryM3Count,jdbcType=INTEGER},
+            </if>
+            <if test="yxOverdueHistoryM6Count != null">
+                #{yxOverdueHistoryM6Count,jdbcType=INTEGER},
+            </if>
+            <if test="yxAm20NoAccept != null">
+                #{yxAm20NoAccept,jdbcType=INTEGER},
+            </if>
+            <if test="mxCourtcaseCnt != null">
+                #{mxCourtcaseCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxDishonestCnt != null">
+                #{mxDishonestCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxIdcardOtherNamesCnt != null">
+                #{mxIdcardOtherNamesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxIdcardOtherMobilesCnt != null">
+                #{mxIdcardOtherMobilesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxIdcardOtherMobilesBlackCnt != null">
+                #{mxIdcardOtherMobilesBlackCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxMobileOtherNamesCnt != null">
+                #{mxMobileOtherNamesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxMobileOtherIdcardsCnt != null">
+                #{mxMobileOtherIdcardsCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxMobileOtherIdcardsBlackCnt != null">
+                #{mxMobileOtherIdcardsBlackCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxOtherDevicesCnt != null">
+                #{mxOtherDevicesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxMobileOtherDevicesCnt != null">
+                #{mxMobileOtherDevicesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxIdcardOtherDevicesCnt != null">
+                #{mxIdcardOtherDevicesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxDeviceOtherNamesCnt != null">
+                #{mxDeviceOtherNamesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxDeviceOtherMobilesCnt != null">
+                #{mxDeviceOtherMobilesCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxDeviceOtherMobilesBlackCnt != null">
+                #{mxDeviceOtherMobilesBlackCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxDeviceOtherIdcardsCnt != null">
+                #{mxDeviceOtherIdcardsCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxDeviceOtherIdcardsBlackCnt != null">
+                #{mxDeviceOtherIdcardsBlackCnt,jdbcType=INTEGER},
+            </if>
+            <if test="mxBlackMobileNameInBlacklist != null">
+                #{mxBlackMobileNameInBlacklist,jdbcType=INTEGER},
+            </if>
+            <if test="mxBlackIdcardNameInBlacklist != null">
+                #{mxBlackIdcardNameInBlacklist,jdbcType=INTEGER},
+            </if>
+            <if test="mxGrayMobileNameInBlacklist != null">
+                #{mxGrayMobileNameInBlacklist,jdbcType=INTEGER},
+            </if>
+            <if test="mxGrayIdcardNameInBlacklist != null">
+                #{mxGrayIdcardNameInBlacklist,jdbcType=INTEGER},
+            </if>
+            <if test="mxFraudIsHit != null">
+                #{mxFraudIsHit,jdbcType=INTEGER},
+            </if>
+            <if test="mxFraudHitType != null and mxFraudHitType != '' ">
+                #{mxFraudHitType,jdbcType=VARCHAR},
+            </if>
+            <if test="xdIsLastloanRefused != null and xdIsLastloanRefused != '' ">
+                #{xdIsLastloanRefused,jdbcType=VARCHAR},
+            </if>
+            <if test="xdTotalLoanCount != null">
+                #{xdTotalLoanCount,jdbcType=INTEGER},
+            </if>
+            <if test="xdTotalOverdueCount != null">
+                #{xdTotalOverdueCount,jdbcType=INTEGER},
+            </if>
+            <if test="xdLongestOverduePaid != null and xdLongestOverduePaid != '' ">
+                #{xdLongestOverduePaid,jdbcType=VARCHAR},
+            </if>
+            <if test="xdCurrentOverdueCount != null">
+                #{xdCurrentOverdueCount,jdbcType=INTEGER},
+            </if>
+            <if test="xdCurrentOverdueAmount != null">
+                #{xdCurrentOverdueAmount,jdbcType=INTEGER},
+            </if>
+            <if test="xdOverDue90ContactsCount != null">
+                #{xdOverDue90ContactsCount,jdbcType=INTEGER},
+            </if>
+            <if test="xdLongestOverdueUnpaid != null and xdLongestOverdueUnpaid != '' ">
+                #{xdLongestOverdueUnpaid,jdbcType=VARCHAR},
+            </if>
+            <if test="xdLastLoanRefuseReason != null and xdLastLoanRefuseReason != '' ">
+                #{xdLastLoanRefuseReason,jdbcType=VARCHAR},
+            </if>
+            <if test="xdLastLoanRefuseTime != null and xdLastLoanRefuseTime != '' ">
+                #{xdLastLoanRefuseTime,jdbcType=VARCHAR},
+            </if>
+            <if test="xdRemark != null and xdRemark != '' ">
+                #{xdRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="xdFirstLoanTime != null and xdFirstLoanTime != '' ">
+                #{xdFirstLoanTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxIsBlack != null">
+                #{ppxIsBlack,jdbcType=INTEGER},
+            </if>
+            <if test="ppxIsAlert != null">
+                #{ppxIsAlert,jdbcType=INTEGER},
+            </if>
+            <if test="ppxOverdueFirstTime != null and ppxOverdueFirstTime != '' ">
+                #{ppxOverdueFirstTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxOverdueLastTime != null and ppxOverdueLastTime != '' ">
+                #{ppxOverdueLastTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxTotalOverdueCount != null">
+                #{ppxTotalOverdueCount,jdbcType=INTEGER},
+            </if>
+            <if test="ppxCurrentOverdueAmount != null">
+                #{ppxCurrentOverdueAmount,jdbcType=INTEGER},
+            </if>
+            <if test="ppxCurrentOverdueDays != null">
+                #{ppxCurrentOverdueDays,jdbcType=INTEGER},
+            </if>
+            <if test="ppxHistoryOverdueAmount != null">
+                #{ppxHistoryOverdueAmount,jdbcType=INTEGER},
+            </if>
+            <if test="ppxHistoryOverdueDays != null">
+                #{ppxHistoryOverdueDays,jdbcType=INTEGER},
+            </if>
+            <if test="ppxFraudFirstTime != null and ppxFraudFirstTime != '' ">
+                #{ppxFraudFirstTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxFraudLastTime != null and ppxFraudLastTime != '' ">
+                #{ppxFraudLastTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxTotalFraudCount != null">
+                #{ppxTotalFraudCount,jdbcType=INTEGER},
+            </if>
+            <if test="ppxNegativeFirstTime != null and ppxNegativeFirstTime != '' ">
+                #{ppxNegativeFirstTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxNegativeLastTime != null and ppxNegativeLastTime != '' ">
+                #{ppxNegativeLastTime,jdbcType=VARCHAR},
+            </if>
+            <if test="ppxTotalNegativeCount != null">
+                #{ppxTotalNegativeCount,jdbcType=INTEGER},
+            </if>
+            <if test="xyLoansScore != null and xyLoansScore != '' ">
+                #{xyLoansScore,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansCredibility != null and xyLoansCredibility != '' ">
+                #{xyLoansCredibility,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansCount != null and xyLoansCount != '' ">
+                #{xyLoansCount,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansSettleCount != null and xyLoansSettleCount != '' ">
+                #{xyLoansSettleCount,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansOverdueCount != null and xyLoansOverdueCount != '' ">
+                #{xyLoansOverdueCount,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansOrgCount != null and xyLoansOrgCount != '' ">
+                #{xyLoansOrgCount,jdbcType=VARCHAR},
+            </if>
+            <if test="xyConsfinOrgCount != null and xyConsfinOrgCount != '' ">
+                #{xyConsfinOrgCount,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansCashCount != null and xyLoansCashCount != '' ">
+                #{xyLoansCashCount,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLatestOneMonth != null and xyLatestOneMonth != '' ">
+                #{xyLatestOneMonth,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLatestThreeMonth != null and xyLatestThreeMonth != '' ">
+                #{xyLatestThreeMonth,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLatestSixMonth != null and xyLatestSixMonth != '' ">
+                #{xyLatestSixMonth,jdbcType=VARCHAR},
+            </if>
+            <if test="xyHistorySucFee != null and xyHistorySucFee != '' ">
+                #{xyHistorySucFee,jdbcType=VARCHAR},
+            </if>
+            <if test="xyHistoryFailFee != null and xyHistoryFailFee != '' ">
+                #{xyHistoryFailFee,jdbcType=VARCHAR},
+            </if>
+            <if test="xyHistorySucMinusFailNum != null">
+                #{xyHistorySucMinusFailNum,jdbcType=INTEGER},
+            </if>
+            <if test="xyLatestOneMonthSuc != null and xyLatestOneMonthSuc != '' ">
+                #{xyLatestOneMonthSuc,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLatestOneMonthFail != null and xyLatestOneMonthFail != '' ">
+                #{xyLatestOneMonthFail,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLatestOneMonthSucMinusFailNum != null">
+                #{xyLatestOneMonthSucMinusFailNum,jdbcType=INTEGER},
+            </if>
+            <if test="xyLoansLongTime != null and xyLoansLongTime != '' ">
+                #{xyLoansLongTime,jdbcType=VARCHAR},
+            </if>
+            <if test="xyLoansLatestTime != null and xyLoansLatestTime != '' ">
+                #{xyLoansLatestTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paL1wwdcnTNumsCon != null">
+                #{paL1wwdcnTNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTNumsConBank != null">
+                #{paL1wwdcnTNumsConBank,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTNumsConCf != null">
+                #{paL1wwdcnTNumsConCf,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTNumsConF != null">
+                #{paL1wwdcnTNumsConF,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTNumsConIf != null">
+                #{paL1wwdcnTNumsConIf,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTNumsConOrg != null">
+                #{paL1wwdcnTNumsConOrg,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTTimesIn != null">
+                #{paL1wwdcnTTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnTTimesOut != null">
+                #{paL1wwdcnTTimesOut,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wwdcnTNumsConOrgType != null">
+                #{paL2wwdcnTNumsConOrgType,jdbcType=INTEGER},
+            </if>
+            <if test="paL3wwdcnTNumsConIf != null">
+                #{paL3wwdcnTNumsConIf,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTNumsCon != null">
+                #{paL1mwdcnTNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTNumsConBank != null">
+                #{paL1mwdcnTNumsConBank,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTNumsConCf != null">
+                #{paL1mwdcnTNumsConCf,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTNumsConF != null">
+                #{paL1mwdcnTNumsConF,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTNumsConIf != null">
+                #{paL1mwdcnTNumsConIf,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTNumsConOrg != null">
+                #{paL1mwdcnTNumsConOrg,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTTimesIn != null">
+                #{paL1mwdcnTTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnTTimesOut != null">
+                #{paL1mwdcnTTimesOut,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnTTimesIn != null">
+                #{paL2mwdcnTTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnTNumsIn != null">
+                #{paL2mwdcnTNumsIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnTaxTimesIn != null">
+                #{paL2mwdcnTaxTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnMaxTimesCon != null">
+                #{paL2mwdcnMaxTimesCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mencnTTaysCon != null">
+                #{paL2mencnTTaysCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTNumsCon != null">
+                #{paL3mwdcnTNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTNumsConBank != null">
+                #{paL3mwdcnTNumsConBank,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTNumsConCf != null">
+                #{paL3mwdcnTNumsConCf,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTNumsConF != null">
+                #{paL3mwdcnTNumsConF,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTNumsConIf != null">
+                #{paL3mwdcnTNumsConIf,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mencnTNumsConOrg != null">
+                #{paL3mencnTNumsConOrg,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTNumsConOrg != null">
+                #{paL3mwdcnTNumsConOrg,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTTimesIn != null">
+                #{paL3mwdcnTTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnTTimesOut != null">
+                #{paL3mwdcnTTimesOut,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnAddTNumsInOrg != null">
+                #{paL3mwdcnAddTNumsInOrg,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnMaxDaysIn != null">
+                #{paL3mwdcnMaxDaysIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTNumsConOrgType != null">
+                #{paL4mwdcnTNumsConOrgType,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTTimesInNonBank != null">
+                #{paL4mwdcnTTimesInNonBank,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTDurCon != null">
+                #{paL4mwdcnTDurCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTTimesCon != null">
+                #{paL4mwdcnTTimesCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTNumsConF != null">
+                #{paL4mwdcnTNumsConF,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTDurIn != null">
+                #{paL4mwdcnTDurIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTDurInMaxTimes != null">
+                #{paL4mwdcnTDurInMaxTimes,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTNumsInF != null">
+                #{paL4mwdcnTNumsInF,jdbcType=INTEGER},
+            </if>
+            <if test="paL5mwdcnTDaysCon != null">
+                #{paL5mwdcnTDaysCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL5mwdcnTDurInF != null">
+                #{paL5mwdcnTDurInF,jdbcType=INTEGER},
+            </if>
+            <if test="paL5mwdcmTDurCon != null">
+                #{paL5mwdcmTDurCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL5mwdcnTNumsConIf != null">
+                #{paL5mwdcnTNumsConIf,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTNumsCon != null">
+                #{paAllwdcnTNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTNumsConBank != null">
+                #{paAllwdcnTNumsConBank,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTNumsConCf != null">
+                #{paAllwdcnTNumsConCf,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTNumsConF != null">
+                #{paAllwdcnTNumsConF,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTNumsConIf != null">
+                #{paAllwdcnTNumsConIf,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTNumsConOrg != null">
+                #{paAllwdcnTNumsConOrg,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTTimesIn != null">
+                #{paAllwdcnTTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTTimesOut != null">
+                #{paAllwdcnTTimesOut,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnTDurInF != null">
+                #{paAllwdcnTDurInF,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcmMaxOrgTypeIn != null">
+                #{paAllwdcmMaxOrgTypeIn,jdbcType=INTEGER},
+            </if>
+            <if test="paAlldtcnwkAdur != null">
+                #{paAlldtcnwkAdur,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnAdur != null">
+                #{paAllwdcnAdur,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mdtcnAdur != null">
+                #{paL1mdtcnAdur,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mwdcnAdur != null">
+                #{paL1mwdcnAdur,jdbcType=INTEGER},
+            </if>
+            <if test="paAllmncnrtNumsCon != null">
+                #{paAllmncnrtNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnrtNumsCon != null">
+                #{paL1wwdcnrtNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnNumsCon != null">
+                #{paL2mwdcnNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wwdcnwkNumsCon != null">
+                #{paL2wwdcnwkNumsCon,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdcnADurOneNums != null">
+                #{paAllwdcnADurOneNums,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnADurOneNums != null">
+                #{paL4mwdcnADurOneNums,jdbcType=INTEGER},
+            </if>
+            <if test="paL6mwdcnADurOneNums != null">
+                #{paL6mwdcnADurOneNums,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mdtcnwkRankCount != null">
+                #{paL1mdtcnwkRankCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wdtcnrtRankCount != null">
+                #{paL1wdtcnrtRankCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mdtcnRankCount != null">
+                #{paL2mdtcnRankCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL3wwdcnwkRankCount != null">
+                #{paL3wwdcnwkRankCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mevcnrtSepcialHourCount != null">
+                #{paL1mevcnrtSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mmncnwkSepcialHourCount != null">
+                #{paL1mmncnwkSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wevcnSepcialHourCount != null">
+                #{paL1wevcnSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL1wwdcnrtSepcialHourCount != null">
+                #{paL1wwdcnrtSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mevcnSepcialHourCount != null">
+                #{paL2mevcnSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mevcnrtSepcialHourCount != null">
+                #{paL2mevcnrtSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnSepcialHourCount != null">
+                #{paL2mwdcnSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mevcnSepcialHourCount != null">
+                #{paL3mevcnSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnrtSepcialHourCount != null">
+                #{paL3mwdcnrtSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL6mwdcnwkSepcialHourCount != null">
+                #{paL6mwdcnwkSepcialHourCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mdtcnActiveDaysCount != null">
+                #{paL2mdtcnActiveDaysCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wwdcnActiveDaysCount != null">
+                #{paL2wwdcnActiveDaysCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnrtActiveDaysCount != null">
+                #{paL3mwdcnrtActiveDaysCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wdtcnMaxTimesIn != null">
+                #{paL2wdtcnMaxTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wevcnMaxDaysOfOneNumberCount != null">
+                #{paL2wevcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnrtMaxDaysOfOneNumberCount != null">
+                #{paL3mwdcnrtMaxDaysOfOneNumberCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL3wwdcnMaxDaysOfOneNumberCount != null">
+                #{paL3wwdcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wwdcnADurOneNumsIn != null">
+                #{paL2wwdcnADurOneNumsIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL2wwdcnTTimesIn != null">
+                #{paL2wwdcnTTimesIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnADurIn != null">
+                #{paL3mwdcnADurIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mevcnrtTDur != null">
+                #{paL1mevcnrtTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL1mmncnwkTDur != null">
+                #{paL1mmncnwkTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mevcnTDur != null">
+                #{paL2mevcnTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL2mwdcnrtTDur != null">
+                #{paL2mwdcnrtTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mevcnTDur != null">
+                #{paL3mevcnTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL3mwdcnrtTDur != null">
+                #{paL3mwdcnrtTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL6mwdcnwkTDur != null">
+                #{paL6mwdcnwkTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL4mwdcnTDur != null">
+                #{paL4mwdcnTDur,jdbcType=INTEGER},
+            </if>
+            <if test="paL6mwdcnMinTtvDaysIn != null">
+                #{paL6mwdcnMinTtvDaysIn,jdbcType=INTEGER},
+            </if>
+            <if test="paL6mwdcnTDurF != null">
+                #{paL6mwdcnTDurF,jdbcType=INTEGER},
+            </if>
+            <if test="paAll25acfriDur != null">
+                #{paAll25acfriDur,jdbcType=INTEGER},
+            </if>
+            <if test="paAllwdacwkDur != null">
+                #{paAllwdacwkDur,jdbcType=INTEGER},
+            </if>
+            <if test="paAll25acTimes != null">
+                #{paAll25acTimes,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifyTime != null">
+                #{lastModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
 </mapper>
