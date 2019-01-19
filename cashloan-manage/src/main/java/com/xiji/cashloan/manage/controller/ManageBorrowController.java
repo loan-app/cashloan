@@ -231,7 +231,8 @@ public class ManageBorrowController extends ManageBaseController {
 						BorrowModel.STATE_FINISH,
 						BorrowModel.STATE_REMISSION_FINISH,
 						BorrowModel.STATE_DELAY, 
-						BorrowModel.STATE_BAD);
+						BorrowModel.STATE_BAD,
+						BorrowModel.STATE_DELAY_PAY);
 			    params.put("stateList", stateList);
 				String state = StringUtil.isNull(params.get("state"));
 				if (null != state &&!StringUtil.isBlank(state)) {

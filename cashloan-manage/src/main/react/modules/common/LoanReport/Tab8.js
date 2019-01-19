@@ -3,7 +3,7 @@ import {
     Table,
     Tabs
 } from 'antd';
-import XinyanDetail from '../XinyanDetail/XinyanDetail';
+import XinyanXwld from '../XinyanDetail/XinyanXwld';
 import OperatorDetail from './OperatorDetail';
 import XindeBlacklist from './XinDe/XindeBlacklist';
 import PaipaixinView from './PaiPaiXin/PaipaixinView';
@@ -36,8 +36,8 @@ var Tab8 = React.createClass({
                         {/*<iframe style={{border: 0, width: "100%", height: 630,}}*/}
                                 {/*src={'/build/magicReport/index.html?userId=' + this.props.userId}/>*/}
                     {/*</TabPane>*/}
-                    <TabPane tab="小额网贷" key="3">
-                        <XinyanDetail userId={this.props.userId}/>
+                    <TabPane tab="借贷多头" key="3">
+                        <XinyanXwld borrowId={this.props.borrowId}/>
                     </TabPane>
                     <TabPane tab="用户染黑" key="PinAn">
                         <PinAn userId={this.props.userId}/>

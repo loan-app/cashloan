@@ -55,7 +55,7 @@
                     <label for="checkbox" onclick="click_a();">同意<a href="protocol_register.jsp">《使用协议》</a>
                           <i src="/static/images/yes.png" id="click_a"></i>
                     </label> 
-                     <a href="#">APP下载</a>                              
+                     <%--<a href="#">APP下载</a>                              --%>
                 </p>
             </form>
         </div>

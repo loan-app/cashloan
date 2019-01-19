@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.util.magic;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.util.BeanUtilsExt;
 import com.xiji.cashloan.cl.util.KeyMapping;
 import com.xiji.cashloan.core.common.util.StringUtil;
@@ -397,7 +398,17 @@ public class ObjectConvertUtil {
     public static MagicFraudulenceInfo getMagicFraudulenceInfo(FraudulenceInfoBean fraudulenceInfoBean) throws Exception {
         MagicFraudulenceInfo fraudulenceInfo = new MagicFraudulenceInfo();
         BeanUtilsExt.copyPropertiesExt(fraudulenceInfo, fraudulenceInfoBean, null);
-        fraudulenceInfo.setIsHit(fraudulenceInfoBean.isHit() ? 1 : 0);
+        fraudulenceInfo.setIsHit(fraudulenceInfoBean.isIsHit() ? 1 : 0);
         return fraudulenceInfo;
+    }
+
+
+
+    public static void main(String[] args) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("is_hit", true);
+        jsonObject.put("type", "伪造流水");
+        FraudulenceInfoBean fraudulenceInfo = JSONObject.parseObject(jsonObject.toJSONString(), FraudulenceInfoBean.class);
+        System.out.println(fraudulenceInfo);
     }
 }

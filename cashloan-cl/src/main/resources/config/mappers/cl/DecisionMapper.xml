@@ -1,0 +1,2153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_decision表:决策数据模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.DecisionMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.Decision">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="contact_num" property="contactNum" jdbcType="INTEGER" />
+        <result column="contact_sensitive_num" property="contactSensitiveNum" jdbcType="INTEGER" />
+        <result column="mx_is_name_and_idcard_in_court_black" property="mxIsNameAndIdcardInCourtBlack" jdbcType="INTEGER" />
+        <result column="mx_is_name_and_idcard_in_finance_black" property="mxIsNameAndIdcardInFinanceBlack" jdbcType="INTEGER" />
+        <result column="mx_is_name_and_mobile_in_finance_black" property="mxIsNameAndMobileInFinanceBlack" jdbcType="INTEGER" />
+        <result column="mx_searched_org_cnt" property="mxSearchedOrgCnt" jdbcType="INTEGER" />
+        <result column="mx_idcard_with_other_phone_num" property="mxIdcardWithOtherPhoneNum" jdbcType="INTEGER" />
+        <result column="mx_phone_no_voice_days" property="mxPhoneNoVoiceDays" jdbcType="INTEGER" />
+        <result column="mx_contact_loan_situation" property="mxContactLoanSituation" jdbcType="INTEGER" />
+        <result column="mx_five_month_voice_situation" property="mxFiveMonthVoiceSituation" jdbcType="INTEGER" />
+        <result column="mx_five_month_bill_less_than_20_num" property="mxFiveMonthBillLessThan20Num" jdbcType="INTEGER" />
+        <result column="mx_contact_matching_voice_situation" property="mxContactMatchingVoiceSituation" jdbcType="INTEGER" />
+        <result column="mx_is_reliability" property="mxIsReliability" jdbcType="INTEGER" />
+        <result column="mx_province" property="mxProvince" jdbcType="VARCHAR" />
+        <result column="mx_city" property="mxCity" jdbcType="VARCHAR" />
+        <result column="mx_region" property="mxRegion" jdbcType="VARCHAR" />
+        <result column="mx_native_place" property="mxNativePlace" jdbcType="VARCHAR" />
+        <result column="mx_in_time" property="mxInTime" jdbcType="VARCHAR" />
+        <result column="mx_bill_certification_day" property="mxBillCertificationDay" jdbcType="VARCHAR" />
+        <result column="mx_idcard_check" property="mxIdcardCheck" jdbcType="VARCHAR" />
+        <result column="mx_email_check" property="mxEmailCheck" jdbcType="VARCHAR" />
+        <result column="mx_address_check" property="mxAddressCheck" jdbcType="VARCHAR" />
+        <result column="mx_call_data_check" property="mxCallDataCheck" jdbcType="VARCHAR" />
+        <result column="mx_idcard_match" property="mxIdcardMatch" jdbcType="VARCHAR" />
+        <result column="mx_name_match" property="mxNameMatch" jdbcType="VARCHAR" />
+        <result column="mx_mobile_silence_3m" property="mxMobileSilence3m" jdbcType="VARCHAR" />
+        <result column="mx_mobile_silence_6m" property="mxMobileSilence6m" jdbcType="VARCHAR" />
+        <result column="mx_arrearage_risk_3m" property="mxArrearageRisk3m" jdbcType="VARCHAR" />
+        <result column="mx_arrearage_risk_6m" property="mxArrearageRisk6m" jdbcType="VARCHAR" />
+        <result column="mx_binding_risk" property="mxBindingRisk" jdbcType="VARCHAR" />
+        <result column="mx_regular_circle" property="mxRegularCircle" jdbcType="VARCHAR" />
+        <result column="mx_phone_used_time" property="mxPhoneUsedTime" jdbcType="VARCHAR" />
+        <result column="mx_phone_power_off" property="mxPhonePowerOff" jdbcType="VARCHAR" />
+        <result column="mx_contact_each_other" property="mxContactEachOther" jdbcType="VARCHAR" />
+        <result column="mx_contact_macao" property="mxContactMacao" jdbcType="VARCHAR" />
+        <result column="mx_contact_110" property="mxContact110" jdbcType="VARCHAR" />
+        <result column="mx_contact_120" property="mxContact120" jdbcType="VARCHAR" />
+        <result column="mx_contact_lawyer" property="mxContactLawyer" jdbcType="VARCHAR" />
+        <result column="mx_contact_court" property="mxContactCourt" jdbcType="VARCHAR" />
+        <result column="mx_contact_loan" property="mxContactLoan" jdbcType="VARCHAR" />
+        <result column="mx_contact_bank" property="mxContactBank" jdbcType="VARCHAR" />
+        <result column="mx_contact_credit_card" property="mxContactCreditCard" jdbcType="VARCHAR" />
+        <result column="mx_contact_collection" property="mxContactCollection" jdbcType="VARCHAR" />
+        <result column="mx_contact_night" property="mxContactNight" jdbcType="VARCHAR" />
+        <result column="mx_dwell_used_time" property="mxDwellUsedTime" jdbcType="VARCHAR" />
+        <result column="mx_ebusiness_info" property="mxEbusinessInfo" jdbcType="VARCHAR" />
+        <result column="mx_person_ebusiness_info" property="mxPersonEbusinessInfo" jdbcType="VARCHAR" />
+        <result column="mx_virtual_buying" property="mxVirtualBuying" jdbcType="VARCHAR" />
+        <result column="mx_lottery_buying" property="mxLotteryBuying" jdbcType="VARCHAR" />
+        <result column="mx_person_addr_changed" property="mxPersonAddrChanged" jdbcType="VARCHAR" />
+        <result column="mx_school_status" property="mxSchoolStatus" jdbcType="VARCHAR" />
+        <result column="mx_education_info" property="mxEducationInfo" jdbcType="VARCHAR" />
+        <result column="mx_work_addr_info" property="mxWorkAddrInfo" jdbcType="VARCHAR" />
+        <result column="mx_live_addr_info" property="mxLiveAddrInfo" jdbcType="VARCHAR" />
+        <result column="mx_school_addr_info" property="mxSchoolAddrInfo" jdbcType="VARCHAR" />
+        <result column="mx_phone_call" property="mxPhoneCall" jdbcType="VARCHAR" />
+        <result column="mx_friend_num_3m" property="mxFriendNum3m" jdbcType="VARCHAR" />
+        <result column="mx_good_friend_num_3m" property="mxGoodFriendNum3m" jdbcType="VARCHAR" />
+        <result column="mx_friend_city_center_3m" property="mxFriendCityCenter3m" jdbcType="VARCHAR" />
+        <result column="mx_is_city_match_friend_city_center_3m" property="mxIsCityMatchFriendCityCenter3m" jdbcType="VARCHAR" />
+        <result column="mx_inter_peer_num_3m" property="mxInterPeerNum3m" jdbcType="VARCHAR" />
+        <result column="mx_friend_num_6m" property="mxFriendNum6m" jdbcType="VARCHAR" />
+        <result column="mx_good_friend_num_6m" property="mxGoodFriendNum6m" jdbcType="VARCHAR" />
+        <result column="mx_friend_city_center_6m" property="mxFriendCityCenter6m" jdbcType="VARCHAR" />
+        <result column="mx_is_city_match_friend_city_center_6m" property="mxIsCityMatchFriendCityCenter6m" jdbcType="VARCHAR" />
+        <result column="mx_inter_peer_num_6m" property="mxInterPeerNum6m" jdbcType="VARCHAR" />
+        <result column="mx_searched_org_type" property="mxSearchedOrgType" jdbcType="VARCHAR" />
+        <result column="mx_idcard_with_other_names" property="mxIdcardWithOtherNames" jdbcType="VARCHAR" />
+        <result column="mx_idcard_with_other_phones" property="mxIdcardWithOtherPhones" jdbcType="VARCHAR" />
+        <result column="mx_phone_with_other_names" property="mxPhoneWithOtherNames" jdbcType="VARCHAR" />
+        <result column="mx_phone_with_other_idcards" property="mxPhoneWithOtherIdcards" jdbcType="VARCHAR" />
+        <result column="mx_register_org_cnt" property="mxRegisterOrgCnt" jdbcType="INTEGER" />
+        <result column="mx_register_org_type" property="mxRegisterOrgType" jdbcType="VARCHAR" />
+        <result column="mx_arised_open_web" property="mxArisedOpenWeb" jdbcType="VARCHAR" />
+        <result column="mx_phone_gray_score" property="mxPhoneGrayScore" jdbcType="DECIMAL" />
+        <result column="mx_contacts_class1_blacklist_cnt" property="mxContactsClass1BlacklistCnt" jdbcType="INTEGER" />
+        <result column="mx_contacts_class2_blacklist_cnt" property="mxContactsClass2BlacklistCnt" jdbcType="INTEGER" />
+        <result column="mx_contacts_class1_cnt" property="mxContactsClass1Cnt" jdbcType="INTEGER" />
+        <result column="mx_contacts_router_cnt" property="mxContactsRouterCnt" jdbcType="INTEGER" />
+        <result column="mx_contacts_router_ratio" property="mxContactsRouterRatio" jdbcType="DECIMAL" />
+        <result column="yx_overdue_history_count" property="yxOverdueHistoryCount" jdbcType="INTEGER" />
+        <result column="yx_overdue_history_m3_count" property="yxOverdueHistoryM3Count" jdbcType="INTEGER" />
+        <result column="yx_overdue_history_m6_count" property="yxOverdueHistoryM6Count" jdbcType="INTEGER" />
+        <result column="yx_am20_no_accept" property="yxAm20NoAccept" jdbcType="INTEGER" />
+        <result column="mx_courtcase_cnt" property="mxCourtcaseCnt" jdbcType="INTEGER" />
+        <result column="mx_dishonest_cnt" property="mxDishonestCnt" jdbcType="INTEGER" />
+        <result column="mx_idcard_other_names_cnt" property="mxIdcardOtherNamesCnt" jdbcType="INTEGER" />
+        <result column="mx_idcard_other_mobiles_cnt" property="mxIdcardOtherMobilesCnt" jdbcType="INTEGER" />
+        <result column="mx_idcard_other_mobiles_black_cnt" property="mxIdcardOtherMobilesBlackCnt" jdbcType="INTEGER" />
+        <result column="mx_mobile_other_names_cnt" property="mxMobileOtherNamesCnt" jdbcType="INTEGER" />
+        <result column="mx_mobile_other_idcards_cnt" property="mxMobileOtherIdcardsCnt" jdbcType="INTEGER" />
+        <result column="mx_mobile_other_idcards_black_cnt" property="mxMobileOtherIdcardsBlackCnt" jdbcType="INTEGER" />
+        <result column="mx_other_devices_cnt" property="mxOtherDevicesCnt" jdbcType="INTEGER" />
+        <result column="mx_mobile_other_devices_cnt" property="mxMobileOtherDevicesCnt" jdbcType="INTEGER" />
+        <result column="mx_idcard_other_devices_cnt" property="mxIdcardOtherDevicesCnt" jdbcType="INTEGER" />
+        <result column="mx_device_other_names_cnt" property="mxDeviceOtherNamesCnt" jdbcType="INTEGER" />
+        <result column="mx_device_other_mobiles_cnt" property="mxDeviceOtherMobilesCnt" jdbcType="INTEGER" />
+        <result column="mx_device_other_mobiles_black_cnt" property="mxDeviceOtherMobilesBlackCnt" jdbcType="INTEGER" />
+        <result column="mx_device_other_idcards_cnt" property="mxDeviceOtherIdcardsCnt" jdbcType="INTEGER" />
+        <result column="mx_device_other_idcards_black_cnt" property="mxDeviceOtherIdcardsBlackCnt" jdbcType="INTEGER" />
+        <result column="mx_black_mobile_name_in_blacklist" property="mxBlackMobileNameInBlacklist" jdbcType="INTEGER" />
+        <result column="mx_black_idcard_name_in_blacklist" property="mxBlackIdcardNameInBlacklist" jdbcType="INTEGER" />
+        <result column="mx_gray_mobile_name_in_blacklist" property="mxGrayMobileNameInBlacklist" jdbcType="INTEGER" />
+        <result column="mx_gray_idcard_name_in_blacklist" property="mxGrayIdcardNameInBlacklist" jdbcType="INTEGER" />
+        <result column="mx_fraud_is_hit" property="mxFraudIsHit" jdbcType="INTEGER" />
+        <result column="mx_fraud_hit_type" property="mxFraudHitType" jdbcType="VARCHAR" />
+        <result column="xd_is_lastloan_refused" property="xdIsLastloanRefused" jdbcType="VARCHAR" />
+        <result column="xd_total_loan_count" property="xdTotalLoanCount" jdbcType="INTEGER" />
+        <result column="xd_total_overdue_count" property="xdTotalOverdueCount" jdbcType="INTEGER" />
+        <result column="xd_longest_overdue_paid" property="xdLongestOverduePaid" jdbcType="VARCHAR" />
+        <result column="xd_current_overdue_count" property="xdCurrentOverdueCount" jdbcType="INTEGER" />
+        <result column="xd_current_overdue_amount" property="xdCurrentOverdueAmount" jdbcType="INTEGER" />
+        <result column="xd_over_due90_contacts_count" property="xdOverDue90ContactsCount" jdbcType="INTEGER" />
+        <result column="xd_longest_overdue_unpaid" property="xdLongestOverdueUnpaid" jdbcType="VARCHAR" />
+        <result column="xd_last_loan_refuse_reason" property="xdLastLoanRefuseReason" jdbcType="VARCHAR" />
+        <result column="xd_last_loan_refuse_time" property="xdLastLoanRefuseTime" jdbcType="VARCHAR" />
+        <result column="xd_remark" property="xdRemark" jdbcType="VARCHAR" />
+        <result column="xd_first_loan_time" property="xdFirstLoanTime" jdbcType="VARCHAR" />
+        <result column="ppx_is_black" property="ppxIsBlack" jdbcType="INTEGER" />
+        <result column="ppx_is_alert" property="ppxIsAlert" jdbcType="INTEGER" />
+        <result column="ppx_overdue_first_time" property="ppxOverdueFirstTime" jdbcType="VARCHAR" />
+        <result column="ppx_overdue_last_time" property="ppxOverdueLastTime" jdbcType="VARCHAR" />
+        <result column="ppx_total_overdue_count" property="ppxTotalOverdueCount" jdbcType="INTEGER" />
+        <result column="ppx_current_overdue_amount" property="ppxCurrentOverdueAmount" jdbcType="INTEGER" />
+        <result column="ppx_current_overdue_days" property="ppxCurrentOverdueDays" jdbcType="INTEGER" />
+        <result column="ppx_history_overdue_amount" property="ppxHistoryOverdueAmount" jdbcType="INTEGER" />
+        <result column="ppx_history_overdue_days" property="ppxHistoryOverdueDays" jdbcType="INTEGER" />
+        <result column="ppx_fraud_first_time" property="ppxFraudFirstTime" jdbcType="VARCHAR" />
+        <result column="ppx_fraud_last_time" property="ppxFraudLastTime" jdbcType="VARCHAR" />
+        <result column="ppx_total_fraud_count" property="ppxTotalFraudCount" jdbcType="INTEGER" />
+        <result column="ppx_negative_first_time" property="ppxNegativeFirstTime" jdbcType="VARCHAR" />
+        <result column="ppx_negative_last_time" property="ppxNegativeLastTime" jdbcType="VARCHAR" />
+        <result column="ppx_total_negative_count" property="ppxTotalNegativeCount" jdbcType="INTEGER" />
+        <result column="xy_loans_score" property="xyLoansScore" jdbcType="VARCHAR" />
+        <result column="xy_loans_credibility" property="xyLoansCredibility" jdbcType="VARCHAR" />
+        <result column="xy_loans_count" property="xyLoansCount" jdbcType="VARCHAR" />
+        <result column="xy_loans_settle_count" property="xyLoansSettleCount" jdbcType="VARCHAR" />
+        <result column="xy_loans_overdue_count" property="xyLoansOverdueCount" jdbcType="VARCHAR" />
+        <result column="xy_loans_org_count" property="xyLoansOrgCount" jdbcType="VARCHAR" />
+        <result column="xy_consfin_org_count" property="xyConsfinOrgCount" jdbcType="VARCHAR" />
+        <result column="xy_loans_cash_count" property="xyLoansCashCount" jdbcType="VARCHAR" />
+        <result column="xy_latest_one_month" property="xyLatestOneMonth" jdbcType="VARCHAR" />
+        <result column="xy_latest_three_month" property="xyLatestThreeMonth" jdbcType="VARCHAR" />
+        <result column="xy_latest_six_month" property="xyLatestSixMonth" jdbcType="VARCHAR" />
+        <result column="xy_history_suc_fee" property="xyHistorySucFee" jdbcType="VARCHAR" />
+        <result column="xy_history_fail_fee" property="xyHistoryFailFee" jdbcType="VARCHAR" />
+        <result column="xy_history_suc_minus_fail_num" property="xyHistorySucMinusFailNum" jdbcType="INTEGER" />
+        <result column="xy_latest_one_month_suc" property="xyLatestOneMonthSuc" jdbcType="VARCHAR" />
+        <result column="xy_latest_one_month_fail" property="xyLatestOneMonthFail" jdbcType="VARCHAR" />
+        <result column="xy_latest_one_month_suc_minus_fail_num" property="xyLatestOneMonthSucMinusFailNum" jdbcType="INTEGER" />
+        <result column="xy_loans_long_time" property="xyLoansLongTime" jdbcType="VARCHAR" />
+        <result column="xy_loans_latest_time" property="xyLoansLatestTime" jdbcType="VARCHAR" />
+        <result column="pa_l1wwdcn_t_nums_con" property="paL1wwdcnTNumsCon" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_nums_con_bank" property="paL1wwdcnTNumsConBank" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_nums_con_cf" property="paL1wwdcnTNumsConCf" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_nums_con_f" property="paL1wwdcnTNumsConF" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_nums_con_if" property="paL1wwdcnTNumsConIf" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_nums_con_org" property="paL1wwdcnTNumsConOrg" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_times_in" property="paL1wwdcnTTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcn_t_times_out" property="paL1wwdcnTTimesOut" jdbcType="INTEGER" />
+        <result column="pa_l2wwdcn_t_nums_con_org_type" property="paL2wwdcnTNumsConOrgType" jdbcType="INTEGER" />
+        <result column="pa_l3wwdcn_t_nums_con_if" property="paL3wwdcnTNumsConIf" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_nums_con" property="paL1mwdcnTNumsCon" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_nums_con_bank" property="paL1mwdcnTNumsConBank" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_nums_con_cf" property="paL1mwdcnTNumsConCf" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_nums_con_f" property="paL1mwdcnTNumsConF" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_nums_con_if" property="paL1mwdcnTNumsConIf" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_nums_con_org" property="paL1mwdcnTNumsConOrg" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_times_in" property="paL1mwdcnTTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_t_times_out" property="paL1mwdcnTTimesOut" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcn_t_times_in" property="paL2mwdcnTTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcn_t_nums_in" property="paL2mwdcnTNumsIn" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcn_tax_times_in" property="paL2mwdcnTaxTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcn_max_times_con" property="paL2mwdcnMaxTimesCon" jdbcType="INTEGER" />
+        <result column="pa_l2mencn_t_tays_con" property="paL2mencnTTaysCon" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_nums_con" property="paL3mwdcnTNumsCon" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_nums_con_bank" property="paL3mwdcnTNumsConBank" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_nums_con_cf" property="paL3mwdcnTNumsConCf" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_nums_con_f" property="paL3mwdcnTNumsConF" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_nums_con_if" property="paL3mwdcnTNumsConIf" jdbcType="INTEGER" />
+        <result column="pa_l3mencn_t_nums_con_org" property="paL3mencnTNumsConOrg" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_nums_con_org" property="paL3mwdcnTNumsConOrg" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_times_in" property="paL3mwdcnTTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_t_times_out" property="paL3mwdcnTTimesOut" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_add_t_nums_in_org" property="paL3mwdcnAddTNumsInOrg" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_max_days_in" property="paL3mwdcnMaxDaysIn" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_nums_con_org_type" property="paL4mwdcnTNumsConOrgType" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_times_in_non_bank" property="paL4mwdcnTTimesInNonBank" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_dur_con" property="paL4mwdcnTDurCon" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_times_con" property="paL4mwdcnTTimesCon" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_nums_con_f" property="paL4mwdcnTNumsConF" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_dur_in" property="paL4mwdcnTDurIn" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_dur_in_max_times" property="paL4mwdcnTDurInMaxTimes" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_nums_in_f" property="paL4mwdcnTNumsInF" jdbcType="INTEGER" />
+        <result column="pa_l5mwdcn_t_days_con" property="paL5mwdcnTDaysCon" jdbcType="INTEGER" />
+        <result column="pa_l5mwdcn_t_dur_in_f" property="paL5mwdcnTDurInF" jdbcType="INTEGER" />
+        <result column="pa_l5mwdcm_t_dur_con" property="paL5mwdcmTDurCon" jdbcType="INTEGER" />
+        <result column="pa_l5mwdcn_t_nums_con_if" property="paL5mwdcnTNumsConIf" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_nums_con" property="paAllwdcnTNumsCon" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_nums_con_bank" property="paAllwdcnTNumsConBank" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_nums_con_cf" property="paAllwdcnTNumsConCf" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_nums_con_f" property="paAllwdcnTNumsConF" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_nums_con_if" property="paAllwdcnTNumsConIf" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_nums_con_org" property="paAllwdcnTNumsConOrg" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_times_in" property="paAllwdcnTTimesIn" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_times_out" property="paAllwdcnTTimesOut" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_t_dur_in_f" property="paAllwdcnTDurInF" jdbcType="INTEGER" />
+        <result column="pa_allwdcm_max_org_type_in" property="paAllwdcmMaxOrgTypeIn" jdbcType="INTEGER" />
+        <result column="pa_alldtcnwk_adur" property="paAlldtcnwkAdur" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_adur" property="paAllwdcnAdur" jdbcType="INTEGER" />
+        <result column="pa_l1mdtcn_adur" property="paL1mdtcnAdur" jdbcType="INTEGER" />
+        <result column="pa_l1mwdcn_adur" property="paL1mwdcnAdur" jdbcType="INTEGER" />
+        <result column="pa_allmncnrt_nums_con" property="paAllmncnrtNumsCon" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcnrt_nums_con" property="paL1wwdcnrtNumsCon" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcn_nums_con" property="paL2mwdcnNumsCon" jdbcType="INTEGER" />
+        <result column="pa_l2wwdcnwk_nums_con" property="paL2wwdcnwkNumsCon" jdbcType="INTEGER" />
+        <result column="pa_allwdcn_a_dur_one_nums" property="paAllwdcnADurOneNums" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_a_dur_one_nums" property="paL4mwdcnADurOneNums" jdbcType="INTEGER" />
+        <result column="pa_l6mwdcn_a_dur_one_nums" property="paL6mwdcnADurOneNums" jdbcType="INTEGER" />
+        <result column="pa_l1mdtcnwk_rank_count" property="paL1mdtcnwkRankCount" jdbcType="INTEGER" />
+        <result column="pa_l1wdtcnrt_rank_count" property="paL1wdtcnrtRankCount" jdbcType="INTEGER" />
+        <result column="pa_l2mdtcn_rank_count" property="paL2mdtcnRankCount" jdbcType="INTEGER" />
+        <result column="pa_l3wwdcnwk_rank_count" property="paL3wwdcnwkRankCount" jdbcType="INTEGER" />
+        <result column="pa_l1mevcnrt_sepcial_hour_count" property="paL1mevcnrtSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l1mmncnwk_sepcial_hour_count" property="paL1mmncnwkSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l1wevcn_sepcial_hour_count" property="paL1wevcnSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l1wwdcnrt_sepcial_hour_count" property="paL1wwdcnrtSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l2mevcn_sepcial_hour_count" property="paL2mevcnSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l2mevcnrt_sepcial_hour_count" property="paL2mevcnrtSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcn_sepcial_hour_count" property="paL2mwdcnSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l3mevcn_sepcial_hour_count" property="paL3mevcnSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcnrt_sepcial_hour_count" property="paL3mwdcnrtSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l6mwdcnwk_sepcial_hour_count" property="paL6mwdcnwkSepcialHourCount" jdbcType="INTEGER" />
+        <result column="pa_l2mdtcn_active_days_count" property="paL2mdtcnActiveDaysCount" jdbcType="INTEGER" />
+        <result column="pa_l2wwdcn_active_days_count" property="paL2wwdcnActiveDaysCount" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcnrt_active_days_count" property="paL3mwdcnrtActiveDaysCount" jdbcType="INTEGER" />
+        <result column="pa_l2wdtcn_max_times_in" property="paL2wdtcnMaxTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l2wevcn_max_days_of_one_number_count" property="paL2wevcnMaxDaysOfOneNumberCount" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcnrt_max_days_of_one_number_count" property="paL3mwdcnrtMaxDaysOfOneNumberCount" jdbcType="INTEGER" />
+        <result column="pa_l3wwdcn_max_days_of_one_number_count" property="paL3wwdcnMaxDaysOfOneNumberCount" jdbcType="INTEGER" />
+        <result column="pa_l2wwdcn_a_dur_one_nums_in" property="paL2wwdcnADurOneNumsIn" jdbcType="INTEGER" />
+        <result column="pa_l2wwdcn_t_times_in" property="paL2wwdcnTTimesIn" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcn_a_dur_in" property="paL3mwdcnADurIn" jdbcType="INTEGER" />
+        <result column="pa_l1mevcnrt_t_dur" property="paL1mevcnrtTDur" jdbcType="INTEGER" />
+        <result column="pa_l1mmncnwk_t_dur" property="paL1mmncnwkTDur" jdbcType="INTEGER" />
+        <result column="pa_l2mevcn_t_dur" property="paL2mevcnTDur" jdbcType="INTEGER" />
+        <result column="pa_l2mwdcnrt_t_dur" property="paL2mwdcnrtTDur" jdbcType="INTEGER" />
+        <result column="pa_l3mevcn_t_dur" property="paL3mevcnTDur" jdbcType="INTEGER" />
+        <result column="pa_l3mwdcnrt_t_dur" property="paL3mwdcnrtTDur" jdbcType="INTEGER" />
+        <result column="pa_l6mwdcnwk_t_dur" property="paL6mwdcnwkTDur" jdbcType="INTEGER" />
+        <result column="pa_l4mwdcn_t_dur" property="paL4mwdcnTDur" jdbcType="INTEGER" />
+        <result column="pa_l6mwdcn_min_ttv_days_in" property="paL6mwdcnMinTtvDaysIn" jdbcType="INTEGER" />
+        <result column="pa_l6mwdcn_t_dur_f" property="paL6mwdcnTDurF" jdbcType="INTEGER" />
+        <result column="pa_all25acfri_dur" property="paAll25acfriDur" jdbcType="INTEGER" />
+        <result column="pa_allwdacwk_dur" property="paAllwdacwkDur" jdbcType="INTEGER" />
+        <result column="pa_all25ac_times" property="paAll25acTimes" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,borrow_id,age,contact_num,contact_sensitive_num,mx_is_name_and_idcard_in_court_black,mx_is_name_and_idcard_in_finance_black,mx_is_name_and_mobile_in_finance_black,mx_searched_org_cnt,mx_idcard_with_other_phone_num,mx_phone_no_voice_days,mx_contact_loan_situation,mx_five_month_voice_situation,mx_five_month_bill_less_than_20_num,mx_contact_matching_voice_situation,mx_is_reliability,mx_province,mx_city,mx_region,mx_native_place,mx_in_time,mx_bill_certification_day,mx_idcard_check,mx_email_check,mx_address_check,mx_call_data_check,mx_idcard_match,mx_name_match,mx_mobile_silence_3m,mx_mobile_silence_6m,mx_arrearage_risk_3m,mx_arrearage_risk_6m,mx_binding_risk,mx_regular_circle,mx_phone_used_time,mx_phone_power_off,mx_contact_each_other,mx_contact_macao,mx_contact_110,mx_contact_120,mx_contact_lawyer,mx_contact_court,mx_contact_loan,mx_contact_bank,mx_contact_credit_card,mx_contact_collection,mx_contact_night,mx_dwell_used_time,mx_ebusiness_info,mx_person_ebusiness_info,mx_virtual_buying,mx_lottery_buying,mx_person_addr_changed,mx_school_status,mx_education_info,mx_work_addr_info,mx_live_addr_info,mx_school_addr_info,mx_phone_call,mx_friend_num_3m,mx_good_friend_num_3m,mx_friend_city_center_3m,mx_is_city_match_friend_city_center_3m,mx_inter_peer_num_3m,mx_friend_num_6m,mx_good_friend_num_6m,mx_friend_city_center_6m,mx_is_city_match_friend_city_center_6m,mx_inter_peer_num_6m,mx_searched_org_type,mx_idcard_with_other_names,mx_idcard_with_other_phones,mx_phone_with_other_names,mx_phone_with_other_idcards,mx_register_org_cnt,mx_register_org_type,mx_arised_open_web,mx_phone_gray_score,mx_contacts_class1_blacklist_cnt,mx_contacts_class2_blacklist_cnt,mx_contacts_class1_cnt,mx_contacts_router_cnt,mx_contacts_router_ratio,yx_overdue_history_count,yx_overdue_history_m3_count,yx_overdue_history_m6_count,yx_am20_no_accept,mx_courtcase_cnt,mx_dishonest_cnt,mx_idcard_other_names_cnt,mx_idcard_other_mobiles_cnt,mx_idcard_other_mobiles_black_cnt,mx_mobile_other_names_cnt,mx_mobile_other_idcards_cnt,mx_mobile_other_idcards_black_cnt,mx_other_devices_cnt,mx_mobile_other_devices_cnt,mx_idcard_other_devices_cnt,mx_device_other_names_cnt,mx_device_other_mobiles_cnt,mx_device_other_mobiles_black_cnt,mx_device_other_idcards_cnt,mx_device_other_idcards_black_cnt,mx_black_mobile_name_in_blacklist,mx_black_idcard_name_in_blacklist,mx_gray_mobile_name_in_blacklist,mx_gray_idcard_name_in_blacklist,mx_fraud_is_hit,mx_fraud_hit_type,xd_is_lastloan_refused,xd_total_loan_count,xd_total_overdue_count,xd_longest_overdue_paid,xd_current_overdue_count,xd_current_overdue_amount,xd_over_due90_contacts_count,xd_longest_overdue_unpaid,xd_last_loan_refuse_reason,xd_last_loan_refuse_time,xd_remark,xd_first_loan_time,ppx_is_black,ppx_is_alert,ppx_overdue_first_time,ppx_overdue_last_time,ppx_total_overdue_count,ppx_current_overdue_amount,ppx_current_overdue_days,ppx_history_overdue_amount,ppx_history_overdue_days,ppx_fraud_first_time,ppx_fraud_last_time,ppx_total_fraud_count,ppx_negative_first_time,ppx_negative_last_time,ppx_total_negative_count,xy_loans_score,xy_loans_credibility,xy_loans_count,xy_loans_settle_count,xy_loans_overdue_count,xy_loans_org_count,xy_consfin_org_count,xy_loans_cash_count,xy_latest_one_month,xy_latest_three_month,xy_latest_six_month,xy_history_suc_fee,xy_history_fail_fee,xy_history_suc_minus_fail_num,xy_latest_one_month_suc,xy_latest_one_month_fail,xy_latest_one_month_suc_minus_fail_num,xy_loans_long_time,xy_loans_latest_time,pa_l1wwdcn_t_nums_con,pa_l1wwdcn_t_nums_con_bank,pa_l1wwdcn_t_nums_con_cf,pa_l1wwdcn_t_nums_con_f,pa_l1wwdcn_t_nums_con_if,pa_l1wwdcn_t_nums_con_org,pa_l1wwdcn_t_times_in,pa_l1wwdcn_t_times_out,pa_l2wwdcn_t_nums_con_org_type,pa_l3wwdcn_t_nums_con_if,pa_l1mwdcn_t_nums_con,pa_l1mwdcn_t_nums_con_bank,pa_l1mwdcn_t_nums_con_cf,pa_l1mwdcn_t_nums_con_f,pa_l1mwdcn_t_nums_con_if,pa_l1mwdcn_t_nums_con_org,pa_l1mwdcn_t_times_in,pa_l1mwdcn_t_times_out,pa_l2mwdcn_t_times_in,pa_l2mwdcn_t_nums_in,pa_l2mwdcn_tax_times_in,pa_l2mwdcn_max_times_con,pa_l2mencn_t_tays_con,pa_l3mwdcn_t_nums_con,pa_l3mwdcn_t_nums_con_bank,pa_l3mwdcn_t_nums_con_cf,pa_l3mwdcn_t_nums_con_f,pa_l3mwdcn_t_nums_con_if,pa_l3mencn_t_nums_con_org,pa_l3mwdcn_t_nums_con_org,pa_l3mwdcn_t_times_in,pa_l3mwdcn_t_times_out,pa_l3mwdcn_add_t_nums_in_org,pa_l3mwdcn_max_days_in,pa_l4mwdcn_t_nums_con_org_type,pa_l4mwdcn_t_times_in_non_bank,pa_l4mwdcn_t_dur_con,pa_l4mwdcn_t_times_con,pa_l4mwdcn_t_nums_con_f,pa_l4mwdcn_t_dur_in,pa_l4mwdcn_t_dur_in_max_times,pa_l4mwdcn_t_nums_in_f,pa_l5mwdcn_t_days_con,pa_l5mwdcn_t_dur_in_f,pa_l5mwdcm_t_dur_con,pa_l5mwdcn_t_nums_con_if,pa_allwdcn_t_nums_con,pa_allwdcn_t_nums_con_bank,pa_allwdcn_t_nums_con_cf,pa_allwdcn_t_nums_con_f,pa_allwdcn_t_nums_con_if,pa_allwdcn_t_nums_con_org,pa_allwdcn_t_times_in,pa_allwdcn_t_times_out,pa_allwdcn_t_dur_in_f,pa_allwdcm_max_org_type_in,pa_alldtcnwk_adur,pa_allwdcn_adur,pa_l1mdtcn_adur,pa_l1mwdcn_adur,pa_allmncnrt_nums_con,pa_l1wwdcnrt_nums_con,pa_l2mwdcn_nums_con,pa_l2wwdcnwk_nums_con,pa_allwdcn_a_dur_one_nums,pa_l4mwdcn_a_dur_one_nums,pa_l6mwdcn_a_dur_one_nums,pa_l1mdtcnwk_rank_count,pa_l1wdtcnrt_rank_count,pa_l2mdtcn_rank_count,pa_l3wwdcnwk_rank_count,pa_l1mevcnrt_sepcial_hour_count,pa_l1mmncnwk_sepcial_hour_count,pa_l1wevcn_sepcial_hour_count,pa_l1wwdcnrt_sepcial_hour_count,pa_l2mevcn_sepcial_hour_count,pa_l2mevcnrt_sepcial_hour_count,pa_l2mwdcn_sepcial_hour_count,pa_l3mevcn_sepcial_hour_count,pa_l3mwdcnrt_sepcial_hour_count,pa_l6mwdcnwk_sepcial_hour_count,pa_l2mdtcn_active_days_count,pa_l2wwdcn_active_days_count,pa_l3mwdcnrt_active_days_count,pa_l2wdtcn_max_times_in,pa_l2wevcn_max_days_of_one_number_count,pa_l3mwdcnrt_max_days_of_one_number_count,pa_l3wwdcn_max_days_of_one_number_count,pa_l2wwdcn_a_dur_one_nums_in,pa_l2wwdcn_t_times_in,pa_l3mwdcn_a_dur_in,pa_l1mevcnrt_t_dur,pa_l1mmncnwk_t_dur,pa_l2mevcn_t_dur,pa_l2mwdcnrt_t_dur,pa_l3mevcn_t_dur,pa_l3mwdcnrt_t_dur,pa_l6mwdcnwk_t_dur,pa_l4mwdcn_t_dur,pa_l6mwdcn_min_ttv_days_in,pa_l6mwdcn_t_dur_f,pa_all25acfri_dur,pa_allwdacwk_dur,pa_all25ac_times,create_time,last_modify_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="borrowId != null">
+                and borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="age != null">
+                and age = #{age,jdbcType=INTEGER}
+            </if>
+            <if test="contactNum != null">
+                and contact_num = #{contactNum,jdbcType=INTEGER}
+            </if>
+            <if test="contactSensitiveNum != null">
+                and contact_sensitive_num = #{contactSensitiveNum,jdbcType=INTEGER}
+            </if>
+            <if test="mxIsNameAndIdcardInCourtBlack != null">
+                and mx_is_name_and_idcard_in_court_black = #{mxIsNameAndIdcardInCourtBlack,jdbcType=INTEGER}
+            </if>
+            <if test="mxIsNameAndIdcardInFinanceBlack != null">
+                and mx_is_name_and_idcard_in_finance_black = #{mxIsNameAndIdcardInFinanceBlack,jdbcType=INTEGER}
+            </if>
+            <if test="mxIsNameAndMobileInFinanceBlack != null">
+                and mx_is_name_and_mobile_in_finance_black = #{mxIsNameAndMobileInFinanceBlack,jdbcType=INTEGER}
+            </if>
+            <if test="mxSearchedOrgCnt != null">
+                and mx_searched_org_cnt = #{mxSearchedOrgCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxIdcardWithOtherPhoneNum != null">
+                and mx_idcard_with_other_phone_num = #{mxIdcardWithOtherPhoneNum,jdbcType=INTEGER}
+            </if>
+            <if test="mxPhoneNoVoiceDays != null">
+                and mx_phone_no_voice_days = #{mxPhoneNoVoiceDays,jdbcType=INTEGER}
+            </if>
+            <if test="mxContactLoanSituation != null">
+                and mx_contact_loan_situation = #{mxContactLoanSituation,jdbcType=INTEGER}
+            </if>
+            <if test="mxFiveMonthVoiceSituation != null">
+                and mx_five_month_voice_situation = #{mxFiveMonthVoiceSituation,jdbcType=INTEGER}
+            </if>
+            <if test="mxFiveMonthBillLessThan20Num != null">
+                and mx_five_month_bill_less_than_20_num = #{mxFiveMonthBillLessThan20Num,jdbcType=INTEGER}
+            </if>
+            <if test="mxContactMatchingVoiceSituation != null">
+                and mx_contact_matching_voice_situation = #{mxContactMatchingVoiceSituation,jdbcType=INTEGER}
+            </if>
+            <if test="mxIsReliability != null">
+                and mx_is_reliability = #{mxIsReliability,jdbcType=INTEGER}
+            </if>
+            <if test="mxProvince != null and mxProvince != ''">
+                and mx_province = #{mxProvince,jdbcType=VARCHAR}
+            </if>
+            <if test="mxCity != null and mxCity != ''">
+                and mx_city = #{mxCity,jdbcType=VARCHAR}
+            </if>
+            <if test="mxRegion != null and mxRegion != ''">
+                and mx_region = #{mxRegion,jdbcType=VARCHAR}
+            </if>
+            <if test="mxNativePlace != null and mxNativePlace != ''">
+                and mx_native_place = #{mxNativePlace,jdbcType=VARCHAR}
+            </if>
+            <if test="mxInTime != null and mxInTime != ''">
+                and mx_in_time = #{mxInTime,jdbcType=VARCHAR}
+            </if>
+            <if test="mxBillCertificationDay != null and mxBillCertificationDay != ''">
+                and mx_bill_certification_day = #{mxBillCertificationDay,jdbcType=VARCHAR}
+            </if>
+            <if test="mxIdcardCheck != null and mxIdcardCheck != ''">
+                and mx_idcard_check = #{mxIdcardCheck,jdbcType=VARCHAR}
+            </if>
+            <if test="mxEmailCheck != null and mxEmailCheck != ''">
+                and mx_email_check = #{mxEmailCheck,jdbcType=VARCHAR}
+            </if>
+            <if test="mxAddressCheck != null and mxAddressCheck != ''">
+                and mx_address_check = #{mxAddressCheck,jdbcType=VARCHAR}
+            </if>
+            <if test="mxCallDataCheck != null and mxCallDataCheck != ''">
+                and mx_call_data_check = #{mxCallDataCheck,jdbcType=VARCHAR}
+            </if>
+            <if test="mxIdcardMatch != null and mxIdcardMatch != ''">
+                and mx_idcard_match = #{mxIdcardMatch,jdbcType=VARCHAR}
+            </if>
+            <if test="mxNameMatch != null and mxNameMatch != ''">
+                and mx_name_match = #{mxNameMatch,jdbcType=VARCHAR}
+            </if>
+            <if test="mxMobileSilence3m != null and mxMobileSilence3m != ''">
+                and mx_mobile_silence_3m = #{mxMobileSilence3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxMobileSilence6m != null and mxMobileSilence6m != ''">
+                and mx_mobile_silence_6m = #{mxMobileSilence6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxArrearageRisk3m != null and mxArrearageRisk3m != ''">
+                and mx_arrearage_risk_3m = #{mxArrearageRisk3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxArrearageRisk6m != null and mxArrearageRisk6m != ''">
+                and mx_arrearage_risk_6m = #{mxArrearageRisk6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxBindingRisk != null and mxBindingRisk != ''">
+                and mx_binding_risk = #{mxBindingRisk,jdbcType=VARCHAR}
+            </if>
+            <if test="mxRegularCircle != null and mxRegularCircle != ''">
+                and mx_regular_circle = #{mxRegularCircle,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPhoneUsedTime != null and mxPhoneUsedTime != ''">
+                and mx_phone_used_time = #{mxPhoneUsedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPhonePowerOff != null and mxPhonePowerOff != ''">
+                and mx_phone_power_off = #{mxPhonePowerOff,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactEachOther != null and mxContactEachOther != ''">
+                and mx_contact_each_other = #{mxContactEachOther,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactMacao != null and mxContactMacao != ''">
+                and mx_contact_macao = #{mxContactMacao,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContact110 != null and mxContact110 != ''">
+                and mx_contact_110 = #{mxContact110,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContact120 != null and mxContact120 != ''">
+                and mx_contact_120 = #{mxContact120,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactLawyer != null and mxContactLawyer != ''">
+                and mx_contact_lawyer = #{mxContactLawyer,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactCourt != null and mxContactCourt != ''">
+                and mx_contact_court = #{mxContactCourt,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactLoan != null and mxContactLoan != ''">
+                and mx_contact_loan = #{mxContactLoan,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactBank != null and mxContactBank != ''">
+                and mx_contact_bank = #{mxContactBank,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactCreditCard != null and mxContactCreditCard != ''">
+                and mx_contact_credit_card = #{mxContactCreditCard,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactCollection != null and mxContactCollection != ''">
+                and mx_contact_collection = #{mxContactCollection,jdbcType=VARCHAR}
+            </if>
+            <if test="mxContactNight != null and mxContactNight != ''">
+                and mx_contact_night = #{mxContactNight,jdbcType=VARCHAR}
+            </if>
+            <if test="mxDwellUsedTime != null and mxDwellUsedTime != ''">
+                and mx_dwell_used_time = #{mxDwellUsedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="mxEbusinessInfo != null and mxEbusinessInfo != ''">
+                and mx_ebusiness_info = #{mxEbusinessInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPersonEbusinessInfo != null and mxPersonEbusinessInfo != ''">
+                and mx_person_ebusiness_info = #{mxPersonEbusinessInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="mxVirtualBuying != null and mxVirtualBuying != ''">
+                and mx_virtual_buying = #{mxVirtualBuying,jdbcType=VARCHAR}
+            </if>
+            <if test="mxLotteryBuying != null and mxLotteryBuying != ''">
+                and mx_lottery_buying = #{mxLotteryBuying,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPersonAddrChanged != null and mxPersonAddrChanged != ''">
+                and mx_person_addr_changed = #{mxPersonAddrChanged,jdbcType=VARCHAR}
+            </if>
+            <if test="mxSchoolStatus != null and mxSchoolStatus != ''">
+                and mx_school_status = #{mxSchoolStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="mxEducationInfo != null and mxEducationInfo != ''">
+                and mx_education_info = #{mxEducationInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="mxWorkAddrInfo != null and mxWorkAddrInfo != ''">
+                and mx_work_addr_info = #{mxWorkAddrInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="mxLiveAddrInfo != null and mxLiveAddrInfo != ''">
+                and mx_live_addr_info = #{mxLiveAddrInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="mxSchoolAddrInfo != null and mxSchoolAddrInfo != ''">
+                and mx_school_addr_info = #{mxSchoolAddrInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPhoneCall != null and mxPhoneCall != ''">
+                and mx_phone_call = #{mxPhoneCall,jdbcType=VARCHAR}
+            </if>
+            <if test="mxFriendNum3m != null and mxFriendNum3m != ''">
+                and mx_friend_num_3m = #{mxFriendNum3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxGoodFriendNum3m != null and mxGoodFriendNum3m != ''">
+                and mx_good_friend_num_3m = #{mxGoodFriendNum3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxFriendCityCenter3m != null and mxFriendCityCenter3m != ''">
+                and mx_friend_city_center_3m = #{mxFriendCityCenter3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter3m != null and mxIsCityMatchFriendCityCenter3m != ''">
+                and mx_is_city_match_friend_city_center_3m = #{mxIsCityMatchFriendCityCenter3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxInterPeerNum3m != null and mxInterPeerNum3m != ''">
+                and mx_inter_peer_num_3m = #{mxInterPeerNum3m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxFriendNum6m != null and mxFriendNum6m != ''">
+                and mx_friend_num_6m = #{mxFriendNum6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxGoodFriendNum6m != null and mxGoodFriendNum6m != ''">
+                and mx_good_friend_num_6m = #{mxGoodFriendNum6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxFriendCityCenter6m != null and mxFriendCityCenter6m != ''">
+                and mx_friend_city_center_6m = #{mxFriendCityCenter6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter6m != null and mxIsCityMatchFriendCityCenter6m != ''">
+                and mx_is_city_match_friend_city_center_6m = #{mxIsCityMatchFriendCityCenter6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxInterPeerNum6m != null and mxInterPeerNum6m != ''">
+                and mx_inter_peer_num_6m = #{mxInterPeerNum6m,jdbcType=VARCHAR}
+            </if>
+            <if test="mxSearchedOrgType != null and mxSearchedOrgType != ''">
+                and mx_searched_org_type = #{mxSearchedOrgType,jdbcType=VARCHAR}
+            </if>
+            <if test="mxIdcardWithOtherNames != null and mxIdcardWithOtherNames != ''">
+                and mx_idcard_with_other_names = #{mxIdcardWithOtherNames,jdbcType=VARCHAR}
+            </if>
+            <if test="mxIdcardWithOtherPhones != null and mxIdcardWithOtherPhones != ''">
+                and mx_idcard_with_other_phones = #{mxIdcardWithOtherPhones,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPhoneWithOtherNames != null and mxPhoneWithOtherNames != ''">
+                and mx_phone_with_other_names = #{mxPhoneWithOtherNames,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPhoneWithOtherIdcards != null and mxPhoneWithOtherIdcards != ''">
+                and mx_phone_with_other_idcards = #{mxPhoneWithOtherIdcards,jdbcType=VARCHAR}
+            </if>
+            <if test="mxRegisterOrgCnt != null">
+                and mx_register_org_cnt = #{mxRegisterOrgCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxRegisterOrgType != null and mxRegisterOrgType != ''">
+                and mx_register_org_type = #{mxRegisterOrgType,jdbcType=VARCHAR}
+            </if>
+            <if test="mxArisedOpenWeb != null and mxArisedOpenWeb != ''">
+                and mx_arised_open_web = #{mxArisedOpenWeb,jdbcType=VARCHAR}
+            </if>
+            <if test="mxPhoneGrayScore != null">
+                and mx_phone_gray_score = #{mxPhoneGrayScore,jdbcType=DECIMAL}
+            </if>
+            <if test="mxContactsClass1BlacklistCnt != null">
+                and mx_contacts_class1_blacklist_cnt = #{mxContactsClass1BlacklistCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxContactsClass2BlacklistCnt != null">
+                and mx_contacts_class2_blacklist_cnt = #{mxContactsClass2BlacklistCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxContactsClass1Cnt != null">
+                and mx_contacts_class1_cnt = #{mxContactsClass1Cnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxContactsRouterCnt != null">
+                and mx_contacts_router_cnt = #{mxContactsRouterCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxContactsRouterRatio != null">
+                and mx_contacts_router_ratio = #{mxContactsRouterRatio,jdbcType=DECIMAL}
+            </if>
+            <if test="yxOverdueHistoryCount != null">
+                and yx_overdue_history_count = #{yxOverdueHistoryCount,jdbcType=INTEGER}
+            </if>
+            <if test="yxOverdueHistoryM3Count != null">
+                and yx_overdue_history_m3_count = #{yxOverdueHistoryM3Count,jdbcType=INTEGER}
+            </if>
+            <if test="yxOverdueHistoryM6Count != null">
+                and yx_overdue_history_m6_count = #{yxOverdueHistoryM6Count,jdbcType=INTEGER}
+            </if>
+            <if test="yxAm20NoAccept != null">
+                and yx_am20_no_accept = #{yxAm20NoAccept,jdbcType=INTEGER}
+            </if>
+            <if test="mxCourtcaseCnt != null">
+                and mx_courtcase_cnt = #{mxCourtcaseCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxDishonestCnt != null">
+                and mx_dishonest_cnt = #{mxDishonestCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxIdcardOtherNamesCnt != null">
+                and mx_idcard_other_names_cnt = #{mxIdcardOtherNamesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxIdcardOtherMobilesCnt != null">
+                and mx_idcard_other_mobiles_cnt = #{mxIdcardOtherMobilesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxIdcardOtherMobilesBlackCnt != null">
+                and mx_idcard_other_mobiles_black_cnt = #{mxIdcardOtherMobilesBlackCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxMobileOtherNamesCnt != null">
+                and mx_mobile_other_names_cnt = #{mxMobileOtherNamesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxMobileOtherIdcardsCnt != null">
+                and mx_mobile_other_idcards_cnt = #{mxMobileOtherIdcardsCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxMobileOtherIdcardsBlackCnt != null">
+                and mx_mobile_other_idcards_black_cnt = #{mxMobileOtherIdcardsBlackCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxOtherDevicesCnt != null">
+                and mx_other_devices_cnt = #{mxOtherDevicesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxMobileOtherDevicesCnt != null">
+                and mx_mobile_other_devices_cnt = #{mxMobileOtherDevicesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxIdcardOtherDevicesCnt != null">
+                and mx_idcard_other_devices_cnt = #{mxIdcardOtherDevicesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxDeviceOtherNamesCnt != null">
+                and mx_device_other_names_cnt = #{mxDeviceOtherNamesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxDeviceOtherMobilesCnt != null">
+                and mx_device_other_mobiles_cnt = #{mxDeviceOtherMobilesCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxDeviceOtherMobilesBlackCnt != null">
+                and mx_device_other_mobiles_black_cnt = #{mxDeviceOtherMobilesBlackCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxDeviceOtherIdcardsCnt != null">
+                and mx_device_other_idcards_cnt = #{mxDeviceOtherIdcardsCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxDeviceOtherIdcardsBlackCnt != null">
+                and mx_device_other_idcards_black_cnt = #{mxDeviceOtherIdcardsBlackCnt,jdbcType=INTEGER}
+            </if>
+            <if test="mxBlackMobileNameInBlacklist != null">
+                and mx_black_mobile_name_in_blacklist = #{mxBlackMobileNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="mxBlackIdcardNameInBlacklist != null">
+                and mx_black_idcard_name_in_blacklist = #{mxBlackIdcardNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="mxGrayMobileNameInBlacklist != null">
+                and mx_gray_mobile_name_in_blacklist = #{mxGrayMobileNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="mxGrayIdcardNameInBlacklist != null">
+                and mx_gray_idcard_name_in_blacklist = #{mxGrayIdcardNameInBlacklist,jdbcType=INTEGER}
+            </if>
+            <if test="mxFraudIsHit != null">
+                and mx_fraud_is_hit = #{mxFraudIsHit,jdbcType=INTEGER}
+            </if>
+            <if test="mxFraudHitType != null and mxFraudHitType != ''">
+                and mx_fraud_hit_type = #{mxFraudHitType,jdbcType=VARCHAR}
+            </if>
+            <if test="xdIsLastloanRefused != null and xdIsLastloanRefused != ''">
+                and xd_is_lastloan_refused = #{xdIsLastloanRefused,jdbcType=VARCHAR}
+            </if>
+            <if test="xdTotalLoanCount != null">
+                and xd_total_loan_count = #{xdTotalLoanCount,jdbcType=INTEGER}
+            </if>
+            <if test="xdTotalOverdueCount != null">
+                and xd_total_overdue_count = #{xdTotalOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="xdLongestOverduePaid != null and xdLongestOverduePaid != ''">
+                and xd_longest_overdue_paid = #{xdLongestOverduePaid,jdbcType=VARCHAR}
+            </if>
+            <if test="xdCurrentOverdueCount != null">
+                and xd_current_overdue_count = #{xdCurrentOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="xdCurrentOverdueAmount != null">
+                and xd_current_overdue_amount = #{xdCurrentOverdueAmount,jdbcType=INTEGER}
+            </if>
+            <if test="xdOverDue90ContactsCount != null">
+                and xd_over_due90_contacts_count = #{xdOverDue90ContactsCount,jdbcType=INTEGER}
+            </if>
+            <if test="xdLongestOverdueUnpaid != null and xdLongestOverdueUnpaid != ''">
+                and xd_longest_overdue_unpaid = #{xdLongestOverdueUnpaid,jdbcType=VARCHAR}
+            </if>
+            <if test="xdLastLoanRefuseReason != null and xdLastLoanRefuseReason != ''">
+                and xd_last_loan_refuse_reason = #{xdLastLoanRefuseReason,jdbcType=VARCHAR}
+            </if>
+            <if test="xdLastLoanRefuseTime != null and xdLastLoanRefuseTime != ''">
+                and xd_last_loan_refuse_time = #{xdLastLoanRefuseTime,jdbcType=VARCHAR}
+            </if>
+            <if test="xdRemark != null and xdRemark != ''">
+                and xd_remark = #{xdRemark,jdbcType=VARCHAR}
+            </if>
+            <if test="xdFirstLoanTime != null and xdFirstLoanTime != ''">
+                and xd_first_loan_time = #{xdFirstLoanTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxIsBlack != null">
+                and ppx_is_black = #{ppxIsBlack,jdbcType=INTEGER}
+            </if>
+            <if test="ppxIsAlert != null">
+                and ppx_is_alert = #{ppxIsAlert,jdbcType=INTEGER}
+            </if>
+            <if test="ppxOverdueFirstTime != null and ppxOverdueFirstTime != ''">
+                and ppx_overdue_first_time = #{ppxOverdueFirstTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxOverdueLastTime != null and ppxOverdueLastTime != ''">
+                and ppx_overdue_last_time = #{ppxOverdueLastTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxTotalOverdueCount != null">
+                and ppx_total_overdue_count = #{ppxTotalOverdueCount,jdbcType=INTEGER}
+            </if>
+            <if test="ppxCurrentOverdueAmount != null">
+                and ppx_current_overdue_amount = #{ppxCurrentOverdueAmount,jdbcType=INTEGER}
+            </if>
+            <if test="ppxCurrentOverdueDays != null">
+                and ppx_current_overdue_days = #{ppxCurrentOverdueDays,jdbcType=INTEGER}
+            </if>
+            <if test="ppxHistoryOverdueAmount != null">
+                and ppx_history_overdue_amount = #{ppxHistoryOverdueAmount,jdbcType=INTEGER}
+            </if>
+            <if test="ppxHistoryOverdueDays != null">
+                and ppx_history_overdue_days = #{ppxHistoryOverdueDays,jdbcType=INTEGER}
+            </if>
+            <if test="ppxFraudFirstTime != null and ppxFraudFirstTime != ''">
+                and ppx_fraud_first_time = #{ppxFraudFirstTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxFraudLastTime != null and ppxFraudLastTime != ''">
+                and ppx_fraud_last_time = #{ppxFraudLastTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxTotalFraudCount != null">
+                and ppx_total_fraud_count = #{ppxTotalFraudCount,jdbcType=INTEGER}
+            </if>
+            <if test="ppxNegativeFirstTime != null and ppxNegativeFirstTime != ''">
+                and ppx_negative_first_time = #{ppxNegativeFirstTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxNegativeLastTime != null and ppxNegativeLastTime != ''">
+                and ppx_negative_last_time = #{ppxNegativeLastTime,jdbcType=VARCHAR}
+            </if>
+            <if test="ppxTotalNegativeCount != null">
+                and ppx_total_negative_count = #{ppxTotalNegativeCount,jdbcType=INTEGER}
+            </if>
+            <if test="xyLoansScore != null and xyLoansScore != ''">
+                and xy_loans_score = #{xyLoansScore,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansCredibility != null and xyLoansCredibility != ''">
+                and xy_loans_credibility = #{xyLoansCredibility,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansCount != null and xyLoansCount != ''">
+                and xy_loans_count = #{xyLoansCount,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansSettleCount != null and xyLoansSettleCount != ''">
+                and xy_loans_settle_count = #{xyLoansSettleCount,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansOverdueCount != null and xyLoansOverdueCount != ''">
+                and xy_loans_overdue_count = #{xyLoansOverdueCount,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansOrgCount != null and xyLoansOrgCount != ''">
+                and xy_loans_org_count = #{xyLoansOrgCount,jdbcType=VARCHAR}
+            </if>
+            <if test="xyConsfinOrgCount != null and xyConsfinOrgCount != ''">
+                and xy_consfin_org_count = #{xyConsfinOrgCount,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansCashCount != null and xyLoansCashCount != ''">
+                and xy_loans_cash_count = #{xyLoansCashCount,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLatestOneMonth != null and xyLatestOneMonth != ''">
+                and xy_latest_one_month = #{xyLatestOneMonth,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLatestThreeMonth != null and xyLatestThreeMonth != ''">
+                and xy_latest_three_month = #{xyLatestThreeMonth,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLatestSixMonth != null and xyLatestSixMonth != ''">
+                and xy_latest_six_month = #{xyLatestSixMonth,jdbcType=VARCHAR}
+            </if>
+            <if test="xyHistorySucFee != null and xyHistorySucFee != ''">
+                and xy_history_suc_fee = #{xyHistorySucFee,jdbcType=VARCHAR}
+            </if>
+            <if test="xyHistoryFailFee != null and xyHistoryFailFee != ''">
+                and xy_history_fail_fee = #{xyHistoryFailFee,jdbcType=VARCHAR}
+            </if>
+            <if test="xyHistorySucMinusFailNum != null">
+                and xy_history_suc_minus_fail_num = #{xyHistorySucMinusFailNum,jdbcType=INTEGER}
+            </if>
+            <if test="xyLatestOneMonthSuc != null and xyLatestOneMonthSuc != ''">
+                and xy_latest_one_month_suc = #{xyLatestOneMonthSuc,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLatestOneMonthFail != null and xyLatestOneMonthFail != ''">
+                and xy_latest_one_month_fail = #{xyLatestOneMonthFail,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLatestOneMonthSucMinusFailNum != null">
+                and xy_latest_one_month_suc_minus_fail_num = #{xyLatestOneMonthSucMinusFailNum,jdbcType=INTEGER}
+            </if>
+            <if test="xyLoansLongTime != null and xyLoansLongTime != ''">
+                and xy_loans_long_time = #{xyLoansLongTime,jdbcType=VARCHAR}
+            </if>
+            <if test="xyLoansLatestTime != null and xyLoansLatestTime != ''">
+                and xy_loans_latest_time = #{xyLoansLatestTime,jdbcType=VARCHAR}
+            </if>
+            <if test="paL1wwdcnTNumsCon != null">
+                and pa_l1wwdcn_t_nums_con = #{paL1wwdcnTNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTNumsConBank != null">
+                and pa_l1wwdcn_t_nums_con_bank = #{paL1wwdcnTNumsConBank,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTNumsConCf != null">
+                and pa_l1wwdcn_t_nums_con_cf = #{paL1wwdcnTNumsConCf,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTNumsConF != null">
+                and pa_l1wwdcn_t_nums_con_f = #{paL1wwdcnTNumsConF,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTNumsConIf != null">
+                and pa_l1wwdcn_t_nums_con_if = #{paL1wwdcnTNumsConIf,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTNumsConOrg != null">
+                and pa_l1wwdcn_t_nums_con_org = #{paL1wwdcnTNumsConOrg,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTTimesIn != null">
+                and pa_l1wwdcn_t_times_in = #{paL1wwdcnTTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnTTimesOut != null">
+                and pa_l1wwdcn_t_times_out = #{paL1wwdcnTTimesOut,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wwdcnTNumsConOrgType != null">
+                and pa_l2wwdcn_t_nums_con_org_type = #{paL2wwdcnTNumsConOrgType,jdbcType=INTEGER}
+            </if>
+            <if test="paL3wwdcnTNumsConIf != null">
+                and pa_l3wwdcn_t_nums_con_if = #{paL3wwdcnTNumsConIf,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTNumsCon != null">
+                and pa_l1mwdcn_t_nums_con = #{paL1mwdcnTNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTNumsConBank != null">
+                and pa_l1mwdcn_t_nums_con_bank = #{paL1mwdcnTNumsConBank,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTNumsConCf != null">
+                and pa_l1mwdcn_t_nums_con_cf = #{paL1mwdcnTNumsConCf,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTNumsConF != null">
+                and pa_l1mwdcn_t_nums_con_f = #{paL1mwdcnTNumsConF,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTNumsConIf != null">
+                and pa_l1mwdcn_t_nums_con_if = #{paL1mwdcnTNumsConIf,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTNumsConOrg != null">
+                and pa_l1mwdcn_t_nums_con_org = #{paL1mwdcnTNumsConOrg,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTTimesIn != null">
+                and pa_l1mwdcn_t_times_in = #{paL1mwdcnTTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnTTimesOut != null">
+                and pa_l1mwdcn_t_times_out = #{paL1mwdcnTTimesOut,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnTTimesIn != null">
+                and pa_l2mwdcn_t_times_in = #{paL2mwdcnTTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnTNumsIn != null">
+                and pa_l2mwdcn_t_nums_in = #{paL2mwdcnTNumsIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnTaxTimesIn != null">
+                and pa_l2mwdcn_tax_times_in = #{paL2mwdcnTaxTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnMaxTimesCon != null">
+                and pa_l2mwdcn_max_times_con = #{paL2mwdcnMaxTimesCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mencnTTaysCon != null">
+                and pa_l2mencn_t_tays_con = #{paL2mencnTTaysCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTNumsCon != null">
+                and pa_l3mwdcn_t_nums_con = #{paL3mwdcnTNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTNumsConBank != null">
+                and pa_l3mwdcn_t_nums_con_bank = #{paL3mwdcnTNumsConBank,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTNumsConCf != null">
+                and pa_l3mwdcn_t_nums_con_cf = #{paL3mwdcnTNumsConCf,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTNumsConF != null">
+                and pa_l3mwdcn_t_nums_con_f = #{paL3mwdcnTNumsConF,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTNumsConIf != null">
+                and pa_l3mwdcn_t_nums_con_if = #{paL3mwdcnTNumsConIf,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mencnTNumsConOrg != null">
+                and pa_l3mencn_t_nums_con_org = #{paL3mencnTNumsConOrg,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTNumsConOrg != null">
+                and pa_l3mwdcn_t_nums_con_org = #{paL3mwdcnTNumsConOrg,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTTimesIn != null">
+                and pa_l3mwdcn_t_times_in = #{paL3mwdcnTTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnTTimesOut != null">
+                and pa_l3mwdcn_t_times_out = #{paL3mwdcnTTimesOut,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnAddTNumsInOrg != null">
+                and pa_l3mwdcn_add_t_nums_in_org = #{paL3mwdcnAddTNumsInOrg,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnMaxDaysIn != null">
+                and pa_l3mwdcn_max_days_in = #{paL3mwdcnMaxDaysIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTNumsConOrgType != null">
+                and pa_l4mwdcn_t_nums_con_org_type = #{paL4mwdcnTNumsConOrgType,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTTimesInNonBank != null">
+                and pa_l4mwdcn_t_times_in_non_bank = #{paL4mwdcnTTimesInNonBank,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTDurCon != null">
+                and pa_l4mwdcn_t_dur_con = #{paL4mwdcnTDurCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTTimesCon != null">
+                and pa_l4mwdcn_t_times_con = #{paL4mwdcnTTimesCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTNumsConF != null">
+                and pa_l4mwdcn_t_nums_con_f = #{paL4mwdcnTNumsConF,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTDurIn != null">
+                and pa_l4mwdcn_t_dur_in = #{paL4mwdcnTDurIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTDurInMaxTimes != null">
+                and pa_l4mwdcn_t_dur_in_max_times = #{paL4mwdcnTDurInMaxTimes,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTNumsInF != null">
+                and pa_l4mwdcn_t_nums_in_f = #{paL4mwdcnTNumsInF,jdbcType=INTEGER}
+            </if>
+            <if test="paL5mwdcnTDaysCon != null">
+                and pa_l5mwdcn_t_days_con = #{paL5mwdcnTDaysCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL5mwdcnTDurInF != null">
+                and pa_l5mwdcn_t_dur_in_f = #{paL5mwdcnTDurInF,jdbcType=INTEGER}
+            </if>
+            <if test="paL5mwdcmTDurCon != null">
+                and pa_l5mwdcm_t_dur_con = #{paL5mwdcmTDurCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL5mwdcnTNumsConIf != null">
+                and pa_l5mwdcn_t_nums_con_if = #{paL5mwdcnTNumsConIf,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTNumsCon != null">
+                and pa_allwdcn_t_nums_con = #{paAllwdcnTNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTNumsConBank != null">
+                and pa_allwdcn_t_nums_con_bank = #{paAllwdcnTNumsConBank,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTNumsConCf != null">
+                and pa_allwdcn_t_nums_con_cf = #{paAllwdcnTNumsConCf,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTNumsConF != null">
+                and pa_allwdcn_t_nums_con_f = #{paAllwdcnTNumsConF,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTNumsConIf != null">
+                and pa_allwdcn_t_nums_con_if = #{paAllwdcnTNumsConIf,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTNumsConOrg != null">
+                and pa_allwdcn_t_nums_con_org = #{paAllwdcnTNumsConOrg,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTTimesIn != null">
+                and pa_allwdcn_t_times_in = #{paAllwdcnTTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTTimesOut != null">
+                and pa_allwdcn_t_times_out = #{paAllwdcnTTimesOut,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnTDurInF != null">
+                and pa_allwdcn_t_dur_in_f = #{paAllwdcnTDurInF,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcmMaxOrgTypeIn != null">
+                and pa_allwdcm_max_org_type_in = #{paAllwdcmMaxOrgTypeIn,jdbcType=INTEGER}
+            </if>
+            <if test="paAlldtcnwkAdur != null">
+                and pa_alldtcnwk_adur = #{paAlldtcnwkAdur,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnAdur != null">
+                and pa_allwdcn_adur = #{paAllwdcnAdur,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mdtcnAdur != null">
+                and pa_l1mdtcn_adur = #{paL1mdtcnAdur,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mwdcnAdur != null">
+                and pa_l1mwdcn_adur = #{paL1mwdcnAdur,jdbcType=INTEGER}
+            </if>
+            <if test="paAllmncnrtNumsCon != null">
+                and pa_allmncnrt_nums_con = #{paAllmncnrtNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnrtNumsCon != null">
+                and pa_l1wwdcnrt_nums_con = #{paL1wwdcnrtNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnNumsCon != null">
+                and pa_l2mwdcn_nums_con = #{paL2mwdcnNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wwdcnwkNumsCon != null">
+                and pa_l2wwdcnwk_nums_con = #{paL2wwdcnwkNumsCon,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdcnADurOneNums != null">
+                and pa_allwdcn_a_dur_one_nums = #{paAllwdcnADurOneNums,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnADurOneNums != null">
+                and pa_l4mwdcn_a_dur_one_nums = #{paL4mwdcnADurOneNums,jdbcType=INTEGER}
+            </if>
+            <if test="paL6mwdcnADurOneNums != null">
+                and pa_l6mwdcn_a_dur_one_nums = #{paL6mwdcnADurOneNums,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mdtcnwkRankCount != null">
+                and pa_l1mdtcnwk_rank_count = #{paL1mdtcnwkRankCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wdtcnrtRankCount != null">
+                and pa_l1wdtcnrt_rank_count = #{paL1wdtcnrtRankCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mdtcnRankCount != null">
+                and pa_l2mdtcn_rank_count = #{paL2mdtcnRankCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL3wwdcnwkRankCount != null">
+                and pa_l3wwdcnwk_rank_count = #{paL3wwdcnwkRankCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mevcnrtSepcialHourCount != null">
+                and pa_l1mevcnrt_sepcial_hour_count = #{paL1mevcnrtSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mmncnwkSepcialHourCount != null">
+                and pa_l1mmncnwk_sepcial_hour_count = #{paL1mmncnwkSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wevcnSepcialHourCount != null">
+                and pa_l1wevcn_sepcial_hour_count = #{paL1wevcnSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL1wwdcnrtSepcialHourCount != null">
+                and pa_l1wwdcnrt_sepcial_hour_count = #{paL1wwdcnrtSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mevcnSepcialHourCount != null">
+                and pa_l2mevcn_sepcial_hour_count = #{paL2mevcnSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mevcnrtSepcialHourCount != null">
+                and pa_l2mevcnrt_sepcial_hour_count = #{paL2mevcnrtSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnSepcialHourCount != null">
+                and pa_l2mwdcn_sepcial_hour_count = #{paL2mwdcnSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mevcnSepcialHourCount != null">
+                and pa_l3mevcn_sepcial_hour_count = #{paL3mevcnSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnrtSepcialHourCount != null">
+                and pa_l3mwdcnrt_sepcial_hour_count = #{paL3mwdcnrtSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL6mwdcnwkSepcialHourCount != null">
+                and pa_l6mwdcnwk_sepcial_hour_count = #{paL6mwdcnwkSepcialHourCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mdtcnActiveDaysCount != null">
+                and pa_l2mdtcn_active_days_count = #{paL2mdtcnActiveDaysCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wwdcnActiveDaysCount != null">
+                and pa_l2wwdcn_active_days_count = #{paL2wwdcnActiveDaysCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnrtActiveDaysCount != null">
+                and pa_l3mwdcnrt_active_days_count = #{paL3mwdcnrtActiveDaysCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wdtcnMaxTimesIn != null">
+                and pa_l2wdtcn_max_times_in = #{paL2wdtcnMaxTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wevcnMaxDaysOfOneNumberCount != null">
+                and pa_l2wevcn_max_days_of_one_number_count = #{paL2wevcnMaxDaysOfOneNumberCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnrtMaxDaysOfOneNumberCount != null">
+                and pa_l3mwdcnrt_max_days_of_one_number_count = #{paL3mwdcnrtMaxDaysOfOneNumberCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL3wwdcnMaxDaysOfOneNumberCount != null">
+                and pa_l3wwdcn_max_days_of_one_number_count = #{paL3wwdcnMaxDaysOfOneNumberCount,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wwdcnADurOneNumsIn != null">
+                and pa_l2wwdcn_a_dur_one_nums_in = #{paL2wwdcnADurOneNumsIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL2wwdcnTTimesIn != null">
+                and pa_l2wwdcn_t_times_in = #{paL2wwdcnTTimesIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnADurIn != null">
+                and pa_l3mwdcn_a_dur_in = #{paL3mwdcnADurIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mevcnrtTDur != null">
+                and pa_l1mevcnrt_t_dur = #{paL1mevcnrtTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL1mmncnwkTDur != null">
+                and pa_l1mmncnwk_t_dur = #{paL1mmncnwkTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mevcnTDur != null">
+                and pa_l2mevcn_t_dur = #{paL2mevcnTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL2mwdcnrtTDur != null">
+                and pa_l2mwdcnrt_t_dur = #{paL2mwdcnrtTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mevcnTDur != null">
+                and pa_l3mevcn_t_dur = #{paL3mevcnTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL3mwdcnrtTDur != null">
+                and pa_l3mwdcnrt_t_dur = #{paL3mwdcnrtTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL6mwdcnwkTDur != null">
+                and pa_l6mwdcnwk_t_dur = #{paL6mwdcnwkTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL4mwdcnTDur != null">
+                and pa_l4mwdcn_t_dur = #{paL4mwdcnTDur,jdbcType=INTEGER}
+            </if>
+            <if test="paL6mwdcnMinTtvDaysIn != null">
+                and pa_l6mwdcn_min_ttv_days_in = #{paL6mwdcnMinTtvDaysIn,jdbcType=INTEGER}
+            </if>
+            <if test="paL6mwdcnTDurF != null">
+                and pa_l6mwdcn_t_dur_f = #{paL6mwdcnTDurF,jdbcType=INTEGER}
+            </if>
+            <if test="paAll25acfriDur != null">
+                and pa_all25acfri_dur = #{paAll25acfriDur,jdbcType=INTEGER}
+            </if>
+            <if test="paAllwdacwkDur != null">
+                and pa_allwdacwk_dur = #{paAllwdacwkDur,jdbcType=INTEGER}
+            </if>
+            <if test="paAll25acTimes != null">
+                and pa_all25ac_times = #{paAll25acTimes,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastModifyTime != null">
+                and last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.Decision">
+        insert into cl_decision(user_id,borrow_id,age,contact_num,contact_sensitive_num,mx_is_name_and_idcard_in_court_black,mx_is_name_and_idcard_in_finance_black,mx_is_name_and_mobile_in_finance_black,mx_searched_org_cnt,mx_idcard_with_other_phone_num,mx_phone_no_voice_days,mx_contact_loan_situation,mx_five_month_voice_situation,mx_five_month_bill_less_than_20_num,mx_contact_matching_voice_situation,mx_is_reliability,mx_province,mx_city,mx_region,mx_native_place,mx_in_time,mx_bill_certification_day,mx_idcard_check,mx_email_check,mx_address_check,mx_call_data_check,mx_idcard_match,mx_name_match,mx_mobile_silence_3m,mx_mobile_silence_6m,mx_arrearage_risk_3m,mx_arrearage_risk_6m,mx_binding_risk,mx_regular_circle,mx_phone_used_time,mx_phone_power_off,mx_contact_each_other,mx_contact_macao,mx_contact_110,mx_contact_120,mx_contact_lawyer,mx_contact_court,mx_contact_loan,mx_contact_bank,mx_contact_credit_card,mx_contact_collection,mx_contact_night,mx_dwell_used_time,mx_ebusiness_info,mx_person_ebusiness_info,mx_virtual_buying,mx_lottery_buying,mx_person_addr_changed,mx_school_status,mx_education_info,mx_work_addr_info,mx_live_addr_info,mx_school_addr_info,mx_phone_call,mx_friend_num_3m,mx_good_friend_num_3m,mx_friend_city_center_3m,mx_is_city_match_friend_city_center_3m,mx_inter_peer_num_3m,mx_friend_num_6m,mx_good_friend_num_6m,mx_friend_city_center_6m,mx_is_city_match_friend_city_center_6m,mx_inter_peer_num_6m,mx_searched_org_type,mx_idcard_with_other_names,mx_idcard_with_other_phones,mx_phone_with_other_names,mx_phone_with_other_idcards,mx_register_org_cnt,mx_register_org_type,mx_arised_open_web,mx_phone_gray_score,mx_contacts_class1_blacklist_cnt,mx_contacts_class2_blacklist_cnt,mx_contacts_class1_cnt,mx_contacts_router_cnt,mx_contacts_router_ratio,yx_overdue_history_count,yx_overdue_history_m3_count,yx_overdue_history_m6_count,yx_am20_no_accept,mx_courtcase_cnt,mx_dishonest_cnt,mx_idcard_other_names_cnt,mx_idcard_other_mobiles_cnt,mx_idcard_other_mobiles_black_cnt,mx_mobile_other_names_cnt,mx_mobile_other_idcards_cnt,mx_mobile_other_idcards_black_cnt,mx_other_devices_cnt,mx_mobile_other_devices_cnt,mx_idcard_other_devices_cnt,mx_device_other_names_cnt,mx_device_other_mobiles_cnt,mx_device_other_mobiles_black_cnt,mx_device_other_idcards_cnt,mx_device_other_idcards_black_cnt,mx_black_mobile_name_in_blacklist,mx_black_idcard_name_in_blacklist,mx_gray_mobile_name_in_blacklist,mx_gray_idcard_name_in_blacklist,mx_fraud_is_hit,mx_fraud_hit_type,xd_is_lastloan_refused,xd_total_loan_count,xd_total_overdue_count,xd_longest_overdue_paid,xd_current_overdue_count,xd_current_overdue_amount,xd_over_due90_contacts_count,xd_longest_overdue_unpaid,xd_last_loan_refuse_reason,xd_last_loan_refuse_time,xd_remark,xd_first_loan_time,ppx_is_black,ppx_is_alert,ppx_overdue_first_time,ppx_overdue_last_time,ppx_total_overdue_count,ppx_current_overdue_amount,ppx_current_overdue_days,ppx_history_overdue_amount,ppx_history_overdue_days,ppx_fraud_first_time,ppx_fraud_last_time,ppx_total_fraud_count,ppx_negative_first_time,ppx_negative_last_time,ppx_total_negative_count,xy_loans_score,xy_loans_credibility,xy_loans_count,xy_loans_settle_count,xy_loans_overdue_count,xy_loans_org_count,xy_consfin_org_count,xy_loans_cash_count,xy_latest_one_month,xy_latest_three_month,xy_latest_six_month,xy_history_suc_fee,xy_history_fail_fee,xy_history_suc_minus_fail_num,xy_latest_one_month_suc,xy_latest_one_month_fail,xy_latest_one_month_suc_minus_fail_num,xy_loans_long_time,xy_loans_latest_time,pa_l1wwdcn_t_nums_con,pa_l1wwdcn_t_nums_con_bank,pa_l1wwdcn_t_nums_con_cf,pa_l1wwdcn_t_nums_con_f,pa_l1wwdcn_t_nums_con_if,pa_l1wwdcn_t_nums_con_org,pa_l1wwdcn_t_times_in,pa_l1wwdcn_t_times_out,pa_l2wwdcn_t_nums_con_org_type,pa_l3wwdcn_t_nums_con_if,pa_l1mwdcn_t_nums_con,pa_l1mwdcn_t_nums_con_bank,pa_l1mwdcn_t_nums_con_cf,pa_l1mwdcn_t_nums_con_f,pa_l1mwdcn_t_nums_con_if,pa_l1mwdcn_t_nums_con_org,pa_l1mwdcn_t_times_in,pa_l1mwdcn_t_times_out,pa_l2mwdcn_t_times_in,pa_l2mwdcn_t_nums_in,pa_l2mwdcn_tax_times_in,pa_l2mwdcn_max_times_con,pa_l2mencn_t_tays_con,pa_l3mwdcn_t_nums_con,pa_l3mwdcn_t_nums_con_bank,pa_l3mwdcn_t_nums_con_cf,pa_l3mwdcn_t_nums_con_f,pa_l3mwdcn_t_nums_con_if,pa_l3mencn_t_nums_con_org,pa_l3mwdcn_t_nums_con_org,pa_l3mwdcn_t_times_in,pa_l3mwdcn_t_times_out,pa_l3mwdcn_add_t_nums_in_org,pa_l3mwdcn_max_days_in,pa_l4mwdcn_t_nums_con_org_type,pa_l4mwdcn_t_times_in_non_bank,pa_l4mwdcn_t_dur_con,pa_l4mwdcn_t_times_con,pa_l4mwdcn_t_nums_con_f,pa_l4mwdcn_t_dur_in,pa_l4mwdcn_t_dur_in_max_times,pa_l4mwdcn_t_nums_in_f,pa_l5mwdcn_t_days_con,pa_l5mwdcn_t_dur_in_f,pa_l5mwdcm_t_dur_con,pa_l5mwdcn_t_nums_con_if,pa_allwdcn_t_nums_con,pa_allwdcn_t_nums_con_bank,pa_allwdcn_t_nums_con_cf,pa_allwdcn_t_nums_con_f,pa_allwdcn_t_nums_con_if,pa_allwdcn_t_nums_con_org,pa_allwdcn_t_times_in,pa_allwdcn_t_times_out,pa_allwdcn_t_dur_in_f,pa_allwdcm_max_org_type_in,pa_alldtcnwk_adur,pa_allwdcn_adur,pa_l1mdtcn_adur,pa_l1mwdcn_adur,pa_allmncnrt_nums_con,pa_l1wwdcnrt_nums_con,pa_l2mwdcn_nums_con,pa_l2wwdcnwk_nums_con,pa_allwdcn_a_dur_one_nums,pa_l4mwdcn_a_dur_one_nums,pa_l6mwdcn_a_dur_one_nums,pa_l1mdtcnwk_rank_count,pa_l1wdtcnrt_rank_count,pa_l2mdtcn_rank_count,pa_l3wwdcnwk_rank_count,pa_l1mevcnrt_sepcial_hour_count,pa_l1mmncnwk_sepcial_hour_count,pa_l1wevcn_sepcial_hour_count,pa_l1wwdcnrt_sepcial_hour_count,pa_l2mevcn_sepcial_hour_count,pa_l2mevcnrt_sepcial_hour_count,pa_l2mwdcn_sepcial_hour_count,pa_l3mevcn_sepcial_hour_count,pa_l3mwdcnrt_sepcial_hour_count,pa_l6mwdcnwk_sepcial_hour_count,pa_l2mdtcn_active_days_count,pa_l2wwdcn_active_days_count,pa_l3mwdcnrt_active_days_count,pa_l2wdtcn_max_times_in,pa_l2wevcn_max_days_of_one_number_count,pa_l3mwdcnrt_max_days_of_one_number_count,pa_l3wwdcn_max_days_of_one_number_count,pa_l2wwdcn_a_dur_one_nums_in,pa_l2wwdcn_t_times_in,pa_l3mwdcn_a_dur_in,pa_l1mevcnrt_t_dur,pa_l1mmncnwk_t_dur,pa_l2mevcn_t_dur,pa_l2mwdcnrt_t_dur,pa_l3mevcn_t_dur,pa_l3mwdcnrt_t_dur,pa_l6mwdcnwk_t_dur,pa_l4mwdcn_t_dur,pa_l6mwdcn_min_ttv_days_in,pa_l6mwdcn_t_dur_f,pa_all25acfri_dur,pa_allwdacwk_dur,pa_all25ac_times,create_time,last_modify_time)values(#{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{age,jdbcType=INTEGER},#{contactNum,jdbcType=INTEGER},#{contactSensitiveNum,jdbcType=INTEGER},#{mxIsNameAndIdcardInCourtBlack,jdbcType=INTEGER},#{mxIsNameAndIdcardInFinanceBlack,jdbcType=INTEGER},#{mxIsNameAndMobileInFinanceBlack,jdbcType=INTEGER},#{mxSearchedOrgCnt,jdbcType=INTEGER},#{mxIdcardWithOtherPhoneNum,jdbcType=INTEGER},#{mxPhoneNoVoiceDays,jdbcType=INTEGER},#{mxContactLoanSituation,jdbcType=INTEGER},#{mxFiveMonthVoiceSituation,jdbcType=INTEGER},#{mxFiveMonthBillLessThan20Num,jdbcType=INTEGER},#{mxContactMatchingVoiceSituation,jdbcType=INTEGER},#{mxIsReliability,jdbcType=INTEGER},#{mxProvince,jdbcType=VARCHAR},#{mxCity,jdbcType=VARCHAR},#{mxRegion,jdbcType=VARCHAR},#{mxNativePlace,jdbcType=VARCHAR},#{mxInTime,jdbcType=VARCHAR},#{mxBillCertificationDay,jdbcType=VARCHAR},#{mxIdcardCheck,jdbcType=VARCHAR},#{mxEmailCheck,jdbcType=VARCHAR},#{mxAddressCheck,jdbcType=VARCHAR},#{mxCallDataCheck,jdbcType=VARCHAR},#{mxIdcardMatch,jdbcType=VARCHAR},#{mxNameMatch,jdbcType=VARCHAR},#{mxMobileSilence3m,jdbcType=VARCHAR},#{mxMobileSilence6m,jdbcType=VARCHAR},#{mxArrearageRisk3m,jdbcType=VARCHAR},#{mxArrearageRisk6m,jdbcType=VARCHAR},#{mxBindingRisk,jdbcType=VARCHAR},#{mxRegularCircle,jdbcType=VARCHAR},#{mxPhoneUsedTime,jdbcType=VARCHAR},#{mxPhonePowerOff,jdbcType=VARCHAR},#{mxContactEachOther,jdbcType=VARCHAR},#{mxContactMacao,jdbcType=VARCHAR},#{mxContact110,jdbcType=VARCHAR},#{mxContact120,jdbcType=VARCHAR},#{mxContactLawyer,jdbcType=VARCHAR},#{mxContactCourt,jdbcType=VARCHAR},#{mxContactLoan,jdbcType=VARCHAR},#{mxContactBank,jdbcType=VARCHAR},#{mxContactCreditCard,jdbcType=VARCHAR},#{mxContactCollection,jdbcType=VARCHAR},#{mxContactNight,jdbcType=VARCHAR},#{mxDwellUsedTime,jdbcType=VARCHAR},#{mxEbusinessInfo,jdbcType=VARCHAR},#{mxPersonEbusinessInfo,jdbcType=VARCHAR},#{mxVirtualBuying,jdbcType=VARCHAR},#{mxLotteryBuying,jdbcType=VARCHAR},#{mxPersonAddrChanged,jdbcType=VARCHAR},#{mxSchoolStatus,jdbcType=VARCHAR},#{mxEducationInfo,jdbcType=VARCHAR},#{mxWorkAddrInfo,jdbcType=VARCHAR},#{mxLiveAddrInfo,jdbcType=VARCHAR},#{mxSchoolAddrInfo,jdbcType=VARCHAR},#{mxPhoneCall,jdbcType=VARCHAR},#{mxFriendNum3m,jdbcType=VARCHAR},#{mxGoodFriendNum3m,jdbcType=VARCHAR},#{mxFriendCityCenter3m,jdbcType=VARCHAR},#{mxIsCityMatchFriendCityCenter3m,jdbcType=VARCHAR},#{mxInterPeerNum3m,jdbcType=VARCHAR},#{mxFriendNum6m,jdbcType=VARCHAR},#{mxGoodFriendNum6m,jdbcType=VARCHAR},#{mxFriendCityCenter6m,jdbcType=VARCHAR},#{mxIsCityMatchFriendCityCenter6m,jdbcType=VARCHAR},#{mxInterPeerNum6m,jdbcType=VARCHAR},#{mxSearchedOrgType,jdbcType=VARCHAR},#{mxIdcardWithOtherNames,jdbcType=VARCHAR},#{mxIdcardWithOtherPhones,jdbcType=VARCHAR},#{mxPhoneWithOtherNames,jdbcType=VARCHAR},#{mxPhoneWithOtherIdcards,jdbcType=VARCHAR},#{mxRegisterOrgCnt,jdbcType=INTEGER},#{mxRegisterOrgType,jdbcType=VARCHAR},#{mxArisedOpenWeb,jdbcType=VARCHAR},#{mxPhoneGrayScore,jdbcType=DECIMAL},#{mxContactsClass1BlacklistCnt,jdbcType=INTEGER},#{mxContactsClass2BlacklistCnt,jdbcType=INTEGER},#{mxContactsClass1Cnt,jdbcType=INTEGER},#{mxContactsRouterCnt,jdbcType=INTEGER},#{mxContactsRouterRatio,jdbcType=DECIMAL},#{yxOverdueHistoryCount,jdbcType=INTEGER},#{yxOverdueHistoryM3Count,jdbcType=INTEGER},#{yxOverdueHistoryM6Count,jdbcType=INTEGER},#{yxAm20NoAccept,jdbcType=INTEGER},#{mxCourtcaseCnt,jdbcType=INTEGER},#{mxDishonestCnt,jdbcType=INTEGER},#{mxIdcardOtherNamesCnt,jdbcType=INTEGER},#{mxIdcardOtherMobilesCnt,jdbcType=INTEGER},#{mxIdcardOtherMobilesBlackCnt,jdbcType=INTEGER},#{mxMobileOtherNamesCnt,jdbcType=INTEGER},#{mxMobileOtherIdcardsCnt,jdbcType=INTEGER},#{mxMobileOtherIdcardsBlackCnt,jdbcType=INTEGER},#{mxOtherDevicesCnt,jdbcType=INTEGER},#{mxMobileOtherDevicesCnt,jdbcType=INTEGER},#{mxIdcardOtherDevicesCnt,jdbcType=INTEGER},#{mxDeviceOtherNamesCnt,jdbcType=INTEGER},#{mxDeviceOtherMobilesCnt,jdbcType=INTEGER},#{mxDeviceOtherMobilesBlackCnt,jdbcType=INTEGER},#{mxDeviceOtherIdcardsCnt,jdbcType=INTEGER},#{mxDeviceOtherIdcardsBlackCnt,jdbcType=INTEGER},#{mxBlackMobileNameInBlacklist,jdbcType=INTEGER},#{mxBlackIdcardNameInBlacklist,jdbcType=INTEGER},#{mxGrayMobileNameInBlacklist,jdbcType=INTEGER},#{mxGrayIdcardNameInBlacklist,jdbcType=INTEGER},#{mxFraudIsHit,jdbcType=INTEGER},#{mxFraudHitType,jdbcType=VARCHAR},#{xdIsLastloanRefused,jdbcType=VARCHAR},#{xdTotalLoanCount,jdbcType=INTEGER},#{xdTotalOverdueCount,jdbcType=INTEGER},#{xdLongestOverduePaid,jdbcType=VARCHAR},#{xdCurrentOverdueCount,jdbcType=INTEGER},#{xdCurrentOverdueAmount,jdbcType=INTEGER},#{xdOverDue90ContactsCount,jdbcType=INTEGER},#{xdLongestOverdueUnpaid,jdbcType=VARCHAR},#{xdLastLoanRefuseReason,jdbcType=VARCHAR},#{xdLastLoanRefuseTime,jdbcType=VARCHAR},#{xdRemark,jdbcType=VARCHAR},#{xdFirstLoanTime,jdbcType=VARCHAR},#{ppxIsBlack,jdbcType=INTEGER},#{ppxIsAlert,jdbcType=INTEGER},#{ppxOverdueFirstTime,jdbcType=VARCHAR},#{ppxOverdueLastTime,jdbcType=VARCHAR},#{ppxTotalOverdueCount,jdbcType=INTEGER},#{ppxCurrentOverdueAmount,jdbcType=INTEGER},#{ppxCurrentOverdueDays,jdbcType=INTEGER},#{ppxHistoryOverdueAmount,jdbcType=INTEGER},#{ppxHistoryOverdueDays,jdbcType=INTEGER},#{ppxFraudFirstTime,jdbcType=VARCHAR},#{ppxFraudLastTime,jdbcType=VARCHAR},#{ppxTotalFraudCount,jdbcType=INTEGER},#{ppxNegativeFirstTime,jdbcType=VARCHAR},#{ppxNegativeLastTime,jdbcType=VARCHAR},#{ppxTotalNegativeCount,jdbcType=INTEGER},#{xyLoansScore,jdbcType=VARCHAR},#{xyLoansCredibility,jdbcType=VARCHAR},#{xyLoansCount,jdbcType=VARCHAR},#{xyLoansSettleCount,jdbcType=VARCHAR},#{xyLoansOverdueCount,jdbcType=VARCHAR},#{xyLoansOrgCount,jdbcType=VARCHAR},#{xyConsfinOrgCount,jdbcType=VARCHAR},#{xyLoansCashCount,jdbcType=VARCHAR},#{xyLatestOneMonth,jdbcType=VARCHAR},#{xyLatestThreeMonth,jdbcType=VARCHAR},#{xyLatestSixMonth,jdbcType=VARCHAR},#{xyHistorySucFee,jdbcType=VARCHAR},#{xyHistoryFailFee,jdbcType=VARCHAR},#{xyHistorySucMinusFailNum,jdbcType=INTEGER},#{xyLatestOneMonthSuc,jdbcType=VARCHAR},#{xyLatestOneMonthFail,jdbcType=VARCHAR},#{xyLatestOneMonthSucMinusFailNum,jdbcType=INTEGER},#{xyLoansLongTime,jdbcType=VARCHAR},#{xyLoansLatestTime,jdbcType=VARCHAR},#{paL1wwdcnTNumsCon,jdbcType=INTEGER},#{paL1wwdcnTNumsConBank,jdbcType=INTEGER},#{paL1wwdcnTNumsConCf,jdbcType=INTEGER},#{paL1wwdcnTNumsConF,jdbcType=INTEGER},#{paL1wwdcnTNumsConIf,jdbcType=INTEGER},#{paL1wwdcnTNumsConOrg,jdbcType=INTEGER},#{paL1wwdcnTTimesIn,jdbcType=INTEGER},#{paL1wwdcnTTimesOut,jdbcType=INTEGER},#{paL2wwdcnTNumsConOrgType,jdbcType=INTEGER},#{paL3wwdcnTNumsConIf,jdbcType=INTEGER},#{paL1mwdcnTNumsCon,jdbcType=INTEGER},#{paL1mwdcnTNumsConBank,jdbcType=INTEGER},#{paL1mwdcnTNumsConCf,jdbcType=INTEGER},#{paL1mwdcnTNumsConF,jdbcType=INTEGER},#{paL1mwdcnTNumsConIf,jdbcType=INTEGER},#{paL1mwdcnTNumsConOrg,jdbcType=INTEGER},#{paL1mwdcnTTimesIn,jdbcType=INTEGER},#{paL1mwdcnTTimesOut,jdbcType=INTEGER},#{paL2mwdcnTTimesIn,jdbcType=INTEGER},#{paL2mwdcnTNumsIn,jdbcType=INTEGER},#{paL2mwdcnTaxTimesIn,jdbcType=INTEGER},#{paL2mwdcnMaxTimesCon,jdbcType=INTEGER},#{paL2mencnTTaysCon,jdbcType=INTEGER},#{paL3mwdcnTNumsCon,jdbcType=INTEGER},#{paL3mwdcnTNumsConBank,jdbcType=INTEGER},#{paL3mwdcnTNumsConCf,jdbcType=INTEGER},#{paL3mwdcnTNumsConF,jdbcType=INTEGER},#{paL3mwdcnTNumsConIf,jdbcType=INTEGER},#{paL3mencnTNumsConOrg,jdbcType=INTEGER},#{paL3mwdcnTNumsConOrg,jdbcType=INTEGER},#{paL3mwdcnTTimesIn,jdbcType=INTEGER},#{paL3mwdcnTTimesOut,jdbcType=INTEGER},#{paL3mwdcnAddTNumsInOrg,jdbcType=INTEGER},#{paL3mwdcnMaxDaysIn,jdbcType=INTEGER},#{paL4mwdcnTNumsConOrgType,jdbcType=INTEGER},#{paL4mwdcnTTimesInNonBank,jdbcType=INTEGER},#{paL4mwdcnTDurCon,jdbcType=INTEGER},#{paL4mwdcnTTimesCon,jdbcType=INTEGER},#{paL4mwdcnTNumsConF,jdbcType=INTEGER},#{paL4mwdcnTDurIn,jdbcType=INTEGER},#{paL4mwdcnTDurInMaxTimes,jdbcType=INTEGER},#{paL4mwdcnTNumsInF,jdbcType=INTEGER},#{paL5mwdcnTDaysCon,jdbcType=INTEGER},#{paL5mwdcnTDurInF,jdbcType=INTEGER},#{paL5mwdcmTDurCon,jdbcType=INTEGER},#{paL5mwdcnTNumsConIf,jdbcType=INTEGER},#{paAllwdcnTNumsCon,jdbcType=INTEGER},#{paAllwdcnTNumsConBank,jdbcType=INTEGER},#{paAllwdcnTNumsConCf,jdbcType=INTEGER},#{paAllwdcnTNumsConF,jdbcType=INTEGER},#{paAllwdcnTNumsConIf,jdbcType=INTEGER},#{paAllwdcnTNumsConOrg,jdbcType=INTEGER},#{paAllwdcnTTimesIn,jdbcType=INTEGER},#{paAllwdcnTTimesOut,jdbcType=INTEGER},#{paAllwdcnTDurInF,jdbcType=INTEGER},#{paAllwdcmMaxOrgTypeIn,jdbcType=INTEGER},#{paAlldtcnwkAdur,jdbcType=INTEGER},#{paAllwdcnAdur,jdbcType=INTEGER},#{paL1mdtcnAdur,jdbcType=INTEGER},#{paL1mwdcnAdur,jdbcType=INTEGER},#{paAllmncnrtNumsCon,jdbcType=INTEGER},#{paL1wwdcnrtNumsCon,jdbcType=INTEGER},#{paL2mwdcnNumsCon,jdbcType=INTEGER},#{paL2wwdcnwkNumsCon,jdbcType=INTEGER},#{paAllwdcnADurOneNums,jdbcType=INTEGER},#{paL4mwdcnADurOneNums,jdbcType=INTEGER},#{paL6mwdcnADurOneNums,jdbcType=INTEGER},#{paL1mdtcnwkRankCount,jdbcType=INTEGER},#{paL1wdtcnrtRankCount,jdbcType=INTEGER},#{paL2mdtcnRankCount,jdbcType=INTEGER},#{paL3wwdcnwkRankCount,jdbcType=INTEGER},#{paL1mevcnrtSepcialHourCount,jdbcType=INTEGER},#{paL1mmncnwkSepcialHourCount,jdbcType=INTEGER},#{paL1wevcnSepcialHourCount,jdbcType=INTEGER},#{paL1wwdcnrtSepcialHourCount,jdbcType=INTEGER},#{paL2mevcnSepcialHourCount,jdbcType=INTEGER},#{paL2mevcnrtSepcialHourCount,jdbcType=INTEGER},#{paL2mwdcnSepcialHourCount,jdbcType=INTEGER},#{paL3mevcnSepcialHourCount,jdbcType=INTEGER},#{paL3mwdcnrtSepcialHourCount,jdbcType=INTEGER},#{paL6mwdcnwkSepcialHourCount,jdbcType=INTEGER},#{paL2mdtcnActiveDaysCount,jdbcType=INTEGER},#{paL2wwdcnActiveDaysCount,jdbcType=INTEGER},#{paL3mwdcnrtActiveDaysCount,jdbcType=INTEGER},#{paL2wdtcnMaxTimesIn,jdbcType=INTEGER},#{paL2wevcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},#{paL3mwdcnrtMaxDaysOfOneNumberCount,jdbcType=INTEGER},#{paL3wwdcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},#{paL2wwdcnADurOneNumsIn,jdbcType=INTEGER},#{paL2wwdcnTTimesIn,jdbcType=INTEGER},#{paL3mwdcnADurIn,jdbcType=INTEGER},#{paL1mevcnrtTDur,jdbcType=INTEGER},#{paL1mmncnwkTDur,jdbcType=INTEGER},#{paL2mevcnTDur,jdbcType=INTEGER},#{paL2mwdcnrtTDur,jdbcType=INTEGER},#{paL3mevcnTDur,jdbcType=INTEGER},#{paL3mwdcnrtTDur,jdbcType=INTEGER},#{paL6mwdcnwkTDur,jdbcType=INTEGER},#{paL4mwdcnTDur,jdbcType=INTEGER},#{paL6mwdcnMinTtvDaysIn,jdbcType=INTEGER},#{paL6mwdcnTDurF,jdbcType=INTEGER},#{paAll25acfriDur,jdbcType=INTEGER},#{paAllwdacwkDur,jdbcType=INTEGER},#{paAll25acTimes,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{lastModifyTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.Decision">
+        update cl_decision set 
+            user_id = #{userId,jdbcType=BIGINT},
+            borrow_id = #{borrowId,jdbcType=BIGINT},
+            age = #{age,jdbcType=INTEGER},
+            contact_num = #{contactNum,jdbcType=INTEGER},
+            contact_sensitive_num = #{contactSensitiveNum,jdbcType=INTEGER},
+            mx_is_name_and_idcard_in_court_black = #{mxIsNameAndIdcardInCourtBlack,jdbcType=INTEGER},
+            mx_is_name_and_idcard_in_finance_black = #{mxIsNameAndIdcardInFinanceBlack,jdbcType=INTEGER},
+            mx_is_name_and_mobile_in_finance_black = #{mxIsNameAndMobileInFinanceBlack,jdbcType=INTEGER},
+            mx_searched_org_cnt = #{mxSearchedOrgCnt,jdbcType=INTEGER},
+            mx_idcard_with_other_phone_num = #{mxIdcardWithOtherPhoneNum,jdbcType=INTEGER},
+            mx_phone_no_voice_days = #{mxPhoneNoVoiceDays,jdbcType=INTEGER},
+            mx_contact_loan_situation = #{mxContactLoanSituation,jdbcType=INTEGER},
+            mx_five_month_voice_situation = #{mxFiveMonthVoiceSituation,jdbcType=INTEGER},
+            mx_five_month_bill_less_than_20_num = #{mxFiveMonthBillLessThan20Num,jdbcType=INTEGER},
+            mx_contact_matching_voice_situation = #{mxContactMatchingVoiceSituation,jdbcType=INTEGER},
+            mx_is_reliability = #{mxIsReliability,jdbcType=INTEGER},
+            mx_province = #{mxProvince,jdbcType=VARCHAR},
+            mx_city = #{mxCity,jdbcType=VARCHAR},
+            mx_region = #{mxRegion,jdbcType=VARCHAR},
+            mx_native_place = #{mxNativePlace,jdbcType=VARCHAR},
+            mx_in_time = #{mxInTime,jdbcType=VARCHAR},
+            mx_bill_certification_day = #{mxBillCertificationDay,jdbcType=VARCHAR},
+            mx_idcard_check = #{mxIdcardCheck,jdbcType=VARCHAR},
+            mx_email_check = #{mxEmailCheck,jdbcType=VARCHAR},
+            mx_address_check = #{mxAddressCheck,jdbcType=VARCHAR},
+            mx_call_data_check = #{mxCallDataCheck,jdbcType=VARCHAR},
+            mx_idcard_match = #{mxIdcardMatch,jdbcType=VARCHAR},
+            mx_name_match = #{mxNameMatch,jdbcType=VARCHAR},
+            mx_mobile_silence_3m = #{mxMobileSilence3m,jdbcType=VARCHAR},
+            mx_mobile_silence_6m = #{mxMobileSilence6m,jdbcType=VARCHAR},
+            mx_arrearage_risk_3m = #{mxArrearageRisk3m,jdbcType=VARCHAR},
+            mx_arrearage_risk_6m = #{mxArrearageRisk6m,jdbcType=VARCHAR},
+            mx_binding_risk = #{mxBindingRisk,jdbcType=VARCHAR},
+            mx_regular_circle = #{mxRegularCircle,jdbcType=VARCHAR},
+            mx_phone_used_time = #{mxPhoneUsedTime,jdbcType=VARCHAR},
+            mx_phone_power_off = #{mxPhonePowerOff,jdbcType=VARCHAR},
+            mx_contact_each_other = #{mxContactEachOther,jdbcType=VARCHAR},
+            mx_contact_macao = #{mxContactMacao,jdbcType=VARCHAR},
+            mx_contact_110 = #{mxContact110,jdbcType=VARCHAR},
+            mx_contact_120 = #{mxContact120,jdbcType=VARCHAR},
+            mx_contact_lawyer = #{mxContactLawyer,jdbcType=VARCHAR},
+            mx_contact_court = #{mxContactCourt,jdbcType=VARCHAR},
+            mx_contact_loan = #{mxContactLoan,jdbcType=VARCHAR},
+            mx_contact_bank = #{mxContactBank,jdbcType=VARCHAR},
+            mx_contact_credit_card = #{mxContactCreditCard,jdbcType=VARCHAR},
+            mx_contact_collection = #{mxContactCollection,jdbcType=VARCHAR},
+            mx_contact_night = #{mxContactNight,jdbcType=VARCHAR},
+            mx_dwell_used_time = #{mxDwellUsedTime,jdbcType=VARCHAR},
+            mx_ebusiness_info = #{mxEbusinessInfo,jdbcType=VARCHAR},
+            mx_person_ebusiness_info = #{mxPersonEbusinessInfo,jdbcType=VARCHAR},
+            mx_virtual_buying = #{mxVirtualBuying,jdbcType=VARCHAR},
+            mx_lottery_buying = #{mxLotteryBuying,jdbcType=VARCHAR},
+            mx_person_addr_changed = #{mxPersonAddrChanged,jdbcType=VARCHAR},
+            mx_school_status = #{mxSchoolStatus,jdbcType=VARCHAR},
+            mx_education_info = #{mxEducationInfo,jdbcType=VARCHAR},
+            mx_work_addr_info = #{mxWorkAddrInfo,jdbcType=VARCHAR},
+            mx_live_addr_info = #{mxLiveAddrInfo,jdbcType=VARCHAR},
+            mx_school_addr_info = #{mxSchoolAddrInfo,jdbcType=VARCHAR},
+            mx_phone_call = #{mxPhoneCall,jdbcType=VARCHAR},
+            mx_friend_num_3m = #{mxFriendNum3m,jdbcType=VARCHAR},
+            mx_good_friend_num_3m = #{mxGoodFriendNum3m,jdbcType=VARCHAR},
+            mx_friend_city_center_3m = #{mxFriendCityCenter3m,jdbcType=VARCHAR},
+            mx_is_city_match_friend_city_center_3m = #{mxIsCityMatchFriendCityCenter3m,jdbcType=VARCHAR},
+            mx_inter_peer_num_3m = #{mxInterPeerNum3m,jdbcType=VARCHAR},
+            mx_friend_num_6m = #{mxFriendNum6m,jdbcType=VARCHAR},
+            mx_good_friend_num_6m = #{mxGoodFriendNum6m,jdbcType=VARCHAR},
+            mx_friend_city_center_6m = #{mxFriendCityCenter6m,jdbcType=VARCHAR},
+            mx_is_city_match_friend_city_center_6m = #{mxIsCityMatchFriendCityCenter6m,jdbcType=VARCHAR},
+            mx_inter_peer_num_6m = #{mxInterPeerNum6m,jdbcType=VARCHAR},
+            mx_searched_org_type = #{mxSearchedOrgType,jdbcType=VARCHAR},
+            mx_idcard_with_other_names = #{mxIdcardWithOtherNames,jdbcType=VARCHAR},
+            mx_idcard_with_other_phones = #{mxIdcardWithOtherPhones,jdbcType=VARCHAR},
+            mx_phone_with_other_names = #{mxPhoneWithOtherNames,jdbcType=VARCHAR},
+            mx_phone_with_other_idcards = #{mxPhoneWithOtherIdcards,jdbcType=VARCHAR},
+            mx_register_org_cnt = #{mxRegisterOrgCnt,jdbcType=INTEGER},
+            mx_register_org_type = #{mxRegisterOrgType,jdbcType=VARCHAR},
+            mx_arised_open_web = #{mxArisedOpenWeb,jdbcType=VARCHAR},
+            mx_phone_gray_score = #{mxPhoneGrayScore,jdbcType=DECIMAL},
+            mx_contacts_class1_blacklist_cnt = #{mxContactsClass1BlacklistCnt,jdbcType=INTEGER},
+            mx_contacts_class2_blacklist_cnt = #{mxContactsClass2BlacklistCnt,jdbcType=INTEGER},
+            mx_contacts_class1_cnt = #{mxContactsClass1Cnt,jdbcType=INTEGER},
+            mx_contacts_router_cnt = #{mxContactsRouterCnt,jdbcType=INTEGER},
+            mx_contacts_router_ratio = #{mxContactsRouterRatio,jdbcType=DECIMAL},
+            yx_overdue_history_count = #{yxOverdueHistoryCount,jdbcType=INTEGER},
+            yx_overdue_history_m3_count = #{yxOverdueHistoryM3Count,jdbcType=INTEGER},
+            yx_overdue_history_m6_count = #{yxOverdueHistoryM6Count,jdbcType=INTEGER},
+            yx_am20_no_accept = #{yxAm20NoAccept,jdbcType=INTEGER},
+            mx_courtcase_cnt = #{mxCourtcaseCnt,jdbcType=INTEGER},
+            mx_dishonest_cnt = #{mxDishonestCnt,jdbcType=INTEGER},
+            mx_idcard_other_names_cnt = #{mxIdcardOtherNamesCnt,jdbcType=INTEGER},
+            mx_idcard_other_mobiles_cnt = #{mxIdcardOtherMobilesCnt,jdbcType=INTEGER},
+            mx_idcard_other_mobiles_black_cnt = #{mxIdcardOtherMobilesBlackCnt,jdbcType=INTEGER},
+            mx_mobile_other_names_cnt = #{mxMobileOtherNamesCnt,jdbcType=INTEGER},
+            mx_mobile_other_idcards_cnt = #{mxMobileOtherIdcardsCnt,jdbcType=INTEGER},
+            mx_mobile_other_idcards_black_cnt = #{mxMobileOtherIdcardsBlackCnt,jdbcType=INTEGER},
+            mx_other_devices_cnt = #{mxOtherDevicesCnt,jdbcType=INTEGER},
+            mx_mobile_other_devices_cnt = #{mxMobileOtherDevicesCnt,jdbcType=INTEGER},
+            mx_idcard_other_devices_cnt = #{mxIdcardOtherDevicesCnt,jdbcType=INTEGER},
+            mx_device_other_names_cnt = #{mxDeviceOtherNamesCnt,jdbcType=INTEGER},
+            mx_device_other_mobiles_cnt = #{mxDeviceOtherMobilesCnt,jdbcType=INTEGER},
+            mx_device_other_mobiles_black_cnt = #{mxDeviceOtherMobilesBlackCnt,jdbcType=INTEGER},
+            mx_device_other_idcards_cnt = #{mxDeviceOtherIdcardsCnt,jdbcType=INTEGER},
+            mx_device_other_idcards_black_cnt = #{mxDeviceOtherIdcardsBlackCnt,jdbcType=INTEGER},
+            mx_black_mobile_name_in_blacklist = #{mxBlackMobileNameInBlacklist,jdbcType=INTEGER},
+            mx_black_idcard_name_in_blacklist = #{mxBlackIdcardNameInBlacklist,jdbcType=INTEGER},
+            mx_gray_mobile_name_in_blacklist = #{mxGrayMobileNameInBlacklist,jdbcType=INTEGER},
+            mx_gray_idcard_name_in_blacklist = #{mxGrayIdcardNameInBlacklist,jdbcType=INTEGER},
+            mx_fraud_is_hit = #{mxFraudIsHit,jdbcType=INTEGER},
+            mx_fraud_hit_type = #{mxFraudHitType,jdbcType=VARCHAR},
+            xd_is_lastloan_refused = #{xdIsLastloanRefused,jdbcType=VARCHAR},
+            xd_total_loan_count = #{xdTotalLoanCount,jdbcType=INTEGER},
+            xd_total_overdue_count = #{xdTotalOverdueCount,jdbcType=INTEGER},
+            xd_longest_overdue_paid = #{xdLongestOverduePaid,jdbcType=VARCHAR},
+            xd_current_overdue_count = #{xdCurrentOverdueCount,jdbcType=INTEGER},
+            xd_current_overdue_amount = #{xdCurrentOverdueAmount,jdbcType=INTEGER},
+            xd_over_due90_contacts_count = #{xdOverDue90ContactsCount,jdbcType=INTEGER},
+            xd_longest_overdue_unpaid = #{xdLongestOverdueUnpaid,jdbcType=VARCHAR},
+            xd_last_loan_refuse_reason = #{xdLastLoanRefuseReason,jdbcType=VARCHAR},
+            xd_last_loan_refuse_time = #{xdLastLoanRefuseTime,jdbcType=VARCHAR},
+            xd_remark = #{xdRemark,jdbcType=VARCHAR},
+            xd_first_loan_time = #{xdFirstLoanTime,jdbcType=VARCHAR},
+            ppx_is_black = #{ppxIsBlack,jdbcType=INTEGER},
+            ppx_is_alert = #{ppxIsAlert,jdbcType=INTEGER},
+            ppx_overdue_first_time = #{ppxOverdueFirstTime,jdbcType=VARCHAR},
+            ppx_overdue_last_time = #{ppxOverdueLastTime,jdbcType=VARCHAR},
+            ppx_total_overdue_count = #{ppxTotalOverdueCount,jdbcType=INTEGER},
+            ppx_current_overdue_amount = #{ppxCurrentOverdueAmount,jdbcType=INTEGER},
+            ppx_current_overdue_days = #{ppxCurrentOverdueDays,jdbcType=INTEGER},
+            ppx_history_overdue_amount = #{ppxHistoryOverdueAmount,jdbcType=INTEGER},
+            ppx_history_overdue_days = #{ppxHistoryOverdueDays,jdbcType=INTEGER},
+            ppx_fraud_first_time = #{ppxFraudFirstTime,jdbcType=VARCHAR},
+            ppx_fraud_last_time = #{ppxFraudLastTime,jdbcType=VARCHAR},
+            ppx_total_fraud_count = #{ppxTotalFraudCount,jdbcType=INTEGER},
+            ppx_negative_first_time = #{ppxNegativeFirstTime,jdbcType=VARCHAR},
+            ppx_negative_last_time = #{ppxNegativeLastTime,jdbcType=VARCHAR},
+            ppx_total_negative_count = #{ppxTotalNegativeCount,jdbcType=INTEGER},
+            xy_loans_score = #{xyLoansScore,jdbcType=VARCHAR},
+            xy_loans_credibility = #{xyLoansCredibility,jdbcType=VARCHAR},
+            xy_loans_count = #{xyLoansCount,jdbcType=VARCHAR},
+            xy_loans_settle_count = #{xyLoansSettleCount,jdbcType=VARCHAR},
+            xy_loans_overdue_count = #{xyLoansOverdueCount,jdbcType=VARCHAR},
+            xy_loans_org_count = #{xyLoansOrgCount,jdbcType=VARCHAR},
+            xy_consfin_org_count = #{xyConsfinOrgCount,jdbcType=VARCHAR},
+            xy_loans_cash_count = #{xyLoansCashCount,jdbcType=VARCHAR},
+            xy_latest_one_month = #{xyLatestOneMonth,jdbcType=VARCHAR},
+            xy_latest_three_month = #{xyLatestThreeMonth,jdbcType=VARCHAR},
+            xy_latest_six_month = #{xyLatestSixMonth,jdbcType=VARCHAR},
+            xy_history_suc_fee = #{xyHistorySucFee,jdbcType=VARCHAR},
+            xy_history_fail_fee = #{xyHistoryFailFee,jdbcType=VARCHAR},
+            xy_history_suc_minus_fail_num = #{xyHistorySucMinusFailNum,jdbcType=INTEGER},
+            xy_latest_one_month_suc = #{xyLatestOneMonthSuc,jdbcType=VARCHAR},
+            xy_latest_one_month_fail = #{xyLatestOneMonthFail,jdbcType=VARCHAR},
+            xy_latest_one_month_suc_minus_fail_num = #{xyLatestOneMonthSucMinusFailNum,jdbcType=INTEGER},
+            xy_loans_long_time = #{xyLoansLongTime,jdbcType=VARCHAR},
+            xy_loans_latest_time = #{xyLoansLatestTime,jdbcType=VARCHAR},
+            pa_l1wwdcn_t_nums_con = #{paL1wwdcnTNumsCon,jdbcType=INTEGER},
+            pa_l1wwdcn_t_nums_con_bank = #{paL1wwdcnTNumsConBank,jdbcType=INTEGER},
+            pa_l1wwdcn_t_nums_con_cf = #{paL1wwdcnTNumsConCf,jdbcType=INTEGER},
+            pa_l1wwdcn_t_nums_con_f = #{paL1wwdcnTNumsConF,jdbcType=INTEGER},
+            pa_l1wwdcn_t_nums_con_if = #{paL1wwdcnTNumsConIf,jdbcType=INTEGER},
+            pa_l1wwdcn_t_nums_con_org = #{paL1wwdcnTNumsConOrg,jdbcType=INTEGER},
+            pa_l1wwdcn_t_times_in = #{paL1wwdcnTTimesIn,jdbcType=INTEGER},
+            pa_l1wwdcn_t_times_out = #{paL1wwdcnTTimesOut,jdbcType=INTEGER},
+            pa_l2wwdcn_t_nums_con_org_type = #{paL2wwdcnTNumsConOrgType,jdbcType=INTEGER},
+            pa_l3wwdcn_t_nums_con_if = #{paL3wwdcnTNumsConIf,jdbcType=INTEGER},
+            pa_l1mwdcn_t_nums_con = #{paL1mwdcnTNumsCon,jdbcType=INTEGER},
+            pa_l1mwdcn_t_nums_con_bank = #{paL1mwdcnTNumsConBank,jdbcType=INTEGER},
+            pa_l1mwdcn_t_nums_con_cf = #{paL1mwdcnTNumsConCf,jdbcType=INTEGER},
+            pa_l1mwdcn_t_nums_con_f = #{paL1mwdcnTNumsConF,jdbcType=INTEGER},
+            pa_l1mwdcn_t_nums_con_if = #{paL1mwdcnTNumsConIf,jdbcType=INTEGER},
+            pa_l1mwdcn_t_nums_con_org = #{paL1mwdcnTNumsConOrg,jdbcType=INTEGER},
+            pa_l1mwdcn_t_times_in = #{paL1mwdcnTTimesIn,jdbcType=INTEGER},
+            pa_l1mwdcn_t_times_out = #{paL1mwdcnTTimesOut,jdbcType=INTEGER},
+            pa_l2mwdcn_t_times_in = #{paL2mwdcnTTimesIn,jdbcType=INTEGER},
+            pa_l2mwdcn_t_nums_in = #{paL2mwdcnTNumsIn,jdbcType=INTEGER},
+            pa_l2mwdcn_tax_times_in = #{paL2mwdcnTaxTimesIn,jdbcType=INTEGER},
+            pa_l2mwdcn_max_times_con = #{paL2mwdcnMaxTimesCon,jdbcType=INTEGER},
+            pa_l2mencn_t_tays_con = #{paL2mencnTTaysCon,jdbcType=INTEGER},
+            pa_l3mwdcn_t_nums_con = #{paL3mwdcnTNumsCon,jdbcType=INTEGER},
+            pa_l3mwdcn_t_nums_con_bank = #{paL3mwdcnTNumsConBank,jdbcType=INTEGER},
+            pa_l3mwdcn_t_nums_con_cf = #{paL3mwdcnTNumsConCf,jdbcType=INTEGER},
+            pa_l3mwdcn_t_nums_con_f = #{paL3mwdcnTNumsConF,jdbcType=INTEGER},
+            pa_l3mwdcn_t_nums_con_if = #{paL3mwdcnTNumsConIf,jdbcType=INTEGER},
+            pa_l3mencn_t_nums_con_org = #{paL3mencnTNumsConOrg,jdbcType=INTEGER},
+            pa_l3mwdcn_t_nums_con_org = #{paL3mwdcnTNumsConOrg,jdbcType=INTEGER},
+            pa_l3mwdcn_t_times_in = #{paL3mwdcnTTimesIn,jdbcType=INTEGER},
+            pa_l3mwdcn_t_times_out = #{paL3mwdcnTTimesOut,jdbcType=INTEGER},
+            pa_l3mwdcn_add_t_nums_in_org = #{paL3mwdcnAddTNumsInOrg,jdbcType=INTEGER},
+            pa_l3mwdcn_max_days_in = #{paL3mwdcnMaxDaysIn,jdbcType=INTEGER},
+            pa_l4mwdcn_t_nums_con_org_type = #{paL4mwdcnTNumsConOrgType,jdbcType=INTEGER},
+            pa_l4mwdcn_t_times_in_non_bank = #{paL4mwdcnTTimesInNonBank,jdbcType=INTEGER},
+            pa_l4mwdcn_t_dur_con = #{paL4mwdcnTDurCon,jdbcType=INTEGER},
+            pa_l4mwdcn_t_times_con = #{paL4mwdcnTTimesCon,jdbcType=INTEGER},
+            pa_l4mwdcn_t_nums_con_f = #{paL4mwdcnTNumsConF,jdbcType=INTEGER},
+            pa_l4mwdcn_t_dur_in = #{paL4mwdcnTDurIn,jdbcType=INTEGER},
+            pa_l4mwdcn_t_dur_in_max_times = #{paL4mwdcnTDurInMaxTimes,jdbcType=INTEGER},
+            pa_l4mwdcn_t_nums_in_f = #{paL4mwdcnTNumsInF,jdbcType=INTEGER},
+            pa_l5mwdcn_t_days_con = #{paL5mwdcnTDaysCon,jdbcType=INTEGER},
+            pa_l5mwdcn_t_dur_in_f = #{paL5mwdcnTDurInF,jdbcType=INTEGER},
+            pa_l5mwdcm_t_dur_con = #{paL5mwdcmTDurCon,jdbcType=INTEGER},
+            pa_l5mwdcn_t_nums_con_if = #{paL5mwdcnTNumsConIf,jdbcType=INTEGER},
+            pa_allwdcn_t_nums_con = #{paAllwdcnTNumsCon,jdbcType=INTEGER},
+            pa_allwdcn_t_nums_con_bank = #{paAllwdcnTNumsConBank,jdbcType=INTEGER},
+            pa_allwdcn_t_nums_con_cf = #{paAllwdcnTNumsConCf,jdbcType=INTEGER},
+            pa_allwdcn_t_nums_con_f = #{paAllwdcnTNumsConF,jdbcType=INTEGER},
+            pa_allwdcn_t_nums_con_if = #{paAllwdcnTNumsConIf,jdbcType=INTEGER},
+            pa_allwdcn_t_nums_con_org = #{paAllwdcnTNumsConOrg,jdbcType=INTEGER},
+            pa_allwdcn_t_times_in = #{paAllwdcnTTimesIn,jdbcType=INTEGER},
+            pa_allwdcn_t_times_out = #{paAllwdcnTTimesOut,jdbcType=INTEGER},
+            pa_allwdcn_t_dur_in_f = #{paAllwdcnTDurInF,jdbcType=INTEGER},
+            pa_allwdcm_max_org_type_in = #{paAllwdcmMaxOrgTypeIn,jdbcType=INTEGER},
+            pa_alldtcnwk_adur = #{paAlldtcnwkAdur,jdbcType=INTEGER},
+            pa_allwdcn_adur = #{paAllwdcnAdur,jdbcType=INTEGER},
+            pa_l1mdtcn_adur = #{paL1mdtcnAdur,jdbcType=INTEGER},
+            pa_l1mwdcn_adur = #{paL1mwdcnAdur,jdbcType=INTEGER},
+            pa_allmncnrt_nums_con = #{paAllmncnrtNumsCon,jdbcType=INTEGER},
+            pa_l1wwdcnrt_nums_con = #{paL1wwdcnrtNumsCon,jdbcType=INTEGER},
+            pa_l2mwdcn_nums_con = #{paL2mwdcnNumsCon,jdbcType=INTEGER},
+            pa_l2wwdcnwk_nums_con = #{paL2wwdcnwkNumsCon,jdbcType=INTEGER},
+            pa_allwdcn_a_dur_one_nums = #{paAllwdcnADurOneNums,jdbcType=INTEGER},
+            pa_l4mwdcn_a_dur_one_nums = #{paL4mwdcnADurOneNums,jdbcType=INTEGER},
+            pa_l6mwdcn_a_dur_one_nums = #{paL6mwdcnADurOneNums,jdbcType=INTEGER},
+            pa_l1mdtcnwk_rank_count = #{paL1mdtcnwkRankCount,jdbcType=INTEGER},
+            pa_l1wdtcnrt_rank_count = #{paL1wdtcnrtRankCount,jdbcType=INTEGER},
+            pa_l2mdtcn_rank_count = #{paL2mdtcnRankCount,jdbcType=INTEGER},
+            pa_l3wwdcnwk_rank_count = #{paL3wwdcnwkRankCount,jdbcType=INTEGER},
+            pa_l1mevcnrt_sepcial_hour_count = #{paL1mevcnrtSepcialHourCount,jdbcType=INTEGER},
+            pa_l1mmncnwk_sepcial_hour_count = #{paL1mmncnwkSepcialHourCount,jdbcType=INTEGER},
+            pa_l1wevcn_sepcial_hour_count = #{paL1wevcnSepcialHourCount,jdbcType=INTEGER},
+            pa_l1wwdcnrt_sepcial_hour_count = #{paL1wwdcnrtSepcialHourCount,jdbcType=INTEGER},
+            pa_l2mevcn_sepcial_hour_count = #{paL2mevcnSepcialHourCount,jdbcType=INTEGER},
+            pa_l2mevcnrt_sepcial_hour_count = #{paL2mevcnrtSepcialHourCount,jdbcType=INTEGER},
+            pa_l2mwdcn_sepcial_hour_count = #{paL2mwdcnSepcialHourCount,jdbcType=INTEGER},
+            pa_l3mevcn_sepcial_hour_count = #{paL3mevcnSepcialHourCount,jdbcType=INTEGER},
+            pa_l3mwdcnrt_sepcial_hour_count = #{paL3mwdcnrtSepcialHourCount,jdbcType=INTEGER},
+            pa_l6mwdcnwk_sepcial_hour_count = #{paL6mwdcnwkSepcialHourCount,jdbcType=INTEGER},
+            pa_l2mdtcn_active_days_count = #{paL2mdtcnActiveDaysCount,jdbcType=INTEGER},
+            pa_l2wwdcn_active_days_count = #{paL2wwdcnActiveDaysCount,jdbcType=INTEGER},
+            pa_l3mwdcnrt_active_days_count = #{paL3mwdcnrtActiveDaysCount,jdbcType=INTEGER},
+            pa_l2wdtcn_max_times_in = #{paL2wdtcnMaxTimesIn,jdbcType=INTEGER},
+            pa_l2wevcn_max_days_of_one_number_count = #{paL2wevcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},
+            pa_l3mwdcnrt_max_days_of_one_number_count = #{paL3mwdcnrtMaxDaysOfOneNumberCount,jdbcType=INTEGER},
+            pa_l3wwdcn_max_days_of_one_number_count = #{paL3wwdcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},
+            pa_l2wwdcn_a_dur_one_nums_in = #{paL2wwdcnADurOneNumsIn,jdbcType=INTEGER},
+            pa_l2wwdcn_t_times_in = #{paL2wwdcnTTimesIn,jdbcType=INTEGER},
+            pa_l3mwdcn_a_dur_in = #{paL3mwdcnADurIn,jdbcType=INTEGER},
+            pa_l1mevcnrt_t_dur = #{paL1mevcnrtTDur,jdbcType=INTEGER},
+            pa_l1mmncnwk_t_dur = #{paL1mmncnwkTDur,jdbcType=INTEGER},
+            pa_l2mevcn_t_dur = #{paL2mevcnTDur,jdbcType=INTEGER},
+            pa_l2mwdcnrt_t_dur = #{paL2mwdcnrtTDur,jdbcType=INTEGER},
+            pa_l3mevcn_t_dur = #{paL3mevcnTDur,jdbcType=INTEGER},
+            pa_l3mwdcnrt_t_dur = #{paL3mwdcnrtTDur,jdbcType=INTEGER},
+            pa_l6mwdcnwk_t_dur = #{paL6mwdcnwkTDur,jdbcType=INTEGER},
+            pa_l4mwdcn_t_dur = #{paL4mwdcnTDur,jdbcType=INTEGER},
+            pa_l6mwdcn_min_ttv_days_in = #{paL6mwdcnMinTtvDaysIn,jdbcType=INTEGER},
+            pa_l6mwdcn_t_dur_f = #{paL6mwdcnTDurF,jdbcType=INTEGER},
+            pa_all25acfri_dur = #{paAll25acfriDur,jdbcType=INTEGER},
+            pa_allwdacwk_dur = #{paAllwdacwkDur,jdbcType=INTEGER},
+            pa_all25ac_times = #{paAll25acTimes,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_decision
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="borrowId != null">        
+                borrow_id = #{borrowId,jdbcType=BIGINT},                
+            </if>
+            <if test="age != null">        
+                age = #{age,jdbcType=INTEGER},                
+            </if>
+            <if test="contactNum != null">        
+                contact_num = #{contactNum,jdbcType=INTEGER},                
+            </if>
+            <if test="contactSensitiveNum != null">        
+                contact_sensitive_num = #{contactSensitiveNum,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIsNameAndIdcardInCourtBlack != null">        
+                mx_is_name_and_idcard_in_court_black = #{mxIsNameAndIdcardInCourtBlack,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIsNameAndIdcardInFinanceBlack != null">        
+                mx_is_name_and_idcard_in_finance_black = #{mxIsNameAndIdcardInFinanceBlack,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIsNameAndMobileInFinanceBlack != null">        
+                mx_is_name_and_mobile_in_finance_black = #{mxIsNameAndMobileInFinanceBlack,jdbcType=INTEGER},                
+            </if>
+            <if test="mxSearchedOrgCnt != null">        
+                mx_searched_org_cnt = #{mxSearchedOrgCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIdcardWithOtherPhoneNum != null">        
+                mx_idcard_with_other_phone_num = #{mxIdcardWithOtherPhoneNum,jdbcType=INTEGER},                
+            </if>
+            <if test="mxPhoneNoVoiceDays != null">        
+                mx_phone_no_voice_days = #{mxPhoneNoVoiceDays,jdbcType=INTEGER},                
+            </if>
+            <if test="mxContactLoanSituation != null">        
+                mx_contact_loan_situation = #{mxContactLoanSituation,jdbcType=INTEGER},                
+            </if>
+            <if test="mxFiveMonthVoiceSituation != null">        
+                mx_five_month_voice_situation = #{mxFiveMonthVoiceSituation,jdbcType=INTEGER},                
+            </if>
+            <if test="mxFiveMonthBillLessThan20Num != null">        
+                mx_five_month_bill_less_than_20_num = #{mxFiveMonthBillLessThan20Num,jdbcType=INTEGER},                
+            </if>
+            <if test="mxContactMatchingVoiceSituation != null">        
+                mx_contact_matching_voice_situation = #{mxContactMatchingVoiceSituation,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIsReliability != null">        
+                mx_is_reliability = #{mxIsReliability,jdbcType=INTEGER},                
+            </if>
+            <if test="mxProvince != null and mxProvince != '' ">
+                mx_province = #{mxProvince,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxCity != null and mxCity != '' ">
+                mx_city = #{mxCity,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxRegion != null and mxRegion != '' ">
+                mx_region = #{mxRegion,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxNativePlace != null and mxNativePlace != '' ">
+                mx_native_place = #{mxNativePlace,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxInTime != null and mxInTime != '' ">
+                mx_in_time = #{mxInTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxBillCertificationDay != null and mxBillCertificationDay != '' ">
+                mx_bill_certification_day = #{mxBillCertificationDay,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxIdcardCheck != null and mxIdcardCheck != '' ">
+                mx_idcard_check = #{mxIdcardCheck,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxEmailCheck != null and mxEmailCheck != '' ">
+                mx_email_check = #{mxEmailCheck,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxAddressCheck != null and mxAddressCheck != '' ">
+                mx_address_check = #{mxAddressCheck,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxCallDataCheck != null and mxCallDataCheck != '' ">
+                mx_call_data_check = #{mxCallDataCheck,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxIdcardMatch != null and mxIdcardMatch != '' ">
+                mx_idcard_match = #{mxIdcardMatch,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxNameMatch != null and mxNameMatch != '' ">
+                mx_name_match = #{mxNameMatch,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxMobileSilence3m != null and mxMobileSilence3m != '' ">
+                mx_mobile_silence_3m = #{mxMobileSilence3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxMobileSilence6m != null and mxMobileSilence6m != '' ">
+                mx_mobile_silence_6m = #{mxMobileSilence6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxArrearageRisk3m != null and mxArrearageRisk3m != '' ">
+                mx_arrearage_risk_3m = #{mxArrearageRisk3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxArrearageRisk6m != null and mxArrearageRisk6m != '' ">
+                mx_arrearage_risk_6m = #{mxArrearageRisk6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxBindingRisk != null and mxBindingRisk != '' ">
+                mx_binding_risk = #{mxBindingRisk,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxRegularCircle != null and mxRegularCircle != '' ">
+                mx_regular_circle = #{mxRegularCircle,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPhoneUsedTime != null and mxPhoneUsedTime != '' ">
+                mx_phone_used_time = #{mxPhoneUsedTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPhonePowerOff != null and mxPhonePowerOff != '' ">
+                mx_phone_power_off = #{mxPhonePowerOff,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactEachOther != null and mxContactEachOther != '' ">
+                mx_contact_each_other = #{mxContactEachOther,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactMacao != null and mxContactMacao != '' ">
+                mx_contact_macao = #{mxContactMacao,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContact110 != null and mxContact110 != '' ">
+                mx_contact_110 = #{mxContact110,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContact120 != null and mxContact120 != '' ">
+                mx_contact_120 = #{mxContact120,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactLawyer != null and mxContactLawyer != '' ">
+                mx_contact_lawyer = #{mxContactLawyer,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactCourt != null and mxContactCourt != '' ">
+                mx_contact_court = #{mxContactCourt,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactLoan != null and mxContactLoan != '' ">
+                mx_contact_loan = #{mxContactLoan,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactBank != null and mxContactBank != '' ">
+                mx_contact_bank = #{mxContactBank,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactCreditCard != null and mxContactCreditCard != '' ">
+                mx_contact_credit_card = #{mxContactCreditCard,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactCollection != null and mxContactCollection != '' ">
+                mx_contact_collection = #{mxContactCollection,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxContactNight != null and mxContactNight != '' ">
+                mx_contact_night = #{mxContactNight,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxDwellUsedTime != null and mxDwellUsedTime != '' ">
+                mx_dwell_used_time = #{mxDwellUsedTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxEbusinessInfo != null and mxEbusinessInfo != '' ">
+                mx_ebusiness_info = #{mxEbusinessInfo,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPersonEbusinessInfo != null and mxPersonEbusinessInfo != '' ">
+                mx_person_ebusiness_info = #{mxPersonEbusinessInfo,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxVirtualBuying != null and mxVirtualBuying != '' ">
+                mx_virtual_buying = #{mxVirtualBuying,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxLotteryBuying != null and mxLotteryBuying != '' ">
+                mx_lottery_buying = #{mxLotteryBuying,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPersonAddrChanged != null and mxPersonAddrChanged != '' ">
+                mx_person_addr_changed = #{mxPersonAddrChanged,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxSchoolStatus != null and mxSchoolStatus != '' ">
+                mx_school_status = #{mxSchoolStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxEducationInfo != null and mxEducationInfo != '' ">
+                mx_education_info = #{mxEducationInfo,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxWorkAddrInfo != null and mxWorkAddrInfo != '' ">
+                mx_work_addr_info = #{mxWorkAddrInfo,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxLiveAddrInfo != null and mxLiveAddrInfo != '' ">
+                mx_live_addr_info = #{mxLiveAddrInfo,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxSchoolAddrInfo != null and mxSchoolAddrInfo != '' ">
+                mx_school_addr_info = #{mxSchoolAddrInfo,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPhoneCall != null and mxPhoneCall != '' ">
+                mx_phone_call = #{mxPhoneCall,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxFriendNum3m != null and mxFriendNum3m != '' ">
+                mx_friend_num_3m = #{mxFriendNum3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxGoodFriendNum3m != null and mxGoodFriendNum3m != '' ">
+                mx_good_friend_num_3m = #{mxGoodFriendNum3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxFriendCityCenter3m != null and mxFriendCityCenter3m != '' ">
+                mx_friend_city_center_3m = #{mxFriendCityCenter3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter3m != null and mxIsCityMatchFriendCityCenter3m != '' ">
+                mx_is_city_match_friend_city_center_3m = #{mxIsCityMatchFriendCityCenter3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxInterPeerNum3m != null and mxInterPeerNum3m != '' ">
+                mx_inter_peer_num_3m = #{mxInterPeerNum3m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxFriendNum6m != null and mxFriendNum6m != '' ">
+                mx_friend_num_6m = #{mxFriendNum6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxGoodFriendNum6m != null and mxGoodFriendNum6m != '' ">
+                mx_good_friend_num_6m = #{mxGoodFriendNum6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxFriendCityCenter6m != null and mxFriendCityCenter6m != '' ">
+                mx_friend_city_center_6m = #{mxFriendCityCenter6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxIsCityMatchFriendCityCenter6m != null and mxIsCityMatchFriendCityCenter6m != '' ">
+                mx_is_city_match_friend_city_center_6m = #{mxIsCityMatchFriendCityCenter6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxInterPeerNum6m != null and mxInterPeerNum6m != '' ">
+                mx_inter_peer_num_6m = #{mxInterPeerNum6m,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxSearchedOrgType != null and mxSearchedOrgType != '' ">
+                mx_searched_org_type = #{mxSearchedOrgType,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxIdcardWithOtherNames != null and mxIdcardWithOtherNames != '' ">
+                mx_idcard_with_other_names = #{mxIdcardWithOtherNames,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxIdcardWithOtherPhones != null and mxIdcardWithOtherPhones != '' ">
+                mx_idcard_with_other_phones = #{mxIdcardWithOtherPhones,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPhoneWithOtherNames != null and mxPhoneWithOtherNames != '' ">
+                mx_phone_with_other_names = #{mxPhoneWithOtherNames,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPhoneWithOtherIdcards != null and mxPhoneWithOtherIdcards != '' ">
+                mx_phone_with_other_idcards = #{mxPhoneWithOtherIdcards,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxRegisterOrgCnt != null">        
+                mx_register_org_cnt = #{mxRegisterOrgCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxRegisterOrgType != null and mxRegisterOrgType != '' ">
+                mx_register_org_type = #{mxRegisterOrgType,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxArisedOpenWeb != null and mxArisedOpenWeb != '' ">
+                mx_arised_open_web = #{mxArisedOpenWeb,jdbcType=VARCHAR},                
+            </if>
+            <if test="mxPhoneGrayScore != null">        
+                mx_phone_gray_score = #{mxPhoneGrayScore,jdbcType=DECIMAL},                
+            </if>
+            <if test="mxContactsClass1BlacklistCnt != null">        
+                mx_contacts_class1_blacklist_cnt = #{mxContactsClass1BlacklistCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxContactsClass2BlacklistCnt != null">        
+                mx_contacts_class2_blacklist_cnt = #{mxContactsClass2BlacklistCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxContactsClass1Cnt != null">        
+                mx_contacts_class1_cnt = #{mxContactsClass1Cnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxContactsRouterCnt != null">        
+                mx_contacts_router_cnt = #{mxContactsRouterCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxContactsRouterRatio != null">        
+                mx_contacts_router_ratio = #{mxContactsRouterRatio,jdbcType=DECIMAL},                
+            </if>
+            <if test="yxOverdueHistoryCount != null">        
+                yx_overdue_history_count = #{yxOverdueHistoryCount,jdbcType=INTEGER},                
+            </if>
+            <if test="yxOverdueHistoryM3Count != null">        
+                yx_overdue_history_m3_count = #{yxOverdueHistoryM3Count,jdbcType=INTEGER},                
+            </if>
+            <if test="yxOverdueHistoryM6Count != null">        
+                yx_overdue_history_m6_count = #{yxOverdueHistoryM6Count,jdbcType=INTEGER},                
+            </if>
+            <if test="yxAm20NoAccept != null">        
+                yx_am20_no_accept = #{yxAm20NoAccept,jdbcType=INTEGER},                
+            </if>
+            <if test="mxCourtcaseCnt != null">        
+                mx_courtcase_cnt = #{mxCourtcaseCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxDishonestCnt != null">        
+                mx_dishonest_cnt = #{mxDishonestCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIdcardOtherNamesCnt != null">        
+                mx_idcard_other_names_cnt = #{mxIdcardOtherNamesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIdcardOtherMobilesCnt != null">        
+                mx_idcard_other_mobiles_cnt = #{mxIdcardOtherMobilesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIdcardOtherMobilesBlackCnt != null">        
+                mx_idcard_other_mobiles_black_cnt = #{mxIdcardOtherMobilesBlackCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxMobileOtherNamesCnt != null">        
+                mx_mobile_other_names_cnt = #{mxMobileOtherNamesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxMobileOtherIdcardsCnt != null">        
+                mx_mobile_other_idcards_cnt = #{mxMobileOtherIdcardsCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxMobileOtherIdcardsBlackCnt != null">        
+                mx_mobile_other_idcards_black_cnt = #{mxMobileOtherIdcardsBlackCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxOtherDevicesCnt != null">        
+                mx_other_devices_cnt = #{mxOtherDevicesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxMobileOtherDevicesCnt != null">        
+                mx_mobile_other_devices_cnt = #{mxMobileOtherDevicesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxIdcardOtherDevicesCnt != null">        
+                mx_idcard_other_devices_cnt = #{mxIdcardOtherDevicesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxDeviceOtherNamesCnt != null">        
+                mx_device_other_names_cnt = #{mxDeviceOtherNamesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxDeviceOtherMobilesCnt != null">        
+                mx_device_other_mobiles_cnt = #{mxDeviceOtherMobilesCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxDeviceOtherMobilesBlackCnt != null">        
+                mx_device_other_mobiles_black_cnt = #{mxDeviceOtherMobilesBlackCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxDeviceOtherIdcardsCnt != null">        
+                mx_device_other_idcards_cnt = #{mxDeviceOtherIdcardsCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxDeviceOtherIdcardsBlackCnt != null">        
+                mx_device_other_idcards_black_cnt = #{mxDeviceOtherIdcardsBlackCnt,jdbcType=INTEGER},                
+            </if>
+            <if test="mxBlackMobileNameInBlacklist != null">        
+                mx_black_mobile_name_in_blacklist = #{mxBlackMobileNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="mxBlackIdcardNameInBlacklist != null">        
+                mx_black_idcard_name_in_blacklist = #{mxBlackIdcardNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="mxGrayMobileNameInBlacklist != null">        
+                mx_gray_mobile_name_in_blacklist = #{mxGrayMobileNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="mxGrayIdcardNameInBlacklist != null">        
+                mx_gray_idcard_name_in_blacklist = #{mxGrayIdcardNameInBlacklist,jdbcType=INTEGER},                
+            </if>
+            <if test="mxFraudIsHit != null">        
+                mx_fraud_is_hit = #{mxFraudIsHit,jdbcType=INTEGER},                
+            </if>
+            <if test="mxFraudHitType != null and mxFraudHitType != '' ">
+                mx_fraud_hit_type = #{mxFraudHitType,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdIsLastloanRefused != null and xdIsLastloanRefused != '' ">
+                xd_is_lastloan_refused = #{xdIsLastloanRefused,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdTotalLoanCount != null">        
+                xd_total_loan_count = #{xdTotalLoanCount,jdbcType=INTEGER},                
+            </if>
+            <if test="xdTotalOverdueCount != null">        
+                xd_total_overdue_count = #{xdTotalOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="xdLongestOverduePaid != null and xdLongestOverduePaid != '' ">
+                xd_longest_overdue_paid = #{xdLongestOverduePaid,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdCurrentOverdueCount != null">        
+                xd_current_overdue_count = #{xdCurrentOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="xdCurrentOverdueAmount != null">        
+                xd_current_overdue_amount = #{xdCurrentOverdueAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="xdOverDue90ContactsCount != null">        
+                xd_over_due90_contacts_count = #{xdOverDue90ContactsCount,jdbcType=INTEGER},                
+            </if>
+            <if test="xdLongestOverdueUnpaid != null and xdLongestOverdueUnpaid != '' ">
+                xd_longest_overdue_unpaid = #{xdLongestOverdueUnpaid,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdLastLoanRefuseReason != null and xdLastLoanRefuseReason != '' ">
+                xd_last_loan_refuse_reason = #{xdLastLoanRefuseReason,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdLastLoanRefuseTime != null and xdLastLoanRefuseTime != '' ">
+                xd_last_loan_refuse_time = #{xdLastLoanRefuseTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdRemark != null and xdRemark != '' ">
+                xd_remark = #{xdRemark,jdbcType=VARCHAR},                
+            </if>
+            <if test="xdFirstLoanTime != null and xdFirstLoanTime != '' ">
+                xd_first_loan_time = #{xdFirstLoanTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxIsBlack != null">        
+                ppx_is_black = #{ppxIsBlack,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxIsAlert != null">        
+                ppx_is_alert = #{ppxIsAlert,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxOverdueFirstTime != null and ppxOverdueFirstTime != '' ">
+                ppx_overdue_first_time = #{ppxOverdueFirstTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxOverdueLastTime != null and ppxOverdueLastTime != '' ">
+                ppx_overdue_last_time = #{ppxOverdueLastTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxTotalOverdueCount != null">        
+                ppx_total_overdue_count = #{ppxTotalOverdueCount,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxCurrentOverdueAmount != null">        
+                ppx_current_overdue_amount = #{ppxCurrentOverdueAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxCurrentOverdueDays != null">        
+                ppx_current_overdue_days = #{ppxCurrentOverdueDays,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxHistoryOverdueAmount != null">        
+                ppx_history_overdue_amount = #{ppxHistoryOverdueAmount,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxHistoryOverdueDays != null">        
+                ppx_history_overdue_days = #{ppxHistoryOverdueDays,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxFraudFirstTime != null and ppxFraudFirstTime != '' ">
+                ppx_fraud_first_time = #{ppxFraudFirstTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxFraudLastTime != null and ppxFraudLastTime != '' ">
+                ppx_fraud_last_time = #{ppxFraudLastTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxTotalFraudCount != null">        
+                ppx_total_fraud_count = #{ppxTotalFraudCount,jdbcType=INTEGER},                
+            </if>
+            <if test="ppxNegativeFirstTime != null and ppxNegativeFirstTime != '' ">
+                ppx_negative_first_time = #{ppxNegativeFirstTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxNegativeLastTime != null and ppxNegativeLastTime != '' ">
+                ppx_negative_last_time = #{ppxNegativeLastTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="ppxTotalNegativeCount != null">        
+                ppx_total_negative_count = #{ppxTotalNegativeCount,jdbcType=INTEGER},                
+            </if>
+            <if test="xyLoansScore != null and xyLoansScore != '' ">
+                xy_loans_score = #{xyLoansScore,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansCredibility != null and xyLoansCredibility != '' ">
+                xy_loans_credibility = #{xyLoansCredibility,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansCount != null and xyLoansCount != '' ">
+                xy_loans_count = #{xyLoansCount,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansSettleCount != null and xyLoansSettleCount != '' ">
+                xy_loans_settle_count = #{xyLoansSettleCount,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansOverdueCount != null and xyLoansOverdueCount != '' ">
+                xy_loans_overdue_count = #{xyLoansOverdueCount,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansOrgCount != null and xyLoansOrgCount != '' ">
+                xy_loans_org_count = #{xyLoansOrgCount,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyConsfinOrgCount != null and xyConsfinOrgCount != '' ">
+                xy_consfin_org_count = #{xyConsfinOrgCount,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansCashCount != null and xyLoansCashCount != '' ">
+                xy_loans_cash_count = #{xyLoansCashCount,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLatestOneMonth != null and xyLatestOneMonth != '' ">
+                xy_latest_one_month = #{xyLatestOneMonth,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLatestThreeMonth != null and xyLatestThreeMonth != '' ">
+                xy_latest_three_month = #{xyLatestThreeMonth,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLatestSixMonth != null and xyLatestSixMonth != '' ">
+                xy_latest_six_month = #{xyLatestSixMonth,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyHistorySucFee != null and xyHistorySucFee != '' ">
+                xy_history_suc_fee = #{xyHistorySucFee,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyHistoryFailFee != null and xyHistoryFailFee != '' ">
+                xy_history_fail_fee = #{xyHistoryFailFee,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyHistorySucMinusFailNum != null">        
+                xy_history_suc_minus_fail_num = #{xyHistorySucMinusFailNum,jdbcType=INTEGER},                
+            </if>
+            <if test="xyLatestOneMonthSuc != null and xyLatestOneMonthSuc != '' ">
+                xy_latest_one_month_suc = #{xyLatestOneMonthSuc,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLatestOneMonthFail != null and xyLatestOneMonthFail != '' ">
+                xy_latest_one_month_fail = #{xyLatestOneMonthFail,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLatestOneMonthSucMinusFailNum != null">        
+                xy_latest_one_month_suc_minus_fail_num = #{xyLatestOneMonthSucMinusFailNum,jdbcType=INTEGER},                
+            </if>
+            <if test="xyLoansLongTime != null and xyLoansLongTime != '' ">
+                xy_loans_long_time = #{xyLoansLongTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="xyLoansLatestTime != null and xyLoansLatestTime != '' ">
+                xy_loans_latest_time = #{xyLoansLatestTime,jdbcType=VARCHAR},                
+            </if>
+            <if test="paL1wwdcnTNumsCon != null">        
+                pa_l1wwdcn_t_nums_con = #{paL1wwdcnTNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTNumsConBank != null">        
+                pa_l1wwdcn_t_nums_con_bank = #{paL1wwdcnTNumsConBank,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTNumsConCf != null">        
+                pa_l1wwdcn_t_nums_con_cf = #{paL1wwdcnTNumsConCf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTNumsConF != null">        
+                pa_l1wwdcn_t_nums_con_f = #{paL1wwdcnTNumsConF,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTNumsConIf != null">        
+                pa_l1wwdcn_t_nums_con_if = #{paL1wwdcnTNumsConIf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTNumsConOrg != null">        
+                pa_l1wwdcn_t_nums_con_org = #{paL1wwdcnTNumsConOrg,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTTimesIn != null">        
+                pa_l1wwdcn_t_times_in = #{paL1wwdcnTTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnTTimesOut != null">        
+                pa_l1wwdcn_t_times_out = #{paL1wwdcnTTimesOut,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wwdcnTNumsConOrgType != null">        
+                pa_l2wwdcn_t_nums_con_org_type = #{paL2wwdcnTNumsConOrgType,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3wwdcnTNumsConIf != null">        
+                pa_l3wwdcn_t_nums_con_if = #{paL3wwdcnTNumsConIf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTNumsCon != null">        
+                pa_l1mwdcn_t_nums_con = #{paL1mwdcnTNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTNumsConBank != null">        
+                pa_l1mwdcn_t_nums_con_bank = #{paL1mwdcnTNumsConBank,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTNumsConCf != null">        
+                pa_l1mwdcn_t_nums_con_cf = #{paL1mwdcnTNumsConCf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTNumsConF != null">        
+                pa_l1mwdcn_t_nums_con_f = #{paL1mwdcnTNumsConF,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTNumsConIf != null">        
+                pa_l1mwdcn_t_nums_con_if = #{paL1mwdcnTNumsConIf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTNumsConOrg != null">        
+                pa_l1mwdcn_t_nums_con_org = #{paL1mwdcnTNumsConOrg,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTTimesIn != null">        
+                pa_l1mwdcn_t_times_in = #{paL1mwdcnTTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnTTimesOut != null">        
+                pa_l1mwdcn_t_times_out = #{paL1mwdcnTTimesOut,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnTTimesIn != null">        
+                pa_l2mwdcn_t_times_in = #{paL2mwdcnTTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnTNumsIn != null">        
+                pa_l2mwdcn_t_nums_in = #{paL2mwdcnTNumsIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnTaxTimesIn != null">        
+                pa_l2mwdcn_tax_times_in = #{paL2mwdcnTaxTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnMaxTimesCon != null">        
+                pa_l2mwdcn_max_times_con = #{paL2mwdcnMaxTimesCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mencnTTaysCon != null">        
+                pa_l2mencn_t_tays_con = #{paL2mencnTTaysCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTNumsCon != null">        
+                pa_l3mwdcn_t_nums_con = #{paL3mwdcnTNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTNumsConBank != null">        
+                pa_l3mwdcn_t_nums_con_bank = #{paL3mwdcnTNumsConBank,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTNumsConCf != null">        
+                pa_l3mwdcn_t_nums_con_cf = #{paL3mwdcnTNumsConCf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTNumsConF != null">        
+                pa_l3mwdcn_t_nums_con_f = #{paL3mwdcnTNumsConF,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTNumsConIf != null">        
+                pa_l3mwdcn_t_nums_con_if = #{paL3mwdcnTNumsConIf,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mencnTNumsConOrg != null">        
+                pa_l3mencn_t_nums_con_org = #{paL3mencnTNumsConOrg,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTNumsConOrg != null">        
+                pa_l3mwdcn_t_nums_con_org = #{paL3mwdcnTNumsConOrg,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTTimesIn != null">        
+                pa_l3mwdcn_t_times_in = #{paL3mwdcnTTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnTTimesOut != null">        
+                pa_l3mwdcn_t_times_out = #{paL3mwdcnTTimesOut,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnAddTNumsInOrg != null">        
+                pa_l3mwdcn_add_t_nums_in_org = #{paL3mwdcnAddTNumsInOrg,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnMaxDaysIn != null">        
+                pa_l3mwdcn_max_days_in = #{paL3mwdcnMaxDaysIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTNumsConOrgType != null">        
+                pa_l4mwdcn_t_nums_con_org_type = #{paL4mwdcnTNumsConOrgType,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTTimesInNonBank != null">        
+                pa_l4mwdcn_t_times_in_non_bank = #{paL4mwdcnTTimesInNonBank,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTDurCon != null">        
+                pa_l4mwdcn_t_dur_con = #{paL4mwdcnTDurCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTTimesCon != null">        
+                pa_l4mwdcn_t_times_con = #{paL4mwdcnTTimesCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTNumsConF != null">        
+                pa_l4mwdcn_t_nums_con_f = #{paL4mwdcnTNumsConF,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTDurIn != null">        
+                pa_l4mwdcn_t_dur_in = #{paL4mwdcnTDurIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTDurInMaxTimes != null">        
+                pa_l4mwdcn_t_dur_in_max_times = #{paL4mwdcnTDurInMaxTimes,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTNumsInF != null">        
+                pa_l4mwdcn_t_nums_in_f = #{paL4mwdcnTNumsInF,jdbcType=INTEGER},                
+            </if>
+            <if test="paL5mwdcnTDaysCon != null">        
+                pa_l5mwdcn_t_days_con = #{paL5mwdcnTDaysCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL5mwdcnTDurInF != null">        
+                pa_l5mwdcn_t_dur_in_f = #{paL5mwdcnTDurInF,jdbcType=INTEGER},                
+            </if>
+            <if test="paL5mwdcmTDurCon != null">        
+                pa_l5mwdcm_t_dur_con = #{paL5mwdcmTDurCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL5mwdcnTNumsConIf != null">        
+                pa_l5mwdcn_t_nums_con_if = #{paL5mwdcnTNumsConIf,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTNumsCon != null">        
+                pa_allwdcn_t_nums_con = #{paAllwdcnTNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTNumsConBank != null">        
+                pa_allwdcn_t_nums_con_bank = #{paAllwdcnTNumsConBank,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTNumsConCf != null">        
+                pa_allwdcn_t_nums_con_cf = #{paAllwdcnTNumsConCf,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTNumsConF != null">        
+                pa_allwdcn_t_nums_con_f = #{paAllwdcnTNumsConF,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTNumsConIf != null">        
+                pa_allwdcn_t_nums_con_if = #{paAllwdcnTNumsConIf,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTNumsConOrg != null">        
+                pa_allwdcn_t_nums_con_org = #{paAllwdcnTNumsConOrg,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTTimesIn != null">        
+                pa_allwdcn_t_times_in = #{paAllwdcnTTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTTimesOut != null">        
+                pa_allwdcn_t_times_out = #{paAllwdcnTTimesOut,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnTDurInF != null">        
+                pa_allwdcn_t_dur_in_f = #{paAllwdcnTDurInF,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcmMaxOrgTypeIn != null">        
+                pa_allwdcm_max_org_type_in = #{paAllwdcmMaxOrgTypeIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paAlldtcnwkAdur != null">        
+                pa_alldtcnwk_adur = #{paAlldtcnwkAdur,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnAdur != null">        
+                pa_allwdcn_adur = #{paAllwdcnAdur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mdtcnAdur != null">        
+                pa_l1mdtcn_adur = #{paL1mdtcnAdur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mwdcnAdur != null">        
+                pa_l1mwdcn_adur = #{paL1mwdcnAdur,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllmncnrtNumsCon != null">        
+                pa_allmncnrt_nums_con = #{paAllmncnrtNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnrtNumsCon != null">        
+                pa_l1wwdcnrt_nums_con = #{paL1wwdcnrtNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnNumsCon != null">        
+                pa_l2mwdcn_nums_con = #{paL2mwdcnNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wwdcnwkNumsCon != null">        
+                pa_l2wwdcnwk_nums_con = #{paL2wwdcnwkNumsCon,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdcnADurOneNums != null">        
+                pa_allwdcn_a_dur_one_nums = #{paAllwdcnADurOneNums,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnADurOneNums != null">        
+                pa_l4mwdcn_a_dur_one_nums = #{paL4mwdcnADurOneNums,jdbcType=INTEGER},                
+            </if>
+            <if test="paL6mwdcnADurOneNums != null">        
+                pa_l6mwdcn_a_dur_one_nums = #{paL6mwdcnADurOneNums,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mdtcnwkRankCount != null">        
+                pa_l1mdtcnwk_rank_count = #{paL1mdtcnwkRankCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wdtcnrtRankCount != null">        
+                pa_l1wdtcnrt_rank_count = #{paL1wdtcnrtRankCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mdtcnRankCount != null">        
+                pa_l2mdtcn_rank_count = #{paL2mdtcnRankCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3wwdcnwkRankCount != null">        
+                pa_l3wwdcnwk_rank_count = #{paL3wwdcnwkRankCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mevcnrtSepcialHourCount != null">        
+                pa_l1mevcnrt_sepcial_hour_count = #{paL1mevcnrtSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mmncnwkSepcialHourCount != null">        
+                pa_l1mmncnwk_sepcial_hour_count = #{paL1mmncnwkSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wevcnSepcialHourCount != null">        
+                pa_l1wevcn_sepcial_hour_count = #{paL1wevcnSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1wwdcnrtSepcialHourCount != null">        
+                pa_l1wwdcnrt_sepcial_hour_count = #{paL1wwdcnrtSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mevcnSepcialHourCount != null">        
+                pa_l2mevcn_sepcial_hour_count = #{paL2mevcnSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mevcnrtSepcialHourCount != null">        
+                pa_l2mevcnrt_sepcial_hour_count = #{paL2mevcnrtSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnSepcialHourCount != null">        
+                pa_l2mwdcn_sepcial_hour_count = #{paL2mwdcnSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mevcnSepcialHourCount != null">        
+                pa_l3mevcn_sepcial_hour_count = #{paL3mevcnSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnrtSepcialHourCount != null">        
+                pa_l3mwdcnrt_sepcial_hour_count = #{paL3mwdcnrtSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL6mwdcnwkSepcialHourCount != null">        
+                pa_l6mwdcnwk_sepcial_hour_count = #{paL6mwdcnwkSepcialHourCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mdtcnActiveDaysCount != null">        
+                pa_l2mdtcn_active_days_count = #{paL2mdtcnActiveDaysCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wwdcnActiveDaysCount != null">        
+                pa_l2wwdcn_active_days_count = #{paL2wwdcnActiveDaysCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnrtActiveDaysCount != null">        
+                pa_l3mwdcnrt_active_days_count = #{paL3mwdcnrtActiveDaysCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wdtcnMaxTimesIn != null">        
+                pa_l2wdtcn_max_times_in = #{paL2wdtcnMaxTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wevcnMaxDaysOfOneNumberCount != null">        
+                pa_l2wevcn_max_days_of_one_number_count = #{paL2wevcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnrtMaxDaysOfOneNumberCount != null">        
+                pa_l3mwdcnrt_max_days_of_one_number_count = #{paL3mwdcnrtMaxDaysOfOneNumberCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3wwdcnMaxDaysOfOneNumberCount != null">        
+                pa_l3wwdcn_max_days_of_one_number_count = #{paL3wwdcnMaxDaysOfOneNumberCount,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wwdcnADurOneNumsIn != null">        
+                pa_l2wwdcn_a_dur_one_nums_in = #{paL2wwdcnADurOneNumsIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2wwdcnTTimesIn != null">        
+                pa_l2wwdcn_t_times_in = #{paL2wwdcnTTimesIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnADurIn != null">        
+                pa_l3mwdcn_a_dur_in = #{paL3mwdcnADurIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mevcnrtTDur != null">        
+                pa_l1mevcnrt_t_dur = #{paL1mevcnrtTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL1mmncnwkTDur != null">        
+                pa_l1mmncnwk_t_dur = #{paL1mmncnwkTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mevcnTDur != null">        
+                pa_l2mevcn_t_dur = #{paL2mevcnTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL2mwdcnrtTDur != null">        
+                pa_l2mwdcnrt_t_dur = #{paL2mwdcnrtTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mevcnTDur != null">        
+                pa_l3mevcn_t_dur = #{paL3mevcnTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL3mwdcnrtTDur != null">        
+                pa_l3mwdcnrt_t_dur = #{paL3mwdcnrtTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL6mwdcnwkTDur != null">        
+                pa_l6mwdcnwk_t_dur = #{paL6mwdcnwkTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL4mwdcnTDur != null">        
+                pa_l4mwdcn_t_dur = #{paL4mwdcnTDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paL6mwdcnMinTtvDaysIn != null">        
+                pa_l6mwdcn_min_ttv_days_in = #{paL6mwdcnMinTtvDaysIn,jdbcType=INTEGER},                
+            </if>
+            <if test="paL6mwdcnTDurF != null">        
+                pa_l6mwdcn_t_dur_f = #{paL6mwdcnTDurF,jdbcType=INTEGER},                
+            </if>
+            <if test="paAll25acfriDur != null">        
+                pa_all25acfri_dur = #{paAll25acfriDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paAllwdacwkDur != null">        
+                pa_allwdacwk_dur = #{paAllwdacwkDur,jdbcType=INTEGER},                
+            </if>
+            <if test="paAll25acTimes != null">        
+                pa_all25ac_times = #{paAll25acTimes,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="lastModifyTime != null">        
+                last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_decision
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_decision
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_decision
+        <include refid="searchBy"/>
+    </select>
+    
+</mapper>

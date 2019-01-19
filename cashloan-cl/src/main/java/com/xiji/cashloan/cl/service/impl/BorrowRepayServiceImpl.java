@@ -337,7 +337,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		String isImproveCredit = Global.getValue("is_improve_credit");//提额开关 -- 10开，20关
 
-		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit)){//未逾期且提额开关为10 ---提额
+		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit) && Integer.parseInt(br.getPenaltyDay()) <= 0){//未逾期且提额开关为10 ---提额
 			String oneRepayCredit = Global.getValue("one_repay_credit");//还款成功题额  --固定额度
 			String improveCreditLimit = Global.getValue("imporove_credit_limit");//提额上限
 

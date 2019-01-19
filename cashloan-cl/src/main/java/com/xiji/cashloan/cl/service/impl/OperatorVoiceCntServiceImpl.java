@@ -3,9 +3,11 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.BorrowOperatorLog;
 import com.xiji.cashloan.cl.domain.OperatorVoiceCnt;
 import com.xiji.cashloan.cl.domain.UserContacts;
 import com.xiji.cashloan.cl.domain.operator.OperatorVoiceCntMeta;
+import com.xiji.cashloan.cl.mapper.BorrowOperatorLogMapper;
 import com.xiji.cashloan.cl.mapper.OperatorVoiceCntMapper;
 import com.xiji.cashloan.cl.mapper.OperatorVoiceMapper;
 import com.xiji.cashloan.cl.mapper.UserContactsMapper;
@@ -14,6 +16,7 @@ import com.xiji.cashloan.cl.util.MobileUtil;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import java.util.Date;
@@ -21,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.xiji.cashloan.core.domain.Borrow;
+import com.xiji.cashloan.core.mapper.BorrowMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +51,10 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
     private OperatorVoiceCntMapper operatorVoiceCntMapper;
 	@Resource
 	private UserContactsMapper userContactsMapper;
+	@Resource
+	private BorrowOperatorLogMapper borrowOperatorLogMapper;
+	@Resource
+	private BorrowMapper borrowMapper;
 	@Resource
 	private OperatorVoiceMapper operatorVoiceMapper;
 
@@ -123,6 +133,54 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
 			.listShardSelective(tableName,map);
 
 		return page;
+	}
+
+	@Override
+	public Page<OperatorVoiceCnt> pageByBorrowId(long borrowId, int current, int pageSize) {
+		Borrow borrow = borrowMapper.findByPrimary(borrowId);
+		String tableName = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
+		Map<String,Object> map = new HashMap<>();
+		map.put("borrowId", borrowId);
+		BorrowOperatorLog log = borrowOperatorLogMapper.findSelective(map);
+		if (log != null) {
+			map.clear();
+			map.put("userId", borrow.getUserId());
+			map.put("reqLogId",log.getReqLogId());
+		}
+
+		PageHelper.startPage(current, pageSize);
+		Page<OperatorVoiceCnt> page = (Page<OperatorVoiceCnt>) operatorVoiceCntMapper
+			.listShardSelective(tableName,map);
+
+		return page;
+	}
+
+	@Override
+	public void lastContactTime(Long userId, Long reqLogId) {
+		String tableName1 = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", userId, 30000);
+		int count = operatorVoiceCntMapper.countNotNull(tableName1, userId, reqLogId);
+		if(count == 0) {
+			String tableName2 = ShardTableUtil.generateTableNameById("cl_operator_voice", userId, 30000);
+			Map<String, Date> lastContactMap = new HashMap<>();
+			List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, userId, reqLogId);
+			if(lastContactTimes != null) {
+				for (Map<String, String> lastContactTime : lastContactTimes) {
+					lastContactMap.put(lastContactTime.get("peer_number"), DateUtil.parse(lastContactTime.get("last_contact_time"), "yyyy-MM-dd HH:mm:ss"));
+				}
+			}
+
+			if(lastContactMap.size() > 0) {
+				for (String key : lastContactMap.keySet()) {
+					Map<String, Object> updateMap = new HashMap<>();
+					updateMap.put("tableName", tableName1);
+					updateMap.put("userId", userId);
+					updateMap.put("reqLogId", reqLogId);
+					updateMap.put("peerNumber", key);
+					updateMap.put("lastContactTime", lastContactMap.get(key));
+					operatorVoiceCntMapper.updateLastContactTime(updateMap);
+				}
+			}
+		}
 	}
 
 }

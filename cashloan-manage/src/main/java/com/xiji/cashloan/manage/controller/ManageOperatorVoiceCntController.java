@@ -35,10 +35,16 @@ public class ManageOperatorVoiceCntController extends BaseController {
 
 	@RequestMapping(value = "/modules/manage/operatorVoiceCnt/listVoiceCnt.htm")
 	public void listInviteBorrow(
-		@RequestParam(value="userId") long userId,
+		@RequestParam(value="userId", required=false) Long userId,
+		@RequestParam(value="borrowId", required=false) Long borrowId,
 		@RequestParam(value = "current") int current,
 		@RequestParam(value = "pageSize") int pageSize) throws Exception {
-		Page<OperatorVoiceCnt> page = operatorVoiceCntService.page(userId,current,pageSize);
+		Page<OperatorVoiceCnt> page;
+		if(borrowId != null) {
+			page = operatorVoiceCntService.pageByBorrowId(borrowId, current, pageSize);
+		} else {
+			page = operatorVoiceCntService.page(userId, current, pageSize);
+		}
 		Map<String, Object> data = new HashMap<>();
 		data.put("list", getResult(page.getResult()));
 		Map<String,Object> result = new HashMap<String,Object>();

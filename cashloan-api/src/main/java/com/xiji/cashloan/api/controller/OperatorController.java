@@ -319,11 +319,13 @@ public class OperatorController extends BaseController {
                                     Map<String, Object> updateMap = new HashMap<>();
                                     updateMap.put("id", oldReport.getId());
                                     updateMap.put("report", result);
+                                    updateMap.put("gmtModified", DateUtil.getNow());
                                     operatorReportService.updateSelective(updateMap);
                                 }
 
                                 int start = DateUtil.getNowTime();
                                 operatorVoiceCntService.paserReportDetail(result, userId, updateTime, reqLogId);
+                                operatorVoiceCntService.lastContactTime(userId, reqLogId);
                                 int end = DateUtil.getNowTime();
                                 logger.info("保存userId" + userId + "运营商报告，详情统计，耗时" + (end - start) + "秒");
                             } catch (Exception e) {

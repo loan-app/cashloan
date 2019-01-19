@@ -51,7 +51,7 @@ function getIndex_img3(){
 }
 //帮助中心客服电话
 function getPhone(){
-    return '15519557269。';
+    return '18302522195。';
 }
 //支付宝账号
 function getAirpay(){

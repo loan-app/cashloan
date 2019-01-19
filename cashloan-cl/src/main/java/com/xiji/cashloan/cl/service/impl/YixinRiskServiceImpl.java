@@ -98,6 +98,7 @@ public class YixinRiskServiceImpl implements YixinRiskService {
                 log.setRespTime(respTime);
                 if (resJson.getBoolean("success") && "10000".equals(resJson.getString("code"))) {
                     log.setIsFee(1);
+                    log.setFlowId(resJson.getString("flowId"));
                     //插入收费记录表
                     CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId, resJson.getString("flowId"), CallsOutSideFeeConstant.CALLS_TYPE_YIXIN_RISK,
                             CallsOutSideFeeConstant.FEE_YIXIN_RISK, CallsOutSideFeeConstant.CAST_TYPE_CONSUME, userBaseinfo.getPhone());

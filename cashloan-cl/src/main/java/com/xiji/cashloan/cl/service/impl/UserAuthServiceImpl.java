@@ -114,6 +114,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 					}
 				}
 				Map<String, Object> modifyMap = new HashMap<String, Object>();
+				modifyMap.put("phoneTime", DateUtil.getNow());
 				modifyMap.put("userId", userAuth.getUserId());
 				modifyMap.put("phoneState", phoneState);
 				this.updateByUserId(modifyMap);

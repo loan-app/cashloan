@@ -49,7 +49,7 @@ public interface OperatorVoiceCntMapper extends BaseMapper<OperatorVoiceCnt, Lon
 
     OperatorVoiceCnt getLastRecord(@Param("tableName") String tableName, @Param("userId") Long userId);
 
-    int countNotNull(@Param("tableName") String tableName1, @Param("userId") Long userId);
+    int countNotNull(@Param("tableName") String tableName1, @Param("userId") Long userId, @Param("reqLogId") Long reqLogId);
 
     void updateLastContactTime(Map<String, Object> updateMap);
 }
