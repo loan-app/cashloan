@@ -1718,6 +1718,37 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType) throws Exception {
 		ClBorrowModel clBorrow = new ClBorrowModel();
 		Borrow realBorrow = null;
+		// 处理用户通话详情统计
+		fixedThreadPool.execute(new Runnable() {
+			public void run(){
+				Map<String, Object> queryMap = new HashMap<>();
+				queryMap.put("userId", borrow.getUserId());
+				OperatorReqLog operatorReqLog = operatorReqLogMapper.findLastRecord(queryMap);
+				String tableName1 = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
+				int count = operatorVoiceCntMapper.countNotNull(tableName1, borrow.getUserId(), operatorReqLog.getId());
+				if(count == 0) {
+					String tableName2 = ShardTableUtil.generateTableNameById("cl_operator_voice", borrow.getUserId(), 30000);
+					Map<String, Date> lastContactMap = new HashMap<>();
+					List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, borrow.getUserId(), operatorReqLog.getId());
+					if(lastContactTimes != null) {
+						for (Map<String, String> lastContactTime : lastContactTimes) {
+							lastContactMap.put(lastContactTime.get("peer_number"), DateUtil.parse(lastContactTime.get("last_contact_time"), "yyyy-MM-dd HH:mm:ss"));
+						}
+					}
+
+					if(lastContactMap.size() > 0) {
+						for (String key : lastContactMap.keySet()) {
+							Map<String, Object> updateMap = new HashMap<>();
+							updateMap.put("tableName", tableName1);
+							updateMap.put("userId", borrow.getUserId());
+							updateMap.put("peerNumber", key);
+							updateMap.put("lastContactTime", lastContactMap.get(key));
+							operatorVoiceCntMapper.updateLastContactTime(updateMap);
+						}
+					}
+				}
+			}
+		});
 		// 校验用户是否符合借款条件
 		boolean isCanBorrow = isCanBorrow(borrow,tradePwd);
 		if(isCanBorrow){
