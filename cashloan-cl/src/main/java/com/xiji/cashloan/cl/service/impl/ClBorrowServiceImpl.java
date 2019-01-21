@@ -2259,8 +2259,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if (uro != null) {
 				model.setLevel(uro.getLevel());
 			}
-			params3.put("type", model.getId());
-			params3.put("state", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+			params3.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			BorrowRepayLog brl = borrowRepayLogMapper.findSelective(params3);
 			if (brl != null) {
 				model.setRepayAmount(brl.getAmount());

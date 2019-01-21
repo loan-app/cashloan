@@ -75,7 +75,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 	public Map<String,Object> result(Borrow borrow) {
 		Map<String,Object> searchMap = new HashMap<>();
 		searchMap.put("borrowId", borrow.getId());
-		searchMap.put("state", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+		searchMap.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		BorrowRepayLog log = borrowRepayLogMapper.findSelective(searchMap);
 
 		searchMap.put("borrowId", borrow.getId());
