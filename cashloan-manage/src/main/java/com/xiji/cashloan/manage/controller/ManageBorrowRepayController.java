@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import tool.util.DateUtil;
+import tool.util.NumberUtil;
 import tool.util.StringUtil;
 
 import com.github.pagehelper.Page;
@@ -297,7 +298,7 @@ public class ManageBorrowRepayController extends ManageBaseController {
 			param.put("repayTime",DateUtil.valueOf(repayTime, DateUtil.DATEFORMAT_STR_001));
 			param.put("repayWay", repayWay);
 			param.put("repayAccount", repayAccount);
-			param.put("amount", amount);
+			param.put("amount", NumberUtil.getDouble(amount));
 			param.put("serialNumber", serialNumber);
 			param.put("penaltyAmout", penaltyAmout);
 			param.put("delayDays", delayDays);

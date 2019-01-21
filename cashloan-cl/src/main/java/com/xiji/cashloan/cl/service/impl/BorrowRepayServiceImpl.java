@@ -402,7 +402,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		//插入展期扣款的还款计划,状态为展期成功
 		BorrowRepay newBr = new BorrowRepay();
-		double repayAmount = NumberUtil.getDouble(param.get("amount") != null ? (String) param.get("amount") : "0");
+		double repayAmount = param.get("amount") != null ? (Double) param.get("amount") : 0.0D;
 		newBr.setAmount(repayAmount);
 		newBr.setBorrowId(br.getBorrowId());
 		newBr.setUserId(br.getUserId());
