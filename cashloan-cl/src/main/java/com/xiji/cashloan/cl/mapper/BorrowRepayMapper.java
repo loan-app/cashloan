@@ -90,4 +90,11 @@ public interface BorrowRepayMapper extends BaseMapper<BorrowRepay,Long> {
 	 * @return
      */
 	int saveReturnId(BorrowRepay br);
+
+	/**
+	 * 加入展期还款逻辑,调整查询逻辑
+	 * @param paramMap
+	 * @return
+	 */
+	BorrowRepay findByBorrowIdState(Map<String, Object> paramMap);
 }

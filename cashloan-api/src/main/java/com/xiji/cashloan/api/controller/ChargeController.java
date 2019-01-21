@@ -133,6 +133,7 @@ public class ChargeController extends BaseController {
 				Map<String, Object> repayMap = new HashMap<String, Object>();
 				repayMap.put("userId", payLog.getUserId());
 				repayMap.put("borrowId", payLog.getBorrowId());
+				repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 				BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
 				BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
 
@@ -192,6 +193,7 @@ public class ChargeController extends BaseController {
 				Map<String, Object> repayMap = new HashMap<String, Object>();
 				repayMap.put("userId", payLog.getUserId());
 				repayMap.put("borrowId", payLog.getBorrowId());
+				repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 				BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
 				BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
 

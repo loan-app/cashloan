@@ -756,6 +756,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("borrowId", borrowId);
 		paramMap.put("userId", userId);
+		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramMap);
 
 		// 还款金额
@@ -879,7 +880,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> repayMap = new HashMap<String, Object>();
 		repayMap.put("userId", payLog.getUserId());
 		repayMap.put("borrowId", payLog.getBorrowId());
-		BorrowRepay borrowRepay = borrowRepayMapper.findSelective(repayMap);
+		BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(repayMap);
 		// 若已完成还款，那么直接返回success
 		if (borrowRepay == null || BorrowRepayModel.STATE_REPAY_YES.equals(borrowRepay.getState())) {
 			logger.warn("还款计划有误");
@@ -968,6 +969,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
 		paramRepayMap.put("borrowId", borrowId);
 		paramRepayMap.put("userId", userId);
+		paramRepayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramRepayMap);
 
 		//1、查询是否存在待支付记录

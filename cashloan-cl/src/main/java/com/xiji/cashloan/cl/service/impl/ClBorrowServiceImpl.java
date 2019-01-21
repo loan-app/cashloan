@@ -692,7 +692,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					progress.setRemark("您需要在" + borrow.getTimeLimit() + "天后还款" + repayAmount + "元");
 					Map<String,Object> paramMap = new HashMap<>();
 					paramMap.put("borrowId", borrow.getId());
-					BorrowRepay repay = borrowRepayMapper.findSelective(paramMap);
+					BorrowRepay repay = borrowRepayMapper.findByBorrowIdState(paramMap);
 					if (repay!=null) {
 						day = DateUtil.daysBetween(new Date(),
 								repay.getRepayTime());
@@ -1654,7 +1654,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			paramMap = new HashMap<String, Object>();
 			paramMap.put("borrowId", borrowId);
-			BorrowRepay borrowRepay = borrowRepayMapper.findSelective(paramMap);
+			BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(paramMap);
 			if (borrowRepay != null) {
 				model.setPenaltyAmout(borrowRepay.getPenaltyAmout());
 				model.setPenaltyDay(borrowRepay.getPenaltyDay());
@@ -2250,7 +2250,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			Map<String, Object> params3 = new HashMap<>();
 			params3.put("borrowId", model.getId());
-			BorrowRepay br = borrowRepayMapper.findSelective(params3);
+			BorrowRepay br = borrowRepayMapper.findByBorrowIdState(params3);
 			if (br != null) {
 				model.setPenaltyDay(br.getPenaltyDay());
 				model.setPenaltyAmout(br.getPenaltyAmout());
