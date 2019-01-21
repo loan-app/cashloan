@@ -383,8 +383,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
 		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
-		int delayDays = NumberUtil.getInt(param.get("delayDays").toString());
-		if(delayDays == 0) {
+		int delayDays;
+		if(param.get("delayDays") != null) {
+			delayDays = NumberUtil.getInt(param.get("delayDays").toString());
+		} else {
 			delayDays = Global.getInt("delay_days");
 		}
 		if (nowDate.after(repayPlanTime)){
