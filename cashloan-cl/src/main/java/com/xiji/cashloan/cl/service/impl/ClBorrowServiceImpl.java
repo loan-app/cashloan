@@ -1004,6 +1004,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		borrow.setOrderNo(NidGenerator.getOrderNo());
 		borrow.setState(BorrowModel.STATE_PRE);
 		borrow.setCreateTime(DateUtil.getNow());
+		borrow.setIsOverdue("10");
 		
 		// 首再贷标识标识
 		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数

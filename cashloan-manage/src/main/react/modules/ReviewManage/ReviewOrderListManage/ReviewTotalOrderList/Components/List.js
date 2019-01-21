@@ -1,12 +1,10 @@
 import React from 'react'
-import {
-  Table,
-  Modal,
-  Button
-} from 'antd';
+import {Button, Modal, Table} from 'antd';
+import AdjustCreditDetial from './AdjustCreditDetial';
+import UserRemarkList from '../../../../common/UserRemark/UserRemarkList';
+
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
-import AdjustCreditDetial from './AdjustCreditDetial'
 export default React.createClass({
   getInitialState() {
     return {
@@ -19,6 +17,7 @@ export default React.createClass({
       visible: false,
       visibleAdd: false,
       visibleAc:false,
+        visibleRemark:false,
     };
   },
   componentWillReceiveProps(nextProps, nextState) {
@@ -30,7 +29,8 @@ export default React.createClass({
     this.setState({
       visible: false,
       visibleAdd:false,
-      visibleAc:false
+      visibleAc:false,
+      visibleRemark:false
     });
     this.refreshList();
   },
@@ -169,6 +169,17 @@ export default React.createClass({
       });
     }  
   },
+
+
+    showUserRemark(title, record, canEdit) {
+
+        this.setState({
+            visibleRemark: true,
+            canEdit: canEdit,
+            record: record,
+            title:title
+        })
+    },
  
   render() {
     var me = this;
@@ -216,7 +227,10 @@ export default React.createClass({
       dataIndex: 'userName',
     }, {
       title: '备注',
-      dataIndex: 'remark'
+      //dataIndex: 'remark'
+        render(text, record) {
+            return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record, false)}>备注</a></div>
+        }
     }, {
       title: '渠道',
       dataIndex: 'channelName',
@@ -269,6 +283,9 @@ export default React.createClass({
              onChange={this.handleTableChange}  />
              <AdjustCreditDetial ref="AdjustCreditDetial"  visible={state.visibleAc}    title={state.title} hideModal={me.hideModal} 
              record={state.selectedrecord} dataRecord={state.dataRecord}  canEdit={state.canEdit} selectedRowKeys1={state.selectedRowKeys1} />
+
+             <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
+                             dataRecord={state.dataRecord}  canEdit={state.canEdit} />
          </div>
     );
   }

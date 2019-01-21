@@ -123,6 +123,11 @@ import java.util.Date;
 	 * 附属状态
 	 */
 	private String subState;
+
+	/**
+	 * 是否逾期 10:否 ，20:是
+	 */
+	private String isOverdue;
 	
 	public String getSubState() {
 		return subState;
@@ -469,4 +474,11 @@ import java.util.Date;
 		this.again = again;
 	}
 
+	public String getIsOverdue() {
+		return isOverdue;
+	}
+
+	public void setIsOverdue(String isOverdue) {
+		this.isOverdue = isOverdue;
+	}
 }

@@ -448,13 +448,29 @@ delete from arc_sys_role_menu where menu_id in (1001,1002,1003,1006);
 ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用程序列表';
 -- 添加认证更新周期数据
 INSERT INTO `arc_sys_config` VALUES (null, '110', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');
-
+--运营商周期更新
 INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 1/1 * ?', 'com.xiji.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
 
-
+--最新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
+--强制更新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '强制更新版本号', 'mandatory_update_version', '1.0.0', '1', '系统强制更新版本号', '1');
 -- 最新版本下载地址 线上
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本下载地址', 'last_version_download_url', 'http://jy.xyhuigou.com/h5/invite.jsp', '1', '最新版本下载地址', '1');
+
+-- 借款信息表添加是否逾期字段
+ALTER table cl_borrow add is_overdue varchar(2) DEFAULT '10' COMMENT '是否逾期 10：未逾期，20 ：已逾期';
+-- 同步更新是否逾期字段
+update cl_borrow SET is_overdue = '20' where id in ( select borrow_id from cl_borrow_repay where penalty_day > 0) and is_overdue = '10';
+--用户备注表
+CREATE TABLE `cl_user_remark` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `operate_id` bigint(20) NOT NULL COMMENT '操作人ID',
+  `remark` varchar(128) DEFAULT '' COMMENT '备注',
+  `operate_time` datetime NOT NULL COMMENT '操作时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='用户备注表'
 
 
