@@ -1666,6 +1666,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			paramMap = new HashMap<String, Object>();
 			paramMap.put("borrowId", borrowId);
+			paramMap.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			BorrowRepayLog borrowRepaylog = borrowRepayLogMapper
 					.findSelective(paramMap);
 			if (borrowRepaylog != null) {
