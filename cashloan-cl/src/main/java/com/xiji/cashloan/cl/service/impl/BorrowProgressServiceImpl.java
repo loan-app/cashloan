@@ -10,10 +10,7 @@ import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.model.BorrowRepayModel;
-import com.xiji.cashloan.cl.model.ClBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
+import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.service.BorrowProgressService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -78,8 +75,10 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 	public Map<String,Object> result(Borrow borrow) {
 		Map<String,Object> searchMap = new HashMap<>();
 		searchMap.put("borrowId", borrow.getId());
+		searchMap.put("state", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		BorrowRepayLog log = borrowRepayLogMapper.findSelective(searchMap);
-		
+
+		searchMap.put("borrowId", borrow.getId());
 		List<BorrowRepayModel> repay = borrowRepayMapper.listSelModel(searchMap);
 		Map<String,Object> result = new HashMap<>();
 		ClBorrowModel clBorrowModel = new ClBorrowModel();

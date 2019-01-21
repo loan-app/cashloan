@@ -515,3 +515,6 @@ update cl_rc_tpp_business set state = '20' where nid = 'XinyanLoan';
 
 -- 展期天数
 INSERT INTO `arc_sys_config` VALUES (null, '10', '展期天数', 'delay_days', '6', '1', '展期天数', '1');
+
+-- 还款记录新增还款类型字段
+ALTER TABLE cl_borrow_repay_log add column `type` varchar(10)  default '10' COMMENT '还款类型 10-还款 20-展期还款';

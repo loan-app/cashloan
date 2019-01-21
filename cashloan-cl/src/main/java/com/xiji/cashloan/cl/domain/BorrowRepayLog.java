@@ -86,6 +86,10 @@ import java.util.Date;
 	 * 流水号
 	 */
 	private String serialNumber;
+	/**
+	 * 还款类型 10-还款 20-展期还款
+	 */
+	private String type;
 
 	/**
 	 * 获取主键Id
@@ -323,5 +327,11 @@ import java.util.Date;
 		this.serialNumber = serialNumber;
 	}
 
-	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

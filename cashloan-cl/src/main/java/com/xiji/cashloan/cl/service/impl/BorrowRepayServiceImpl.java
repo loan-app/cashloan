@@ -427,6 +427,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		delayRepayLog.setSerialNumber((String) param.get("serialNumber"));
 		delayRepayLog.setRepayAccount((String) param.get("repayAccount"));
 		delayRepayLog.setRepayWay((String) param.get("repayWay"));
+		delayRepayLog.setType(BorrowRepayLogModel.REPAY_TYPE_DELAY);
 		delayRepayLog.setCreateTime(DateUtil.getNow());
 		msg = borrowRepayLogMapper.save(delayRepayLog);
 		if (msg <= 0) {
@@ -514,6 +515,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			log.setRepayAccount((String) param.get("repayAccount"));
 			log.setRepayWay((String) param.get("repayWay"));
 			log.setCreateTime(DateUtil.getNow());
+			log.setType(BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			return borrowRepayLogMapper.save(log);
 		}
 		return i;

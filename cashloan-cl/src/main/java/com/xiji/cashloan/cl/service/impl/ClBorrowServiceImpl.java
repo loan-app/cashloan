@@ -2255,16 +2255,18 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				model.setPenaltyDay(br.getPenaltyDay());
 				model.setPenaltyAmout(br.getPenaltyAmout());
 			}
+			UrgeRepayOrder uro = urgeRepayOrderMapper.findSelective(params3);
+			if (uro != null) {
+				model.setLevel(uro.getLevel());
+			}
+			params3.put("type", model.getId());
+			params3.put("state", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			BorrowRepayLog brl = borrowRepayLogMapper.findSelective(params3);
 			if (brl != null) {
 				model.setRepayAmount(brl.getAmount());
 				model.setRepayTime(DateUtil.dateStr2(brl.getRepayTime()));
 			}
-			UrgeRepayOrder uro = urgeRepayOrderMapper.findSelective(params3);
-			if (uro != null) {
-				model.setLevel(uro.getLevel());
-			}
-			
+
 		}
 		return list;
 	}
