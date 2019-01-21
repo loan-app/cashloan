@@ -383,16 +383,54 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
 		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
+		int delayDays = NumberUtil.getInt(param.get("delayDays").toString());
+		if(delayDays == 0) {
+			delayDays = Global.getInt("delay_days");
+		}
 		if (nowDate.after(repayPlanTime)){
-			repayTime = tool.util.DateUtil.rollDay(now,7);
+			repayTime = tool.util.DateUtil.rollDay(now, delayDays);
 		}else {
-			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(),7);
+			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(), delayDays);
 		}
 		result.put("repayTime", repayTime);
 		// 更新还款信息
 		int msg = updateBorrowReplayByDelayPay(br, repayTime);
 		if (msg <= 0) {
 			throw new BussinessException("更新还款信息出错" + br.getBorrowId());
+		}
+		//插入展期扣款的还款计划,状态为展期成功
+		BorrowRepay newBr = new BorrowRepay();
+		double repayAmount = NumberUtil.getDouble(param.get("amount") != null ? (String) param.get("amount") : "0");
+		newBr.setAmount(repayAmount);
+		newBr.setBorrowId(br.getBorrowId());
+		newBr.setUserId(br.getUserId());
+		String repay = DateUtil.dateStr2(DateUtil.rollDay(DateUtil.getNow(), 0));
+		repay = repay + " 23:59:59";
+		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
+		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);
+		newBr.setPenaltyAmout(0.0);
+		newBr.setPenaltyDay("0");
+		newBr.setCreateTime(DateUtil.getNow());
+		msg = borrowRepayMapper.saveReturnId(newBr);
+		if (msg <= 0) {
+			throw new BussinessException("插入展期还款计划出错" + newBr.getBorrowId());
+		}
+		//新增一条展期还款记录
+		BorrowRepayLog delayRepayLog = new BorrowRepayLog();
+		delayRepayLog.setBorrowId(br.getBorrowId());
+		delayRepayLog.setRepayId(newBr.getId());
+		delayRepayLog.setUserId(br.getUserId());
+		delayRepayLog.setAmount(repayAmount);// 实际还款金额
+		delayRepayLog.setRepayTime(DateUtil.getNow());// 实际还款时间
+		delayRepayLog.setPenaltyAmout(0.00);
+		delayRepayLog.setPenaltyDay("0");
+		delayRepayLog.setSerialNumber((String) param.get("serialNumber"));
+		delayRepayLog.setRepayAccount((String) param.get("repayAccount"));
+		delayRepayLog.setRepayWay((String) param.get("repayWay"));
+		delayRepayLog.setCreateTime(DateUtil.getNow());
+		msg = borrowRepayLogMapper.save(delayRepayLog);
+		if (msg <= 0) {
+			throw new BussinessException("插入展期还款记录出错" + newBr.getBorrowId());
 		}
 		// 更新借款表和借款进度状态
 		msg = updateBorrow(br.getBorrowId(), br.getUserId(),state);

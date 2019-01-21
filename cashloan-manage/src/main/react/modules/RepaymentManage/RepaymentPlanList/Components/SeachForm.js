@@ -62,6 +62,7 @@ let SeachForm = React.createClass({
                         <Option value="">全部</Option>
                         <Option value="10">已还款</Option>
                         <Option value="20">未还款</Option>
+                        <Option value="30">展期还款</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="应还日期：">

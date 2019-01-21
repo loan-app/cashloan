@@ -250,12 +250,18 @@ public class ChargeController extends BaseController {
 				Map<String, Object> repayMap = new HashMap<String, Object>();
 				repayMap.put("userId", payLog.getUserId());
 				repayMap.put("borrowId", payLog.getBorrowId());
+				repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 				BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
+				BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
 				Date repayTime = null;
 				if (borrowRepay != null) {
 					Map<String, Object> param = new HashMap<String, Object>();
 					param.put("id", borrowRepay.getId());
 					param.put("state", BorrowModel.STATE_DELAY_PAY);
+					param.put("amount", payLog.getAmount());
+					param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
+					param.put("repayAccount", bankCard.getCardNo());
+					param.put("serialNumber", payLog.getOrderNo());
 					if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
 						Map<String, Object> delayPayMap = borrowRepayService.confirmDelayPay(param);
 						if (delayPayMap != null) {

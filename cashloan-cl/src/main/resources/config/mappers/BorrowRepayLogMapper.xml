@@ -231,7 +231,7 @@
 					and r.amount = l.amount
 				</if>
 			</if>
-			and r.state=10
+			and (r.state=10 or r.state=30)
 		</trim>
         ORDER BY l.repay_time DESC
     </select>

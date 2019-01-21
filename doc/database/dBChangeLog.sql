@@ -512,3 +512,6 @@ INSERT INTO `cl_rc_scene_business` VALUES ('9', '10', '9', '10', 0, '10', '10', 
 INSERT INTO `cl_rc_tpp_business` VALUES ('10', '2', '行为雷达', 'XYXWLD', '10', '', '', null, '2019-01-17 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('10', '10', '10', '10', 0, '10', '10', '2019-01-17 00:00:00');
 update cl_rc_tpp_business set state = '20' where nid = 'XinyanLoan';
+
+-- 展期天数
+INSERT INTO `arc_sys_config` VALUES (null, '10', '展期天数', 'delay_days', '6', '1', '展期天数', '1');

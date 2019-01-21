@@ -83,5 +83,11 @@ public interface BorrowRepayMapper extends BaseMapper<BorrowRepay,Long> {
 	 * @return
 	 */
 	double findRepayTotal();
-	
+
+	/**
+	 * 插入返回对象id
+	 * @param br
+	 * @return
+     */
+	int saveReturnId(BorrowRepay br);
 }

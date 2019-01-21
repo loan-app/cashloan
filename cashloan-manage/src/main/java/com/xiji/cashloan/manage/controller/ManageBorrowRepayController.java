@@ -265,5 +265,62 @@ public class ManageBorrowRepayController extends ManageBaseController {
 			logger.error(e.getMessage(), e);
 		}
 	}
-	
+
+	/**
+	 * 线下展期
+	 * @param id  还款计划id
+	 * @param amount  还款金额
+	 * @param penaltyAmout   逾期罚息
+	 * @param repayTime  还款时间
+	 * @param repayWay   还款方式
+	 * @param serialNumber 流水号
+	 * @param repayAccount 还款账号
+	 * @param delayDays 展期天数
+	 * @throws
+	 */
+	@RequestMapping(value = "/modules/manage/borrow/repay/delayRepay.htm", method = {RequestMethod.POST })
+	@RequiresPermission(code = "modules:manage:borrow:repay:delayRepay", name = "确认还款")
+	public void delayRepay(
+			@RequestParam(value = "id") Long id,
+			@RequestParam(value = "amount", required = false) String amount,
+			@RequestParam(value = "penaltyAmout", required = false) String penaltyAmout,
+			@RequestParam(value = "repayTime") String repayTime,
+			@RequestParam(value = "repayWay") String repayWay,
+			@RequestParam(value = "serialNumber") String serialNumber,
+			@RequestParam(value = "repayAccount") String repayAccount,
+			@RequestParam(value = "delayDays") Integer delayDays) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		try{
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("id", id);
+			param.put("repayTime",DateUtil.valueOf(repayTime, DateUtil.DATEFORMAT_STR_001));
+			param.put("repayWay", repayWay);
+			param.put("repayAccount", repayAccount);
+			param.put("amount", amount);
+			param.put("serialNumber", serialNumber);
+			param.put("penaltyAmout", penaltyAmout);
+			param.put("delayDays", delayDays);
+			param.put("state", BorrowModel.STATE_DELAY_PAY);
+			BorrowRepay br = borrowRepayService.getById(id);
+			if (br != null) {
+				if (!br.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
+					resultMap = borrowRepayService.confirmDelayPay(param);
+				} else {
+					resultMap.put("Code", Constant.FAIL_CODE_VALUE);
+					resultMap.put("Msg", "该还款计划已还款");
+				}
+			} else {
+				resultMap.put("Code", Constant.FAIL_CODE_VALUE);
+				resultMap.put("Msg", "还款计划不存在");
+			}
+		} catch (Exception e) {
+			logger.info(e.getMessage(),e);
+			resultMap.put("Code", Constant.FAIL_CODE_VALUE);
+			resultMap.put("Msg", "还款失败");
+		}
+		result.put(Constant.RESPONSE_CODE, resultMap.get("Code"));
+		result.put(Constant.RESPONSE_CODE_MSG, resultMap.get("Msg"));
+		ServletUtils.writeToResponse(response, result);
+	}
 }
