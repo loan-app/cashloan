@@ -34,8 +34,12 @@ let SeachForm = React.createClass({
     },
     handleOut() {
         var params = this.props.form.getFieldsValue();
-        var json = encodeURI(JSON.stringify(params));
-        window.open("/modules/manage/repayment/plan/export.htm?searchParams="+json);
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state};
+        if(params.registTime){
+            json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
+            json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
+        }
+        window.open("/modules/manage/repayment/plan/export.htm?searchParams="+JSON.stringify(json));
 
     },
     disabledDate(startValue) {
