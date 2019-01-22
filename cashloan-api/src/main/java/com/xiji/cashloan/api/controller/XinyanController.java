@@ -72,7 +72,7 @@ public class XinyanController extends BaseController {
         data.put("pre_order_no", preOrderNo);
         data.put("id_no", userBaseInfo.getIdNo());
         data.put("name", userBaseInfo.getRealName());
-        logger.info("APP获取预订单号返回结果:" + JsonUtil.toString(preOrderNo));
+        logger.info("APP获取预订单号返回结果:" + JsonUtil.toString(data));
         Map<String,Object> result = new HashMap<>();
         result.put(Constant.RESPONSE_DATA, data);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
