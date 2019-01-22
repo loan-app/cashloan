@@ -13,10 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -42,13 +39,15 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 
 
 	/**
-	 * 根据用户id 获取最近一份风险评估报告
-	 * @param userId
+	 * 根据借款id 获取风险评估报告
+	 * @param borrowId
 	 * @return
 	 */
 	@Override
-	public Map<String,Object> getRecentlyYixinRiskReportMap(Long userId){
-		YixinRiskReport yixinRiskReport = yixinRiskReportMapper.getRecentlyYixinRiskReport(userId);
+	public Map<String,Object> getRecentlyYixinRiskReportMap(Long borrowId){
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("borrowId", borrowId);
+		YixinRiskReport yixinRiskReport = yixinRiskReportMapper.findSelective(queryMap);
 		if (yixinRiskReport == null || yixinRiskReport.getData() == null){
 			return null;
 		}

@@ -24,7 +24,7 @@ var Tab8 = React.createClass({
         return (<div className="block-panel">
                 <Tabs type="card">
                     <TabPane tab="借贷评估" key='YXAF'>
-                        <YXAF userId={this.props.userId}></YXAF>
+                        <YXAF userId={this.props.borrowId}></YXAF>
                     </TabPane>
                     <TabPane tab="反欺诈" key='AntiFraud'>
                         <AntiFraud userId={this.props.userId}></AntiFraud>
