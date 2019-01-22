@@ -168,6 +168,7 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
             log.setTransId(transId);
 
             String data = getPreOrderNoData(memberId, terminalId, tradeDate, transId, pfxpwd);
+            logger.info("请求url:" + url);
 
             Map<String, Object> params = new HashMap<>();
             params.put("member_id", memberId);
