@@ -86,34 +86,65 @@ var Lookdetails = React.createClass({
         return;
       }
       var tips = "您是否确定提交";
-      confirm({
-        title: tips,
-        onOk: function () {
-          Utils.ajaxData({
-            url: "/modules/manage/borrow/repay/confirmRepay.htm",
-            data: {
-              id: values.id,
-              repayTime: DateFormat.formatDate(values.repayTimes),
-              repayAccount: values.repayAccount,
-              repayWay: values.repayWay,
-              serialNumber: values.serialNumber,
-              amount: me.state.value == 1 ? me.props.record.repayAmount : values.amount,
-              penaltyAmout: me.state.value == 1 ? me.props.record.penaltyAmout : values.penaltyAmout1,
-              state: me.state.value == 1 ? 10 : 20,
-            },
-            callback: (result) => {
-              if (result.code == 200) {
-                me.handleCancel();
-              };
-              let resType = result.code == 200 ? 'success' : 'warning';
-              Modal[resType]({
-                title: result.msg,
-              });
-            }
-          });
-        },
-        onCancel: function () { }
-      })
+
+      if(me.state.value == 3) {
+        confirm({
+          title: tips,
+          onOk: function () {
+            Utils.ajaxData({
+              url: "/modules/manage/borrow/repay/delayRepay.htm",
+              data: {
+                id: values.id,
+                repayTime: DateFormat.formatDate(values.repayTimes),
+                repayAccount: values.repayAccount,
+                repayWay: values.repayWay,
+                serialNumber: values.serialNumber,
+                amount: values.amount,
+                delayDays: values.delayDays
+              },
+              callback: (result) => {
+                if (result.code == 200) {
+                  me.handleCancel();
+                };
+                let resType = result.code == 200 ? 'success' : 'warning';
+                Modal[resType]({
+                  title: result.msg,
+                });
+              }
+            });
+          },
+          onCancel: function () { }
+        })
+      } else {
+        confirm({
+          title: tips,
+          onOk: function () {
+            Utils.ajaxData({
+              url: "/modules/manage/borrow/repay/confirmRepay.htm",
+              data: {
+                id: values.id,
+                repayTime: DateFormat.formatDate(values.repayTimes),
+                repayAccount: values.repayAccount,
+                repayWay: values.repayWay,
+                serialNumber: values.serialNumber,
+                amount: me.state.value == 1 ? me.props.record.repayAmount : values.amount,
+                penaltyAmout: me.state.value == 1 ? me.props.record.penaltyAmout : values.penaltyAmout1,
+                state: me.state.value == 1 ? 10 : 20,
+              },
+              callback: (result) => {
+                if (result.code == 200) {
+                  me.handleCancel();
+                };
+                let resType = result.code == 200 ? 'success' : 'warning';
+                Modal[resType]({
+                  title: result.msg,
+                });
+              }
+            });
+          },
+          onCancel: function () { }
+        })
+      }
     })
   },
   onChange1(e) {
@@ -152,6 +183,7 @@ var Lookdetails = React.createClass({
                 <RadioGroup onChange={this.onChange1} value={this.state.value}>
                   <Radio key="a" value={1}>正常还款</Radio>
                   <Radio key="b" value={2}>金额减免</Radio>
+                  <Radio key="c" value={3}>展期还款</Radio>
                 </RadioGroup>
               </FormItem>
             </Col>
@@ -187,7 +219,31 @@ var Lookdetails = React.createClass({
               </FormItem>
             </Col>
           </Row>
-          {state.value == 1 ? "" :
+          {state.value == 3 ?
+              <div>
+                <Row>
+                  <Col span="24">
+                    <FormItem {...formItemLayout} label="展期金额:">
+                      <Input type="text" placeholder="请输入展期金额" {...getFieldProps('amount', { rules: [{ required: true, message: '必填' }] }) } />
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span="24">
+                    <FormItem {...formItemLayout} label="展期天数:">
+                      <Input type="text" placeholder="请输入展期天数" {...getFieldProps('delayDays', { rules: [{ required: true, message: '必填' }] }) } />
+                    </FormItem>
+                  </Col>
+                </Row>
+                {this.state.startValue && DateFormat.formatDate(this.state.startValue).substring(0, 10) > this.props.record.repayTime.substring(0, 10) ? <Row>
+                  <Col span="24">
+                    <FormItem {...formItemLayout} label="逾期罚金:">
+                      <Input type="text" placeholder="请输入逾期罚金" {...getFieldProps('penaltyAmout1') } />
+                    </FormItem>
+                  </Col>
+                </Row> : ''}
+              </div> :
+            state.value == 1 ? "" :
             <div>
               <Row>
                 <Col span="24">

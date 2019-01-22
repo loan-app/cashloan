@@ -91,4 +91,15 @@
 		select <include refid="base_column_list" /> from cl_rc_scene_business_log 
 		where user_id = #{userId,jdbcType=BIGINT} and business_id = #{busId,jdbcType=BIGINT} ORDER BY id DESC LIMIT 1
 	</select>
+
+    <!-- -->
+    <select id="haveNeedExcuteByNid" resultType="java.lang.Integer">
+        select count(1) from cl_rc_scene_business_log where (rs_state is null or rs_state = '' or rs_state = '0')
+        <if test="borrowId != null">
+            and borrow_id = #{borrowId,jdbcType=BIGINT}
+        </if>
+        <if test="nid !=null and nid !='' ">
+            and nid = #{nid,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

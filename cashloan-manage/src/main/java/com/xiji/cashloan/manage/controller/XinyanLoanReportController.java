@@ -5,16 +5,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.MagicReqDetail;
 import com.xiji.cashloan.cl.domain.XinyanLoanReport;
+import com.xiji.cashloan.cl.domain.XinyanXwld;
 import com.xiji.cashloan.cl.model.CreditLoanUserModel;
 import com.xiji.cashloan.cl.model.XinyanLoanUserModel;
 import com.xiji.cashloan.cl.service.MagicReqDetailService;
 import com.xiji.cashloan.cl.service.XinyanLoanReportService;
+import com.xiji.cashloan.cl.service.XinyanXwldService;
 import com.xiji.cashloan.cl.service.impl.XinyanLoanReportServiceImpl;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
@@ -41,6 +44,8 @@ public class XinyanLoanReportController extends BaseController {
     private XinyanLoanReportService xinyanLoanReportService;
     @Resource
     private UserBaseInfoService userBaseInfoService;
+    @Resource
+    private XinyanXwldService xinyanXwldService;
 
     /**
      * 新颜小额网贷报告列表
@@ -83,6 +88,26 @@ public class XinyanLoanReportController extends BaseController {
         }
         Map<String,Object> result = new HashMap<>();
         result.put(Constant.RESPONSE_DATA, resJson);
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
+        ServletUtils.writeToResponse(response,result);
+    }
+
+    /**
+     * 行为雷达报告展示
+     * @param borrowId
+     */
+    @RequestMapping(value="/modules/manage/xinyan/xwld/detail.htm",method={RequestMethod.GET,RequestMethod.POST})
+    @RequiresPermission(code = "modules:manage:xinyan:xwld:detail",name = "用户行为雷达信息")
+    public void xwld(@RequestParam(value = "borrowId") Long borrowId){
+        XinyanXwld xinyanXwld = xinyanXwldService.getByBorrowId(borrowId);
+        String data = StringUtil.EMPTY;
+        if(xinyanXwld != null) {
+            data = xinyanXwld.getData();
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put(Constant.RESPONSE_DATA, JSONObject.parseObject(data));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
         ServletUtils.writeToResponse(response,result);

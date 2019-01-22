@@ -534,7 +534,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 	public String repayBefore(long userId, long borrowId) {
 		Map<String, Object> search = new HashMap<>();
 		search.put("borrowId", borrowId);
-		BorrowRepay repay=borrowRepayMapper.findSelective(search);
+		BorrowRepay repay=borrowRepayMapper.findByBorrowIdState(search);
 		UserBaseInfo baseInfo=userBaseInfoMapper.findByUserId(userId);
 		search.clear();
 		search.put("userId", userId);

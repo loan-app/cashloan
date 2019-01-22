@@ -162,6 +162,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private OperatorVoiceMapper operatorVoiceMapper;
 	@Resource
 	private NameBlacklistMapper nameBlacklistMapper;
+	@Resource
+	private BorrowOperatorLogService borrowOperatorLogService;
+	@Resource
+	private DecisionService decisionService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -688,7 +692,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					progress.setRemark("您需要在" + borrow.getTimeLimit() + "天后还款" + repayAmount + "元");
 					Map<String,Object> paramMap = new HashMap<>();
 					paramMap.put("borrowId", borrow.getId());
-					BorrowRepay repay = borrowRepayMapper.findSelective(paramMap);
+					BorrowRepay repay = borrowRepayMapper.findByBorrowIdState(paramMap);
 					if (repay!=null) {
 						day = DateUtil.daysBetween(new Date(),
 								repay.getRepayTime());
@@ -1651,7 +1655,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			paramMap = new HashMap<String, Object>();
 			paramMap.put("borrowId", borrowId);
-			BorrowRepay borrowRepay = borrowRepayMapper.findSelective(paramMap);
+			BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(paramMap);
 			if (borrowRepay != null) {
 				model.setPenaltyAmout(borrowRepay.getPenaltyAmout());
 				model.setPenaltyDay(borrowRepay.getPenaltyDay());
@@ -1663,6 +1667,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			paramMap = new HashMap<String, Object>();
 			paramMap.put("borrowId", borrowId);
+			paramMap.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			BorrowRepayLog borrowRepaylog = borrowRepayLogMapper
 					.findSelective(paramMap);
 			if (borrowRepaylog != null) {
@@ -1718,12 +1723,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		// 处理用户通话详情统计
 		fixedThreadPool.execute(new Runnable() {
 			public void run(){
+				Map<String, Object> queryMap = new HashMap<>();
+				queryMap.put("userId", borrow.getUserId());
+				OperatorReqLog operatorReqLog = operatorReqLogMapper.findLastRecord(queryMap);
 				String tableName1 = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
-				int count = operatorVoiceCntMapper.countNotNull(tableName1, borrow.getUserId());
+				int count = operatorVoiceCntMapper.countNotNull(tableName1, borrow.getUserId(), operatorReqLog.getId());
 				if(count == 0) {
 					String tableName2 = ShardTableUtil.generateTableNameById("cl_operator_voice", borrow.getUserId(), 30000);
 					Map<String, Date> lastContactMap = new HashMap<>();
-					List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, borrow.getUserId());
+					List<Map<String, String>> lastContactTimes = operatorVoiceMapper.getLastContactTime(tableName2, borrow.getUserId(), operatorReqLog.getId());
 					if(lastContactTimes != null) {
 						for (Map<String, String> lastContactTime : lastContactTimes) {
 							lastContactMap.put(lastContactTime.get("peer_number"), DateUtil.parse(lastContactTime.get("last_contact_time"), "yyyy-MM-dd HH:mm:ss"));
@@ -1811,14 +1819,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			});
 			//新颜小额网贷报告
-		} else if ("XinyanLoan".equals(nid)) {
-			logger.info("进入新颜小额网贷报告查询");
-			fixedThreadPool.execute(new Runnable() {
-				public void run() {
-					int count = xinyanRiskService.queryLoan(borrow);
-					syncSceneBusinessLog(borrow.getId(), nid, count);
-				}
-			});
+		} else if (TppBusinessModel.BUS_NID_XWLD.equals(nid)) {
+			logger.info("进入新颜行为雷达报告查询,等待新颜回调结果");
 			//宜信风险评估报告
 		} else if ("YixinRisk".equals(nid)) {
 			logger.info("进入宜信风险评估查询");
@@ -1834,6 +1836,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			fixedThreadPool.execute(new Runnable() {
 				public void run() {
 					int count = yixinRiskService.queryFraud(borrow);
+					syncSceneBusinessLog(borrow.getId(), nid, count);
+				}
+			});
+			//宜信欺诈甄别
+		} else if ("Operator".equals(nid)) {
+			logger.info("进入运营商数据处理");
+			fixedThreadPool.execute(new Runnable() {
+				public void run() {
+					int count = borrowOperatorLogService.saveLog(borrow);
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
@@ -1854,6 +1865,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public void rcBorrowRuleVerify(Long borrowId){
 		Borrow borrow = getById(borrowId);
+		//计算借款订单对应决策数据的值
+		decisionService.saveBorrowDecision(borrow);
+
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);
 		List<RuleEngine> ruleEngieList = ruleEngineMapper.listSelective(paramMap);
@@ -2238,21 +2252,22 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			Map<String, Object> params3 = new HashMap<>();
 			params3.put("borrowId", model.getId());
-			BorrowRepay br = borrowRepayMapper.findSelective(params3);
+			BorrowRepay br = borrowRepayMapper.findByBorrowIdState(params3);
 			if (br != null) {
 				model.setPenaltyDay(br.getPenaltyDay());
 				model.setPenaltyAmout(br.getPenaltyAmout());
-			}
-			BorrowRepayLog brl = borrowRepayLogMapper.findSelective(params3);
-			if (brl != null) {
-				model.setRepayAmount(brl.getAmount());
-				model.setRepayTime(DateUtil.dateStr2(brl.getRepayTime()));
 			}
 			UrgeRepayOrder uro = urgeRepayOrderMapper.findSelective(params3);
 			if (uro != null) {
 				model.setLevel(uro.getLevel());
 			}
-			
+			params3.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+			BorrowRepayLog brl = borrowRepayLogMapper.findSelective(params3);
+			if (brl != null) {
+				model.setRepayAmount(brl.getAmount());
+				model.setRepayTime(DateUtil.dateStr2(brl.getRepayTime()));
+			}
+
 		}
 		return list;
 	}

@@ -420,7 +420,16 @@
 			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day
 		from cl_borrow b 
 		left join cl_user_base_info u on u.user_id=b.user_id 
-		left join cl_borrow_repay_log l on l.borrow_id=b.id
+		left join
+        <choose>
+            <when test="type !=null and type != ''">
+                (select * from cl_borrow_repay_log where type = #{type,jdbcType=VARCHAR}) l
+            </when>
+            <otherwise>
+                cl_borrow_repay_log l
+            </otherwise>
+        </choose>
+        on l.borrow_id=b.id
 		<include refid="searchModelBy" />
 		ORDER BY b.create_time DESC
 	</select>

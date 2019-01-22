@@ -1,5 +1,6 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.ExportConstant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
@@ -75,6 +76,7 @@ public class ManageListExport extends ManageBaseController{
 	public void borrowExport(
 			@RequestParam(value="searchParams",required = false) String searchParams) throws Exception {
 		Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		List list = clBorrowService.listBorrow(params);
 		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
 		response.setContentType("application/msexcel;charset=UTF-8");
@@ -140,6 +142,7 @@ public class ManageListExport extends ManageBaseController{
 			params = JsonUtil.parse(searchParams, Map.class);
 		}
 		params.put("state", BorrowModel.STATE_DELAY);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		List list = clBorrowService.listBorrow(params);
 		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
 		response.setContentType("application/msexcel;charset=UTF-8");
@@ -166,6 +169,7 @@ public class ManageListExport extends ManageBaseController{
 			params = JsonUtil.parse(searchParams, Map.class);
 		}
 		params.put("state", BorrowModel.STATE_BAD);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		List list = clBorrowService.listBorrow(params);
 		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
 		response.setContentType("application/msexcel;charset=UTF-8");

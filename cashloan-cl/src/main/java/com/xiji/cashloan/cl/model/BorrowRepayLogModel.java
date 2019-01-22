@@ -24,6 +24,12 @@ public class BorrowRepayLogModel extends BorrowRepayLog {
 	/** 还款方式 - 认证支付 */
 	public static final String  REPAY_WAY_CERTIFIED = "40";
 
+	/** 还款类型 - 正常还款 */
+	public static final String REPAY_TYPE_CHARGE = "10";
+
+	/** 还款类型 - 展期还款 */
+	public static final String REPAY_TYPE_DELAY = "20";
+
 	
 	/**
 	 * 还款时间

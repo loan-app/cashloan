@@ -24,6 +24,9 @@ public class BorrowRepayModel extends BorrowRepay{
 	/** 还款状态 - 未还款 */
 	public static final String STATE_REPAY_NO = "20";
 
+	/** 还款状态 - 展期还款已还款 */
+	public static final String STATE_REPAY_DELAY_YES = "30";
+
 	/**
 	 * 借款人手机号
 	 */

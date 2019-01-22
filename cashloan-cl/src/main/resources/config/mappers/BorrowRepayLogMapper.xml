@@ -18,6 +18,7 @@
         <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
     </resultMap>
     
     <resultMap id="BorrowRepayLogModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.BorrowRepayLogModel" >
@@ -26,7 +27,7 @@
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,repay_id,borrow_id,user_id,amount,repay_time,penalty_amout,penalty_day,repay_way,repay_account,refund_deduction,pay_time,create_time,serial_number
+        id,repay_id,borrow_id,user_id,amount,repay_time,penalty_amout,penalty_day,repay_way,repay_account,refund_deduction,pay_time,create_time,serial_number,type
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -71,8 +72,11 @@
             <if test="createTime !=null">
                 and create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
-             <if test="serialNumber !=null and serialNumber != ''">
+            <if test="serialNumber !=null and serialNumber != ''">
                 and serial_number = #{serialNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="type !=null and type != ''">
+                and type = #{type,jdbcType=VARCHAR}
             </if>
         </trim>
     </sql>
@@ -80,11 +84,11 @@
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BorrowRepayLog">
 		insert into
-			cl_borrow_repay_log(repay_id,borrow_id,user_id,amount,repay_time,penalty_amout,penalty_day,repay_way,repay_account,refund_deduction,pay_time,create_time,serial_number)
+			cl_borrow_repay_log(repay_id,borrow_id,user_id,amount,repay_time,penalty_amout,penalty_day,repay_way,repay_account,refund_deduction,pay_time,create_time,serial_number,type)
 		values(
 			#{repayId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{amount,jdbcType=DECIMAL},#{repayTime,jdbcType=TIMESTAMP},
 			#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{repayWay,jdbcType=VARCHAR},
-			#{repayAccount,jdbcType=VARCHAR},#{refundDeduction,jdbcType=VARCHAR},#{payTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{serialNumber,jdbcType=VARCHAR})
+			#{repayAccount,jdbcType=VARCHAR},#{refundDeduction,jdbcType=VARCHAR},#{payTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{serialNumber,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR})
 	</insert>
 
     
@@ -127,8 +131,11 @@
             <if test="createTime !=null">
                 create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
-             <if test="serialNumber !=null and serialNumber != ''">
+            <if test="serialNumber !=null and serialNumber != ''">
                 serial_number = #{serialNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="type !=null and type != ''">
+                type = #{type,jdbcType=VARCHAR}
             </if>
         </set>
         where id = #{id ,jdbcType=BIGINT}
@@ -231,7 +238,7 @@
 					and r.amount = l.amount
 				</if>
 			</if>
-			and r.state=10
+			and (r.state=10 or r.state=30)
 		</trim>
         ORDER BY l.repay_time DESC
     </select>

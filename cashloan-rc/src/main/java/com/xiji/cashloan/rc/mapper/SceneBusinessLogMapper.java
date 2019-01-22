@@ -44,4 +44,12 @@ public interface SceneBusinessLogMapper extends BaseMapper<SceneBusinessLog,Long
 	 * @return
 	 */
 	SceneBusinessLog findLastExcute(@Param("userId") Long userId, @Param("busId") Long busId);
+
+	/**
+	 * 根据Nid查询未完成的（失败的/需要重新执行的）记录数
+	 * @param borrowId
+	 * @param nid
+     * @return
+     */
+	int haveNeedExcuteByNid(@Param("borrowId") Long borrowId, @Param("nid") String nid);
 }

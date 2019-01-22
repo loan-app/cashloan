@@ -299,7 +299,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		String isImproveCredit = Global.getValue("is_improve_credit");//提额开关 -- 10开，20关
 
-		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit)){//未逾期且提额开关为10 ---提额
+		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit) && Integer.parseInt(br.getPenaltyDay()) <= 0){//未逾期且提额开关为10 ---提额
 			String oneRepayCredit = Global.getValue("one_repay_credit");//还款成功题额  --固定额度
 			String improveCreditLimit = Global.getValue("imporove_credit_limit");//提额上限
 
@@ -383,16 +383,57 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
 		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
+		int delayDays;
+		if(param.get("delayDays") != null) {
+			delayDays = NumberUtil.getInt(param.get("delayDays").toString());
+		} else {
+			delayDays = Global.getInt("delay_days");
+		}
 		if (nowDate.after(repayPlanTime)){
-			repayTime = tool.util.DateUtil.rollDay(now,7);
+			repayTime = tool.util.DateUtil.rollDay(now, delayDays);
 		}else {
-			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(),7);
+			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(), delayDays);
 		}
 		result.put("repayTime", repayTime);
 		// 更新还款信息
 		int msg = updateBorrowReplayByDelayPay(br, repayTime);
 		if (msg <= 0) {
 			throw new BussinessException("更新还款信息出错" + br.getBorrowId());
+		}
+		//插入展期扣款的还款计划,状态为展期成功
+		BorrowRepay newBr = new BorrowRepay();
+		double repayAmount = param.get("amount") != null ? (Double) param.get("amount") : 0.0D;
+		newBr.setAmount(repayAmount);
+		newBr.setBorrowId(br.getBorrowId());
+		newBr.setUserId(br.getUserId());
+		String repay = DateUtil.dateStr2(DateUtil.rollDay(DateUtil.getNow(), 0));
+		repay = repay + " 23:59:59";
+		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
+		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);
+		newBr.setPenaltyAmout(0.0);
+		newBr.setPenaltyDay("0");
+		newBr.setCreateTime(DateUtil.getNow());
+		msg = borrowRepayMapper.saveReturnId(newBr);
+		if (msg <= 0) {
+			throw new BussinessException("插入展期还款计划出错" + newBr.getBorrowId());
+		}
+		//新增一条展期还款记录
+		BorrowRepayLog delayRepayLog = new BorrowRepayLog();
+		delayRepayLog.setBorrowId(br.getBorrowId());
+		delayRepayLog.setRepayId(newBr.getId());
+		delayRepayLog.setUserId(br.getUserId());
+		delayRepayLog.setAmount(repayAmount);// 实际还款金额
+		delayRepayLog.setRepayTime(DateUtil.getNow());// 实际还款时间
+		delayRepayLog.setPenaltyAmout(0.00);
+		delayRepayLog.setPenaltyDay("0");
+		delayRepayLog.setSerialNumber((String) param.get("serialNumber"));
+		delayRepayLog.setRepayAccount((String) param.get("repayAccount"));
+		delayRepayLog.setRepayWay((String) param.get("repayWay"));
+		delayRepayLog.setType(BorrowRepayLogModel.REPAY_TYPE_DELAY);
+		delayRepayLog.setCreateTime(DateUtil.getNow());
+		msg = borrowRepayLogMapper.save(delayRepayLog);
+		if (msg <= 0) {
+			throw new BussinessException("插入展期还款记录出错" + newBr.getBorrowId());
 		}
 		// 更新借款表和借款进度状态
 		msg = updateBorrow(br.getBorrowId(), br.getUserId(),state);
@@ -476,6 +517,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			log.setRepayAccount((String) param.get("repayAccount"));
 			log.setRepayWay((String) param.get("repayWay"));
 			log.setCreateTime(DateUtil.getNow());
+			log.setType(BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			return borrowRepayLogMapper.save(log);
 		}
 		return i;
@@ -718,6 +760,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("borrowId", borrowId);
 		paramMap.put("userId", userId);
+		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramMap);
 
 		// 还款金额
@@ -841,7 +884,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> repayMap = new HashMap<String, Object>();
 		repayMap.put("userId", payLog.getUserId());
 		repayMap.put("borrowId", payLog.getBorrowId());
-		BorrowRepay borrowRepay = borrowRepayMapper.findSelective(repayMap);
+		BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(repayMap);
 		// 若已完成还款，那么直接返回success
 		if (borrowRepay == null || BorrowRepayModel.STATE_REPAY_YES.equals(borrowRepay.getState())) {
 			logger.warn("还款计划有误");
@@ -930,6 +973,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
 		paramRepayMap.put("borrowId", borrowId);
 		paramRepayMap.put("userId", userId);
+		paramRepayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramRepayMap);
 
 		//1、查询是否存在待支付记录

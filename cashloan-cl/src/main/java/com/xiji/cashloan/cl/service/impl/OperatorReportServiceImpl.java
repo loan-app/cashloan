@@ -5,13 +5,13 @@ import javax.annotation.Resource;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.domain.BorrowOperatorLog;
 import com.xiji.cashloan.cl.domain.UserContacts;
 import com.xiji.cashloan.cl.domain.UserEmerContacts;
-import com.xiji.cashloan.cl.mapper.OperatorVoiceMapper;
-import com.xiji.cashloan.cl.mapper.UserContactsMapper;
-import com.xiji.cashloan.cl.mapper.UserEmerContactsMapper;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import org.slf4j.Logger;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.cl.mapper.OperatorReportMapper;
 import com.xiji.cashloan.cl.domain.OperatorReport;
 import com.xiji.cashloan.cl.service.OperatorReportService;
 
@@ -47,13 +46,15 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
     @Resource
     private OperatorReportMapper operatorReportMapper;
     @Resource
-    private OperatorVoiceMapper operatorVoiceMapper;
-    @Resource
     private UserEmerContactsMapper userEmerContactsMapper;
     @Resource
     private UserBaseInfoMapper userBaseInfoMapper;
     @Resource
     private UserContactsMapper userContactsMapper;
+    @Resource
+    private ClBorrowMapper clBorrowMapper;
+    @Resource
+    private BorrowOperatorLogMapper borrowOperatorLogMapper;
 
     private static final String BEHAVIOR_CHECK_TYPES = "regular_circle|phone_used_time|phone_silent|phone_power_off|contact_each_other|contact_macao|contact_110|contact_120|contact_lawyer|contact_court|contact_loan|contact_bank|contact_credit_card|contact_collection|contact_night";
 
@@ -76,15 +77,37 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
 
     @Override
     public JSONObject getReportByUserId(Long userId) {
-        JSONObject json = new JSONObject();
         UserBaseInfo userBaseInfo = userBaseInfoMapper.findByUserId(userId);
+        OperatorReport operatorReport = operatorReportMapper.getLastRecord(userId);
+        JSONObject json = getOperatorData(userBaseInfo, operatorReport);
+        return json;
+    }
+
+    @Override
+    public JSONObject getReportByBorrowId(Long borrowId) {
+        Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+        UserBaseInfo userBaseInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("borrowId", borrowId);
+        BorrowOperatorLog borrowOperatorLog = borrowOperatorLogMapper.findSelective(queryMap);
+        OperatorReport operatorReport = null;
+        if(borrowOperatorLog != null) {
+            queryMap.clear();
+            queryMap.put("reqLogId", borrowOperatorLog.getReqLogId());
+            operatorReport = operatorReportMapper.findSelective(queryMap);
+        }
+        JSONObject json = getOperatorData(userBaseInfo, operatorReport);
+        return json;
+    }
+
+    private JSONObject getOperatorData(UserBaseInfo userBaseInfo, OperatorReport operatorReport) {
+        JSONObject json = new JSONObject();
         JSONObject basic = new JSONObject();
         basic.put("name", userBaseInfo.getRealName());
         basic.put("idNo", userBaseInfo.getIdNo());
         basic.put("gender", userBaseInfo.getSex());
         basic.put("age", userBaseInfo.getAge());
         basic.put("phone", userBaseInfo.getPhone());
-        OperatorReport operatorReport = operatorReportMapper.getLastRecord(userId);
         if (operatorReport != null) {
             String report = operatorReport.getReport();
             if (StringUtil.isNotBlank(report)) {
@@ -153,10 +176,10 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
                 }
 
                 //判断亲密联系人是否为小号
-                String tableName1 = ShardTableUtil.generateTableNameById("cl_user_contacts", userId, 30000);
+                String tableName1 = ShardTableUtil.generateTableNameById("cl_user_contacts", userBaseInfo.getUserId(), 30000);
                 JSONArray emerArray = new JSONArray();
                 Map<String, Object> params = new HashMap<>();
-                params.put("userId", userId);
+                params.put("userId", userBaseInfo.getUserId());
                 List<UserEmerContacts> userEmerContactses = userEmerContactsMapper.listSelective(params);
                 for (UserEmerContacts userEmerContactse : userEmerContactses) {
                     JSONObject emerJson = new JSONObject();
@@ -270,7 +293,6 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
                     }
                 }
 
-                json.put("basic", basic);
                 json.put("behavior_check", behaviorChecks);
                 json.put("consum_behavior", consumBehaviorArray);
                 json.put("check_search_info", searchInfoJson);
@@ -281,7 +303,7 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
 
             }
         }
-
+        json.put("basic", basic);
         return json;
     }
 }

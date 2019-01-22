@@ -21,6 +21,8 @@ public class TppBusinessModel extends TppBusiness {
 	
 	public static final String BUS_NID_TONGDUN = "TongdunApply";
 
+	public static final String BUS_NID_XWLD = "XYXWLD";
+
 	/**
 	 * 第三方Nid
 	 */

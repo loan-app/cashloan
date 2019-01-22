@@ -1,6 +1,7 @@
 package com.xiji.cashloan.manage.controller;
 
 import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
 import com.xiji.cashloan.cl.service.*;
@@ -231,7 +232,8 @@ public class ManageBorrowController extends ManageBaseController {
 						BorrowModel.STATE_FINISH,
 						BorrowModel.STATE_REMISSION_FINISH,
 						BorrowModel.STATE_DELAY, 
-						BorrowModel.STATE_BAD);
+						BorrowModel.STATE_BAD,
+						BorrowModel.STATE_DELAY_PAY);
 			    params.put("stateList", stateList);
 				String state = StringUtil.isNull(params.get("state"));
 				if (null != state &&!StringUtil.isBlank(state)) {
@@ -262,6 +264,10 @@ public class ManageBorrowController extends ManageBaseController {
 				}
 				
 			}
+			params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+		} else {
+			params = new HashMap<>();
+			params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		}
 		Page<ManageBorrowModel> page = clBorrowService.listBorrowModel(params,current,pageSize);
 		Map<String,Object> result = new HashMap<String,Object>();
@@ -328,6 +334,7 @@ public class ManageBorrowController extends ManageBaseController {
 			@RequestParam(value = "pageSize") int pageSize) throws Exception {
 		Map<String,Object> params = new HashMap<>();
 		params.put("userId", userId);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		Page<ManageBorrowModel> page = clBorrowService.listBorrowModel(params, current, pageSize);
 		
 		Map<String, Object> data = new HashMap<String, Object>();

@@ -147,6 +147,11 @@ public class UserService {
             	Channel channel = channelService.findByCode(channelCode);
             	 if (channel != null) {
             		 channelId=channel.getId();
+                 } else {
+                     Map ret = new LinkedHashMap();
+                     ret.put("success", false);
+                     ret.put("msg", "您的资质未达到我们平台的标准，请关注日用钱包获取更多贷款资讯");
+                     return ret;
                  }
             } else {
                 Map ret = new LinkedHashMap();

@@ -80,7 +80,6 @@ public class ManageOperatorReportLinkController extends ManageBaseController{
     public void page(@RequestParam(value = "userId") Long userId) throws Exception {
         UserBaseInfo userBaseInfo = userBaseInfoService.getById(userId);
         String reportLink = StringUtil.EMPTY;
-        JSONObject resJson = new JSONObject();
         if (userBaseInfo != null) {
             OperatorReportLink lastRecord = operatorReportLinkService.getLastRecord(userId);
             if(lastRecord != null) {
@@ -97,12 +96,15 @@ public class ManageOperatorReportLinkController extends ManageBaseController{
 
     @SuppressWarnings("unchecked")
     @RequestMapping(value="/modules/manage/operator/report.htm",method={RequestMethod.GET,RequestMethod.POST})
-    public void operatorReport(@RequestParam(value = "userId") Long userId) throws Exception {
-        UserBaseInfo userBaseInfo = userBaseInfoService.getById(userId);
-        JSONObject resJson = new JSONObject();
-        if (userBaseInfo != null) {
+    public void operatorReport(@RequestParam(value = "userId", required = false) Long userId,
+                               @RequestParam(value = "borrowId", required = false) Long borrowId) throws Exception {
+        JSONObject resJson;
+        if(borrowId != null) {
+            resJson = operatorReportService.getReportByBorrowId(borrowId);
+        } else {
             resJson = operatorReportService.getReportByUserId(userId);
         }
+
         Map<String,Object> result = new HashMap<>();
         result.put("data", resJson);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);

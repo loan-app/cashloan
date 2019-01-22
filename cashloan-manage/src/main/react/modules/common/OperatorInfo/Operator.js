@@ -48,6 +48,7 @@ var Operator = React.createClass({
             url: '/modules/manage/operator/report.htm',
             data: {
                 userId: this.props.record.borrowUserId,
+                borrowId: this.props.record.borrowId,
             },
             callback: (result) => {
                 this.setState({

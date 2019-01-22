@@ -48,7 +48,7 @@ var NavTab = React.createClass({
     // console.log(window.tablist);
     return (
       <div className="Mytabs">
-          <Tabs activeKey={this.state.activeId} onChange={this.onChange} destroyInactiveTabPane animation={null} contentStyle={{height:document.body.clientHeight-100,overflow: 'auto'}}>
+          <Tabs activeKey={this.state.activeId} onChange={this.onChange} animation={null} contentStyle={{height:document.body.clientHeight-100,overflow: 'auto'}}>
                 {
                   this.state.tablist.map((t, i)=> {
                     return<TabPane key={t.tabId}

@@ -100,5 +100,36 @@
         from ${tableName}
         <include refid="searchBy"/>
     </select>
-    
+
+    <insert id="saveSelective" parameterType="${packageName}.${moduleName}.domain.${ClassName}">
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <#list list as column>
+        <#if column.columnName == "id">
+        <#elseif column.dataType == "String">
+            <if test="${column.columnName} != null and ${column.columnName} != '' ">
+                ${column.typeName},
+            </if>
+        <#else>
+            <if test="${column.columnName} != null">
+                ${column.typeName},
+            </if>
+        </#if>
+        </#list>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <#list list as column>
+        <#if column.columnName == "id">
+        <#elseif column.dataType == "String">
+            <if test="${column.columnName} != null and ${column.columnName} != '' ">
+                #${leftBraces}${column.columnName},jdbcType=${column.jdbcType}${rightBraces},
+            </if>
+        <#else>
+            <if test="${column.columnName} != null">
+                #${leftBraces}${column.columnName},jdbcType=${column.jdbcType}${rightBraces},
+            </if>
+        </#if >
+        </#list>
+        </trim>
+    </insert>
 </mapper>

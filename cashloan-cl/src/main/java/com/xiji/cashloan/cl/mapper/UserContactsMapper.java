@@ -83,4 +83,9 @@ public interface UserContactsMapper extends BaseMapper<UserContacts,Long> {
 	 * 通讯修改
 	 */
 	void updateCount(Map<String, Object> params);
+
+	/**
+	 * 统计用户通讯录数量
+	 */
+	int countContacts(@Param("tableName") String tableName, @Param("params") Map<String, Object> params);
 }

@@ -1662,10 +1662,10 @@ CREATE TABLE `cl_rc_scene_business` (
 -- ----------------------------
 -- Records of cl_rc_scene_business
 -- ----------------------------
-INSERT INTO `cl_rc_scene_business` VALUES ('1', '10', '1', '20', '30', '10', '10', '2018-12-06 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('2', '10', '2', '20', '30', '10', '10', '2018-12-06 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('3', '10', '3', '20', '30', '10', '10', '2018-12-06 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('4', '10', '4', '20', '30', '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('1', '10', '1', '10', 0, '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('2', '10', '2', '10', 0, '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('3', '10', '3', '10', 0, '10', '10', '2018-12-06 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('4', '10', '4', '10', 0, '10', '10', '2018-12-06 00:00:00');
 
 
 -- ----------------------------

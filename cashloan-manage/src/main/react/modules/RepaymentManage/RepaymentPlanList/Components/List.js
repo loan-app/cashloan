@@ -225,6 +225,8 @@ export default React.createClass({
                     return "已还款"
                 }else if(record.state==20){
                     return "未还款"
+                }else if(record.state==30){
+                    return "展期还款"
                 }else{
                     return "-"
                 }
@@ -233,13 +235,13 @@ export default React.createClass({
             title: '操作',
             dataIndex: "",
             render: (text,record) => {
-                if(record.state == 10){
+                if(record.state == 10 || record.state == 30){
                     return "-"
                 }else{
                     return(
                     <div style={{ textAlign: "left" }}>
-                            <a href="#" onClick={me.showModal.bind(me, '确认还款',record, false)}>确认还款</a>
-                    </div>  
+                        <a href="#" onClick={me.showModal.bind(me, '确认还款',record, false)}>确认还款 </a>
+                    </div>
                     )
                 }
             } 
