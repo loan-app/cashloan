@@ -518,3 +518,6 @@ INSERT INTO `arc_sys_config` VALUES (null, '10', '展期天数', 'delay_days', '
 
 -- 还款记录新增还款类型字段
 ALTER TABLE cl_borrow_repay_log add column `type` varchar(10)  default '10' COMMENT '还款类型 10-还款 20-展期还款';
+
+-- 新颜预订单号请求url
+INSERT INTO `arc_sys_config` VALUES (null, '100', '预订单号请求地址', 'xy_pre_order_url', 'https://test.xinyan.com/entry/sdk/preOrder', '1', '预订单号获取请求地址', '1');

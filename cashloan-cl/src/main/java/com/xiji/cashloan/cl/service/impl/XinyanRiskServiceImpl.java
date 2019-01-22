@@ -158,7 +158,7 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
             /** 2、终端号 **/
             String terminalId = Global.getValue("xy_terminal_id");
             /** 3、请求地址 **/
-            String url = Global.getValue("xy_loan_url");
+            String url = Global.getValue("xy_pre_order_url");
             /** 4、私钥密码 **/
             String pfxpwd = Global.getValue("xy_pfx_pwd");
             Map<String, String> headers = new HashMap<>();

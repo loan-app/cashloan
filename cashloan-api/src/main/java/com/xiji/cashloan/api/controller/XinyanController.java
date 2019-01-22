@@ -52,6 +52,7 @@ public class XinyanController extends BaseController {
 
     @RequestMapping(value = "/api/act/xinyan/preOrderNo.htm")
     public void protocolDetail() {
+        logger.info("发起借款成功,APP获取预订单号");
         long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
         UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
         if(userBaseInfo == null) {
@@ -66,6 +67,7 @@ public class XinyanController extends BaseController {
                 preOrderNo = xinyanRiskService.getPreOrderNo(lastBorrow);
             }
         }
+        logger.info("APP获取预订单号返回结果:" + preOrderNo);
         data.put("pre_order_no", preOrderNo);
         data.put("id_no", userBaseInfo.getIdNo());
         data.put("name", userBaseInfo.getRealName());
