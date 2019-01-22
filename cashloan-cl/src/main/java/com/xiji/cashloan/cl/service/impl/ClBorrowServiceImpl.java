@@ -1716,7 +1716,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	@Override
-	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType) throws Exception {
+	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType, boolean xwldFlag) throws Exception {
 		ClBorrowModel clBorrow = new ClBorrowModel();
 		Borrow realBorrow = null;
 		// 处理用户通话详情统计
@@ -1785,6 +1785,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if (infoList != null && infoList.size() > 0) {
 				SceneBusinessLog sceneLog = null;
 				for(TppServiceInfoModel info : infoList){
+					//忽略新颜行为雷达查询
+					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusId())) {
+						continue;
+					}
 					boolean needExcute = sceneBusinessLogService.needExcute(realBorrow.getUserId(),info.getBusId(),info.getGetWay(),info.getPeriod());
 					if(needExcute){
 						sceneLog = new SceneBusinessLog(info.getSceneId(), realBorrow.getId(), realBorrow.getUserId(), info.getTppId(), info.getBusId(), info.getBusNid(), realBorrow.getCreateTime(),info.getType());

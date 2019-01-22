@@ -27,10 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,7 +80,8 @@ public class XinyanController extends BaseController {
     }
 
     @RequestMapping(value = "/api/xinyanNotify.htm", method= RequestMethod.POST)
-    public void protocolDetail(@RequestParam(value="result_data") String resultData) {
+    public void protocolDetail(HttpServletRequest request) {
+        String resultData = getRequestParams(request);
         logger.info("新颜行为雷达回调数据："+ resultData);
         final long borrowId = xinyanRiskService.saveXWLDNotify(resultData);
         if(borrowId != 0l) {
@@ -100,5 +100,24 @@ public class XinyanController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public String getRequestParams(HttpServletRequest request) {
+        String params = "";
+        try {
+            request.setCharacterEncoding("UTF-8");
+            InputStream in = request.getInputStream();
+            StringBuilder sb = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            params = sb.toString();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return params;
     }
 }
