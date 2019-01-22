@@ -3,9 +3,11 @@ package com.xiji.cashloan.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.cl.service.XinyanRiskService;
+import com.xiji.cashloan.cl.util.black.JSONUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
+import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
@@ -67,10 +69,10 @@ public class XinyanController extends BaseController {
                 preOrderNo = xinyanRiskService.getPreOrderNo(lastBorrow);
             }
         }
-        logger.info("APP获取预订单号返回结果:" + preOrderNo);
         data.put("pre_order_no", preOrderNo);
         data.put("id_no", userBaseInfo.getIdNo());
         data.put("name", userBaseInfo.getRealName());
+        logger.info("APP获取预订单号返回结果:" + JsonUtil.toString(preOrderNo));
         Map<String,Object> result = new HashMap<>();
         result.put(Constant.RESPONSE_DATA, data);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
