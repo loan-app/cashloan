@@ -14,17 +14,18 @@ var UserRemarkList = React.createClass({
         return record.id;
     },
     componentWillReceiveProps(nextProps){
-        var searchdata = {};
-        var record=nextProps.record;
-
-        console.log('record = '+nextProps.record);
-
-        searchdata = {
-            tppId:record
-
-        }
-        var params=objectAssign({},{pageSize: 10, current: 1,}, {search:JSON.stringify(searchdata)  })
-        this.fetch(params);
+        // var searchdata = {};
+        // var record=nextProps.record;
+        //
+        // console.log('record = '+nextProps.record);
+        // console.log('userId = '+this.state.data);
+        // searchdata = {
+        //     userId:record
+        //
+        // }
+        // var params=objectAssign({},{pageSize: 10, current: 1,}, {search:JSON.stringify(searchdata)  })
+        // this.fetch(params);
+        this.fetch();
     },
 
     handleTableChange(pagination, filters, sorter) {
@@ -46,8 +47,9 @@ var UserRemarkList = React.createClass({
             params = {
                 pageSize: 5,
                 current: 1,
-                userId: this.props.record.userId,
+                userId: this.props.data,
             }
+            console.log('fetch userId = '+ this.props.title);
         }
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',

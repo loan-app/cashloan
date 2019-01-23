@@ -106,7 +106,7 @@
     <select id="listUserRemark" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
         cur.id,cur.user_id,cur.operate_id,cur.remark,cur.operate_time,cur.create_time,cubi.name as operate_name
-        from arc_sys_user as cubi left join cl_user_remark as cur on cur.operate_id = cubi.id
+        from cl_user_remark as cur left join arc_sys_user as cubi  on cur.operate_id = cubi.id
         <trim prefix="where" prefixOverrides="and|or">
             <if test="userId != null">
                 and user_id = #{userId,jdbcType=BIGINT}
