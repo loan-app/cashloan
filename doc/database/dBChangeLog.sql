@@ -521,3 +521,7 @@ ALTER TABLE cl_borrow_repay_log add column `type` varchar(10)  default '10' COMM
 
 -- 新颜预订单号请求url
 INSERT INTO `arc_sys_config` VALUES (null, '100', '预订单号请求地址', 'xy_pre_order_url', 'https://test.xinyan.com/entry/sdk/preOrder', '1', '预订单号获取请求地址', '1');
+
+-- 规则表字段长度修改
+ALTER TABLE `arc_rule_engine_config` change ccolumn `ccolumn` varchar(100) DEFAULT '' COMMENT '设置关联表列';
+ALTER TABLE `arc_rule_engine_config` change column_comment `column_comment` varchar(255) DEFAULT '' COMMENT '字段名称';
