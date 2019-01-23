@@ -111,6 +111,15 @@ public class BorrowRepayLogServiceImpl extends BaseServiceImpl<BorrowRepayLog, L
 				m.setRepayWay("支付宝转账");
 				break;
 			}
+
+			switch (m.getType()) {
+				case "10":
+					m.setType("还款");
+					break;
+				case "20":
+					m.setType("展期还款");
+					break;
+			}
 		}
 		return list;
 	}

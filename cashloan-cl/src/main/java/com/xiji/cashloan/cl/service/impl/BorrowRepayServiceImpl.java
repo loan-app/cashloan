@@ -581,6 +581,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				manageBRepayModel.setStateStr("已还款");
 			}else if ("20".equals(manageBRepayModel.getState())){
 				manageBRepayModel.setStateStr("未还款");
+			}
+			else if ("30".equals(manageBRepayModel.getState())){
+				manageBRepayModel.setStateStr("展期还款");
 			}else {
 				manageBRepayModel.setStateStr("-");
 			}
