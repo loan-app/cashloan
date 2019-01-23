@@ -185,8 +185,8 @@ public class SystemCountServiceImpl implements SystemCountService {
 		rtMap.put("borrowRepay", borrowRepay);
 
 		Map<String, Object> borrowRepayParams = new HashMap<>();
-		borrowRepayParams.put("startTime", DateUtils.formatDate(new Date(), "yyyy-MM-dd"));
-		borrowRepayParams.put("endTime", DateUtils.formatDate(new Date(), "yyyy-MM-dd"));
+		borrowRepayParams.put("startTime", DateUtil.dateStr(new Date(), DateUtil.DATEFORMAT_STR_002));
+		borrowRepayParams.put("endTime", DateUtil.dateStr(new Date(), DateUtil.DATEFORMAT_STR_002));
 		List<ManageBRepayModel> brs = borrowRepayMapper.listModel(borrowRepayParams);
 
 		int todayShouldCnt =  brs.size();
