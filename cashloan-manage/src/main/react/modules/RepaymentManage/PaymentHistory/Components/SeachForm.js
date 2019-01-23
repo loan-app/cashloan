@@ -39,7 +39,7 @@ let SeachForm = React.createClass({
             json.startTime = (DateFormat.formatDate(params.repayTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.repayTime[1])).substring(0,10);
         }
-        window.open("/modules/manage/borrowRepayLog/export.htm?searchParams="+JSON.stringify(json));
+        window.open("/modules/manage/borrowRepayLog/export.htm?searchParams="+encodeURI(JSON.stringify(json)));
 
     },
     render() {
