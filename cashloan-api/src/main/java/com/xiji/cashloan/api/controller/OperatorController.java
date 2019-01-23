@@ -235,9 +235,6 @@ public class OperatorController extends BaseController {
             //运营商数据生成成功,调用接口获取数据
             fixedThreadPool.execute(new Runnable() {
                 public void run() {
-                    Map<String, Object> userAuth = new HashMap<String, Object>();
-                    userAuth.put("userId", userId);
-                    userAuth.put("phoneTime", DateUtil.getNow());
                     try {
                         String host = Global.getValue("mx_operator_mxdata");
                         final String token = Global.getValue("mx_token");
@@ -264,9 +261,6 @@ public class OperatorController extends BaseController {
                         int end = DateUtil.getNowTime();
                         logger.info("保存userId" + userId + "运营商数据，耗时" + (end - start) + "秒");
                     } catch (Exception e) {
-                        // 运营商数据保存失败，将认证状态改回未认证
-                        userAuth.put("phoneState", "10");
-                        userAuthService.updateByUserId(userAuth);
                         logger.error("严重问题，userId:" + userId + "运营商数据保存异常", e);
                         return;
                     }
@@ -276,9 +270,6 @@ public class OperatorController extends BaseController {
                         callsOutSideFee = new CallsOutSideFee(userId, taskId, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,mobile);
                         callsOutSideFeeService.insert(callsOutSideFee);
                     }
-                    //修改认证状态为认证完成
-                    userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
-                    userAuthService.updateByUserId(userAuth);
                 }
             });
         }
@@ -304,6 +295,9 @@ public class OperatorController extends BaseController {
                     //获取运营商报告
                     fixedThreadPool.execute(new Runnable() {
                         public void run() {
+                            Map<String, Object> userAuth = new HashMap<String, Object>();
+                            userAuth.put("userId", userId);
+                            userAuth.put("phoneTime", DateUtil.getNow());
                             try {
                                 String host = Global.getValue("mx_operator_report");
                                 final String token = Global.getValue("mx_token");
@@ -328,8 +322,13 @@ public class OperatorController extends BaseController {
                                 operatorVoiceCntService.lastContactTime(userId, reqLogId);
                                 int end = DateUtil.getNowTime();
                                 logger.info("保存userId" + userId + "运营商报告，详情统计，耗时" + (end - start) + "秒");
+                                //修改认证状态为认证完成
+                                userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
+                                userAuthService.updateByUserId(userAuth);
                             } catch (Exception e) {
-                                // 运营商报告保存失败
+                                // 运营商报告保存失败，将认证状态改回未认证
+                                userAuth.put("phoneState", UserAuthModel.STATE_NOT_CERTIFIED);
+                                userAuthService.updateByUserId(userAuth);
                                 logger.error("严重问题，userId:" + userId + "运营商数据报告保存失败", e);
                                 return;
                             }
