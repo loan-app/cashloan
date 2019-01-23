@@ -245,6 +245,8 @@ public class XinyanRiskServiceImpl implements XinyanRiskService {
                             borrowId = lastBorrow.getId();
                         } else if("1".equals(dataJson.getString("code"))) {
                             //查询未命中
+                            XinyanXwld xinyanXwld = new XinyanXwld(userBaseInfo.getUserId(), lastBorrow.getId(), dataJson.getString("trade_no"), StringUtil.EMPTY);
+                            xinyanXwldMapper.save(xinyanXwld);
                             borrowId = lastBorrow.getId();
                         } else {
                             logger.error("用户" + userBaseInfo.getRealName() + "，请求新颜,新颜返回未知异常");
