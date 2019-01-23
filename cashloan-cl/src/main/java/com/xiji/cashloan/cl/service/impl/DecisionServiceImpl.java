@@ -668,8 +668,10 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     String checkResult = jsonObject.getString("result");
                     switch (checkPoint) {
                         case "phone_silent":
-                            decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
-                            break;
+                            if(checkResult.indexOf("天无通话记录") > -1) {
+                                decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
+                                break;
+                            }
                         case "contact_loan":
                             decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
                             decision.setMxContactLoan(checkResult);
