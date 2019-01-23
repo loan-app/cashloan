@@ -331,6 +331,9 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private void setXinyanXwld(XinyanXwld xinyanXwld, Decision decision) {
         if(xinyanXwld != null && xinyanXwld.getData() != null) {
             JSONObject dataJson = JSONObject.parseObject(xinyanXwld.getData());
+            if(dataJson == null){
+                return ;
+            }
             decision.setXyLoansScore(dataJson.getString("loans_score"));
             decision.setXyLoansCredibility(dataJson.getString("loans_credibility"));
             decision.setXyLoansCount(dataJson.getString("loans_count"));
@@ -368,6 +371,9 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private void setPinganGrayscale(PinganGrayscale pinganGrayscale, Decision decision) {
         if(pinganGrayscale != null && pinganGrayscale.getData() != null) {
             JSONObject dataJson = JSONObject.parseObject(pinganGrayscale.getData());
+            if (dataJson == null){
+                return;
+            }
             decision.setPaL1wwdcnTNumsCon(dataJson.getInteger("l1wwdcn_TNumsCon"));
             decision.setPaL1wwdcnTNumsConBank(dataJson.getInteger("l1wwdcn_TNumsCon_bank"));
             decision.setPaL1wwdcnTNumsConCf(dataJson.getInteger("l1wwdcn_TNumsCon_cf"));
