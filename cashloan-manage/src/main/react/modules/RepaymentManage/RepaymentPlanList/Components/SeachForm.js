@@ -39,7 +39,7 @@ let SeachForm = React.createClass({
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
         }
-        window.open("/modules/manage/repayment/plan/export.htm?searchParams="+JSON.stringify(json));
+        window.open("/modules/manage/repayment/plan/export.htm?searchParams="+encodeURI(JSON.stringify(json)));
 
     },
     disabledDate(startValue) {

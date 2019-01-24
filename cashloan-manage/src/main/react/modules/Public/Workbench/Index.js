@@ -176,8 +176,8 @@ export default React.createClass({
                             <div className='blk-number'>{formsToday.todayDeferredCnt}</div>
                         </div>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>今日逾期率</div>
-                            <div className='blk-number'>{formsToday.todayOverdueRate}<span style={{ fontSize: '12px' }}>% </span></div>
+                            <div className='blk-title'>今日还款率</div>
+                            <div className='blk-number'>{formsToday.todayShouldCntRate}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
                     </div>
                 </div>

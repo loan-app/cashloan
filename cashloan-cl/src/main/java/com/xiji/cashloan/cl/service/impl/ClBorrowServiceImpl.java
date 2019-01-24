@@ -1786,7 +1786,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				SceneBusinessLog sceneLog = null;
 				for(TppServiceInfoModel info : infoList){
 					//忽略新颜行为雷达查询
-					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusId())) {
+					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusNid())) {
 						continue;
 					}
 					boolean needExcute = sceneBusinessLogService.needExcute(realBorrow.getUserId(),info.getBusId(),info.getGetWay(),info.getPeriod());
