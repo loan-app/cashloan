@@ -5,12 +5,15 @@ package com.xiji.cashloan.cl.model.pay.helipay.vo.response;
  * @Date: 2019/1/23 20:11
  * @Description:
  */
-public class HeliPayForNodifyVo {
+public class HeliPayForPaymentResultVo {
     private String rt1_bizType;
     private String rt2_retCode;
     private String rt3_retMsg;
     private String rt4_customerNumber;
     private String rt5_orderId;
+    /**
+     * 平台流水号
+     */
     private String rt6_serialNumber;
     private String rt7_orderStatus;
     private String rt8_notifyType;

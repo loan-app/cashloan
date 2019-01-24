@@ -5,6 +5,7 @@ import com.fuiou.mpay.encrypt.DESCoderFUIOU;
 import com.fuiou.mpay.encrypt.RSAUtils;
 import com.fuiou.util.MD5;
 import com.xiji.cashloan.cl.domain.PayLog;
+import com.xiji.cashloan.cl.model.pay.BasePay;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
