@@ -5,7 +5,6 @@ import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.service.SystemCountService;
 import com.xiji.cashloan.core.common.util.DateUtil;
-import org.apache.http.client.utils.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -178,7 +177,7 @@ public class SystemCountServiceImpl implements SystemCountService {
 			rtMap.put("passApr", 0);
 		}
 
-		Integer borrowLoan = systemCountMapper.countBorrowLoan(param);
+		Double borrowLoan = systemCountMapper.countBorrowLoan(param);
 		rtMap.put("borrowLoan", borrowLoan);
 
 		Integer borrowRepay = systemCountMapper.countBorrowRepay(param);
@@ -190,9 +189,9 @@ public class SystemCountServiceImpl implements SystemCountService {
 		List<ManageBRepayModel> brs = borrowRepayMapper.listModel(borrowRepayParams);
 
 		int todayShouldCnt =  brs.size();
-		int todayRepayCnt = 0;
-		int todayNotRepayCnt = 0;
-		int todayDeferredCnt = 0;
+		int todayRepayCnt = 0;//今日结清
+		int todayNotRepayCnt = 0;//今日待还
+		int todayDeferredCnt = 0;//今日展期
 		for (ManageBRepayModel br : brs) {
 			if ("10".equals(br.getState())) {
 				todayRepayCnt++;
@@ -204,9 +203,11 @@ public class SystemCountServiceImpl implements SystemCountService {
 				todayDeferredCnt++;
 			}
 		}
-		double todayOverdueRate = 0;
+		// double todayOverdueRate = 0;
+		double todayShouldCntRate = 0;
 		if (todayShouldCnt != 0) {
-			todayOverdueRate = todayNotRepayCnt * 100 / (double) todayShouldCnt;
+			// todayOverdueRate = todayNotRepayCnt * 100 / (double) todayShouldCnt;
+			todayShouldCntRate = todayRepayCnt* 100 / (double) todayShouldCnt;
 		}
 
 		rtMap.put("todayShouldCnt", todayShouldCnt);
@@ -214,7 +215,8 @@ public class SystemCountServiceImpl implements SystemCountService {
 		rtMap.put("todayNotRepayCnt", todayNotRepayCnt);
 		rtMap.put("todayDeferredCnt", todayDeferredCnt);
 
-		rtMap.put("todayOverdueRate", String.format("%.2f", todayOverdueRate));
+		//rtMap.put("todayOverdueRate", String.format("%.2f", todayOverdueRate));
+		rtMap.put("todayShouldCntRate",BigDecimalUtil.decimal(todayShouldCntRate,2));
 
         if (register > 0){
         	rtMap.put("borrowRate",BigDecimalUtil.decimal(borrowLoan/register*100,2));
