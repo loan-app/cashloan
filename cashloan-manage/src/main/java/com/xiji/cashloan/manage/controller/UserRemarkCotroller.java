@@ -63,7 +63,7 @@ public class UserRemarkCotroller extends BaseController {
      * 查询用户备注信息列表
      * @throws Exception
      */
-    @RequestMapping(value = "/modules/manage/user/remark/list.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/modules/manage/user/remark/list.htm", method = RequestMethod.GET)
     @RequiresPermission(code = "modules:manage:user:remark:list",name = "备注列表")
     public void list(@RequestParam(value="searchParams",required=false) String searchParams,
                      @RequestParam(value = "current") int currentPage,

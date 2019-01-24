@@ -173,6 +173,34 @@ export default React.createClass({
 
     showUserRemark(title, record, canEdit) {
 
+        // var record = record;
+        //
+        // Utils.ajaxData({
+        //     url: '/modules/manage/user/remark/list.htm',
+        //     data: {
+        //         userId: record.userId,
+        //         pageSize: 3,
+        //         current: 1,
+        //     },
+        //     method: 'get',
+        //     callback: (result) => {
+        //         const pagination = this.state.pagination;
+        //         pagination.current = result.current;
+        //         pagination.pageSize =result.pageSize;
+        //         pagination.total = result.page.total;
+        //         if (!pagination.current) {
+        //             pagination.current = 1
+        //         };
+        //         //console.log(result.data.logs);
+        //         this.setState({
+        //             dataRecord: result.data,
+        //             canEdit: canEdit,
+        //             visibleRemark: true,
+        //             title: title,
+        //             record: record,
+        //         });
+        //     }
+        // });
         this.setState({
             visibleRemark: true,
             canEdit: canEdit,
@@ -286,7 +314,11 @@ export default React.createClass({
 
              <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
                              dataRecord={state.dataRecord}  canEdit={state.canEdit} />
-         </div>
+
+             {/*<UserRemark_1 ref="UserRemark_1"  visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}*/}
+                              {/*record={state.selectedrecord} dataRecord={state.dataRecord} pagination={state.pagination} canEdit={state.canEdit}/>*/}
+
+      </div>
     );
   }
 })

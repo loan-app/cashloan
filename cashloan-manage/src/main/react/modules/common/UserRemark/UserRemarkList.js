@@ -54,6 +54,7 @@ var UserRemarkList = React.createClass({
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',
             data: params,
+            method: 'get',
             callback: (result) => {
                 const pagination = this.state.pagination;
                 pagination.current = params.current;
