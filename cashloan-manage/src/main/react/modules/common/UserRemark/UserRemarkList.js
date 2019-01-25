@@ -1,6 +1,10 @@
 import React from 'react';
-import {Modal, Table,} from 'antd';
 
+import {Form, Modal, Table} from 'antd';
+import SaveUserRemark from '../UserRemark/SaveUserRemark';
+
+const FormItem = Form.Item;
+var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
 var UserRemarkList = React.createClass({
     getInitialState() {
@@ -16,24 +20,50 @@ var UserRemarkList = React.createClass({
 
     handleCancel() {
         this.props.hideModal();
+        this.refs.UserRemark_1.resetFields();
     },
 
     componentWillReceiveProps(nextProps,nextState){
         this.setState({
-            userId: nextProps.record
+            data: nextProps.dataRecord,
+            pagination:nextProps.pagination
         })
-        // var searchdata = {};
-        // var record=nextProps.record;
-        //
-        // console.log('record_1 = '+nextProps);
-        // console.log('userId = '+record);
-        // searchdata = {
-        //     userId:record
-        //
-        // }
-        // var params=objectAssign({},{pageSize: 10, current: 1,}, {search:JSON.stringify(searchdata)  })
-        // this.fetch(params);
-        this.fetch();
+    },
+
+    handleOk(){
+        let me = this;
+        let params = this.refs.UserRemark_1.getFieldsValue();
+        this.refs.UserRemark_1.validateFields((errors, values) => {
+            if (!!errors) {
+                console.log('Errors in form!!!');
+                return;
+            }
+            if (!params.remark) {
+                alert("请填写备注");
+                return;
+            }
+            var tips = '是否确定提交';
+            confirm({
+                title: tips,
+                onOk: function () {
+                    Utils.ajaxData({
+                        url: '/modules/manage/user/remark/save.htm',
+                        data: {remark:params.remark,userId:params.userId},
+                        callback: (result) => {
+                            if (result.code == 200) {
+                                me.handleCancel();
+                            };
+                            let resType = result.code == 200 ? 'success' : 'warning';
+                            Modal[resType]({
+                                title: result.msg,
+                            });
+                        }
+                    });
+                },
+                onCancel: function () { }
+            })
+            this.handleCancel();
+        })
     },
 
     handleTableChange(pagination, filters, sorter) {
@@ -41,7 +71,7 @@ var UserRemarkList = React.createClass({
         pager.current = pagination.current;
         pager.pageSize = pagination.pageSize;
         pager.userId = this.state.record,
-            console.log('pager.userId = '+ this.state.record);
+            pager.searchParams = JSON.stringify({userId:this.props.record})
             this.setState({
                 pagination: pager,
             });
@@ -54,11 +84,13 @@ var UserRemarkList = React.createClass({
         if (!params.pageSize) {
             var params = {};
             params = {
-                pageSize: 2,
+                pageSize: 5,
                 current: 1,
-                userId: this.props.record,
             }
-            console.log('fetch userId = '+ this.props.record);
+        }
+
+        if(!params.searchParams){
+            params.searchParams = JSON.stringify({userId:this.state.record});
         }
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',
@@ -92,19 +124,27 @@ var UserRemarkList = React.createClass({
             title: '操作人',
             dataIndex: "operateName",
         }];
+        const formItemLayout = {
+            labelCol: {
+                span: 8
+            },
+            wrapperCol: {
+                span: 12
+            },
+        };
+        var modalBtns  = [
+            <button key="back" className="ant-btn" onClick={this.handleCancel}>关闭</button>,
+            <button key="go" className="ant-btn" onClick={this.handleOk}>保存</button>
+        ];
         return (
-            <Modal title={this.props.title} visible={this.props.visible} onCancel={this.handleCancel} width="1000">
+            <Modal title={this.props.title} visible={this.props.visible} onCancel={this.handleCancel} width="800" footer={modalBtns} >
                 <div className="block-panel">
-                    <div className="actionBtns" style={{ marginBottom: 16 }}>
-                        <button className="ant-btn" >
-                            新增
-                        </button>
-                    </div>
                     <Table columns={columns} rowKey={this.rowKey}  size="middle"
                            dataSource={this.state.data}
                            pagination={this.state.pagination}
                            loading={this.state.loading}
                            onChange={this.handleTableChange}  />
+                    <SaveUserRemark ref="UserRemark_1" canEdit={this.props.canEdit} userId={this.props.record} />
                 </div>
             </Modal>
 

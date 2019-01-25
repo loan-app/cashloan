@@ -7,7 +7,7 @@ import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
-import com.xiji.cashloan.core.common.web.controller.BaseController;
+import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Scope("prototype")
 @Controller
-public class UserRemarkCotroller extends BaseController {
+public class UserRemarkCotroller extends ManageBaseController {
 
     @Resource
     private UserRemarkService userRemarkService;
@@ -38,15 +38,21 @@ public class UserRemarkCotroller extends BaseController {
     @RequestMapping(value = "/modules/manage/user/remark/save.htm", method = RequestMethod.POST)
     @RequiresPermission(code = "modules:manage:user:remark:save",name = "保存用户备注信息")
     public void save(@RequestParam(value="userId") Long userId,
-                     @RequestParam(value="remark") String remark,
-                     @RequestParam(value = "operateId") Long operateId) throws Exception {
+                     @RequestParam(value="remark") String remark) throws Exception {
+        Map<String,Object> result = new HashMap<>();
+        SysUser sysUser = getLoginUser(request);
+        if (sysUser == null){
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "请重新登录");
+            ServletUtils.writeToResponse(response, result);
+            return;
+        }
         UserRemark userRemark = new UserRemark();
         userRemark.setCreateTime(new Date());
         userRemark.setOperateTime(new Date());
         userRemark.setRemark(remark);
-        userRemark.setOperateId(operateId);
+        userRemark.setOperateId(sysUser.getId());
         userRemark.setUserId(userId);
-        Map<String,Object> result = new HashMap<>();
         int count = userRemarkService.insert(userRemark);
         if (count > 0) {
             result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
