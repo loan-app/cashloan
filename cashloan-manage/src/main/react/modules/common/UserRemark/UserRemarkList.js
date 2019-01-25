@@ -13,12 +13,20 @@ var UserRemarkList = React.createClass({
     rowKey(record) {
         return record.id;
     },
-    componentWillReceiveProps(nextProps){
+
+    handleCancel() {
+        this.props.hideModal();
+    },
+
+    componentWillReceiveProps(nextProps,nextState){
+        this.setState({
+            userId: nextProps.record
+        })
         // var searchdata = {};
         // var record=nextProps.record;
         //
-        // console.log('record = '+nextProps.record);
-        // console.log('userId = '+this.state.data);
+        // console.log('record_1 = '+nextProps);
+        // console.log('userId = '+record);
         // searchdata = {
         //     userId:record
         //
@@ -32,7 +40,8 @@ var UserRemarkList = React.createClass({
         const pager = this.state.pagination;
         pager.current = pagination.current;
         pager.pageSize = pagination.pageSize;
-        pager.userId = this.props.record.userId,
+        pager.userId = this.state.record,
+            console.log('pager.userId = '+ this.state.record);
             this.setState({
                 pagination: pager,
             });
@@ -45,11 +54,11 @@ var UserRemarkList = React.createClass({
         if (!params.pageSize) {
             var params = {};
             params = {
-                pageSize: 5,
+                pageSize: 2,
                 current: 1,
-                userId: this.props.data,
+                userId: this.props.record,
             }
-            console.log('fetch userId = '+ this.props.title);
+            console.log('fetch userId = '+ this.props.record);
         }
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',

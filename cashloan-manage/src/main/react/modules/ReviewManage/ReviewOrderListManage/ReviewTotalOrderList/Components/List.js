@@ -257,7 +257,8 @@ export default React.createClass({
       title: '备注',
       //dataIndex: 'remark'
         render(text, record) {
-            return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record, false)}>备注</a></div>
+          console.log('record == >'+record.userId)
+            return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
         }
     }, {
       title: '渠道',
@@ -313,7 +314,7 @@ export default React.createClass({
              record={state.selectedrecord} dataRecord={state.dataRecord}  canEdit={state.canEdit} selectedRowKeys1={state.selectedRowKeys1} />
 
              <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
-                             dataRecord={state.dataRecord}  canEdit={state.canEdit} />
+                             dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} />
 
              {/*<UserRemark_1 ref="UserRemark_1"  visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}*/}
                               {/*record={state.selectedrecord} dataRecord={state.dataRecord} pagination={state.pagination} canEdit={state.canEdit}/>*/}
