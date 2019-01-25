@@ -1777,14 +1777,6 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				return clBorrow;
 			}
 
-			//如果是复借用户,直接机审通过
-			int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
-			if (finishCount > 0) {
-				handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
-				clBorrow.setNeedApprove(false);
-				return clBorrow;
-			}
-
 			List<TppServiceInfoModel> infoList = sceneBusinessMapper.findTppServiceInfo();
 			//不需要执行有可用历史记录的数量
 			logger.debug("审核需要执行的接口信息"+JSONObject.toJSONString(infoList));
@@ -1877,6 +1869,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		Borrow borrow = getById(borrowId);
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
+
+		//如果是复借用户,直接机审通过
+		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
+		if (finishCount > 0) {
+			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
+			return;
+		}
 
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);
