@@ -17,6 +17,10 @@ public class HelipayUtil {
 //        return Global.getValue("helibao_transfer_url");
         return "http://test.trx.helipay.com/trx/transfer/interface.action";
     }
+    public static String quickPayUrl() {
+//        return Global.getValue("helibao_quickpay_api_url");
+        return "http://test.trx.helipay.com/trx/quickPayApi/interface.action";
+    }
     public static String customerNumber() {
 //        return Global.getValue("helibao_customer_no");
         return "C1800000002";
