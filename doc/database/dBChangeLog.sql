@@ -462,7 +462,8 @@ INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本下载地址', 'la
 ALTER table cl_borrow add is_overdue varchar(2) DEFAULT '10' COMMENT '是否逾期 10：未逾期，20 ：已逾期';
 -- 同步更新是否逾期字段
 update cl_borrow SET is_overdue = '20' where id in ( select borrow_id from cl_borrow_repay where penalty_day > 0) and is_overdue = '10';
---用户备注表
+-- 用户备注表
+DROP TABLE IF EXISTS cl_user_remark;
 CREATE TABLE `cl_user_remark` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
@@ -471,9 +472,7 @@ CREATE TABLE `cl_user_remark` (
   `operate_time` datetime NOT NULL COMMENT '操作时间',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='用户备注表'
-
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户备注表';
 
 
 -- 借款订单-运营商记录表

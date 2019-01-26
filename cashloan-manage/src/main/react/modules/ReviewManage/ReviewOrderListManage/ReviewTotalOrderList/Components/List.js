@@ -249,6 +249,17 @@ export default React.createClass({
       title: '渠道',
       dataIndex: 'channelName',
     }, {
+        title: '是否复借',
+        dataIndex: 'again',
+        render:(text,record) =>  {
+            switch(record.again){
+                case "10":
+                    return "否";
+                case "20":
+                    return <span style={{ color: "red" }}>是</span>;
+            }
+        }
+    }, {
       title: '审核状态',
       dataIndex: 'state',
       render:(text,record) =>  {
@@ -284,6 +295,7 @@ export default React.createClass({
       }
     }];
     var state = this.state;
+      console.log(state);
     return (
       <div className="block-panel">
           <div className="actionBtns" style={{ marginBottom: 16 }}>

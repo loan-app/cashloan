@@ -11,7 +11,6 @@ let SaveUserRemark = React.createClass({
     render() {
         let { getFieldProps } = this.props.form;
         let props = this.props;
-        console.log(this.props.form);
         const formItemLayout = {
             labelCol: {
                 span: 6

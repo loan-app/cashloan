@@ -89,6 +89,11 @@ public class ManualReviewOrderModel extends ManualReviewOrder {
      */
     private String channelName;
 
+    /**
+     * 是否复借
+     */
+    private String again;
+
     public Double getRealAmount() {
         return realAmount;
     }
@@ -192,5 +197,13 @@ public class ManualReviewOrderModel extends ManualReviewOrder {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public String getAgain() {
+        return again;
+    }
+
+    public void setAgain(String again) {
+        this.again = again;
     }
 }
