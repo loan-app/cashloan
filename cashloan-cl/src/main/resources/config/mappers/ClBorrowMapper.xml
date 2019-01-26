@@ -170,7 +170,7 @@
             remark = #{remark,jdbcType=VARCHAR},
             ip = #{ip,jdbcType=VARCHAR},
             sign_service_id = #{signServiceId,jdbcType=VARCHAR},
-            is_overdue = #{isOverdue,jdbcType=VARCHAR},
+            is_overdue = #{isOverdue,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=BIGINT}
     </update>
 
