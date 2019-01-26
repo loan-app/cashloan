@@ -20,7 +20,7 @@ var UserRemarkList = React.createClass({
 
     handleCancel() {
         this.props.hideModal();
-        this.refs.UserRemark_1.resetFields();
+        this.refs.SaveUserRemark.resetFields();
     },
 
     componentWillReceiveProps(nextProps,nextState){
@@ -32,8 +32,8 @@ var UserRemarkList = React.createClass({
 
     handleOk(){
         let me = this;
-        let params = this.refs.UserRemark_1.getFieldsValue();
-        this.refs.UserRemark_1.validateFields((errors, values) => {
+        let params = this.refs.SaveUserRemark.getFieldsValue();
+        this.refs.SaveUserRemark.validateFields((errors, values) => {
             if (!!errors) {
                 console.log('Errors in form!!!');
                 return;
@@ -144,7 +144,7 @@ var UserRemarkList = React.createClass({
                            pagination={this.state.pagination}
                            loading={this.state.loading}
                            onChange={this.handleTableChange}  />
-                    <SaveUserRemark ref="UserRemark_1" canEdit={this.props.canEdit} userId={this.props.record} />
+                    <SaveUserRemark ref="SaveUserRemark" canEdit={this.props.canEdit} userId={this.props.record} />
                 </div>
             </Modal>
 

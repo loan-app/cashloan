@@ -246,12 +246,6 @@ export default React.createClass({
       title: '审核人',
       dataIndex: 'userName',
     }, {
-      title: '备注',
-        render(text, record) {
-          console.log('record == >'+record.userId)
-            return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
-        }
-    }, {
       title: '渠道',
       dataIndex: 'channelName',
     }, {
@@ -269,7 +263,13 @@ export default React.createClass({
                     return "审核拒绝";
         }
       }
-    }, {
+    },{
+        title: '备注',
+        render(text, record) {
+            console.log('record == >'+record.userId)
+            return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
+        }
+    },{
       title: '操作',
       render(text, record) {
         if(record.state == "10"){
