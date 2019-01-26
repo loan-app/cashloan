@@ -384,12 +384,22 @@ export default React.createClass({
             title: '实际还款金额(元)',
             dataIndex: 'repayAmount'
         }, {
+            title: '是否复借',
+            dataIndex: 'again',
+            render:(text,record) =>  {
+                switch(record.again){
+                    case "10":
+                        return "否";
+                    case "20":
+                        return <span style={{ color: "red" }}>是</span>;
+                }
+            }
+        }, {
             title: '订单状态',
             dataIndex: "stateStr",
         },{
             title: '备注',
             render(text, record) {
-                console.log('record == >'+record.userId)
                 return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
             }
         },{
