@@ -27,7 +27,7 @@ create table cl_decision
   `mx_idcard_check` varchar(32) NOT NULL DEFAULT '' COMMENT '身份证号码有效性',
   `mx_email_check` varchar(32) NOT NULL DEFAULT '' COMMENT '邮箱有效性',
   `mx_address_check` varchar(32) NOT NULL DEFAULT '' COMMENT '地址有效性',
-  `mx_call_data_check` varchar(100) NOT NULL DEFAULT '' COMMENT '通话记录完整性',
+  `mx_call_data_check` varchar(255) NOT NULL DEFAULT '' COMMENT '通话记录完整性',
   `mx_idcard_match` varchar(32) NOT NULL DEFAULT '' COMMENT '身份证号码是否与运营商数据匹配',
   `mx_name_match` varchar(32) NOT NULL DEFAULT '' COMMENT '姓名是否与运营商数据匹配',
   `mx_mobile_silence_3m` varchar(10) NOT NULL DEFAULT '' COMMENT '号码沉默度(近3月) 0-10分，分数越低越活跃',
