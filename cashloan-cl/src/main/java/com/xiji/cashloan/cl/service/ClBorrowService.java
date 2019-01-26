@@ -213,7 +213,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param borrow
 	 * @return
 	 */
-	ClBorrowModel rcBorrowApply(Borrow borrow,String tradePwd,String mobileType) throws Exception;
+	ClBorrowModel rcBorrowApply(Borrow borrow,String tradePwd,String mobileType, boolean xwldFlag) throws Exception;
 	
 	/**
 	 * 借款规则审核

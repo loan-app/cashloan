@@ -29,7 +29,7 @@
     		and state in ('20','26') 
     </select>
     <!-- 统计当日借款申请放款数量 -->
-    <select id="countBorrowLoan" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    <select id="countBorrowLoan" resultType="java.lang.Double" parameterType="java.util.HashMap">
     	select count(DISTINCT borrow_id) from cl_borrow_progress 
     	where TO_DAYS(create_time)-TO_DAYS(SYSDATE())=0
     	and state = '30'

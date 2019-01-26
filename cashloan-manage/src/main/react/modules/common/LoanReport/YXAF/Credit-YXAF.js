@@ -78,7 +78,7 @@ var Operator = React.createClass({
         Utils.getData({
             url: '/modules/manage/yixin/risk/report/list.htm',
             data: {
-                userId: this.props.userId,
+                borrowId: this.props.borrowId,
             },
             callback: (result) => {
                 this.setState({

@@ -10,13 +10,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -527,6 +521,16 @@ public abstract class BaseController extends AbstractController {
 	    vCode.write(response.getOutputStream());
 	    response.getOutputStream().flush();
 	}
-	
-	
+
+	public static Map<String,Object> getParams(HttpServletRequest request) {
+		Map<String, String[]> rec = request.getParameterMap();
+		Map<String, Object> result = new LinkedHashMap<String, Object>();
+
+		for (Map.Entry<String, String[]> entry : rec.entrySet()) {
+			String name = entry.getKey();
+			Object value = entry.getValue()[0];
+			result.put(name, value);
+		}
+		return result;
+	}
 }

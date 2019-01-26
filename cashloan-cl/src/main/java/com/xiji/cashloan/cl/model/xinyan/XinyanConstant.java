@@ -17,7 +17,7 @@ public class XinyanConstant {
     //获取预订单号
     public static final int XWLD_PRE_ORDER_NO = 1;
     //行为雷达接口版本号
-    public static final String XWLD_VERSION = "1.0.3";
+    public static final String XWLD_VERSION = "1.3.0";
     //行为雷达产品类型
     public static final String PRODUCT_TYPE_XWLD = "XWLDBG";
 

@@ -196,20 +196,21 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 while (iterator.hasNext()){
                     countBorrowApply = countBorrowApply +1;
                     String str = iterator.next().toString();
-                    if (JSON.parseObject(str).get("approvalStatus") != null){
-                        String result = JSON.parseObject(str).get("approvalStatus").toString();
+                    JSONObject json = JSON.parseObject(str);
+                    if (json.get("approvalStatus") != null){
+                        String result = json.get("approvalStatus").toString();
                         if ("ACCEPT".equals(result)){
                             countApprovalAccept = countApprovalAccept +1;
                         }
                     }
-                    if (JSON.parseObject(str).get("overdueM3") != null){
+                    if (json.get("overdueM3") != null) {
                         countOverdueHistoryM3 = countOverdueHistoryM3 +1;
                     }
-                    if (JSON.parseObject(str).get("overdueM6") != null){
+                    if (json.get("overdueM6") != null) {
                         countOverdueHistoryM6 = countOverdueHistoryM6 +1;
                     }
-                    if (JSON.parseObject(str).get("overdueTotal") != null){
-                        countOverdueHistory = countOverdueHistory +1;
+                    if (StringUtil.isNotBlank(json.getString("overdueStatus"))) {
+                        countOverdueHistory = countOverdueHistory + 1;
                     }
                 }
             }
@@ -331,8 +332,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private void setXinyanXwld(XinyanXwld xinyanXwld, Decision decision) {
         if(xinyanXwld != null && xinyanXwld.getData() != null) {
             JSONObject dataJson = JSONObject.parseObject(xinyanXwld.getData());
-            if (dataJson == null){
-                return;
+            if(dataJson == null){
+                return ;
             }
             decision.setXyLoansScore(dataJson.getString("loans_score"));
             decision.setXyLoansCredibility(dataJson.getString("loans_credibility"));
@@ -668,8 +669,10 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     String checkResult = jsonObject.getString("result");
                     switch (checkPoint) {
                         case "phone_silent":
-                            decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
-                            break;
+                            if(checkResult.indexOf("天无通话记录") > -1) {
+                                decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
+                                break;
+                            }
                         case "contact_loan":
                             decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
                             decision.setMxContactLoan(checkResult);

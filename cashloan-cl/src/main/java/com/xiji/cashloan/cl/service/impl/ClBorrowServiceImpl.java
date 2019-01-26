@@ -1717,7 +1717,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	@Override
-	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType) throws Exception {
+	public ClBorrowModel rcBorrowApply(final Borrow borrow, String tradePwd, String mobileType, boolean xwldFlag) throws Exception {
 		ClBorrowModel clBorrow = new ClBorrowModel();
 		Borrow realBorrow = null;
 		// 处理用户通话详情统计
@@ -1777,8 +1777,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				clBorrow.setNeedApprove(false);
 				return clBorrow;
 			}
-			
-			
+
 			List<TppServiceInfoModel> infoList = sceneBusinessMapper.findTppServiceInfo();
 			//不需要执行有可用历史记录的数量
 			logger.debug("审核需要执行的接口信息"+JSONObject.toJSONString(infoList));
@@ -1786,6 +1785,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if (infoList != null && infoList.size() > 0) {
 				SceneBusinessLog sceneLog = null;
 				for(TppServiceInfoModel info : infoList){
+					//忽略新颜行为雷达查询
+					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusNid())) {
+						continue;
+					}
 					boolean needExcute = sceneBusinessLogService.needExcute(realBorrow.getUserId(),info.getBusId(),info.getGetWay(),info.getPeriod());
 					if(needExcute){
 						sceneLog = new SceneBusinessLog(info.getSceneId(), realBorrow.getId(), realBorrow.getUserId(), info.getTppId(), info.getBusId(), info.getBusNid(), realBorrow.getCreateTime(),info.getType());
@@ -1867,6 +1870,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		Borrow borrow = getById(borrowId);
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
+
+		//如果是复借用户,直接机审通过
+		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
+		if (finishCount > 0) {
+			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
+			return;
+		}
 
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);

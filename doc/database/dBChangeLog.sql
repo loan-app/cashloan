@@ -447,9 +447,9 @@ delete from arc_sys_role_menu where menu_id in (1001,1002,1003,1006);
 -- 修改app_list长度
 ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用程序列表';
 -- 添加认证更新周期数据
-INSERT INTO `arc_sys_config` VALUES (null, '110', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');
---运营商周期更新
-INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 1/1 * ?', 'com.xiji.cashloan.manage.job.QuartzUserAuth', '0', '0', '20', '2017-03-27 14:53:27');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');
+
+INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 * * ?', 'com.xiji.cashloan.manage.job.QuartzUserAuth', '0', '0', '20', '2017-03-27 14:53:27');
 
 --最新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
@@ -534,3 +534,12 @@ INSERT INTO `arc_sys_config` VALUES (null, '10', '展期天数', 'delay_days', '
 
 -- 还款记录新增还款类型字段
 ALTER TABLE cl_borrow_repay_log add column `type` varchar(10)  default '10' COMMENT '还款类型 10-还款 20-展期还款';
+
+-- 新颜预订单号请求url
+INSERT INTO `arc_sys_config` VALUES (null, '100', '预订单号请求地址', 'xy_pre_order_url', 'https://test.xinyan.com/entry/sdk/preOrder', '1', '预订单号获取请求地址', '1');
+
+-- 规则表字段长度修改
+ALTER TABLE `arc_rule_engine_config` change ccolumn `ccolumn` varchar(100) DEFAULT '' COMMENT '设置关联表列';
+ALTER TABLE `arc_rule_engine_config` change column_comment `column_comment` varchar(255) DEFAULT '' COMMENT '字段名称';
+ALTER TABLE `arc_borrow_rule_result` change col_nid `col_nid` varchar(100) NOT NULL DEFAULT '' COMMENT '列名英文名称';
+ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';

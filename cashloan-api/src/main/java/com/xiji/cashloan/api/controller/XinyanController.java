@@ -3,9 +3,11 @@ package com.xiji.cashloan.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.cl.service.XinyanRiskService;
+import com.xiji.cashloan.cl.util.black.JSONUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
+import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
@@ -25,10 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class XinyanController extends BaseController {
 
     @RequestMapping(value = "/api/act/xinyan/preOrderNo.htm")
     public void protocolDetail() {
+        logger.info("发起借款成功,APP获取预订单号");
         long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
         UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
         if(userBaseInfo == null) {
@@ -73,11 +75,13 @@ public class XinyanController extends BaseController {
         result.put(Constant.RESPONSE_DATA, data);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
+        logger.info("APP获取预订单号返回结果:" + JsonUtil.toString(result));
         ServletUtils.writeToResponse(response, result);
     }
 
     @RequestMapping(value = "/api/xinyanNotify.htm", method= RequestMethod.POST)
-    public void protocolDetail(@RequestParam(value="result_data") String resultData) {
+    public void protocolDetail(HttpServletRequest request) {
+        String resultData = getRequestParams(request);
         logger.info("新颜行为雷达回调数据："+ resultData);
         final long borrowId = xinyanRiskService.saveXWLDNotify(resultData);
         if(borrowId != 0l) {
@@ -96,5 +100,24 @@ public class XinyanController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public String getRequestParams(HttpServletRequest request) {
+        String params = "";
+        try {
+            request.setCharacterEncoding("UTF-8");
+            InputStream in = request.getInputStream();
+            StringBuilder sb = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            params = sb.toString();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return params;
     }
 }

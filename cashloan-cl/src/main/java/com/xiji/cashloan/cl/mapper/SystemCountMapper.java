@@ -1,9 +1,9 @@
 package com.xiji.cashloan.cl.mapper;
 
+import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+
 import java.util.List;
 import java.util.Map;
-
-import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
 
 /**
@@ -48,7 +48,7 @@ public interface SystemCountMapper {
 	 * @param param 
 	 * @return
 	 */
-	Integer countBorrowLoan(Map<String, Object> param);
+	double countBorrowLoan(Map<String, Object> param);
 	
 	/**
 	 * 统计当日还款量

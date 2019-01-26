@@ -69,7 +69,7 @@ public class ManageBorrowTest extends ManageBaseController{
 			) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>();
 		Borrow borrow = new Borrow(1l, amount, timeLimit, cardId, "", "", "","");
-		borrow = clBorrowService.rcBorrowApply(borrow,"BEE2D38199B4E26D15235E0D7D3390D3","");
+		borrow = clBorrowService.rcBorrowApply(borrow,"BEE2D38199B4E26D15235E0D7D3390D3","", Boolean.TRUE);
 		if (borrow != null && borrow.getId() > 0) {
 			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "申请成功");
