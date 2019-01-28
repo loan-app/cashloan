@@ -18,15 +18,23 @@ public class MessageHandle {
 
 	private static final Log log = LogFactory.getLog(MessageHandle.class);
 
-
-	private static final String CERT_PATH = "d:/helipay.cer";    //合利宝cert
-	private static final String PFX_PATH = "d:/merchant0002.pfx";        //商户pfx
-	private static final String PFX_PWD = "1234qwer";    //pfx密码
+	private static String CERT_PATH = "d:/helipay.cer";    //合利宝cert
+	private static String PFX_PATH = "d:/merchant0002.pfx";        //商户pfx
+	private static String PFX_PWD = "1234qwer";    //pfx密码
 	private static final String ENCRYPTION_KEY = "encryptionKey";
 	private static final String SPLIT = "&";
 	private static final String SIGN = "sign";
 
+	public static void setCertPath(String path) {
+		CERT_PATH = path;
+	}
+	public static void setPfxPath(String path) {
+		PFX_PATH = path;
+	}
 
+	public static void setPfxPwd(String pfxPwd) {
+		PFX_PWD = pfxPwd;
+	}
 	/**
 	 * 获取map
 	 */
@@ -71,15 +79,17 @@ public class MessageHandle {
 			retMap.put(ENCRYPTION_KEY, encrytionKey);
 		}
 
+		if (HelipayUtil.isLogSign()) {
+			log.info("原签名串：" + sb.toString());
+		}
 
-		log.info("原签名串：" + sb.toString());
 		//使用商户的私钥进行签名
 		PrivateKey privateKey = RSA.getPrivateKey(PFX_PATH, PFX_PWD);
 		String sign = RSA.sign(sb.toString(), privateKey);
 		retMap.put(SIGN, sign);
-		log.info("签名sign：" + sign);
-
-
+		if (HelipayUtil.isLogSign()) {
+			log.info("签名sign：" + sign);
+		}
 		return retMap;
 	}
 
@@ -113,16 +123,21 @@ public class MessageHandle {
 			}
 
 		}
-		log.info("response验签原签名串：" + sb.toString());
 
+		if (HelipayUtil.isLogSign()) {
+			log.info("response验签原签名串：" + sb.toString());
+		}
 		//使用合利宝的公钥进行验签
 		PublicKey publicKey = RSA.getPublicKeyByCert(CERT_PATH);
 		flag = RSA.verifySign(sb.toString(), sign, publicKey);
-		if (flag) {
-			log.info("验签成功");
-		} else {
-			log.info("验签失败");
+		if (HelipayUtil.isLogSign()) {
+			if (flag) {
+				log.info("验签成功");
+			} else {
+				log.info("验签失败");
+			}
 		}
+
 		return flag;
 
 	}

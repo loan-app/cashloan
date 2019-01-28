@@ -6,5 +6,13 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
  * @Description:
  */
 public class PaymentQueryVo {
+    private String orderNo;
 
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
 }

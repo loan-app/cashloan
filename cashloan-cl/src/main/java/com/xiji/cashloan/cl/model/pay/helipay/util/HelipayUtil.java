@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
 import com.xiji.cashloan.core.common.util.OrderNoUtil;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import tool.util.StringUtil;
 
 /**
@@ -13,6 +15,7 @@ import tool.util.StringUtil;
  */
 public class HelipayUtil {
     public static final String split="&";
+    public static final String IDCARD="IDCARD";
     public static String transferUrl() {
 //        return Global.getValue("helibao_transfer_url");
         return "http://test.trx.helipay.com/trx/transfer/interface.action";
@@ -43,4 +46,14 @@ public class HelipayUtil {
         return "xjhlb" + OrderNoUtil.getSerialNumber();
     }
 
+    public static String getTimeStamp() {
+        SimpleDateFormat STRING_FORMAT_TIMESTAMP = new SimpleDateFormat("yyyyMMddHHmmss");
+        return STRING_FORMAT_TIMESTAMP.format(new Date());
+    }
+
+    public static boolean isLogSign() {
+//        String value = Global.getValue("helibao_log_open");
+//        return StringUtil.equals("open",value);
+        return true;
+    }
 }

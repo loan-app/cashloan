@@ -12,7 +12,7 @@ public class UnBindCardResponseVo {
 
     private String rt2_retCode;
 
-    @SignExclude
+//    @SignExclude
     private String rt3_retMsg;
 
     private String rt4_customerNumber;

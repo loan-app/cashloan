@@ -41,5 +41,24 @@ public class HelipayConstant {
     public static final String PAYTYPE_RECEIVER = "RECEIVER";
     /** 是否加急 */
     public static final String PAY_URGENCY = "true";
+    /** 加密方式 */
+    public static final String SIGNATURE_TYPE = "MD5WITHRSA";
+    /** 币种 */
+    public static final String CURRENCY_CNY = "CNY";
+    /** 订单状态 成功 */
+    public static final String ORDER_STATUS_SUCCESS = "SUCCESS";
+    /** 订单状态 CANCELLED：已取消*/
+    public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
+    /** 订单状态 退款*/
+    public static final String ORDER_STATUS_REFUNDED = "REFUNDED";
+    /** 订单状态 失败*/
+    public static final String ORDER_STATUS_FAILED = "FAILED";
+    /** 订单状态 处理中*/
+    public static final String ORDER_STATUS_DOING = "DOING";
+
+    /** 交易状态 成功*/
+    public static final String ORDER_RETCODE_SUCCESS = "0000";
+    /** 交易状态 返回码8000，以订单状态为准*/
+    public static final String ORDER_RETCODE_NEED_ORDERSTATUS= "8000";
 
 }
