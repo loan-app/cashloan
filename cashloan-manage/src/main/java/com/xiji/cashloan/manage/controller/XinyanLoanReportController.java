@@ -102,7 +102,7 @@ public class XinyanLoanReportController extends BaseController {
     public void xwld(@RequestParam(value = "borrowId") Long borrowId){
         XinyanXwld xinyanXwld = xinyanXwldService.getByBorrowId(borrowId);
         JSONObject data = new JSONObject();
-        if(xinyanXwld != null) {
+        if(xinyanXwld != null && StringUtil.isNotBlank(xinyanXwld.getData())) {
             data = JSONObject.parseObject(xinyanXwld.getData());
         }
 
