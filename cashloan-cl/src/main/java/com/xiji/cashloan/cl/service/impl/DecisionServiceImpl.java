@@ -196,20 +196,21 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 while (iterator.hasNext()){
                     countBorrowApply = countBorrowApply +1;
                     String str = iterator.next().toString();
-                    if (JSON.parseObject(str).get("approvalStatus") != null){
-                        String result = JSON.parseObject(str).get("approvalStatus").toString();
+                    JSONObject json = JSON.parseObject(str);
+                    if (json.get("approvalStatus") != null){
+                        String result = json.get("approvalStatus").toString();
                         if ("ACCEPT".equals(result)){
                             countApprovalAccept = countApprovalAccept +1;
                         }
                     }
-                    if (JSON.parseObject(str).get("overdueM3") != null){
+                    if (json.get("overdueM3") != null) {
                         countOverdueHistoryM3 = countOverdueHistoryM3 +1;
                     }
-                    if (JSON.parseObject(str).get("overdueM6") != null){
+                    if (json.get("overdueM6") != null) {
                         countOverdueHistoryM6 = countOverdueHistoryM6 +1;
                     }
-                    if (JSON.parseObject(str).get("overdueTotal") != null){
-                        countOverdueHistory = countOverdueHistory +1;
+                    if (StringUtil.isNotBlank(json.getString("overdueStatus"))) {
+                        countOverdueHistory = countOverdueHistory + 1;
                     }
                 }
             }

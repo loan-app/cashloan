@@ -101,13 +101,13 @@ public class XinyanLoanReportController extends BaseController {
     @RequiresPermission(code = "modules:manage:xinyan:xwld:detail",name = "用户行为雷达信息")
     public void xwld(@RequestParam(value = "borrowId") Long borrowId){
         XinyanXwld xinyanXwld = xinyanXwldService.getByBorrowId(borrowId);
-        String data = StringUtil.EMPTY;
-        if(xinyanXwld != null) {
-            data = xinyanXwld.getData();
+        JSONObject data = new JSONObject();
+        if(xinyanXwld != null && StringUtil.isNotBlank(xinyanXwld.getData())) {
+            data = JSONObject.parseObject(xinyanXwld.getData());
         }
 
         Map<String,Object> result = new HashMap<>();
-        result.put(Constant.RESPONSE_DATA, JSONObject.parseObject(data));
+        result.put(Constant.RESPONSE_DATA, data);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
         ServletUtils.writeToResponse(response,result);

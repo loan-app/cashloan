@@ -24,6 +24,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="ip" property="ip" jdbcType="VARCHAR" />
         <result column="sign_service_id" property="signServiceId" jdbcType="VARCHAR" />
+        <result column="is_overdue" property="isOverdue" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="YixinShareModelMap" type="com.xiji.cashloan.cl.model.YixinShareModel">
@@ -44,7 +45,7 @@
 
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,user_id,order_no,amount,real_amount,fee,create_time,time_limit,state,again,card_id,service_fee,info_auth_fee,interest,client,address,coordinate,remark,ip,sign_service_id
+        id,user_id,order_no,amount,real_amount,fee,create_time,time_limit,state,again,card_id,service_fee,info_auth_fee,interest,client,address,coordinate,remark,ip,sign_service_id,is_overdue
     </sql>
     
     <resultMap id="IndexModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.IndexModel">
@@ -126,6 +127,9 @@
             <if test="signServiceId !=null and signServiceId != ''">
                 and sign_service_id = #{signServiceId,jdbcType=VARCHAR}
             </if>
+            <if test="isOverdue != null and isOverdue !=''">
+                and is_overdue = #{isOverdue,jdbcType=VARCHAR}
+            </if>
         </trim>
     </sql>
     
@@ -138,10 +142,10 @@
         where not exists(select id from cl_borrow where user_id = #{userId,jdbcType=BIGINT} and state in(10,20,22,26,30,31,50,90) ) -->
         <!-- 以上sql高并发时死锁，弃用 -->
         
-        insert into cl_borrow(user_id,order_no,amount,real_amount,fee,create_time,time_limit,state,again,card_id,service_fee,info_auth_fee,interest,client,address,coordinate,remark,ip,sign_service_id)
+        insert into cl_borrow(user_id,order_no,amount,real_amount,fee,create_time,time_limit,state,again,card_id,service_fee,info_auth_fee,interest,client,address,coordinate,remark,ip,sign_service_id,is_overdue)
         values(#{userId,jdbcType=BIGINT},#{orderNo,jdbcType=VARCHAR},#{amount,jdbcType=DECIMAL},#{realAmount,jdbcType=DECIMAL},#{fee,jdbcType=DECIMAL},#{createTime,jdbcType=TIMESTAMP},
         #{timeLimit,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{again,jdbcType=VARCHAR},#{cardId,jdbcType=BIGINT},#{serviceFee,jdbcType=DECIMAL},#{infoAuthFee,jdbcType=DECIMAL},#{interest,jdbcType=DECIMAL},
-        #{client,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{coordinate,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{ip,jdbcType=VARCHAR},#{signServiceId,jdbcType=VARCHAR})
+        #{client,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{coordinate,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{ip,jdbcType=VARCHAR},#{signServiceId,jdbcType=VARCHAR},#{isOverdue,jdbcType=VARCHAR})
     </insert>
 
     
@@ -165,7 +169,8 @@
             coordinate = #{coordinate,jdbcType=VARCHAR},
             remark = #{remark,jdbcType=VARCHAR},
             ip = #{ip,jdbcType=VARCHAR},
-            sign_service_id = #{signServiceId,jdbcType=VARCHAR}
+            sign_service_id = #{signServiceId,jdbcType=VARCHAR},
+            is_overdue = #{isOverdue,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=BIGINT}
     </update>
 
@@ -228,8 +233,11 @@
                 ip = #{ip,jdbcType=VARCHAR},
             </if>
             <if test="signServiceId !=null and signServiceId != ''">
-                sign_service_id = #{signServiceId,jdbcType=VARCHAR}
+                sign_service_id = #{signServiceId,jdbcType=VARCHAR},
             </if>
+              <if test="isOverdue != null and isOverdue != ''">
+                  is_overdue = #{isOverdue,jdbcType=VARCHAR}
+              </if>
         </set>    
         where id = #{id ,jdbcType=BIGINT}
     </update>
@@ -409,7 +417,7 @@
 	<select id="listBorrowModel" resultMap="userBorrowMap"	parameterType="java.util.HashMap">
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,b.time_limit,b.state,b.remark,
-			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day
+			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue
 		from cl_borrow b 
 		left join cl_user_base_info u on u.user_id=b.user_id 
 		left join

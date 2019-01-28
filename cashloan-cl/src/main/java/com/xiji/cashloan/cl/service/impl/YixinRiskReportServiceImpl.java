@@ -2,11 +2,13 @@ package com.xiji.cashloan.cl.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.domain.YixinRiskReport;
 import com.xiji.cashloan.cl.mapper.YixinRiskReportMapper;
 import com.xiji.cashloan.cl.service.YixinRiskReportService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,35 +71,33 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 		if (loanRecordsJsonArray != null){
 			Iterator iterator = loanRecordsJsonArray.iterator();
 			while (iterator.hasNext()){
-
-					String str = iterator.next().toString();
-					if (JSON.parseObject(str).get("approvalStatus") != null){
-						String result = JSON.parseObject(str).get("approvalStatus").toString();
-						if ("ACCEPT".equals(result)){
-							countApprovalAccept = countApprovalAccept +1;
-							borrowOrgNames.add(JSON.parseObject(str).get("orgName").toString());
-						}
+				countBorrowApply = countBorrowApply +1;
+				String str = iterator.next().toString();
+				JSONObject json = JSON.parseObject(str);
+				if (json.get("approvalStatus") != null){
+					String result = json.get("approvalStatus").toString();
+					if ("ACCEPT".equals(result)){
+						countApprovalAccept = countApprovalAccept +1;
+						borrowOrgNames.add(JSON.parseObject(str).get("orgName").toString());
 					}
-					countBorrowApply = countBorrowApply +1;
-					orgNames.add(JSON.parseObject(str).get("orgName").toString());
-
-					if (JSON.parseObject(str).get("overdueM3") != null){
-                       countOverdueHistoryM3 = countOverdueHistoryM3 +1;
-					}
-
-					if (JSON.parseObject(str).get("overdueM6") != null){
-						countOverdueHistoryM6 = countOverdueHistoryM6 +1;
-					}
-
-					if (JSON.parseObject(str).get("overdueTotal") != null){
-						countOverdueHistory = countOverdueHistory +1;
-					}
+				}
+				countBorrowApply = countBorrowApply +1;
+				orgNames.add(JSON.parseObject(str).get("orgName").toString());
+				if (json.get("overdueM3") != null) {
+					countOverdueHistoryM3 = countOverdueHistoryM3 +1;
+				}
+				if (json.get("overdueM6") != null) {
+					countOverdueHistoryM6 = countOverdueHistoryM6 +1;
+				}
+				if (StringUtil.isNotBlank(json.getString("overdueStatus"))) {
+					countOverdueHistory = countOverdueHistory + 1;
+				}
 			}
 		}
 
 		Map<String,Object> map = new HashedMap();
 		// 借款机构数
-		int countCorporateBorrower = borrowOrgNames.size();
+		int countCorporateBorrower = orgNames.size();
 		// 审批机构数
 		int countApprovalMechanism = borrowOrgNames.size();
 

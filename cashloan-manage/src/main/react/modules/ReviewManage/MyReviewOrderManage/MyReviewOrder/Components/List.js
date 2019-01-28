@@ -1,6 +1,7 @@
 import React from 'react'
 import {Table} from 'antd';
 import Lookdetails from "./Lookdetails"
+import UserRemarkList from "../../../../common/UserRemark/UserRemarkList";
 
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -20,9 +21,10 @@ export default React.createClass({
             pictureData: [],
             creditReportData: [],
             rowRecord: [],
-            dataRecord: '',
+            dataRecord: [],
             recordSoure: '',
             dataForm: '',
+            visibleRemark:false,
 
         };
     },
@@ -187,9 +189,10 @@ export default React.createClass({
             visible: false,
             selectedIndex: '',
             selectedRowKeys: [],
-            dataRecord: '',
+            dataRecord: [],
             recordSoure: '',
             dataForm: '',
+            visibleRemark:false,
         });
         this.refreshList();
     },
@@ -224,6 +227,36 @@ export default React.createClass({
             // searchParams: JSON.stringify({ state: "22" }),
         });
         this.fetch(params);
+    },
+
+    showUserRemark(title, record, canEdit) {
+        Utils.ajaxData({
+            url: '/modules/manage/user/remark/list.htm',
+            data: {
+                pageSize: 5,
+                current: 1,
+                searchParams:JSON.stringify({userId:record})
+            },
+            method: 'get',
+            callback: (result) => {
+                const pagination = this.state.pagination;
+                pagination.current = result.current;
+                pagination.pageSize =result.pageSize;
+                pagination.total = result.page.total;
+                if (!pagination.current) {
+                    pagination.current = 1
+                };
+                //console.log(result.data.logs);
+                this.setState({
+                    dataRecord: result.data,
+                    canEdit: canEdit,
+                    visibleRemark: true,
+                    title: title,
+                    pagination:result.page,
+                    record:record
+                });
+            }
+        });
     },
 
 
@@ -261,12 +294,26 @@ export default React.createClass({
             title: '渠道',
             dataIndex: 'channelName',
         }, {
-            title: '备注',
-            dataIndex: 'remark'
+            title: '是否复借',
+            dataIndex: 'again',
+            render:(text,record) =>  {
+                switch(record.again){
+                    case "10":
+                        return "否";
+                    case "20":
+                        return <span style={{ color: "red" }}>是</span>;
+                }
+            }
         }, {
             title: '状态',
             dataIndex: "stateStr",
         }, {
+            title: '备注',
+            render(text, record) {
+                console.log('record == >'+record.borrowUserId)
+                return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.borrowUserId, true)}>备注</a></div>
+            }
+        },{
             title: '操作',
             render(text, record) {
                 if (record.borrowState == '22') {
@@ -296,6 +343,10 @@ export default React.createClass({
                 />
                 <Lookdetails ref="Lookdetails" dataForm={state.dataForm} key={state.keyModal} recordSoure={state.recordSoure}  visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.rowRecord}
                     canEdit={state.canEdit} />
+
+
+                <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
+                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination}/>
             </div>
         );
     }
