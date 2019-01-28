@@ -417,7 +417,7 @@
 	<select id="listBorrowModel" resultMap="userBorrowMap"	parameterType="java.util.HashMap">
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,b.time_limit,b.state,b.remark,
-			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again
+			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue
 		from cl_borrow b 
 		left join cl_user_base_info u on u.user_id=b.user_id 
 		left join
