@@ -78,8 +78,11 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 					String result = json.get("approvalStatus").toString();
 					if ("ACCEPT".equals(result)){
 						countApprovalAccept = countApprovalAccept +1;
+						borrowOrgNames.add(JSON.parseObject(str).get("orgName").toString());
 					}
 				}
+				countBorrowApply = countBorrowApply +1;
+				orgNames.add(JSON.parseObject(str).get("orgName").toString());
 				if (json.get("overdueM3") != null) {
 					countOverdueHistoryM3 = countOverdueHistoryM3 +1;
 				}
@@ -94,7 +97,7 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 
 		Map<String,Object> map = new HashedMap();
 		// 借款机构数
-		int countCorporateBorrower = borrowOrgNames.size();
+		int countCorporateBorrower = orgNames.size();
 		// 审批机构数
 		int countApprovalMechanism = borrowOrgNames.size();
 
