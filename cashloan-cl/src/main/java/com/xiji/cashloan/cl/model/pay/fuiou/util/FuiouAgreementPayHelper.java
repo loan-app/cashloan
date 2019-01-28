@@ -521,7 +521,7 @@ public class FuiouAgreementPayHelper extends BasePay {
                 }
                 orderInfo.setMsg(resp.getrDesc());
             } else {
-                orderInfo.setCode(QueryPayOrderInfo.PAY_ERROR);
+                orderInfo.setCode(PayConstant.QUERY_PAY_ERROR);
             }
         }else  if (StringUtil.isNotEmpty(vo.getOrderNo())) {
             OrderQryByMSsn beanreq = new OrderQryByMSsn();

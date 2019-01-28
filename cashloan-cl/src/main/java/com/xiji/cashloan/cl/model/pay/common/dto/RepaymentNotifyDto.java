@@ -1,15 +1,19 @@
-package com.xiji.cashloan.cl.model.pay.common.vo.response;
+package com.xiji.cashloan.cl.model.pay.common.dto;
 
 /**
  * @Auther: king
- * @Date: 2019/1/25 18:26
+ * @ss 支付异步通知model
+ * @Date: 2018/11/28 10:41
  * @Description:
  */
-public class PaymentResponseVo {
-    private String orderNo = "";
-    private String status = "";
-    private String statusCode = "";
-    private String message = "";
+public class RepaymentNotifyDto {
+    private String orderNo;
+    private String status;
+    private String message;
+    /**
+     * 平台流水
+     */
+    private String payPlatNo;
 
     public String getOrderNo() {
         return orderNo;
@@ -35,11 +39,11 @@ public class PaymentResponseVo {
         this.message = message;
     }
 
-    public String getStatusCode() {
-        return statusCode;
+    public String getPayPlatNo() {
+        return payPlatNo;
     }
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
+    public void setPayPlatNo(String payPlatNo) {
+        this.payPlatNo = payPlatNo;
     }
 }

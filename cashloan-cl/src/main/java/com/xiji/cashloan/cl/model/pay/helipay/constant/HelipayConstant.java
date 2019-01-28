@@ -55,10 +55,12 @@ public class HelipayConstant {
     public static final String ORDER_STATUS_FAILED = "FAILED";
     /** 订单状态 处理中*/
     public static final String ORDER_STATUS_DOING = "DOING";
+    /** 订单状态 未支付*/
+    public static final String ORDER_STATUS_INIT = "INIT";
 
-    /** 交易状态 成功*/
-    public static final String ORDER_RETCODE_SUCCESS = "0000";
     /** 交易状态 返回码8000，以订单状态为准*/
     public static final String ORDER_RETCODE_NEED_ORDERSTATUS= "8000";
+
+    public static final String DAIFU_RESPONSE_NO_ORDER = "0005";
 
 }

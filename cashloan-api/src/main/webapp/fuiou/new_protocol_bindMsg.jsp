@@ -21,36 +21,11 @@ table {
 			<tr>
 				<td width="100%">
 					<table width="100%" border="0" cellspacing="1">
-					    <tr>
-							<td width="300" class="bg_gray" align="right">版本号(VERSION)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;1.0</td>
-						</tr>
-						 <tr>
-							<td width="300" class="bg_gray" align="right">商户编号(MCHNTCD)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;
-							<input type="text" name="mchntcd" size='30' value='0002900F0096235' /></td>
-						</tr>
-						 <tr>
-							<td width="300" class="bg_gray" align="right">商户密钥(key)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;
-							<input type="text" name="key" size='100' value='5old71wihg2tqjug9kkpxnhx9hiujoqj' /></td>
-						</tr>
 						<tr>
 							<td width="300" class="bg_gray" align="right">客户编号(USERID)：&nbsp;&nbsp;</td>
 							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
 								type="text" name="userid" size='30' value='66666666' /></td>
 						</tr>
-						 <tr>
-							<td width="300" class="bg_gray" align="right">交易请求日期(TRADEDATE)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;
-							<input type="text" name="tradedate" size='30' value='' /></td>
-						</tr>
-						 <tr>
-							<td width="300" class="bg_gray" align="right">流水号(MCHNTSSN)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;
-							<input type="text" name="mchntssn" size='30' value='' /></td>
-						</tr>
-						
 							<tr>
 							<td width="300" class="bg_gray" align="right">账户名称(ACCOUNT)：&nbsp;&nbsp;</td>
 							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
@@ -82,24 +57,6 @@ table {
 								type="text" name="mobileno" size='30' maxlength='100'
 								value='13888888888' /></td>
 						</tr>
-							<tr>
-							<td width="200" class="bg_gray" align="right">CVN：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
-								type="text" name="cvn" size='30' maxlength='100'
-								value='123' /></td>
-						</tr>
-						<tr>
-							<td width="200" class="bg_gray" align="right">有效期(YYMM)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
-								type="text" name="exp" size='30' maxlength='100'
-								value='1129' /></td>
-						</tr>
-						<!-- <tr>
-							<td width="300" class="bg_gray" align="right">短信验证码(MSGCODE)：&nbsp;&nbsp;</td>
-							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
-								type="text" name="msgcode" size='30' maxlength='100'
-								value='0000' /></td>
-						</tr> -->
 						<tr>
 							<td height="50">&nbsp;</td>
 							<td><input type="submit" name="Submit" value="确 定" />&nbsp;&nbsp;&nbsp;&nbsp;

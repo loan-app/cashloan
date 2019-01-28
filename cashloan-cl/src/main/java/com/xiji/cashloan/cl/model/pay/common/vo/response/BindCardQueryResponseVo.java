@@ -5,12 +5,11 @@ package com.xiji.cashloan.cl.model.pay.common.vo.response;
  * @Date: 2019/1/26 15:31
  * @Description:
  */
-public class BindCardMsgResponseVo {
+public class BindCardQueryResponseVo {
     /**
      * 状态
      */
     private String status;
-    private String orderNo;
     private String message;
     private String protocolNo;//协议号
 
@@ -36,13 +35,5 @@ public class BindCardMsgResponseVo {
 
     public void setProtocolNo(String protocolNo) {
         this.protocolNo = protocolNo;
-    }
-
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
     }
 }

@@ -1,7 +1,7 @@
 package com.xiji.cashloan.core.common.web.listener;
 
 
-import com.xiji.cashloan.core.common.context.BankCandBinUtil;
+import com.xiji.cashloan.core.common.context.BankCardBinUtil;
 import com.xiji.cashloan.core.common.util.CacheUtil;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -35,7 +35,7 @@ public class WebConfigContextListener implements ServletContextListener,HttpSess
 		
 		// 系统参数
 		CacheUtil.initSysConfig();
-		BankCandBinUtil.initCardBin();
+		BankCardBinUtil.initCardBin();
 	}
 
 	@Override

@@ -1,19 +1,25 @@
 package com.xiji.cashloan.cl.model.pay.common.biz;
 
+import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
-import com.xiji.cashloan.cl.model.pay.common.vo.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.UnbindCardVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.UnbindCardResponseVo;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
@@ -50,11 +56,7 @@ public class FuiouPayBiz implements PayCommon {
         model.setOrderno(orderNo);
         model.setAccntno(vo.getBankCardNo());
         model.setAccntnm(vo.getBankCardName());
-        if ("dev".equals(Global.getValue("app_environment"))) {
-            model.setAmt(AmtUtil.convertAmtToBranch(3.0));
-        } else {
-            model.setAmt(AmtUtil.convertAmtToBranch(vo.getAmount()));
-        }
+        model.setAmt(AmtUtil.convertAmtToBranch(vo.getAmount()));
         model.setMobile(vo.getMobile());
         model.setEntseq(vo.getBorrowOrderNo());//借款号
         model.setMemo(vo.getBorrowOrderNo()+ "付款");
@@ -65,9 +67,11 @@ public class FuiouPayBiz implements PayCommon {
 
         if (result.acceptSuccess() || result.success()) { //受理成功
             responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setStatusCode(result.getRet());
         } else if (result.error()) { // 疑似重复订单，待人工审核
             responseVo.setStatus(PayConstant.STATUS_NEED_CHECK);
         } else {
+            responseVo.setStatusCode(result.getRet());
             responseVo.setStatus(PayConstant.STATUS_FAIL);
         }
         responseVo.setOrderNo(model.getOrderno());
@@ -118,6 +122,7 @@ public class FuiouPayBiz implements PayCommon {
             responseVo.setStatus(PayConstant.STATUS_FAIL);
             responseVo.setMessage(result.getResponseMsg());
         }
+        responseVo.setOrderNo(beanReq.getMchntSsn());
         return responseVo;
     }
 
@@ -184,8 +189,8 @@ public class FuiouPayBiz implements PayCommon {
         beanReq.setProtocolNo(vo.getProtocolNo());
         beanReq.setNeedSendMsg("0");
         beanReq.setBackUrl(Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
-        beanReq.setRem1("还款" + vo.getBorrowOrderNo());
-        beanReq.setRem2("repayment_" + vo.getBorrowOrderNo());
+        beanReq.setRem1(vo.getRemark());
+        beanReq.setRem2(vo.getRemark2());
         String key = Global.getValue("fuiou_protocol_mchntcd_key");
         FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
         OrderXmlBeanResp result = payHelper.repayment(beanReq);
@@ -204,6 +209,7 @@ public class FuiouPayBiz implements PayCommon {
             responseVo.setStatus(PayConstant.STATUS_FAIL);
             responseVo.setMessage(result.getResponseMsg());
         }
+        responseVo.setStatusCode(result.getResponseCode());
         return responseVo;
     }
 
@@ -216,6 +222,43 @@ public class FuiouPayBiz implements PayCommon {
         responseVo.setOrderNo(result.getOrderNo());
         responseVo.setCode(result.getCode());
         responseVo.setMsg(result.getMsg());
+        return responseVo;
+    }
+
+    @Override
+    public BindCardQueryResponseVo bindCardQuery(BindCardQueryVo vo) {
+        BindXmlBeanReq beanReq = new BindXmlBeanReq();
+        beanReq.setUserId(vo.getUserId());
+        FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
+        BindXmlBeanResp result = payHelper.bindQuery(beanReq);//绑卡
+        BindCardQueryResponseVo responseVo = new BindCardQueryResponseVo();
+        if (result.checkReturn()){
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setProtocolNo(result.getProtocolNo());
+            responseVo.setMessage(result.getResponseMsg());
+        }else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+            responseVo.setMessage(result.getResponseMsg());
+        }
+        return responseVo;
+    }
+
+    @Override
+    public CardBinQueryResponseVo queryCardBin(CardBinQueryVo vo) {
+        BankCardReq beanreq = new BankCardReq();
+        beanreq.setOno(vo.getBankCardNo());
+
+        FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
+        BankCardResp resp = payHelper.cardBinQuery(beanreq);
+        String bank = "";
+        String key = Global.getValue("fuiou_protocol_mchntcd_key");
+        CardBinQueryResponseVo responseVo = new CardBinQueryResponseVo();
+        if (resp.checkReturn() && resp.checkSign(key)) {
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setBank(resp.getCnm());
+        }else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+        }
         return responseVo;
     }
 }

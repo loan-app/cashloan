@@ -3,9 +3,11 @@ package com.xiji.cashloan.cl.model.pay.helipay.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.springframework.util.StringUtils;
 import tool.util.StringUtil;
 
 /**
@@ -46,6 +48,16 @@ public class HelipayUtil {
         return "xjhlb" + OrderNoUtil.getSerialNumber();
     }
 
+    public static String paymentNotifyAddress() {
+        return Global.getValue("server_host")+ "/pay/helipay/paymentNotify.htm";
+    }
+
+    public static String rePaymentNotifyAddress() {
+        return Global.getValue("server_host")+ "/pay/helipay/repaymentNotify.htm";
+    }
+    public static String getMD5Key() {
+        return Global.getValue("helipay_daifu_md5_key");
+    }
     public static String getTimeStamp() {
         SimpleDateFormat STRING_FORMAT_TIMESTAMP = new SimpleDateFormat("yyyyMMddHHmmss");
         return STRING_FORMAT_TIMESTAMP.format(new Date());
@@ -55,5 +67,25 @@ public class HelipayUtil {
 //        String value = Global.getValue("helibao_log_open");
 //        return StringUtil.equals("open",value);
         return true;
+    }
+
+    /**
+     * 根据合利宝通知的参数生成用于签名的源串
+     */
+    public static boolean checkPaymentResultSign(HeliPayForPaymentResultVo vo) {
+        return StringUtil.equals(vo.getSign(),Disguiser.disguiseMD5(generateSignatureSource(vo)));
+    }
+    private static String generateSignatureSource(HeliPayForPaymentResultVo vo) {
+        return "&" + (StringUtils.isEmpty(vo.getRt1_bizType()) ? "" : vo.getRt1_bizType()) + "&"
+            + (StringUtils.isEmpty(vo.getRt2_retCode()) ? "" : vo.getRt2_retCode()) + "&"
+            + (StringUtils.isEmpty(vo.getRt3_retMsg()) ? "" : vo.getRt3_retMsg()) + "&"
+            + (StringUtils.isEmpty(vo.getRt4_customerNumber()) ? "" : vo.getRt4_customerNumber()) + "&"
+            + (StringUtils.isEmpty(vo.getRt5_orderId()) ? "" : vo.getRt5_orderId()) + "&"
+            + (StringUtils.isEmpty(vo.getRt6_serialNumber()) ? "" : vo.getRt6_serialNumber()) + "&"
+            + (StringUtils.isEmpty(vo.getRt7_orderStatus()) ? "" : vo.getRt7_orderStatus()) + "&"
+            + (StringUtils.isEmpty(vo.getRt8_notifyType()) ? "" : vo.getRt8_notifyType()) + "&"
+            + (StringUtils.isEmpty(vo.getRt9_reason()) ? "" : vo.getRt9_reason()) + "&"
+            + (StringUtils.isEmpty(vo.getRt10_createDate()) ? "" : vo.getRt10_createDate()) + "&"
+            + (StringUtils.isEmpty(vo.getRt11_completeDate()) ? "" : vo.getRt11_completeDate()) + "&" + HelipayUtil.getMD5Key();
     }
 }

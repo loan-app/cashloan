@@ -1,15 +1,15 @@
-package com.xiji.cashloan.cl.model.pay.common.vo.response;
+package com.xiji.cashloan.cl.model.pay.common.dto;
 
 /**
  * @Auther: king
- * @Date: 2019/1/25 18:26
+ * @ss 支付异步通知model
+ * @Date: 2018/11/28 10:41
  * @Description:
  */
-public class PaymentResponseVo {
-    private String orderNo = "";
-    private String status = "";
-    private String statusCode = "";
-    private String message = "";
+public class PaymentNotifyDto {
+    private String orderNo;
+    private String status;
+    private String message;
 
     public String getOrderNo() {
         return orderNo;
@@ -33,13 +33,5 @@ public class PaymentResponseVo {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
     }
 }

@@ -3,24 +3,74 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.*;
-import com.xiji.cashloan.cl.mapper.*;
-import com.xiji.cashloan.cl.model.*;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
+import com.xiji.cashloan.cl.domain.BankCard;
+import com.xiji.cashloan.cl.domain.BorrowProgress;
+import com.xiji.cashloan.cl.domain.BorrowRepay;
+import com.xiji.cashloan.cl.domain.BorrowRepayLog;
+import com.xiji.cashloan.cl.domain.ManualReviewOrder;
+import com.xiji.cashloan.cl.domain.NameBlacklist;
+import com.xiji.cashloan.cl.domain.OperatorReqLog;
+import com.xiji.cashloan.cl.domain.PayLog;
+import com.xiji.cashloan.cl.domain.QianchengReqlog;
+import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
+import com.xiji.cashloan.cl.mapper.BankCardMapper;
+import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
+import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
+import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.ManualReviewOrderMapper;
+import com.xiji.cashloan.cl.mapper.NameBlacklistMapper;
+import com.xiji.cashloan.cl.mapper.OperatorReqLogMapper;
+import com.xiji.cashloan.cl.mapper.OperatorVoiceCntMapper;
+import com.xiji.cashloan.cl.mapper.OperatorVoiceMapper;
+import com.xiji.cashloan.cl.mapper.PayLogMapper;
+import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
+import com.xiji.cashloan.cl.mapper.QianchengReqlogMapper;
+import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
+import com.xiji.cashloan.cl.mapper.UserBlackInfoMapper;
+import com.xiji.cashloan.cl.mapper.UserInviteMapper;
+import com.xiji.cashloan.cl.model.BorrowProgressModel;
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
+import com.xiji.cashloan.cl.model.ClBorrowModel;
+import com.xiji.cashloan.cl.model.IndexModel;
+import com.xiji.cashloan.cl.model.ManageBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
+import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
+import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.RepayModel;
+import com.xiji.cashloan.cl.model.YixinShareModel;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
-import com.xiji.cashloan.cl.service.*;
-import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
+import com.xiji.cashloan.cl.service.BorrowOperatorLogService;
+import com.xiji.cashloan.cl.service.BorrowRepayService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.ClSmsService;
+import com.xiji.cashloan.cl.service.DecisionService;
+import com.xiji.cashloan.cl.service.MagicRiskService;
+import com.xiji.cashloan.cl.service.PinganRiskService;
+import com.xiji.cashloan.cl.service.RcQianchenService;
+import com.xiji.cashloan.cl.service.TongdunReqLogService;
+import com.xiji.cashloan.cl.service.UserAuthService;
+import com.xiji.cashloan.cl.service.XinyanRiskService;
+import com.xiji.cashloan.cl.service.YixinRiskService;
+import com.xiji.cashloan.cl.service.ZhimaService;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistBaseTask;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistProcess;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistUtil;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.XindeDataTask;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
 import com.xiji.cashloan.core.common.exception.SimpleMessageException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.core.common.util.*;
+import com.xiji.cashloan.core.common.util.DateUtil;
+import com.xiji.cashloan.core.common.util.NidGenerator;
+import com.xiji.cashloan.core.common.util.ShardTableUtil;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
@@ -34,9 +84,22 @@ import com.xiji.cashloan.rc.mapper.SceneBusinessLogMapper;
 import com.xiji.cashloan.rc.mapper.SceneBusinessMapper;
 import com.xiji.cashloan.rc.model.TppBusinessModel;
 import com.xiji.cashloan.rc.model.TppServiceInfoModel;
-import com.xiji.cashloan.rc.service.*;
-import com.xiji.cashloan.rule.domain.*;
-import com.xiji.cashloan.rule.mapper.*;
+import com.xiji.cashloan.rc.service.SceneBusinessLogService;
+import com.xiji.cashloan.rc.service.SimpleBorrowCountService;
+import com.xiji.cashloan.rc.service.SimpleContactCountService;
+import com.xiji.cashloan.rc.service.SimpleVoicesCountService;
+import com.xiji.cashloan.rc.service.TppBusinessService;
+import com.xiji.cashloan.rule.domain.BorrowRuleResult;
+import com.xiji.cashloan.rule.domain.BorrowScoreResult;
+import com.xiji.cashloan.rule.domain.RuleEngine;
+import com.xiji.cashloan.rule.domain.RuleEngineConfig;
+import com.xiji.cashloan.rule.domain.RuleEngineInfo;
+import com.xiji.cashloan.rule.mapper.BorrowRuleEngineMapper;
+import com.xiji.cashloan.rule.mapper.BorrowRuleResultMapper;
+import com.xiji.cashloan.rule.mapper.BorrowScoreResultMapper;
+import com.xiji.cashloan.rule.mapper.RuleEngineConfigMapper;
+import com.xiji.cashloan.rule.mapper.RuleEngineInfoMapper;
+import com.xiji.cashloan.rule.mapper.RuleEngineMapper;
 import com.xiji.cashloan.rule.model.ManageReviewModel;
 import com.xiji.cashloan.rule.model.ManageRuleResultModel;
 import com.xiji.cashloan.rule.model.srule.client.RulesExecutorUtil;
@@ -44,17 +107,22 @@ import com.xiji.cashloan.rule.model.srule.model.SimpleRule;
 import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tool.util.BigDecimalUtil;
-
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -1339,31 +1407,26 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				BankCard bankCard = bankCardMapper.findSelective(bankCardMap);
 
 				UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
-				String orderNo = OrderNoUtil.getSerialNumber();
-				PayforreqModel model = new PayforreqModel();
-				model.setMerdt(tool.util.DateUtil.dateStr7(new Date()));
-				model.setOrderno(orderNo);
-				model.setAccntno(bankCard.getCardNo());
-				model.setAccntnm(baseInfo.getRealName());
-				if ("dev".equals(Global.getValue("app_environment"))) {
-					model.setAmt(AmtUtil.convertAmtToBranch(3.0));
-				} else {
-					model.setAmt(AmtUtil.convertAmtToBranch(borrow.getRealAmount()));
-				}
-				model.setMobile(bankCard.getPhone());
-				model.setEntseq(borrow.getOrderNo());//借款号
-				model.setMemo(borrow.getOrderNo() + "付款");
-				model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
+
 				boolean flag  = judge(borrow.getId());
 				if(!flag){
 					logger.error("放款支付终止，存在待支付或者待审核状态或者支付成功的支付记录，借款id："+borrow.getId());
 					return;
 				}
-				FuiouHelper fuiouHelper = new FuiouHelper();
-				PayforrspModel result = fuiouHelper.payment(model);
-
+				PaymentReqVo vo = new PaymentReqVo();
+				if ("dev".equals(Global.getValue("app_environment"))) {
+					vo.setAmount(3.0);
+				} else {
+					vo.setAmount(borrow.getRealAmount());
+				}
+				vo.setBankCardName(baseInfo.getRealName());
+				vo.setBankCardNo(bankCard.getCardNo());
+				vo.setBorrowId(borrow.getId());
+				vo.setBorrowOrderNo(borrow.getOrderNo());
+				vo.setMobile(bankCard.getPhone());
+				PaymentResponseVo result = PayCommonUtil.payment(vo);
 				PayLog payLog = new PayLog();
-				payLog.setOrderNo(model.getOrderno());
+				payLog.setOrderNo(result.getOrderNo());
 				payLog.setUserId(borrow.getUserId());
 				payLog.setBorrowId(borrow.getId());
 				payLog.setAmount(borrow.getRealAmount());
@@ -1373,21 +1436,21 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				payLog.setType(PayLogModel.TYPE_PAYMENT);
 				payLog.setScenes(PayLogModel.SCENES_LOANS);
 
-				if (result.acceptSuccess() || result.success()) { //受理成功
+				if (PayCommonUtil.success(result.getStatus())) { //受理成功
 					payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-				} else if (result.error()) { // 疑似重复订单，待人工审核
+				} else if (PayCommonUtil.needCheck(result.getStatus())) { // 疑似重复订单，待人工审核
 					payLog.setState(PayLogModel.STATE_PENDING_REVIEW);
 //					payLog.setConfirmCode(payment.getConfirm_code());
 					payLog.setUpdateTime(DateUtil.getNow());
 				} else {
-					BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), fuiouHelper.getRemark(result));
+					BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), result.getMessage());
 					payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
 					payLog.setUpdateTime(DateUtil.getNow());
 
 					clBorrowMapper.updateState(BorrowModel.STATE_REPAY_FAIL ,borrow.getId());
 				}
-
-				payLog.setRemark(fuiouHelper.getRemark(result));
+				payLog.setCode(result.getStatusCode());
+				payLog.setRemark(result.getMessage());
 				payLog.setPayReqTime(date);
 				payLog.setCreateTime(DateUtil.getNow());
 				payLogMapper.save(payLog);

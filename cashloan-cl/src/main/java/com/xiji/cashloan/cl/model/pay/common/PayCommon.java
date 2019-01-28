@@ -1,12 +1,16 @@
-package com.xiji.cashloan.cl.model.pay.common.vo;
+package com.xiji.cashloan.cl.model.pay.common;
 
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.UnbindCardVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
@@ -26,4 +30,6 @@ public interface PayCommon {
     BindCardMsgResponseVo bindCommit(BindCardMsgVo vo);
     RepaymentResponseVo repayment(RepaymentReqVo vo);
     RepaymentQueryResponseVo queryOrder(RepaymentQueryVo vo);
+    BindCardQueryResponseVo bindCardQuery(BindCardQueryVo vo);
+    CardBinQueryResponseVo queryCardBin(CardBinQueryVo vo);
 }

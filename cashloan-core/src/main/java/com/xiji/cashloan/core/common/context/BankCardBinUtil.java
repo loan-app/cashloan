@@ -14,10 +14,11 @@ import tool.util.BeanUtil;
  * @Date: 2019/1/25 14:24
  * @Description:
  */
-public class BankCandBinUtil {
-    public static Map<String, String> configMap;
+public class BankCardBinUtil {
+    public static Map<String, BankCardBin> configMap;
+    private static final BankCardBin defaultBin = new BankCardBin();
 
-    public static String getBankCode(String cardNo) {
+    public static BankCardBin getBankCardBin(String cardNo) {
         String prefix = StringUtil.substring(cardNo, 0, 6);
         if (configMap.containsKey(prefix)) {
             return configMap.get(prefix);
@@ -58,19 +59,23 @@ public class BankCandBinUtil {
         if (configMap.containsKey(prefix)) {
             return configMap.get(prefix);
         }
-        return "";
+        return defaultBin;
+    }
+
+    public static String getBankCode(String cardNo) {
+        return getBankCardBin(cardNo).getBankCode();
     }
 
     public static void initCardBin() {
         BankCardBinService bankCardBinService = (BankCardBinService) BeanUtil.getBean("bankCardBinService");
         List<BankCardBin> list = bankCardBinService.listSelective(new HashedMap());
-        Map<String, Object> tempMap = new HashMap<String, Object>();
+        Map<String, BankCardBin> tempMap = new HashMap<String, BankCardBin>();
         for (BankCardBin bin : list) {
             if (bin != null) {
-                tempMap.put(bin.getCardBin(), bin.getBankCode());
+                tempMap.put(bin.getCardBin(), bin);
             }
         }
-        Global.configMap = new HashMap<String, Object>();
-        Global.configMap.putAll(tempMap);
+        configMap = new HashMap<String, BankCardBin>();
+        configMap.putAll(tempMap);
     }
 }
