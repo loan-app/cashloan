@@ -138,4 +138,22 @@
 		select count(id) from cl_borrow_progress
 		where  state in ('20','26')
 	</select>
+
+	<select id="listUserAuthByToday" resultType="com.xiji.cashloan.cl.domain.UserAuth">
+		select auth.*
+		from cl_user as usr left join cl_user_auth auth on usr.id = auth.user_id
+		where TO_DAYS(usr.regist_time)-TO_DAYS(SYSDATE())=0
+	</select>
+
+	<select id="listBorrowByToday" resultType="com.xiji.cashloan.core.domain.Borrow" >
+		select * from cl_borrow
+    	where TO_DAYS(create_time)-TO_DAYS(SYSDATE())=0
+	</select>
+
+	<select id="listBorrowStatistics" resultType="com.xiji.cashloan.core.domain.Borrow">
+		select borrow.*
+		from cl_borrow as borrow ,cl_borrow_progress as progress
+    	where TO_DAYS(progress.create_time)-TO_DAYS(SYSDATE())=0 and progress.state = '30' and borrow.id = progress.borrow_id;
+	</select>
+
 </mapper>

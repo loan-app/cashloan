@@ -1,6 +1,8 @@
 package com.xiji.cashloan.cl.mapper;
 
+import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+import com.xiji.cashloan.core.domain.Borrow;
 
 import java.util.List;
 import java.util.Map;
@@ -141,4 +143,22 @@ public interface SystemCountMapper {
 	 * @return
 	 */
 	Integer totalBorrowApplyPass();
+
+	/**
+	 * 查询当日注册认证信息
+	 * @return
+	 */
+	List<UserAuth> listUserAuthByToday();
+
+	/**
+	 * 当日借款信息
+	 * @return
+	 */
+	List<Borrow> listBorrowByToday();
+
+	/**
+	 * 当日放款成功借款信息列表
+	 * @return
+	 */
+	List<Borrow> listBorrowStatistics();
 }

@@ -1,10 +1,13 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.service.SystemCountService;
+import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.util.DateUtil;
+import com.xiji.cashloan.core.domain.Borrow;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -223,6 +226,78 @@ public class SystemCountServiceImpl implements SystemCountService {
 		}else {
         	rtMap.put("borrowRate",0);
 		}
+
+		int todayCertification = 0;//当日实名
+		int todayContact = 0;//通讯录认证人数
+		int todayBank = 0;//当日绑卡
+		int todayPhone = 0;//当日运营商认证
+		int todayNewBorrow = 0;//新客借款
+		int todayOldBorrow = 0;//老客借款
+		int todayNewLoan = 0;//当日新客放款
+		int todayOldLoan = 0;//当日老客放款
+		double todayTotalSum = 0;//借出总金额
+		double todayPrincipal = 0;//借出本金
+		List<UserAuth> userAuths = systemCountMapper.listUserAuthByToday();
+		if (CollectionUtil.isNotEmpty(userAuths)){
+			for (UserAuth userAuth :userAuths){
+				if ("30".equals(userAuth.getIdState())){
+					todayCertification ++;
+				}
+				if ("30".equals(userAuth.getContactState())){
+					todayContact++;
+				}
+				if ("30".equals(userAuth.getBankCardState())){
+					todayBank++;
+				}
+				if ("30".equals(userAuth.getPhoneState())){
+					todayPhone++;
+				}
+			}
+		}
+
+		List<Borrow> borrows = systemCountMapper.listBorrowByToday();
+		if (CollectionUtil.isNotEmpty(borrows)){
+			for (Borrow borrow1:borrows){
+				if ("10".equals(borrow1.getAgain())){
+					todayNewBorrow++;
+				}
+				if ("20".equals(borrow1.getAgain())){
+					todayOldBorrow++;
+				}
+			}
+		}
+
+		List<Borrow> borrowLoanList = systemCountMapper.listBorrowStatistics();
+		if (CollectionUtil.isNotEmpty(borrowLoanList)){
+			for (Borrow loan:borrowLoanList){
+				if ("10".equals(loan.getAgain())){
+					if ("30".equals(loan.getState())){
+						todayNewLoan++;
+						todayTotalSum =  BigDecimalUtil.add(todayTotalSum,loan.getAmount());
+						todayPrincipal = BigDecimalUtil.add(todayPrincipal,loan.getRealAmount());
+					}
+				}
+
+				if ("20".equals(loan.getAgain())){
+					if ("30".equals(loan.getState())){
+						todayOldLoan++;
+						todayPrincipal = BigDecimalUtil.add(todayPrincipal,loan.getRealAmount());
+						todayTotalSum =  BigDecimalUtil.add(todayTotalSum,loan.getAmount());
+					}
+				}
+			}
+		}
+
+		rtMap.put("todayCertification", todayCertification);
+		rtMap.put("todayContact", todayContact);
+		rtMap.put("todayBank", todayBank);
+		rtMap.put("todayPhone", todayPhone);
+		rtMap.put("todayNewBorrow", todayNewBorrow);
+		rtMap.put("todayOldBorrow", todayOldBorrow);
+		rtMap.put("todayNewLoan", todayNewLoan);
+		rtMap.put("todayOldLoan", todayOldLoan);
+		rtMap.put("todayTotalSum", todayTotalSum);
+		rtMap.put("todayPrincipal", todayPrincipal);
 
 		return rtMap;
 	}

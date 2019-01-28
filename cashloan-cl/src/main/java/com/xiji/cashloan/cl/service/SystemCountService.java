@@ -56,4 +56,10 @@ public interface SystemCountService {
 	 */
 	public Map<String,Object> loanAndRepayInfo()throws Exception;
 
+//	/**
+//	 * 单日用户统计
+//	 * @return
+//	 */
+//	Map<String,Object> todayUserStatistics();
+
 }
