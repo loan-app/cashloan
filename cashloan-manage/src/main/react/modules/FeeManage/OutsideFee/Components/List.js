@@ -153,7 +153,9 @@ export default React.createClass({
               return "欺诈甄别"
           } else if (record.type == 11) {
               return "染黑统计"
-          }else {
+          } else if (record.type == 12) {
+              return "行为雷达"
+          } else {
               return "-"
           }
       }
