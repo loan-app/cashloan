@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.helipay.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -28,6 +29,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.core.io.ClassPathResource;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -309,11 +311,16 @@ public class RSA {
         System.out.println("public:\n" + key);
         return key;
     }
-    public static PublicKey getPublicKeyByCert(String path) throws Exception {
+    public static PublicKey getPublicKeyByCert() throws Exception {
         CertificateFactory cff = CertificateFactory.getInstance("X.509");
-        FileInputStream fis1 = new FileInputStream(path);
-        Certificate cf = cff.generateCertificate(fis1);
+//        FileInputStream fis1 = new FileInputStream(path);
+        String cert = "pfx"+ File.separator+HelipayUtil.getCertPathName();
+        org.springframework.core.io.Resource fileRource = new ClassPathResource(cert);
+//        InputStream inputStream = RSA.class.getClass().getClassLoader().getResourceAsStream(cert);
+
+        Certificate cf = cff.generateCertificate(fileRource.getInputStream());
         PublicKey publicKey = cf.getPublicKey();
+        fileRource.getInputStream().close();
         return publicKey;
     }
 
@@ -366,20 +373,24 @@ public class RSA {
         return null;
     }
 
-    public static PrivateKey getPrivateKey(String pfxPath, String pfxPassword) {
+    public static PrivateKey getPrivateKey() {
         try {
             KeyStore ks = KeyStore.getInstance("PKCS12");
-            FileInputStream fis = new FileInputStream(pfxPath);
+            String cert = "pfx"+ File.separator+HelipayUtil.getPfxPathName();
+//            InputStream inputStream = RSA.class.getClass().getClassLoader().getResourceAsStream(cert);
+//            FileInputStream fis = new FileInputStream(pfxPath);
             // If the keystore password is empty(""), then we have to set
             // to null, otherwise it won't work!!!
+            org.springframework.core.io.Resource fileRource = new ClassPathResource(cert);
+            String pfxPassword = HelipayUtil.getPfxPwd();
             char[] nPassword = null;
             if ((pfxPassword == null) || pfxPassword.trim().equals("")) {
                 nPassword = null;
             } else {
                 nPassword = pfxPassword.toCharArray();
             }
-            ks.load(fis, nPassword);
-            fis.close();
+            ks.load(fileRource.getInputStream(), nPassword);
+            fileRource.getInputStream().close();
             Enumeration enumas = ks.aliases();
             String keyAlias = null;
             if (enumas.hasMoreElements())// we are readin just one certificate.

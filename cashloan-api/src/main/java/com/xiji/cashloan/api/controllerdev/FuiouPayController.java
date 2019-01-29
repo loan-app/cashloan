@@ -74,7 +74,7 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/bindCommit.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void bindCommit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            String mchntcd = req.getParameter("mchntcd");
+            String mchntcd = req.getParameter("mchntssn");
             String userid = req.getParameter("userid");
             String account = req.getParameter("account");
             String cardNo = req.getParameter("cardno");
@@ -205,7 +205,7 @@ public class FuiouPayController extends BaseController {
         try {
             String mchntOrderId = req.getParameter("mchntOrderId");
             RepaymentQueryVo vo = new RepaymentQueryVo();
-            vo.setPayPlatNo(mchntOrderId);
+            vo.setOrderNo(mchntOrderId);
             RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
             String result = JSON.toJSONString(responseVo);
             logger.info(result);

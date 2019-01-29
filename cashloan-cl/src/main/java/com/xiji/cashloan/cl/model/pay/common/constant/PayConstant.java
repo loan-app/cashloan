@@ -7,7 +7,7 @@ package com.xiji.cashloan.cl.model.pay.common.constant;
  */
 public class PayConstant {
     public static final String PAY_MODE_FUIOU = "fuiou";
-    public static final String PAY_MODE_HELIPAY = "helibao";
+    public static final String PAY_MODE_HELIPAY = "helipay";
     /** 处理结果 - 成功 */
     public static final String RESULT_SUCCESS = "success";
     public static final String STATUS_NEED_CHECK = "needCheck";

@@ -112,18 +112,15 @@ public class HeliPayBiz implements PayCommon {
         AgreementSendValidateCodeResponseVo result = helipayHelper.bindMsg(reqVo);
         BindCardMsgResponseVo responseVo = new BindCardMsgResponseVo();
         try {
-            if (MessageHandle.checkSign(result)) {
-                if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
+            responseVo.setStatus(PayConstant.STATUS_ERROR);
+            if (!unSignError(result.getRt2_retCode()) && MessageHandle.checkSign(result)){
+                if (success(result.getRt2_retCode())) {
                     responseVo.setStatus(PayConstant.RESULT_SUCCESS);
                     responseVo.setMessage(result.getRt3_retMsg());
-                }else if(error(result.getRt2_retCode()) || StringUtil.equals(result.getRt2_retCode(),PayConstant.REQ_ERROR_CODE_10)) {
-                    responseVo.setStatus(PayConstant.STATUS_ERROR);
                 }else {
                     responseVo.setStatus(PayConstant.STATUS_FAIL);
                     responseVo.setMessage(result.getRt3_retMsg());
                 }
-            }else {
-                responseVo.setStatus(PayConstant.STATUS_ERROR);
             }
         } catch (Exception e) {
             responseVo.setStatus(PayConstant.STATUS_ERROR);
@@ -145,18 +142,15 @@ public class HeliPayBiz implements PayCommon {
         UnBindCardResponseVo result = helipayHelper.unbind(reqVo);
         UnbindCardResponseVo responseVo = new UnbindCardResponseVo();
         try {
-            if (MessageHandle.checkSign(result)) {
-                if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
+            responseVo.setStatus(PayConstant.STATUS_ERROR);
+            if (!unSignError(result.getRt2_retCode()) && MessageHandle.checkSign(result)){
+                if (success(result.getRt2_retCode())) {
                     responseVo.setStatus(PayConstant.RESULT_SUCCESS);
                     responseVo.setMessage(result.getRt3_retMsg());
-                }else if(error(result.getRt2_retCode()) || StringUtil.equals(result.getRt2_retCode(),PayConstant.REQ_ERROR_CODE_10)) {
-                    responseVo.setStatus(PayConstant.STATUS_ERROR);
                 }else {
                     responseVo.setStatus(PayConstant.STATUS_FAIL);
                     responseVo.setMessage(result.getRt3_retMsg());
                 }
-            }else {
-                responseVo.setStatus(PayConstant.STATUS_ERROR);
             }
         } catch (Exception e) {
             responseVo.setStatus(PayConstant.STATUS_ERROR);
@@ -182,19 +176,16 @@ public class HeliPayBiz implements PayCommon {
         reqVo.setSignatureType(HelipayConstant.SIGNATURE_TYPE);
         BindCardResponseVo result = helipayHelper.bindCommit(reqVo);
         try {
-            if (MessageHandle.checkSign(result)) {
-                if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
+            responseVo.setStatus(PayConstant.STATUS_ERROR);
+            if (!unSignError(result.getRt2_retCode()) && MessageHandle.checkSign(result)){
+                if (success(result.getRt2_retCode())) {
                     responseVo.setStatus(PayConstant.RESULT_SUCCESS);
                     responseVo.setMessage(result.getRt3_retMsg());
                     responseVo.setProtocolNo(result.getRt10_bindId());
-                }else if(error(result.getRt2_retCode()) || StringUtil.equals(result.getRt2_retCode(),PayConstant.REQ_ERROR_CODE_10)) {
-                    responseVo.setStatus(PayConstant.STATUS_ERROR);
                 }else {
                     responseVo.setStatus(PayConstant.STATUS_FAIL);
                     responseVo.setMessage(result.getRt3_retMsg());
                 }
-            }else {
-                responseVo.setStatus(PayConstant.STATUS_ERROR);
             }
         } catch (Exception e) {
             responseVo.setStatus(PayConstant.STATUS_ERROR);
@@ -222,8 +213,9 @@ public class HeliPayBiz implements PayCommon {
         RepaymentResponseVo responseVo = new RepaymentResponseVo();
         responseVo.setOrderNo(reqVo.getP5_orderId());
         try {
-            if (MessageHandle.checkSign(result)) {
-                if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
+            responseVo.setStatus(PayConstant.STATUS_ERROR);
+            if (!unSignError(result.getRt2_retCode()) && MessageHandle.checkSign(result)){
+                if (success(result.getRt2_retCode())) {
                     String payMsg = result.getRt3_retMsg();
                     if (tool.util.StringUtil.isNotEmpty(result.getRt6_serialNumber())) {
                         payMsg = result.getRt6_serialNumber()+"|" + payMsg;
@@ -231,14 +223,10 @@ public class HeliPayBiz implements PayCommon {
                     responseVo.setStatus(PayConstant.RESULT_SUCCESS);
                     responseVo.setMessage(payMsg);
                     responseVo.setPayPlatNo(result.getRt6_serialNumber());
-                }else if(error(result.getRt2_retCode()) || StringUtil.equals(result.getRt2_retCode(),PayConstant.REQ_ERROR_CODE_10)) {
-                    responseVo.setStatus(PayConstant.STATUS_ERROR);
-                }else {
+                } else {
                     responseVo.setStatus(PayConstant.STATUS_FAIL);
                     responseVo.setMessage(result.getRt3_retMsg());
                 }
-            }else {
-                responseVo.setStatus(PayConstant.STATUS_ERROR);
             }
         } catch (Exception e) {
             responseVo.setStatus(PayConstant.STATUS_ERROR);
@@ -256,8 +244,9 @@ public class HeliPayBiz implements PayCommon {
         QueryOrderResponseVo result = helipayHelper.queryOrder(reqVo);
         RepaymentQueryResponseVo responseVo = new RepaymentQueryResponseVo();
         try {
-            if (MessageHandle.checkSign(result)) {
-                if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
+            responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
+            if (!unSignError(result.getRt2_retCode()) && MessageHandle.checkSign(result)){
+                if (success(result.getRt2_retCode())) {
                     responseVo.setCode(PayConstant.QUERY_PAY_SUCCESS);
                 }else if(StringUtil.equals(result.getRt2_retCode(),HelipayConstant.ORDER_RETCODE_NEED_ORDERSTATUS)) {
                     if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.ORDER_STATUS_SUCCESS)){
@@ -268,13 +257,9 @@ public class HeliPayBiz implements PayCommon {
                     }else {
                         responseVo.setCode(PayConstant.QUERY_PAY_FAIL);
                     }
-                }else if(error(result.getRt2_retCode()) || StringUtil.equals(result.getRt2_retCode(),PayConstant.REQ_ERROR_CODE_10)) {
-                    responseVo.setCode(PayConstant.QUERY_PAY_FAIL);
-                }else {
+                } else {
                     responseVo.setCode(PayConstant.QUERY_PAY_FAIL);
                 }
-            }else {
-                responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
             }
         } catch (Exception e) {
             responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
@@ -303,5 +288,13 @@ public class HeliPayBiz implements PayCommon {
 
     public boolean error(String code) {
         return StringUtils.startsWith(code, "300");
+    }
+
+    private boolean unSignError(String code){
+       return error(code) || StringUtil.equals(code,PayConstant.REQ_ERROR_CODE_10);
+    }
+
+    private boolean success(String code) {
+       return StringUtil.equals(code,HelipayConstant.RESULT_CODE_SUCCESS);
     }
 }

@@ -1,3 +1,14 @@
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付代付地址', 'helipay_transfer_url', 'http://test.trx.helipay.com/trx/transfer/interface.action', '1', '合利支付代付地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付快捷支付', 'helipay_quickpay_api_url', 'http://test.trx.helipay.com/trx/quickPayApi/interface.action', '1', '合利支付快捷支付', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付商务号', 'helipay_customer_no', 'C1800000002', '1', '合利支付商务号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付rsakey', 'helipay_transfer_sign_key', 'MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAM+PcQN9JmrYJ+sKwI9kmBLAsBS6HHDT2Sgkh8BYbyTKovSMQat1II6l42HhUH6lr7bXwnRUw8I4qrNBZjz4cWZBi+vgkSL/1f1M/erW27t61DobvpgDpZQTtmQ7IDsiLuY7C7We+WwaBcddnju74ij3FPWCpgYBHGwdv5wwzRxdAgMBAAECgYBAzSreiPsujm/gDQpTeneUGz6eKgDpJOr+gnEzlyiUFwPLT+LM0hOpFZepHnxQHhB/CFu4kCJSB/kbYAa4cGSOlPo8zBLCfNajClZMLaKMAIb+0TmYNAnVcadC/4fXibzAW0zRS2/OK4H7wWUVEYyC66m+ieBaH5Jt/72+e6aYTQJBAPjjhGanLk22ml8i5+MzN94RBQStbGNxI6xtBXoKEIB2W/INPddZ877e7tknh+fVvctTZlE4Q5V1TT2ZL4wzke8CQQDVfaE9Cbc+aeg3Mb+Ap64tCK4WTHhWzHySN7VGTLdeF41ZjqTrIS7SSQyZOPOt/lMfFgXO0EnSdCqL+aexXFJzAkBeHyxi5bZNDVEzyS+IbEYkZKtRKYRj1tV2z4PSsxuqeRgsYXWRiyLye7w3wwtSUTKFQfTfojdsvf+H2/ZvPtFhAkAMygfctjZKAOIuXEaSmHjwrbJwF4il+n4D7F5ppbLeah7HnKn4g/ZgFowwqZ6/b5rfI9yZNRUXDGp4FC6di2BNAkB572zRbBT5Ot9mx9xVg6g/t0s3+LLEs1LBFEWQatRR9oC6qUzGNKTnZ/d5254ngnYXSRaQEZT698cJQV7kvmg4', '1', '合利支付RSAKEY', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付开关', 'helipay_switch', '1', '1', '合利支付开关', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付md5key', 'helipay_daifu_md5_key', 'Vx977zHtKzoMkb3vZjxLzVvNHg1469cO', '1', '合利支付md5key', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付cert', 'helipay_cert_name', 'helipay.cer', '1', '合利支付cert', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付pfx', 'helipay_pfx_name', 'C1800000002.pfx', '1', '合利支付pfx', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付pwd', 'helipay_pfx_pwd', 'qwer1234', '1', '合利支付pwd', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '支付公司选择', 'pay_model_select', 'fuiou', '1', '支付公司选择，fuiou,helipay', '1');
+
 -- 添加token获取地址，2018-11-16
 INSERT INTO `arc_sys_config` VALUES (null, 70, 'token', 'token_apihost', 'https://api.dsdatas.com/credit/api/token', 1, '获取token的host', 1);
 

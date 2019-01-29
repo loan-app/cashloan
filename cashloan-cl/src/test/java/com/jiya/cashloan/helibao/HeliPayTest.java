@@ -217,7 +217,7 @@ public class HeliPayTest {
         String property = System.getProperty("user.dir");
         String pfxpath = property + File.separator + "sign" + File.separator + "C1800000002.pfx";
         String cerPath = property + File.separator + "sign" + File.separator + "helipay.cer";
-        MessageHandle.setCertPath(cerPath);
+//        MessageHandle.setCertPath(cerPath);
         MessageHandle.setPfxPath(pfxpath);
         MessageHandle.setPfxPwd("qwer1234");
     }

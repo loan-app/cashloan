@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.helipay;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.model.pay.BasePay;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
@@ -46,7 +47,7 @@ public class HelipayHelper extends BasePay {
         reqVo.setBizType(HelipayConstant.BTYPE_Transfer);
         Map<String, String> reqestMap = new HashMap();
         try {
-            reqestMap = reqVo.payQueryParams();
+            reqestMap = reqVo.paymentParams();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -257,7 +258,7 @@ public class HelipayHelper extends BasePay {
 
     private String requestTransfer(Map reqestMap,String bizType,String orderId) {
         String resp = "";
-//        saveReqLog(bizType, orderId, "", JSON.toJSONString(reqestMap));
+        saveReqLog(bizType, orderId, "", JSON.toJSONString(reqestMap));
         try {
             if (HelipayUtil.switchHelipay()) {
                 resp = HttpsUtil.postClient(HelipayUtil.transferUrl(), reqestMap);
@@ -274,7 +275,7 @@ public class HelipayHelper extends BasePay {
 
     private String request(Map reqestMap,String bizType,String orderId) {
         String resp = "";
-//        saveReqLog(bizType, orderId, "", JSON.toJSONString(reqestMap));
+        saveReqLog(bizType, orderId, "", JSON.toJSONString(reqestMap));
         try {
             if (HelipayUtil.switchHelipay()) {
                 resp = HttpsUtil.postClient(HelipayUtil.quickPayUrl(), reqestMap);
@@ -290,6 +291,6 @@ public class HelipayHelper extends BasePay {
     }
     @Override
     public void modifyReqLog(String orderNo, String resp){
-//        super.modifyReqLog(orderNo,resp);
+        super.modifyReqLog(orderNo,resp);
     }
 }

@@ -24,7 +24,7 @@ table {
 						<tr>
 							<td width="300" class="bg_gray" align="right">客户编号(USERID)：&nbsp;&nbsp;</td>
 							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
-								type="text" name="userid" size='30' value='66666666' /></td>
+								type="text" name="userid" size='30' value='xj123456' /></td>
 						</tr>
 							<tr>
 							<td width="300" class="bg_gray" align="right">账户名称(ACCOUNT)：&nbsp;&nbsp;</td>

@@ -18,16 +18,12 @@ public class MessageHandle {
 
 	private static final Log log = LogFactory.getLog(MessageHandle.class);
 
-	private static String CERT_PATH = "d:/helipay.cer";    //合利宝cert
 	private static String PFX_PATH = "d:/merchant0002.pfx";        //商户pfx
 	private static String PFX_PWD = "1234qwer";    //pfx密码
 	private static final String ENCRYPTION_KEY = "encryptionKey";
 	private static final String SPLIT = "&";
 	private static final String SIGN = "sign";
 
-	public static void setCertPath(String path) {
-		CERT_PATH = path;
-	}
 	public static void setPfxPath(String path) {
 		PFX_PATH = path;
 	}
@@ -74,7 +70,7 @@ public class MessageHandle {
 
 		//如果有加密的，需要用合利宝的公钥将AES加密的KEY进行加密使用BASE64编码上送
 		if (isEncrypt) {
-			PublicKey publicKey = RSA.getPublicKeyByCert(CERT_PATH);
+			PublicKey publicKey = RSA.getPublicKeyByCert();
 			String encrytionKey = RSA.encodeToBase64(aesKey, publicKey, ConfigureEncryptAndDecrypt.KEY_ALGORITHM);
 			retMap.put(ENCRYPTION_KEY, encrytionKey);
 		}
@@ -84,7 +80,7 @@ public class MessageHandle {
 		}
 
 		//使用商户的私钥进行签名
-		PrivateKey privateKey = RSA.getPrivateKey(PFX_PATH, PFX_PWD);
+		PrivateKey privateKey = RSA.getPrivateKey();
 		String sign = RSA.sign(sb.toString(), privateKey);
 		retMap.put(SIGN, sign);
 		if (HelipayUtil.isLogSign()) {
@@ -128,7 +124,7 @@ public class MessageHandle {
 			log.info("response验签原签名串：" + sb.toString());
 		}
 		//使用合利宝的公钥进行验签
-		PublicKey publicKey = RSA.getPublicKeyByCert(CERT_PATH);
+		PublicKey publicKey = RSA.getPublicKeyByCert();
 		flag = RSA.verifySign(sb.toString(), sign, publicKey);
 		if (HelipayUtil.isLogSign()) {
 			if (flag) {
