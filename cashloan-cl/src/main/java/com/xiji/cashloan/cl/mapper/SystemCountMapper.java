@@ -1,6 +1,8 @@
 package com.xiji.cashloan.cl.mapper;
 
 import com.xiji.cashloan.cl.domain.UserAuth;
+import com.xiji.cashloan.cl.model.statistic.ChannelStatisticData;
+import com.xiji.cashloan.cl.model.statistic.UserStatisticData;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import com.xiji.cashloan.core.domain.Borrow;
 
@@ -161,4 +163,18 @@ public interface SystemCountMapper {
 	 * @return
 	 */
 	List<Borrow> listBorrowStatistics();
+
+    /**
+     * 用户数据统计
+     * @return
+     */
+	List<UserStatisticData> listUserStatisticData(Map<String,Object> params);
+
+
+	/**
+	 * 渠道数据统计
+	 * @param params
+	 * @return
+	 */
+	List<ChannelStatisticData> listChannelStatisticData(Map<String,Object> params);
 }

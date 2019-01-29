@@ -1,5 +1,9 @@
 package com.xiji.cashloan.cl.service;
 
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.model.statistic.ChannelStatisticData;
+import com.xiji.cashloan.cl.model.statistic.UserStatisticData;
+
 import java.util.Map;
 
 /**
@@ -61,5 +65,23 @@ public interface SystemCountService {
 //	 * @return
 //	 */
 //	Map<String,Object> todayUserStatistics();
+
+	/**
+	 * 用户数据统计
+	 * @param params
+	 * @param current
+	 * @param pageSize
+	 * @return
+	 */
+	Page<UserStatisticData> listUserStatisticData(Map<String,Object> params, Integer current, Integer pageSize);
+
+	/**
+	 * 渠道数据统计
+	 * @param params
+	 * @param current
+	 * @param pageSize
+	 * @return
+	 */
+	Page<ChannelStatisticData> listChannelStatisticData(Map<String,Object> params,Integer current,Integer pageSize);
 
 }
