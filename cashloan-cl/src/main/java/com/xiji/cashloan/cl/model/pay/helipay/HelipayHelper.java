@@ -121,7 +121,7 @@ public class HelipayHelper extends BasePay {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        String resp = request(reqestMap,reqVo.getP1_bizType(),reqVo.getP4_orderId());
+        String resp = request(reqestMap,"sendBingCardCode",reqVo.getP4_orderId());
         if (isException(resp)) {
             result.setRt2_retCode(resp);
         } else if (!JSONUtil.isJsonObject(resp)){
