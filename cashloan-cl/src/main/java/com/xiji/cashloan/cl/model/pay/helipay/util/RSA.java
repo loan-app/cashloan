@@ -324,6 +324,14 @@ public class RSA {
         return publicKey;
     }
 
+    public static PublicKey getPublicKeyByCert(String path) throws Exception {
+        CertificateFactory cff = CertificateFactory.getInstance("X.509");
+        FileInputStream fis1 = new FileInputStream(path);
+        Certificate cf = cff.generateCertificate(fis1);
+        PublicKey publicKey = cf.getPublicKey();
+        return publicKey;
+    }
+
     public static String getKeyStringByPfx(String strPfx, String strPassword) {
         try {
             KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -372,7 +380,34 @@ public class RSA {
         }
         return null;
     }
+    public static PrivateKey getPrivateKey(String pfxPath,String pfxPassword) {
+        try {
+            KeyStore ks = KeyStore.getInstance("PKCS12");
 
+            FileInputStream fis = new FileInputStream(pfxPath);
+            // If the keystore password is empty(""), then we have to set
+            // to null, otherwise it won't work!!!
+            char[] nPassword = null;
+            if ((pfxPassword == null) || pfxPassword.trim().equals("")) {
+                nPassword = null;
+            } else {
+                nPassword = pfxPassword.toCharArray();
+            }
+            ks.load(fis, nPassword);
+            fis.close();
+            Enumeration enumas = ks.aliases();
+            String keyAlias = null;
+            if (enumas.hasMoreElements())// we are readin just one certificate.
+            {
+                keyAlias = (String) enumas.nextElement();
+            }
+            PrivateKey prikey = (PrivateKey) ks.getKey(keyAlias, nPassword);
+            return prikey;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static PrivateKey getPrivateKey() {
         try {
             KeyStore ks = KeyStore.getInstance("PKCS12");

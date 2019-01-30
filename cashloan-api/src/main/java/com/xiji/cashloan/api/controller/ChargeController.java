@@ -126,10 +126,8 @@ public class ChargeController extends BaseController {
 	@RequestMapping(value = "/pay/helipay/repaymentNotify.htm")
 	public void heliBaoRepaymentNotify(BindCardPayResponseVo vo) throws Exception {
 		String jsonMsg = JSON.toJSONString(vo);
-		if (logger.isDebugEnabled()) {
-			logger.debug("代扣 - 异步通知：" + jsonMsg);
-		}
 
+		logger.info("协议支付 - 异步通知：" + jsonMsg);
 		String orderNo = vo.getRt5_orderId();
 		if (!MessageHandle.checkSign(vo)) {
 			logger.error("验签失败" + orderNo);
