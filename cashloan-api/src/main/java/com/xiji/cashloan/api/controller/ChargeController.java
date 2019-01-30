@@ -16,11 +16,11 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardPayResponseVo;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
-import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +114,8 @@ public class ChargeController extends BaseController {
 			return;
 		}
 
-		if (StringUtil.isNotEmpty(message)) {
-			ServletUtils.writeToResponse(response, "1");
+		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
+			writeResult(response, "1");
 		}
 	}
 
@@ -175,8 +175,8 @@ public class ChargeController extends BaseController {
 			return;
 		}
 
-		if (StringUtil.equals(message,PayConstant.RESULT_SUCCESS)) {
-			ServletUtils.writeToResponse(response, "success");
+		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
+			writeResult(response, "success");
 		}
 	}
 
@@ -203,5 +203,9 @@ public class ChargeController extends BaseController {
 		model.setSign(request.getParameter("SIGN"));
 		return model;
 	}
-	
+	private void writeResult(HttpServletResponse response,String result)throws Exception {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf8");
+		response.getOutputStream().write(result.getBytes("utf8"));
+	}
 }
