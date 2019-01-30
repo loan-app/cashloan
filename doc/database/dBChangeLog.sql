@@ -541,4 +541,10 @@ INSERT INTO `arc_sys_config` VALUES (null, '100', '预订单号请求地址', 'x
 ALTER TABLE `arc_rule_engine_config` change ccolumn `ccolumn` varchar(100) DEFAULT '' COMMENT '设置关联表列';
 ALTER TABLE `arc_rule_engine_config` change column_comment `column_comment` varchar(255) DEFAULT '' COMMENT '字段名称';
 ALTER TABLE `arc_borrow_rule_result` change col_nid `col_nid` varchar(100) NOT NULL DEFAULT '' COMMENT '列名英文名称';
-ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';
+ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';;
+
+-- 英趣思汀
+INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'kface', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测key', 'k_ocr_base64key', 'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAoQbUJfG8h63o2klN3InuK1qUetS71O0YINFlHyZzzKmRBCgNyvuDt8ZuCjB9Zrexk+FNOeUg2dGV8XSCZKwLmwIDAQABAkEAg/C3ddvMMZQi/nEf9juiRi2zCa4ztbULlyBb7hkwuxlL+HYHln8EhgvBTGAWb596BQTmmDET1iVgDm+pWEfd2QIhANk6cX7/H4AkKr9GLlc5KMJNm7+/tJzoMTw6uETwfL1HAiEAvcRuUYY4azGhBAJmsoxSy/S0DSGYZlohMN+FYjSRmQ0CIH+257GVx2xsVyGb3nTzqy4JuO9Ug5jYvtG9aEdH6N7TAiEAgoeV9l+jeSBHB/H63/+jiAUGwC2GnYiLYgmtvtI4ABUCIQC1BoDi3sip+YcY3gw6+SbChaRNAcfZVoeJK60ZM5+xww==', 1, '英趣思汀活体检测key', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测渠道号', 'k_ocr_channelno', 'CH13IVR8S', 1, '英趣思汀活体检测渠道号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测url', 'k_ocr_checkface_url', 'http://rryqo.com/finance/v1/face/match?applyNo=', 1, '英趣思汀活体检测url', 1);

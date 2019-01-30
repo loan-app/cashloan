@@ -7,9 +7,21 @@ import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.domain.UserCardCreditLog;
 import com.xiji.cashloan.cl.domain.UserMessages;
 import com.xiji.cashloan.cl.model.UserAuthModel;
-import com.xiji.cashloan.cl.model.dsdata.LinkfaceHsTkCreditRequest;
 import com.xiji.cashloan.cl.model.dsdata.LinkfaceIDTkOcrRequest;
-import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckBiz;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckReq;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckResult;
+import com.xiji.cashloan.cl.service.BankCardService;
+import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.OperatorReqLogService;
+import com.xiji.cashloan.cl.service.OperatorRespDetailService;
+import com.xiji.cashloan.cl.service.OperatorService;
+import com.xiji.cashloan.cl.service.UserAuthService;
+import com.xiji.cashloan.cl.service.UserBlackInfoService;
+import com.xiji.cashloan.cl.service.UserCardCreditLogService;
+import com.xiji.cashloan.cl.service.UserContactsService;
+import com.xiji.cashloan.cl.service.UserMessagesService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -26,6 +38,19 @@ import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.model.UserWorkInfoModel;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,15 +64,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.*;
 
 /**
  * 用户详情表Controller
@@ -309,7 +325,6 @@ public class UserBaseInfoController extends BaseController {
             throws Exception {
         long userId = NumberUtil.getLong(request.getSession().getAttribute("userId").toString());
         Map<String, Object> returnMap = new HashMap<String, Object>();
-        final String LINKFACEHOST = Global.getValue("linkface_liVerification");
 
         Map<String, Object> infoMap = new HashMap<String, Object>();
         infoMap.put("idNo", idNo);
@@ -370,37 +385,24 @@ public class UserBaseInfoController extends BaseController {
 //					linkfaceRequest.signByKey(SECRETKEY);
 //
 //					String result = linkfaceRequest.request();
+                    final String LINKFACEHOST = Global.getValue("linkface_liVerification");
+                    FaceCheckReq req = new FaceCheckReq();
+                    req.setUrl(LINKFACEHOST);
+                    req.setIdCard(idNo);
+                    req.setLivingImgPath(list.get(0).getResPath());
+                    req.setFrontImgPath(list.get(1).getResPath());
+                    req.setRealName(user.getLoginName());
 
-                    LinkfaceHsTkCreditRequest linkfaceHsTkRequest = new LinkfaceHsTkCreditRequest(LINKFACEHOST, new File(list.get(0).getResPath()), realName, idNo);
-                    String result = linkfaceHsTkRequest.request();
-                    logger.info("用户" + user.getLoginName() + "完善个人信息，进行人证识别比对，result为:" + result);
+                    FaceCheckResult faceCheckResult = FaceCheckBiz.checkFace(req);
 
                     UserCardCreditLog log = new UserCardCreditLog();
                     log.setCreateTime(DateUtil.getNow());
                     log.setUserId(info.getUserId());
-                    log.setReqParams(JSONObject.toJSONString(linkfaceHsTkRequest));
-                    log.setReturnParams(result);
-
-                    JSONObject resultJson = JSONObject.parseObject(result);
-         /*           JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("data")));
-                    if (null != resultJson
-                            && StringUtil.isNotBlank(resultJson.get("code"))
-                            && 200 == (Integer) resultJson.get("code")) {
-                        match = data.getDoubleValue("verify_score");
-                        log.setResult(String.valueOf(resultJson.get("code")));
-                        log.setConfidence(String.valueOf(match));
-                    }*/
-                    if (resultJson.get("request_id") != null) {
-                        taskId = resultJson.get("request_id").toString();
-                    }
-                    JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("result_faceid")));
-                    log.setResult(String.valueOf(resultJson.get("code")));
-                    if (data == null){
-                        logger.info("人证识别请求失败"+result);
-                        match = 0.00;
-                    }else {
-                        match = data.getDoubleValue("confidence");
-                    }
+                    log.setReqParams(faceCheckResult.getReqParams());
+                    log.setReturnParams(faceCheckResult.getReturnParams());
+                    log.setResult(faceCheckResult.getCode());
+                    match = faceCheckResult.getScore();
+                    taskId = faceCheckResult.getTaskId();
                     log.setConfidence(String.valueOf(match));
                     userCardCreditLogService.insert(log);
                     logger.info("用户" + user.getLoginName() + "完善个人信息，进行人证识别比对，比对值为:" + match);

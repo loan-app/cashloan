@@ -109,7 +109,13 @@ public abstract class DsTkCreditRequest{
         return responseStr;
     }
 
-    private String convertStreamToString(InputStream is) {
+    protected CloseableHttpClient getHttpClient() {
+        return httpClient;
+    }
+    protected RequestConfig getRequestConfig() {
+        return requestConfig;
+    }
+    public String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line = null;
