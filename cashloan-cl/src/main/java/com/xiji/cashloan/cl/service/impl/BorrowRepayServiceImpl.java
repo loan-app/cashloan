@@ -445,7 +445,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		newBr.setAmount(repayAmount);
 		newBr.setBorrowId(br.getBorrowId());
 		newBr.setUserId(br.getUserId());
-		String repay = DateUtil.dateStr2(DateUtil.rollDay(DateUtil.getNow(), 0));
+		String repay = DateUtil.dateStr2(DateUtil.rollDay(br.getRepayTime(), 0));
 		repay = repay + " 23:59:59";
 		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
 		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);

@@ -139,14 +139,14 @@ body.signup-body { background: #48cafb; padding: 0.2666666667rem 0.2666666667rem
 
 .signup form p.other input[type='checkbox']:checked + label i { display: block; }
 
-.signup form p.other label { display: block; float: left; color: #fff; padding-left: 0.5333333333rem; position: relative; }
+.signup form p.other label { display: block; float: left; color: #ff4f1f; padding-left: 0.5333333333rem; position: relative; }
 
 .signup form p.other label:before { content: ''; display: block; width: 0.3733333333rem; height: 0.3733333333rem; background: #d9dbdb; position: absolute; left: 0; top: 50%; margin-top: -0.1866666667rem; border-radius: 0.0666666667rem; }
 
 .signup form p.other label i { width: 0.3733333333rem; height: 0.3733333333rem; position: absolute; left: 0; top: 50%; margin-top: -0.1866666667rem; background-size: 0.3733333333rem 0.3733333333rem;
 	background: url(../images/yes.png) 0px 0px / 0.373333rem 0.373333rem no-repeat;}
 
-.signup form p.other a { display: block; float: right; text-decoration: none; color: #fff; }
+.signup form p.other a { display: block; float: right; text-decoration: none; color: #ff4f1f; }
 
 .signup p { text-align: center; color: #de8d01; font-size: 0.2933333333rem; margin-top: 1rem; }
 
