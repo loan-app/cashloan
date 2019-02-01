@@ -7,6 +7,7 @@ import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.ManageBRepayLogModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
@@ -129,6 +130,12 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 			result.put(Constant.RESPONSE_CODE_MSG, "付款金额超过综合服务费了，请调整支付金额！");
 			ServletUtils.writeToResponse(response, result);
 		}
+		if (PayCommonHelper.isEmpty(bankCard)) {
+			Map<String,Object> result = new HashMap<String, Object>();
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡");
+			ServletUtils.writeToResponse(response, result);
+		}
 
 		PaymentReqVo vo = new PaymentReqVo();
 		if ("dev".equals(Global.getValue("app_environment"))) {
@@ -221,6 +228,13 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		}
 		logger.info("进行补扣代扣" + amount);
 		Date payReqTime = DateUtil.getNow();
+
+		if (PayCommonHelper.isEmpty(bankCard)) {
+			Map<String,Object> result = new HashMap<String, Object>();
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡");
+			ServletUtils.writeToResponse(response, result);
+		}
 
 		RepaymentReqVo vo = new RepaymentReqVo();
 		if ("dev".equals(Global.getValue("app_environment"))) {

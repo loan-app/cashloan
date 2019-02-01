@@ -101,7 +101,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		searchMap.clear();
 		searchMap.put("userId", borrow.getUserId());
 		BankCard card = bankCardManage.findSelective(searchMap);
-		if(StringUtil.isNotBlank(searchMap)){
+		if(StringUtil.isNotBlank(searchMap) && card != null){
 			clBorrowModel.setCardNo(card.getCardNo());
 			clBorrowModel.setBank(card.getBank());
 			if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
@@ -132,7 +132,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 			//存在还款计划时，才需要展示展期信息
 			if (repayDate != null) {
 				Map<String,Object> delayItem = new HashMap<>();
-				if(StringUtil.isNotBlank(searchMap)){
+				if(StringUtil.isNotBlank(searchMap) && card != null){
 					if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
 						delayItem.put("bankMsg",card.getBank()+"("+card.getCardNo().substring(card.getCardNo().length() - 4)+")");
 					}

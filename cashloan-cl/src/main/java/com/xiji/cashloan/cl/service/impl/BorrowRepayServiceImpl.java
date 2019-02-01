@@ -29,6 +29,7 @@ import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.RepayExcelModel;
 import com.xiji.cashloan.cl.model.UrgeRepayOrderModel;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
@@ -811,6 +812,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		// APP应用 + 小额贷款
 
 		BankCard bankCard = bankCardService.getBankCardByUserId(borrow.getUserId());
+		if (bankCard == null) {
+			throw new BussinessException("支付失败");
+		}
 		Map<String, String> sdkParam = paySdkParams(userId, bankCard.getAgreeNo(), amount, orderNo);
 
 		// 若参数封装失败，直接返回失败，业务不再执行
@@ -1004,6 +1008,12 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 //		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
 		Borrow borrow = clBorrowService.getById(borrowId);
 		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+
+		if (PayCommonHelper.isEmpty(bankCard)) {
+			result.put("code", "12");
+			result.put("msg", "绑定的银行卡信息失效，请重新绑卡！");
+			return result;
+		}
 
 		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
 		paramRepayMap.put("borrowId", borrowId);

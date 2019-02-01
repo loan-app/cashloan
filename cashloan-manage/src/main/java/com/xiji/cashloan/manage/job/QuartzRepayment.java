@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
@@ -97,7 +98,10 @@ public class QuartzRepayment implements Job {
 				UserBaseInfo baseInfo = userBaseInfoService.findByUserId(borrowRepay.getUserId());
 				Borrow borrow = clBorrowService.getById(borrowRepay.getBorrowId());
 				BankCard bankCard = bankCardService.getBankCardByUserId(borrowRepay.getUserId());
-				
+				if (PayCommonHelper.isEmpty(bankCard)) {
+					logger.error("绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡,userId:"+user.getId());
+					continue;
+				}
 				// 达到单笔代扣次数上限的不用再代扣
 				int doRepaymentCount = payLogService.doRepaymentNum(borrow.getId());
 				if(doRepaymentMax > 0 && doRepaymentCount >= doRepaymentMax){

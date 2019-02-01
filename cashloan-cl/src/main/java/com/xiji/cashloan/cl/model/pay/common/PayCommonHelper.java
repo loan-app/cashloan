@@ -13,4 +13,7 @@ public class PayCommonHelper {
         return StringUtil.equalsIgnoreCase(card.getAgreeCompany(), PayCommonUtil.payCompany(card.getUserId()));
     }
 
+    public static boolean isEmpty(BankCard bankCard) {
+        return bankCard == null;
+    }
 }

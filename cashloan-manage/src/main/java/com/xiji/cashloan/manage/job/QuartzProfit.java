@@ -4,6 +4,7 @@ import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.ProfitAmount;
 import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
@@ -76,6 +77,10 @@ public class QuartzProfit implements Job {
 					BankCard bankCard = bankCardService.getBankCardByUserId(profitAmount.getUserId());
 					UserBaseInfo baseInfo = userBaseInfoService.findByUserId(profitAmount.getUserId());
 					if(baseInfo != null && UserBaseInfoModel.USER_STATE_BLACK.equals(baseInfo.getState())){
+						continue;
+					}
+					if (PayCommonHelper.isEmpty(bankCard)) {
+						logger.error("绑卡信息异常，请联系客户重新绑卡！userId:" +baseInfo.getUserId());
 						continue;
 					}
 					Date date = DateUtil.getNow();

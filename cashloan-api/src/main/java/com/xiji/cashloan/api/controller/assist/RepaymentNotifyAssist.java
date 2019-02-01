@@ -1,6 +1,5 @@
 package com.xiji.cashloan.api.controller.assist;
 
-import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.PayLog;
@@ -9,7 +8,6 @@ import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.dto.RepaymentNotifyDto;
-import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayLogService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClSmsService;
@@ -40,8 +38,6 @@ public class RepaymentNotifyAssist {
     @Resource
     private BorrowRepayLogService borrowRepayLogService;
     @Resource
-    private BankCardService bankCardService;
-    @Resource
     private ClSmsService clSmsService;
 
     public String doScenesRepayment(RepaymentNotifyDto model,PayLog payLog)throws Exception {
@@ -58,7 +54,6 @@ public class RepaymentNotifyAssist {
                 repayMap.put("borrowId", payLog.getBorrowId());
                 repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
                 BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
-                BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
 
                 if (borrowRepay != null) {
                     Map<String, Object> param = new HashMap<String, Object>();
@@ -66,7 +61,7 @@ public class RepaymentNotifyAssist {
                     //param.put("repayTime", DateUtil.dateStr4(DateUtil.getNow()));
                     param.put("repayTime", DateUtil.getNow());
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-                    param.put("repayAccount", bankCard.getCardNo());
+                    param.put("repayAccount", model.getCardNo());
                     param.put("amount", payLog.getAmount());
                     param.put("serialNumber", payLog.getOrderNo());
                     param.put("penaltyAmout", borrowRepay.getPenaltyAmout());
@@ -154,7 +149,6 @@ public class RepaymentNotifyAssist {
                 repayMap.put("borrowId", payLog.getBorrowId());
                 repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
                 BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
-                BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
 
                 if (borrowRepay != null) {
                     Map<String, Object> param = new HashMap<String, Object>();
@@ -162,7 +156,7 @@ public class RepaymentNotifyAssist {
                     //param.put("repayTime", DateUtil.dateStr4(DateUtil.getNow()));
                     param.put("repayTime", DateUtil.getNow());
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-                    param.put("repayAccount", bankCard.getCardNo());
+                    param.put("repayAccount", model.getCardNo());
                     param.put("amount", payLog.getAmount());
                     param.put("serialNumber", payLog.getOrderNo());
                     param.put("penaltyAmout", borrowRepay.getPenaltyAmout());
@@ -214,7 +208,6 @@ public class RepaymentNotifyAssist {
                 repayMap.put("borrowId", payLog.getBorrowId());
                 repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
                 BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
-                BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
                 Date repayTime = null;
                 if (borrowRepay != null) {
                     Map<String, Object> param = new HashMap<String, Object>();
@@ -222,7 +215,7 @@ public class RepaymentNotifyAssist {
                     param.put("state", BorrowModel.STATE_DELAY_PAY);
                     param.put("amount", payLog.getAmount());
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-                    param.put("repayAccount", bankCard.getCardNo());
+                    param.put("repayAccount", model.getCardNo());
                     param.put("serialNumber", payLog.getOrderNo());
                     if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
                         Map<String, Object> delayPayMap = borrowRepayService.confirmDelayPay(param);
