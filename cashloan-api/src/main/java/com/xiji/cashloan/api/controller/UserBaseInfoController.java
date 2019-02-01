@@ -72,9 +72,6 @@ public class UserBaseInfoController extends BaseController {
     private UserAuthService userAuthService;
 
     @Resource
-    private BankCardService bankCardService;
-
-    @Resource
     private OperatorReqLogService operatorReqLogService;
 
     @Resource

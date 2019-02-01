@@ -106,6 +106,7 @@ public class PayLogServiceImpl extends BaseServiceImpl<PayLog, Long> implements 
 		Map<String, Object> checkMap = new HashedMap();
 		PaymentQueryVo vo = new PaymentQueryVo();
 		vo.setOrderNo(payLog.getOrderNo());
+		vo.setShareKey(payLog.getUserId());
 		PaymentQueryResponseVo responseVo = PayCommonUtil.queryPayment(vo);
 		if (responseVo != null) {
 			if (StringUtil.equalsIgnoreCase(responseVo.getStatus(), PayConstant.STATUS_PAYQUERY_NO_REQ)) {

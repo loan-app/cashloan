@@ -8,6 +8,9 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付cert', 'helipay_ce
 INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付pfx', 'helipay_pfx_name', 'C1800000002.pfx', '1', '合利支付pfx', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付pwd', 'helipay_pfx_pwd', 'qwer1234', '1', '合利支付pwd', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '支付公司选择', 'pay_model_select', 'fuiou', '1', '支付公司选择，fuiou,helipay', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '支付测试指定userid和公司', 'pay_model_test', '', '1', '支付测试指定userid和公司：1=helipay', '1');
+alter table cl_bank_card add column `agree_company` varchar(32) DEFAULT '' COMMENT '签约协议公司，fuiou或者helipay';
+update cl_bank_card set agree_company = 'fuiou';
 
 -- 添加token获取地址，2018-11-16
 INSERT INTO `arc_sys_config` VALUES (null, 70, 'token', 'token_apihost', 'https://api.dsdatas.com/credit/api/token', 1, '获取token的host', 1);

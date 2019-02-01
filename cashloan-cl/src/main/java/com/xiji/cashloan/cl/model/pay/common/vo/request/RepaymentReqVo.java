@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
  * @Date: 2019/1/26 15:41
  * @Description:
  */
-public class RepaymentReqVo {
+public class RepaymentReqVo  extends PayReq {
     private String userId;
     private String ip;
     private Double amount;

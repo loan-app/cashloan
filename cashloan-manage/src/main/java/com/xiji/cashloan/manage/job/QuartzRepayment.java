@@ -12,7 +12,6 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
@@ -117,7 +116,6 @@ public class QuartzRepayment implements Job {
 				payLogMap.put("type", PayLogModel.TYPE_COLLECT);
 				payLogMap.put("scenes", PayLogModel.SCENES_REPAYMENT);
 				PayLog repaymentLog = payLogService.findLatestOne(payLogMap);
-				FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
 
 				// 支付记录存在且不是支付失败，需要查询支付方得到准确结果
 				if (null != repaymentLog && !PayLogModel.STATE_PAYMENT_FAILED.equals(repaymentLog.getState())) {
@@ -127,6 +125,7 @@ public class QuartzRepayment implements Job {
 					RepaymentQueryVo vo = new RepaymentQueryVo();
 					vo.setOrderNo(repaymentLog.getOrderNo());
 					vo.setPayPlatNo(repaymentLog.getPayOrderNo());
+					vo.setShareKey(repaymentLog.getUserId());
 					RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 
 					if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_SUCCESS)) {
@@ -184,6 +183,7 @@ public class QuartzRepayment implements Job {
 				vo.setRemark2("repayment_" + borrow.getOrderNo());
 				vo.setTerminalId(UUID.randomUUID().toString());
 				vo.setTerminalType("OTHER");
+				vo.setShareKey(bankCard.getUserId());
 				RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
 				String payOrderNo = "";

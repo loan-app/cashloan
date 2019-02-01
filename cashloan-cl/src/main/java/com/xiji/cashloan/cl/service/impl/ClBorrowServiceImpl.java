@@ -13,7 +13,7 @@ import com.xiji.cashloan.cl.domain.OperatorReqLog;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.QianchengReqlog;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
+import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
@@ -153,7 +153,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Resource
 	private BorrowRepayLogMapper borrowRepayLogMapper;
 	@Resource
-	private BankCardMapper bankCardMapper;
+	private BankCardManage bankCardManage;
 	@Resource
 	private UserInviteMapper userInviteMapper;
 	@Resource
@@ -449,7 +449,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			result.put("isPwd", isPwd);
 			
-			BankCard bc = bankCardMapper.findByUserId(user.getId());
+			BankCard bc = bankCardManage.findByUserId(user.getId());
 			if (bc != null) {
 				result.put("cardId", bc.getId());
 				result.put("cardNo", bc.getCardNo());
@@ -1281,7 +1281,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 //			public void run() {
 //				Map<String, Object> bankCardMap = new HashMap<String, Object>();
 //				bankCardMap.put("userId", borrow.getUserId());
-//				BankCard bankCard = bankCardMapper.findSelective(bankCardMap);
+//				BankCard bankCard = bankCardManage.findSelective(bankCardMap);
 //
 //				UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
 //				String orderNo = OrderNoUtil.getSerialNumber();
@@ -1405,13 +1405,17 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			public void run() {
 				Map<String, Object> bankCardMap = new HashMap<String, Object>();
 				bankCardMap.put("userId", borrow.getUserId());
-				BankCard bankCard = bankCardMapper.findSelective(bankCardMap);
+				BankCard bankCard = bankCardManage.findSelective(bankCardMap);
 
 				UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
 
 				boolean flag  = judge(borrow.getId());
 				if(!flag){
 					logger.error("放款支付终止，存在待支付或者待审核状态或者支付成功的支付记录，借款id："+borrow.getId());
+					return;
+				}
+				if(bankCard == null){
+					logger.error("放款支付终止，绑卡信息为空，请重新绑卡："+borrow.getId());
 					return;
 				}
 				PaymentReqVo vo = new PaymentReqVo();
@@ -1425,6 +1429,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				vo.setBorrowId(borrow.getId());
 				vo.setBorrowOrderNo(borrow.getOrderNo());
 				vo.setMobile(bankCard.getPhone());
+				vo.setShareKey(bankCard.getUserId());
 				PaymentResponseVo result = PayCommonUtil.payment(vo);
 				PayLog payLog = new PayLog();
 				payLog.setOrderNo(result.getOrderNo());

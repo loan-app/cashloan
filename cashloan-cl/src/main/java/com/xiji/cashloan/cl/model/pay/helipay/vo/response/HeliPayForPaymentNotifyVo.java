@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.helipay.vo.response;
  * @Date: 2019/1/23 20:11
  * @Description:
  */
-public class HeliPayForPaymentResultVo {
+public class HeliPayForPaymentNotifyVo {
     private String rt1_bizType;
     private String rt2_retCode;
     private String rt3_retMsg;
@@ -15,6 +15,11 @@ public class HeliPayForPaymentResultVo {
      * 平台流水号
      */
     private String rt6_serialNumber;
+    private String rt7_orderStatus;
+    private String rt8_notifyType;
+    private String rt9_reason;
+    private String rt10_createDate;
+    private String rt11_completeDate;
     private String sign;
 
     public String getRt1_bizType() {
@@ -63,6 +68,46 @@ public class HeliPayForPaymentResultVo {
 
     public void setRt6_serialNumber(String rt6_serialNumber) {
         this.rt6_serialNumber = rt6_serialNumber;
+    }
+
+    public String getRt7_orderStatus() {
+        return rt7_orderStatus;
+    }
+
+    public void setRt7_orderStatus(String rt7_orderStatus) {
+        this.rt7_orderStatus = rt7_orderStatus;
+    }
+
+    public String getRt8_notifyType() {
+        return rt8_notifyType;
+    }
+
+    public void setRt8_notifyType(String rt8_notifyType) {
+        this.rt8_notifyType = rt8_notifyType;
+    }
+
+    public String getRt9_reason() {
+        return rt9_reason;
+    }
+
+    public void setRt9_reason(String rt9_reason) {
+        this.rt9_reason = rt9_reason;
+    }
+
+    public String getRt10_createDate() {
+        return rt10_createDate;
+    }
+
+    public void setRt10_createDate(String rt10_createDate) {
+        this.rt10_createDate = rt10_createDate;
+    }
+
+    public String getRt11_completeDate() {
+        return rt11_completeDate;
+    }
+
+    public void setRt11_completeDate(String rt11_completeDate) {
+        this.rt11_completeDate = rt11_completeDate;
     }
 
     public String getSign() {

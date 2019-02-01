@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
  * @Date: 2019/1/25 18:29
  * @Description:
  */
-public class RepaymentQueryVo {
+public class RepaymentQueryVo extends PayReq {
     private String orderNo;
     /**
      * 平台流水

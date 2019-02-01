@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import tool.util.StringUtil;
 
 /**
  * @Auther: king
@@ -50,7 +51,7 @@ public class FuiouPayController extends BaseController {
             String cardNo = req.getParameter("cardno");
             String idCard = req.getParameter("idcard");
             String mobileNo = req.getParameter("mobileno");
-
+            String sharekey = req.getParameter("shareKey");
 
             BindCardMsgVo vo = new BindCardMsgVo();
             vo.setUserId(userid);
@@ -58,6 +59,9 @@ public class FuiouPayController extends BaseController {
             vo.setBankCardName(account);
             vo.setIdCard(idCard);
             vo.setMobile(mobileNo);
+            if (StringUtil.isNotEmpty(sharekey)) {
+                vo.setShareKey(NumberUtils.toLong(sharekey));
+            }
             BindCardMsgResponseVo responseVo = PayCommonUtil.bindMsg(vo);
 
             String result = JSON.toJSONString(responseVo);
@@ -171,6 +175,7 @@ public class FuiouPayController extends BaseController {
             vo.setRemark("还款");
             vo.setTerminalId("xyz-id");
             vo.setTerminalType("OTHER");
+//            vo.setShareKey();
             RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
             result = JSON.toJSONString(responseVo);
@@ -277,11 +282,11 @@ public class FuiouPayController extends BaseController {
 //            model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
 
             PaymentReqVo vo = new PaymentReqVo();
-            if ("dev".equals(Global.getValue("app_environment"))) {
-                vo.setAmount(3.0);
-            } else {
-                vo.setAmount(NumberUtils.toDouble(req.getParameter("amt")));
+            double am = NumberUtils.toDouble(req.getParameter("amt"));
+            if (am > 10) {
+                am = 10.0;
             }
+            vo.setAmount(am);
             vo.setBankCardName(req.getParameter("accntnm"));
             vo.setBankCardNo(req.getParameter("accntno"));
             vo.setBorrowOrderNo("borrowid");

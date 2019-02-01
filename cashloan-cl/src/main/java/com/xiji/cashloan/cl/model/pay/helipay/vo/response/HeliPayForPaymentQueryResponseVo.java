@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.helipay.vo.response;
  * @Date: 2019/1/23 20:11
  * @Description:
  */
-public class HeliPayForPaymentResultVo {
+public class HeliPayForPaymentQueryResponseVo {
     private String rt1_bizType;
     private String rt2_retCode;
     private String rt3_retMsg;
@@ -15,6 +15,8 @@ public class HeliPayForPaymentResultVo {
      * 平台流水号
      */
     private String rt6_serialNumber;
+    private String rt7_orderStatus;
+    private String rt8_reason;
     private String sign;
 
     public String getRt1_bizType() {
@@ -63,6 +65,22 @@ public class HeliPayForPaymentResultVo {
 
     public void setRt6_serialNumber(String rt6_serialNumber) {
         this.rt6_serialNumber = rt6_serialNumber;
+    }
+
+    public String getRt7_orderStatus() {
+        return rt7_orderStatus;
+    }
+
+    public void setRt7_orderStatus(String rt7_orderStatus) {
+        this.rt7_orderStatus = rt7_orderStatus;
+    }
+
+    public String getRt8_reason() {
+        return rt8_reason;
+    }
+
+    public void setRt8_reason(String rt8_reason) {
+        this.rt8_reason = rt8_reason;
     }
 
     public String getSign() {

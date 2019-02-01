@@ -5,12 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
+import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.model.*;
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
+import com.xiji.cashloan.cl.model.BorrowRepayModel;
+import com.xiji.cashloan.cl.model.ClBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
 import com.xiji.cashloan.cl.service.BorrowProgressService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -61,7 +65,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
     @Resource
     private BorrowRepayLogMapper borrowRepayLogMapper;
     @Resource
-    private BankCardMapper bankCardMapper;
+    private BankCardManage bankCardManage;
     @Resource
 	private UserBaseInfoMapper userBaseInfoMapper;
     
@@ -96,7 +100,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		}
 		searchMap.clear();
 		searchMap.put("userId", borrow.getUserId());
-		BankCard card = bankCardMapper.findSelective(searchMap);
+		BankCard card = bankCardManage.findSelective(searchMap);
 		if(StringUtil.isNotBlank(searchMap)){
 			clBorrowModel.setCardNo(card.getCardNo());
 			clBorrowModel.setBank(card.getBank());

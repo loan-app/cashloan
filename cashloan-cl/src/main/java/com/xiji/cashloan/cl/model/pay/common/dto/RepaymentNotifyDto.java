@@ -14,6 +14,10 @@ public class RepaymentNotifyDto {
      * 平台流水
      */
     private String payPlatNo;
+    /**
+     * 银行卡号
+     */
+    private String cardNo;
 
     public String getOrderNo() {
         return orderNo;
@@ -45,5 +49,13 @@ public class RepaymentNotifyDto {
 
     public void setPayPlatNo(String payPlatNo) {
         this.payPlatNo = payPlatNo;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

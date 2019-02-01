@@ -12,7 +12,6 @@ import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrderLog;
 import com.xiji.cashloan.cl.domain.UserInvite;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
 import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
@@ -36,7 +35,6 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
@@ -121,8 +119,6 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	private UserInviteMapper userInviteMapper;
 	@Resource
 	private ProfitLogMapper profitLogMapper;
-	@Resource
-	private BankCardMapper bankCardMapper;
 	@Resource
 	private BankCardService bankCardService;
 	@Resource
@@ -213,7 +209,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 //			public void run() {
 //				Map<String, Object> paramMap = new HashMap<String, Object>();
 //				paramMap.put("userId", borrowRepay.getUserId());
-//				BankCard bankCard = bankCardMapper.findSelective(paramMap);
+//				BankCard bankCard = bankCardManage.findSelective(paramMap);
 //
 //				User user = userMapper.findByPrimary(borrowRepay.getUserId()); // 用户UUID
 //				Borrow borrow = clBorrowMapper.findByPrimary(borrowRepay.getBorrowId()); // 借款标识 OrderNo 作为还款编号
@@ -980,6 +976,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		if (log!=null&&!PayLogModel.STATE_PAYMENT_FAILED.equals(log.getState())) {
 			RepaymentQueryVo vo = new RepaymentQueryVo();
 			vo.setOrderNo(log.getOrderNo());
+			vo.setShareKey(log.getUserId());
 			RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 			if (StringUtil.equals(responseVo.getCode(),PayConstant.QUERY_PAY_SUCCESS)) {
 				// 更新订单状态
@@ -1007,8 +1004,6 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 //		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
 		Borrow borrow = clBorrowService.getById(borrowId);
 		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
-		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-		String key = Global.getValue("fuiou_protocol_mchntcd_key");
 
 		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
 		paramRepayMap.put("borrowId", borrowId);
@@ -1066,6 +1061,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		vo.setRemark2("repayment_" + borrow.getOrderNo());
 		vo.setTerminalId(UUID.randomUUID().toString());
 		vo.setTerminalType("OTHER");
+		vo.setShareKey(bankCard.getUserId());
 		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
 		String payOrderNo = "";
@@ -1134,6 +1130,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			RepaymentQueryVo vo = new RepaymentQueryVo();
 			vo.setOrderNo(repaymentLog.getOrderNo());
 			vo.setPayPlatNo(repaymentLog.getPayOrderNo());
+			vo.setShareKey(repaymentLog.getUserId());
 			RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 
 			if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_SUCCESS)) {
@@ -1196,6 +1193,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			RepaymentQueryVo vo = new RepaymentQueryVo();
 			vo.setOrderNo(repaymentLog.getOrderNo());
 			vo.setPayPlatNo(repaymentLog.getPayOrderNo());
+			vo.setShareKey(repaymentLog.getUserId());
 			RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 
 			if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_SUCCESS)) {

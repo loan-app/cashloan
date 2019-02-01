@@ -98,6 +98,7 @@ public class ChargeController extends BaseController {
 		dto.setMessage(model.getResponseMsg());
 		if (model.checkReturn()) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
+			dto.setCardNo(model.getBankCard());
 		}
 		String message = "";
 		if (PayLogModel.SCENES_REPAYMENT.equals(payLog.getScenes())) {
@@ -157,6 +158,7 @@ public class ChargeController extends BaseController {
 		dto.setMessage(vo.getRt3_retMsg());
 		if (StringUtil.equals(vo.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS)) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
+			dto.setCardNo(vo.getRt11_bankId());
 		}
 		String message = "";
 		if (PayLogModel.SCENES_REPAYMENT.equals(payLog.getScenes())) {

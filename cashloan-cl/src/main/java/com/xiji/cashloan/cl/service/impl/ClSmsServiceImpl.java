@@ -5,8 +5,19 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.*;
-import com.xiji.cashloan.cl.mapper.*;
+import com.xiji.cashloan.cl.domain.BankCard;
+import com.xiji.cashloan.cl.domain.BorrowRepay;
+import com.xiji.cashloan.cl.domain.CallsOutSideFee;
+import com.xiji.cashloan.cl.domain.Sms;
+import com.xiji.cashloan.cl.domain.SmsTpl;
+import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
+import com.xiji.cashloan.cl.manage.BankCardManage;
+import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
+import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.SmsMapper;
+import com.xiji.cashloan.cl.mapper.SmsTplMapper;
+import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.dsdata.SmsTkCreditRequest;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
@@ -65,7 +76,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
     @Resource
     private UserBaseInfoMapper userBaseInfoMapper;
     @Resource
-    private BankCardMapper bankCardMapper;
+    private BankCardManage bankCardManage;
 	@Resource
     private CallsOutSideFeeMapper callsOutSideFeeMapper;
 	@Override
@@ -538,7 +549,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		UserBaseInfo baseInfo=userBaseInfoMapper.findByUserId(userId);
 		search.clear();
 		search.put("userId", userId);
-		BankCard bankCard = bankCardMapper.findSelective(search);
+		BankCard bankCard = bankCardManage.findSelective(search);
 		if (baseInfo != null && repay != null && bankCard != null) {
 			search.clear();
 			search.put("type", "repayBefore");

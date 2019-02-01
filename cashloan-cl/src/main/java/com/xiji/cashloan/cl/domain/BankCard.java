@@ -53,9 +53,9 @@ import java.util.Date;
 	 */
 	private String agreeNo;
 	/**
-	 * 签约协议标识
+	 * 签约协议公司
 	 */
-	private String agreeType;
+	private String agreeCompany;
 
 	/**
 	 * 获取主键Id
@@ -188,11 +188,11 @@ import java.util.Date;
 		this.agreeNo = agreeNo;
 	}
 
-	public String getAgreeType() {
-		return agreeType;
+	public String getAgreeCompany() {
+		return agreeCompany;
 	}
 
-	public void setAgreeType(String agreeType) {
-		this.agreeType = agreeType;
+	public void setAgreeCompany(String agreeCompany) {
+		this.agreeCompany = agreeCompany;
 	}
 }

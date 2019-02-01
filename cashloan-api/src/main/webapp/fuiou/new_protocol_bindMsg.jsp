@@ -22,6 +22,11 @@ table {
 				<td width="100%">
 					<table width="100%" border="0" cellspacing="1">
 						<tr>
+							<td width="300" class="bg_gray" align="right">客户编号(shareKey)：&nbsp;&nbsp;</td>
+							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
+									type="text" name="shareKey" size='30' value='1' /></td>
+						</tr>
+						<tr>
 							<td width="300" class="bg_gray" align="right">客户编号(USERID)：&nbsp;&nbsp;</td>
 							<td class="bg_yellow2" align="left">&nbsp;&nbsp;<input
 								type="text" name="userid" size='30' value='xj123456' /></td>

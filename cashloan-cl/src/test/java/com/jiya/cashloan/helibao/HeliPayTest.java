@@ -1,10 +1,7 @@
 package com.jiya.cashloan.helibao;
 
 import com.alibaba.fastjson.JSON;
-import com.xiji.cashloan.cl.model.pay.common.biz.HeliPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.HelipayHelper;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
@@ -18,6 +15,7 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.request.UnBindCardVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.AgreementSendValidateCodeResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardPayResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.QueryOrderResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.UnBindCardResponseVo;
@@ -56,23 +54,41 @@ public class HeliPayTest {
 //        }
 //        System.out.printf(HelipayUtil.getOrderId());
 //        testPayment();
-//        testPayQuery();
+        testPayQuery();
 //        testBingMsg();
 //        testBindCommit();
 //        repayment();
 //        queryOrder();
-        unbind();
+//        unbind();
     }
 
     public static void testPayment() {
-        HeliPayBiz biz = new HeliPayBiz();
-        PaymentReqVo reqVo = new PaymentReqVo();
-        reqVo.setBankCardNo("6225880158386129");
-        reqVo.setAmount(0.01);
-        reqVo.setRemark("支付");
-        reqVo.setBankCardName("王金生");
-        PaymentResponseVo resultVo = biz.payment(reqVo);
+//        HeliPayBiz biz = new HeliPayBiz();
+//        PaymentReqVo reqVo = new PaymentReqVo();
+//        reqVo.setBankCardNo("6225880158386129");
+//        reqVo.setAmount(0.01);
+//        reqVo.setRemark("支付");
+//        reqVo.setBankCardName("王金生");
+//        PaymentResponseVo resultVo = biz.payment(reqVo);
+//        logger.info("success");
+////        System.out.println(HelipayUtil.checkPaymentResultSign(resultVo));
+//        System.out.println(JSON.toJSON(resultVo));
+        HelipayHelper helipayHelper = new HelipayHelper();
+        PayForReqVo reqVo = new PayForReqVo();
+        reqVo.setOrderId(HelipayUtil.getOrderId());
+        reqVo.setAmount("0.01");
+        reqVo.setBankCode("CMBCHINA");
+        reqVo.setBankAccountName("王金生");
+        reqVo.setBankAccountNo("6225880158386129");
+        reqVo.setBiz(HelipayConstant.BIZ_TYPE_B2C);
+        reqVo.setFeeType(HelipayConstant.PAYTYPE_PAYER);
+        reqVo.setUrgency(HelipayConstant.PAY_URGENCY);
+        reqVo.setSummary("remark");
+        reqVo.setNotifyUrl("https://www.baidu.com/");
+
+        HeliPayForPaymentResultVo resultVo = helipayHelper.payment(reqVo);
         logger.info("success");
+        System.out.println(HelipayUtil.checkPaymentResultSign(resultVo));
         System.out.println(JSON.toJSON(resultVo));
     }
 
@@ -84,7 +100,8 @@ public class HeliPayTest {
         HelipayHelper helipayHelper = new HelipayHelper();
         PayForReqVo reqVo = new PayForReqVo();
         reqVo.setOrderId("xjhlb1901240018634301");
-        HeliPayForPaymentResultVo resultVo = helipayHelper.queryPayment(reqVo);
+        HeliPayForPaymentQueryResponseVo resultVo = helipayHelper.queryPayment(reqVo);
+        System.out.println(HelipayUtil.checkQueryPaymentResultSign(resultVo));
         System.out.println(JSON.toJSON(resultVo));
     }
 

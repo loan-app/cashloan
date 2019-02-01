@@ -14,7 +14,7 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforNotifyModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
-import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
@@ -151,12 +151,12 @@ public class PayFuiouController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/pay/helipay/paymentNotify.htm")
-	public void helipayPaymentNotify(HeliPayForPaymentResultVo model) throws Exception {
+	public void helipayPaymentNotify(HeliPayForPaymentNotifyVo model) throws Exception {
 		String params = JSON.toJSONString(model);
 		logger.info("实时付款 - 异步通知:" + params);
 
 		String orderNo = model.getRt5_orderId();
-		if (!HelipayUtil.checkPaymentResultSign(model)) {
+		if (!HelipayUtil.checkNotifySign(model)) {
 			logger.error("验签失败" + orderNo);
 			return;
 		}

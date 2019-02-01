@@ -16,6 +16,7 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.request.UnBindCardVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.AgreementSendValidateCodeResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardPayResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.QueryOrderResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.UnBindCardResponseVo;
@@ -58,7 +59,7 @@ public class HelipayHelper extends BasePay {
             result.setRt2_retCode(PayConstant.REQ_ERROR_CODE_10);
             result.setRt3_retMsg(resp);
         }else {
-            result = JSONObject.parseObject(resp, HeliPayForPaymentResultVo.class);;
+            result = JSONObject.parseObject(resp, HeliPayForPaymentResultVo.class);
         }
 
         modifyReqLog(reqVo.getOrderId(), resp);
@@ -70,8 +71,8 @@ public class HelipayHelper extends BasePay {
      * @param reqVo
      * @return
      */
-    public HeliPayForPaymentResultVo queryPayment(PayForReqVo reqVo) {
-        HeliPayForPaymentResultVo result = new HeliPayForPaymentResultVo();
+    public HeliPayForPaymentQueryResponseVo queryPayment(PayForReqVo reqVo) {
+        HeliPayForPaymentQueryResponseVo result = new HeliPayForPaymentQueryResponseVo();
         reqVo.setCustomerNumber(HelipayUtil.customerNumber());
         reqVo.setBizType(HelipayConstant.BTYPE_TransferQuery);
         String orderNo = OrderNoUtil.getSerialNumber();
@@ -88,7 +89,7 @@ public class HelipayHelper extends BasePay {
             result.setRt2_retCode(PayConstant.REQ_ERROR_CODE_10);
             result.setRt3_retMsg(resp);
         }else  {
-            result = JSONObject.parseObject(resp, HeliPayForPaymentResultVo.class);;
+            result = JSONObject.parseObject(resp, HeliPayForPaymentQueryResponseVo.class);;
         }
 
         modifyReqLog(orderNo, resp);

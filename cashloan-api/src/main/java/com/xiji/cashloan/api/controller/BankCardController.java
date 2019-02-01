@@ -1,8 +1,8 @@
 package com.xiji.cashloan.api.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.model.BankCardModel;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
@@ -10,10 +10,6 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.lianlian.AgreementList;
-import com.xiji.cashloan.cl.model.pay.lianlian.QueryAuthSignModel;
-import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
-import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
@@ -24,7 +20,6 @@ import com.xiji.cashloan.cl.service.UserBlackInfoService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.Borrow;
@@ -108,9 +103,11 @@ public class BankCardController extends BaseController {
 		List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(NumberUtil.getLong(userId));
 	    if (null != list && !list.isEmpty()) {
 	    	Borrow borrow = list.get(0);
-	    	if(borrow != null && !BorrowModel.STATE_REPAY_FAIL.equals(borrow.getState())){
-	    		model.setChangeAble(BankCardModel.STATE_DISABLE);
-	    	}
+			if (card != null && PayCommonHelper.isCurrentPayCompany(card)) {
+				if(borrow != null && !BorrowModel.STATE_REPAY_FAIL.equals(borrow.getState())){
+					model.setChangeAble(BankCardModel.STATE_DISABLE);
+				}
+			}
 		}
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
@@ -172,7 +169,8 @@ public class BankCardController extends BaseController {
 		@RequestParam(value = "mobileNo", required = true) String mobileNo){
 		//校验更换绑卡时，是否存在未结束的借款
 		String bindCardSwitch = Global.getValue("bindCardSwitch");//10支持接口结束前换卡，20不支持
-		if (StringUtil.equals(bindCardSwitch, "10")) {
+		BankCard card = bankCardService.getBankCardByUserId(NumberUtil.getLong(userId));
+		if (StringUtil.equals(bindCardSwitch, "10") && card != null && PayCommonHelper.isCurrentPayCompany(card)) {
 			List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(NumberUtil.getLong(userId));
 			if (null != list && !list.isEmpty()) {
 				Borrow borrow = list.get(0);
@@ -218,6 +216,7 @@ public class BankCardController extends BaseController {
 				vo.setBankCardName(baseInfo.getRealName());
 				vo.setIdCard(baseInfo.getIdNo());
 				vo.setMobile(phone);
+				vo.setShareKey(baseInfo.getUserId());
 				BindCardMsgResponseVo responseVo = PayCommonUtil.bindMsg(vo);
 				if (PayCommonUtil.success(responseVo.getStatus())) {
 					data.put("state", "10");
@@ -266,9 +265,10 @@ public class BankCardController extends BaseController {
         @RequestParam(value = "orderNo", required = true) String orderNo,
 		@RequestParam(value = "mobileNo", required = true) String mobileNo) {
         long userid = NumberUtil.getLong(userId);
+		BankCard card = bankCardService.getBankCardByUserId(userid);
         //校验更换绑卡时，是否存在未结束的借款
         String bindCardSwitch = Global.getValue("bindCardSwitch");//10支持接口结束前换卡，20不支持
-        if (StringUtil.equals(bindCardSwitch, "10")) {
+        if (StringUtil.equals(bindCardSwitch, "10") && card != null && PayCommonHelper.isCurrentPayCompany(card)) {
             List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(userid);
             if (null != list && !list.isEmpty()) {
                 Borrow borrow = list.get(0);
@@ -307,6 +307,7 @@ public class BankCardController extends BaseController {
 		vo.setMobile(mobileNo);
 		vo.setMsgCode(captcha);
 		vo.setOrderNo(orderNo);
+		vo.setShareKey(baseInfo.getUserId());
 		BindCardMsgResponseVo responseVo = PayCommonUtil.bindCommit(vo);
 
         if (PayCommonUtil.success(responseVo.getStatus())) {
@@ -314,6 +315,7 @@ public class BankCardController extends BaseController {
             if (!StringUtil.isNotEmpty(agreeNo)) {//没有协议号的情况下，需要重新查一下
 				BindCardQueryVo bindCardQueryVo = new BindCardQueryVo();
 				bindCardQueryVo.setUserId(user.getUuid());
+				bindCardQueryVo.setShareKey(user.getId());
 				BindCardQueryResponseVo cardQueryResponseVo = PayCommonUtil.bindCardQuery(bindCardQueryVo);
                 if (PayCommonUtil.success(cardQueryResponseVo.getStatus())) {
                     agreeNo = cardQueryResponseVo.getProtocolNo();
@@ -352,73 +354,74 @@ public class BankCardController extends BaseController {
         }
 	}
 	
-	/**
-	 * 签约响应回调
-	 * 
-	 * @param uuid
-	 * @param signResult
-	 * @param userId
-	 */
-	@RequestMapping(value = "/api/act/mine/bankCard/authSignReturn.htm", method = RequestMethod.POST)
-	public void authSignReturn(
-			@RequestParam(value = "uuid", required = true) String uuid,
-			@RequestParam(value = "agreeNo", required = true) String agreeNo,
-			@RequestParam(value = "signResult", required = true) String signResult,
-			@RequestParam(value = "userId", required = true) Long userId,
-			@RequestParam(value = "bank", required = false) String bank,
-			@RequestParam(value = "cardNo", required = true) String cardNo) {
-		Map<String, Object> result = new HashMap<String, Object>();
-
-		if (StringUtil.isEmpty(uuid) || StringUtil.isEmpty(signResult)) {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "参数不能为空");
-			ServletUtils.writeToResponse(response, result);
-			return;
-		}
-
-		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
-
-		boolean flag = false;
-		if (LianLianConstant.RESULT_SUCCESS.equals(signResult)) {
-			flag = saveOrUpdate(userId, cardNo, bankCard, agreeNo,"");
-		} else if (LianLianConstant.RESULT_PROCESSING.equals(signResult)) {
-			String orderNo = OrderNoUtil.getSerialNumber();
-			QueryAuthSignModel model = new QueryAuthSignModel(orderNo);
-			model.setUser_id(StringUtil.isNull(uuid));
-			LianLianHelper helper = new LianLianHelper();
-			model = (QueryAuthSignModel) helper.queryAuthSign(model);
-			List<AgreementList> agreementList = JSONArray.parseArray(model.getAgreement_list(), AgreementList.class);
-			if (null != agreementList && !agreementList.isEmpty()) {
-				AgreementList agreement = agreementList.get(0);
-				flag = saveOrUpdate(userId, cardNo, bankCard, agreement.getNo_agree(),"");
-			}
-		}
-
-		if (flag) {
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("userId", userId);
-			paramMap.put("bankCardState", "30");
-			userAuthService.updateByUserId(paramMap);
-		}
-
-		// 签约成功之后 ，查询是否有未还款的借款，进行重新授权
-		borrowRepayService.authSignApply(userId);	
-		
-		if (flag) {
-			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "保存成功");
-		} else {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "保存失败");
-		}
-
-		ServletUtils.writeToResponse(response, result);
-	}
+//	/**
+//	 * 签约响应回调
+//	 *
+//	 * @param uuid
+//	 * @param signResult
+//	 * @param userId
+//	 */
+//	@RequestMapping(value = "/api/act/mine/bankCard/authSignReturn.htm", method = RequestMethod.POST)
+//	public void authSignReturn(
+//			@RequestParam(value = "uuid", required = true) String uuid,
+//			@RequestParam(value = "agreeNo", required = true) String agreeNo,
+//			@RequestParam(value = "signResult", required = true) String signResult,
+//			@RequestParam(value = "userId", required = true) Long userId,
+//			@RequestParam(value = "bank", required = false) String bank,
+//			@RequestParam(value = "cardNo", required = true) String cardNo) {
+//		Map<String, Object> result = new HashMap<String, Object>();
+//
+//		if (StringUtil.isEmpty(uuid) || StringUtil.isEmpty(signResult)) {
+//			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+//			result.put(Constant.RESPONSE_CODE_MSG, "参数不能为空");
+//			ServletUtils.writeToResponse(response, result);
+//			return;
+//		}
+//
+//		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+//
+//		boolean flag = false;
+//		if (LianLianConstant.RESULT_SUCCESS.equals(signResult)) {
+//			flag = saveOrUpdate(userId, cardNo, bankCard, agreeNo,"");
+//		} else if (LianLianConstant.RESULT_PROCESSING.equals(signResult)) {
+//			String orderNo = OrderNoUtil.getSerialNumber();
+//			QueryAuthSignModel model = new QueryAuthSignModel(orderNo);
+//			model.setUser_id(StringUtil.isNull(uuid));
+//			LianLianHelper helper = new LianLianHelper();
+//			model = (QueryAuthSignModel) helper.queryAuthSign(model);
+//			List<AgreementList> agreementList = JSONArray.parseArray(model.getAgreement_list(), AgreementList.class);
+//			if (null != agreementList && !agreementList.isEmpty()) {
+//				AgreementList agreement = agreementList.get(0);
+//				flag = saveOrUpdate(userId, cardNo, bankCard, agreement.getNo_agree(),"");
+//			}
+//		}
+//
+//		if (flag) {
+//			Map<String, Object> paramMap = new HashMap<String, Object>();
+//			paramMap.put("userId", userId);
+//			paramMap.put("bankCardState", "30");
+//			userAuthService.updateByUserId(paramMap);
+//		}
+//
+//		// 签约成功之后 ，查询是否有未还款的借款，进行重新授权
+//		borrowRepayService.authSignApply(userId);
+//
+//		if (flag) {
+//			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+//			result.put(Constant.RESPONSE_CODE_MSG, "保存成功");
+//		} else {
+//			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+//			result.put(Constant.RESPONSE_CODE_MSG, "保存失败");
+//		}
+//
+//		ServletUtils.writeToResponse(response, result);
+//	}
 
 	private boolean saveOrUpdate(Long userId, String cardNo, BankCard bankCard, String agreeNo,String mobileNo) {
 		boolean flag = false;
 		CardBinQueryVo vo = new CardBinQueryVo();
 		vo.setBankCardNo(cardNo);
+		vo.setShareKey(bankCard.getUserId());
 		CardBinQueryResponseVo responseVo = PayCommonUtil.queryCardBin(vo);
         String bank = "";
         if (PayCommonUtil.success(responseVo.getStatus())) {

@@ -3,6 +3,7 @@ package com.xiji.cashloan.cl.model.pay.common;
 import com.xiji.cashloan.cl.model.pay.common.biz.FuiouPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.biz.HeliPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+import com.xiji.cashloan.cl.model.pay.common.constant.PayModelEnum;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
@@ -23,6 +24,7 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * @Auther: king
@@ -39,40 +41,49 @@ public class PayCommonUtil{
     }
 
     public static PaymentResponseVo payment(PaymentReqVo vo) {
-        return payMode.get(payKey()).payment(vo);
+        return payMode.get(payCompany(vo.getShareKey())).payment(vo);
     }
     public static PaymentQueryResponseVo queryPayment(PaymentQueryVo vo){
-        return payMode.get(payKey()).queryPayment(vo);
+        return payMode.get(payCompany(vo.getShareKey())).queryPayment(vo);
     }
     public static BindCardMsgResponseVo bindMsg(BindCardMsgVo vo){
-        return payMode.get(payKey()).bindMsg(vo);
+        return payMode.get(payCompany(vo.getShareKey())).bindMsg(vo);
     }
     public static UnbindCardResponseVo unbind(UnbindCardVo vo){
-        return payMode.get(payKey()).unbind(vo);
+        return payMode.get(payCompany(vo.getShareKey())).unbind(vo);
     }
     public static BindCardMsgResponseVo bindCommit(BindCardMsgVo vo){
-        return payMode.get(payKey()).bindCommit(vo);
+        return payMode.get(payCompany(vo.getShareKey())).bindCommit(vo);
     }
     public static RepaymentResponseVo repayment(RepaymentReqVo vo){
-        return payMode.get(payKey()).repayment(vo);
+        return payMode.get(payCompany(vo.getShareKey())).repayment(vo);
     }
     public static RepaymentQueryResponseVo queryOrder(RepaymentQueryVo vo){
-        return payMode.get(payKey()).queryOrder(vo);
+        return payMode.get(payCompany(vo.getShareKey())).queryOrder(vo);
     }
     public static BindCardQueryResponseVo bindCardQuery(BindCardQueryVo vo){
-        return payMode.get(payKey()).bindCardQuery(vo);
+        return payMode.get(payCompany(vo.getShareKey())).bindCardQuery(vo);
     }
     public static CardBinQueryResponseVo queryCardBin(CardBinQueryVo vo){
-        return payMode.get(payKey()).queryCardBin(vo);
+        return payMode.get(payCompany(vo.getShareKey())).queryCardBin(vo);
     }
 
 
-    public static String payKey() {
+    public static String payCompany(Long userId) {
         String value = Global.getValue("pay_model_select");
-        if (StringUtil.isBlank(value)) {
-            return PayConstant.PAY_MODE_FUIOU;
+        String test = Global.getValue("pay_model_test");
+        if (StringUtil.isNotEmpty(test)){
+            if (userId != null && userId > 0) {
+                if (test.contains("=")){
+                    String[] strings = test.split("=");
+                    if (userId == NumberUtils.toLong(strings[0])){
+                        return PayModelEnum.match(strings[1]);
+                    }
+                }
+            }
         }
-        return value;
+
+        return PayModelEnum.match(value);
     }
 
     public static boolean success(String status) {

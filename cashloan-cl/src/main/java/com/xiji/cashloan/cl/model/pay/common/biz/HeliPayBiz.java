@@ -31,6 +31,7 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.request.UnBindCardVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.AgreementSendValidateCodeResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardPayResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.BindCardResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.QueryOrderResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.UnBindCardResponseVo;
@@ -65,8 +66,13 @@ public class HeliPayBiz implements PayCommon {
         PaymentResponseVo responseVo = new PaymentResponseVo();
         //受理成功
         if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
-            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
-            responseVo.setStatusCode(result.getRt2_retCode());
+            if (HelipayUtil.checkPaymentResultSign(result)) {
+                responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+                responseVo.setStatusCode(result.getRt2_retCode());
+            }else {
+                //签名异常
+                responseVo.setStatus(PayConstant.STATUS_NEED_CHECK);
+            }
         } else if (error(result.getRt2_retCode())) {
             // 疑似重复订单，待人工审核
             responseVo.setStatus(PayConstant.STATUS_NEED_CHECK);
@@ -84,13 +90,15 @@ public class HeliPayBiz implements PayCommon {
         HelipayHelper helipayHelper = new HelipayHelper();
         PayForReqVo reqVo = new PayForReqVo();
         reqVo.setOrderId(vo.getOrderNo());
-        HeliPayForPaymentResultVo result = helipayHelper.queryPayment(reqVo);
+        HeliPayForPaymentQueryResponseVo result = helipayHelper.queryPayment(reqVo);
         PaymentQueryResponseVo responseVo = new PaymentQueryResponseVo();
         if (result != null) {
-            if (StringUtil.equalsIgnoreCase(result.getRt2_retCode(), HelipayConstant.DAIFU_RESPONSE_NO_ORDER)) {
-                responseVo.setStatus(PayConstant.STATUS_PAYQUERY_NO_REQ);
-            }else {
-                responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            if (HelipayUtil.checkQueryPaymentResultSign(result)) {
+                if (StringUtil.equalsIgnoreCase(result.getRt2_retCode(), HelipayConstant.DAIFU_RESPONSE_NO_ORDER)) {
+                    responseVo.setStatus(PayConstant.STATUS_PAYQUERY_NO_REQ);
+                }else {
+                    responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+                }
             }
         }
         return responseVo;

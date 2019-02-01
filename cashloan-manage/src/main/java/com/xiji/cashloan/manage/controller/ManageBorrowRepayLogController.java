@@ -15,7 +15,6 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayLogService;
@@ -142,6 +141,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setBorrowId(borrow.getId());
 		vo.setBorrowOrderNo(borrow.getOrderNo());
 		vo.setMobile(bankCard.getPhone());
+		vo.setShareKey(bankCard.getUserId());
 		PaymentResponseVo result = PayCommonUtil.payment(vo);
 
 		PayLog payLog = new PayLog();
@@ -203,13 +203,13 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		payLogMap.put("type", PayLogModel.TYPE_COLLECT);
 		payLogMap.put("scenes",PayLogModel.SCENES_DEDUCTION);
 		PayLog deductionLog = payLogService.findLatestOne(payLogMap);
-		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
 		// 订单存在并不是支付失败记录
 		if (null != deductionLog
 				&& !PayLogModel.STATE_PAYMENT_FAILED.equals(deductionLog.getState())) {
 			RepaymentQueryVo vo = new RepaymentQueryVo();
 			vo.setOrderNo(deductionLog.getOrderNo());
 			vo.setPayPlatNo(deductionLog.getPayOrderNo());
+			vo.setShareKey(deductionLog.getUserId());
 			RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 
 			if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_SUCCESS)) {
@@ -237,6 +237,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setRemark2("repayment_" + borrow.getOrderNo());
 		vo.setTerminalId(UUID.randomUUID().toString());
 		vo.setTerminalType("OTHER");
+		vo.setShareKey(bankCard.getUserId());
 		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
 		String payMsg = "";

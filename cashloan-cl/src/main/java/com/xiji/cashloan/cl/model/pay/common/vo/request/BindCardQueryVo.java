@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
  * @Date: 2019/1/28 19:15
  * @Description:
  */
-public class BindCardQueryVo {
+public class BindCardQueryVo  extends PayReq {
     private String userId;
     private String protocolNo;//协议号
     private String cardNo;//银行卡号

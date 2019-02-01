@@ -90,6 +90,7 @@ public class QuartzProfit implements Job {
 					vo.setBankCardNo(bankCard.getCardNo());
 					vo.setBorrowOrderNo(profitAmount.getId()+"");
 					vo.setMobile(bankCard.getPhone());
+					vo.setShareKey(bankCard.getUserId());
 					PaymentResponseVo result = PayCommonUtil.payment(vo);
 
 					PayLog payLog = new PayLog();

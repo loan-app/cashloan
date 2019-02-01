@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
  * @Date: 2019/1/25 18:24
  * @Description:
  */
-public class PaymentReqVo {
+public class PaymentReqVo  extends PayReq {
     private String bankCardNo;
     private String bankCardName;
     private Double amount;
