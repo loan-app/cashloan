@@ -158,7 +158,8 @@ $(function() {
         success: function(data) {
           if (data.code == 200) {
             //注册成功
-            show_download('恭喜您注册成功,快去下载app登录吧!');
+            //show_download('恭喜您注册成功,快去下载app登录吧!');
+            window.location.href = getInvite_a();
           }else {
             //报错
             show(data.msg);
