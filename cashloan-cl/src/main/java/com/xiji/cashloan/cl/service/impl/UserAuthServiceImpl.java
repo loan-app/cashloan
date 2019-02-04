@@ -4,16 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.OperatorReport;
 import com.xiji.cashloan.cl.domain.OperatorReqLog;
 import com.xiji.cashloan.cl.domain.OperatorRespDetail;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
-import com.xiji.cashloan.cl.service.OperatorRespDetailService;
-import com.xiji.cashloan.cl.service.OperatorService;
-import com.xiji.cashloan.cl.service.UserAuthService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
@@ -57,6 +55,8 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
     private OperatorService operatorService;
 	@Resource
 	private UserBaseInfoMapper userBaseInfoMapper;
+	@Resource
+	private OperatorReportService operatorReportService;
 
 	@Override
 	public BaseMapper<UserAuth, Long> getMapper() {
@@ -93,7 +93,20 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 					logger.error(e.getMessage(),e);
 				}
 
-				if(StringUtil.isNotBlank(result)) {
+
+				String reportHost = Global.getValue("mx_operator_report");
+				Map<String, String> reportHeadMap = new HashMap<>();
+				reportHeadMap.put("Authorization", "token" + " " + token);
+				reportHost = reportHost.replace("{mobile}", String.valueOf(baseInfo.getPhone()));
+				String reportResult = null;
+				try {
+					reportResult = MxCreditRequest.get(reportHost, reportHeadMap);
+				} catch (Exception e) {
+					logger.error(e.getMessage(),e);
+				}
+
+
+				if(StringUtil.isNotBlank(result) && StringUtil.isNotBlank(reportResult)) {
 					JSONObject json = JSON.parseObject(result);
 					String code = json.getString("code");
 					if("0".equals(code)){
@@ -109,6 +122,19 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 							operatorRespDetailService.updateSelective(updateMap);
 						}
 						operatorService.saveOperatorInfos(result, userAuth.getUserId(),DateUtil.getNow(), baseInfo.getPhone(), operatorReqLog.getId());
+
+
+						OperatorReport oldReport = operatorReportService.getByTaskId(operatorReqLog.getTaskId());
+						if (oldReport == null) {
+							OperatorReport operatorReport = new OperatorReport(operatorReqLog.getUserId(), operatorReqLog.getId(), operatorReqLog.getTaskId(), reportResult);
+							operatorReportService.insert(operatorReport);
+						} else {
+							Map<String, Object> updateMap = new HashMap<>();
+							updateMap.put("id", oldReport.getId());
+							updateMap.put("report", reportResult);
+							updateMap.put("gmtModified", DateUtil.getNow());
+							operatorReportService.updateSelective(updateMap);
+						}
 					} else {
 						phoneState = UserAuthModel.STATE_NOT_CERTIFIED;
 					}
