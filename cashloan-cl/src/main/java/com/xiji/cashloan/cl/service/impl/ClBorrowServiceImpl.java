@@ -1744,6 +1744,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 							updateMap.put("tableName", tableName1);
 							updateMap.put("userId", borrow.getUserId());
 							updateMap.put("peerNumber", key);
+							updateMap.put("reqLogId", operatorReqLog.getId());
 							updateMap.put("lastContactTime", lastContactMap.get(key));
 							operatorVoiceCntMapper.updateLastContactTime(updateMap);
 						}

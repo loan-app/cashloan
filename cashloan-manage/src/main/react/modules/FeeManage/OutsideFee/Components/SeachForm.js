@@ -62,7 +62,7 @@ let SeachForm = React.createClass({
           <Option value="9">借贷评估</Option>
           <Option value="10">欺诈甄别</Option>
           <Option value="11">染黑统计</Option>
-          <Option value="11">行为雷达</Option>
+          <Option value="12">行为雷达</Option>
           </Select>
           </FormItem>
 

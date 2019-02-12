@@ -271,7 +271,6 @@ export default React.createClass({
         },{
             title: '备注',
             render(text, record) {
-                console.log('record == >'+record.userId)
                 return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
             }
         },{
