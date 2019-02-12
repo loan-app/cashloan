@@ -221,6 +221,7 @@ export default React.createClass({
 
     refreshList() {
         var pagination = this.state.pagination; //console.log(pagination)
+        pagination.pageSize = 10;
         var params = objectAssign({}, this.props.params, {
             current: pagination.current,
             pageSize: pagination.pageSize,
