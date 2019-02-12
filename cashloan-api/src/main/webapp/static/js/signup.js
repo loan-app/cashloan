@@ -189,9 +189,9 @@ function downLoad() {
 
 function iosDownload() {
   //return "https://fir.im/zkdm";
-  return "https://xmvip.vip/vTf9y1";
+  return "https://3gle.cn/b/lbqh";
 }
 function androidDownload() {
   //return "https://fir.im/zkdx";
-  return "https://xmvip.vip/rjYQc4";
+  return "https://3gle.cn/b/lbqh";
 }
