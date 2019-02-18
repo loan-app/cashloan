@@ -21,11 +21,11 @@ function downLoad() {
 
 function iosDownload() {
     //return "https://fir.im/zkdm";
-    return "https://3gle.cn/b/lbqh";
+    return "https://xmvip.vip/vTf9y1";
 }
 function androidDownload() {
     //return "https://fir.im/zkdx";
-    return "https://3gle.cn/b/lbqh";
+    return "https://xmvip.vip/rjYQc4";
 }
 
 //邀请页面App下载的地址
