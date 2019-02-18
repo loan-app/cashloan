@@ -1,14 +1,13 @@
 package com.xiji.cashloan.api.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.domain.UserCardCreditLog;
 import com.xiji.cashloan.cl.domain.UserMessages;
 import com.xiji.cashloan.cl.model.UserAuthModel;
-import com.xiji.cashloan.cl.model.dsdata.LinkfaceIDTkOcrRequest;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckBiz;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckIdCardResult;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckReq;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckResult;
 import com.xiji.cashloan.cl.service.BankCardService;
@@ -259,34 +258,43 @@ public class UserBaseInfoController extends BaseController {
         saveFile(list, byteFront);
 //        saveFile(list, byteBack);
 
-        LinkfaceIDTkOcrRequest linkfaceIDTkOcrRequest = new LinkfaceIDTkOcrRequest(LINKFACEHOST, new File(list.get(0).getResPath()), null);
-        String result = linkfaceIDTkOcrRequest.request();
+//        LinkfaceIDTkOcrRequest linkfaceIDTkOcrRequest = new LinkfaceIDTkOcrRequest(LINKFACEHOST, new File(list.get(0).getResPath()), null);
+//        String result = linkfaceIDTkOcrRequest.request();
 //        linkfaceIDOcrRequest.setOcrFrontImg(new File(list.get(0).getResPath()));
 //        linkfaceIDOcrRequest.setOcrBackImg(new File(list.get(1).getResPath()));
 //
 //        linkfaceIDOcrRequest.signByKey(SECRETKEY);
 //        String result = linkfaceIDOcrRequest.request();
         logger.info("请求地址--" + LINKFACEHOST);
-        logger.info("ocr返回结果-->" + result);
+//        logger.info("ocr返回结果-->" + result);
+        FaceCheckReq req = new FaceCheckReq();
+        req.setUrl(LINKFACEHOST);
+        req.setFrontImgPath(list.get(0).getResPath());
+        FaceCheckIdCardResult idCardResult = FaceCheckBiz.checkIdCard(req);
 
         Map<String, Object> resultMap = new HashMap<>();
-        JSONObject resultJson = JSONObject.parseObject(result);
-        if (StringUtil.isNotBlank(resultJson)) {
-            JSONObject name = JSONObject.parseObject(StringUtil.isNull(resultJson.get("name")));
-            JSONObject idCard = JSONObject.parseObject(StringUtil.isNull(resultJson.get("idcard_number")));
-            JSONObject address = JSONObject.parseObject(StringUtil.isNull(resultJson.get("address")));
-            resultMap.put("name", name.getString("result"));
-            resultMap.put("idNum", idCard.getString("result"));
-            resultMap.put("address", address.getString("result"));
-            //	if (200 == resultJson.getInteger("code")) {
-            //		JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("data")));
-            //		JSONObject front = JSONObject.parseObject(StringUtil.isNull(data.get("front")));
-            //		JSONObject res = JSONObject.parseObject(StringUtil.isNull(front.get("res")));
-            //		if (StringUtil.isNotBlank(res)) {
-            //			resultMap.put("name",res.getString("name"));
-            //			resultMap.put("idNum",res.getString("idNum"));
-            //			resultMap.put("address",res.getString("address"));
-            //		}
+//        JSONObject resultJson = JSONObject.parseObject(result);
+//        if (StringUtil.isNotBlank(resultJson)) {
+//            JSONObject name = JSONObject.parseObject(StringUtil.isNull(resultJson.get("name")));
+//            JSONObject idCard = JSONObject.parseObject(StringUtil.isNull(resultJson.get("idcard_number")));
+//            JSONObject address = JSONObject.parseObject(StringUtil.isNull(resultJson.get("address")));
+//            resultMap.put("name", name.getString("result"));
+//            resultMap.put("idNum", idCard.getString("result"));
+//            resultMap.put("address", address.getString("result"));
+//            //	if (200 == resultJson.getInteger("code")) {
+//            //		JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("data")));
+//            //		JSONObject front = JSONObject.parseObject(StringUtil.isNull(data.get("front")));
+//            //		JSONObject res = JSONObject.parseObject(StringUtil.isNull(front.get("res")));
+//            //		if (StringUtil.isNotBlank(res)) {
+//            //			resultMap.put("name",res.getString("name"));
+//            //			resultMap.put("idNum",res.getString("idNum"));
+//            //			resultMap.put("address",res.getString("address"));
+//            //		}
+//        }
+        if (idCardResult != null) {
+            resultMap.put("name", idCardResult.getName());
+            resultMap.put("idNum", idCardResult.getIdNum());
+            resultMap.put("address", idCardResult.getAddress());
         }
 
         map.put(Constant.RESPONSE_DATA, resultMap);

@@ -1,8 +1,12 @@
 package com.jiya.cashloan.ht;
 
+import static com.xiji.cashloan.rc.controller.SceneBusinessLogController.logger;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.model.dsdata.FaceCheckIdCardRequest;
 import com.xiji.cashloan.cl.model.dsdata.FaceCheckOcrRequest;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckIdCardResult;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckReq;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckResult;
 import com.xiji.cashloan.cl.model.dsdata.util.FaceCheckUtil;
@@ -23,6 +27,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sun.misc.BASE64Encoder;
+import tool.util.StringUtil;
 
 /**
  * @Auther: king
@@ -33,7 +38,8 @@ public class BaiduApiTest {
 
     public static void main(String[] args) throws Exception {
 //        apiTest();
-        FaceCheckOcrRequest();
+//        FaceCheckOcrRequest();
+        FaceCheckIdCardRequest();
     }
 
 //    public static void apiTest() {
@@ -153,6 +159,27 @@ public class BaiduApiTest {
             e.printStackTrace();
         }
         System.out.println(JSONObject.toJSONString(result));
+    }
+
+    public static void FaceCheckIdCardRequest() throws Exception {
+        String idcardImage = "/unit/word/self/WechatIMG5.jpg";
+        String orderNo = FaceCheckUtil.getSeqNumber();
+        FaceCheckIdCardResult result = new FaceCheckIdCardResult();
+        FaceCheckIdCardRequest faceCheckIdCardRequest = new FaceCheckIdCardRequest(idcardImage,orderNo);
+        String requestStr = faceCheckIdCardRequest.request();
+        logger.info("kFaceCheckIDCard ocr返回结果-->" + requestStr);
+        JSONObject resultJson = JSONObject.parseObject(requestStr);
+        if (StringUtil.isNotBlank(resultJson)) {
+            if ("normal".equals(resultJson.getString("imageStatus"))){
+                JSONObject wordResult = resultJson.getJSONObject("wordResults");
+                if (wordResult != null) {
+                    result.setName(wordResult.getString("姓名"));
+                    result.setIdNum(wordResult.getString("公民身份号码"));
+                    result.setAddress(wordResult.getString("住址"));
+                }
+            }
+        }
+        System.out.println(result.getAddress());
     }
 
 }

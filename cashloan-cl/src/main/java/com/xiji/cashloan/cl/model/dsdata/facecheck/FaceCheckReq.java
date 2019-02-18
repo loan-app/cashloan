@@ -7,8 +7,8 @@ package com.xiji.cashloan.cl.model.dsdata.facecheck;
  */
 public class FaceCheckReq {
     private String url;
-    private String livingImgPath;
-    private String frontImgPath;
+    private String livingImgPath;//活体
+    private String frontImgPath;//身份证正面
     private String realName;
     private String idCard;
 

@@ -39,6 +39,10 @@ public class FaceCheckUtil {
        return Global.getValue("k_ocr_checkface_url");
 //        return "http://rryqo.com/finance/v1/face/match?applyNo=";
     }
+    public static String getCheckFaceIDCardUrl() {
+       return Global.getValue("k_ocr_check_idcard_url");
+//        return "http://rryqo.com/finance/v1/ocr/idCard?applyNo=";
+    }
 
     public static String router(String idCard) {
         String kRouter = Global.getValue("k_ocr_checkface_router");
@@ -50,6 +54,19 @@ public class FaceCheckUtil {
             if (!StringUtil.equalsIgnoreCase(last, "1")) {
                 return model_kFace;
             }
+        }
+        if (StringUtil.equalsIgnoreCase(kRouter,router_kface)){
+            return model_kFace;
+        }
+        if (StringUtil.equalsIgnoreCase(kRouter,router_face)){
+            return model_face;
+        }
+        return model_face;
+    }
+    public static String routerIDCard() {
+        String kRouter = Global.getValue("k_ocr_checkface_router");
+        if (StringUtil.isEmpty(kRouter)) {
+            return model_face;
         }
         if (StringUtil.equalsIgnoreCase(kRouter,router_kface)){
             return model_kFace;
@@ -86,5 +103,27 @@ public class FaceCheckUtil {
         // 加密
         BASE64Encoder encoder = new BASE64Encoder();
         return encoder.encode(data);
+    }
+
+    public static byte[] fileToByte(String file) {
+        InputStream inputStream = null;
+        byte[] data = null;
+        try {
+            inputStream = new FileInputStream(file);
+            data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return data;
     }
 }
