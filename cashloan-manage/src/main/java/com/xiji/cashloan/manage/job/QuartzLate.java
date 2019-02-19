@@ -132,7 +132,13 @@ public class QuartzLate implements Job{
 									uroMap.put("penaltyAmout", br.getPenaltyAmout());
 									uroMap.put("penaltyDay", br.getPenaltyDay());
 									uroMap.put("id", uro.getId());
+									uroMap.put("repayTime", br.getRepayTime());
 									uroMap.put("createTime", DateUtil.getNow());
+									if(uro.getUserId() != null) {
+										uroMap.put("state", UrgeRepayOrderModel.STATE_ORDER_WAIT);
+									} else {
+										uroMap.put("state", UrgeRepayOrderModel.STATE_ORDER_PRE);
+									}
 									if (day >= badDebtDay) {
 										//修改催款计划
 										uroMap.put("state", UrgeRepayOrderModel.STATE_ORDER_BAD);
