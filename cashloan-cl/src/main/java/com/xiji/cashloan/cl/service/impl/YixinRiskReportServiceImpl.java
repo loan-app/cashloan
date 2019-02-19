@@ -81,7 +81,6 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 						borrowOrgNames.add(JSON.parseObject(str).get("orgName").toString());
 					}
 				}
-				countBorrowApply = countBorrowApply +1;
 				orgNames.add(JSON.parseObject(str).get("orgName").toString());
 				if (json.get("overdueM3") != null) {
 					countOverdueHistoryM3 = countOverdueHistoryM3 +1;

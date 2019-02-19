@@ -62,7 +62,7 @@ $(function() {
   var verify = function() {
     var pwd = $('input[name=password]').val();
     //MD5加密
-    var pwd_md5 = $.md5(pwd);    
+    var pwd_md5 = $.md5(pwd);
     var re = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,16})$/;
     var code = $('input[name=vcode]').val();
     var inviteCode = $('input[name=invitationCode]').val();
@@ -115,7 +115,7 @@ $(function() {
               }
               if (data.code == 1000) {
                 pop("您已经注册请下载登录");
-              } 
+              }
               else if (data.code == 200) {
                   show(data.msg);
                   timing = setInterval(function () {
@@ -129,7 +129,7 @@ $(function() {
                     }
                     time--;
                   }, 1000);
-              } 
+              }
               else {
                 if(data.msg == '该手机号已经注册') {
                   show_download('该手机号已注册,请下载APP登录吧!');
@@ -141,7 +141,7 @@ $(function() {
     	      }
     	    })
     }
-    
+
     return false;
   });
 
@@ -154,11 +154,12 @@ $(function() {
       $.ajax({
         url: reg,
         data: params,
-        dataType: 'json', 
+        dataType: 'json',
         success: function(data) {
           if (data.code == 200) {
             //注册成功
-            show_download('恭喜您注册成功,快去下载app登录吧!');
+            //show_download('恭喜您注册成功,快去下载app登录吧!');
+            window.location.href = getInvite_a();
           }else {
             //报错
             show(data.msg);
@@ -170,7 +171,7 @@ $(function() {
       });
     }
     return false;
-  });   
+  });
 });
 
 function getInvite_a(){

@@ -6,7 +6,6 @@ import {
 import XinyanXwld from '../XinyanDetail/XinyanXwld';
 import OperatorDetail from './OperatorDetail';
 import XindeBlacklist from './XinDe/XindeBlacklist';
-import PaipaixinView from './PaiPaiXin/PaipaixinView';
 import YXAF from './YXAF/Credit-YXAF';
 import AntiFraud from './AntiFraud/AntiFraud';
 import PinAn from './PinAn/PinAn';
@@ -45,9 +44,6 @@ var Tab8 = React.createClass({
 
                     <TabPane tab="灰名单信息" key="4">
                         <XindeBlacklist borrowId={this.props.borrowId}/>
-                    </TabPane>
-                    <TabPane tab="黑名单信息" key="5">
-                        <PaipaixinView borrowId={this.props.borrowId}/>
                     </TabPane>
                 </Tabs>
             </div>

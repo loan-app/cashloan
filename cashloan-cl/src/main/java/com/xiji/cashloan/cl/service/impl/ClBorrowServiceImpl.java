@@ -166,6 +166,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private BorrowOperatorLogService borrowOperatorLogService;
 	@Resource
 	private DecisionService decisionService;
+	@Resource
+	private UserRemarkService userRemarkService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1507,6 +1509,17 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			map.put("reviewTime", DateUtil.getNow());
 			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManualReviewOrderModel.STATE_ORDER_REFUSED);
 			manualReviewOrderMapper.reviewState(map);
+
+			if(StringUtil.isNotBlank(remark)) {
+				UserRemark userRemark = new UserRemark();
+				userRemark.setCreateTime(new Date());
+				userRemark.setOperateTime(new Date());
+				userRemark.setRemark(remark);
+				userRemark.setOperateId(userId);
+				userRemark.setUserId(borrow.getUserId());
+				userRemarkService.insert(userRemark);
+			}
+
 			if (BorrowModel.STATE_REFUSED.equals(state)|| BorrowModel.STATE_AUTO_REFUSED.equals(state)) {
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
@@ -1744,6 +1757,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 							updateMap.put("tableName", tableName1);
 							updateMap.put("userId", borrow.getUserId());
 							updateMap.put("peerNumber", key);
+							updateMap.put("reqLogId", operatorReqLog.getId());
 							updateMap.put("lastContactTime", lastContactMap.get(key));
 							operatorVoiceCntMapper.updateLastContactTime(updateMap);
 						}

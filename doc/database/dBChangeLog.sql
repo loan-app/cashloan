@@ -433,7 +433,6 @@ CREATE TABLE `cl_yixin_fraud` (
 
 -- 通话详情统计表新增最后联系时间字段
 alter table `cl_operator_voice_cnt` add column `last_contact_time` datetime  default null comment '最后联系时间';
-alter table `cl_operator_voice_cnt_1` add column `last_contact_time` datetime  default null comment '最后联系时间';
 
 -- 魔蝎黑灰名单
 INSERT INTO `cl_rc_tpp_business` VALUES ('8', '1', '黑灰名单', 'MagicBlackGray', '10', '', '', null, '2019-01-03 00:00:00');
@@ -451,9 +450,9 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '认证更新周期', 'authenti
 
 INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 * * ?', 'com.xiji.cashloan.manage.job.QuartzUserAuth', '0', '0', '20', '2017-03-27 14:53:27');
 
---最新版本号
+-- 最新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
---强制更新版本号
+-- 强制更新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '强制更新版本号', 'mandatory_update_version', '1.0.0', '1', '系统强制更新版本号', '1');
 -- 最新版本下载地址 线上
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本下载地址', 'last_version_download_url', 'http://jy.xyhuigou.com/h5/invite.jsp', '1', '最新版本下载地址', '1');
@@ -541,7 +540,10 @@ INSERT INTO `arc_sys_config` VALUES (null, '100', '预订单号请求地址', 'x
 ALTER TABLE `arc_rule_engine_config` change ccolumn `ccolumn` varchar(100) DEFAULT '' COMMENT '设置关联表列';
 ALTER TABLE `arc_rule_engine_config` change column_comment `column_comment` varchar(255) DEFAULT '' COMMENT '字段名称';
 ALTER TABLE `arc_borrow_rule_result` change col_nid `col_nid` varchar(100) NOT NULL DEFAULT '' COMMENT '列名英文名称';
-ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';;
+ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';
+
+-- 新增渠道后台角色
+INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
 
 -- 英趣思汀
 INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'kface', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
