@@ -451,7 +451,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			orderLog.setRemark("展期成功");
 			orderLog.setWay("50");
 			orderLog.setCreateTime(DateUtil.getNow());
-			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_PROMISE);
+			//催收订单状态修改为催收成功
+			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_SUCCESS);
 			urgeRepayOrderLogService.saveOrderInfo(orderLog, order);
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
