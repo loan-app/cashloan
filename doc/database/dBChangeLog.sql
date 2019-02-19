@@ -546,8 +546,9 @@ ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT
 INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
 
 -- 英趣思汀
-INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'kface', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'face', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测key', 'k_ocr_base64key', 'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAoQbUJfG8h63o2klN3InuK1qUetS71O0YINFlHyZzzKmRBCgNyvuDt8ZuCjB9Zrexk+FNOeUg2dGV8XSCZKwLmwIDAQABAkEAg/C3ddvMMZQi/nEf9juiRi2zCa4ztbULlyBb7hkwuxlL+HYHln8EhgvBTGAWb596BQTmmDET1iVgDm+pWEfd2QIhANk6cX7/H4AkKr9GLlc5KMJNm7+/tJzoMTw6uETwfL1HAiEAvcRuUYY4azGhBAJmsoxSy/S0DSGYZlohMN+FYjSRmQ0CIH+257GVx2xsVyGb3nTzqy4JuO9Ug5jYvtG9aEdH6N7TAiEAgoeV9l+jeSBHB/H63/+jiAUGwC2GnYiLYgmtvtI4ABUCIQC1BoDi3sip+YcY3gw6+SbChaRNAcfZVoeJK60ZM5+xww==', 1, '英趣思汀活体检测key', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测渠道号', 'k_ocr_channelno', 'CH13IVR8S', 1, '英趣思汀活体检测渠道号', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测url', 'k_ocr_checkface_url', 'http://rryqo.com/finance/v1/face/match?applyNo=', 1, '英趣思汀活体检测url', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀身份证识别', 'k_ocr_check_idcard_url', 'http://rryqo.com/finance/v1/ocr/idCard?applyNo=', 1, '英趣思汀身份证识别', 1);
+
