@@ -61,7 +61,7 @@ public class UserSdkLogController extends BaseController {
 
 	 @RequestMapping(value = "/api/act/mine/sdk/select.htm")
 	 public void select(
-		 @RequestParam(value="userId", required = false) long userId) throws Exception {
+		 @RequestParam(value="userId", required = false) Long userId) throws Exception {
 		 Map<String,Object> data = new HashMap<>();
 		 String ocrType = Global.getValue("orc_sdk_select");
 		 data.put("ocrType",1);//face++,默认使用
@@ -71,9 +71,11 @@ public class UserSdkLogController extends BaseController {
 		 }else if (StringUtil.equals("2", ocrType)){
 			 data.put("ocrType",2);//有盾
 		 }else if (StringUtil.contains(ocrType,"=")){
-			 int lastKey = (int) (userId%10);
-			 if (ocrType.contains(String.valueOf(lastKey))) {
-				 data.put("ocrType",2);//有盾
+			 if (userId != null) {
+				 int lastKey = (int) (userId%10);
+				 if (ocrType.contains(String.valueOf(lastKey))) {
+					 data.put("ocrType",2);//有盾
+				 }
 			 }
 		 }
 
