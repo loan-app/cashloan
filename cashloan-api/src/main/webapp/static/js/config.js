@@ -50,8 +50,8 @@ function getIndex_img3(){
     return "/static/images/txtBtm.png";
 }
 //帮助中心客服电话
-function getPhone(){
-    return '15519557269。';
+function getTelephone(){
+    return '18688017544。';
 }
 //支付宝账号
 function getAirpay(){

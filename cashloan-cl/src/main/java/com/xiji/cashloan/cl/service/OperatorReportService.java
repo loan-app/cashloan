@@ -30,9 +30,16 @@ public interface OperatorReportService extends BaseService<OperatorReport, Long>
     public int updateSelective(Map<String, Object> params);
 
     /**
-     * 给管理后台封装运营商数据
+     * 给管理后台封装运营商数据-通过userId查询
      * @param userId
      * @return
      */
     JSONObject getReportByUserId(Long userId);
+
+    /**
+     * 给管理后台封装运营商数据-通过borrowId查询
+     * @param borrowId
+     * @return
+     */
+    JSONObject getReportByBorrowId(Long borrowId);
 }

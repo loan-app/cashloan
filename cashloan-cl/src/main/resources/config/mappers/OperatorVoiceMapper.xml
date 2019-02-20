@@ -206,7 +206,7 @@
         PRIMARY KEY (`id`),
         INDEX `user_id` (`user_id`) USING BTREE,
         INDEX `mobile` (`mobile`) USING BTREE,
-        INDEX `req_log_id` (`req_log_id`) USING BTREE,
+        INDEX `req_log_id` (`req_log_id`) USING BTREE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-通话记录信息';
     </select>
 
@@ -272,6 +272,6 @@
 
     <select id="getLastContactTime" resultType="java.util.Map">
         select peer_number,max(time) last_contact_time from ${tableName}
-        where user_id = #{userId, jdbcType=BIGINT} group by peer_number;
+        where user_id = #{userId, jdbcType=BIGINT} and req_log_id = #{reqLogId, jdbcType=BIGINT} group by peer_number;
     </select>
 </mapper>

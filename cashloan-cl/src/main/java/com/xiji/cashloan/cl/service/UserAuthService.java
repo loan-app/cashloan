@@ -1,11 +1,11 @@
 package com.xiji.cashloan.cl.service;
 
-import java.util.Map;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.core.common.service.BaseService;
+
+import java.util.Map;
 
 
 /**
@@ -38,4 +38,11 @@ public interface UserAuthService extends BaseService<UserAuth, Long>{
 	public Map<String, Object> getAuthState(Map<String, Object> paramMap);
 
 	public int updatePhoneState(Map<String, Object> userAuth);
+
+	/**
+	 * 根据时间更新认证状态
+	 * @param userAuth
+	 * @return
+	 */
+	int updateAuthByTime(Map<String, Object> userAuth);
 }

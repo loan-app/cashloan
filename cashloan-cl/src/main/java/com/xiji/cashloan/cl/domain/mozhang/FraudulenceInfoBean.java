@@ -13,11 +13,11 @@ public class FraudulenceInfoBean {
     @JsonProperty("type")
     private String type;
 
-    public boolean isHit() {
+    public boolean isIsHit() {
         return isHit;
     }
 
-    public void setHit(boolean hit) {
+    public void setIsHit(boolean hit) {
         isHit = hit;
     }
 

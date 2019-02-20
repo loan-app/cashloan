@@ -126,4 +126,12 @@
         from cl_name_blacklist
         <include refid="searchBy"/>
     </select>
+
+
+    <update id="updateNameBlacklistStatus"  parameterType="java.util.HashMap">
+        update cl_name_blacklist
+        set status = #{status,jdbcType=INTEGER},
+            lastmodifytime = #{lastmodifytime,jdbcType=TIMESTAMP}
+        where dimensionkey = #{dimensionkey,jdbcType=VARCHAR} and dimensionvalue = #{dimensionvalue,jdbcType=VARCHAR}
+    </update>
 </mapper>

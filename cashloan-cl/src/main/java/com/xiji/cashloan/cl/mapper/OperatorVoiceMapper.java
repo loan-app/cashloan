@@ -69,7 +69,8 @@ public interface OperatorVoiceMapper extends BaseMapper<OperatorVoice, Long> {
      * 获取每个号码的最后通话时间
      * @param tableName
      * @param userId
+     * @param reqLogId
      * @return
      */
-    List<Map<String, String>> getLastContactTime(@Param("tableName") String tableName, @Param("userId") Long userId);
+    List<Map<String, String>> getLastContactTime(@Param("tableName") String tableName, @Param("userId") Long userId, @Param("reqLogId") Long reqLogId);
 }

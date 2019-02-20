@@ -3,10 +3,9 @@ import {
     Table,
     Tabs
 } from 'antd';
-import XinyanDetail from '../XinyanDetail/XinyanDetail';
+import XinyanXwld from '../XinyanDetail/XinyanXwld';
 import OperatorDetail from './OperatorDetail';
 import XindeBlacklist from './XinDe/XindeBlacklist';
-import PaipaixinView from './PaiPaiXin/PaipaixinView';
 import YXAF from './YXAF/Credit-YXAF';
 import AntiFraud from './AntiFraud/AntiFraud';
 import PinAn from './PinAn/PinAn';
@@ -24,7 +23,7 @@ var Tab8 = React.createClass({
         return (<div className="block-panel">
                 <Tabs type="card">
                     <TabPane tab="借贷评估" key='YXAF'>
-                        <YXAF userId={this.props.userId}></YXAF>
+                        <YXAF borrowId={this.props.borrowId}></YXAF>
                     </TabPane>
                     <TabPane tab="反欺诈" key='AntiFraud'>
                         <AntiFraud userId={this.props.userId}></AntiFraud>
@@ -36,8 +35,8 @@ var Tab8 = React.createClass({
                         {/*<iframe style={{border: 0, width: "100%", height: 630,}}*/}
                                 {/*src={'/build/magicReport/index.html?userId=' + this.props.userId}/>*/}
                     {/*</TabPane>*/}
-                    <TabPane tab="小额网贷" key="3">
-                        <XinyanDetail userId={this.props.userId}/>
+                    <TabPane tab="借贷多头" key="3">
+                        <XinyanXwld borrowId={this.props.borrowId}/>
                     </TabPane>
                     <TabPane tab="用户染黑" key="PinAn">
                         <PinAn userId={this.props.userId}/>
@@ -45,9 +44,6 @@ var Tab8 = React.createClass({
 
                     <TabPane tab="灰名单信息" key="4">
                         <XindeBlacklist borrowId={this.props.borrowId}/>
-                    </TabPane>
-                    <TabPane tab="黑名单信息" key="5">
-                        <PaipaixinView borrowId={this.props.borrowId}/>
                     </TabPane>
                 </Tabs>
             </div>

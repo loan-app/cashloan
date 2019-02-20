@@ -26,14 +26,6 @@ import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.model.UserWorkInfoModel;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.*;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +39,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * 用户详情表Controller
@@ -394,7 +395,12 @@ public class UserBaseInfoController extends BaseController {
                     }
                     JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("result_faceid")));
                     log.setResult(String.valueOf(resultJson.get("code")));
-                    match = data.getDoubleValue("confidence");
+                    if (data == null){
+                        logger.info("人证识别请求失败"+result);
+                        match = 0.00;
+                    }else {
+                        match = data.getDoubleValue("confidence");
+                    }
                     log.setConfidence(String.valueOf(match));
                     userCardCreditLogService.insert(log);
                     logger.info("用户" + user.getLoginName() + "完善个人信息，进行人证识别比对，比对值为:" + match);
@@ -422,7 +428,7 @@ public class UserBaseInfoController extends BaseController {
                     }
                 } else {
                     returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                    returnMap.put(Constant.RESPONSE_CODE_MSG, "认证失败，请重新认证");
+                    returnMap.put(Constant.RESPONSE_CODE_MSG, "认证失败，请到光线充足处重新认证");
                 }
             }
         } else {

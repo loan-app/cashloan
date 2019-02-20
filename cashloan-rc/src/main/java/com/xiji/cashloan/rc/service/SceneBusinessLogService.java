@@ -30,4 +30,12 @@ public interface SceneBusinessLogService extends BaseService<SceneBusinessLog, L
 	 * @throws Exception
 	 */
 	boolean needExcute(Long userId, Long busId, String getWay, String period);
+
+	/**
+	 * 根据nid查询是否有未执行完的接口
+	 * @param borrowId
+	 * @param nid
+     * @return
+     */
+	boolean haveNeedExcuteByNid(Long borrowId, String nid);
 }

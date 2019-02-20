@@ -88,11 +88,17 @@ public class SceneBusinessLogServiceImpl extends BaseServiceImpl<SceneBusinessLo
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean haveNeedExcuteService(Long borrowId) {
 		int count = sceneBusinessLogMapper.countUnFinishLog(borrowId);
 		return count > 0 ? true : false;
 	}
-	
+
+	@Override
+	public boolean haveNeedExcuteByNid(Long borrowId, String nid) {
+		int count = sceneBusinessLogMapper.haveNeedExcuteByNid(borrowId, nid);
+		return count > 0 ? true : false;
+	}
+
 }

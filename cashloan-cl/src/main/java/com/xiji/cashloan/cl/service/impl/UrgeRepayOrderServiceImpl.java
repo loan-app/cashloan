@@ -146,7 +146,7 @@ public class UrgeRepayOrderServiceImpl extends BaseServiceImpl<UrgeRepayOrder, L
 					}
 					params = new HashMap<String, Object>();
 					params.put("borrowId", b.getId());
-				    BorrowRepay br=borrowRepayMapper.findSelective(params);
+				    BorrowRepay br=borrowRepayMapper.findByBorrowIdState(params);
 				    if(br!=null){
 				    order.setAmount(br.getAmount());
 				    order.setRepayTime(br.getRepayTime());

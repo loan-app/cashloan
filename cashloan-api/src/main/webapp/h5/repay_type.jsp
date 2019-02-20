@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%><!doctype html>
+<%@ page language="java" pageEncoding="UTF-8"%><!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
@@ -67,6 +67,6 @@
  })
  $('.bank').text(getBank2());
  $('.airPay').text(getAirpay());
- $('.phone').text(getPhone());
+ $('.phone').text(getTelephone());
  </script>  </body>
 </html>

@@ -86,7 +86,7 @@ CREATE TABLE `cl_xinyan_req_log` (
   `resp_params` mediumtext COMMENT '同步响应结果',
   `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
   `is_fee` tinyint(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
-  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-小额网贷',
+  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-小额网贷 2-行为雷达',
   `data_code` varchar(10) DEFAULT NULL COMMENT 'data响应码 0-查询成功 1-查询未命中 9-其他异常',
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
@@ -347,9 +347,9 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信欺诈甄别接口名称
 -- 宜信风险评估 欺诈甄别加入到借款策略中
 INSERT INTO `cl_rc_tpp` VALUES ('3', 'YX', 'yixin', '', '', '', '', '10', '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('5', '3', 'YX风险评估', 'YixinRisk', '10', '', '', null, '2018-12-26 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('5', '10', '5', '20', '7', '10', '10', '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('5', '10', '5', '10', 0, '10', '10', '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('6', '3', 'YX欺诈甄别', 'YixinFraud', '10', '', '', null, '2018-12-26 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('6', '10', '6', '20', '7', '10', '10', '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('6', '10', '6', '10', 0, '10', '10', '2018-12-26 00:00:00');
 
 -- 宜信风险评估建表
 DROP TABLE IF EXISTS `cl_yixin_req_log`;
@@ -416,7 +416,7 @@ ALTER TABLE `cl_calls_outside_fee` change task_id `task_id` varchar(64) DEFAULT 
 -- 凭安染黑度统计加入到借款策略中
 INSERT INTO `cl_rc_tpp` VALUES ('4', 'PA', 'pingan', '', '', '', '', '10', '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_tpp_business` VALUES ('7', '4', 'PA染黑统计', 'PinganGrayscaleStat', '10', '', '', null, '2018-12-26 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '20', '7', '10', '10', '2018-12-26 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '10', 0, '10', '10', '2018-12-26 00:00:00');
 
 -- 宜信欺诈甄别
 DROP TABLE IF EXISTS `cl_yixin_fraud`;
@@ -433,11 +433,10 @@ CREATE TABLE `cl_yixin_fraud` (
 
 -- 通话详情统计表新增最后联系时间字段
 alter table `cl_operator_voice_cnt` add column `last_contact_time` datetime  default null comment '最后联系时间';
-alter table `cl_operator_voice_cnt_1` add column `last_contact_time` datetime  default null comment '最后联系时间';
 
 -- 魔蝎黑灰名单
 INSERT INTO `cl_rc_tpp_business` VALUES ('8', '1', '黑灰名单', 'MagicBlackGray', '10', '', '', null, '2019-01-03 00:00:00');
-INSERT INTO `cl_rc_scene_business` VALUES ('8', '10', '8', '20', '7', '10', '10', '2019-01-03 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('8', '10', '8', '10', 0, '10', '10', '2019-01-03 00:00:00');
 update cl_rc_tpp_business set state = '20' where nid in ('MagicApply', 'MagicPostLoad');
 
 -- 删除信用报告菜单
@@ -446,3 +445,102 @@ delete from arc_sys_role_menu where menu_id in (1001,1002,1003,1006);
 
 -- 修改app_list长度
 ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用程序列表';
+-- 添加认证更新周期数据
+INSERT INTO `arc_sys_config` VALUES (null, '20', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');
+
+INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 * * ?', 'com.xiji.cashloan.manage.job.QuartzUserAuth', '0', '0', '20', '2017-03-27 14:53:27');
+
+-- 最新版本号
+INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
+-- 强制更新版本号
+INSERT INTO `arc_sys_config` VALUES (null, '10', '强制更新版本号', 'mandatory_update_version', '1.0.0', '1', '系统强制更新版本号', '1');
+-- 最新版本下载地址 线上
+INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本下载地址', 'last_version_download_url', 'http://jy.xyhuigou.com/h5/invite.jsp', '1', '最新版本下载地址', '1');
+
+-- 借款信息表添加是否逾期字段
+ALTER table cl_borrow add is_overdue varchar(2) DEFAULT '10' COMMENT '是否逾期 10：未逾期，20 ：已逾期';
+-- 同步更新是否逾期字段
+update cl_borrow SET is_overdue = '20' where id in ( select borrow_id from cl_borrow_repay where penalty_day > 0) and is_overdue = '10';
+-- 用户备注表
+DROP TABLE IF EXISTS cl_user_remark;
+CREATE TABLE `cl_user_remark` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `operate_id` bigint(20) NOT NULL COMMENT '操作人ID',
+  `remark` varchar(128) DEFAULT '' COMMENT '备注',
+  `operate_time` datetime NOT NULL COMMENT '操作时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户备注表';
+
+
+-- 借款订单-运营商记录表
+DROP TABLE IF EXISTS cl_borrow_operator_log;
+CREATE TABLE `cl_borrow_operator_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `req_log_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '请求记录id',
+  `borrow_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '借款标识',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modify_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='借款订单-运营商记录表';
+
+-- 新颜行为雷达表
+DROP TABLE IF EXISTS `cl_xinyan_xwld`;
+CREATE TABLE `cl_xinyan_xwld` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `trade_no` varchar(64) DEFAULT '' COMMENT '交易订单号',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `borrow_id` (`borrow_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='新颜行为雷达';
+
+-- 新颜获取预订单号记录表
+DROP TABLE IF EXISTS `cl_xinyan_pre_no_log`;
+CREATE TABLE `cl_xinyan_pre_no_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `trans_id` varchar(64) NOT NULL DEFAULT '' COMMENT '申请订单号',
+  `pre_order_no` varchar(64) NOT NULL DEFAULT '' COMMENT '预订单号',
+  `user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '借款订单id',
+  `is_success` tinyint(1) NOT NULL DEFAULT 0 COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) NOT NULL DEFAULT '' COMMENT '接口响应错误码',
+  `resp_params` varchar(100) NOT NULL DEFAULT '' COMMENT '接口响应错误描述',
+  `resp_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '同步响应时间',
+  `type` tinyint(2)  NOT NULL DEFAULT 1 COMMENT '类型 1-行为雷达',
+  `data_code` varchar(10) NOT NULL DEFAULT '0' COMMENT 'data响应码 0-查询成功 1-失败 9-其他异常',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='新颜获取预订单号记录表';
+
+-- 运营商策略
+INSERT INTO `cl_rc_tpp` VALUES ('5', '运营商', 'Operator', '', '', '', '', '10', '2019-01-17 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('9', '5', '运营商', 'Operator', '10', '', '', null, '2019-01-17 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('9', '10', '9', '10', 0, '10', '10', '2019-01-17 00:00:00');
+
+-- 新颜行为雷达
+INSERT INTO `cl_rc_tpp_business` VALUES ('10', '2', '行为雷达', 'XYXWLD', '10', '', '', null, '2019-01-17 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('10', '10', '10', '10', 0, '10', '10', '2019-01-17 00:00:00');
+update cl_rc_tpp_business set state = '20' where nid = 'XinyanLoan';
+
+-- 展期天数
+INSERT INTO `arc_sys_config` VALUES (null, '10', '展期天数', 'delay_days', '6', '1', '展期天数', '1');
+
+-- 还款记录新增还款类型字段
+ALTER TABLE cl_borrow_repay_log add column `type` varchar(10)  default '10' COMMENT '还款类型 10-还款 20-展期还款';
+
+-- 新颜预订单号请求url
+INSERT INTO `arc_sys_config` VALUES (null, '100', '预订单号请求地址', 'xy_pre_order_url', 'https://test.xinyan.com/entry/sdk/preOrder', '1', '预订单号获取请求地址', '1');
+
+-- 规则表字段长度修改
+ALTER TABLE `arc_rule_engine_config` change ccolumn `ccolumn` varchar(100) DEFAULT '' COMMENT '设置关联表列';
+ALTER TABLE `arc_rule_engine_config` change column_comment `column_comment` varchar(255) DEFAULT '' COMMENT '字段名称';
+ALTER TABLE `arc_borrow_rule_result` change col_nid `col_nid` varchar(100) NOT NULL DEFAULT '' COMMENT '列名英文名称';
+ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';
+
+-- 新增渠道后台角色
+INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');

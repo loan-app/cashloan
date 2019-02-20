@@ -29,6 +29,8 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_YIXIN_FRAUD = 10;
     //凭安染黑度统计
     public static int CALLS_TYPE_GRAYSCALE_STAT = 11;
+    //新颜行为雷达
+    public static int CALLS_TYPE_XINYAN_XWLD = 12;
 
     //魔蝎运营商费用
     public static double FEE_OPERATOR = -0.7;
@@ -39,7 +41,7 @@ public class CallsOutSideFeeConstant {
 //    //魔杖多头费用
 //    public static double FEE_MULTI_INFO = 0.3;
 //    //魔杖黑灰名单费用
-    public static double FEE_BLACK_GRAY = 0.2;
+    public static double FEE_BLACK_GRAY = -0.2;
     //魔杖贷后行为费用
     public static double FEE_POST_LOAD = -0.5;
     //发送短信费用
@@ -54,6 +56,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_YIXIN_FRAUD = -0.2;
     //凭安染黑度统计值接口费用
     public static double FEE_GRAYSCALE_STAT = -0.4;
+    //新颜行为雷达费用
+    public static double FEE_XINYAN_XWLD = -1;
 
     /**
      * 消费

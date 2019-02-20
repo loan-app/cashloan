@@ -1,35 +1,11 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.ServiceException;
-import com.xiji.cashloan.core.common.util.CacheUtil;
-import com.xiji.cashloan.core.common.util.DateUtil;
-import com.xiji.cashloan.core.common.util.HttpUtil;
-import com.xiji.cashloan.core.common.util.JsonUtil;
-import com.xiji.cashloan.core.common.util.RdPage;
-import com.xiji.cashloan.core.common.util.ServletUtils;
-import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.common.util.*;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.rc.service.TppBusinessService;
 import com.xiji.cashloan.system.domain.SysConfig;
@@ -38,6 +14,18 @@ import com.xiji.cashloan.system.model.SysConfigModel;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.cashloan.system.service.SysDictService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * @author wnb
@@ -105,12 +93,9 @@ public class SysConfigController extends BaseController {
     /**
      * 系统参数表,查询数据
      * @param response      页面的response
-     * @param currentPage   当前页数
+     * @param current       当前页数
      * @param pageSize      每页限制
-     * @param searchParam   查询条件
-     * @param whereSql      直接的sql
-     * @param fields        排序字段
-     * @param rule          排序方式
+     * @param searchParams   查询条件
      * @throws ServiceException
      */
     @SuppressWarnings("unchecked")
@@ -162,7 +147,7 @@ public class SysConfigController extends BaseController {
     /**
      * 系统参数表表,逻辑删除 修改状态
      * @param response      页面的response
-     * @param json          页面参数
+     * @param id            页面参数
      * @throws ServiceException
      */
     @RequestMapping("/modules/manage/system/config/delete.htm")

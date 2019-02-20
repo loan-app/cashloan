@@ -228,9 +228,19 @@ public class ClBorrowController extends BaseController {
 			@RequestParam(value="mobileType",required=false) String mobileType
 			) throws Exception {
 		long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+
+		boolean xwldFlag = Boolean.TRUE;
+		Map<String, Object> requestMap = getParams(request);
+		String versionNumber = com.xiji.cashloan.core.common.util.StringUtil.isNull(requestMap.get("versionNumber"));
+		String user_version = com.xiji.cashloan.core.common.util.StringUtil.isBlank(versionNumber) ? "1.0.0" : versionNumber;
+		//APP版本从1.0.4开始接入新颜行为雷达,1.0.4版本之前不去查询新颜行为雷达
+		int compareResult = com.xiji.cashloan.core.common.util.StringUtil.compareVersion("1.0.4", user_version);
+		if (compareResult > 0) {
+			xwldFlag = Boolean.FALSE;
+		}
 		Map<String,Object> result = new HashMap<String,Object>();
 		Borrow borrow = new Borrow(userId, amount, timeLimit, cardId, client, address, coordinate,ip);
-		ClBorrowModel borrowModel = clBorrowService.rcBorrowApply(borrow, tradePwd, mobileType);
+		ClBorrowModel borrowModel = clBorrowService.rcBorrowApply(borrow, tradePwd, mobileType, xwldFlag);
 		if(borrowModel.isNeedApprove()){
 			clBorrowService.verifyBorrowData(borrow.getId(), mobileType);
 		}
@@ -441,9 +451,9 @@ public class ClBorrowController extends BaseController {
 		borrow.setUserId(1L);
 		borrow.setId(1L);
 		int i = magicRiskService.queryAntiFraud(borrow);
-		int i2 = magicRiskService.queryApply(borrow);
-		int i3 = magicRiskService.queryPostLoad(borrow);
-		int i4 = magicRiskService.queryBlackGray(borrow);
+//		int i2 = magicRiskService.queryApply(borrow);
+//		int i3 = magicRiskService.queryPostLoad(borrow);
+//		int i4 = magicRiskService.queryBlackGray(borrow);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
@@ -495,4 +505,6 @@ public class ClBorrowController extends BaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
 	}
+
+
 }

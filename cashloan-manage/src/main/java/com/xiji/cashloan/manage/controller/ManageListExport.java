@@ -1,11 +1,7 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.ExportConstant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.excel.JsGridReportBase;
@@ -16,15 +12,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import tool.util.StringUtil;
 
-import com.xiji.cashloan.cl.service.BorrowRepayLogService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
-import com.xiji.cashloan.cl.service.PayCheckService;
-import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderService;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -52,7 +45,8 @@ public class ManageListExport extends ManageBaseController{
 	private PayCheckService payCheckService;
 	@Resource
 	private UrgeRepayOrderService urgeRepayOrderService;
-	
+	@Resource
+	private BorrowRepayService borrowRepayService;
 	/**
 	 * 导出还款记录报表
 	 * 
@@ -82,6 +76,7 @@ public class ManageListExport extends ManageBaseController{
 	public void borrowExport(
 			@RequestParam(value="searchParams",required = false) String searchParams) throws Exception {
 		Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		List list = clBorrowService.listBorrow(params);
 		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
 		response.setContentType("application/msexcel;charset=UTF-8");
@@ -147,6 +142,7 @@ public class ManageListExport extends ManageBaseController{
 			params = JsonUtil.parse(searchParams, Map.class);
 		}
 		params.put("state", BorrowModel.STATE_DELAY);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		List list = clBorrowService.listBorrow(params);
 		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
 		response.setContentType("application/msexcel;charset=UTF-8");
@@ -173,6 +169,7 @@ public class ManageListExport extends ManageBaseController{
 			params = JsonUtil.parse(searchParams, Map.class);
 		}
 		params.put("state", BorrowModel.STATE_BAD);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		List list = clBorrowService.listBorrow(params);
 		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
 		response.setContentType("application/msexcel;charset=UTF-8");
@@ -245,6 +242,30 @@ public class ManageListExport extends ManageBaseController{
 		String title = "已还款订单Excel表";
 		String[] hearders =  ExportConstant.EXPORT_REPAY_LIST_HEARDERS;
 		String[] fields = ExportConstant.EXPORT_REPAY_LIST_FIELDS;
+		JsGridReportBase report = new JsGridReportBase(request, response);
+		report.exportExcel(list,title,hearders,fields,user.getName());
+	}
+
+	/**
+	 * 还款计划导出
+	 *
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/repayment/plan/export.htm")
+	public void repaymentPlanExport(@RequestParam(value="searchParams",required = false) String searchParams)throws Exception{
+		Map<String, Object> params;
+		if (StringUtil.isBlank(searchParams)) {
+			params = new HashMap<>();
+		}else {
+			params = JsonUtil.parse(searchParams, Map.class);
+		}
+		List list = borrowRepayService.listAllModel(params);
+		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
+		response.setContentType("application/msexcel;charset=UTF-8");
+		// 记录取得
+		String title = "还款计划Excel表";
+		String[] hearders =  ExportConstant.EXPORT_REPAYMENT_PLAN_LIST_HEARDERS;
+		String[] fields = ExportConstant.EXPORT_REPAYMENT_PLAN_LIST_FIELDS;
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}

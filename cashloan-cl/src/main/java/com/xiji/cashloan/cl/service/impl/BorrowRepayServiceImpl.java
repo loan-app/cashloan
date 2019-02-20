@@ -3,50 +3,15 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.BorrowProgress;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.domain.PayLog;
-import com.xiji.cashloan.cl.domain.PayReqLog;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrderLog;
-import com.xiji.cashloan.cl.domain.UserInvite;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.PayLogMapper;
-import com.xiji.cashloan.cl.mapper.PayReqLogMapper;
-import com.xiji.cashloan.cl.mapper.ProfitAgentMapper;
-import com.xiji.cashloan.cl.mapper.ProfitLogMapper;
-import com.xiji.cashloan.cl.mapper.UserInviteMapper;
-import com.xiji.cashloan.cl.model.AlipayModel;
-import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
-import com.xiji.cashloan.cl.model.BorrowRepayModel;
-import com.xiji.cashloan.cl.model.ManageBRepayModel;
-import com.xiji.cashloan.cl.model.ManageBorrowModel;
-import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.RepayExcelModel;
-import com.xiji.cashloan.cl.model.UrgeRepayOrderModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QueryPayOrderInfo;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.*;
+import com.xiji.cashloan.cl.model.*;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.*;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.service.ProfitLogService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderLogService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -69,13 +34,6 @@ import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.domain.CreditLog;
 import com.xiji.creditrank.cr.mapper.CreditLogMapper;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -83,6 +41,10 @@ import org.springframework.web.multipart.MultipartFile;
 import tool.util.BigDecimalUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 还款计划ServiceImpl
@@ -337,7 +299,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		String isImproveCredit = Global.getValue("is_improve_credit");//提额开关 -- 10开，20关
 
-		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit)){//未逾期且提额开关为10 ---提额
+		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit) && Integer.parseInt(br.getPenaltyDay()) <= 0){//未逾期且提额开关为10 ---提额
 			String oneRepayCredit = Global.getValue("one_repay_credit");//还款成功题额  --固定额度
 			String improveCreditLimit = Global.getValue("imporove_credit_limit");//提额上限
 
@@ -421,16 +383,57 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
 		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
+		int delayDays;
+		if(param.get("delayDays") != null) {
+			delayDays = NumberUtil.getInt(param.get("delayDays").toString());
+		} else {
+			delayDays = Global.getInt("delay_days");
+		}
 		if (nowDate.after(repayPlanTime)){
-			repayTime = tool.util.DateUtil.rollDay(now,7);
+			repayTime = tool.util.DateUtil.rollDay(now, delayDays);
 		}else {
-			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(),7);
+			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(), delayDays);
 		}
 		result.put("repayTime", repayTime);
 		// 更新还款信息
 		int msg = updateBorrowReplayByDelayPay(br, repayTime);
 		if (msg <= 0) {
 			throw new BussinessException("更新还款信息出错" + br.getBorrowId());
+		}
+		//插入展期扣款的还款计划,状态为展期成功
+		BorrowRepay newBr = new BorrowRepay();
+		double repayAmount = param.get("amount") != null ? (Double) param.get("amount") : 0.0D;
+		newBr.setAmount(repayAmount);
+		newBr.setBorrowId(br.getBorrowId());
+		newBr.setUserId(br.getUserId());
+		String repay = DateUtil.dateStr2(DateUtil.rollDay(br.getRepayTime(), 0));
+		repay = repay + " 23:59:59";
+		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
+		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);
+		newBr.setPenaltyAmout(0.0);
+		newBr.setPenaltyDay("0");
+		newBr.setCreateTime(DateUtil.getNow());
+		msg = borrowRepayMapper.saveReturnId(newBr);
+		if (msg <= 0) {
+			throw new BussinessException("插入展期还款计划出错" + newBr.getBorrowId());
+		}
+		//新增一条展期还款记录
+		BorrowRepayLog delayRepayLog = new BorrowRepayLog();
+		delayRepayLog.setBorrowId(br.getBorrowId());
+		delayRepayLog.setRepayId(newBr.getId());
+		delayRepayLog.setUserId(br.getUserId());
+		delayRepayLog.setAmount(repayAmount);// 实际还款金额
+		delayRepayLog.setRepayTime(DateUtil.getNow());// 实际还款时间
+		delayRepayLog.setPenaltyAmout(0.00);
+		delayRepayLog.setPenaltyDay("0");
+		delayRepayLog.setSerialNumber((String) param.get("serialNumber"));
+		delayRepayLog.setRepayAccount((String) param.get("repayAccount"));
+		delayRepayLog.setRepayWay((String) param.get("repayWay"));
+		delayRepayLog.setType(BorrowRepayLogModel.REPAY_TYPE_DELAY);
+		delayRepayLog.setCreateTime(DateUtil.getNow());
+		msg = borrowRepayLogMapper.save(delayRepayLog);
+		if (msg <= 0) {
+			throw new BussinessException("插入展期还款记录出错" + newBr.getBorrowId());
 		}
 		// 更新借款表和借款进度状态
 		msg = updateBorrow(br.getBorrowId(), br.getUserId(),state);
@@ -448,7 +451,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			orderLog.setRemark("展期成功");
 			orderLog.setWay("50");
 			orderLog.setCreateTime(DateUtil.getNow());
-			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_PROMISE);
+			//催收订单状态修改为催收成功
+			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_SUCCESS);
 			urgeRepayOrderLogService.saveOrderInfo(orderLog, order);
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
@@ -514,6 +518,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			log.setRepayAccount((String) param.get("repayAccount"));
 			log.setRepayWay((String) param.get("repayWay"));
 			log.setCreateTime(DateUtil.getNow());
+			log.setType(BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 			return borrowRepayLogMapper.save(log);
 		}
 		return i;
@@ -571,6 +576,19 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	@Override
 	public List<ManageBRepayModel> listAllModel(Map<String, Object> params) {
 		List<ManageBRepayModel> list = borrowRepayMapper.listModel(params);
+
+		for(ManageBRepayModel manageBRepayModel : list){
+			if ("10".equals(manageBRepayModel.getState())){
+				manageBRepayModel.setStateStr("已还款");
+			}else if ("20".equals(manageBRepayModel.getState())){
+				manageBRepayModel.setStateStr("未还款");
+			}
+			else if ("30".equals(manageBRepayModel.getState())){
+				manageBRepayModel.setStateStr("展期还款");
+			}else {
+				manageBRepayModel.setStateStr("-");
+			}
+		}
 		return list;
 	}
 
@@ -746,6 +764,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("borrowId", borrowId);
 		paramMap.put("userId", userId);
+		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramMap);
 
 		// 还款金额
@@ -869,7 +888,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> repayMap = new HashMap<String, Object>();
 		repayMap.put("userId", payLog.getUserId());
 		repayMap.put("borrowId", payLog.getBorrowId());
-		BorrowRepay borrowRepay = borrowRepayMapper.findSelective(repayMap);
+		BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(repayMap);
 		// 若已完成还款，那么直接返回success
 		if (borrowRepay == null || BorrowRepayModel.STATE_REPAY_YES.equals(borrowRepay.getState())) {
 			logger.warn("还款计划有误");
@@ -958,6 +977,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Map<String, Object> paramRepayMap = new HashMap<String, Object>();
 		paramRepayMap.put("borrowId", borrowId);
 		paramRepayMap.put("userId", userId);
+		paramRepayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramRepayMap);
 
 		//1、查询是否存在待支付记录

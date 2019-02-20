@@ -1,23 +1,31 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.model.InviteBorrowModel;
+import com.xiji.cashloan.cl.model.UserAuthModel;
+import com.xiji.cashloan.cl.model.UserEducationInfoModel;
+import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
+import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.domain.UserOtherInfo;
+import com.xiji.cashloan.core.model.CloanUserModel;
 import com.xiji.cashloan.core.model.ManagerUserModel;
 import com.xiji.cashloan.core.model.UserBaseInfoModel;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
+import com.xiji.cashloan.core.service.UserOtherInfoService;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
+import com.xiji.creditrank.cr.model.CreditModel;
+import com.xiji.creditrank.cr.service.CreditService;
+import credit.CreditRequest;
+import credit.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -25,38 +33,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import tool.util.StringUtil;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.Channel;
-import com.xiji.cashloan.cl.domain.UserAuth;
-import com.xiji.cashloan.cl.domain.UserEducationInfo;
-import com.xiji.cashloan.cl.domain.UserEmerContacts;
-import com.xiji.cashloan.cl.domain.Zhima;
-import com.xiji.cashloan.cl.model.InviteBorrowModel;
-import com.xiji.cashloan.cl.model.UserAuthModel;
-import com.xiji.cashloan.cl.model.UserEducationInfoModel;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.ChannelService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.UserBlackInfoService;
-import com.xiji.cashloan.cl.service.UserEducationInfoService;
-import com.xiji.cashloan.cl.service.UserEmerContactsService;
-import com.xiji.cashloan.cl.service.UserInviteService;
-import com.xiji.cashloan.cl.service.ZhimaService;
-import com.xiji.cashloan.core.common.context.Constant;
-import com.xiji.cashloan.core.common.util.ServletUtils;
-import com.xiji.cashloan.core.domain.User;
-import com.xiji.cashloan.core.model.CloanUserModel;
-import com.xiji.cashloan.core.service.UserOtherInfoService;
-import com.xiji.creditrank.cr.model.CreditModel;
-import com.xiji.creditrank.cr.service.CreditService;
-
-import credit.CreditRequest;
-import credit.Header;
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * 用户记录Controller
@@ -123,8 +103,6 @@ public class ManageUserController extends ManageBaseController{
 	/**
 	 * 用户详细信息
 	 * @param userId
-	 * @param currentPage
-	 * @param pageSize
 	 */
 	@RequestMapping(value="/modules/manage/cl/cluser/detail.htm",method={RequestMethod.GET,RequestMethod.POST})   
 	@RequiresPermission(code = "modules:manage:cl:cluser:detail",name = "用户详细信息")
@@ -217,11 +195,8 @@ public class ManageUserController extends ManageBaseController{
 	
 	/**
 	 * @description  查询黑名单用户列表   不用
-	 * @param response
-	 * @param request
 	 * @param currentPage
 	 * @param pageSize
-	 * @param search
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -280,10 +255,14 @@ public class ManageUserController extends ManageBaseController{
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "修改失败");
 		}else {
+
+			if(StringUtil.isNotBlank(state) && UserBaseInfoModel.USER_STATE_BLACK.equals(state)){
+				// 当 state ="10" 添加黑名单
+				userBlackInfoService.addNameBlack(id,state);
+			}
+			userBlackInfoService.deleteBlackOrWhite(id, state,"black");
 			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "修改成功");
-			
-			userBlackInfoService.deleteBlackOrWhiteInfo(id, state);
 		}
 		ServletUtils.writeToResponse(response,result);
 	}
@@ -306,11 +285,13 @@ public class ManageUserController extends ManageBaseController{
 				result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "修改失败");
 			}else {
+				if (StringUtil.isNotBlank(state) && UserBaseInfoModel.USER_STATE_WHITE.equals(state)){
+					// 当 state = "20" 时 添加白名单
+					userBlackInfoService.addNameWhite(id,state);
+				}
+				userBlackInfoService.deleteBlackOrWhite(id, state,"white");
 				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "修改成功");
-				
-				
-				userBlackInfoService.deleteBlackOrWhiteInfo(id, state);
 			}
 		}else{
 			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
@@ -415,7 +396,9 @@ public class ManageUserController extends ManageBaseController{
 	
 	/**
 	 * 查询学历列表
-	 * @param uei
+	 * @param search
+	 * @param current
+	 * @param pageSize
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")

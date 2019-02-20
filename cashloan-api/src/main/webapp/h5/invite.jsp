@@ -21,13 +21,13 @@
     <link rel="stylesheet" href="/static/css/style.css"/>
 </head>
 <style>
-    body{background: #ca0a07;}
+    body{background: #ece8d9;}
 </style>
 <body>
     <img src="" style="position:absolute;opacity: 0;left:-10000px;z-index: -1000;">
 
     <div class="signup seven">                          
-        <img class="bar" alt="" src="/static/images/invite.png"/>          
+        <img class="bar" alt="" src="/static/images/invite.png"/>
         <div class="content">
             <form action="/api/user/wxRegister.htm">
                 <div class='centerDiv'><input name="phone" type="tel" value="" maxlength="11" placeholder="请输入手机号"/><span class='clear'  >x</span></div>
@@ -55,7 +55,7 @@
                     <label for="checkbox" onclick="click_a();">同意<a href="protocol_register.jsp">《使用协议》</a>
                           <i src="/static/images/yes.png" id="click_a"></i>
                     </label> 
-                     <a href="#">APP下载</a>                              
+                    <a href="#">APP下载</a>
                 </p>
             </form>
         </div>

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Row, Col, Message } from 'antd';
+import {Col, Message, Row} from 'antd';
 import './style.css';
 import Map from './Map';
 import Bar1 from './Bar1';
-import Bar2 from './Bar2';
-import Pie1 from './Pie1';
 import Pie2 from './Pie2';
+
 export default React.createClass({
     getInitialState() {
         var change = true;
@@ -146,12 +145,43 @@ export default React.createClass({
                             <div className='blk-title'>放款量</div>
                             <div className='blk-number'>{formsToday.borrowLoan}</div>
                         </div>
-                        <div className='blk-top-item blk-top-item-last' >
+                        <div className='blk-top-item' >
                             <div className='blk-title'>还款量</div>
                             <div className='blk-number'>{formsToday.borrowRepay}</div>
                         </div>
+                        <div className='blk-top-item blk-top-item-last' >
+                            <div className='blk-title'>放款率</div>
+                            <div className='blk-number'>{formsToday.borrowRate}<span style={{ fontSize: '12px' }}>% </span></div>
+                        </div>
                     </div>
                 </div>
+
+                <div className="block-panel">
+                    <h2 className="navLine-title">逾期统计</h2>
+                    <div className='blk-top'>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日应还</div>
+                            <div className='blk-number'>{formsToday.todayShouldCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日结清</div>
+                            <div className='blk-number'>{formsToday.todayRepayCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日待还</div>
+                            <div className='blk-number'>{formsToday.todayNotRepayCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日展期</div>
+                            <div className='blk-number'>{formsToday.todayDeferredCnt}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>今日还款率</div>
+                            <div className='blk-number'>{formsToday.todayShouldCntRate}<span style={{ fontSize: '12px' }}>% </span></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <div className="data-panel">
                         <div className="block-panel">

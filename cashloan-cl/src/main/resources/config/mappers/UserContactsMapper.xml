@@ -162,8 +162,8 @@
 			limit #{params.topCount,jdbcType=INTEGER}
 		</if>
    </select>
-   
-   <update id="updateCount" parameterType="java.util.HashMap">
+
+	<update id="updateCount" parameterType="java.util.HashMap">
    		update ${tableName1}
    		<set>
   			<if test="totalCount != null and totalCount != ''">
@@ -174,5 +174,20 @@
   			</if>
    		</set>
    		where user_id = #{userId,jdbcType=INTEGER} and phone = #{phone,jdbcType=VARCHAR}
-   </update>
+    </update>
+
+	<select id="countContacts" resultType="java.lang.Integer">
+		select count(1) from ${tableName}
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="params.userId != null">
+				user_id = #{params.userId,jdbcType=BIGINT}
+			</if>
+			<if test="params.name !=null and params.name !='' ">
+				and (name like '%借%' or name like '%贷%' or name like '%催收%')
+			</if>
+			<if test="params.sumDuration !=null">
+				and sum_duration &gt; #{params.sumDuration, jdbcType=INTEGER}
+			</if>
+		</trim>
+	</select>
 </mapper>

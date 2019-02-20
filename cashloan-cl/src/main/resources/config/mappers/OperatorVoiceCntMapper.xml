@@ -219,12 +219,14 @@
     </select>
 
     <select id="countNotNull" resultType="java.lang.Integer">
-        select count(1) from ${tableName} where user_id = #{userId,jdbcType=BIGINT} and last_contact_time is not null
+        select count(1) from ${tableName} where user_id = #{userId,jdbcType=BIGINT} and req_log_id = #{reqLogId,jdbcType=BIGINT}
+        and last_contact_time is not null
     </select>
 
 
     <update id="updateLastContactTime"  parameterType="java.util.HashMap">
         update ${tableName} set last_contact_time = #{lastContactTime,jdbcType=TIMESTAMP}
         where peer_num = #{peerNumber,jdbcType=VARCHAR} and user_id = #{userId ,jdbcType=BIGINT}
+        and req_log_id = #{reqLogId,jdbcType=BIGINT}
     </update>
 </mapper>

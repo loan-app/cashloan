@@ -236,6 +236,18 @@ export default React.createClass({
                 }
             }
         }, {
+            title: '还款类型',
+            dataIndex: 'type',
+            render: (text, record) => {
+                if (record.type == 10) {
+                    return "还款"
+                } else if (record.type == 20) {
+                    return <span style={{ color: "red" }}>展期还款</span>
+                } else {
+                    return "-"
+                }
+            }
+        }, {
             title: '应还款日期',
             width: 80,
             dataIndex: 'repayPlanTime'

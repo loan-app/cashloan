@@ -6,6 +6,7 @@ import Tab2 from './Tab2';
 import Tab9 from './Tab9';
 import Tab8 from '../../../../common/LoanReport/Tab8';
 import Operator from '../../../../common/OperatorInfo/Operator';
+import Tab6 from "./Tab6";
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -119,6 +120,9 @@ var Lookdetails = React.createClass({
           {/*<TabPane tab="同盾决策引擎审核结果" key="7">
             <Tab7 ref="Tab7" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
           </TabPane>*/}
+            <TabPane tab="借款记录" key="6">
+                <Tab6 record={props.record.borrowUserId} ref="Tab6" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+            </TabPane>
           <TabPane tab="通话详情统计" key="9">
             <Tab9 ref="Tab9" record={props.record}  canEdit={props.canEdit} activeKey={this.state.activekey}/>
           </TabPane>

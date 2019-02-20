@@ -1,12 +1,10 @@
 import React from 'react'
-import {
-  Table,
-  Modal,
-  Button
-} from 'antd';
+import {Button, Modal, Table} from 'antd';
+import AdjustCreditDetial from './AdjustCreditDetial';
+import UserRemarkList from '../../../../common/UserRemark/UserRemarkList';
+
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
-import AdjustCreditDetial from './AdjustCreditDetial'
 export default React.createClass({
   getInitialState() {
     return {
@@ -15,10 +13,15 @@ export default React.createClass({
       loading: false,
       data: [],
       pagination: {},
+      pagination1:{
+          pageSize:5,
+          current:1
+      },
       canEdit: true,
       visible: false,
       visibleAdd: false,
       visibleAc:false,
+        visibleRemark:false,
     };
   },
   componentWillReceiveProps(nextProps, nextState) {
@@ -30,7 +33,8 @@ export default React.createClass({
     this.setState({
       visible: false,
       visibleAdd:false,
-      visibleAc:false
+      visibleAc:false,
+      visibleRemark:false
     });
     this.refreshList();
   },
@@ -169,6 +173,37 @@ export default React.createClass({
       });
     }  
   },
+
+
+    showUserRemark(title, record, canEdit) {
+        Utils.ajaxData({
+            url: '/modules/manage/user/remark/list.htm',
+            data: {
+                pageSize: 5,
+                current: 1,
+                searchParams:JSON.stringify({userId:record})
+            },
+            method: 'get',
+            callback: (result) => {
+                const pagination1 = this.state.pagination1;
+                pagination1.current = result.current;
+                pagination1.pageSize =result.pageSize;
+                pagination1.total = result.page.total;
+                if (!pagination1.current) {
+                    pagination1.current = 1
+                };
+                //console.log(result.data.logs);
+                this.setState({
+                    dataRecord: result.data,
+                    canEdit: canEdit,
+                    visibleRemark: true,
+                    title: title,
+                    pagination1:result.page,
+                    record:record
+                });
+            }
+        });
+    },
  
   render() {
     var me = this;
@@ -215,11 +250,19 @@ export default React.createClass({
       title: '审核人',
       dataIndex: 'userName',
     }, {
-      title: '备注',
-      dataIndex: 'remark'
-    }, {
       title: '渠道',
       dataIndex: 'channelName',
+    }, {
+        title: '是否复借',
+        dataIndex: 'again',
+        render:(text,record) =>  {
+            switch(record.again){
+                case "10":
+                    return "否";
+                case "20":
+                    return <span style={{ color: "red" }}>是</span>;
+            }
+        }
     }, {
       title: '审核状态',
       dataIndex: 'state',
@@ -235,7 +278,12 @@ export default React.createClass({
                     return "审核拒绝";
         }
       }
-    }, {
+    },{
+        title: '备注',
+        render(text, record) {
+            return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.borrowUserId, true)}>备注</a></div>
+        }
+    },{
       title: '操作',
       render(text, record) {
         if(record.state == "10"){
@@ -250,6 +298,7 @@ export default React.createClass({
       }
     }];
     var state = this.state;
+      console.log(state);
     return (
       <div className="block-panel">
           <div className="actionBtns" style={{ marginBottom: 16 }}>
@@ -269,7 +318,10 @@ export default React.createClass({
              onChange={this.handleTableChange}  />
              <AdjustCreditDetial ref="AdjustCreditDetial"  visible={state.visibleAc}    title={state.title} hideModal={me.hideModal} 
              record={state.selectedrecord} dataRecord={state.dataRecord}  canEdit={state.canEdit} selectedRowKeys1={state.selectedRowKeys1} />
-         </div>
+
+             <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
+                             dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination1}/>
+      </div>
     );
   }
 })

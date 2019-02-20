@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Col,
-  Select,
-  Tabs,
-} from 'antd';
+import {Col, Form, Input, Modal, Row, Select, Tabs,} from 'antd';
 
 import RuleReport from './RuleReport';
 import Lookdetails from './Lookdetails';
@@ -16,7 +7,6 @@ import Tab1 from './Tab1';
 import Tab2 from './Tab2';
 import Tab3 from './Tab3';
 import Tab6 from './Tab6';
-import Tab7 from './Tab7';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -140,9 +130,9 @@ var Check = React.createClass({
           <TabPane tab="借款记录" key="6">
             <Tab6 record={props.record} ref="Tab6" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
-          <TabPane tab="邀请记录" key="7">
-            <Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
-          </TabPane>
+          {/*<TabPane tab="邀请记录" key="7">*/}
+            {/*<Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>*/}
+          {/*</TabPane>*/}
         </Tabs>
        {props.title == '审核' ?  <Form horizontal form={this.props.form}>
           <Row>

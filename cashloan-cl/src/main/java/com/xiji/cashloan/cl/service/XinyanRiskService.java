@@ -8,4 +8,8 @@ import com.xiji.cashloan.core.domain.Borrow;
 public interface XinyanRiskService {
 
     int queryLoan(Borrow borrow);
+
+    String getPreOrderNo(Borrow borrow);
+
+    long saveXWLDNotify(String resultData);
 }

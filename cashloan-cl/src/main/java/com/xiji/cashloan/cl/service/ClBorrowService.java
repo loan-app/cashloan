@@ -166,7 +166,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param remark
 	 * @return 
 	 */
-	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,String isBlack);
+	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack);
 	
 	/**
 	 * 借款部分还款信息
@@ -213,7 +213,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param borrow
 	 * @return
 	 */
-	ClBorrowModel rcBorrowApply(Borrow borrow,String tradePwd,String mobileType) throws Exception;
+	ClBorrowModel rcBorrowApply(Borrow borrow,String tradePwd,String mobileType, boolean xwldFlag) throws Exception;
 	
 	/**
 	 * 借款规则审核
@@ -318,4 +318,9 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
      * @return
      */
 	List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name);
+
+	/**
+	 *
+	 */
+
 }

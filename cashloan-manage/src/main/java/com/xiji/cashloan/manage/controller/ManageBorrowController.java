@@ -1,6 +1,7 @@
 package com.xiji.cashloan.manage.controller;
 
 import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
 import com.xiji.cashloan.cl.service.*;
@@ -59,8 +60,8 @@ public class ManageBorrowController extends ManageBaseController {
 	
 	/**
 	 *借款信息列表
-	 * @param search
-	 * @param currentPage
+	 * @param searchParams
+	 * @param current
 	 * @param pageSize
 	 */
 	@RequestMapping(value="/modules/manage/borrow/list.htm",method={RequestMethod.GET,RequestMethod.POST})
@@ -80,7 +81,7 @@ public class ManageBorrowController extends ManageBaseController {
 
 	/**
 	 *借款进度列表
-	 * @param search
+	 * @param searchParams
 	 * @param currentPage
 	 * @param pageSize
 	 */
@@ -142,7 +143,7 @@ public class ManageBorrowController extends ManageBaseController {
  
 	/**
 	 * 借款审核列表     
-	 * @param search
+	 * @param searchParams
 	 * @param currentPage
 	 * @param pageSize
 	 */
@@ -205,8 +206,8 @@ public class ManageBorrowController extends ManageBaseController {
 	
 	/**
 	 * 借款还款信息列表     
-	 * @param search
-	 * @param currentPage
+	 * @param searchParams
+	 * @param current
 	 * @param pageSize
 	 */
 	@RequestMapping(value="/modules/manage/borrow/borrowRepayList.htm",method={RequestMethod.GET,RequestMethod.POST})
@@ -231,7 +232,8 @@ public class ManageBorrowController extends ManageBaseController {
 						BorrowModel.STATE_FINISH,
 						BorrowModel.STATE_REMISSION_FINISH,
 						BorrowModel.STATE_DELAY, 
-						BorrowModel.STATE_BAD);
+						BorrowModel.STATE_BAD,
+						BorrowModel.STATE_DELAY_PAY);
 			    params.put("stateList", stateList);
 				String state = StringUtil.isNull(params.get("state"));
 				if (null != state &&!StringUtil.isBlank(state)) {
@@ -262,6 +264,10 @@ public class ManageBorrowController extends ManageBaseController {
 				}
 				
 			}
+			params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+		} else {
+			params = new HashMap<>();
+			params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		}
 		Page<ManageBorrowModel> page = clBorrowService.listBorrowModel(params,current,pageSize);
 		Map<String,Object> result = new HashMap<String,Object>();
@@ -301,9 +307,7 @@ public class ManageBorrowController extends ManageBaseController {
 
 	/**
 	 * 借款还款信息详细页面      
-	 * @param search
-	 * @param currentPage
-	 * @param pageSize
+	 * @param borrowId
 	 */
 	@RequestMapping(value="/modules/manage/borrow/borrowRepayContent.htm",method={RequestMethod.GET,RequestMethod.POST})
 	@RequiresPermission(code = "modules:manage:borrow:borrowRepayContent",name = "借款还款信息详细页面    ")
@@ -330,6 +334,7 @@ public class ManageBorrowController extends ManageBaseController {
 			@RequestParam(value = "pageSize") int pageSize) throws Exception {
 		Map<String,Object> params = new HashMap<>();
 		params.put("userId", userId);
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		Page<ManageBorrowModel> page = clBorrowService.listBorrowModel(params, current, pageSize);
 		
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -352,7 +357,7 @@ public class ManageBorrowController extends ManageBaseController {
 	public void verifyBorrow(HttpServletRequest request, @RequestParam(value = "borrowId") Long borrowId,
 							 @RequestParam(value = "state") String state,
 							 @RequestParam(value = "remark") String remark,
-							 @RequestParam(value = "isBlack")String isBlack) throws Exception {
+							 @RequestParam(value = "isBlack")Boolean isBlack) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>();
 		SysUser curUser = null;
 		Object obj = request.getSession().getAttribute("SysUser");
@@ -378,8 +383,6 @@ public class ManageBorrowController extends ManageBaseController {
 
 	/**
 	 * 重新发起审核
-	 * @param request
-	 * @param response
 	 * @param borrowId
 	 */
 	@RequestMapping(value = "/modules/manage/borrow/reVerifyBorrowData.htm",method=RequestMethod.POST)

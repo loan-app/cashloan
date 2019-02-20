@@ -310,6 +310,17 @@ export default React.createClass({
             title: '实际还款金额(元)',
             dataIndex: 'repayAmount'
         }, {
+            title: '是否复借',
+            dataIndex: 'again',
+            render:(text,record) =>  {
+                switch(record.again){
+                    case "10":
+                        return "否";
+                    case "20":
+                        return <span style={{ color: "red" }}>是</span>;
+                }
+            }
+        }, {
             title: '订单状态',
             dataIndex: "stateStr",
         }, {
