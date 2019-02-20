@@ -302,7 +302,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 
 	@Override
-	public List<IndexModel> listIndex() {
+	public List<IndexModel> listIndex(String userId) {
 		List<IndexModel> list = clBorrowMapper.listIndex();
 		List indexList = new ArrayList<>();
 		for (int i = 0; i < list.size(); i++) {
@@ -318,9 +318,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				time = DateUtil.minuteBetween(list.get(i).getCreateTime(), list
 						.get(i).getLoanTime());
 			}
-			
-			String value = "尾号" + cardNo + " " + "成功借款" + (int) (money)
-					+ "元 用时" + time + "分钟";
+			String value;
+			if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
+				value = "尾号" + cardNo + " " + "成功借款" + 8000
+						+ "元 用时" + time + "分钟";
+			} else {
+				value = "尾号" + cardNo + " " + "成功借款" + (int) (money)
+						+ "元 用时" + time + "分钟";
+			}
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", i);
 			map.put("value", value);
@@ -909,7 +914,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public Map<String, Object> choice(double amount, String timeLimit, String userId) {
 		double fee = 0;
-		if(StringUtil.isBlank(userId)) {
+		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
 			fee = CreditConstant.FEE;
 		} else {
 			String fee_ = Global.getValue("fee");// 综合费用
@@ -947,7 +952,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		String[] borrowCredits = borrowCredit.split(",");
 		
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		if(StringUtil.isBlank(userId)) {
+		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
 			Map<String,Object> map = new HashMap<>();
 			map.put("fee", CreditConstant.FEE);
 			map.put("feeName", feeName);

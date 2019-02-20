@@ -149,7 +149,6 @@ public class ClBorrowController extends BaseController {
 	@RequestMapping(value = "/api/borrow/findIndex.htm")
 	public void findIndex() throws Exception {
 		String userId = request.getParameter("userId");
-//		String userId = "1";
 		Map<String,Object> data = clBorrowService.findIndex(userId);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_DATA, data);
@@ -164,7 +163,8 @@ public class ClBorrowController extends BaseController {
 	 */
 	@RequestMapping(value = "/api/borrow/listIndex.htm")
 	public void listIndex() throws Exception {
-		List<IndexModel> list = clBorrowService.listIndex();
+		String userId = request.getParameter("userId");
+		List<IndexModel> list = clBorrowService.listIndex(userId);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("list", list);
 		Map<String,Object> result = new HashMap<String,Object>();

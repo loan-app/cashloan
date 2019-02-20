@@ -101,7 +101,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * 查询最新10条借款信息
 	 * @return
 	 */
-	List<IndexModel> listIndex();
+	List<IndexModel> listIndex(String userId);
 
 	/**
 	 * 借款记录查看
