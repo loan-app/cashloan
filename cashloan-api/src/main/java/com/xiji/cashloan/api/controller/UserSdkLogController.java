@@ -1,5 +1,6 @@
 package com.xiji.cashloan.api.controller;
 
+import com.xiji.cashloan.core.common.util.StringUtil;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +58,31 @@ public class UserSdkLogController extends BaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response,result);
 	}
+
+	 @RequestMapping(value = "/api/act/mine/sdk/select.htm")
+	 public void select(
+		 @RequestParam(value="userId", required = false) long userId) throws Exception {
+		 Map<String,Object> data = new HashMap<>();
+		 String ocrType = Global.getValue("orc_sdk_select");
+		 data.put("ocrType",1);//face++,默认使用
+
+		 if (StringUtil.equals("1", ocrType)) {
+			 data.put("ocrType",1);//face++
+		 }else if (StringUtil.equals("2", ocrType)){
+			 data.put("ocrType",2);//有盾
+		 }else if (StringUtil.contains(ocrType,"=")){
+			 int lastKey = (int) (userId%10);
+			 if (ocrType.contains(String.valueOf(lastKey))) {
+				 data.put("ocrType",2);//有盾
+			 }
+		 }
+
+		 Map<String,Object> result = new HashMap<String,Object>();
+		 result.put(Constant.RESPONSE_DATA, data);
+		 result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		 result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		 ServletUtils.writeToResponse(response,result);
+	 }
 	
 	/**
 	 * 同步OCR数据

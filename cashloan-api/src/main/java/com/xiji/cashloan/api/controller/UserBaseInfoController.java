@@ -342,6 +342,7 @@ public class UserBaseInfoController extends BaseController {
         long userId = NumberUtil.getLong(request.getSession().getAttribute("userId").toString());
         Map<String, Object> returnMap = new HashMap<String, Object>();
         JSONObject ocrResultJson = null;
+        logger.info("youdun_ocrResult:" + ocrResult);
         if (OcrUtil.ifYoudun(ocrType)) {
             if (StringUtil.isNotEmpty(ocrResult)) {
                 ocrResultJson = JSONObject.parseObject(ocrResult);
@@ -349,6 +350,11 @@ public class UserBaseInfoController extends BaseController {
                     realName = OcrUtil.getIdName(ocrResultJson);
                     idNo = OcrUtil.getIdCard(ocrResultJson);
                 }
+            }else {
+                returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                returnMap.put(Constant.RESPONSE_CODE_MSG, "认证失败，请到光线充足处重新认证");
+                ServletUtils.writeToResponse(response, returnMap);
+                return;
             }
         }
         Map<String, Object> infoMap = new HashMap<String, Object>();
@@ -408,7 +414,7 @@ public class UserBaseInfoController extends BaseController {
                         log.setResult(OcrUtil.getAuth(ocrResultJson));
                         match = OcrUtil.getScore(ocrResultJson);
                         log.setConfidence(String.valueOf(match));
-                        if (StringUtil.equalsIgnoreCase("F",OcrUtil.getAuth(ocrResultJson))){
+                        if (!StringUtil.equalsIgnoreCase("T",OcrUtil.getAuth(ocrResultJson))){
                             //认证失败
                             match = 0.0;
                         }
