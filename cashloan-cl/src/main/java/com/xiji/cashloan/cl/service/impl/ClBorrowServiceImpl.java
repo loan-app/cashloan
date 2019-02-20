@@ -13,6 +13,7 @@ import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
+import com.xiji.cashloan.cl.util.CreditConstant;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -353,29 +354,48 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		} else {
 			loanCeiling -= repayTotal;
 	    }
-		
-		String fee = Global.getValue("fee");// 综合费用
-		String[] fees = fee.split(",");
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
-		String[] days = borrowDay.split(",");
-		int maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
-		int minDays = Integer.parseInt(days[0]);			// 最小借款期限
-		String borrowCredit = Global.getValue("borrow_credit");// 借款额度
-		String[] credits = borrowCredit.split(",");
-		double maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
-		double minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
-		
+
+		String[] fees;
+		String borrowDay;
+		int maxDays = 0;
+		int minDays = 0;
+		String[] credits = {CreditConstant.AMOUNTS};
+		String[] days = {CreditConstant.DAYS};
+		String borrowCredit;
+		double maxCredit = 0d;
+		double minCredit = 0d;
+		if(user == null) {
+			String fee = CreditConstant.FEE_POWER;
+			fees = fee.split(",");
+			maxDays = CreditConstant.MAX_DAY;
+			minDays = CreditConstant.MIN_DAY;
+			maxCredit = CreditConstant.MAX_CREDIT;
+			minCredit = CreditConstant.MIN_CREDIT;
+		} else {
+			String fee = Global.getValue("fee");// 综合费用
+			fees = fee.split(",");
+			borrowDay = Global.getValue("borrow_day");// 借款天数
+			days = borrowDay.split(",");
+			maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
+			minDays = Integer.parseInt(days[0]);			// 最小借款期限
+			borrowCredit = Global.getValue("borrow_credit");// 借款额度
+			credits = borrowCredit.split(",");
+			maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
+			minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
+		}
+
 		if(user != null){
 			result.put("total", credit.getUnuse());
 		} else {
-			result.put("total", Global.getValue("init_credit"));
+//			result.put("total", Global.getValue("init_credit"));
+			result.put("total", CreditConstant.AMOUNTS);
 		}
 		Map<String, Object> auth = new HashMap<String, Object>();
 		auth.put("total", Global.getInt("auth_total")); // 认证总项数量
 		auth.put("result", 0);
 		auth.put("qualified", 0);
 		result.put("cardNo", "");
-		
+
 		if (user != null) {
 			boolean isPwd = false;
 			if (StringUtil.isNotBlank(user.getTradePwd())) {
@@ -887,15 +907,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 
 	@Override
-	public Map<String, Object> choice(double amount, String timeLimit) {
-		String fee_ = Global.getValue("fee");// 综合费用
-		String[] fees = fee_.split(",");
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
-		String[] days = borrowDay.split(",");
+	public Map<String, Object> choice(double amount, String timeLimit, String userId) {
 		double fee = 0;
-		for (int i = 0; i < days.length; i++) {
-			if (timeLimit.equals(days[i])) {
-				fee = BigDecimalUtil.round(BigDecimalUtil.mul(amount, Double.parseDouble(fees[i])));
+		if(StringUtil.isBlank(userId)) {
+			fee = CreditConstant.FEE;
+		} else {
+			String fee_ = Global.getValue("fee");// 综合费用
+			String[] fees = fee_.split(",");
+			String borrowDay = Global.getValue("borrow_day");// 借款天数
+			String[] days = borrowDay.split(",");
+			for (int i = 0; i < days.length; i++) {
+				if (timeLimit.equals(days[i])) {
+					fee = BigDecimalUtil.round(BigDecimalUtil.mul(amount, Double.parseDouble(fees[i])));
+				}
 			}
 		}
 		Map<String,Object> map = new HashMap<>();
@@ -913,7 +937,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	@Override
-	public List<Map<String, Object>> choices() {
+	public List<Map<String, Object>> choices(String userId) {
 		String fee_ = Global.getValue("fee");// 综合费用
 		String feeName = sysConfigService.findByCode("fee").getName();// 综合费用
 		String[] fees = fee_.split(",");
@@ -923,47 +947,76 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		String[] borrowCredits = borrowCredit.split(",");
 		
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		for (int i = 0; i < days.length; i++) {
-			for (int j = 0; j < borrowCredits.length; j++) {
-				Map<String,Object> map = new HashMap<>();
-				double fee = Double.parseDouble(borrowCredits[j])*Double.parseDouble(fees[i]);
-				map.put("fee", BigDecimalUtil.decimal(fee, 2));
-				map.put("feeName", feeName);
-				
-				double amount = Double.parseDouble(borrowCredits[j]);
-				String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
-				if ("10".equals(beheadFee)) {// 启用
-					map.put("realAmount", amount - fee);
-				} else {
-					map.put("realAmount", amount);
-				}
-				
-				Map<String, Object> feeDetail= new HashMap<String, Object>();
-				List<Map<String,Object>> feeDetailList = new ArrayList<>();
-				double total = 0;
-				Map<String,Object> feeMap=getFeeMap(fee);
-				feeDetail.put("title", feeMap.get("serviceFeeName"));
-				feeDetail.put("value", feeMap.get("serviceFee"));
-				feeDetailList.add(feeDetail);
-				feeDetail= new HashMap<String, Object>();
-				feeDetail.put("title", feeMap.get("infoAuthFeeName"));
-				feeDetail.put("value", feeMap.get("infoAuthFee"));
-				feeDetailList.add(feeDetail);
-				feeDetail= new HashMap<String, Object>();
-				feeDetail.put("title", feeMap.get("interestName"));
-				feeDetail.put("value", feeMap.get("interest"));
-				feeDetailList.add(feeDetail);
-				map.put("feeDetailList", feeDetailList);
-				
-				map.put("timeLimit", days[i]);
-				map.put("amount", amount);
+		if(StringUtil.isBlank(userId)) {
+			Map<String,Object> map = new HashMap<>();
+			map.put("fee", CreditConstant.FEE);
+			map.put("feeName", feeName);
+			map.put("realAmount", CreditConstant.AMOUNT - CreditConstant.FEE);
+			Map<String, Object> feeDetail= new HashMap<String, Object>();
+			List<Map<String,Object>> feeDetailList = new ArrayList<>();
+			Map<String,Object> feeMap=getFeeMap(CreditConstant.FEE);
+			feeDetail.put("title", feeMap.get("serviceFeeName"));
+			feeDetail.put("value", feeMap.get("serviceFee"));
+			feeDetailList.add(feeDetail);
+			feeDetail= new HashMap<String, Object>();
+			feeDetail.put("title", feeMap.get("infoAuthFeeName"));
+			feeDetail.put("value", feeMap.get("infoAuthFee"));
+			feeDetailList.add(feeDetail);
+			feeDetail= new HashMap<String, Object>();
+			feeDetail.put("title", feeMap.get("interestName"));
+			feeDetail.put("value", feeMap.get("interest"));
+			feeDetailList.add(feeDetail);
+			map.put("feeDetailList", feeDetailList);
 
-				//IOS端返回数据
-				map.put("feeDetail", feeMap);
-				list.add(map);
+			map.put("timeLimit", CreditConstant.MAX_CREDIT);
+			map.put("amount", CreditConstant.AMOUNT);
+
+			//IOS端返回数据
+			map.put("feeDetail", feeMap);
+			list.add(map);
+		} else {
+			for (int i = 0; i < days.length; i++) {
+				for (int j = 0; j < borrowCredits.length; j++) {
+					Map<String,Object> map = new HashMap<>();
+					double fee = Double.parseDouble(borrowCredits[j])*Double.parseDouble(fees[i]);
+					map.put("fee", BigDecimalUtil.decimal(fee, 2));
+					map.put("feeName", feeName);
+
+					double amount = Double.parseDouble(borrowCredits[j]);
+					String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+					if ("10".equals(beheadFee)) {// 启用
+						map.put("realAmount", amount - fee);
+					} else {
+						map.put("realAmount", amount);
+					}
+
+					Map<String, Object> feeDetail= new HashMap<String, Object>();
+					List<Map<String,Object>> feeDetailList = new ArrayList<>();
+					double total = 0;
+					Map<String,Object> feeMap=getFeeMap(fee);
+					feeDetail.put("title", feeMap.get("serviceFeeName"));
+					feeDetail.put("value", feeMap.get("serviceFee"));
+					feeDetailList.add(feeDetail);
+					feeDetail= new HashMap<String, Object>();
+					feeDetail.put("title", feeMap.get("infoAuthFeeName"));
+					feeDetail.put("value", feeMap.get("infoAuthFee"));
+					feeDetailList.add(feeDetail);
+					feeDetail= new HashMap<String, Object>();
+					feeDetail.put("title", feeMap.get("interestName"));
+					feeDetail.put("value", feeMap.get("interest"));
+					feeDetailList.add(feeDetail);
+					map.put("feeDetailList", feeDetailList);
+
+					map.put("timeLimit", days[i]);
+					map.put("amount", amount);
+
+					//IOS端返回数据
+					map.put("feeDetail", feeMap);
+					list.add(map);
+				}
 			}
 		}
-		
+
 		return list;
 	}
 
