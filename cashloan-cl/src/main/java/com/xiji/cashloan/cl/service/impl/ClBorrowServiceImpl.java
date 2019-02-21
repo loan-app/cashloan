@@ -973,7 +973,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			feeDetailList.add(feeDetail);
 			map.put("feeDetailList", feeDetailList);
 
-			map.put("timeLimit", CreditConstant.MAX_CREDIT);
+			map.put("timeLimit", CreditConstant.DAYS);
 			map.put("amount", CreditConstant.AMOUNT);
 
 			//IOS端返回数据
