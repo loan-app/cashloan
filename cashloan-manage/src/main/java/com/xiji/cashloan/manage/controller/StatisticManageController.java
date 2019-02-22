@@ -1,16 +1,5 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.model.DayNeedAmountModel;
@@ -18,9 +7,19 @@ import com.xiji.cashloan.cl.model.ExpendDetailModel;
 import com.xiji.cashloan.cl.model.IncomeAndExpendModel;
 import com.xiji.cashloan.cl.model.IncomeDetailModel;
 import com.xiji.cashloan.cl.service.StatisticManageService;
+import com.xiji.cashloan.cl.service.statistic.*;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 统计管理
@@ -38,6 +37,24 @@ public class StatisticManageController extends ManageBaseController {
 	
 	@Resource
 	private StatisticManageService statisticManageService;
+
+	@Resource
+	private UserStatisticDataService userStatisticDataService;
+
+	@Resource
+	private ChannelStatisticDataService channelStatisticDataService;
+
+	@Resource
+	private RepaymentStatisticDataService repaymentStatisticDataService;
+
+	@Resource
+	private AuditorStatisticDataService auditorStatisticDataService;
+
+	@Resource
+	private AuditingStatisticDataService auditingStatisticDataService;
+
+	@Resource
+	private LoadStatisticDataService loadStatisticDataService;
 
 	/**
 	 * 每日未还本金
@@ -134,4 +151,8 @@ public class StatisticManageController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response,result);
 	}
+
+
+
+
 }

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_load_statistic_data表:放款统计数据模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.statistic.LoadStatisticDataMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.statistic.LoadStatisticData">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="count_time" property="countTime" jdbcType="TIMESTAMP" />
+        <result column="load_count" property="loadCount" jdbcType="INTEGER" />
+        <result column="load_amount" property="loadAmount" jdbcType="DECIMAL" />
+        <result column="load_principal" property="loadPrincipal" jdbcType="DECIMAL" />
+        <result column="first_load_count" property="firstLoadCount" jdbcType="INTEGER" />
+        <result column="first_load_amount" property="firstLoadAmount" jdbcType="DECIMAL" />
+        <result column="first_load_principal" property="firstLoadPrincipal" jdbcType="DECIMAL" />
+        <result column="again_load_count" property="againLoadCount" jdbcType="INTEGER" />
+        <result column="again_load_amount" property="againLoadAmount" jdbcType="DECIMAL" />
+        <result column="again_load_principal" property="againLoadPrincipal" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,create_time,update_time,count_time,load_count,load_amount,load_principal,first_load_count,first_load_amount,first_load_principal,again_load_count,again_load_amount,again_load_principal 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="countTime != null">
+                and count_time = #{countTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="loadCount != null">
+                and load_count = #{loadCount,jdbcType=INTEGER}
+            </if>
+            <if test="loadAmount != null">
+                and load_amount = #{loadAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="loadPrincipal != null">
+                and load_principal = #{loadPrincipal,jdbcType=DECIMAL}
+            </if>
+            <if test="firstLoadCount != null">
+                and first_load_count = #{firstLoadCount,jdbcType=INTEGER}
+            </if>
+            <if test="firstLoadAmount != null">
+                and first_load_amount = #{firstLoadAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="firstLoadPrincipal != null">
+                and first_load_principal = #{firstLoadPrincipal,jdbcType=DECIMAL}
+            </if>
+            <if test="againLoadCount != null">
+                and again_load_count = #{againLoadCount,jdbcType=INTEGER}
+            </if>
+            <if test="againLoadAmount != null">
+                and again_load_amount = #{againLoadAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="againLoadPrincipal != null">
+                and again_load_principal = #{againLoadPrincipal,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.LoadStatisticData">
+        insert into cl_load_statistic_data(create_time,update_time,count_time,load_count,load_amount,load_principal,first_load_count,first_load_amount,first_load_principal,again_load_count,again_load_amount,again_load_principal)values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{loadCount,jdbcType=INTEGER},#{loadAmount,jdbcType=DECIMAL},#{loadPrincipal,jdbcType=DECIMAL},#{firstLoadCount,jdbcType=INTEGER},#{firstLoadAmount,jdbcType=DECIMAL},#{firstLoadPrincipal,jdbcType=DECIMAL},#{againLoadCount,jdbcType=INTEGER},#{againLoadAmount,jdbcType=DECIMAL},#{againLoadPrincipal,jdbcType=DECIMAL})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.statistic.LoadStatisticData">
+        update cl_load_statistic_data set 
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            count_time = #{countTime,jdbcType=TIMESTAMP},
+            load_count = #{loadCount,jdbcType=INTEGER},
+            load_amount = #{loadAmount,jdbcType=DECIMAL},
+            load_principal = #{loadPrincipal,jdbcType=DECIMAL},
+            first_load_count = #{firstLoadCount,jdbcType=INTEGER},
+            first_load_amount = #{firstLoadAmount,jdbcType=DECIMAL},
+            first_load_principal = #{firstLoadPrincipal,jdbcType=DECIMAL},
+            again_load_count = #{againLoadCount,jdbcType=INTEGER},
+            again_load_amount = #{againLoadAmount,jdbcType=DECIMAL},
+            again_load_principal = #{againLoadPrincipal,jdbcType=DECIMAL}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_load_statistic_data
+          <set>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null">        
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="countTime != null">        
+                count_time = #{countTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="loadCount != null">        
+                load_count = #{loadCount,jdbcType=INTEGER},                
+            </if>
+            <if test="loadAmount != null">        
+                load_amount = #{loadAmount,jdbcType=DECIMAL},                
+            </if>
+            <if test="loadPrincipal != null">        
+                load_principal = #{loadPrincipal,jdbcType=DECIMAL},                
+            </if>
+            <if test="firstLoadCount != null">        
+                first_load_count = #{firstLoadCount,jdbcType=INTEGER},                
+            </if>
+            <if test="firstLoadAmount != null">        
+                first_load_amount = #{firstLoadAmount,jdbcType=DECIMAL},                
+            </if>
+            <if test="firstLoadPrincipal != null">        
+                first_load_principal = #{firstLoadPrincipal,jdbcType=DECIMAL},                
+            </if>
+            <if test="againLoadCount != null">        
+                again_load_count = #{againLoadCount,jdbcType=INTEGER},                
+            </if>
+            <if test="againLoadAmount != null">        
+                again_load_amount = #{againLoadAmount,jdbcType=DECIMAL},                
+            </if>
+            <if test="againLoadPrincipal != null">        
+                again_load_principal = #{againLoadPrincipal,jdbcType=DECIMAL}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_load_statistic_data
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_load_statistic_data
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_load_statistic_data
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.statistic.LoadStatisticData">
+        insert into cl_load_statistic_data
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="countTime != null">
+                count_time,
+            </if>
+            <if test="loadCount != null">
+                load_count,
+            </if>
+            <if test="loadAmount != null">
+                load_amount,
+            </if>
+            <if test="loadPrincipal != null">
+                load_principal,
+            </if>
+            <if test="firstLoadCount != null">
+                first_load_count,
+            </if>
+            <if test="firstLoadAmount != null">
+                first_load_amount,
+            </if>
+            <if test="firstLoadPrincipal != null">
+                first_load_principal,
+            </if>
+            <if test="againLoadCount != null">
+                again_load_count,
+            </if>
+            <if test="againLoadAmount != null">
+                again_load_amount,
+            </if>
+            <if test="againLoadPrincipal != null">
+                again_load_principal,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="countTime != null">
+                #{countTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loadCount != null">
+                #{loadCount,jdbcType=INTEGER},
+            </if>
+            <if test="loadAmount != null">
+                #{loadAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="loadPrincipal != null">
+                #{loadPrincipal,jdbcType=DECIMAL},
+            </if>
+            <if test="firstLoadCount != null">
+                #{firstLoadCount,jdbcType=INTEGER},
+            </if>
+            <if test="firstLoadAmount != null">
+                #{firstLoadAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="firstLoadPrincipal != null">
+                #{firstLoadPrincipal,jdbcType=DECIMAL},
+            </if>
+            <if test="againLoadCount != null">
+                #{againLoadCount,jdbcType=INTEGER},
+            </if>
+            <if test="againLoadAmount != null">
+                #{againLoadAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="againLoadPrincipal != null">
+                #{againLoadPrincipal,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="getLateDate" resultType="java.util.Date">
+        select count_time from cl_load_statistic_data order by count_time desc limit 1
+    </select>
+    <select id="listLoadStatisticData" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+
+        select  distinct T.countTime,
+                 T.loadCount,
+                 T.loadPrincipal,
+                 T.loadAmount,
+                 T.firstLoadCount,
+                 T.firstLoadPrincipal,
+                 T.firstLoadAmount,
+                 T.againLoadCount,
+                 T.againLoadPrincipal,
+                 T.againLoadAmount
+   		from (
+	   		select DATE_FORMAT(p.time,'%Y-%m-%d') countTime,
+                    IFNULL(p1.loadCount,0) loadCount,
+                    IFNULL(p2.loadPrincipal,0) loadPrincipal,
+                    IFNULL(p3.loadAmount,0) loadAmount,
+                    IFNULL(p4.firstLoadCount,0) firstLoadCount,
+                    IFNULL(p5.firstLoadPrincipal,0) firstLoadPrincipal,
+                    IFNULL(p6.firstLoadAmount,0) firstLoadAmount,
+                    IFNULL(p7.againLoadCount,0) againLoadCount,
+                    IFNULL(p8.againLoadPrincipal,0) againLoadPrincipal,
+                    IFNULL(p9.againLoadAmount,0) againLoadAmount
+
+	   		from (
+                (SELECT COUNT(id) loadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) UNION
+		        (SELECT sum(real_amount) loadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) UNION
+                (SELECT sum(amount) loadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) UNION
+
+                (SELECT COUNT(id) firstLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '10') t2 GROUP BY time) UNION
+		        (SELECT sum(real_amount) firstLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '10') t2 GROUP BY time) UNION
+                (SELECT sum(amount) firstLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '10') t2 GROUP BY time) UNION
+
+                (SELECT COUNT(id) againLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) UNION
+		        (SELECT sum(real_amount) againLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) UNION
+                (SELECT sum(amount) againLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time)
+
+ ) p
+           left join (SELECT COUNT(id) loadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) p1 on p.time = p1.time
+           left join (SELECT sum(real_amount) loadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) p2 on p.time = p2.time
+           left join (SELECT sum(amount) loadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) p3 on p.time = p3.time
+
+           left join (SELECT COUNT(id) firstLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '10') t2 GROUP BY time) p4 on p.time = p4.time
+           left join (SELECT sum(real_amount) firstLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '10') t2 GROUP BY time) p5 on p.time = p5.time
+           left join (SELECT sum(amount) firstLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '10') t2 GROUP BY time) p6 on p.time = p6.time
+
+
+           left join (SELECT COUNT(t2.user_id) againLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT distinct borrow.user_id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) p7 on p.time = p7.time
+           left join (SELECT sum(real_amount) againLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) p8 on p.time = p8.time
+           left join (SELECT sum(amount) againLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) p9 on p.time = p9.time
+
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(p.time, '%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(p.time, '%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+) T ORDER BY T.countTime DESC
+
+
+    </select>
+</mapper>
