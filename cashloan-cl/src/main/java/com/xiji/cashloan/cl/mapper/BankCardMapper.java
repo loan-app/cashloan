@@ -3,6 +3,7 @@ package com.xiji.cashloan.cl.mapper;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+import java.util.Map;
 
 /**
  * 银行卡Dao
@@ -22,7 +23,7 @@ public interface BankCardMapper extends BaseMapper<BankCard,Long> {
 	 * 根据userId查询
 	 * @return
 	 */
-	BankCard findByUserId(long userId);
+	BankCard findByUserId(Map<String, Object> paramMap);
 
 
 }

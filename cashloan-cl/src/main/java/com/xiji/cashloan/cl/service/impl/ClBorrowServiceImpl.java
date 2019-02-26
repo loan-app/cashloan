@@ -448,8 +448,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				isPwd = true;
 			}
 			result.put("isPwd", isPwd);
-			
-			BankCard bc = bankCardManage.findByUserId(user.getId());
+
+			Map<String, Object> bankParam = new HashMap<String, Object>();
+			bankParam.put("userId",user.getId());
+			BankCard bc = bankCardManage.findByUserId(bankParam);
 			if (bc != null) {
 				result.put("cardId", bc.getId());
 				result.put("cardNo", bc.getCardNo());

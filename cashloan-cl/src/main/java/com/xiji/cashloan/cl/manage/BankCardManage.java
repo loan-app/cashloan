@@ -80,7 +80,14 @@ public class BankCardManage implements BankCardMapper {
     }
 
     @Override
-    public BankCard findByUserId(long userId) {
-        return bankCardMapper.findByUserId(userId);
+    public BankCard findByUserId(Map<String, Object> paramMap) {
+        if (paramMap != null) {
+            long userId = 0;
+            if (paramMap.get("userId") != null){
+                userId = Long.valueOf(paramMap.get("userId").toString());
+            }
+            paramMap.put("agreeCompany",PayCommonUtil.payCompany(userId));
+        }
+        return bankCardMapper.findByUserId(paramMap);
     }
 }

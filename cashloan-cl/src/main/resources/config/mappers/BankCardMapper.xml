@@ -105,11 +105,11 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     
-    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
         <include refid="Base_Column_List" />
         from cl_bank_card
-        where user_id = #{userId,jdbcType=BIGINT}
+        where user_id = #{userId,jdbcType=BIGINT} and agree_company = #{agreeCompany,jdbcType=VARCHAR}
     </select>
 
 	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
