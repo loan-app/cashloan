@@ -45,6 +45,7 @@ import com.xiji.cashloan.rule.model.srule.model.SimpleRule;
 import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -337,7 +338,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public Map<String, Object> findIndex(String userId) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+
 		Boolean isBorrow = false;
 		int count;
 		User user = null;
@@ -349,23 +350,23 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				credit = creditMapper.findByConsumerNo(userId);
 			}
 		}
-		
+
 		double loanCeiling = Global.getDouble("loan_ceiling");   //放款上限
-	    double repayTotal = borrowRepayMapper.findRepayTotal(); //当前放款量
-	    // double repayTotal = clBorrowMapper.borrowAmountSum(); 此方法会对DB产生很大的压力，弃用
+		double repayTotal = borrowRepayMapper.findRepayTotal(); //当前放款量
+		// double repayTotal = clBorrowMapper.borrowAmountSum(); 此方法会对DB产生很大的压力，弃用
 		// 计算剩余放款额度
 		if (loanCeiling <= 0 || loanCeiling <= repayTotal) {
 			loanCeiling = 0;
 		} else {
 			loanCeiling -= repayTotal;
-	    }
+		}
 
 		String[] fees;
 		String borrowDay;
 		int maxDays = 0;
 		int minDays = 0;
 		String[] credits = {CreditConstant.AMOUNTS};
-		String[] days = {CreditConstant.DAYS};
+		String[] days = {String.valueOf(CreditConstant.MIN_DAY), String.valueOf(CreditConstant.MAX_DAY)};
 		String borrowCredit;
 		double maxCredit = 0d;
 		double minCredit = 0d;
@@ -384,6 +385,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
 			minDays = Integer.parseInt(days[0]);			// 最小借款期限
 			borrowCredit = Global.getValue("borrow_credit");// 借款额度
+			borrowCredit = getCredit(borrowCredit, credit.getUnuse());
 			credits = borrowCredit.split(",");
 			maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
 			minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
@@ -2523,5 +2525,80 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		manualReviewOrder.setPhone(userInfo.getPhone());
 		manualReviewOrder.setState(ManualReviewOrderModel.STATE_ORDER_PRE);
 		return manualReviewOrder;
+	}
+
+	private String getCredit(String borrowCredit, double userCredit) {
+		String[] split = borrowCredit.split(",");
+		String result = StringUtils.EMPTY;
+		for (int i = 0; i < split.length; i++) {
+			double creditTemp = Double.parseDouble(split[i]);
+			int creditInt = new Double(creditTemp).intValue();
+			if (userCredit >= creditInt) {
+				if (i != 0) {
+					result += ",";
+				}
+				result += creditInt;
+			}
+		}
+		return result;
+	}
+
+	private List<Map<String,Object>> getNoUserChoices(String feeName) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("fee", CreditConstant.FEE);
+		map.put("feeName", feeName);
+		map.put("realAmount", CreditConstant.AMOUNT - CreditConstant.FEE);
+		Map<String, Object> feeDetail= new HashMap<>();
+		List<Map<String,Object>> feeDetailList = new ArrayList<>();
+		Map<String,Object> feeMap=getFeeMap(CreditConstant.FEE);
+		feeDetail.put("title", feeMap.get("serviceFeeName"));
+		feeDetail.put("value", feeMap.get("serviceFee"));
+		feeDetailList.add(feeDetail);
+		feeDetail= new HashMap<>();
+		feeDetail.put("title", feeMap.get("infoAuthFeeName"));
+		feeDetail.put("value", feeMap.get("infoAuthFee"));
+		feeDetailList.add(feeDetail);
+		feeDetail= new HashMap<>();
+		feeDetail.put("title", feeMap.get("interestName"));
+		feeDetail.put("value", feeMap.get("interest"));
+		feeDetailList.add(feeDetail);
+		map.put("feeDetailList", feeDetailList);
+
+		map.put("timeLimit", CreditConstant.MIN_DAY);
+		map.put("amount", CreditConstant.AMOUNT);
+
+		//IOS端返回数据
+		map.put("feeDetail", feeMap);
+		List<Map<String,Object>> list = new ArrayList<>();
+		list.add(map);
+
+
+		Map<String,Object> map2 = new HashMap<>();
+		map2.put("fee", CreditConstant.FEE);
+		map2.put("feeName", feeName);
+		map2.put("realAmount", CreditConstant.AMOUNT - CreditConstant.FEE);
+		Map<String, Object> feeDetail2 = new HashMap<>();
+		List<Map<String,Object>> feeDetailList2 = new ArrayList<>();
+		Map<String,Object> feeMap2 = getFeeMap(CreditConstant.FEE);
+		feeDetail2.put("title", feeMap2.get("serviceFeeName"));
+		feeDetail2.put("value", feeMap2.get("serviceFee"));
+		feeDetailList2.add(feeDetail2);
+		feeDetail2= new HashMap<>();
+		feeDetail2.put("title", feeMap2.get("infoAuthFeeName"));
+		feeDetail2.put("value", feeMap2.get("infoAuthFee"));
+		feeDetailList2.add(feeDetail2);
+		feeDetail2 = new HashMap<>();
+		feeDetail2.put("title", feeMap2.get("interestName"));
+		feeDetail2.put("value", feeMap2.get("interest"));
+		feeDetailList2.add(feeDetail2);
+		map2.put("feeDetailList", feeDetailList2);
+
+		map2.put("timeLimit", CreditConstant.MAX_DAY);
+		map2.put("amount", CreditConstant.AMOUNT);
+
+		//IOS端返回数据
+		map2.put("feeDetail", feeMap2);
+		list.add(map2);
+		return list;
 	}
 }
