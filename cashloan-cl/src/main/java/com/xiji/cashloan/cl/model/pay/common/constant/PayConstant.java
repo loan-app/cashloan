@@ -16,7 +16,7 @@ public class PayConstant {
     public static final String STATUS_PAYQUERY_NO_REQ = "NOREQUEST";
 
     //请求接口返回异常
-    public static final String REQ_ERROR_CODE_10 = "common_pay_error_10";
+    public static final String REQ_ERROR_CODE_10 = "c_p_er_10";
 
     //请求查询接口
     public static String QUERY_PAY_SUCCESS = "1";
