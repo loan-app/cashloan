@@ -192,10 +192,17 @@ import java.util.Date;
      */
     private Integer newReviewNotPassCount;
 
+
+
    /**
     * 渠道名称
     */
    private String channelName;
+
+    /**
+     * 渠道标识
+     */
+   private String channelCode;
 
     /**
     * 获取主键Id
@@ -705,4 +712,12 @@ import java.util.Date;
    public void setChannelName(String channelName) {
       this.channelName = channelName;
    }
+
+    public String getChannelCode() {
+        return channelCode;
+    }
+
+    public void setChannelCode(String channelCode) {
+        this.channelCode = channelCode;
+    }
 }

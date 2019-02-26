@@ -237,6 +237,16 @@ public class ChannelStatisticModel implements Serializable {
      */
     private Double oldReviewNotPassRate;
 
+
+    /**
+     * 渠道名称
+     */
+    private String channelName;
+
+    /**
+     * 渠道标识
+     */
+    private String channelCode;
         /**
          * 获取主键Id
          *
@@ -808,5 +818,21 @@ public class ChannelStatisticModel implements Serializable {
 
     public void setOldReviewNotPassRate(Double oldReviewNotPassRate) {
         this.oldReviewNotPassRate = oldReviewNotPassRate;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getChannelCode() {
+        return channelCode;
+    }
+
+    public void setChannelCode(String channelCode) {
+        this.channelCode = channelCode;
     }
 }

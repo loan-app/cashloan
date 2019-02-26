@@ -40,6 +40,7 @@
         <result column="again_overdue_rate" property="againOverdueRate" jdbcType="INTEGER"/>
         <result column="again_expire_overdue_count" property="againExpireOverdueCount" jdbcType="INTEGER" />
         <result column="channel_name" property="channelName" jdbcType="VARCHAR"/>
+        <result column="channel_code" property="channelCode" jdbcType="VARCHAR"/>
 
     </resultMap>
     
@@ -727,7 +728,7 @@
         sum(new_borrow_apply_count) as new_borrow_apply_count,sum(new_machine_audit_pass_count) as new_machine_audit_pass_count,
         sum(new_machine_audit_not_pass_count) as new_machine_audit_not_pass_count,sum(new_review_pass_count) as new_review_pass_count,
         sum(new_review_not_pass_count) as new_review_not_pass_count,sum(again_expire_overdue_count) as again_expire_overdue_count,
-        channel.name as channel_name
+        channel.name as channel_name,channel.code as channel_code
 
         from cl_channel_statistic_data as statistic,cl_channel as channel
         <where>
@@ -743,7 +744,8 @@
                 and channel.code = #{code}
             </if>
         </where>
-        GROUP BY channel_id,channel_name
+        GROUP BY channel_id,channel_name,channel_code
+        order by channel_id desc
     </select>
 
 
