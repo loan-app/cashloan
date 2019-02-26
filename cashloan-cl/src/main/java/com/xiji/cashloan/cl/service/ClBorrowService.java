@@ -82,13 +82,13 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param timeLimit
 	 * @return
 	 */
-	Map<String, Object> choice(double amount, String timeLimit, String userId);
+	Map<String, Object> choice(double amount, String timeLimit);
 	
 	/**
 	 * 查询所有借款费用信息
 	 * @return
 	 */
-	List<Map<String,Object>> choices(String userId);
+	List<Map<String,Object>> choices();
 	
 	/**
 	 * 查询
