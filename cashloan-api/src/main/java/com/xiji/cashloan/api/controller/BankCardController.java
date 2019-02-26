@@ -421,7 +421,7 @@ public class BankCardController extends BaseController {
 		boolean flag = false;
 		CardBinQueryVo vo = new CardBinQueryVo();
 		vo.setBankCardNo(cardNo);
-		vo.setShareKey(bankCard.getUserId());
+		vo.setShareKey(userId);
 		CardBinQueryResponseVo responseVo = PayCommonUtil.queryCardBin(vo);
         String bank = "";
         if (PayCommonUtil.success(responseVo.getStatus())) {
