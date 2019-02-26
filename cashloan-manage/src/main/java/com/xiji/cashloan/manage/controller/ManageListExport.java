@@ -47,9 +47,11 @@ public class ManageListExport extends ManageBaseController{
 	private UrgeRepayOrderService urgeRepayOrderService;
 	@Resource
 	private BorrowRepayService borrowRepayService;
+	@Resource
+	private UserAuthService authService;
 	/**
 	 * 导出还款记录报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/borrowRepayLog/export.htm")
@@ -66,10 +68,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出借款订单报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/borrow/export.htm")
@@ -87,10 +89,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出支付记录报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/payLog/export.htm")
@@ -106,10 +108,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出支付对账记录报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/payCheck/export.htm")
@@ -126,10 +128,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出已逾期订单报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/overdue/export.htm")
@@ -153,10 +155,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出已坏账订单报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/badDebt/export.htm")
@@ -180,10 +182,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出催收订单报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/urgeRepayOrder/export.htm")
@@ -200,10 +202,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出催收反馈报表
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/urgeLog/export.htm")
@@ -220,10 +222,10 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
-	
+
 	/**
 	 * 导出已还款订单
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modules/manage/repay/export.htm")
@@ -269,4 +271,27 @@ public class ManageListExport extends ManageBaseController{
 		JsGridReportBase report = new JsGridReportBase(request, response);
 		report.exportExcel(list,title,hearders,fields,user.getName());
 	}
+
+	/**
+	 * 导出用户认证列表
+	 *
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/userAuth/export.htm")
+	public void userAuthExport(
+			@RequestParam(value="searchParams",required = false) String searchParams) throws Exception {
+		Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+		List list = authService.listUserAuthModel(params);
+		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
+		response.setContentType("application/msexcel;charset=UTF-8");
+		// 记录取得
+		String title = "用户认证Excel表";
+		String[] hearders =  ExportConstant.EXPORT_USERAUTH_LIST_HEARDERS;
+		String[] fields = ExportConstant.EXPORT_USERAUTH_LIST_FIELDS;
+		JsGridReportBase report = new JsGridReportBase(request, response);
+		report.exportExcel(list,title,hearders,fields,user.getName());
+	}
+
+
+
 }
