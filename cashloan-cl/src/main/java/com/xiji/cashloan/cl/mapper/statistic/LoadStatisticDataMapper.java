@@ -31,4 +31,12 @@ public interface LoadStatisticDataMapper extends BaseMapper<LoadStatisticData, L
      */
     List<LoadStatisticData> listLoadStatisticData(Map<String,Object> params);
 
+
+    /**
+     * 查询 放款统计数据
+     * @param params
+     * @return
+     */
+    List<LoadStatisticData> listLoadStatistic(Map<String,Object> params);
+
 }

@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.statistic;
 
+import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.statistic.LoadStatisticData;
 import com.xiji.cashloan.core.common.service.BaseService;
 
@@ -29,4 +30,11 @@ public interface LoadStatisticDataService extends BaseService<LoadStatisticData,
      * @return
      */
     List<LoadStatisticData> listLoadStatisticData(Map<String,Object> params);
+
+    /**
+     * 查询 放款统计数据
+     * @param params
+     * @return
+     */
+    Page<LoadStatisticData> listLoadStatistic(Map<String,Object> params,Integer current,Integer pageSize);
 }

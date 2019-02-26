@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_auditor_statistic_data表:审核人员统计数据模块 -->
-<mapper namespace="com.xiji.cashloan.cl.mapper.AuditorStatisticDataMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.statistic.AuditorStatisticDataMapper">
     <!--返回Map-->        
     <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
         <id column="id" property="id" jdbcType="BIGINT" />
@@ -19,6 +19,8 @@
         <result column="first_overdue" property="firstOverdue" jdbcType="INTEGER"/>
         <result column="load_count" property="loadCount" jdbcType="INTEGER"/>
         <result column="first_extend_overdue_count" property="firstExtendOverdueCount" jdbcType="INTEGER"/>
+
+        <result column="auditor_name" property="" jdbcType="INTEGER"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
@@ -321,6 +323,23 @@
         GROUP BY countTime ,auditorId
     </select>
 
+  <select id="listAuditorStatistic" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select sum(auditor_id) as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
+        sum(pass_order) as pass_order,sum(current_overdue) as current_overdue,sum(first_load_count) as first_load_count,
+        sum(first_overdue) as first_overdue,sum(first_extend_overdue_count) as first_extend_overdue_count,su.name as auditor_name
+        from cl_auditor_statistic_data as statistic,arc_sys_user as su
+      <where>
+          su.id = statistic.auditor_id
+          <if test="startDate!=null and startDate!=''">
+              and DATE_FORMAT(count_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+          </if>
+          <if test="endDate!=null and endDate!=''">
+              <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+          </if>
 
+      </where>
+      GROUP BY auditor_id ,su.name order by auditor_id
+
+  </select>
 
 </mapper>

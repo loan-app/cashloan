@@ -6,7 +6,6 @@ import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
-import com.xiji.cashloan.cl.model.statistic.ChannelStatisticData;
 import com.xiji.cashloan.cl.model.statistic.UserStatisticData;
 import com.xiji.cashloan.cl.service.SystemCountService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
@@ -480,59 +479,59 @@ public class SystemCountServiceImpl implements SystemCountService {
 
 
 
-	/**
-	 * 渠道数据统计
-	 * @param params
-	 * @param current
-	 * @param pageSize
-	 * @return
-	 */
-	@Override
-	public Page<ChannelStatisticData> listChannelStatisticData(Map<String,Object> params, Integer current, Integer pageSize){
-		PageHelper.startPage(current, pageSize);
-
-		Page<ChannelStatisticData> channelStatisticData = (Page<ChannelStatisticData>) systemCountMapper.listChannelStatisticData(params);
-
-		for (ChannelStatisticData statisticData : channelStatisticData){
-
-			if (statisticData.getBorrowApplyCount() == null || statisticData.getBorrowApplyCount() <= 0){
-				statisticData.setMachineAuditPassRate(0.00);
-				statisticData.setMachineAuditNotPassRate(0.00);
-				statisticData.setReviewPassRate(0.00);
-				statisticData.setReviewNotPassRate(0.00);
-
-			} else {
-
-				statisticData.setMachineAuditPassRate(BigDecimalUtil.decimal((double)statisticData.getMachineAuditPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
-				statisticData.setMachineAuditNotPassRate(BigDecimalUtil.decimal((double)statisticData.getMachineAuditNotPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
-				statisticData.setReviewNotPassRate(BigDecimalUtil.decimal((double)statisticData.getReviewNotPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
-				statisticData.setReviewPassRate(BigDecimalUtil.decimal((double)statisticData.getReviewPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
-			}
-
-			if (statisticData.getUserRegister() == null || statisticData.getUserRegister() <= 0){
-				statisticData.setLoadRate(0.00);
-			} else {
-				statisticData.setLoadRate(BigDecimalUtil.decimal((double)(statisticData.getFirstLoadCount()+statisticData.getAgainLoadCount())/(double)statisticData.getUserRegister()*100,2));
-			}
-
-			if (statisticData.getAgainLoadCount() == null){
-				statisticData.setAgainLoadCount(0);
-			}
-			if (statisticData.getFirstLoadCount() == null){
-				statisticData.setFirstLoadCount(0);
-			}
-			if (statisticData.getAgainLoadCount() == 0 && statisticData.getFirstLoadCount() == 0){
-				statisticData.setOverdueRate(0.00);
-			}else {
-				statisticData.setOverdueRate(BigDecimalUtil.decimal((double)statisticData.getOverdueCount()/(double)(statisticData.getAgainLoadCount()+statisticData.getFirstLoadCount())*100,2));
-			}
-			if (statisticData.getFirstLoadCount() == 0){
-				statisticData.setFirstOverdueRate(0.00);
-			}else {
-				statisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double)statisticData.getFirstOverdueCount()/(double)statisticData.getFirstLoadCount()*100,2));
-			}
-
-		}
-		return channelStatisticData;
-	}
+//	/**
+//	 * 渠道数据统计
+//	 * @param params
+//	 * @param current
+//	 * @param pageSize
+//	 * @return
+//	 */
+//	@Override
+//	public Page<ChannelStatisticModel> listChannelStatisticData(Map<String,Object> params, Integer current, Integer pageSize){
+//		PageHelper.startPage(current, pageSize);
+//
+//		Page<ChannelStatisticModel> channelStatisticData = (Page<ChannelStatisticModel>) systemCountMapper.listChannelStatisticData(params);
+//
+//		for (ChannelStatisticModel statisticData : channelStatisticData){
+//
+//			if (statisticData.getBorrowApplyCount() == null || statisticData.getBorrowApplyCount() <= 0){
+//				statisticData.setMachineAuditPassRate(0.00);
+//				statisticData.setMachineAuditNotPassRate(0.00);
+//				statisticData.setReviewPassRate(0.00);
+//				statisticData.setReviewNotPassRate(0.00);
+//
+//			} else {
+//
+//				statisticData.setMachineAuditPassRate(BigDecimalUtil.decimal((double)statisticData.getMachineAuditPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//				statisticData.setMachineAuditNotPassRate(BigDecimalUtil.decimal((double)statisticData.getMachineAuditNotPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//				statisticData.setReviewNotPassRate(BigDecimalUtil.decimal((double)statisticData.getReviewNotPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//				statisticData.setReviewPassRate(BigDecimalUtil.decimal((double)statisticData.getReviewPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//			}
+//
+//			if (statisticData.getUserRegister() == null || statisticData.getUserRegister() <= 0){
+//				statisticData.setLoadRate(0.00);
+//			} else {
+//				statisticData.setLoadRate(BigDecimalUtil.decimal((double)(statisticData.getFirstLoadCount()+statisticData.getAgainLoadCount())/(double)statisticData.getUserRegister()*100,2));
+//			}
+//
+//			if (statisticData.getAgainLoadCount() == null){
+//				statisticData.setAgainLoadCount(0);
+//			}
+//			if (statisticData.getFirstLoadCount() == null){
+//				statisticData.setFirstLoadCount(0);
+//			}
+//			if (statisticData.getAgainLoadCount() == 0 && statisticData.getFirstLoadCount() == 0){
+//				statisticData.setOverdueRate(0.00);
+//			}else {
+//				statisticData.setOverdueRate(BigDecimalUtil.decimal((double)statisticData.getOverdueCount()/(double)(statisticData.getAgainLoadCount()+statisticData.getFirstLoadCount())*100,2));
+//			}
+//			if (statisticData.getFirstLoadCount() == 0){
+//				statisticData.setFirstOverdueRate(0.00);
+//			}else {
+//				statisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double)statisticData.getFirstOverdueCount()/(double)statisticData.getFirstLoadCount()*100,2));
+//			}
+//
+//		}
+//		return channelStatisticData;
+//	}
 }

@@ -660,3 +660,27 @@ CREATE TABLE `cl_auditor_statistic_data` (
   `first_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '首逾率',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核人员统计数据';
+
+
+
+INSERT INTO `arc_sys_menu` VALUES ('1016', '0', '统计报表', '0', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '统计报表', '0', 'StatisticManage', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1017', '0', '用户统计', '1016', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '用户统计', '0', 'UserStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1018', '0', '审核统计', '1016', '', 'icon-qian', '00000000002', null, '', '2017-01-01 00:00:00', '', '审核统计', '0', 'AuditingStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1019', '0', '审核人员统计', '1016', '', 'icon-qian', '00000000003', null, '', '2017-01-01 00:00:00', '', '审核人员统计', '0', 'AuditorStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1020', '0', '还款统计', '1016', '', 'icon-qian', '00000000004', null, '', '2017-01-01 00:00:00', '', '还款统计', '0', 'RepaymentStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1021', '0', '渠道统计', '1016', '', 'icon-qian', '00000000005', null, '', '2017-01-01 00:00:00', '', '渠道统计', '0', 'ChannelStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1022', '0', '放款统计', '1016', '', 'icon-qian', '00000000006', null, '', '2017-01-01 00:00:00', '', '放款统计', '0', 'LoadStatistic', null, null, null, null);
+
+-- INSERT INTO `arc_sys_role_menu` VALUES ('', '1', '1016');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1017');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1018');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1019');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1020');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1021');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1022');
+
+
+
+
+
+

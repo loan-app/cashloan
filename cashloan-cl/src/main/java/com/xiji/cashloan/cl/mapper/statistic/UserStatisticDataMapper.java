@@ -31,4 +31,11 @@ public interface UserStatisticDataMapper extends BaseMapper<UserStatisticData, L
      * @return
      */
     List<UserStatisticData> listUserStatisticData(Map<String,Object> params);
+
+
+    /**
+     * 用户数据统计
+     * @return
+     */
+    List<UserStatisticData> listUserStatistic(Map<String,Object> params);
 }

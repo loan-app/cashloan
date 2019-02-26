@@ -1,5 +1,7 @@
 package com.xiji.cashloan.cl.service.impl.statistic;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.AuditingStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.AuditingStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.AuditingStatisticDataService;
@@ -79,5 +81,20 @@ public class AuditingStatisticDataServiceImpl extends BaseServiceImpl<AuditingSt
 		return auditingStatisticDataList;
 	}
 
+
+	/**
+	 * 查询 审核统计数据
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public Page<AuditingStatisticData> listAuditingStatistic(Map<String,Object> params,Integer current,Integer pageSize){
+
+		PageHelper.startPage(current, pageSize);
+
+		Page<AuditingStatisticData> auditingStatisticData = (Page<AuditingStatisticData>) auditingStatisticDataMapper.listAuditingStatistic(params);
+
+		return auditingStatisticData;
+	}
 	
 }

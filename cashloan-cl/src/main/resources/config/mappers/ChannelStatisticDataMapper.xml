@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- cl_channel_statistic_data表:渠道统计数据模块 -->
-<mapper namespace="com.xiji.cashloan.cl.mapper.ChannelStatisticDataMapper">
+<mapper namespace="com.xiji.cashloan.cl.mapper.statistic.ChannelStatisticDataMapper">
     <!--返回Map-->        
     <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
         <id column="id" property="id" jdbcType="BIGINT" />
@@ -32,12 +32,23 @@
         <result column="first_extend_overdue_count" property="firstExtendOverdueCount" jdbcType="INTEGER"/>
         <result column="first_expire_load_count" property="firstExpireLoadCount" jdbcType="INTEGER"/>
         <result column="again_expire_load_count" property="againExpireLoadCount" jdbcType="INTEGER"/>
+        <result column="new_borrow_apply_count" property="newBorrowApplyCount" jdbcType="INTEGER" />
+        <result column="new_machine_audit_pass_count" property="newMachineAuditPassCount" jdbcType="INTEGER" />
+        <result column="new_machine_audit_not_pass_count" property="newMachineAuditNotPassCount" jdbcType="INTEGER" />
+        <result column="new_review_pass_count" property="newReviewPassCount" jdbcType="INTEGER" />
+        <result column="new_review_not_pass_count" property="newReviewNotPassCount" jdbcType="INTEGER" />
+        <result column="again_overdue_rate" property="againOverdueRate" jdbcType="INTEGER"/>
+        <result column="again_expire_overdue_count" property="againExpireOverdueCount" jdbcType="INTEGER" />
+        <result column="channel_name" property="channelName" jdbcType="VARCHAR"/>
+
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
         id,create_time,update_time,count_time,channel_id,user_register,borrow_apply_count,machine_audit_pass_count,machine_audit_not_pass_count,review_pass_count,review_not_pass_count,first_load_count,again_load_count,expire_overdue_count,first_expire_overdue_count,machine_audit_pass_rate,machine_audit_not_pass_rate,review_pass_rate,review_not_pass_rate,first_overdue_rate,overdue_rate,load_rate,
-        extend_count,extend_overdue_count,first_extend_count,first_extend_overdue_count,first_expire_load_count,again_expire_load_count
+        extend_count,extend_overdue_count,first_extend_count,first_extend_overdue_count,first_expire_load_count,again_expire_load_count,
+        new_borrow_apply_count,new_machine_audit_pass_count,new_machine_audit_not_pass_count,new_review_pass_count,new_review_not_pass_count,
+        again_overdue_rate,again_expire_overdue_count
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -109,13 +120,18 @@
             <if test="loadRate != null">
                 and load_rate = #{loadRate,jdbcType=DECIMAL}
             </if>
+
         </trim>
     </sql>
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        insert into cl_channel_statistic_data(create_time,update_time,count_time,channel_id,user_register,borrow_apply_count,machine_audit_pass_count,machine_audit_not_pass_count,review_pass_count,review_not_pass_count,first_load_count,again_load_count,expire_overdue_count,first_expire_overdue_count,machine_audit_pass_rate,machine_audit_not_pass_rate,review_pass_rate,review_not_pass_rate,first_overdue_rate,overdue_rate,load_rate,extend_count,extend_overdue_count,first_extend_count,first_extend_overdue_count,first_expire_load_count,again_expire_load_count)
-        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{channelId,jdbcType=INTEGER},#{userRegister,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{machineAuditPassCount,jdbcType=INTEGER},#{machineAuditNotPassCount,jdbcType=INTEGER},#{reviewPassCount,jdbcType=INTEGER},#{reviewNotPassCount,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{againLoadCount,jdbcType=INTEGER},#{expireOverdueCount,jdbcType=INTEGER},#{firstExpireOverdueCount,jdbcType=INTEGER},#{machineAuditPassRate,jdbcType=DECIMAL},#{machineAuditNotPassRate,jdbcType=DECIMAL},#{reviewPassRate,jdbcType=DECIMAL},#{reviewNotPassRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{overdueRate,jdbcType=DECIMAL},#{loadRate,jdbcType=DECIMAL},#{extendCount,jdbcType=INTEGER},#{extendOverdueCount,jdbcType=INTEGER},#{firstExtendCount,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstExpireLoadCount,jdbcType=INTEGER},#{againExpireLoadCount,jdbcType=INTEGER})
+        insert into cl_channel_statistic_data(create_time,update_time,count_time,channel_id,user_register,borrow_apply_count,machine_audit_pass_count,machine_audit_not_pass_count,review_pass_count,review_not_pass_count,first_load_count,again_load_count,expire_overdue_count,first_expire_overdue_count,machine_audit_pass_rate,machine_audit_not_pass_rate,review_pass_rate,review_not_pass_rate,first_overdue_rate,overdue_rate,load_rate,extend_count,extend_overdue_count,first_extend_count,first_extend_overdue_count,first_expire_load_count,again_expire_load_count,
+        new_borrow_apply_count,new_machine_audit_pass_count,new_machine_audit_not_pass_count,new_review_pass_count,new_review_not_pass_count,again_overdue_rate,again_expire_overdue_count)
+
+        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{channelId,jdbcType=INTEGER},#{userRegister,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{machineAuditPassCount,jdbcType=INTEGER},#{machineAuditNotPassCount,jdbcType=INTEGER},#{reviewPassCount,jdbcType=INTEGER},#{reviewNotPassCount,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{againLoadCount,jdbcType=INTEGER},#{expireOverdueCount,jdbcType=INTEGER},#{firstExpireOverdueCount,jdbcType=INTEGER},#{machineAuditPassRate,jdbcType=DECIMAL},
+        #{machineAuditNotPassRate,jdbcType=DECIMAL},#{reviewPassRate,jdbcType=DECIMAL},#{reviewNotPassRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{overdueRate,jdbcType=DECIMAL},#{loadRate,jdbcType=DECIMAL},#{extendCount,jdbcType=INTEGER},#{extendOverdueCount,jdbcType=INTEGER},#{firstExtendCount,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstExpireLoadCount,jdbcType=INTEGER},#{againExpireLoadCount,jdbcType=INTEGER},#{newBorrowApplyCount,jdbcType=INTEGER},#{newMachineAuditPassCount,jdbcType=INTEGER},
+        #{newMachineAuditNotPassCount,jdbcType=INTEGER},#{newReviewPassCount,jdbcType=INTEGER},#{newReviewNotPassCount,jdbcType=INTEGER},#{againOverdueRate,jdbcType=DECIMAL},#{againExpireOverdueCount,jdbcType=INTEGER})
     </insert>
 
     
@@ -147,7 +163,14 @@
             first_extend_count = #{firstExtendCount,jdbcType=INTEGER},
             first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER},
             first_expire_load_count = #{firstExpireLoadCount,jdbcType=INTEGER},
-            again_expire_load_count = #{againExpireLoadCount,jdbcType=INTEGER}
+            again_expire_load_count = #{againExpireLoadCount,jdbcType=INTEGER},
+            new_borrow_apply_count = #{newBorrowApplyCount,jdbcType=INTEGER},
+            new_machine_audit_pass_count = #{newMachineAuditPassCount,jdbcType=INTEGER},
+            new_machine_audit_not_pass_count = #{newMachineAuditNotPassCount,jdbcType=INTEGER},
+            new_review_pass_count = #{newReviewPassCount,jdbcType=INTEGER},
+            new_review_not_pass_count = #{newReviewNotPassCount,jdbcType=INTEGER},
+            again_overdue_rate = #{againOverdueRate,jdbcType=DECIMAL},
+            again_expire_overdue_count = #{againExpireOverdueCount,jdbcType=INTEGER},
 
         where id = #{id ,jdbcType=INTEGER}
     </update>
@@ -613,8 +636,119 @@
     </select>
 
 
+    <select id="getNewBorrowApplyCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
+        SELECT t2.channelId as channelId, COUNT(t2.id) newBorrowApplyCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId,borrow.id,DATE_FORMAT(borrow.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow,cl_user usr,cl_channel as channel where borrow.user_id = usr.id and usr.channel_id = channel.id and borrow.again ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime ,channelId
+    </select>
+
+    <select id="getNewMachineAuditPassCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
+        SELECT t2.channelId as channelId,COUNT(t2.id) newMachineAuditPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='22' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime,channelId
+    </select>
+
+    <select id="getNewMachineAuditNotPassCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
+        SELECT t2.channelId as channelId,COUNT(t2.id) newMachineAuditNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='21' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime,channelId
+    </select>
+    <select id="getNewReviewPassCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
+        SELECT t2.channelId as channelId,COUNT(t2.id) newReviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='26' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime,channelId
+    </select>
+    <select id="getNewReviewNotPassCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
+        SELECT t2.channelId as channelId,COUNT(t2.id) newReviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='27' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime,channelId
+    </select>
+
+
+    <!-- 当日到期复贷逾期笔数-->
+    <select id="getAgainExpireOverdueCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
+        SELECT t2.channelId as channelId ,COUNT(t2.id) againExpireOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_borrow_progress as progress ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id and  progress.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again='20' and  progress.state = '50') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime,channelId
+    </select>
+
+
+    <select id="listChannelStatistic" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        sum(user_register) as user_register,sum(borrow_apply_count) as borrow_apply_count,sum(machine_audit_pass_count) as machine_audit_pass_count,
+        sum(machine_audit_not_pass_count) as machine_audit_not_pass_count,
+        sum(review_pass_count) as review_pass_count,sum(review_not_pass_count) as review_not_pass_count,sum(first_load_count) as first_load_count,
+        sum(again_load_count) as again_load_count,sum(expire_overdue_count) as expire_overdue_count,
+        sum(first_expire_overdue_count) as first_expire_overdue_count,sum(extend_count) as extend_count,sum(extend_overdue_count) as extend_overdue_count,
+        sum(first_extend_count) as first_extend_count,sum(first_extend_overdue_count) as first_extend_overdue_count,
+        sum(first_expire_load_count) as first_expire_load_count,sum(again_expire_load_count) as again_expire_load_count,
+        sum(new_borrow_apply_count) as new_borrow_apply_count,sum(new_machine_audit_pass_count) as new_machine_audit_pass_count,
+        sum(new_machine_audit_not_pass_count) as new_machine_audit_not_pass_count,sum(new_review_pass_count) as new_review_pass_count,
+        sum(new_review_not_pass_count) as new_review_not_pass_count,sum(again_expire_overdue_count) as again_expire_overdue_count,
+        channel.name as channel_name
+
+        from cl_channel_statistic_data as statistic,cl_channel as channel
+        <where>
+             statistic.channel_id = channel.id
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(count_time,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+
+            <if test="code != null and code !=''">
+                and channel.code = #{code}
+            </if>
+        </where>
+        GROUP BY channel_id,channel_name
+    </select>
+
+
     <!-- 注册人数，申请订单数，机审通过数，机审拒绝数，人工通过数、人工拒绝数，首贷放款笔数、复贷放款笔数、逾期笔数 -->
-    <select id="listChannelStatisticData" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.model.statistic.ChannelStatisticData">
+    <select id="listChannelStatisticData" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.model.statistic.ChannelStatisticModel">
 
         select  distinct T.date,
         T.channelId,

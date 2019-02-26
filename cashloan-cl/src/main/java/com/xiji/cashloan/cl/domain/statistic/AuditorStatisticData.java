@@ -90,6 +90,11 @@ import java.util.Date;
     private Integer firstExtendOverdueCount;
 
     /**
+     * 审核员名称
+     */
+    private String auditorName;
+
+    /**
     * 获取主键Id
     *
     * @return id
@@ -347,5 +352,13 @@ import java.util.Date;
      */
     public void setFirstExtendOverdueCount(Integer firstExtendOverdueCount) {
         this.firstExtendOverdueCount = firstExtendOverdueCount;
+    }
+
+    public String getAuditorName() {
+        return auditorName;
+    }
+
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
     }
 }

@@ -231,7 +231,7 @@
 
 
 	<!-- 注册人数，申请订单数，机审通过数，机审拒绝数，人工通过数、人工拒绝数，首贷放款笔数、复贷放款笔数、逾期笔数 -->
-	<select id="listChannelStatisticData" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.model.statistic.ChannelStatisticData">
+	<select id="listChannelStatisticData" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.model.statistic.ChannelStatisticModel">
 
    		select  distinct T.date,
                          T.channelId,

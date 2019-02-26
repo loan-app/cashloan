@@ -30,4 +30,12 @@ public interface AuditingStatisticDataMapper extends BaseMapper<AuditingStatisti
      * @return
      */
     List<AuditingStatisticData> listAuditingStatisticData(Map<String,Object> params);
+
+
+    /**
+     * 查询 审核统计数据
+     * @param params
+     * @return
+     */
+    List<AuditingStatisticData> listAuditingStatistic(Map<String,Object> params);
 }

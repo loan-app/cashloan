@@ -1,5 +1,7 @@
 package com.xiji.cashloan.cl.service.impl.statistic;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.UserStatisticData;
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.mapper.statistic.UserStatisticDataMapper;
@@ -94,6 +96,18 @@ public class UserStatisticDataServiceImpl extends BaseServiceImpl<UserStatisticD
 //			userStatisticData1.setCountTime(DateUtil.getDate(userStatisticData.getDate()));
 //			statisticDataList.add(userStatisticData1);
 //		}
+		return userStatisticDataList;
+	}
+
+	/**
+	 * 用户数据统计
+	 * @return
+	 */
+	@Override
+	public Page<UserStatisticData> listUserStatistic(Map<String,Object> params, Integer current, Integer pageSize){
+
+		PageHelper.startPage(current, pageSize);
+		Page<UserStatisticData> userStatisticDataList = (Page<UserStatisticData>) userStatisticDataMapper.listUserStatistic(params);
 		return userStatisticDataList;
 	}
 }

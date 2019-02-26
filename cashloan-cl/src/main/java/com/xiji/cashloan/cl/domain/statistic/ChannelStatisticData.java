@@ -90,6 +90,11 @@ import java.util.Date;
     private Integer firstExpireOverdueCount;
 
     /**
+     * 当日到期首逾笔数
+     */
+    private Integer againExpireOverdueCount;
+
+    /**
     * 机审通过率
     */
     private Double machineAuditPassRate;
@@ -118,6 +123,11 @@ import java.util.Date;
     * 当日到期逾期率
     */
     private Double overdueRate;
+
+    /**
+     * 老客逾期率
+     */
+    private Double againOverdueRate;
 
     /**
     * 放款率
@@ -157,6 +167,35 @@ import java.util.Date;
      */
     private Integer againExpireLoadCount;
 
+    /**
+     * 当日申请总数
+     */
+    private Integer newBorrowApplyCount;
+
+    /**
+     * 当日新客机审通过数
+     */
+    private Integer newMachineAuditPassCount;
+
+    /**
+     * 当日新客机审拒绝数
+     */
+    private Integer newMachineAuditNotPassCount;
+
+    /**
+     * 当日新客人工通过数
+     */
+    private Integer newReviewPassCount;
+
+    /**
+     * 当日新客人工拒绝数
+     */
+    private Integer newReviewNotPassCount;
+
+   /**
+    * 渠道名称
+    */
+   private String channelName;
 
     /**
     * 获取主键Id
@@ -602,4 +641,68 @@ import java.util.Date;
     public void setAgainExpireLoadCount(Integer againExpireLoadCount) {
         this.againExpireLoadCount = againExpireLoadCount;
     }
+
+    public Integer getNewBorrowApplyCount() {
+        return newBorrowApplyCount;
+    }
+
+    public void setNewBorrowApplyCount(Integer newBorrowApplyCount) {
+        this.newBorrowApplyCount = newBorrowApplyCount;
+    }
+
+    public Integer getNewMachineAuditPassCount() {
+        return newMachineAuditPassCount;
+    }
+
+    public void setNewMachineAuditPassCount(Integer newMachineAuditPassCount) {
+        this.newMachineAuditPassCount = newMachineAuditPassCount;
+    }
+
+    public Integer getNewMachineAuditNotPassCount() {
+        return newMachineAuditNotPassCount;
+    }
+
+    public void setNewMachineAuditNotPassCount(Integer newMachineAuditNotPassCount) {
+        this.newMachineAuditNotPassCount = newMachineAuditNotPassCount;
+    }
+
+    public Integer getNewReviewPassCount() {
+        return newReviewPassCount;
+    }
+
+    public void setNewReviewPassCount(Integer newReviewPassCount) {
+        this.newReviewPassCount = newReviewPassCount;
+    }
+
+    public Integer getNewReviewNotPassCount() {
+        return newReviewNotPassCount;
+    }
+
+    public void setNewReviewNotPassCount(Integer newReviewNotPassCount) {
+        this.newReviewNotPassCount = newReviewNotPassCount;
+    }
+
+    public Integer getAgainExpireOverdueCount() {
+        return againExpireOverdueCount;
+    }
+
+    public void setAgainExpireOverdueCount(Integer againExpireOverdueCount) {
+        this.againExpireOverdueCount = againExpireOverdueCount;
+    }
+
+    public Double getAgainOverdueRate() {
+        return againOverdueRate;
+    }
+
+    public void setAgainOverdueRate(Double againOverdueRate) {
+        this.againOverdueRate = againOverdueRate;
+    }
+
+   public String getChannelName() {
+      return channelName;
+   }
+
+   public void setChannelName(String channelName) {
+      this.channelName = channelName;
+   }
 }

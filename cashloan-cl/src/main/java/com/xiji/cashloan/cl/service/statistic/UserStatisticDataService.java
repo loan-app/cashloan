@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.statistic;
 
+import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.statistic.UserStatisticData;
 import com.xiji.cashloan.core.common.service.BaseService;
 
@@ -26,4 +27,11 @@ public interface UserStatisticDataService extends BaseService<UserStatisticData,
      * @return
      */
     List<UserStatisticData> listUserStatisticData(Map<String,Object> params);
+
+
+    /**
+     * 用户数据统计
+     * @return
+     */
+    Page<UserStatisticData> listUserStatistic(Map<String,Object> params, Integer current, Integer pageSize);
 }

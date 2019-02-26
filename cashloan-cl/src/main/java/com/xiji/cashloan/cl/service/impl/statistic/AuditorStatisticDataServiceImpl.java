@@ -1,7 +1,9 @@
 package com.xiji.cashloan.cl.service.impl.statistic;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData;
-import com.xiji.cashloan.cl.mapper.AuditorStatisticDataMapper;
+import com.xiji.cashloan.cl.mapper.statistic.AuditorStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.AuditorStatisticDataService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -82,23 +84,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 
 			// 设置默认值
 			this.setDefaultValue(statisticDataList);
-
-			for(AuditorStatisticData auditorStatisticData :statisticDataList){
-				if (auditorStatisticData.getFirstLoadCount() == 0){
-					auditorStatisticData.setFirstOverdueRate(0.00);
-					auditorStatisticData.setCurrentOverdueRate(0.00);
-				}else {
-					auditorStatisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (auditorStatisticData.getFirstOverdue()-auditorStatisticData.getFirstExtendOverdueCount())/(double)auditorStatisticData.getFirstLoadCount()*100,2));
-				    auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getFirstLoadCount()*100,2));
-				}
-				if (auditorStatisticData.getBorrowApplyCount() == 0){
-					auditorStatisticData.setPassRate(0.00);
-				}else {
-					auditorStatisticData.setPassRate(BigDecimalUtil.decimal((double)auditorStatisticData.getPassOrder()/(double)auditorStatisticData.getBorrowApplyCount()*100,2));
-				}
-			}
 		}
 
+		// 计算比率
+		this.calculationRatio(statisticDataList);
 		// 按统计时间排序
 		this.auditorStatisticDataSort(statisticDataList);
 		return statisticDataList;
@@ -216,6 +205,49 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 				}
 			}
 		}
+	}
+
+	/**
+	 * 计算比率
+	 * @param statisticDataList
+	 */
+	void calculationRatio(List<AuditorStatisticData> statisticDataList){
+
+		if (CollectionUtil.isNotEmpty(statisticDataList)){
+			return;
+		}
+
+		for(AuditorStatisticData auditorStatisticData :statisticDataList){
+			if (auditorStatisticData.getFirstLoadCount() == 0){
+				auditorStatisticData.setFirstOverdueRate(0.00);
+				auditorStatisticData.setCurrentOverdueRate(0.00);
+			}else {
+				auditorStatisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (auditorStatisticData.getFirstOverdue()-auditorStatisticData.getFirstExtendOverdueCount())/(double)auditorStatisticData.getFirstLoadCount()*100,2));
+				auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getFirstLoadCount()*100,2));
+			}
+			if (auditorStatisticData.getBorrowApplyCount() == 0){
+				auditorStatisticData.setPassRate(0.00);
+			}else {
+				auditorStatisticData.setPassRate(BigDecimalUtil.decimal((double)auditorStatisticData.getPassOrder()/(double)auditorStatisticData.getBorrowApplyCount()*100,2));
+			}
+		}
+	}
+
+	/**
+	 * 查询 审核人员数据统计
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public Page<AuditorStatisticData> listAuditorStatistic(Map<String,Object> params,Integer current,Integer pageSize){
+
+		PageHelper.startPage(current, pageSize);
+
+		Page<AuditorStatisticData> auditorStatisticData = (Page<AuditorStatisticData>) auditorStatisticDataMapper.listAuditorStatistic(params);
+
+		this.calculationRatio(auditorStatisticData);
+
+		return auditorStatisticData;
 	}
 
 }

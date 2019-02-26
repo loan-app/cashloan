@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.statistic;
 
+import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData;
 import com.xiji.cashloan.core.common.service.BaseService;
 
@@ -29,4 +30,11 @@ public interface AuditorStatisticDataService extends BaseService<AuditorStatisti
      * @return
      */
     List<AuditorStatisticData> listAuditorStatisticData(Map<String,Object> params);
+
+    /**
+     * 查询 审核人员数据统计
+     * @param params
+     * @return
+     */
+    Page<AuditorStatisticData> listAuditorStatistic(Map<String,Object> params, Integer current, Integer pageSize);
 }

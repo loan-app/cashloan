@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.statistic;
 
+import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData;
 import com.xiji.cashloan.core.common.service.BaseService;
 
@@ -29,4 +30,11 @@ public interface RepaymentStatisticDataService extends BaseService<RepaymentStat
      * @return
      */
     List<RepaymentStatisticData> listRepaymentStatisticData(Map<String,Object> params);
+
+    /**
+     * 查询 还款统计数据
+     * @param params
+     * @return
+     */
+    Page<RepaymentStatisticData> listRepaymentStatistic(Map<String,Object> params, Integer current, Integer pageSize);
 }

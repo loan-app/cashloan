@@ -2,7 +2,6 @@ package com.xiji.cashloan.manage.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.model.statistic.ChannelStatisticData;
 import com.xiji.cashloan.cl.model.statistic.UserStatisticData;
 import com.xiji.cashloan.cl.service.SystemCountService;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -153,32 +152,32 @@ public class SystemCountController extends ManageBaseController {
 	}
 
 
-	/**
-	 * 渠道统计
-	 *
-	 *注册人数，申请订单数，机审通过数，机审通过率，机审拒绝数、拒绝率，
-	 * 人工通过数、人工复审通过率，人工拒绝数、人工复审拒绝率，
-	 * 首贷放款笔数、复贷放款笔数、逾期笔数，首逾率，逾期率，放款率
-	 * @param response
-	 * @param current
-	 * @param pageSize
-	 * @param search
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/modules/manage/statistic/listChannelStatisticData.htm")
-	public void listChannelStatisticData(HttpServletResponse response,
-								  @RequestParam(value="current")Integer current,
-								  @RequestParam(value="pageSize")Integer pageSize,
-								  @RequestParam("search")String search) throws Exception {
-		Map<String,Object> params = JSONObject.parseObject(search);
-		Page<ChannelStatisticData> page = systemCountService.listChannelStatisticData(params,current,pageSize);
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put(Constant.RESPONSE_DATA, page);
-		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
-		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
-		ServletUtils.writeToResponse(response,result);
-	}
+//	/**
+//	 * 渠道统计
+//	 *
+//	 *注册人数，申请订单数，机审通过数，机审通过率，机审拒绝数、拒绝率，
+//	 * 人工通过数、人工复审通过率，人工拒绝数、人工复审拒绝率，
+//	 * 首贷放款笔数、复贷放款笔数、逾期笔数，首逾率，逾期率，放款率
+//	 * @param response
+//	 * @param current
+//	 * @param pageSize
+//	 * @param search
+//	 * @throws Exception
+//	 */
+//	@RequestMapping(value = "/modules/manage/statistic/listChannelStatisticData.htm")
+//	public void listChannelStatisticData(HttpServletResponse response,
+//								  @RequestParam(value="current")Integer current,
+//								  @RequestParam(value="pageSize")Integer pageSize,
+//								  @RequestParam("search")String search) throws Exception {
+//		Map<String,Object> params = JSONObject.parseObject(search);
+//		Page<ChannelStatisticModel> page = systemCountService.listChannelStatisticData(params,current,pageSize);
+//		Map<String,Object> result = new HashMap<String,Object>();
+//		result.put(Constant.RESPONSE_DATA, page);
+//		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+//		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+//		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+//		ServletUtils.writeToResponse(response,result);
+//	}
 
 
 }

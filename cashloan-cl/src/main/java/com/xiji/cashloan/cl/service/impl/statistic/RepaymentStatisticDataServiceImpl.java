@@ -1,5 +1,7 @@
 package com.xiji.cashloan.cl.service.impl.statistic;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.RepaymentStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.RepaymentStatisticDataService;
@@ -54,5 +56,19 @@ public class RepaymentStatisticDataServiceImpl extends BaseServiceImpl<Repayment
 	@Override
 	public List<RepaymentStatisticData> listRepaymentStatisticData(Map<String,Object> params){
 		return repaymentStatisticDataMapper.listRepaymentStatisticData(params);
+	}
+
+
+	/**
+	 * 查询 还款统计数据
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public Page<RepaymentStatisticData> listRepaymentStatistic(Map<String,Object> params,Integer current,Integer pageSize){
+
+		PageHelper.startPage(current, pageSize);
+		Page<RepaymentStatisticData> repaymentStatisticData = (Page<RepaymentStatisticData>) repaymentStatisticDataMapper.listRepaymentStatistic(params);
+		return repaymentStatisticData;
 	}
 }

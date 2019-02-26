@@ -1,5 +1,7 @@
 package com.xiji.cashloan.cl.service.impl.statistic;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.LoadStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.LoadStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.LoadStatisticDataService;
@@ -52,6 +54,18 @@ public class LoadStatisticDataServiceImpl extends BaseServiceImpl<LoadStatisticD
 	 */
 	public List<LoadStatisticData> listLoadStatisticData(Map<String,Object> params){
 		return loadStatisticDataMapper.listLoadStatisticData(params);
+	}
+
+	/**
+	 * 查询 放款统计数据
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public Page<LoadStatisticData> listLoadStatistic(Map<String,Object> params, Integer current, Integer pageSize){
+		PageHelper.startPage(current, pageSize);
+		Page<LoadStatisticData> loadStatisticData = (Page<LoadStatisticData>) loadStatisticDataMapper.listLoadStatistic(params);
+		return loadStatisticData;
 	}
 	
 }

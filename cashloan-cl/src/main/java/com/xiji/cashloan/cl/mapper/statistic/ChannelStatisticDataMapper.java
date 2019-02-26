@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.mapper;
+package com.xiji.cashloan.cl.mapper.statistic;
 
 import com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -145,4 +145,60 @@ public interface ChannelStatisticDataMapper extends BaseMapper<ChannelStatisticD
      * @return
      */
     List<ChannelStatisticData> getAgainExpireLoadCount(Map<String,Object> params);
+
+
+    /**
+     * 获取 新客申请订单数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getNewBorrowApplyCount(Map<String,Object> params);
+
+
+    /**
+     * 获取 新客机审通过数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getNewMachineAuditPassCount(Map<String,Object> params);
+
+
+    /**
+     * 获取 新客机审拒绝数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getNewMachineAuditNotPassCount(Map<String,Object> params);
+
+
+    /**
+     * 获取 新客人工审核通过数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getNewReviewPassCount(Map<String,Object> params);
+
+
+    /**
+     *获取 新客人工审核拒绝数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getNewReviewNotPassCount(Map<String,Object> params);
+
+    /**
+     * 获取 当日到期首贷逾期笔数(此处未包含展期数逾期数)
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getAgainExpireOverdueCount(Map<String,Object> params);
+
+
+    /**
+     * 查询 渠道统计列表
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> listChannelStatistic(Map<String,Object> params);
+
 }

@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.mapper;
+package com.xiji.cashloan.cl.mapper.statistic;
 
 import com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -75,4 +75,11 @@ public interface AuditorStatisticDataMapper extends BaseMapper<AuditorStatisticD
      * @return
      */
     List<AuditorStatisticData> firstExtendOverdueCount(Map<String,Object> params);
+
+    /**
+     * 查询 审核人员数据统计
+     * @param params
+     * @return
+     */
+    List<AuditorStatisticData> listAuditorStatistic(Map<String,Object> params);
 }

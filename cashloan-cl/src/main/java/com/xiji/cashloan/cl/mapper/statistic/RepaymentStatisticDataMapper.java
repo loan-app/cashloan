@@ -30,4 +30,12 @@ public interface RepaymentStatisticDataMapper extends BaseMapper<RepaymentStatis
      * @return
      */
     List<RepaymentStatisticData> listRepaymentStatisticData(Map<String,Object> params);
+
+
+    /**
+     * 查询 还款统计数据
+     * @param params
+     * @return
+     */
+    List<RepaymentStatisticData> listRepaymentStatistic(Map<String,Object> params);
 }
