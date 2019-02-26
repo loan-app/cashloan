@@ -12,7 +12,6 @@ public class CreditConstant {
     public static double MAX_CREDIT = 10000d;
     public static double MIN_CREDIT = 10000d;
     public static String FEE_POWER = "0.01";
-    public static String DAYS = "14";
     public static String AMOUNTS = "10000";
 
 }

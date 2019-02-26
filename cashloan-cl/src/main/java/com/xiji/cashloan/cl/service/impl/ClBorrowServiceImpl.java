@@ -365,7 +365,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		String borrowDay;
 		int maxDays = 0;
 		int minDays = 0;
-		String[] credits = {CreditConstant.AMOUNTS};
+		String[] credits = {CreditConstant.AMOUNTS, CreditConstant.AMOUNTS};
 		String[] days = {String.valueOf(CreditConstant.MIN_DAY), String.valueOf(CreditConstant.MAX_DAY)};
 		String borrowCredit;
 		double maxCredit = 0d;
@@ -385,9 +385,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
 			minDays = Integer.parseInt(days[0]);			// 最小借款期限
 			borrowCredit = Global.getValue("borrow_credit");// 借款额度
-			borrowCredit = getCredit(borrowCredit, credit.getUnuse());
 			credits = borrowCredit.split(",");
 			maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
+			borrowCredit = getCredit(borrowCredit, credit.getUnuse());
+			credits = borrowCredit.split(",");
 			minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
 		}
 
@@ -955,32 +956,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
-			Map<String,Object> map = new HashMap<>();
-			map.put("fee", CreditConstant.FEE);
-			map.put("feeName", feeName);
-			map.put("realAmount", CreditConstant.AMOUNT - CreditConstant.FEE);
-			Map<String, Object> feeDetail= new HashMap<String, Object>();
-			List<Map<String,Object>> feeDetailList = new ArrayList<>();
-			Map<String,Object> feeMap=getFeeMap(CreditConstant.FEE);
-			feeDetail.put("title", feeMap.get("serviceFeeName"));
-			feeDetail.put("value", feeMap.get("serviceFee"));
-			feeDetailList.add(feeDetail);
-			feeDetail= new HashMap<String, Object>();
-			feeDetail.put("title", feeMap.get("infoAuthFeeName"));
-			feeDetail.put("value", feeMap.get("infoAuthFee"));
-			feeDetailList.add(feeDetail);
-			feeDetail= new HashMap<String, Object>();
-			feeDetail.put("title", feeMap.get("interestName"));
-			feeDetail.put("value", feeMap.get("interest"));
-			feeDetailList.add(feeDetail);
-			map.put("feeDetailList", feeDetailList);
-
-			map.put("timeLimit", CreditConstant.DAYS);
-			map.put("amount", CreditConstant.AMOUNT);
-
-			//IOS端返回数据
-			map.put("feeDetail", feeMap);
-			list.add(map);
+			list = getNoUserChoices(feeName);
 		} else {
 			for (int i = 0; i < days.length; i++) {
 				for (int j = 0; j < borrowCredits.length; j++) {
