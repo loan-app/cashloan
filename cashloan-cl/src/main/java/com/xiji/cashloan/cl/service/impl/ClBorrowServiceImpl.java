@@ -370,11 +370,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		String borrowCredit = Global.getValue("borrow_credit");// 借款额度
 		String[] credits = borrowCredit.split(",");
 		double maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
-		borrowCredit = getCredit(borrowCredit, credit.getUnuse());
+		borrowCredit = getCredit(borrowCredit, credit != null ? credit.getUnuse() : Double.parseDouble(Global.getValue("init_credit")));
 		credits = borrowCredit.split(",");
 		double minCredit = 0d;
 		if(StringUtil.isBlank(credits[0])) {
-			minCredit = credit.getUnuse();
+			minCredit = (credit != null ? credit.getUnuse() : Double.parseDouble(Global.getValue("init_credit")));
 		} else {
 			minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
 		}
