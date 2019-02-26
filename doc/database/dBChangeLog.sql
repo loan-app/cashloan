@@ -11,6 +11,21 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '支付公司选择', 'pay_mode
 INSERT INTO `arc_sys_config` VALUES (null, '20', '支付测试指定userid和公司', 'pay_model_test', '', '1', '支付测试指定userid和公司：1=helipay', '1');
 alter table cl_bank_card add column `agree_company` varchar(32) DEFAULT '' COMMENT '签约协议公司，fuiou或者helipay';
 update cl_bank_card set agree_company = 'fuiou';
+CREATE TABLE `k_bank_card_bin` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `name` varchar(128) NOT NULL DEFAULT '' COMMENT '分行名称',
+  `bank_code` varchar(32) NOT NULL DEFAULT '' COMMENT '银行编码',
+  `bank_name` varchar(128) NOT NULL DEFAULT '' COMMENT '银行名称',
+  `card_name` varchar(128) NOT NULL DEFAULT '' COMMENT '卡名称',
+  `card_type` varchar(24) NOT NULL DEFAULT '' COMMENT '卡类型，借记卡，准贷记卡，贷记卡等',
+  `card_bin` varchar(24) NOT NULL DEFAULT '' COMMENT '卡bin',
+  `bin_len` tinyint(4) NOT NULL DEFAULT '6' COMMENT '卡bin长度',
+  `card_len` tinyint(4) NOT NULL DEFAULT '0' COMMENT '卡长度',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `yn` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否有效：1-有效;0-无效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='卡bin信息';
 
 -- 添加token获取地址，2018-11-16
 INSERT INTO `arc_sys_config` VALUES (null, 70, 'token', 'token_apihost', 'https://api.dsdatas.com/credit/api/token', 1, '获取token的host', 1);
