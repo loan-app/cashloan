@@ -389,7 +389,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
 			borrowCredit = getCredit(borrowCredit, credit.getUnuse());
 			credits = borrowCredit.split(",");
-			minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
+			if(StringUtil.isBlank(credits[0])) {
+				minCredit = credit.getUnuse();
+			} else {
+				minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
+			}
 		}
 
 		if(user != null){
