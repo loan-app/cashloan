@@ -1,15 +1,15 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.xiji.cashloan.cl.domain.UserRemark;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
+import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.model.BorrowModel;
 import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
@@ -27,9 +27,6 @@ import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrderLog;
 import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.cl.model.UrgeRepayOrderModel;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderLogService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
@@ -63,6 +60,12 @@ public class ManageUrgeRepayOrderController extends ManageBaseController {
 	
 	@Resource
 	private SysDictService sysDictService;
+
+	@Resource
+	private UserRemarkService userRemarkService;
+
+	@Resource
+	private ClBorrowService clBorrowService;
 	
 	/**
 	 * 催款订单列表
@@ -110,7 +113,7 @@ public class ManageUrgeRepayOrderController extends ManageBaseController {
 			if(params==null){
 				params=new HashMap<String, Object>();
 			}
-		} 
+		}
 		Page<UrgeRepayOrderModel> page =urgeRepayOrderService.listModel(params,current,pageSize);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_DATA, page);
@@ -277,7 +280,7 @@ public class ManageUrgeRepayOrderController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "提交成功");
 		ServletUtils.writeToResponse(response,result);
 	}
-	
+
 	/**
 	 * 添加催款反馈信息
 	 * @param search
@@ -294,11 +297,26 @@ public class ManageUrgeRepayOrderController extends ManageBaseController {
 			@RequestParam(value = "way") String way) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		UrgeRepayOrder order = urgeRepayOrderService.getById(dueId);
+
 		UrgeRepayOrderLog orderLog = new UrgeRepayOrderLog();
+		//创建用户备注对象
+		UserRemark userRemark=new UserRemark();
 		if (order != null) {
 			 try {
-				orderLog.setCreateTime(DateUtil.valueOf(createTime, DateUtil.DATEFORMAT_STR_001));
-				if (promiseTime != null && promiseTime != "") {
+				 //设置备注对象
+				 userRemark.setCreateTime(new Date());
+				 userRemark.setOperateName(order.getUserName());
+				 userRemark.setOperateId(order.getUserId());
+				 userRemark.setRemark(remark);
+				 //获取borrow对象
+				 Borrow borrow=clBorrowService.findByPrimary(order.getBorrowId());
+				 //通过借款对象获取userid
+				 userRemark.setUserId(borrow.getUserId());
+				 userRemark.setOperateTime(new Date());
+				 //保存备注信息
+				 userRemarkService.saveUserRemark(userRemark);
+				 orderLog.setCreateTime(DateUtil.valueOf(createTime, DateUtil.DATEFORMAT_STR_001));
+				 if (promiseTime != null && promiseTime != "") {
 					orderLog.setPromiseTime(DateUtil.valueOf(promiseTime, DateUtil.DATEFORMAT_STR_001));
 				}
 				orderLog.setRemark(remark);
