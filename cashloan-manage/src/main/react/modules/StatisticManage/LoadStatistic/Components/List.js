@@ -79,7 +79,7 @@ export default React.createClass({
         const pagination = this.state.pagination;
         pagination.current = params.current;
         pagination.pageSize = params.pageSize;
-        //pagination.total = result.page.total;
+        pagination.total = result.page.total;
 
         if (!pagination.current) {
           pagination.current = 1
@@ -119,7 +119,7 @@ export default React.createClass({
   render() {
     var columns = [{
       title: '统计时间',
-      dataIndex: 'countTime',
+      dataIndex: 'countTimeStr',
     }, {
       title: '放款笔数',
         dataIndex: 'loadCount',
@@ -136,9 +136,6 @@ export default React.createClass({
         title: '首贷金额',
         dataIndex: "firstLoadAmount",
     }, {
-        title: '放款订单数',
-        dataIndex: "loadCount",
-    }, {
         title: '首贷本金',
         dataIndex: "firstLoadPrincipal",
     }, {
@@ -154,10 +151,6 @@ export default React.createClass({
     var state = this.state;
     return (
       <div className="block-panel">
-          {/*<div className="actionBtns" style={{ marginBottom: 16 }}>*/}
-              {/*<span> 消费总金额：{this.state.totalFee}</span>*/}
-              {/*<dev></dev>*/}
-          {/*</div>*/}
 
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}

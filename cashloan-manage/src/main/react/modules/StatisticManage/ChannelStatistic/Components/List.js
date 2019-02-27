@@ -79,7 +79,7 @@ export default React.createClass({
         const pagination = this.state.pagination;
         pagination.current = params.current;
         pagination.pageSize = params.pageSize;
-        //pagination.total = result.page.total;
+        pagination.total = result.page.total;
 
         if (!pagination.current) {
           pagination.current = 1
@@ -118,103 +118,69 @@ export default React.createClass({
  
   render() {
     var columns = [{
-      title: '注册数',
-      dataIndex: 'userRegister',
+        title: '渠道标识',
+        dataIndex: 'channelCode',
     }, {
-          title: '老客申请笔数',
-          dataIndex: 'oldBorrowApplyCount'
+        title: '渠道名称',
+        dataIndex: 'channelName',
+    }, {
+        title: '注册数',
+        dataIndex: 'userRegister',
     },{
-      title: '老客人工审核通过数',
-      dataIndex: 'newMachineAuditPassCount'
+        title: '新客申请笔数',
+        dataIndex: 'newBorrowApplyCount'
+    },{
+        title: '老客申请笔数',
+        dataIndex: 'oldBorrowApplyCount',
+        render(text, record) {
+            return record.borrowApplyCount - record.newBorrowApplyCount
+        }
     }, {
-      title: '老客人工审核拒绝数',
-      dataIndex: "newMachineAuditNotPassCount"
-    }, {
-        title: '首贷放款数',
+        title: '新客下款数',
         dataIndex: "firstLoadCount",
     }, {
-        title: '复贷放款数',
+        title: '老客下款数',
         dataIndex: "againLoadCount",
-    }, {
-        title: '到期逾期笔数',
-        dataIndex: "expireOverdueCount",
-    }, {
-        title: '到期首逾笔数',
-        dataIndex: "firstExpireOverdueCount",
-    }, {
-      title: '到期展期数',
-        dataIndex: "extendCount",
-    },{
-        title: '到期逾期数',
-        dataIndex: "extendOverdueCount",
-    }, {
-        title: '到期首贷展期数',
-        dataIndex: "firstExtendCount",
-    }, {
-        title: '到期首贷展期逾期数',
-        dataIndex: "firstExtendOverdueCount",
-    }, {
-        title: '到期首贷放款笔数',
-        dataIndex: "firstExpireLoadCount",
-    }, {
-        title: '到期复贷放款笔数',
-        dataIndex: "againExpireLoadCount",
-    }, {
-        title: '新客申请量',
-        dataIndex: "newBorrowApplyCount",
-    }, {
-        title: '新客机审通过数',
-        dataIndex: "newMachineAuditPassCount",
-    }, {
-        title: '新客机审拒绝数',
-        dataIndex: "newMachineAuditNotPassCount",
-    }, {
-        title: '新客人工通过数',
-        dataIndex: "newReviewPassCount",
-    }, {
-        title: '新客人工拒绝数',
-        dataIndex: "newReviewNotPassCount",
-    }, {
-        title: '到期复贷逾期笔数',
-        dataIndex: "againExpireOverdueCount",
     }, {
         title: '新客机审通过率',
         dataIndex: "machineAuditPassRate",
+        render(text,record){
+            return record.machineAuditPassRate +"%"
+        }
+    },  {
+        title: '新客转化率',
+        dataIndex: "newTransformRate",
+        render(text,record){
+            return record.newTransformRate +"%"
+        }
     }, {
-        title: '新客机审拒绝率',
-        dataIndex: "machineAuditNotPassRate",
+        title: '新客下款/注册数',
+        dataIndex: "newLoadRegisterRate",
+        render(text,record){
+            return record.newLoadRegisterRate +"%"
+        }
     }, {
-        title: '新客人工复审通过率',
-        dataIndex: "newReviewPassRate",
+        title: '新客下款/申请数',
+        dataIndex: "newLoadApplyRate",
+        render(text,record){
+            return record.newLoadApplyRate +"%"
+        }
     }, {
-        title: '新客人工复审拒绝率',
-        dataIndex: "newReviewNotPassRate",
-    },{
-        title: '新客人工复审通过率',
-        dataIndex: "oldReviewPassRate",
-    }, {
-        title: '新客人工复审拒绝率',
-        dataIndex: "oldReviewNotPassRate",
-    }, {
-        title: '首逾率',
+        title: '新客首逾率',
         dataIndex: "firstOverdueRate",
+        render(text,record){
+           return record.firstOverdueRate+"%"
+        }
     }, {
         title: '总逾期率',
         dataIndex: "overdueRate",
-    }, {
-        title: '复贷逾期率',
-        dataIndex: "againOverdueRate",
-    }, {
-        title: '新客放款率',
-        dataIndex: "loadRate",
+        render(text,record){
+            return record.overdueRate +"%"
+        }
     }];
     var state = this.state;
     return (
       <div className="block-panel">
-          {/*<div className="actionBtns" style={{ marginBottom: 16 }}>*/}
-              {/*<span> 消费总金额：{this.state.totalFee}</span>*/}
-              {/*<dev></dev>*/}
-          {/*</div>*/}
 
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}

@@ -79,7 +79,7 @@ export default React.createClass({
         const pagination = this.state.pagination;
         pagination.current = params.current;
         pagination.pageSize = params.pageSize;
-        //pagination.total = result.page.total;
+        pagination.total = result.page.total;
 
         if (!pagination.current) {
           pagination.current = 1
@@ -119,7 +119,7 @@ export default React.createClass({
   render() {
     var columns = [{
       title: '统计时间',
-      dataIndex: 'countTime',
+      dataIndex: 'countTimeStr',
     }, {
           title: '应还订单笔数',
           dataIndex: 'shouldOrder',

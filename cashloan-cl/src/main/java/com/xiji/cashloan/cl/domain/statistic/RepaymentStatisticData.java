@@ -94,6 +94,10 @@ import java.util.Date;
     */
     private Double remainAmount;
 
+    /**
+     * 统计时间Str
+     */
+    private String countTimeStr;
 
     /**
     * 获取主键Id
@@ -380,5 +384,29 @@ import java.util.Date;
      */
     public void setTodayRealRetrunAmount(Double todayRealRetrunAmount) {
         this.todayRealReturnAmount = todayRealRetrunAmount;
+    }
+
+    public Double getRealReturnAmount() {
+        return realReturnAmount;
+    }
+
+    public void setRealReturnAmount(Double realReturnAmount) {
+        this.realReturnAmount = realReturnAmount;
+    }
+
+    public Double getTodayRealReturnAmount() {
+        return todayRealReturnAmount;
+    }
+
+    public void setTodayRealReturnAmount(Double todayRealReturnAmount) {
+        this.todayRealReturnAmount = todayRealReturnAmount;
+    }
+
+    public String getCountTimeStr() {
+        return countTimeStr;
+    }
+
+    public void setCountTimeStr(String countTimeStr) {
+        this.countTimeStr = countTimeStr;
     }
 }

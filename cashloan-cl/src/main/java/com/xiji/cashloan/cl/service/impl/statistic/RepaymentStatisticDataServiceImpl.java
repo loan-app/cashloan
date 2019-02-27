@@ -5,8 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.RepaymentStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.RepaymentStatisticDataService;
+import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,6 +71,12 @@ public class RepaymentStatisticDataServiceImpl extends BaseServiceImpl<Repayment
 
 		PageHelper.startPage(current, pageSize);
 		Page<RepaymentStatisticData> repaymentStatisticData = (Page<RepaymentStatisticData>) repaymentStatisticDataMapper.listRepaymentStatistic(params);
+
+		if (CollectionUtil.isNotEmpty(repaymentStatisticData)){
+			for (RepaymentStatisticData statisticData:repaymentStatisticData){
+				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
+			}
+		}
 		return repaymentStatisticData;
 	}
 }

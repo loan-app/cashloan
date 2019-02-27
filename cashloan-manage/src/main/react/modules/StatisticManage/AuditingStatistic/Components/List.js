@@ -119,7 +119,7 @@ export default React.createClass({
   render() {
     var columns = [{
         title: '统计时间',
-        dataIndex: 'countTime',
+        dataIndex: 'countTimeStr',
     }, {
       title: '申请笔数',
       dataIndex: 'borrowApplyCount',
@@ -130,13 +130,13 @@ export default React.createClass({
       title: '机审通过数',
       dataIndex: 'machineAuditPassCount'
     }, {
-      title: '人工审核笔数',
+      title: '人审笔数',
       dataIndex: "reviewCount",
     }, {
-        title: '人工审核通过笔数',
+        title: '人审通过笔数',
         dataIndex: "reviewPassCount",
     }, {
-        title: '人工审核拒绝笔数',
+        title: '人审拒绝笔数',
         dataIndex: "reviewNotPassCount",
     },{
         title: '放款笔数',
@@ -144,15 +144,27 @@ export default React.createClass({
     }, {
         title: '机审通过率',
         dataIndex: "machineAuditPassRate",
+        render(text,record){
+          return record.machineAuditPassRate+"%"
+        }
     }, {
         title: '机审拒绝率',
         dataIndex: "machineAuditNotPassRate",
+        render(text,record){
+          return record.machineAuditNotPassRate +"%"
+        }
     }, {
-        title: '人工复审通过率',
+        title: '人审通过率',
         dataIndex: "reviewPassRate",
+        render(text,record){
+          return record.reviewPassRate +"%"
+        }
     }, {
-        title: '人工复审拒绝率',
+        title: '人审拒绝率',
         dataIndex: "reviewNotPassRate",
+        render(text,record){
+          return record.reviewNotPassRate +"%"
+        }
     }];
     var state = this.state;
     return (

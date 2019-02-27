@@ -79,7 +79,7 @@ export default React.createClass({
         const pagination = this.state.pagination;
         pagination.current = params.current;
         pagination.pageSize = params.pageSize;
-        //pagination.total = result.page.total;
+        pagination.total = result.page.total;
 
         if (!pagination.current) {
           pagination.current = 1
@@ -119,7 +119,7 @@ export default React.createClass({
   render() {
     var columns = [{
       title: '统计时间',
-      dataIndex: 'countTime',
+      dataIndex: 'countTimeStr',
     }, {
         title: '注册人数',
         dataIndex: 'userRegister',
@@ -133,25 +133,25 @@ export default React.createClass({
         title: '银行卡绑定数',
         dataIndex: "bankCount",
     }, {
-        title: '手机运营商认证数',
+        title: '运营商认证数',
         dataIndex: "phoneCount",
     }, {
-        title: '当日申请数',
+        title: '申请总数',
         dataIndex: "borrowApplyCount",
     }, {
-        title: '当日新客借款数',
+        title: '新客借款数',
         dataIndex: "newBorrowCount",
     }, {
-        title: '当日老客借款数',
+        title: '老客借款数',
         dataIndex: "oldBorrowCount",
     }, {
-        title: '当日新客下款数',
+        title: '新客下款数',
         dataIndex: "newLoadCount",
     }, {
-        title: '当日老客下款数',
+        title: '老客下款数',
         dataIndex: "oldLoadCount",
     }, {
-        title: '当日下款数',
+        title: '下款总数',
         dataIndex: "loadCount",
     }];
     var state = this.state;

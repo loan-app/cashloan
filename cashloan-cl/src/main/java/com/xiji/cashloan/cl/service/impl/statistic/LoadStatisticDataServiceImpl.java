@@ -5,8 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.LoadStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.LoadStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.LoadStatisticDataService;
+import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -65,6 +67,11 @@ public class LoadStatisticDataServiceImpl extends BaseServiceImpl<LoadStatisticD
 	public Page<LoadStatisticData> listLoadStatistic(Map<String,Object> params, Integer current, Integer pageSize){
 		PageHelper.startPage(current, pageSize);
 		Page<LoadStatisticData> loadStatisticData = (Page<LoadStatisticData>) loadStatisticDataMapper.listLoadStatistic(params);
+		if (CollectionUtil.isNotEmpty(loadStatisticData)){
+			for(LoadStatisticData statisticData :loadStatisticData){
+				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
+			}
+		}
 		return loadStatisticData;
 	}
 	

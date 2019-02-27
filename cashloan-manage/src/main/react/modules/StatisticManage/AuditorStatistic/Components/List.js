@@ -79,7 +79,7 @@ export default React.createClass({
         const pagination = this.state.pagination;
         pagination.current = params.current;
         pagination.pageSize = params.pageSize;
-        //pagination.total = result.page.total;
+        pagination.total = result.page.total;
 
         if (!pagination.current) {
           pagination.current = 1
@@ -118,17 +118,17 @@ export default React.createClass({
  
   render() {
     var columns = [{
-      title: '审核员名称',
-      dataIndex: 'auditorName',
+        title: '审核员',
+        dataIndex: 'auditorName',
     }, {
-          title: '申请笔数',
-          dataIndex: 'borrowApplyCount',
+        title: '申请笔数',
+        dataIndex: 'borrowApplyCount',
     },{
-      title: '通过订单量',
-      dataIndex: 'passOrder'
+        title: '通过订单量',
+        dataIndex: 'passOrder'
     }, {
-      title: '当天逾期数',
-      dataIndex: "currentOverdue",
+        title: '当天逾期数',
+        dataIndex: "currentOverdue",
     }, {
         title: '首贷放款数',
         dataIndex: "firstLoadCount",
@@ -141,21 +141,25 @@ export default React.createClass({
     }, {
         title: '通过率',
         dataIndex: "passRate",
+        render(text,record){
+         return record.passRate +"%"
+        }
     }, {
-        title: '当天逾期率',
+        title: '总逾期率',
         dataIndex: "currentOverdueRate",
+        render(text,record){
+          return record.currentOverdueRate +"%"
+        }
     }, {
-        title: '首逾率',
+        title: '首贷逾期率',
         dataIndex: "firstOverdueRate",
+        render(text,record){
+          return record.firstOverdueRate +"%"
+        }
     }];
     var state = this.state;
     return (
       <div className="block-panel">
-          {/*<div className="actionBtns" style={{ marginBottom: 16 }}>*/}
-              {/*<span> 消费总金额：{this.state.totalFee}</span>*/}
-              {/*<dev></dev>*/}
-          {/*</div>*/}
-
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}
              dataSource={this.state.data}

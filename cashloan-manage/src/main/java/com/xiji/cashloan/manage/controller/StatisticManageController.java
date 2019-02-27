@@ -15,6 +15,7 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
@@ -157,9 +158,9 @@ public class StatisticManageController extends ManageBaseController {
      * @param current
      * @param pageSize
 	 */
-    @RequestMapping(value = "/modules/manage/statistic/listChannelStatistic.htm")
+    @RequestMapping(value = "/modules/manage/statistic/listChannelStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
     public void listChannelStatistic(HttpServletResponse response,
-                             @RequestParam("search")String search,
+                             @RequestParam(value = "search",required = false)String search,
                              @RequestParam("current")Integer current,
                              @RequestParam("pageSize")Integer pageSize) {
         Map<String, Object> params = JSONObject.parseObject(search);
@@ -180,9 +181,9 @@ public class StatisticManageController extends ManageBaseController {
      * @param current
      * @param pageSize
 	 */
-    @RequestMapping(value = "/modules/manage/statistic/listUserStatistic.htm")
+    @RequestMapping(value = "/modules/manage/statistic/listUserStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
     public void listUserStatistic(HttpServletResponse response,
-                                     @RequestParam("search")String search,
+                                     @RequestParam(value = "search",required = false)String search,
                                      @RequestParam("current")Integer current,
                                      @RequestParam("pageSize")Integer pageSize) {
         Map<String, Object> params = JSONObject.parseObject(search);
@@ -203,9 +204,9 @@ public class StatisticManageController extends ManageBaseController {
      * @param current
      * @param pageSize
 	 */
-    @RequestMapping(value = "/modules/manage/statistic/listAuditingStatistic.htm")
+    @RequestMapping(value = "/modules/manage/statistic/listAuditingStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
     public void listAuditingStatistic(HttpServletResponse response,
-                                  @RequestParam("search")String search,
+                                  @RequestParam(value = "search",required = false)String search,
                                   @RequestParam("current")Integer current,
                                   @RequestParam("pageSize")Integer pageSize) {
         Map<String, Object> params = JSONObject.parseObject(search);
@@ -226,9 +227,9 @@ public class StatisticManageController extends ManageBaseController {
 	 * @param current
 	 * @param pageSize
 	 */
-	@RequestMapping(value = "/modules/manage/statistic/listAuditorStatistic.htm")
+	@RequestMapping(value = "/modules/manage/statistic/listAuditorStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
 	public void listAuditorStatistic(HttpServletResponse response,
-									  @RequestParam("search")String search,
+									  @RequestParam(value = "search",required = false)String search,
 									  @RequestParam("current")Integer current,
 									  @RequestParam("pageSize")Integer pageSize) {
 		Map<String, Object> params = JSONObject.parseObject(search);
@@ -249,9 +250,9 @@ public class StatisticManageController extends ManageBaseController {
 	 * @param current
 	 * @param pageSize
 	 */
-	@RequestMapping(value = "/modules/manage/statistic/listLoadStatistic.htm")
+	@RequestMapping(value = "/modules/manage/statistic/listLoadStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
 	public void listLoadStatistic(HttpServletResponse response,
-									 @RequestParam("search")String search,
+									 @RequestParam(value = "search",required = false)String search,
 									 @RequestParam("current")Integer current,
 									 @RequestParam("pageSize")Integer pageSize) {
 		Map<String, Object> params = JSONObject.parseObject(search);
@@ -272,9 +273,9 @@ public class StatisticManageController extends ManageBaseController {
 	 * @param current
 	 * @param pageSize
 	 */
-	@RequestMapping(value = "/modules/manage/statistic/listRepaymentStatistic.htm")
+	@RequestMapping(value = "/modules/manage/statistic/listRepaymentStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
 	public void listRepaymentStatistic(HttpServletResponse response,
-								  @RequestParam("search")String search,
+								  @RequestParam(value = "search",required = false)String search,
 								  @RequestParam("current")Integer current,
 								  @RequestParam("pageSize")Integer pageSize) {
 		Map<String, Object> params = JSONObject.parseObject(search);

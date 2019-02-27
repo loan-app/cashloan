@@ -8,6 +8,7 @@ import com.xiji.cashloan.cl.service.statistic.AuditingStatisticDataService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -93,6 +94,12 @@ public class AuditingStatisticDataServiceImpl extends BaseServiceImpl<AuditingSt
 		PageHelper.startPage(current, pageSize);
 
 		Page<AuditingStatisticData> auditingStatisticData = (Page<AuditingStatisticData>) auditingStatisticDataMapper.listAuditingStatistic(params);
+
+		if (CollectionUtil.isNotEmpty(auditingStatisticData)){
+			for(AuditingStatisticData statisticData :auditingStatisticData){
+				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
+			}
+		}
 
 		return auditingStatisticData;
 	}

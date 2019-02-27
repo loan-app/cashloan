@@ -130,9 +130,25 @@ export default React.createClass({
                             <div className='blk-number'>{formsToday.register}</div>
                         </div>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>借款申请数</div>
-                            <div className='blk-number'>{formsToday.borrow}</div>
+                            <div className='blk-title'>新客申请量</div>
+                            <div className='blk-number'>{formsToday.todayNewBorrow}</div>
                         </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>老客申请量</div>
+                            <div className='blk-number'>{formsToday.todayOldBorrow}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>新客放款量</div>
+                            <div className='blk-number'>{formsToday.todayNewLoan}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>老客放款量</div>
+                            <div className='blk-number'>{formsToday.todayOldLoan}</div>
+                        </div>
+                        {/*<div className='blk-top-item'>*/}
+                            {/*<div className='blk-title'>借款申请数</div>*/}
+                            {/*<div className='blk-number'>{formsToday.borrow}</div>*/}
+                        {/*</div>*/}
                         <div className='blk-top-item'>
                             <div className='blk-title'>通过次数</div>
                             <div className='blk-number'>{formsToday.borrowPass}</div>
@@ -141,10 +157,10 @@ export default React.createClass({
                             <div className='blk-title'>通过率</div>
                             <div className='blk-number'>{formsToday.passApr}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
-                        <div className='blk-top-item'>
-                            <div className='blk-title'>放款量</div>
-                            <div className='blk-number'>{formsToday.borrowLoan}</div>
-                        </div>
+                        {/*<div className='blk-top-item'>*/}
+                            {/*<div className='blk-title'>放款量</div>*/}
+                            {/*<div className='blk-number'>{formsToday.borrowLoan}</div>*/}
+                        {/*</div>*/}
                         <div className='blk-top-item' >
                             <div className='blk-title'>还款量</div>
                             <div className='blk-number'>{formsToday.borrowRepay}</div>
@@ -153,6 +169,44 @@ export default React.createClass({
                             <div className='blk-title'>放款率</div>
                             <div className='blk-number'>{formsToday.borrowRate}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
+                    </div>
+                </div>
+
+
+                <div className="block-panel">
+                    <h2 className="navLine-title">今日认证</h2>
+                    <div className='blk-top'>
+
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>实名人数</div>
+                            <div className='blk-number'>{formsToday.todayCertification}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>通讯录认证人数</div>
+                            <div className='blk-number'>{formsToday.todayContact}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>绑卡人数</div>
+                            <div className='blk-number'>{formsToday.todayBank}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>运营商认证人数</div>
+                            <div className='blk-number'>{formsToday.todayPhone}</div>
+                        </div>
+
+
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>借出总金额</div>
+                            <div className='blk-number'>{formsToday.todayTotalSum}</div>
+                        </div>
+                        <div className='blk-top-item blk-top-item-last'>
+                            <div className='blk-title'>借出本金</div>
+                            <div className='blk-number'>{formsToday.todayPrincipal}</div>
+                        </div>
+                        {/*<div className='blk-top-item'>*/}
+                        {/*<div className='blk-title'>借款申请数</div>*/}
+                        {/*<div className='blk-number'>{formsToday.borrow}</div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
 

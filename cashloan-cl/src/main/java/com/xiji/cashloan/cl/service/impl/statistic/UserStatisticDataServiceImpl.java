@@ -8,6 +8,7 @@ import com.xiji.cashloan.cl.mapper.statistic.UserStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.UserStatisticDataService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -88,14 +89,6 @@ public class UserStatisticDataServiceImpl extends BaseServiceImpl<UserStatisticD
 				userStatisticData.setUserRegister(0);
 			}
 		}
-
-//		List<UserStatisticData> statisticDataList = new ArrayList<>();
-//		for(com.xiji.cashloan.cl.model.statistic.UserStatisticData userStatisticData:userStatisticDataList){
-//			UserStatisticData userStatisticData1 = new UserStatisticData();
-//			BeanUtil.copyProperties(userStatisticData,userStatisticData1);
-//			userStatisticData1.setCountTime(DateUtil.getDate(userStatisticData.getDate()));
-//			statisticDataList.add(userStatisticData1);
-//		}
 		return userStatisticDataList;
 	}
 
@@ -108,6 +101,9 @@ public class UserStatisticDataServiceImpl extends BaseServiceImpl<UserStatisticD
 
 		PageHelper.startPage(current, pageSize);
 		Page<UserStatisticData> userStatisticDataList = (Page<UserStatisticData>) userStatisticDataMapper.listUserStatistic(params);
+		for (UserStatisticData statisticData :userStatisticDataList){
+			statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
+		}
 		return userStatisticDataList;
 	}
 }

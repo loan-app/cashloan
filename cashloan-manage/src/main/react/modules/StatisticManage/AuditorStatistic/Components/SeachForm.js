@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, DatePicker, Form, Select} from 'antd';
+import {Button, DatePicker, Form, Input, Select} from 'antd';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -14,7 +14,7 @@ let SeachForm = React.createClass({
     },
   handleQuery() {
     var params = this.props.form.getFieldsValue();
-    var json = {endDate:'',startDate:''};
+    var json = {endDate:'',startDate:'',auditorName:params.auditorName};
     if(params.countTime){
           json.startDate = (DateFormat.formatDate(params.countTime[0])).substring(0,10);
           json.endDate = (DateFormat.formatDate(params.countTime[1])).substring(0,10);
@@ -38,7 +38,9 @@ let SeachForm = React.createClass({
     } = this.props.form;
     return (
       <Form inline >
-
+          <FormItem label="审核人姓名：">
+              <Input  {...getFieldProps('auditorName', { initialValue: ''})} />
+          </FormItem>
       <FormItem label="统计时间：">
           <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('countTime', { initialValue: '' }) } />
       </FormItem>

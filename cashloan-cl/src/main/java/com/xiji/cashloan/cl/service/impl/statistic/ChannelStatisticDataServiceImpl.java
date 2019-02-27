@@ -141,6 +141,7 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 				statisticData.setMachineAuditNotPassRate(0.00);
 				statisticData.setReviewPassRate(0.00);
 				statisticData.setReviewNotPassRate(0.00);
+				statisticData.setNewLoadApplyRate(0.00);
 			} else {
 
 				statisticData.setMachineAuditPassRate(BigDecimalUtil.decimal((double) statisticData.getMachineAuditPassCount() / (double) statisticData.getBorrowApplyCount() * 100, 2));
@@ -151,8 +152,12 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 
 			if (statisticData.getUserRegister() == null || statisticData.getUserRegister() <= 0) {
 				statisticData.setLoadRate(0.00);
+				statisticData.setNewLoadRegisterRate(0.00);
+				statisticData.setNewTransformRate(0.00);
 			} else {
 				statisticData.setLoadRate(BigDecimalUtil.decimal((double) statisticData.getFirstLoadCount() / (double) statisticData.getUserRegister() * 100, 2));
+			    statisticData.setNewLoadRegisterRate(BigDecimalUtil.decimal((double)statisticData.getFirstLoadCount()/(double)statisticData.getUserRegister()*100,2));
+			    statisticData.setNewTransformRate(BigDecimalUtil.decimal((double)statisticData.getNewBorrowApplyCount()/(double)statisticData.getUserRegister()*100,2));
 			}
 
 			if (statisticData.getAgainExpireLoadCount() == 0 && statisticData.getFirstExpireLoadCount() == 0) {
@@ -170,6 +175,12 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 				statisticData.setAgainOverdueRate(0.00);
 			} else {
 				statisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double) (statisticData.getAgainExpireOverdueCount()+statisticData.getExtendOverdueCount()) / (double) (statisticData.getAgainExpireLoadCount()+ statisticData.getExtendCount() )* 100, 2));
+			}
+
+			if (statisticData.getNewBorrowApplyCount() == null || statisticData.getNewBorrowApplyCount() == 0){
+				statisticData.setNewLoadApplyRate(0.00);
+			} else {
+				statisticData.setNewLoadApplyRate(BigDecimalUtil.decimal((double)statisticData.getFirstLoadCount()/(double)statisticData.getNewBorrowApplyCount()*100,2));
 			}
 		}
 	}

@@ -239,6 +239,11 @@ public class ChannelStatisticModel implements Serializable {
 
 
     /**
+     * 新客转化率
+     */
+    private Double newTransformRate;
+
+    /**
      * 渠道名称
      */
     private String channelName;
@@ -247,6 +252,9 @@ public class ChannelStatisticModel implements Serializable {
      * 渠道标识
      */
     private String channelCode;
+
+
+
         /**
          * 获取主键Id
          *
@@ -834,5 +842,13 @@ public class ChannelStatisticModel implements Serializable {
 
     public void setChannelCode(String channelCode) {
         this.channelCode = channelCode;
+    }
+
+    public Double getNewTransformRate() {
+        return newTransformRate;
+    }
+
+    public void setNewTransformRate(Double newTransformRate) {
+        this.newTransformRate = newTransformRate;
     }
 }

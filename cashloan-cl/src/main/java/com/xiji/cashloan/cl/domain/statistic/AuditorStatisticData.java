@@ -94,6 +94,7 @@ import java.util.Date;
      */
     private String auditorName;
 
+
     /**
     * 获取主键Id
     *
@@ -361,4 +362,5 @@ import java.util.Date;
     public void setAuditorName(String auditorName) {
         this.auditorName = auditorName;
     }
+
 }

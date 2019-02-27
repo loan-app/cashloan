@@ -337,6 +337,9 @@
               <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
           </if>
 
+          <if test="name != null and name !=''" >
+              and su.name ={auditorName}
+          </if>
       </where>
       GROUP BY auditor_id ,su.name order by auditor_id
 

@@ -204,6 +204,22 @@ import java.util.Date;
      */
    private String channelCode;
 
+
+    /**
+     * 新客下款/申请数
+     */
+    private Double newLoadApplyRate;
+
+    /**
+     * 新客下款/注册数
+     */
+    private Double newLoadRegisterRate;
+
+    /**
+     * 新客转化率
+     */
+    private Double newTransformRate;
+
     /**
     * 获取主键Id
     *
@@ -720,4 +736,29 @@ import java.util.Date;
     public void setChannelCode(String channelCode) {
         this.channelCode = channelCode;
     }
+
+    public Double getNewLoadApplyRate() {
+        return newLoadApplyRate;
+    }
+
+    public void setNewLoadApplyRate(Double newLoadApplyRate) {
+        this.newLoadApplyRate = newLoadApplyRate;
+    }
+
+    public Double getNewLoadRegisterRate() {
+        return newLoadRegisterRate;
+    }
+
+    public void setNewLoadRegisterRate(Double newLoadRegisterRate) {
+        this.newLoadRegisterRate = newLoadRegisterRate;
+    }
+
+    public Double getNewTransformRate() {
+        return newTransformRate;
+    }
+
+    public void setNewTransformRate(Double newTransformRate) {
+        this.newTransformRate = newTransformRate;
+    }
+
 }
