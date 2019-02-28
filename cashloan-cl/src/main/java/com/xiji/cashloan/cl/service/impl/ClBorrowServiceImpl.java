@@ -399,8 +399,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		if(user != null){
 			result.put("total", credit.getUnuse());
 		} else {
-			result.put("total", Global.getValue("init_credit"));
-//			result.put("total", CreditConstant.AMOUNTS);
+//			result.put("total", Global.getValue("init_credit"));
+			result.put("total", CreditConstant.AMOUNTS);
 		}
 		Map<String, Object> auth = new HashMap<String, Object>();
 		auth.put("total", Global.getInt("auth_total")); // 认证总项数量
