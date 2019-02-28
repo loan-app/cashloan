@@ -303,11 +303,11 @@
 
                 (SELECT COUNT(id) machineAuditNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='21' and borrow.id = progress.borrow_id ) t2 GROUP BY time ) UNION
 
-                (SELECT COUNT(id) reviewCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state in ('20','30') ) t2 GROUP BY time ) UNION
+                (SELECT COUNT(id) reviewCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.review_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state in ('20','30') ) t2 GROUP BY time ) UNION
 
-                (SELECT COUNT(id) reviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='20' ) t2 GROUP BY time ) UNION
+                (SELECT COUNT(id) reviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.review_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='20' ) t2 GROUP BY time ) UNION
 
-                (SELECT COUNT(id) reviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='30' ) t2 GROUP BY time ) UNION
+                (SELECT COUNT(id) reviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.review_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='30' ) t2 GROUP BY time ) UNION
 
                 (SELECT COUNT(id) loadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time)
 
@@ -319,11 +319,11 @@
 
            left join (SELECT COUNT(id) machineAuditNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='21' and borrow.id = progress.borrow_id ) t2 GROUP BY time ) p3 on p.time = p3.time
 
-           left join (SELECT COUNT(id) reviewCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state in ('20','30') ) t2 GROUP BY time ) p4 on p.time = p4.time
+           left join (SELECT COUNT(id) reviewCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.review_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state in ('20','30') ) t2 GROUP BY time ) p4 on p.time = p4.time
 
-           left join (SELECT COUNT(id) reviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='20' ) t2 GROUP BY time ) p5 on p.time = p5.time
+           left join (SELECT COUNT(id) reviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.review_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='20' ) t2 GROUP BY time ) p5 on p.time = p5.time
 
-           left join (SELECT COUNT(id) reviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='30') t2 GROUP BY time ) p6 on p.time = p6.time
+           left join (SELECT COUNT(id) reviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(manual.review_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_manual_review_order as manual where  borrow.id = manual.borrow_id and manual.state ='30') t2 GROUP BY time ) p6 on p.time = p6.time
 
            left join (SELECT COUNT(id) loadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) p7 on p.time = p7.time
 

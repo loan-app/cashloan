@@ -301,7 +301,7 @@
                 <![CDATA[ and DATE_FORMAT(p.time, '%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
             </if>
         </where>
-) T ORDER BY T.countTime DESC
+) T ORDER BY T.countTime ASC
 
 
     </select>
