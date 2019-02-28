@@ -361,6 +361,9 @@
             <if test="remark != null and remark != ''">        
             	and b.remark like concat("%",#{remark,jdbcType=VARCHAR},"%")  
             </if>
+            <if test="createTime != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') = #{createTime,jdbcType=TIMESTAMP}
+            </if>
             <if test="startTime != null">
                 and DATE_FORMAT(b.create_time,'%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
             </if>

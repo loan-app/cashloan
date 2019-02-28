@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Form, Input, Select,Message } from 'antd';
+import {Button, Form, Input, Select,Message,DatePicker } from 'antd';
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const RangePicker = DatePicker.RangePicker;
 
 let SeachForm = React.createClass({
     getInitialState() {
@@ -12,9 +13,14 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state: params.state};
+        if(params.createTime){
+            json.startTime = (DateFormat.formatDate(params.createTime[0])).substring(0,10);
+            json.endTime = (DateFormat.formatDate(params.createTime[1])).substring(0,10);
+        }
         //params.type = "repay";
         this.props.passParams({
-            searchParams: JSON.stringify(params),
+            searchParams: JSON.stringify(json),
             pageSize: 10,
             current: 1,
         });
@@ -27,6 +33,10 @@ let SeachForm = React.createClass({
             //searchParams: JSON.stringify({type:"repay"}),
             searchParams: JSON.stringify({}),
         });
+    },
+    disabledDate(startValue) {
+        var today = new Date();
+        return startValue.getTime() > today.getTime();
     },
     render() {
 
@@ -64,6 +74,9 @@ let SeachForm = React.createClass({
                         <Option value="90">坏账</Option>
              </Select>
              </FormItem>
+            <FormItem label="借款日期：">
+            <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('createTime', { initialValue: '' }) } />
+            </FormItem>
              <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
              <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
             </Form>
