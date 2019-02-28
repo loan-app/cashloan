@@ -372,7 +372,7 @@
         cl_repayment_statistic_data
         <where>
             <if test="startDate!=null and startDate!=''">
-                and DATE_FORMAT(count_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+                and DATE_FORMAT(count_time,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
             </if>
             <if test="endDate!=null and endDate!=''">
                 <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>

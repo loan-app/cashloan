@@ -50,9 +50,9 @@ import java.util.Date;
     private Integer passOrder;
 
     /**
-    * 通过率
+    * 新客通过率
     */
-    private Double passRate;
+    private Double firstPassRate;
 
     /**
     * 当前逾期率
@@ -60,7 +60,7 @@ import java.util.Date;
     private Double currentOverdueRate;
 
     /**
-    * 首逾率
+    * 首逾率（新客逾期率）
     */
     private Double firstOverdueRate;
 
@@ -85,14 +85,29 @@ import java.util.Date;
     private Integer loadCount;
 
     /**
-     * 当日到期展期逾期数
+     * 新客人审通过数
      */
-    private Integer firstExtendOverdueCount;
+    private Integer firstPassOrder;
 
     /**
      * 审核员名称
      */
     private String auditorName;
+
+    /**
+     * 首贷展期逾期数
+     */
+    private Integer firstExtendOverdueCount;
+
+    /**
+     * 老客逾期率（不包含展期逾期）
+     */
+    private Double  againOverdueRate;
+
+    /**
+     * 新客申请笔数
+     */
+    private Integer newBorrowApplyCount;
 
 
     /**
@@ -107,7 +122,7 @@ import java.util.Date;
     /**
     * 设置主键Id
     * 
-    * @param 要设置的主键Id
+    * @param
     */
     public void setId(Long id){
         this.id = id;
@@ -222,21 +237,21 @@ import java.util.Date;
     }
 
     /**
-    * 获取通过率
+    * 获取新客通过率
     *
     * @return 通过率
     */
-    public Double getPassRate(){
-        return passRate;
+    public Double getFirstPassRate(){
+        return firstPassRate;
     }
 
     /**
-    * 设置通过率
+    * 设置新客通过率
     * 
-    * @param passRate 要设置的通过率
+    * @param firstPassRate 要设置的通过率
     */
-    public void setPassRate(Double passRate){
-        this.passRate = passRate;
+    public void setFirstPassRate(Double firstPassRate){
+        this.firstPassRate = firstPassRate;
     }
 
     /**
@@ -339,20 +354,12 @@ import java.util.Date;
         this.loadCount = loadCount;
     }
 
-    /**
-     * 获取当日到期展期逾期数
-     * @return
-     */
-    public Integer getFirstExtendOverdueCount() {
-        return firstExtendOverdueCount;
+    public Integer getFirstPassOrder() {
+        return firstPassOrder;
     }
 
-    /**
-     * 设置当日到期展期逾期数
-     * @param firstExtendOverdueCount
-     */
-    public void setFirstExtendOverdueCount(Integer firstExtendOverdueCount) {
-        this.firstExtendOverdueCount = firstExtendOverdueCount;
+    public void setFirstPassOrder(Integer firstPassOrder) {
+        this.firstPassOrder = firstPassOrder;
     }
 
     public String getAuditorName() {
@@ -363,4 +370,28 @@ import java.util.Date;
         this.auditorName = auditorName;
     }
 
+
+    public Integer getFirstExtendOverdueCount() {
+        return firstExtendOverdueCount;
+    }
+
+    public void setFirstExtendOverdueCount(Integer firstExtendOverdueCount) {
+        this.firstExtendOverdueCount = firstExtendOverdueCount;
+    }
+
+    public Double getAgainOverdueRate() {
+        return againOverdueRate;
+    }
+
+    public void setAgainOverdueRate(Double againOverdueRate) {
+        this.againOverdueRate = againOverdueRate;
+    }
+
+    public Integer getNewBorrowApplyCount() {
+        return newBorrowApplyCount;
+    }
+
+    public void setNewBorrowApplyCount(Integer newBorrowApplyCount) {
+        this.newBorrowApplyCount = newBorrowApplyCount;
+    }
 }

@@ -74,8 +74,21 @@ public interface AuditorStatisticDataMapper extends BaseMapper<AuditorStatisticD
      * @param params
      * @return
      */
+    List<AuditorStatisticData> firstPassOrder(Map<String,Object> params);
+
+    /**
+     * 获取当日到期展期逾期数
+     * @param params
+     * @return
+     */
     List<AuditorStatisticData> firstExtendOverdueCount(Map<String,Object> params);
 
+    /**
+     * 新客申请量
+     * @param params
+     * @return
+     */
+    List<AuditorStatisticData> newBorrowApplyCount(Map<String,Object> params);
     /**
      * 查询 审核人员数据统计
      * @param params

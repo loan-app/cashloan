@@ -120,41 +120,58 @@ export default React.createClass({
     var columns = [{
         title: '审核员',
         dataIndex: 'auditorName',
-    }, {
-        title: '申请笔数',
-        dataIndex: 'borrowApplyCount',
-    },{
-        title: '通过订单量',
-        dataIndex: 'passOrder'
-    }, {
-        title: '当天逾期数',
-        dataIndex: "currentOverdue",
-    }, {
-        title: '首贷放款数',
-        dataIndex: "firstLoadCount",
-    }, {
-        title: '首贷逾期数',
+    },  {
+        title: '新客逾期未还数',
         dataIndex: "firstOverdue",
     }, {
-        title: '放款订单数',
-        dataIndex: "loadCount",
-    }, {
-        title: '通过率',
-        dataIndex: "passRate",
+        title: '老客逾期未还数',
+        dataIndex: "currentOverdue",
         render(text,record){
-         return record.passRate +"%"
+            return record.currentOverdue - record.firstOverdue;
+        }
+    },{
+        title: '新客审核成功',
+        dataIndex: 'firstPassOrder',
+    },{
+        title: '新客审核不成功',
+        dataIndex: 'newBorrowApplyCount',
+        render(text,record){
+            return record.newBorrowApplyCount - record.firstPassOrder;
         }
     }, {
-        title: '总逾期率',
-        dataIndex: "currentOverdueRate",
+        title: '新客放款量',
+        dataIndex: "firstLoadCount",
+    }, {
+        title: '老客放款量',
+        dataIndex: "oldLoadCount",
         render(text,record){
-          return record.currentOverdueRate +"%"
+            return record.loadCount - record.firstLoadCount
+        }
+    },{
+        title: '新客通过率',
+        dataIndex: "firstPassRate",
+        render(text,record){
+         return record.firstPassRate +"%";
+        }
+    },
+    //     {
+    //     title: '总逾期率',
+    //     dataIndex: "currentOverdueRate",
+    //     render(text,record){
+    //       return record.currentOverdueRate +"%";
+    //     }
+    // },
+        {
+        title: '新客逾期率',
+        dataIndex: 'firstOverdueRate',
+        render(text,record){
+          return record.firstOverdueRate +"%";
         }
     }, {
-        title: '首贷逾期率',
-        dataIndex: "firstOverdueRate",
+        title: '老客逾期率',
+        dataIndex: "againOverdueRate",
         render(text,record){
-          return record.firstOverdueRate +"%"
+            return record.againOverdueRate +"%";
         }
     }];
     var state = this.state;

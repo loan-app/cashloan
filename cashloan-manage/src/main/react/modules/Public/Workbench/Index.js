@@ -154,7 +154,7 @@ export default React.createClass({
                             <div className='blk-number'>{formsToday.borrowPass}</div>
                         </div>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>通过率</div>
+                            <div className='blk-title'>新客通过率</div>
                             <div className='blk-number'>{formsToday.passApr}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
                         {/*<div className='blk-top-item'>*/}
@@ -166,7 +166,7 @@ export default React.createClass({
                             <div className='blk-number'>{formsToday.borrowRepay}</div>
                         </div>
                         <div className='blk-top-item blk-top-item-last' >
-                            <div className='blk-title'>放款率</div>
+                            <div className='blk-title'>新客放款率</div>
                             <div className='blk-number'>{formsToday.borrowRate}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
                     </div>

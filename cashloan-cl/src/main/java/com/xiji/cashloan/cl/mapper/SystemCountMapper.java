@@ -46,7 +46,15 @@ public interface SystemCountMapper {
 	 * @return
 	 */
 	double countBorrowPass(Map<String, Object> param);
-	
+
+
+	/**
+	 * 统计当日借款申请通过的数量
+	 * @param param
+	 * @return
+	 */
+	double countNewBorrowPass(Map<String, Object> param);
+
 	/**
 	 * 统计当日借款申请放款数量
 	 * @param param 

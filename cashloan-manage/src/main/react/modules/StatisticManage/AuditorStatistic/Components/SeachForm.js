@@ -19,6 +19,11 @@ let SeachForm = React.createClass({
           json.startDate = (DateFormat.formatDate(params.countTime[0])).substring(0,10);
           json.endDate = (DateFormat.formatDate(params.countTime[1])).substring(0,10);
     }
+
+      if(json.auditorName){
+          json.auditorName = json.auditorName.replace(/\s+/g, "")
+      }
+
     this.props.passParams({
         search : JSON.stringify(json),
       pageSize: 10,

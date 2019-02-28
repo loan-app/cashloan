@@ -22,11 +22,19 @@
     	select count(id) from cl_borrow 
     	where TO_DAYS(create_time)-TO_DAYS(SYSDATE())=0 
     </select>
-    <!-- 统计当日借款申请通过的数量 -->
+    <!-- 统计当日借款新客申请通过的数量 -->
+    <select id="countNewBorrowPass" resultType="java.lang.Double" parameterType="java.util.HashMap">
+    	select count(distinct borrow.id) from cl_borrow_progress as progress ,cl_borrow as borrow
+    	where TO_DAYS(progress.create_time)-TO_DAYS(SYSDATE())=0
+    		and progress.state in ('20','26')
+    		and borrow.id = progress.borrow_id
+    </select>
+
+    <!-- 统计当日借款新客申请通过的数量 -->
     <select id="countBorrowPass" resultType="java.lang.Double" parameterType="java.util.HashMap">
-    	select count(id) from cl_borrow_progress 
-    	where TO_DAYS(create_time)-TO_DAYS(SYSDATE())=0 
-    		and state in ('20','26') 
+    	select count(id) from cl_borrow_progress
+    	where TO_DAYS(create_time)-TO_DAYS(SYSDATE())=0
+    		and state in ('20','26')
     </select>
     <!-- 统计当日借款申请放款数量 -->
     <select id="countBorrowLoan" resultType="java.lang.Double" parameterType="java.util.HashMap">

@@ -278,7 +278,7 @@
 
 
         select  distinct T.countTime,
-        T.userRegist,
+        T.userRegister,
         T.authCount,
         T.contactCount,
         T.bankCount,
@@ -291,7 +291,7 @@
         T.oldLoadCount
         from (
         select DATE_FORMAT(p.time,'%Y-%m-%d') countTime,
-        IFNULL(p2.userRegist,0) userRegist,
+        IFNULL(p2.userRegister,0) userRegister,
         IFNULL(p3.authCount,0) authCount,
         IFNULL(p4.contactCount,0) contactCount,
         IFNULL(p5.bankCount,0) bankCount,
@@ -303,7 +303,7 @@
         IFNULL(p11.newLoadCount,0) newLoadCount,
         IFNULL(p12.oldLoadCount,0) oldLoadCount
         from (
-        (SELECT COUNT(id) userRegist,DATE_FORMAT(regist_time,'%Y-%m-%d') time from cl_user t2 GROUP BY time ) UNION
+        (SELECT COUNT(id) userRegister,DATE_FORMAT(regist_time,'%Y-%m-%d') time from cl_user t2 GROUP BY time ) UNION
         (SELECT COUNT(id) authCount,DATE_FORMAT(regist_time,'%Y-%m-%d') time from (SELECT cu.id ,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user cu left join cl_user_auth  cua on cu.id = cua.user_id where cua.id_state = '30') t2 GROUP BY time )UNION
         (SELECT COUNT(id) contactCount,DATE_FORMAT(regist_time,'%Y-%m-%d') time from (SELECT cu.id ,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user cu left join cl_user_auth  cua on cu.id = cua.user_id where cua.contact_state = '30') t2 GROUP BY time ) UNION
         (SELECT COUNT(id) bankCount,DATE_FORMAT(regist_time,'%Y-%m-%d') time from (SELECT cu.id ,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user cu left join cl_user_auth  cua on cu.id = cua.user_id where cua.bank_card_state = '30') t2 GROUP BY time )UNION
@@ -317,7 +317,7 @@
         (SELECT COUNT(id) oldLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again ='20') t2 GROUP BY time)
 
         ) p
-        left join (SELECT COUNT(id) userRegist,DATE_FORMAT(regist_time,'%Y-%m-%d') time from cl_user t2 GROUP BY time ) p2 on p.time = p2.time
+        left join (SELECT COUNT(id) userRegister,DATE_FORMAT(regist_time,'%Y-%m-%d') time from cl_user t2 GROUP BY time ) p2 on p.time = p2.time
         left join (SELECT COUNT(id) authCount,DATE_FORMAT(regist_time,'%Y-%m-%d') time from (SELECT cu.id ,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user cu left join cl_user_auth  cua on cu.id = cua.user_id where cua.id_state = '30') t2 GROUP BY time ) p3 on p.time = p3.time
         left join (SELECT COUNT(id) contactCount,DATE_FORMAT(regist_time,'%Y-%m-%d') time from (SELECT cu.id ,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user cu left join cl_user_auth  cua on cu.id = cua.user_id where cua.contact_state = '30') t2 GROUP BY time  ) p4 on p.time = p4.time
         left join (SELECT COUNT(id) bankCount,DATE_FORMAT(regist_time,'%Y-%m-%d') time from (SELECT cu.id ,DATE_FORMAT(regist_time,'%Y-%m-%d') regist_time from cl_user cu left join cl_user_auth  cua on cu.id = cua.user_id where cua.bank_card_state = '30') t2 GROUP BY time  ) p5 on p.time = p5.time
@@ -348,7 +348,7 @@
         select * from cl_user_statistic_data
         <where>
             <if test="startDate!=null and startDate!=''">
-                and DATE_FORMAT(count_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+                and DATE_FORMAT(count_time,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
             </if>
             <if test="endDate!=null and endDate!=''">
                 <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>

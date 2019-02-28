@@ -537,18 +537,18 @@ CREATE TABLE `cl_user_statistic_data` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `count_time` datetime NOT NULL COMMENT '统计时间',
   `user_register` int(11) NOT NULL COMMENT '当日注册数',
-  `auth_count` int(11) NOT NULL COMMENT '实名认证人数',
-  `contact_count` int(11) NOT NULL COMMENT '通讯录认证数',
-  `bank_count` int(11) NOT NULL COMMENT '银行卡绑定数',
-  `phone_count` int(11) NOT NULL COMMENT '手机运营商认证数',
-  `borrow_apply_count` int(11) NOT NULL COMMENT '当日申请总数',
-  `new_borrow_count` int(11) NOT NULL COMMENT '当日新客借款',
-  `old_borrow_count` int(11) NOT NULL COMMENT '当日老客借款数',
-  `new_load_count` int(11) NOT NULL COMMENT '当日新客下款数',
-  `old_load_count` int(11) NOT NULL COMMENT '当日老客下款数',
-  `load_count` int(11) NOT NULL COMMENT '当日下款数',
+  `auth_count` int(11) NOT NULL DEFAULT '0' COMMENT '实名认证人数',
+  `contact_count` int(11) NOT NULL DEFAULT '0' COMMENT '通讯录认证数',
+  `bank_count` int(11) NOT NULL DEFAULT '0' COMMENT '银行卡绑定数',
+  `phone_count` int(11) NOT NULL DEFAULT '0' COMMENT '手机运营商认证数',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日申请总数',
+  `new_borrow_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客借款',
+  `old_borrow_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日老客借款数',
+  `new_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客下款数',
+  `old_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日老客下款数',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日下款数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户统计数据';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='用户统计数据';
 
 
 -- 渠道统计数据
@@ -560,15 +560,15 @@ CREATE TABLE `cl_channel_statistic_data` (
   `count_time` datetime NOT NULL COMMENT '统计时间',
   `channel_id` int(11) NOT NULL COMMENT '渠道ID',
   `user_register` int(11) NOT NULL COMMENT '当日注册数',
-  `borrow_apply_count` int(11) NOT NULL COMMENT '当日申请总数',
-  `machine_audit_pass_count` int(11) NOT NULL COMMENT '当日机审通过数',
-  `machine_audit_not_pass_count` int(11) NOT NULL COMMENT '当日机审拒绝数',
-  `review_pass_count` int(11) NOT NULL COMMENT '当日人工通过数',
-  `review_not_pass_count` int(11) NOT NULL COMMENT '当日人工拒绝数',
-  `first_load_count` int(11) NOT NULL COMMENT '当日首贷放款笔数',
-  `again_load_count` int(11) NOT NULL COMMENT '当日复贷放款笔数',
-  `overdue_count` int(11) NOT NULL COMMENT '当日逾期笔数',
-  `first_overdue_count` int(11) NOT NULL COMMENT '当日首逾笔数',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日申请总数',
+  `machine_audit_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日机审通过数',
+  `machine_audit_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日机审拒绝数',
+  `review_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日人工通过数',
+  `review_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日人工拒绝数',
+  `first_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日首贷放款笔数',
+  `again_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日复贷放款笔数',
+  `expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期逾期笔数',
+  `first_expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期首逾笔数',
   `machine_audit_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审通过率',
   `machine_audit_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审拒绝率',
   `review_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审通过率',
@@ -576,8 +576,21 @@ CREATE TABLE `cl_channel_statistic_data` (
   `first_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '首逾率',
   `overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '逾期率',
   `load_rate` decimal(10,2) DEFAULT '0.00' COMMENT '放款率',
+  `extend_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期展期数',
+  `extend_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期展期逾期数',
+  `first_extend_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期首贷展期数',
+  `first_extend_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期首贷展期逾期数',
+  `first_expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期首贷放款笔数',
+  `again_expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期复贷放款笔数',
+  `new_borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客申请量',
+  `new_machine_audit_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客机审通过数',
+  `new_machine_audit_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客机审拒绝数',
+  `new_review_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客人工通过数',
+  `new_review_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客人工拒绝数',
+  `again_expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期复贷逾期笔数',
+  `again_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '复贷逾期率',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道统计数据';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='渠道统计数据';
 
 
 -- 放款统计数据
@@ -587,17 +600,17 @@ CREATE TABLE `cl_load_statistic_data` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `count_time` datetime NOT NULL COMMENT '统计时间',
-  `load_count` int(11) NOT NULL COMMENT '放款笔数',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款笔数',
   `load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '放款金额',
   `load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '放款本金',
-  `first_load_count` int(11) NOT NULL COMMENT '首贷人数',
+  `first_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '首贷人数',
   `first_load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '首贷金额',
   `first_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '首贷本金',
-  `again_load_count` int(11) NOT NULL COMMENT '复贷人数',
+  `again_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '复贷人数',
   `again_load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '复贷金额',
   `again_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '复贷本金',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='放款统计数据';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='放款统计数据';
 
 
 -- 审核统计数据
@@ -607,19 +620,19 @@ CREATE TABLE `cl_auditing_statistic_data` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `count_time` datetime NOT NULL COMMENT '统计时间',
-  `borrow_apply_count` int(11) NOT NULL COMMENT '申请笔数',
-  `machine_audit_not_pass_count` int(11) NOT NULL COMMENT '机审拒绝数',
-  `machine_audit_pass_count` int(11) NOT NULL COMMENT '当日机审通过数',
-  `review_count` int(11) NOT NULL COMMENT '人工审核笔数',
-  `review_pass_count` int(11) NOT NULL COMMENT '人工审核通过笔数',
-  `review_not_pass_count` int(11) NOT NULL COMMENT '人工审核拒绝笔数',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '申请笔数',
+  `machine_audit_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '机审拒绝数',
+  `machine_audit_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日机审通过数',
+  `review_count` int(11) NOT NULL DEFAULT '0' COMMENT '人工审核笔数',
+  `review_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '人工审核通过笔数',
+  `review_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '人工审核拒绝笔数',
   `machine_audit_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审通过率',
   `machine_audit_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审拒绝率',
   `review_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审通过率',
   `review_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审拒绝率',
-  `load_count` int(11) NOT NULL COMMENT '放款笔数',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款笔数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核统计数据';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='审核统计数据';
 
 
 -- 还款统计数据
@@ -629,20 +642,20 @@ CREATE TABLE `cl_repayment_statistic_data` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `count_time` datetime NOT NULL COMMENT '统计时间',
-  `should_order` int(11) NOT NULL COMMENT '应还订单笔数',
-  `remain_order` int(11) NOT NULL COMMENT '待还订单笔数',
-  `advance_repayment` int(11) NOT NULL COMMENT '提前还款笔数',
-  `normal_repayment` int(11) NOT NULL COMMENT '正常还款笔数',
-  `extend_repayment` int(11) NOT NULL COMMENT '展期还款笔数',
-  `overdue_repayment` int(11) NOT NULL COMMENT '逾期还款笔数',
+  `should_order` int(11) NOT NULL DEFAULT '0' COMMENT '应还订单笔数',
+  `remain_order` int(11) NOT NULL DEFAULT '0' COMMENT '待还订单笔数',
+  `advance_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '提前还款笔数',
+  `normal_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '正常还款笔数',
+  `extend_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '展期还款笔数',
+  `overdue_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '逾期还款笔数',
   `should_amount` decimal(10,2) DEFAULT '0.00' COMMENT '应还金额',
-  `real_retrun_amount` decimal(10,2) DEFAULT '0.00' COMMENT '实还金额',
+  `real_return_amount` decimal(10,2) DEFAULT '0.00' COMMENT '实还金额',
   `load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '放款本金',
   `derate_amount` decimal(10,2) DEFAULT '0.00' COMMENT '减免金额',
   `remain_amount` decimal(10,2) DEFAULT '0.00' COMMENT '待还金额',
   `today_real_return_amount` decimal(10,2) DEFAULT '0.00' COMMENT '今日实还金额',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='还款统计数据';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='还款统计数据';
 
 
 -- 审核人员统计数据
@@ -653,11 +666,18 @@ CREATE TABLE `cl_auditor_statistic_data` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `count_time` datetime NOT NULL COMMENT '统计时间',
   `auditor_id` int(11) NOT NULL COMMENT '审核人员ID',
-  `borrow_apply_count` int(11) NOT NULL COMMENT '申请笔数',
-  `pass_order` int(11) NOT NULL COMMENT '通过订单量',
-  `pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '通过率',
-  `current_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '当前逾期率',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '申请笔数',
+  `pass_order` int(11) NOT NULL DEFAULT '0' COMMENT '人审通过总量',
+  `first_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '新客通过率',
+  `current_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '总逾期率',
   `first_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '首逾率',
+  `current_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '总逾期数',
+  `first_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '首贷放款数',
+  `first_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '首贷逾期数',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款订单数',
+  `first_pass_order` int(11) NOT NULL DEFAULT '0' COMMENT '新客通过数',
+  `first_extend_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '首贷展期逾期数',
+  `new_borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '新客申请量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核人员统计数据';
 

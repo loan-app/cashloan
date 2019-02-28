@@ -67,6 +67,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 		List<AuditorStatisticData> currentOverdue = auditorStatisticDataMapper.currentOverdue(params);
 		List<AuditorStatisticData> loadCount = auditorStatisticDataMapper.loadCount(params);
 		List<AuditorStatisticData> firstExtendOverdueCount = auditorStatisticDataMapper.firstExtendOverdueCount(params);
+		List<AuditorStatisticData> firstPassOrder = auditorStatisticDataMapper.firstPassOrder(params);
+		List<AuditorStatisticData> newBorrowApplyCount = auditorStatisticDataMapper.newBorrowApplyCount(params);
+
+
 
 
 		List<AuditorStatisticData> statisticDataList = new ArrayList<>();
@@ -77,6 +81,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 		setAuditorStatisticDataProperty(currentOverdue,statisticDataList,"currentOverdue");
 		setAuditorStatisticDataProperty(loadCount,statisticDataList,"loadCount");
 		setAuditorStatisticDataProperty(firstExtendOverdueCount,statisticDataList,"firstExtendOverdueCount");
+		setAuditorStatisticDataProperty(firstPassOrder,statisticDataList,"firstPassOrder");
+		setAuditorStatisticDataProperty(newBorrowApplyCount,statisticDataList,"newBorrowApplyCount");
+
+
 
 
 
@@ -141,6 +149,12 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 						case "firstExtendOverdueCount":
 							statisticData.setFirstExtendOverdueCount(auditorStatisticData.getFirstExtendOverdueCount());
 							break;
+						case "firstPassOrder":
+							statisticData.setFirstPassOrder(auditorStatisticData.getFirstPassOrder());
+							break;
+						case "newBorrowApplyCount":
+							statisticData.setNewBorrowApplyCount(auditorStatisticData.getNewBorrowApplyCount());
+							break;
 						default:
 							break;
 					}
@@ -182,6 +196,14 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 			if (auditorStatisticData.getLoadCount() == null){
 				auditorStatisticData.setLoadCount(0);
 			}
+
+			if (auditorStatisticData.getFirstPassOrder() == null){
+				auditorStatisticData.setFirstPassOrder(0);
+			}
+
+			if (auditorStatisticData.getNewBorrowApplyCount() == null){
+				auditorStatisticData.setNewBorrowApplyCount(0);
+			}
 		}
 	}
 
@@ -213,7 +235,7 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 	 */
 	void calculationRatio(List<AuditorStatisticData> statisticDataList){
 
-		if (CollectionUtil.isNotEmpty(statisticDataList)){
+		if (CollectionUtil.isEmpty(statisticDataList)){
 			return;
 		}
 
@@ -225,10 +247,16 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 				auditorStatisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (auditorStatisticData.getFirstOverdue()-auditorStatisticData.getFirstExtendOverdueCount())/(double)auditorStatisticData.getFirstLoadCount()*100,2));
 				auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getFirstLoadCount()*100,2));
 			}
-			if (auditorStatisticData.getBorrowApplyCount() == 0){
-				auditorStatisticData.setPassRate(0.00);
+			if (auditorStatisticData.getNewBorrowApplyCount() == 0){
+				auditorStatisticData.setFirstPassRate(0.00);
 			}else {
-				auditorStatisticData.setPassRate(BigDecimalUtil.decimal((double)auditorStatisticData.getPassOrder()/(double)auditorStatisticData.getBorrowApplyCount()*100,2));
+				auditorStatisticData.setFirstPassRate(BigDecimalUtil.decimal((double)auditorStatisticData.getFirstPassOrder()/(double)auditorStatisticData.getNewBorrowApplyCount()*100,2));
+			}
+
+			if (auditorStatisticData.getLoadCount() - auditorStatisticData.getFirstLoadCount() <=0 ){
+				auditorStatisticData.setAgainOverdueRate(0.00);
+			}else {
+				auditorStatisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double)(auditorStatisticData.getCurrentOverdue()-auditorStatisticData.getFirstOverdue())/(double)(auditorStatisticData.getLoadCount() - auditorStatisticData.getFirstLoadCount())*100,2));
 			}
 		}
 	}
@@ -245,6 +273,7 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 
 		Page<AuditorStatisticData> auditorStatisticData = (Page<AuditorStatisticData>) auditorStatisticDataMapper.listAuditorStatistic(params);
 
+		setDefaultValue(auditorStatisticData);
 		this.calculationRatio(auditorStatisticData);
 
 		return auditorStatisticData;

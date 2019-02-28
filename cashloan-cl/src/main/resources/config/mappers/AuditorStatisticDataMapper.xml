@@ -11,7 +11,7 @@
         <result column="auditor_id" property="auditorId" jdbcType="INTEGER" />
         <result column="borrow_apply_count" property="borrowApplyCount" jdbcType="INTEGER" />
         <result column="pass_order" property="passOrder" jdbcType="INTEGER" />
-        <result column="pass_rate" property="passRate" jdbcType="DECIMAL" />
+        <result column="first_pass_rate" property="firstPassRate" jdbcType="DECIMAL" />
         <result column="current_overdue_rate" property="currentOverdueRate" jdbcType="DECIMAL" />
         <result column="first_overdue_rate" property="firstOverdueRate" jdbcType="DECIMAL" />
         <result column="current_overdue" property="currentOverdue" jdbcType="INTEGER"/>
@@ -19,13 +19,14 @@
         <result column="first_overdue" property="firstOverdue" jdbcType="INTEGER"/>
         <result column="load_count" property="loadCount" jdbcType="INTEGER"/>
         <result column="first_extend_overdue_count" property="firstExtendOverdueCount" jdbcType="INTEGER"/>
-
-        <result column="auditor_name" property="" jdbcType="INTEGER"/>
+        <result column="first_pass_order" property="firstPassOrder" jdbcType="INTEGER"/>
+        <result column="new_borrow_apply_count" property="newBorrowApplyCount" jdbcType="INTEGER" />
+        <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,pass_rate,current_overdue_rate,first_overdue_rate, current_overdue,first_load_count,first_overdue,first_extend_overdue_count
+        id,create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate, current_overdue,first_load_count,first_overdue,first_extend_overdue_count,first_pass_order,new_borrow_apply_count
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -52,8 +53,8 @@
             <if test="passOrder != null">
                 and pass_order = #{passOrder,jdbcType=INTEGER}
             </if>
-            <if test="passRate != null">
-                and pass_rate = #{passRate,jdbcType=DECIMAL}
+            <if test="firstPassRate != null">
+                and first_pass_rate = #{firstPassRate,jdbcType=DECIMAL}
             </if>
             <if test="currentOverdueRate != null">
                 and current_overdue_rate = #{currentOverdueRate,jdbcType=DECIMAL}
@@ -66,7 +67,8 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        insert into cl_auditor_statistic_data(create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,pass_rate,current_overdue_rate,first_overdue_rate,current_overdue,first_load_count,first_overdue,first_extend_overdue_count)values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{auditorId,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{passOrder,jdbcType=INTEGER},#{passRate,jdbcType=DECIMAL},#{currentOverdueRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{currentOverdue,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{firstOverdue,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER})
+        insert into cl_auditor_statistic_data(create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate,current_overdue,first_load_count,first_overdue,first_extend_overdue_count,first_pass_order,new_borrow_apply_count)
+        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{auditorId,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{passOrder,jdbcType=INTEGER},#{firstPassRate,jdbcType=DECIMAL},#{currentOverdueRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{currentOverdue,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{firstOverdue,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstPassOrder,jdbcType=INTEGER},#{newBorrowApplyCount,jdbcType=INTEGER})
     </insert>
 
     
@@ -78,13 +80,15 @@
             auditor_id = #{auditorId,jdbcType=INTEGER},
             borrow_apply_count = #{borrowApplyCount,jdbcType=INTEGER},
             pass_order = #{passOrder,jdbcType=INTEGER},
-            pass_rate = #{passRate,jdbcType=DECIMAL},
+            first_pass_rate = #{firstPassRate,jdbcType=DECIMAL},
             current_overdue_rate = #{currentOverdueRate,jdbcType=DECIMAL},
             first_overdue_rate = #{firstOverdueRate,jdbcType=DECIMAL},
             current_overdue = #{currentOverdue,jdbcType=INTEGER},
             first_load_count = #{firstLoadCount,jdbcType=INTEGER},
             first_overdue = #{firstOverdue,jdbcType=INTEGER},
-            first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER}
+            first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER},
+            first_pass_order = #{firstPassOrder,jdbcType=INTEGER},
+            new_borrow_apply_count = #{newBorrowApplyCount,jdbcType=INTEGER}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -110,8 +114,8 @@
             <if test="passOrder != null">        
                 pass_order = #{passOrder,jdbcType=INTEGER},                
             </if>
-            <if test="passRate != null">        
-                pass_rate = #{passRate,jdbcType=DECIMAL},                
+            <if test="firstPassRate != null">
+                first_pass_rate = #{firstPassRate,jdbcType=DECIMAL},
             </if>
             <if test="currentOverdueRate != null">        
                 current_overdue_rate = #{currentOverdueRate,jdbcType=DECIMAL},                
@@ -129,8 +133,14 @@
               <if test="firstOverdue != null">
                   first_overdue = #{firstOverdue,jdbcType=INTEGER},
               </if>
-              <if test="firstOverdue != null">
-                  first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER}
+              <if test="firstExtendOverdueCount != null">
+                  first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER},
+              </if>
+              <if test="firstPassOrder != null" >
+                  first_pass_order = #{firstPassOrder,jdbcType=INTEGER},
+              </if>
+              <if test="newBorrowApplyCount != null" >
+                  new_borrow_apply_count = #{newBorrowApplyCount,jdbcType=INTEGER}
               </if>
         </set>    
         where id = #{id ,jdbcType=INTEGER}
@@ -158,67 +168,7 @@
         <include refid="searchBy"/>
     </select>
 
-    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        insert into cl_auditor_statistic_data
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="countTime != null">
-                count_time,
-            </if>
-            <if test="auditorId != null">
-                auditor_id,
-            </if>
-            <if test="borrowApplyCount != null">
-                borrow_apply_count,
-            </if>
-            <if test="passOrder != null">
-                pass_order,
-            </if>
-            <if test="passRate != null">
-                pass_rate,
-            </if>
-            <if test="currentOverdueRate != null">
-                current_overdue_rate,
-            </if>
-            <if test="firstOverdueRate != null">
-                first_overdue_rate,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="countTime != null">
-                #{countTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="auditorId != null">
-                #{auditorId,jdbcType=INTEGER},
-            </if>
-            <if test="borrowApplyCount != null">
-                #{borrowApplyCount,jdbcType=INTEGER},
-            </if>
-            <if test="passOrder != null">
-                #{passOrder,jdbcType=INTEGER},
-            </if>
-            <if test="passRate != null">
-                #{passRate,jdbcType=DECIMAL},
-            </if>
-            <if test="currentOverdueRate != null">
-                #{currentOverdueRate,jdbcType=DECIMAL},
-            </if>
-            <if test="firstOverdueRate != null">
-                #{firstOverdueRate,jdbcType=DECIMAL},
-            </if>
-        </trim>
-    </insert>
+
 
     <select id="getLateDate" resultType="java.util.Date">
         select count_time from cl_auditor_statistic_data order by count_time desc limit 1;
@@ -310,6 +260,20 @@
         GROUP BY countTime ,auditorId
     </select>
 
+    <select id="firstPassOrder" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstPassOrder,DATE_FORMAT(review_time, '%Y-%m-%d') count_time FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(mro.review_time, '%Y-%m-%d') review_time FROM cl_manual_review_order as mro ,cl_borrow as borrow where mro.borrow_id = borrow.id and mro.state = '20' and borrow.again ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(review_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY count_time ,auditorId
+
+    </select>
+
     <select id="firstExtendOverdueCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
         SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstExtendOverdueCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM  cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where  borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and repay.state ='30' and borrow.again = '10' and borrow.is_overdue = '20') t2
         <where>
@@ -323,22 +287,36 @@
         GROUP BY countTime ,auditorId
     </select>
 
+    <select id="newBorrowApplyCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) newBorrowApplyCount,DATE_FORMAT(review_time, '%Y-%m-%d') count_time FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(mro.review_time, '%Y-%m-%d') review_time FROM cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = mro.borrow_id and mro.state in ('20','30') and borrow.again ='10' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(review_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+
+        GROUP BY count_time ,auditorId
+    </select>
+
   <select id="listAuditorStatistic" parameterType="java.util.HashMap" resultMap="BaseResultMap">
         select sum(auditor_id) as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
         sum(pass_order) as pass_order,sum(current_overdue) as current_overdue,sum(first_load_count) as first_load_count,
-        sum(first_overdue) as first_overdue,sum(first_extend_overdue_count) as first_extend_overdue_count,su.name as auditor_name
+        sum(first_overdue) as first_overdue,sum(first_pass_order) as first_pass_order,su.name as auditor_name
         from cl_auditor_statistic_data as statistic,arc_sys_user as su
       <where>
           su.id = statistic.auditor_id
           <if test="startDate!=null and startDate!=''">
-              and DATE_FORMAT(count_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+              and DATE_FORMAT(count_time,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
           </if>
           <if test="endDate!=null and endDate!=''">
               <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
           </if>
 
-          <if test="name != null and name !=''" >
-              and su.name ={auditorName}
+          <if test="auditorName != null and auditorName !=''" >
+              and su.name like concat("%",#{auditorName,jdbcType=VARCHAR},"%")
           </if>
       </where>
       GROUP BY auditor_id ,su.name order by auditor_id

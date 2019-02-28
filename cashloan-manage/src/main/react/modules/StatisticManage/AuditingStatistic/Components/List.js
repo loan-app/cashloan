@@ -147,32 +147,32 @@ export default React.createClass({
         render(text,record){
           return record.machineAuditPassRate+"%"
         }
-    }, {
-        title: '机审拒绝率',
-        dataIndex: "machineAuditNotPassRate",
-        render(text,record){
-          return record.machineAuditNotPassRate +"%"
-        }
-    }, {
+    },
+    //     {
+    //     title: '机审拒绝率',
+    //     dataIndex: "machineAuditNotPassRate",
+    //     render(text,record){
+    //       return record.machineAuditNotPassRate +"%"
+    //     }
+    // },
+        {
         title: '人审通过率',
         dataIndex: "reviewPassRate",
         render(text,record){
           return record.reviewPassRate +"%"
         }
-    }, {
-        title: '人审拒绝率',
-        dataIndex: "reviewNotPassRate",
-        render(text,record){
-          return record.reviewNotPassRate +"%"
-        }
-    }];
+    }
+    //     {
+    //     title: '人审拒绝率',
+    //     dataIndex: "reviewNotPassRate",
+    //     render(text,record){
+    //       return record.reviewNotPassRate +"%"
+    //     }
+    // }
+    ];
     var state = this.state;
     return (
       <div className="block-panel">
-          {/*<div className="actionBtns" style={{ marginBottom: 16 }}>*/}
-              {/*<span> 消费总金额：{this.state.totalFee}</span>*/}
-              {/*<dev></dev>*/}
-          {/*</div>*/}
 
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}

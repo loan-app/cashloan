@@ -741,7 +741,7 @@
             </if>
 
             <if test="code != null and code !=''">
-                and channel.code = #{code}
+                and channel.code like concat("%",#{code,jdbcType=VARCHAR},"%")
             </if>
         </where>
         GROUP BY channel_id,channel_name,channel_code

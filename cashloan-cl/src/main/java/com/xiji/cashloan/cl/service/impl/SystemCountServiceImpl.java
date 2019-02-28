@@ -177,11 +177,9 @@ public class SystemCountServiceImpl implements SystemCountService {
 		double borrowPass = systemCountMapper.countBorrowPass(param);
 		rtMap.put("borrowPass", borrowPass);
 
-		if(borrow>0){
-			rtMap.put("passApr", BigDecimalUtil.decimal(borrowPass/borrow*100,2));
-		} else {
-			rtMap.put("passApr", 0);
-		}
+		double newBorrowPass = systemCountMapper.countNewBorrowPass(param);
+		//rtMap.put("newBorrowPass", newBorrowPass);
+
 
 		Double borrowLoan = systemCountMapper.countBorrowLoan(param);
 		rtMap.put("borrowLoan", borrowLoan);
@@ -224,12 +222,6 @@ public class SystemCountServiceImpl implements SystemCountService {
 		//rtMap.put("todayOverdueRate", String.format("%.2f", todayOverdueRate));
 		rtMap.put("todayShouldCntRate",BigDecimalUtil.decimal(todayShouldCntRate,2));
 
-        if (register > 0){
-        	rtMap.put("borrowRate",BigDecimalUtil.decimal(borrowLoan/register*100,2));
-		}else {
-        	rtMap.put("borrowRate",0);
-		}
-
 		int todayCertification = 0;//当日实名
 		int todayContact = 0;//通讯录认证人数
 		int todayBank = 0;//当日绑卡
@@ -269,7 +261,11 @@ public class SystemCountServiceImpl implements SystemCountService {
 				}
 			}
 		}
-
+		if(todayNewBorrow>0){
+			rtMap.put("passApr", BigDecimalUtil.decimal(newBorrowPass/todayNewBorrow*100,2));
+		} else {
+			rtMap.put("passApr", 0);
+		}
 		List<Borrow> borrowLoanList = systemCountMapper.listBorrowStatistics();
 		if (CollectionUtil.isNotEmpty(borrowLoanList)){
 			for (Borrow loan:borrowLoanList){
@@ -289,6 +285,11 @@ public class SystemCountServiceImpl implements SystemCountService {
 					}
 				}
 			}
+		}
+		if (register > 0){
+			rtMap.put("borrowRate",BigDecimalUtil.decimal(todayNewLoan/register*100,2));
+		}else {
+			rtMap.put("borrowRate",0);
 		}
 
 		rtMap.put("todayCertification", todayCertification);
