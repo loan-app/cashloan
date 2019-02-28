@@ -433,7 +433,6 @@ CREATE TABLE `cl_yixin_fraud` (
 
 -- 通话详情统计表新增最后联系时间字段
 alter table `cl_operator_voice_cnt` add column `last_contact_time` datetime  default null comment '最后联系时间';
-alter table `cl_operator_voice_cnt_1` add column `last_contact_time` datetime  default null comment '最后联系时间';
 
 -- 魔蝎黑灰名单
 INSERT INTO `cl_rc_tpp_business` VALUES ('8', '1', '黑灰名单', 'MagicBlackGray', '10', '', '', null, '2019-01-03 00:00:00');
@@ -449,15 +448,30 @@ ALTER TABLE `cl_app_list` change app_list `app_list` MEDIUMTEXT COMMENT '应用�
 -- 添加认证更新周期数据
 INSERT INTO `arc_sys_config` VALUES (null, '20', '认证更新周期', 'authentication_cycle', '7', '1', '认证更新周期', '1');
 
-INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 * * ?', 'com.xiji.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
+INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 * * ?', 'com.xiji.cashloan.manage.job.QuartzUserAuth', '0', '0', '20', '2017-03-27 14:53:27');
 
-
+-- 最新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
+-- 强制更新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '强制更新版本号', 'mandatory_update_version', '1.0.0', '1', '系统强制更新版本号', '1');
 -- 最新版本下载地址 线上
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本下载地址', 'last_version_download_url', 'http://jy.xyhuigou.com/h5/invite.jsp', '1', '最新版本下载地址', '1');
 
-
+-- 借款信息表添加是否逾期字段
+ALTER table cl_borrow add is_overdue varchar(2) DEFAULT '10' COMMENT '是否逾期 10：未逾期，20 ：已逾期';
+-- 同步更新是否逾期字段
+update cl_borrow SET is_overdue = '20' where id in ( select borrow_id from cl_borrow_repay where penalty_day > 0) and is_overdue = '10';
+-- 用户备注表
+DROP TABLE IF EXISTS cl_user_remark;
+CREATE TABLE `cl_user_remark` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `operate_id` bigint(20) NOT NULL COMMENT '操作人ID',
+  `remark` varchar(128) DEFAULT '' COMMENT '备注',
+  `operate_time` datetime NOT NULL COMMENT '操作时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户备注表';
 
 
 -- 借款订单-运营商记录表
@@ -704,3 +718,7 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1022');
 
 
 
+
+
+-- 新增渠道后台角色
+INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');

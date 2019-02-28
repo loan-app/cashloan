@@ -387,7 +387,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		if(param.get("delayDays") != null) {
 			delayDays = NumberUtil.getInt(param.get("delayDays").toString());
 		} else {
-			delayDays = Global.getInt("delay_days");
+			delayDays = 6;
 		}
 		if (nowDate.after(repayPlanTime)){
 			repayTime = tool.util.DateUtil.rollDay(now, delayDays);
@@ -406,7 +406,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		newBr.setAmount(repayAmount);
 		newBr.setBorrowId(br.getBorrowId());
 		newBr.setUserId(br.getUserId());
-		String repay = DateUtil.dateStr2(DateUtil.rollDay(DateUtil.getNow(), 0));
+		String repay = DateUtil.dateStr2(DateUtil.rollDay(br.getRepayTime(), 0));
 		repay = repay + " 23:59:59";
 		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
 		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);
@@ -451,7 +451,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			orderLog.setRemark("展期成功");
 			orderLog.setWay("50");
 			orderLog.setCreateTime(DateUtil.getNow());
-			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_PROMISE);
+			//催收订单状态修改为催收成功
+			orderLog.setState(UrgeRepayOrderModel.STATE_ORDER_SUCCESS);
 			urgeRepayOrderLogService.saveOrderInfo(orderLog, order);
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
@@ -482,12 +483,13 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		if (StringUtil.isNotBlank(br.getPenaltyDay()) && br.getPenaltyAmout() > 0) {
 			//实际还款时间在应还款时间之前或当天（不对比时分秒），重置逾期金额和天数
-			if (!repay_time.after(repayPlanTime)) {
-				br.setPenaltyDay(String.valueOf(0));
-				br.setPenaltyAmout(Double.valueOf(0));
-				paramMap.put("penaltyDay","0");
-				paramMap.put("penaltyAmout", 0.00);
-			}
+			//这里要考虑到逾期展期的客户,在结清的时候要处理逾期费用,所以这个逻辑去除
+//			if (!repay_time.after(repayPlanTime)) {
+//				br.setPenaltyDay(String.valueOf(0));
+//				br.setPenaltyAmout(Double.valueOf(0));
+//				paramMap.put("penaltyDay","0");
+//				paramMap.put("penaltyAmout", 0.00);
+//			}
 		}
 		i=borrowRepayMapper.updateParam(paramMap);
 		if(i>0){

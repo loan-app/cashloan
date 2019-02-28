@@ -2,6 +2,7 @@ import React from 'react'
 import {Table} from 'antd';
 import Lookdetails from "./Lookdetails";
 import AddWin from "./AddWin";
+import UserRemarkList from "../../../common/UserRemark/UserRemarkList";
 
 var repaymentTypeText={'10':'待审核', '20': '审核中' ,'30': '通过','40' :'已拒绝' ,'50': '还款中', '60' :'还款完成', '70': '逾期'}
 const objectAssign = require('object-assign');
@@ -15,6 +16,10 @@ export default React.createClass({
                 pageSize: 10,
                 current: 1
             },
+            pagination1: {
+                pageSize: 5,
+                current: 1
+            },
             canEdit: true,
             visible: false,
             visible1: false,
@@ -24,6 +29,7 @@ export default React.createClass({
             rowRecord:[],
             record:"",
             visibleAdd:false,
+            visibleRemark:false,
 
         };
     },
@@ -96,7 +102,9 @@ export default React.createClass({
             visible2: false,
             selectedIndex: '',
             selectedRowKeys: [],
-            visibleAdd:false
+            visibleAdd:false,
+            visibleRemark:false,
+
         });
         this.refreshList();
     },
@@ -165,6 +173,39 @@ export default React.createClass({
     download(){
         window.open('/modules/manage/borrow/repay/downRepayByFile.htm');
     },
+
+
+
+    showUserRemark(title, record, canEdit) {
+        Utils.ajaxData({
+            url: '/modules/manage/user/remark/list.htm',
+            data: {
+                pageSize: 5,
+                current: 1,
+                searchParams:JSON.stringify({userId:record})
+            },
+            method: 'get',
+            callback: (result) => {
+                const pagination1 = this.state.pagination1;
+                pagination1.current = result.current;
+                pagination1.pageSize =result.pageSize;
+                pagination1.total = result.page.total;
+                if (!pagination1.current) {
+                    pagination1.current = 1
+                };
+                //console.log(result.data.logs);
+                this.setState({
+                    dataRecord: result.data,
+                    canEdit: canEdit,
+                    visibleRemark: true,
+                    title: title,
+                    pagination1:result.page,
+                    record:record
+                });
+            }
+        });
+    },
+
     render() {
         const {
             loading,
@@ -232,6 +273,11 @@ export default React.createClass({
                 }
             }
         },{
+            title: '备注',
+            render(text, record) {
+                return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
+            }
+        },{
             title: '操作',
             dataIndex: "",
             render: (text,record) => {
@@ -268,6 +314,11 @@ export default React.createClass({
                 <Lookdetails ref="Lookdetails" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record}
                 canEdit={state.canEdit} />
                 <AddWin ref="AddWin"  visible={state.visibleAdd} hideModal={me.hideModal} title={state.title}/>
+
+
+                <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
+                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination1}/>
+
             </div>
         );
     }

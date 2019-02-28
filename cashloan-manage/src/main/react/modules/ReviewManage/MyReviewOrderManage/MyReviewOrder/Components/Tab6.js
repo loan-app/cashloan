@@ -82,6 +82,17 @@ var Tab6 = React.createClass({
       title: '实际还款金额（元）',
       dataIndex: "repayAmount",
     }, {
+      title: '是否逾期',
+      dataIndex: "isOverdue",
+      render:(text,record) =>  {
+        switch(record.isOverdue){
+          case "10":
+            return "否";
+          case "20":
+            return <span style={{ color: "red" }}>是</span>;
+        }
+      }
+    }, {
       title: '状态',
       dataIndex: "stateStr",
     }];

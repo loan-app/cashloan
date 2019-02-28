@@ -163,7 +163,8 @@ public class ClBorrowController extends BaseController {
 	 */
 	@RequestMapping(value = "/api/borrow/listIndex.htm")
 	public void listIndex() throws Exception {
-		List<IndexModel> list = clBorrowService.listIndex();
+		String userId = request.getParameter("userId");
+		List<IndexModel> list = clBorrowService.listIndex(userId);
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("list", list);
 		Map<String,Object> result = new HashMap<String,Object>();
@@ -179,7 +180,8 @@ public class ClBorrowController extends BaseController {
 	@RequestMapping(value = "/api/borrow/choices.htm")
 	public void choicesList() {
 		Map<String,Object> data = new HashMap<String,Object>();
-		data.put("list", clBorrowService.choices());
+		String userId = request.getParameter("userId");
+		data.put("list", clBorrowService.choices(userId));
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_DATA, data);
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
@@ -193,7 +195,8 @@ public class ClBorrowController extends BaseController {
 	@RequestMapping(value = "/api/borrow/choice.htm")
 	public void choice(@RequestParam(value="amount") double amount,
 					   @RequestParam(value="timeLimit") String timeLimit) {
-		Map<String, Object> data = clBorrowService.choice(amount, timeLimit);
+		String userId = request.getParameter("userId");
+		Map<String, Object> data = clBorrowService.choice(amount, timeLimit, userId);
 
 		data.put("amount", amount);
 		data.put("timeLimit", timeLimit);
@@ -340,7 +343,7 @@ public class ClBorrowController extends BaseController {
 		
 		UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(NumberUtil.getLong(userId));
 		// 根据借款金额和借款期限，返回其余费用明细
-		Map<String, Object> map = clBorrowService.choice(amount, timeLimit);
+		Map<String, Object> map = clBorrowService.choice(amount, timeLimit, userId);
 		
 		Date now = DateUtil.getNow(); // 当前时间
 		Date repayTime = DateUtil.rollDay(now, Integer.parseInt(timeLimit) - 1); // 还款日期
@@ -379,7 +382,7 @@ public class ClBorrowController extends BaseController {
 
 		UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(NumberUtil.getLong(userId));
 		// 根据借款金额和借款期限，返回其余费用明细
-		Map<String, Object> map = clBorrowService.choice(amount, timeLimit);
+		Map<String, Object> map = clBorrowService.choice(amount, timeLimit, userId);
 
 		String penaltyFee = Global.getValue("penalty_fee");
 		String[] penaltyFees = penaltyFee.split(",");

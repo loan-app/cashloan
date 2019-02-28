@@ -11,14 +11,7 @@ import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.PayRespLogModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforNotifyModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
-import com.xiji.cashloan.cl.service.BorrowProgressService;
-import com.xiji.cashloan.cl.service.BorrowRepayLogService;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.service.PayReqLogService;
-import com.xiji.cashloan.cl.service.PayRespLogService;
-import com.xiji.cashloan.cl.service.ProfitAmountService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.Borrow;
@@ -70,6 +63,8 @@ public class PayFuiouController extends BaseController{
 	private ProfitAmountService profitAmountService;
 	@Resource
     private ContractService contractService;
+	@Resource
+	private ClSmsService clSmsService;
 	
 	@RequestMapping(value = "/test.htm")
 	public void test(HttpServletRequest request) throws Exception {
@@ -179,7 +174,8 @@ public class PayFuiouController extends BaseController{
 				paramMap.put("payOrderNo",model.getFuorderno());
 				paramMap.put("id",payLog.getId());
 				payLogService.updateSelective(paramMap);
-
+				//发送放款成功短信
+				clSmsService.loanInform(payLog.getUserId(), payLog.getBorrowId());
 				// 生成pdf合同文件
 				new Thread(new Runnable() {
 					@Override

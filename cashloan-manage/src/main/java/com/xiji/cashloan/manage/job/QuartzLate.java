@@ -1,39 +1,33 @@
 package com.xiji.cashloan.manage.job;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.xiji.cashloan.cl.domain.BorrowRepay;
+import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
+import com.xiji.cashloan.cl.model.BorrowRepayModel;
+import com.xiji.cashloan.cl.model.UrgeRepayOrderModel;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.model.BorrowModel;
 import com.xiji.cashloan.manage.domain.QuartzInfo;
 import com.xiji.cashloan.manage.domain.QuartzLog;
+import com.xiji.cashloan.manage.service.QuartzInfoService;
+import com.xiji.cashloan.manage.service.QuartzLogService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
 import tool.util.BeanUtil;
 import tool.util.BigDecimalUtil;
 import tool.util.DateUtil;
 import tool.util.StringUtil;
 
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.model.BorrowRepayModel;
-import com.xiji.cashloan.cl.model.UrgeRepayOrderModel;
-import com.xiji.cashloan.cl.service.BorrowProgressService;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.UrgeRepayOrderService;
-import com.xiji.cashloan.core.common.exception.ServiceException;
-import com.xiji.cashloan.manage.service.QuartzInfoService;
-import com.xiji.cashloan.manage.service.QuartzLogService;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -122,6 +116,7 @@ public class QuartzLate implements Job{
 									data = new HashMap<>();
 									data.put("id", list.get(i).getBorrowId());
 									data.put("state", BorrowModel.STATE_DELAY);
+									data.put("isOverdue","20");
 									msg = clBorrowService.updateSelective(data);
 									logger.debug("---------添加逾期结束---------");
 								}
@@ -137,7 +132,13 @@ public class QuartzLate implements Job{
 									uroMap.put("penaltyAmout", br.getPenaltyAmout());
 									uroMap.put("penaltyDay", br.getPenaltyDay());
 									uroMap.put("id", uro.getId());
+									uroMap.put("repayTime", br.getRepayTime());
 									uroMap.put("createTime", DateUtil.getNow());
+									if(uro.getUserId() != null) {
+										uroMap.put("state", UrgeRepayOrderModel.STATE_ORDER_WAIT);
+									} else {
+										uroMap.put("state", UrgeRepayOrderModel.STATE_ORDER_PRE);
+									}
 									if (day >= badDebtDay) {
 										//修改催款计划
 										uroMap.put("state", UrgeRepayOrderModel.STATE_ORDER_BAD);
