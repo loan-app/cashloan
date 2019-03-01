@@ -1168,6 +1168,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("id", borrowRepay.getId());
 				param.put("state", BorrowModel.STATE_DELAY_PAY);
+				param.put("repayAccount", repaymentLog.getCardNo());
+				param.put("serialNumber", repaymentLog.getOrderNo());
+				param.put("amount", repaymentLog.getAmount());
+				param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
 				Date repayTime = null;
 				Map<String, Object> delayPayMap = confirmDelayPay(param);
 				if (delayPayMap != null) {
