@@ -47,7 +47,7 @@ export default React.createClass({
 
   },
   rowKey(record) {
-    return record.id;
+    return record.channelCode;
   },
 
   //分页
@@ -178,7 +178,6 @@ export default React.createClass({
             return record.overdueRate +"%"
         }
     }];
-    var state = this.state;
     return (
       <div className="block-panel">
 

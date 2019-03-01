@@ -303,7 +303,7 @@
     </select>
 
   <select id="listAuditorStatistic" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-        select sum(auditor_id) as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
+        select auditor_id as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
         sum(pass_order) as pass_order,sum(current_overdue) as current_overdue,sum(first_load_count) as first_load_count,
         sum(first_overdue) as first_overdue,sum(load_count) as load_count,sum(first_pass_order) as first_pass_order,
         sum(new_borrow_apply_count) as new_borrow_apply_count,su.name as auditor_name

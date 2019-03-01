@@ -47,7 +47,7 @@ export default React.createClass({
 
   },
   rowKey(record) {
-    return record.id;
+    return record.auditorId;
   },
 
   //分页
