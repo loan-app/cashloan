@@ -139,20 +139,20 @@ export default React.createClass({
         title: '逾期还款笔数',
         dataIndex: "overdueRepayment",
     }, {
-        title: '应还金额',
+        title: '到期应还金额',
         dataIndex: "shouldAmount",
     }, {
-        title: '实还金额',
+        title: '到期实还金额',
         dataIndex: "realReturnAmount",
     }, {
-        title: '放款本金',
+        title: '到期放款本金',
         dataIndex: "loadAmount",
-    }, {
-        title: '减免金额',
-        dataIndex: "derateAmount",
-    }, {
-        title: '待还金额',
+    },{
+        title: '到期待还金额',
         dataIndex: "remainAmount",
+    }, {
+        title: '今日减免金额',
+        dataIndex: "derateAmount",
     }, {
         title: '今日实还金额',
         dataIndex: "todayRealReturnAmount",

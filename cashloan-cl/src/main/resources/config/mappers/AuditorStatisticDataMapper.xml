@@ -67,8 +67,8 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        insert into cl_auditor_statistic_data(create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate,current_overdue,first_load_count,first_overdue,first_extend_overdue_count,first_pass_order,new_borrow_apply_count)
-        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{auditorId,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{passOrder,jdbcType=INTEGER},#{firstPassRate,jdbcType=DECIMAL},#{currentOverdueRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{currentOverdue,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{firstOverdue,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstPassOrder,jdbcType=INTEGER},#{newBorrowApplyCount,jdbcType=INTEGER})
+        insert into cl_auditor_statistic_data(create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate,current_overdue,first_load_count,first_overdue,load_count,first_extend_overdue_count,first_pass_order,new_borrow_apply_count)
+        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{auditorId,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{passOrder,jdbcType=INTEGER},#{firstPassRate,jdbcType=DECIMAL},#{currentOverdueRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{currentOverdue,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{firstOverdue,jdbcType=INTEGER},#{loadCount,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstPassOrder,jdbcType=INTEGER},#{newBorrowApplyCount,jdbcType=INTEGER})
     </insert>
 
     
@@ -86,6 +86,7 @@
             current_overdue = #{currentOverdue,jdbcType=INTEGER},
             first_load_count = #{firstLoadCount,jdbcType=INTEGER},
             first_overdue = #{firstOverdue,jdbcType=INTEGER},
+            load_count = #{loadCount,jdbcType=INTEGER},
             first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER},
             first_pass_order = #{firstPassOrder,jdbcType=INTEGER},
             new_borrow_apply_count = #{newBorrowApplyCount,jdbcType=INTEGER}
@@ -304,7 +305,8 @@
   <select id="listAuditorStatistic" parameterType="java.util.HashMap" resultMap="BaseResultMap">
         select sum(auditor_id) as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
         sum(pass_order) as pass_order,sum(current_overdue) as current_overdue,sum(first_load_count) as first_load_count,
-        sum(first_overdue) as first_overdue,sum(first_pass_order) as first_pass_order,su.name as auditor_name
+        sum(first_overdue) as first_overdue,sum(load_count) as load_count,sum(first_pass_order) as first_pass_order,
+        sum(new_borrow_apply_count) as new_borrow_apply_count,su.name as auditor_name
         from cl_auditor_statistic_data as statistic,arc_sys_user as su
       <where>
           su.id = statistic.auditor_id
