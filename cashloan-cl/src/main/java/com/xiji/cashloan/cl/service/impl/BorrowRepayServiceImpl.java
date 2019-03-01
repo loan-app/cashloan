@@ -1172,6 +1172,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				param.put("serialNumber", repaymentLog.getOrderNo());
 				param.put("amount", repaymentLog.getAmount());
 				param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
+				if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
+					param.put("delayDays", Global.getValue("delay_days"));
+				}
 				Date repayTime = null;
 				Map<String, Object> delayPayMap = confirmDelayPay(param);
 				if (delayPayMap != null) {
