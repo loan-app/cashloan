@@ -18,7 +18,7 @@
         <result column="first_load_count" property="firstLoadCount" jdbcType="INTEGER" />
         <result column="again_load_count" property="againLoadCount" jdbcType="INTEGER" />
         <result column="expire_overdue_count" property="expireOverdueCount" jdbcType="INTEGER" />
-        <result column="first_expire_overdue_count" property="firstExtendOverdueCount" jdbcType="INTEGER" />
+        <result column="first_expire_overdue_count" property="firstExpireOverdueCount" jdbcType="INTEGER" />
         <result column="machine_audit_pass_rate" property="machineAuditPassRate" jdbcType="DECIMAL" />
         <result column="machine_audit_not_pass_rate" property="machineAuditNotPassRate" jdbcType="DECIMAL" />
         <result column="review_pass_rate" property="reviewPassRate" jdbcType="DECIMAL" />
