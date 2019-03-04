@@ -67,16 +67,22 @@ public class AuditingStatisticDataServiceImpl extends BaseServiceImpl<AuditingSt
 				if (auditingStatisticData.getBorrowApplyCount() == 0){
 					auditingStatisticData.setMachineAuditNotPassRate(0.00);
 					auditingStatisticData.setMachineAuditPassRate(0.00);
-					auditingStatisticData.setReviewNotPassRate(0.00);
-					auditingStatisticData.setReviewPassRate(0.00);
 				}else {
 					auditingStatisticData.setMachineAuditNotPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getMachineAuditNotPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
 				    auditingStatisticData.setMachineAuditPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getMachineAuditPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
-				    auditingStatisticData.setReviewNotPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewNotPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
-				    auditingStatisticData.setReviewPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
+				}
+
+				if (auditingStatisticData.getReviewPassCount() + auditingStatisticData.getReviewNotPassCount() <=0){
+					auditingStatisticData.setReviewNotPassRate(0.00);
+					auditingStatisticData.setReviewPassRate(0.00);
+				}else {
+					auditingStatisticData.setReviewPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewPassCount()/(double)(auditingStatisticData.getReviewNotPassCount() +auditingStatisticData.getReviewPassCount())*100,2));
+					auditingStatisticData.setReviewNotPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewNotPassCount()/(double)(auditingStatisticData.getReviewNotPassCount()+auditingStatisticData.getReviewPassCount())*100,2));
 				}
 				auditingStatisticData.setCreateTime(new Date());
 			}
+
+
 		}
 
 		return auditingStatisticDataList;
