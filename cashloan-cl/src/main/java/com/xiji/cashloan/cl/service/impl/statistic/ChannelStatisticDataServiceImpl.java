@@ -163,7 +163,7 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 			if (statisticData.getAgainExpireLoadCount() == 0 && statisticData.getFirstExpireLoadCount() == 0) {
 				statisticData.setOverdueRate(0.00);
 			} else {
-				statisticData.setOverdueRate(BigDecimalUtil.decimal((double) statisticData.getExtendOverdueCount() / (double) (statisticData.getAgainExpireLoadCount() + statisticData.getFirstExpireLoadCount()) * 100, 2));
+				statisticData.setOverdueRate(BigDecimalUtil.decimal((double) statisticData.getExpireOverdueCount() / (double) (statisticData.getAgainExpireLoadCount() + statisticData.getFirstExpireLoadCount()) * 100, 2));
 			}
 			if (statisticData.getFirstExpireLoadCount() == 0) {
 				statisticData.setFirstOverdueRate(0.00);
@@ -348,6 +348,7 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 						case "newReviewPassCount" : statisticData.setReviewPassCount(channelStatisticData.getReviewPassCount());break;
 						case "againExpireOverdueCount" : statisticData.setAgainExpireOverdueCount(channelStatisticData.getAgainExpireOverdueCount());break;
 
+						case "expireOverdueCount" : statisticData.setExpireOverdueCount(channelStatisticData.getExpireOverdueCount());break;
 						default:break;
 					}
 				}
