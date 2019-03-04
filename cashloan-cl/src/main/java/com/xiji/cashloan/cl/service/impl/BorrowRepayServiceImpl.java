@@ -996,7 +996,12 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		//2、走支付逻辑
 		Double sourceAmount = 0.0;
 		if ((StringUtil.equals("2", type))) {
-			sourceAmount = borrow.getFee();//展期扣除部费用
+			//展期扣除部费用
+			if(borrowRepay.getPenaltyAmout() > 0) {
+				sourceAmount = BigDecimalUtil.add(borrow.getFee() ,borrowRepay.getPenaltyAmout());
+			} else {
+				sourceAmount = borrow.getFee();
+			}
 		}else {
 			// 还款金额
 			double principal = borrowRepay.getAmount();

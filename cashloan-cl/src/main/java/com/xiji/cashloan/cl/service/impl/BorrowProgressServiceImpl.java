@@ -142,12 +142,19 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
+				long day = DateUtil.daysBetween(new Date(), repayDate);
+				double delayFee;
+				if(day > 0) {
+					delayFee = borrow.getFee() + clBorrowModel.getPenaltyAmount();
+				} else {
+					delayFee = borrow.getFee();
+				}
 				if (nowDate.after(repayPlanTime)){
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				}else {
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,delayDays),"yyyy-M-d");
 				}
-				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(borrow.getFee()));
+				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(delayFee));
 				delayItem.put("delayRepayTimeStr",dateStr);
 				result.put("delayItem", delayItem);
 			}
