@@ -562,7 +562,7 @@ CREATE TABLE `cl_user_statistic_data` (
   `old_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日老客下款数',
   `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日下款数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='用户统计数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户统计数据';
 
 
 -- 渠道统计数据
@@ -604,7 +604,7 @@ CREATE TABLE `cl_channel_statistic_data` (
   `again_expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期复贷逾期笔数',
   `again_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '复贷逾期率',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='渠道统计数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道统计数据';
 
 
 -- 放款统计数据
@@ -624,7 +624,7 @@ CREATE TABLE `cl_load_statistic_data` (
   `again_load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '复贷金额',
   `again_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '复贷本金',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='放款统计数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='放款统计数据';
 
 
 -- 审核统计数据
@@ -646,7 +646,7 @@ CREATE TABLE `cl_auditing_statistic_data` (
   `review_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审拒绝率',
   `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款笔数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='审核统计数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核统计数据';
 
 
 -- 还款统计数据
@@ -669,7 +669,7 @@ CREATE TABLE `cl_repayment_statistic_data` (
   `remain_amount` decimal(10,2) DEFAULT '0.00' COMMENT '待还金额',
   `today_real_return_amount` decimal(10,2) DEFAULT '0.00' COMMENT '今日实还金额',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='还款统计数据';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='还款统计数据';
 
 
 -- 审核人员统计数据
