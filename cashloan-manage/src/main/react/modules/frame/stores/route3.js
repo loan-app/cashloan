@@ -35,6 +35,7 @@ var ReviewPersonnelList = require('../../ReviewManage/ReviewPersonnelManage/Revi
 var ReviewTotalOrderList = require('../../ReviewManage/ReviewOrderListManage/ReviewTotalOrderList/index');//审核订单管理-审核总订单
 var MyReviewOrder = require('../../ReviewManage/MyReviewOrderManage/MyReviewOrder/index');//我的审核订单-审核订单
 var BlackTaskManager = require('../../TaskManageList/index');//任务管理
+var LoanStatistics = require('../../StatisticalManagement/LoanStatistics/index');//放款统计
 module.exports = {
   OrdinaryUserList,
   AgentList,
@@ -65,6 +66,7 @@ module.exports = {
   ShowWorkbench,
   ReviewPersonnelList,
   ReviewTotalOrderList,
-    BlackTaskManager,
-  MyReviewOrder
+  BlackTaskManager,
+  MyReviewOrder,
+  LoanStatistics
 }

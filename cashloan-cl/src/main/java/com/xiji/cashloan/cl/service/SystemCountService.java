@@ -1,5 +1,8 @@
 package com.xiji.cashloan.cl.service;
 
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.model.statistic.UserStatisticData;
+
 import java.util.Map;
 
 /**
@@ -55,5 +58,29 @@ public interface SystemCountService {
 	 * @throws Exception
 	 */
 	public Map<String,Object> loanAndRepayInfo()throws Exception;
+
+//	/**
+//	 * 单日用户统计
+//	 * @return
+//	 */
+//	Map<String,Object> todayUserStatistics();
+
+	/**
+	 * 用户数据统计
+	 * @param params
+	 * @param current
+	 * @param pageSize
+	 * @return
+	 */
+	Page<UserStatisticData> listUserStatisticData(Map<String,Object> params, Integer current, Integer pageSize);
+
+//	/**
+//	 * 渠道数据统计
+//	 * @param params
+//	 * @param current
+//	 * @param pageSize
+//	 * @return
+//	 */
+//	Page<ChannelStatisticModel> listChannelStatisticData(Map<String,Object> params, Integer current, Integer pageSize);
 
 }

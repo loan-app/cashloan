@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_repayment_statistic_data表:还款统计数据模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.statistic.RepaymentStatisticDataMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="count_time" property="countTime" jdbcType="TIMESTAMP" />
+        <result column="should_order" property="shouldOrder" jdbcType="INTEGER" />
+        <result column="remain_order" property="remainOrder" jdbcType="INTEGER" />
+        <result column="advance_repayment" property="advanceRepayment" jdbcType="INTEGER" />
+        <result column="normal_repayment" property="normalRepayment" jdbcType="INTEGER" />
+        <result column="extend_repayment" property="extendRepayment" jdbcType="INTEGER" />
+        <result column="overdue_repayment" property="overdueRepayment" jdbcType="INTEGER" />
+        <result column="should_amount" property="shouldAmount" jdbcType="DECIMAL" />
+        <result column="real_return_amount" property="realReturnAmount" jdbcType="DECIMAL" />
+        <result column="today_real_return_amount" property="todayRealReturnAmount" jdbcType="DECIMAL" />
+        <result column="load_amount" property="loadAmount" jdbcType="DECIMAL" />
+        <result column="derate_amount" property="derateAmount" jdbcType="DECIMAL" />
+        <result column="remain_amount" property="remainAmount" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,create_time,update_time,count_time,should_order,remain_order,advance_repayment,normal_repayment,extend_repayment,overdue_repayment,should_amount,real_retrun_amount,today_real_return_amount,load_amount,derate_amount,remain_amount
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="countTime != null">
+                and count_time = #{countTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="shouldOrder != null">
+                and should_order = #{shouldOrder,jdbcType=INTEGER}
+            </if>
+            <if test="remainOrder != null">
+                and remain_order = #{remainOrder,jdbcType=INTEGER}
+            </if>
+            <if test="advanceRepayment != null">
+                and advance_repayment = #{advanceRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="normalRepayment != null">
+                and normal_repayment = #{normalRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="extendRepayment != null">
+                and extend_repayment = #{extendRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="overdueRepayment != null">
+                and overdue_repayment = #{overdueRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="shouldAmount != null">
+                and should_amount = #{shouldAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="realReturnAmount != null">
+                and real_retrun_amount = #{realReturnAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="todayRealReturnAmount != null">
+                and today_real_return_amount = #{todayRealReturnAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="loadAmount != null">
+                and load_amount = #{loadAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="derateAmount != null">
+                and derate_amount = #{derateAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="remainAmount != null">
+                and remain_amount = #{remainAmount,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData">
+        insert into cl_repayment_statistic_data(create_time,update_time,count_time,should_order,remain_order,advance_repayment,normal_repayment,extend_repayment,overdue_repayment,should_amount,real_return_amount,today_real_return_amount,load_amount,derate_amount,remain_amount)values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{shouldOrder,jdbcType=INTEGER},#{remainOrder,jdbcType=INTEGER},#{advanceRepayment,jdbcType=INTEGER},#{normalRepayment,jdbcType=INTEGER},#{extendRepayment,jdbcType=INTEGER},#{overdueRepayment,jdbcType=INTEGER},#{shouldAmount,jdbcType=DECIMAL},#{realReturnAmount,jdbcType=DECIMAL},#{todayRealReturnAmount,jdbcType=DECIMAL},#{loadAmount,jdbcType=DECIMAL},#{derateAmount,jdbcType=DECIMAL},#{remainAmount,jdbcType=DECIMAL})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData">
+        update cl_repayment_statistic_data set 
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            count_time = #{countTime,jdbcType=TIMESTAMP},
+            should_order = #{shouldOrder,jdbcType=INTEGER},
+            remain_order = #{remainOrder,jdbcType=INTEGER},
+            advance_repayment = #{advanceRepayment,jdbcType=INTEGER},
+            normal_repayment = #{normalRepayment,jdbcType=INTEGER},
+            extend_repayment = #{extendRepayment,jdbcType=INTEGER},
+            overdue_repayment = #{overdueRepayment,jdbcType=INTEGER},
+            should_amount = #{shouldAmount,jdbcType=DECIMAL},
+            real_return_amount = #{realReturnAmount,jdbcType=DECIMAL},
+            today_real_retrun_amount = #{todayRealReturnAmount,jdbcType=DECIMAL},
+            load_amount = #{loadAmount,jdbcType=DECIMAL},
+            derate_amount = #{derateAmount,jdbcType=DECIMAL},
+            remain_amount = #{remainAmount,jdbcType=DECIMAL}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_repayment_statistic_data
+          <set>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null">        
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="countTime != null">        
+                count_time = #{countTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="shouldOrder != null">        
+                should_order = #{shouldOrder,jdbcType=INTEGER},                
+            </if>
+            <if test="remainOrder != null">        
+                remain_order = #{remainOrder,jdbcType=INTEGER},                
+            </if>
+            <if test="advanceRepayment != null">        
+                advance_repayment = #{advanceRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="normalRepayment != null">        
+                normal_repayment = #{normalRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="extendRepayment != null">        
+                extend_repayment = #{extendRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="overdueRepayment != null">        
+                overdue_repayment = #{overdueRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="shouldAmount != null">        
+                should_amount = #{shouldAmount,jdbcType=DECIMAL},                
+            </if>
+            <if test="realReturnAmount != null">
+                real_return_amount = #{realReturnAmount,jdbcType=DECIMAL},
+            </if>
+
+              <if test="todayRealReturnAmount != null">
+                  today_real_return_amount = #{todayRealReturnAmount,jdbcType=DECIMAL},
+              </if>
+            <if test="loadAmount != null">        
+                load_amount = #{loadAmount,jdbcType=DECIMAL},                
+            </if>
+            <if test="derateAmount != null">        
+                derate_amount = #{derateAmount,jdbcType=DECIMAL},                
+            </if>
+            <if test="remainAmount != null">        
+                remain_amount = #{remainAmount,jdbcType=DECIMAL}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_repayment_statistic_data
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_repayment_statistic_data
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_repayment_statistic_data
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData">
+        insert into cl_repayment_statistic_data
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="countTime != null">
+                count_time,
+            </if>
+            <if test="shouldOrder != null">
+                should_order,
+            </if>
+            <if test="remainOrder != null">
+                remain_order,
+            </if>
+            <if test="advanceRepayment != null">
+                advance_repayment,
+            </if>
+            <if test="normalRepayment != null">
+                normal_repayment,
+            </if>
+            <if test="extendRepayment != null">
+                extend_repayment,
+            </if>
+            <if test="overdueRepayment != null">
+                overdue_repayment,
+            </if>
+            <if test="shouldAmount != null">
+                should_amount,
+            </if>
+            <if test="realReturnAmount != null">
+                real_return_amount,
+            </if>
+            <if test="todayRealReturnAmount != null">
+                today_real_return_amount,
+            </if>
+            <if test="loadAmount != null">
+                load_amount,
+            </if>
+            <if test="derateAmount != null">
+                derate_amount,
+            </if>
+            <if test="remainAmount != null">
+                remain_amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="countTime != null">
+                #{countTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="shouldOrder != null">
+                #{shouldOrder,jdbcType=INTEGER},
+            </if>
+            <if test="remainOrder != null">
+                #{remainOrder,jdbcType=INTEGER},
+            </if>
+            <if test="advanceRepayment != null">
+                #{advanceRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="normalRepayment != null">
+                #{normalRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="extendRepayment != null">
+                #{extendRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="overdueRepayment != null">
+                #{overdueRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="shouldAmount != null">
+                #{shouldAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="realReturnAmount != null">
+                #{realReturnAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="todayRealReturnAmount != null">
+                #{todayRealReturnAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="loadAmount != null">
+                #{loadAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="derateAmount != null">
+                #{derateAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="remainAmount != null">
+                #{remainAmount,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getLateDate" resultType="java.util.Date">
+        select count_time from cl_repayment_statistic_data order by count_time desc limit 1;
+    </select>
+
+    <select id="listRepaymentStatisticData" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+      select  distinct T.countTime,
+        T.shouldOrder,
+        T.remainOrder,
+        T.advanceRepayment,
+        T.normalRepayment,
+        T.overdueRepayment,
+        T.extendRepayment,
+        T.shouldAmount,
+        T.realReturnAmount,
+        T.todayRealReturnAmount,
+        T.loadAmount,
+        T.derateAmount,
+        T.remainAmount
+
+
+
+        from (
+        select DATE_FORMAT(p.time,'%Y-%m-%d') countTime,
+
+        IFNULL(p1.shouldOrder,0) shouldOrder,
+        IFNULL(p2.remainOrder,0) remainOrder,
+        IFNULL(p3.advanceRepayment,0) advanceRepayment,
+        IFNULL(p4.normalRepayment,0) normalRepayment,
+        IFNULL(p5.overdueRepayment,0) overdueRepayment,
+        IFNULL(p6.extendRepayment,0) extendRepayment,
+        IFNULL(p7.shouldAmount,0) shouldAmount,
+        IFNULL(p8.realReturnAmount,0) realReturnAmount,
+        IFNULL(p9.todayRealReturnAmount,0) todayRealReturnAmount,
+        IFNULL(p10.loadAmount,0) loadAmount,
+        IFNULL(p11.derateAmount,0) derateAmount,
+        IFNULL(p12.remainAmount,0) remainAmount
+
+        from (
+
+        (SELECT COUNT(id) shouldOrder,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay  ) t2 GROUP BY time ) UNION
+        (SELECT COUNT(id) remainOrder,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay where state ='20' ) t2 GROUP BY time  ) UNION
+        (SELECT COUNT(id) advanceRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') > DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) UNION
+        (SELECT COUNT(id) normalRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') = DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) UNION
+
+        (SELECT COUNT(id) overdueRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) UNION
+        (SELECT COUNT(id) extendRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY time  ) UNION
+
+        (SELECT sum(amount+penalty_amout) shouldAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) UNION
+        (SELECT sum(amount+penalty_amout) realReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) UNION
+        (SELECT sum(amount+penalty_amout) todayRealReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) UNION
+        (SELECT sum(real_amount) loadAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) UNION
+
+        (SELECT sum(repayPenaltyAmout+repayAmount-logAmount-logPenaltyAmout) derateAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount as logAmount,log.penalty_amout as logPenaltyAmout, repay.amount as repayAmount ,repay.penalty_amout as repayPenaltyAmout ,DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) UNION
+
+        (SELECT sum(amount+penalty_amout) remainAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id and repay.state ='20') t2 GROUP BY time  )
+
+
+        ) p
+        left join (SELECT COUNT(id) shouldOrder,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay) t2 GROUP BY time  ) p1 on p.time = p1.time
+        left join (SELECT COUNT(id) remainOrder,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay where state ='20' ) t2 GROUP BY time  ) p2 on p.time = p2.time
+        left join (SELECT COUNT(id) advanceRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') > DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) p3 on p.time = p3.time
+        left join (SELECT COUNT(id) normalRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') = DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) p4 on p.time = p4.time
+        left join (SELECT COUNT(id) overdueRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) p5 on p.time = p5.time
+        left join (SELECT COUNT(id) extendRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY time  ) p6 on p.time = p6.time
+
+        left join (SELECT sum(amount+penalty_amout) shouldAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) p7 on p.time = p7.time
+        left join (SELECT sum(amount+penalty_amout) realReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) p8 on p.time = p8.time
+        left join (SELECT sum(amount+penalty_amout) todayRealReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) p9 on p.time = p9.time
+        left join (SELECT sum(real_amount) loadAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) p10 on p.time = p10.time
+
+        left join (SELECT sum(repayPenaltyAmout+repayAmount-logAmount-logPenaltyAmout) derateAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount as logAmount,log.penalty_amout as logPenaltyAmout, repay.amount as repayAmount ,repay.penalty_amout as repayPenaltyAmout ,DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) p11 on p.time = p11.time
+
+        left join (SELECT sum(amount+penalty_amout) remainAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id and repay.state ='20') t2 GROUP BY time  ) p12 on p.time = p12.time
+
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(p.time, '%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(p.time, '%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+
+        ) T ORDER BY T.countTime ASC
+    </select>
+
+    <select id="listRepaymentStatistic" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select * from
+        cl_repayment_statistic_data
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(count_time,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        order by count_time desc
+    </select>
+</mapper>
