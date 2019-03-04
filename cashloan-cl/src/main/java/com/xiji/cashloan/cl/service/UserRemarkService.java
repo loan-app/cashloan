@@ -23,4 +23,11 @@ public interface UserRemarkService extends BaseService<UserRemark, Long>{
      * @return
      */
     Page<UserRemark> listUserRemark(Map<String, Object> searchParams, int current, int pageSize);
+
+    /**
+     * 保存备注信息
+     * @param userRemark
+     * @return
+     */
+    int saveUserRemark(UserRemark userRemark);
 }

@@ -19,7 +19,9 @@ import com.xiji.cashloan.cl.service.ClSmsService;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.model.BorrowModel;
 import java.util.Date;
@@ -264,6 +266,9 @@ public class ChargeController extends BaseController {
 					param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
 					param.put("repayAccount", bankCard.getCardNo());
 					param.put("serialNumber", payLog.getOrderNo());
+					if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
+						param.put("delayDays", Global.getValue("delay_days"));
+					}
 					if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
 						Map<String, Object> delayPayMap = borrowRepayService.confirmDelayPay(param);
 						if (delayPayMap != null) {
