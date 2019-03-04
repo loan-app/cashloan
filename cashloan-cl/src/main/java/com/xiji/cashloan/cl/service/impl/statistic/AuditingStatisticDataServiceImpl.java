@@ -73,7 +73,7 @@ public class AuditingStatisticDataServiceImpl extends BaseServiceImpl<AuditingSt
 					auditingStatisticData.setMachineAuditNotPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getMachineAuditNotPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
 				    auditingStatisticData.setMachineAuditPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getMachineAuditPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
 				    auditingStatisticData.setReviewNotPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewNotPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
-				    auditingStatisticData.setReviewPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
+				    auditingStatisticData.setReviewPassRate(BigDecimalUtil.decimal((double)auditingStatisticData.getReviewPassCount()/(double)auditingStatisticData.getBorrowApplyCount()*100,2));
 				}
 				auditingStatisticData.setCreateTime(new Date());
 			}
