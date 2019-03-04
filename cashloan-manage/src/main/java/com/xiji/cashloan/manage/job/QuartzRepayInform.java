@@ -70,7 +70,7 @@ public class QuartzRepayInform implements Job{
 				}
 			}
 		}
-		logger.info("还款日前0~2天计算结束");
+		logger.info("还款日前0~1天计算结束");
 		quartzRemark = "执行总次数"+total+",成功"+succeed+"次,失败"+fail+"次";
 		return quartzRemark;
 	}
