@@ -394,6 +394,7 @@ public class UserBaseInfoController extends BaseController {
 
                 String taskId = "";
                 double match = 0.0;
+                boolean matchYoudun = false;
 
                 if ((livingImg != null && 30 != Integer.parseInt(userAuth.getIdState()))
                     || OcrUtil.ifYoudun(ocrType)) {
@@ -414,8 +415,9 @@ public class UserBaseInfoController extends BaseController {
                         log.setResult(OcrUtil.getAuth(ocrResultJson));
                         match = OcrUtil.getScore(ocrResultJson);
                         log.setConfidence(String.valueOf(match));
-                        if (!StringUtil.equalsIgnoreCase("T",OcrUtil.getAuth(ocrResultJson))){
-                            //认证失败
+                        //有盾认证成功.
+                        matchYoudun = StringUtil.equalsIgnoreCase("T",OcrUtil.getAuth(ocrResultJson));
+                        if (!matchYoudun) {
                             match = 0.0;
                         }
                         taskId = orderNo;
@@ -453,7 +455,7 @@ public class UserBaseInfoController extends BaseController {
 
                 logger.info("用户" + user.getLoginName() + "完善个人信息，人证识别比对最终值为：" + match);
 
-                if (match >= Global.getDouble("idCard_credit_pass_rate")) {
+                if (match >= Global.getDouble("idCard_credit_pass_rate") || matchYoudun) {
                     int count = userBaseInfoService.updateById(info);
                     returnMap.put("idState", UserAuthModel.STATE_VERIFIED);
                     returnMap.put("idTime", DateUtil.getNow());
