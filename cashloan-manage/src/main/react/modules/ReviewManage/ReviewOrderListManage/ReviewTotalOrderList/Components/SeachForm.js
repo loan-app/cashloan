@@ -9,6 +9,7 @@ import {
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const RangePicker = DatePicker.RangePicker;
 
 let SeachForm = React.createClass({
   getInitialState() {
@@ -18,8 +19,17 @@ let SeachForm = React.createClass({
     },
   handleQuery() {
     var params = this.props.form.getFieldsValue();
+      var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,state: params.state};
+      if(params.borrowTime){
+          json.startTime = (DateFormat.formatDate(params.borrowTime[0])).substring(0,10);
+          json.endTime = (DateFormat.formatDate(params.borrowTime[1])).substring(0,10);
+      }
+      if(params.reviewTime){
+          json.startDate = (DateFormat.formatDate(params.reviewTime[0])).substring(0,10);
+          json.endDate = (DateFormat.formatDate(params.reviewTime[1])).substring(0,10);
+      }
     this.props.passParams({
-      searchParams : JSON.stringify(params),
+      searchParams : JSON.stringify(json),
       pageSize: 10,
       current: 1,
     });
@@ -31,6 +41,10 @@ let SeachForm = React.createClass({
       current: 1,
     });
   },
+    disabledDate(startValue) {
+        var today = new Date();
+        return startValue.getTime() > today.getTime();
+    },
   render() {
     const {
       getFieldProps
@@ -75,7 +89,13 @@ let SeachForm = React.createClass({
               <Option value="20">未分配</Option>
           </Select>
         </FormItem>
-        <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
+          <FormItem label="借款日期：">
+          <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('borrowTime', { initialValue: '' }) } />
+        </FormItem>
+      <FormItem label="审核日期：">
+          <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('reviewTime', { initialValue: '' }) } />
+      </FormItem>
+      <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
         <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
       </Form>
     );
