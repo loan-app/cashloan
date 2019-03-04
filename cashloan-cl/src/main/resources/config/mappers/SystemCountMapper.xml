@@ -27,7 +27,7 @@
     	select count(distinct borrow.id) from cl_borrow_progress as progress ,cl_borrow as borrow
     	where TO_DAYS(progress.create_time)-TO_DAYS(SYSDATE())=0
     		and progress.state in ('20','26')
-    		and borrow.id = progress.borrow_id
+    		and borrow.id = progress.borrow_id and borrow.again ='10'
     </select>
 
     <!-- 统计当日借款新客申请通过的数量 -->
