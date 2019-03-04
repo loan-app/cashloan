@@ -713,6 +713,13 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1020');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1021');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1022');
 
+-- 添加定时任务信息表
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertChannelStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzChannelStatistic', now(), '保存渠道统计数据', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertAuditorStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzAuditorStatistic', now(), '保存审核人员统计数据', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertRepaymentStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzRepaymentStatistic', now(), '保存还款统计数据统计', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertUserStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzUserStatistic', now(), '保存用户统计数据', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertLoadStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzLoadStatistic', now(), '保存放款统计数据', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertAuditingStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzAuditingStatistic', now(), '保存审核统计数据', '0 0 3 * * ?');
 
 
 
