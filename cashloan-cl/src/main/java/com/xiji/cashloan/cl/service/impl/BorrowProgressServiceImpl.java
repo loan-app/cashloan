@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import tool.util.BigDecimalUtil;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
@@ -143,14 +144,12 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
 				double delayFee;
+				// 如果当前时间大于应还款时间,那么
 				if(nowDate.after(repayPlanTime)) {
-					delayFee = borrow.getFee() + clBorrowModel.getPenaltyAmount();
+					delayFee = BigDecimalUtil.add(borrow.getFee() + clBorrowModel.getPenaltyAmount());
+					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				} else {
 					delayFee = borrow.getFee();
-				}
-				if (nowDate.after(repayPlanTime)){
-					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
-				}else {
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,delayDays),"yyyy-M-d");
 				}
 				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(delayFee));
