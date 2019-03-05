@@ -19,7 +19,7 @@ let SeachForm = React.createClass({
     },
   handleQuery() {
     var params = this.props.form.getFieldsValue();
-      var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,state: params.state,isDestribute:params.isDestribute};
+      var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,borrowState:params.borrowState,isDestribute:params.isDestribute};
       if(params.borrowTime){
           json.startTime = (DateFormat.formatDate(params.borrowTime[0])).substring(0,10);
           json.endTime = (DateFormat.formatDate(params.borrowTime[1])).substring(0,10);
