@@ -13,7 +13,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,state: params.state};
+        var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,borrowState: params.borrowState};
         if(params.borrowTime){
             json.startTime = (DateFormat.formatDate(params.borrowTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.borrowTime[1])).substring(0,10);
@@ -21,6 +21,12 @@ let SeachForm = React.createClass({
         if(params.reviewTime){
             json.startDate = (DateFormat.formatDate(params.reviewTime[0])).substring(0,10);
             json.endDate = (DateFormat.formatDate(params.reviewTime[1])).substring(0,10);
+        }
+        if(json.borrowName){
+            json.borrowName = json.borrowName.replace(/\s+/g, "")
+        }
+        if(json.orderNo){
+            json.orderNo = json.orderNo.replace(/\s+/g, "")
         }
         this.props.passParams({
             searchParams: JSON.stringify(json),
@@ -73,11 +79,11 @@ let SeachForm = React.createClass({
                  </Select>
              </FormItem>
             <FormItem label="借款日期：">
-            <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('borrowTime', { initialValue: '' }) } />
-            </FormItem>
-            <FormItem label="审核日期：">
-                <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('reviewTime', { initialValue: '' }) } />
-            </FormItem>
+                    <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('borrowTime', { initialValue: '' }) } />
+                </FormItem>
+                <FormItem label="审核日期：">
+                    <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('reviewTime', { initialValue: '' }) } />
+                </FormItem>
                 <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
                 <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
             </Form>
