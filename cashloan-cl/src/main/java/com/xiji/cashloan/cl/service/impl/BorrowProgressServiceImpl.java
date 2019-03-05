@@ -142,9 +142,8 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
-				long day = DateUtil.daysBetween(new Date(), repayDate);
 				double delayFee;
-				if(day > 0) {
+				if(nowDate.after(repayPlanTime)) {
 					delayFee = borrow.getFee() + clBorrowModel.getPenaltyAmount();
 				} else {
 					delayFee = borrow.getFee();
