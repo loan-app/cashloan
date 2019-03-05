@@ -120,6 +120,7 @@ export default React.createClass({
         let formsToday = this.state.formsToday;
         let formsTotal = this.state.formsTotal;
         let formsRealTime = this.state.formsRealTime;
+        let br=<br></br>;
         return (
             <div id='box' style={{ minWidth: 820 }}>
                 <div className="block-panel">
@@ -243,7 +244,7 @@ export default React.createClass({
 
                             <dev className ="data-panel-1">
                                 <dev className="data-panel-t1"></dev>
-                                <dev className='sp-title'>累计数据</dev>
+                                <dev className='sp-title'>{br}累计数据</dev>
                                 {/*<span className='sp-title'>累计数据</span>*/}
                             </dev>
                             <dev className ="data-panel-2 ">
@@ -275,7 +276,7 @@ export default React.createClass({
 
                                 <dev className ="data-panel-5">
                                     <dev className="data-panel-t2"></dev>
-                                    <dev className='sp-title'>实时数据</dev>
+                                    <dev className='sp-title'>{br}实时数据</dev>
                                 </dev>
                                 <dev className ="data-panel-4 ">
                                     <dev className ='blk-number-description'>待还款总余额</dev>
