@@ -79,6 +79,8 @@ public class ClBorrowController extends BaseController {
 	private YixinRiskService yixinRiskService;
 	@Resource
 	private PinganRiskService pinganRiskService;
+	@Resource
+	private YouDunRiskService youDunRiskService;
 
 	/**
 	 * 查询借款列表
@@ -500,6 +502,21 @@ public class ClBorrowController extends BaseController {
 		borrow.setUserId(1L);
 		borrow.setId(1L);
 		int i = pinganRiskService.queryGrayscaleStat(borrow);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+	/**
+	 * 测试有盾数据
+	 */
+	@RequestMapping(value = "/api/act/borrow/testYoudun.htm")
+	public void testYoudun() {
+		Borrow borrow = new Borrow();
+		borrow.setUserId(3L);
+		borrow.setId(7L);
+		int point = youDunRiskService.multiPoint(borrow);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");

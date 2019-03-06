@@ -553,3 +553,39 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测渠道�
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测url', 'k_ocr_checkface_url', 'http://rryqo.com/finance/v1/face/match?applyNo=', 1, '英趣思汀活体检测url', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀身份证识别', 'k_ocr_check_idcard_url', 'http://rryqo.com/finance/v1/ocr/idCard?applyNo=', 1, '英趣思汀身份证识别', 1);
 
+
+-- 有盾用户画像
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾密钥', 'youdun_pub_key', 'f2ae8f6d-f6d7-4d50-9daa-ac253b1fb46d', 1, '有盾密钥', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾产品编码', 'youdun_product_code', 'Y1001005', 1, '有盾产品编码', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾安全密钥', 'youdun_secret_key', '250b6c96-b8e0-46b8-9878-8753766cfe83', 1, '有盾产品编码', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾url请求地址', 'youdun_risk_url', 'https://api4.udcredit.com/dsp-front/4.1/dsp-front/default/pubkey/%s/product_code/%s/out_order_id/%s/signature/%s', 1, '有盾url请求地址', 1);
+
+-- 有盾请求记录
+DROP TABLE IF EXISTS `cl_youdun_req_log`;
+CREATE TABLE `cl_youdun_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '同步响应流水号',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `resp_msg` mediumtext COMMENT '同步响应结果',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-风险评估',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾请求记录';
+
+-- 有盾风险评估表
+DROP TABLE IF EXISTS `cl_youdun_risk_report`;
+CREATE TABLE `cl_youdun_risk_report` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾风险评估表';
