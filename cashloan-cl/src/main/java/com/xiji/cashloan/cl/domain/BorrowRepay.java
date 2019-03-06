@@ -64,6 +64,11 @@ import java.util.Date;
      private Date createTime;
 
 	/**
+	 * 还款计划类型 1-正常 2-展期
+	 */
+	private String type;
+
+	/**
 	 * 获取主键Id
 	 *
 	 * @return id
@@ -227,5 +232,12 @@ import java.util.Date;
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-    
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
