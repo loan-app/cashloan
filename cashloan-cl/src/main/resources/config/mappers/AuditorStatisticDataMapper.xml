@@ -30,7 +30,7 @@
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate, current_overdue,first_load_count,first_overdue,first_extend_overdue_count,first_pass_order,new_borrow_apply_count
+        id,create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate, current_overdue,first_load_count,first_overdue,first_extend_overdue_count,first_pass_order,new_borrow_apply_count,again_load_count,again_overdue
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -71,8 +71,9 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        insert into cl_auditor_statistic_data(create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate,current_overdue,first_load_count,first_overdue,load_count,first_extend_overdue_count,first_pass_order,new_borrow_apply_count)
-        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{auditorId,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{passOrder,jdbcType=INTEGER},#{firstPassRate,jdbcType=DECIMAL},#{currentOverdueRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},#{currentOverdue,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{firstOverdue,jdbcType=INTEGER},#{loadCount,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstPassOrder,jdbcType=INTEGER},#{newBorrowApplyCount,jdbcType=INTEGER})
+        insert into cl_auditor_statistic_data(create_time,update_time,count_time,auditor_id,borrow_apply_count,pass_order,first_pass_rate,current_overdue_rate,first_overdue_rate,current_overdue,first_load_count,first_overdue,load_count,first_extend_overdue_count,first_pass_order,new_borrow_apply_count,again_load_count,again_overdue)
+        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{auditorId,jdbcType=INTEGER},#{borrowApplyCount,jdbcType=INTEGER},#{passOrder,jdbcType=INTEGER},#{firstPassRate,jdbcType=DECIMAL},#{currentOverdueRate,jdbcType=DECIMAL},#{firstOverdueRate,jdbcType=DECIMAL},
+        #{currentOverdue,jdbcType=INTEGER},#{firstLoadCount,jdbcType=INTEGER},#{firstOverdue,jdbcType=INTEGER},#{loadCount,jdbcType=INTEGER},#{firstExtendOverdueCount,jdbcType=INTEGER},#{firstPassOrder,jdbcType=INTEGER},#{newBorrowApplyCount,jdbcType=INTEGER},#{againLoadCount,jdbcType=INTEGER},#{againOverdue,jdbcType=INTEGER})
     </insert>
 
     
@@ -93,7 +94,10 @@
             load_count = #{loadCount,jdbcType=INTEGER},
             first_extend_overdue_count = #{firstExtendOverdueCount,jdbcType=INTEGER},
             first_pass_order = #{firstPassOrder,jdbcType=INTEGER},
-            new_borrow_apply_count = #{newBorrowApplyCount,jdbcType=INTEGER}
+            new_borrow_apply_count = #{newBorrowApplyCount,jdbcType=INTEGER},
+            again_load_count = #{againLoadCount,jdbcType=INTEGER},
+            again_overdue = #{againOverdue,jdbcType=INTEGER}
+
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
