@@ -8,7 +8,6 @@ import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
-import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import org.springframework.context.annotation.Scope;
@@ -61,7 +60,7 @@ public class ManageManualReviewOrderController extends ManageBaseController {
     }
 
     /**
-     * 催款专员信息列表
+     * 审核专员信息列表
      * @param roleName
      */
     @RequestMapping(value="/modules/manage/borrow/manual/review/sysUserlist.htm",method={RequestMethod.GET,RequestMethod.POST})

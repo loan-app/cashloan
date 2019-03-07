@@ -22,12 +22,12 @@ import java.util.Map;
 
 /**
  * 审核人员统计数据ServiceImpl
- * 
+ *
  * @author wnb
  * @version 1.0.0
  * @date 2019-02-15 15:35:23
  */
- 
+
 @Service("auditorStatisticDataService")
 public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStatisticData, Long> implements AuditorStatisticDataService {
 
@@ -69,11 +69,15 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 		List<AuditorStatisticData> firstExtendOverdueCount = auditorStatisticDataMapper.firstExtendOverdueCount(params);
 		List<AuditorStatisticData> firstPassOrder = auditorStatisticDataMapper.firstPassOrder(params);
 		List<AuditorStatisticData> newBorrowApplyCount = auditorStatisticDataMapper.newBorrowApplyCount(params);
+        List<AuditorStatisticData> againLoadCount = auditorStatisticDataMapper.againLoadCount(params);
+        List<AuditorStatisticData> againOverdue = auditorStatisticDataMapper.againOverdue(params);
 
 
 
 
-		List<AuditorStatisticData> statisticDataList = new ArrayList<>();
+
+
+        List<AuditorStatisticData> statisticDataList = new ArrayList<>();
 		setAuditorStatisticDataProperty(borrowApplyCount,statisticDataList,"borrowApplyCount");
 		setAuditorStatisticDataProperty(passOrder,statisticDataList,"passOrder");
 		setAuditorStatisticDataProperty(firstOverdue,statisticDataList,"firstOverdue");
@@ -83,6 +87,8 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 		setAuditorStatisticDataProperty(firstExtendOverdueCount,statisticDataList,"firstExtendOverdueCount");
 		setAuditorStatisticDataProperty(firstPassOrder,statisticDataList,"firstPassOrder");
 		setAuditorStatisticDataProperty(newBorrowApplyCount,statisticDataList,"newBorrowApplyCount");
+        setAuditorStatisticDataProperty(againLoadCount,statisticDataList,"againLoadCount");
+        setAuditorStatisticDataProperty(againOverdue,statisticDataList,"againOverdue");
 
 
 
@@ -155,6 +161,12 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 						case "newBorrowApplyCount":
 							statisticData.setNewBorrowApplyCount(auditorStatisticData.getNewBorrowApplyCount());
 							break;
+                        case "againLoadCount":
+                            statisticData.setAgainLoadCount(auditorStatisticData.getAgainLoadCount());
+                            break;
+                        case "againOverdue":
+                            statisticData.setAgainOverdue(auditorStatisticData.getAgainOverdue());
+                            break;
 						default:
 							break;
 					}
@@ -204,6 +216,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 			if (auditorStatisticData.getNewBorrowApplyCount() == null){
 				auditorStatisticData.setNewBorrowApplyCount(0);
 			}
+
+			if (auditorStatisticData.getAgainLoadCount() == null){
+			    auditorStatisticData.setAgainLoadCount(0);
+            }
 		}
 	}
 
@@ -244,7 +260,7 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 				auditorStatisticData.setFirstOverdueRate(0.00);
 				auditorStatisticData.setCurrentOverdueRate(0.00);
 			}else {
-				auditorStatisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (auditorStatisticData.getFirstOverdue()-auditorStatisticData.getFirstExtendOverdueCount())/(double)auditorStatisticData.getFirstLoadCount()*100,2));
+				auditorStatisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (auditorStatisticData.getFirstOverdue())/(double)auditorStatisticData.getFirstLoadCount()*100,2));
 				auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getFirstLoadCount()*100,2));
 			}
 			if (auditorStatisticData.getNewBorrowApplyCount() == 0){
@@ -253,10 +269,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 				auditorStatisticData.setFirstPassRate(BigDecimalUtil.decimal((double)auditorStatisticData.getFirstPassOrder()/(double)auditorStatisticData.getNewBorrowApplyCount()*100,2));
 			}
 
-			if (auditorStatisticData.getLoadCount() - auditorStatisticData.getFirstLoadCount() <=0 ){
+			if (auditorStatisticData.getAgainLoadCount() == 0 ){
 				auditorStatisticData.setAgainOverdueRate(0.00);
 			}else {
-				auditorStatisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double)(auditorStatisticData.getCurrentOverdue()-auditorStatisticData.getFirstOverdue())/(double)(auditorStatisticData.getLoadCount() - auditorStatisticData.getFirstLoadCount())*100,2));
+				auditorStatisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double)(auditorStatisticData.getAgainOverdue())/(double)(auditorStatisticData.getAgainLoadCount())*100,2));
 			}
 		}
 	}

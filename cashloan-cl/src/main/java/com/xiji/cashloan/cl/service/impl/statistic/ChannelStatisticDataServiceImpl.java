@@ -160,21 +160,21 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 			    statisticData.setNewTransformRate(BigDecimalUtil.decimal((double)statisticData.getNewBorrowApplyCount()/(double)statisticData.getUserRegister()*100,2));
 			}
 
-			if (statisticData.getAgainExpireLoadCount() == 0 && statisticData.getFirstExpireLoadCount() == 0) {
+			if (statisticData.getAgainExpireLoadCount() == 0 && statisticData.getFirstExpireLoadCount() == 0 && statisticData.getExtendCount() == 0) {
 				statisticData.setOverdueRate(0.00);
 			} else {
-				statisticData.setOverdueRate(BigDecimalUtil.decimal((double) statisticData.getExpireOverdueCount() / (double) (statisticData.getAgainExpireLoadCount() + statisticData.getFirstExpireLoadCount()) * 100, 2));
+				statisticData.setOverdueRate(BigDecimalUtil.decimal((double) statisticData.getExpireOverdueCount() / (double) (statisticData.getAgainExpireLoadCount() + statisticData.getFirstExpireLoadCount()+statisticData.getExtendCount()) * 100, 2));
 			}
 			if (statisticData.getFirstExpireLoadCount() == 0) {
 				statisticData.setFirstOverdueRate(0.00);
 			} else {
-				statisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (statisticData.getFirstExpireOverdueCount() - statisticData.getFirstExtendOverdueCount()) / (double) statisticData.getFirstExpireLoadCount() * 100, 2));
+				statisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (statisticData.getFirstExpireOverdueCount()) / (double) statisticData.getFirstExpireLoadCount() * 100, 2));
 			}
 
-			if (statisticData.getAgainExpireLoadCount() == 0 && statisticData.getExtendCount() == 0) {
+			if (statisticData.getAgainExpireLoadCount() == 0) {
 				statisticData.setAgainOverdueRate(0.00);
 			} else {
-				statisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double) (statisticData.getAgainExpireOverdueCount()+statisticData.getExtendOverdueCount()) / (double) (statisticData.getAgainExpireLoadCount()+ statisticData.getExtendCount() )* 100, 2));
+				statisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double) (statisticData.getAgainExpireOverdueCount()) / (double) (statisticData.getAgainExpireLoadCount())* 100, 2));
 			}
 
 			if (statisticData.getNewBorrowApplyCount() == null || statisticData.getNewBorrowApplyCount() == 0){

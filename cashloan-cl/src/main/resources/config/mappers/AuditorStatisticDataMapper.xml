@@ -21,6 +21,10 @@
         <result column="first_extend_overdue_count" property="firstExtendOverdueCount" jdbcType="INTEGER"/>
         <result column="first_pass_order" property="firstPassOrder" jdbcType="INTEGER"/>
         <result column="new_borrow_apply_count" property="newBorrowApplyCount" jdbcType="INTEGER" />
+        <result column="again_load_count" property="againLoadCount" jdbcType="INTEGER"/>
+        <result column="again_overdue" property="againOverdue" jdbcType="INTEGER"/>
+
+
         <result column="auditor_name" property="auditorName" jdbcType="VARCHAR"/>
     </resultMap>
     
@@ -205,7 +209,21 @@
 
 
     <select id="firstOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstOverdue,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where repay.borrow_id = borrow.id and mro.borrow_id = borrow.id  and borrow.is_overdue = '20' and borrow.again = '10') t2
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstOverdue,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where repay.borrow_id = borrow.id and mro.borrow_id = borrow.id  and borrow.is_overdue = '20' and borrow.again = '10' and repay.type = '1') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(review_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime ,auditorId
+
+    </select>
+
+    <select id="againOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) againOverdue,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where repay.borrow_id = borrow.id and mro.borrow_id = borrow.id  and borrow.is_overdue = '20' and borrow.again = '20' and repay.type = '1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -219,7 +237,7 @@
     </select>
 
     <select id="firstLoadCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstLoadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and borrow.again = '10') t2
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstLoadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and borrow.again = '10' and repay.type ='1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -249,7 +267,20 @@
 
 
     <select id="loadCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        SELECT t2.auditorId as auditorId ,COUNT(t2.id) loadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id ) t2
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) loadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and repay.type ='1') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(review_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime ,auditorId
+    </select>
+
+    <select id="againLoadCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) againLoadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and borrow.again = '20' and repay.type ='1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -306,7 +337,7 @@
         select auditor_id as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
         sum(pass_order) as pass_order,sum(current_overdue) as current_overdue,sum(first_load_count) as first_load_count,
         sum(first_overdue) as first_overdue,sum(load_count) as load_count,sum(first_pass_order) as first_pass_order,
-        sum(new_borrow_apply_count) as new_borrow_apply_count,su.name as auditor_name
+        sum(new_borrow_apply_count) as new_borrow_apply_count,sum(again_overdue) as again_overdue ,su.name as auditor_name
         from cl_auditor_statistic_data as statistic,arc_sys_user as su
       <where>
           su.id = statistic.auditor_id

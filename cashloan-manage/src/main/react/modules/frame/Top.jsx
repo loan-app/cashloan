@@ -36,7 +36,6 @@ const Top = React.createClass({
    },
 
     componentWillReceiveProps(nextProps, nextState) {
-        console.log('测试 ===》👌');
         this.fetch(nextProps.params);
     },
 

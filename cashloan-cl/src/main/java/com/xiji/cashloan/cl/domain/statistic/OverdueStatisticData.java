@@ -94,6 +94,15 @@ import java.util.Date;
     */
     private Double extendOverdueRate;
 
+    /**
+     * 总逾期率
+     */
+    private Double overdueRate;
+
+    /**
+     * 统计时间
+     */
+    private String countTimeStr;
 
     /**
     * 获取主键Id
@@ -383,4 +392,19 @@ import java.util.Date;
         this.extendOverdueRate = extendOverdueRate;
     }
 
+    public Double getOverdueRate() {
+        return overdueRate;
+    }
+
+    public void setOverdueRate(Double overdueRate) {
+        this.overdueRate = overdueRate;
+    }
+
+    public String getCountTimeStr() {
+        return countTimeStr;
+    }
+
+    public void setCountTimeStr(String countTimeStr) {
+        this.countTimeStr = countTimeStr;
+    }
 }

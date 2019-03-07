@@ -109,6 +109,15 @@ import java.util.Date;
      */
     private Integer newBorrowApplyCount;
 
+    /**
+     * 当日到期复贷放款数
+     */
+    private Integer againLoadCount;
+
+    /**
+     * 当日到期复贷逾期
+     */
+    private Integer againOverdue;
 
     /**
     * 获取主键Id
@@ -393,5 +402,21 @@ import java.util.Date;
 
     public void setNewBorrowApplyCount(Integer newBorrowApplyCount) {
         this.newBorrowApplyCount = newBorrowApplyCount;
+    }
+
+    public Integer getAgainLoadCount() {
+        return againLoadCount;
+    }
+
+    public void setAgainLoadCount(Integer againLoadCount) {
+        this.againLoadCount = againLoadCount;
+    }
+
+    public Integer getAgainOverdue() {
+        return againOverdue;
+    }
+
+    public void setAgainOverdue(Integer againOverdue) {
+        this.againOverdue = againOverdue;
     }
 }

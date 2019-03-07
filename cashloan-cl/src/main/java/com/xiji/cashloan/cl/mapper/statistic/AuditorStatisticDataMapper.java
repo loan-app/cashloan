@@ -46,6 +46,14 @@ public interface AuditorStatisticDataMapper extends BaseMapper<AuditorStatisticD
      * @return
      */
     List<AuditorStatisticData> firstOverdue(Map<String,Object> params);
+
+    /**
+     * 获取当日到期首贷逾期数
+     * @param params
+     * @return
+     */
+    List<AuditorStatisticData> againOverdue(Map<String,Object> params);
+
     /**
      * 获取当日首贷放款数
      * @param params
@@ -68,6 +76,13 @@ public interface AuditorStatisticDataMapper extends BaseMapper<AuditorStatisticD
      * @return
      */
     List<AuditorStatisticData> loadCount(Map<String,Object> params);
+
+    /**
+     * 获取当日到期放款数
+     * @param params
+     * @return
+     */
+    List<AuditorStatisticData> againLoadCount(Map<String,Object> params);
 
     /**
      * 获取当日到期展期逾期数

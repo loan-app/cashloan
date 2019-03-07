@@ -47,7 +47,7 @@ export default React.createClass({
 
   },
   rowKey(record) {
-    return record.auditorId;
+    return record.id;
   },
 
   //分页
@@ -72,7 +72,7 @@ export default React.createClass({
       }
     }
     Utils.ajaxData({
-      url: '/modules/manage/statistic/listAuditorStatistic.htm',
+      url: '/modules/manage/statistic/listOverdueStatistic.htm',
       data: params,
 
       callback: (result) => {
@@ -118,55 +118,55 @@ export default React.createClass({
  
   render() {
     var columns = [{
-        title: '审核员',
-        dataIndex: 'auditorName',
-    },  {
-        title: '新客逾期未还数',
-        dataIndex: "firstOverdue",
+      title: '统计时间',
+      dataIndex: 'countTimeStr',
     }, {
-        title: '老客逾期未还数',
-        dataIndex: "againOverdue",
+          title: '新客未还',
+          dataIndex: 'newOverdue',
     },{
-        title: '新客审核成功',
-        dataIndex: 'firstPassOrder',
-    },{
-        title: '新客审核不成功',
-        dataIndex: 'newBorrowApplyCount',
-        render(text,record){
-            return record.newBorrowApplyCount - record.firstPassOrder;
-        }
+      title: '新客放款数',
+      dataIndex: 'newExpire'
     }, {
-        title: '新客放款量',
-        dataIndex: "firstLoadCount",
+      title: '复借未还',
+      dataIndex: "againOverdue",
     }, {
-        title: '老客放款量',
-        dataIndex: "againLoadCount",
-        render(text,record){
-            return record.againLoadCount;
-        }
-    },{
-        title: '新客通过率',
-        dataIndex: "firstPassRate",
-        render(text,record){
-         return record.firstPassRate +"%";
-        }
-    },
-        {
+        title: '复借放款数',
+        dataIndex: "againExpire",
+    }, {
+        title: '展期未还',
+        dataIndex: "extendOverdue",
+    }, {
+        title: '展期到期数',
+        dataIndex: "extendExpire",
+    }, {
         title: '新客逾期率',
-        dataIndex: 'firstOverdueRate',
+        dataIndex: "newOverdueRate",
         render(text,record){
-          return record.firstOverdueRate +"%";
+          return record.newOverdueRate +"%"
         }
     }, {
-        title: '老客逾期率',
+        title: '复借逾期率',
         dataIndex: "againOverdueRate",
         render(text,record){
-            return record.againOverdueRate +"%";
+            return record.againOverdueRate +"%"
+        }
+    }, {
+        title: '展期逾期率',
+        dataIndex: "extendOverdueRate",
+        render(text,record){
+            return record.extendOverdueRate +"%"
+        }
+    },{
+        title: '总逾期率',
+        dataIndex: "overdueRate",
+        render(text,record){
+            return record.overdueRate +"%"
         }
     }];
     var state = this.state;
     return (
       <div className="block-panel">
+
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}
              dataSource={this.state.data}

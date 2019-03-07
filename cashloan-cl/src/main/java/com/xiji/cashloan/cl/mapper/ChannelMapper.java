@@ -123,4 +123,6 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * @return
 	 */
 	List<Map<String, Object>> countLending(Map<String,Object> paramMap);
+
+
 }

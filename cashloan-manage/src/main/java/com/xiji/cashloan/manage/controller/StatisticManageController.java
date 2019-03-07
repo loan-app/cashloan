@@ -58,6 +58,9 @@ public class StatisticManageController extends ManageBaseController {
 	@Resource
 	private LoadStatisticDataService loadStatisticDataService;
 
+	@Resource
+	private OverdueStatisticDataService overdueStatisticDataService;
+
 	/**
 	 * 每日未还本金
 	 * @param response
@@ -287,4 +290,28 @@ public class StatisticManageController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
 	}
+
+	/**
+	 * 分页查询 还款数据统计
+	 * @param response
+	 * @param search
+	 * @param current
+	 * @param pageSize
+	 */
+	@RequestMapping(value = "/modules/manage/statistic/listOverdueStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
+	public void listOverdueStatistic(HttpServletResponse response,
+									   @RequestParam(value = "search",required = false)String search,
+									   @RequestParam("current")Integer current,
+									   @RequestParam("pageSize")Integer pageSize) {
+		Map<String, Object> params = JSONObject.parseObject(search);
+		Page<OverdueStatisticData> page = overdueStatisticDataService.listOverdueStatistic(params,current, pageSize);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+
 }

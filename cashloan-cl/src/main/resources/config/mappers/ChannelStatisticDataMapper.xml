@@ -541,7 +541,7 @@
 
     <!-- 当日到期首贷逾期笔数-->
     <select id="getFirstExpireOverdueCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        SELECT t2.channelId as channelId ,COUNT(t2.id) firstExpireOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_borrow_progress as progress ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id and  progress.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again='10' and  progress.state = '50') t2
+        SELECT t2.channelId as channelId ,COUNT(t2.id) firstExpireOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_borrow_progress as progress ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id and  progress.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again='10' and  progress.state = '50' and repay.type ='1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -557,7 +557,7 @@
 
 
     <select id="getExtendCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        SELECT t2.channelId as channelId ,COUNT(distinct t2.id) extendCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and repay.state = '30') t2
+        SELECT t2.channelId as channelId ,COUNT(distinct t2.id) extendCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and repay.type ='2' ) t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -571,7 +571,7 @@
 
 
     <select id="getExtendOverdueCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        SELECT t2.channelId as channelId ,COUNT(distinct t2.id) extendOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and repay.state = '30' and borrow.is_overdue ='20') t2
+        SELECT t2.channelId as channelId ,COUNT(distinct t2.id) extendOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id  and borrow.is_overdue ='20' and repay.type ='2') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -611,7 +611,7 @@
     </select>
 
     <select id="getFirstExpireLoadCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        SELECT t2.channelId as channelId ,COUNT(t2.id) firstExpireLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again ='10' ) t2
+        SELECT t2.channelId as channelId ,COUNT(t2.id) firstExpireLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again ='10' and repay.type ='1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -624,7 +624,7 @@
     </select>
 
     <select id="getAgainExpireLoadCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        SELECT t2.channelId as channelId ,COUNT(t2.id) againExpireLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again ='20' ) t2
+        SELECT t2.channelId as channelId ,COUNT(t2.id) againExpireLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id  and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again ='20' and repay.type ='1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -703,7 +703,7 @@
 
     <!-- 当日到期复贷逾期笔数-->
     <select id="getAgainExpireOverdueCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
-        SELECT t2.channelId as channelId ,COUNT(t2.id) againExpireOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_borrow_progress as progress ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id and  progress.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again='20' and  progress.state = '50') t2
+        SELECT t2.channelId as channelId ,COUNT(t2.id) againExpireOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay ,cl_borrow_progress as progress ,cl_user as usr ,cl_channel as channel where repay.borrow_id = borrow.id and  progress.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and borrow.again='20' and  progress.state = '50' and repay.type ='1') t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -743,80 +743,13 @@
             <if test="code != null and code !=''">
                 and channel.code like concat("%",#{code,jdbcType=VARCHAR},"%")
             </if>
+            <if test="channelName !=null and channelName !=''">
+                and channel.name like concat("%",#{channelName,jdbcType=VARCHAR},"%")
+            </if>
         </where>
         GROUP BY channel_id,channel_name,channel_code
         order by channel_id desc
     </select>
-
-
-    <!-- 注册人数，申请订单数，机审通过数，机审拒绝数，人工通过数、人工拒绝数，首贷放款笔数、复贷放款笔数、逾期笔数 -->
-    <select id="listChannelStatisticData" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.model.statistic.ChannelStatisticModel">
-
-        select  distinct T.date,
-        T.channelId,
-        T.userRegister,
-        T.borrowApplyCount,
-        T.machineAuditPassCount,
-        T.machineAuditNotPassCount,
-        T.reviewPassCount,
-        T.reviewNotPassCount,
-        T.firstLoadCount,
-        T.againLoadCount,
-        T.overdueCount,
-        T.firstOverdueCount
-
-
-
-        from (
-        select DATE_FORMAT(p.time,'%Y-%m-%d') date,
-        IFNULL(p.channelId,0) channelId,
-        IFNULL(p2.userRegister,0) userRegister,
-        IFNULL(p3.borrowApplyCount,0) borrowApplyCount,
-        IFNULL(p4.machineAuditPassCount,0) machineAuditPassCount,
-        IFNULL(p5.machineAuditNotPassCount,0) machineAuditNotPassCount,
-        IFNULL(p6.reviewPassCount,0) reviewPassCount,
-        IFNULL(p7.reviewNotPassCount,0) reviewNotPassCount,
-        IFNULL(p8.firstLoadCount,0) firstLoadCount,
-        IFNULL(p9.againLoadCount,0) againLoadCount,
-        IFNULL(p10.overdueCount,0) overdueCount,
-        IFNULL(p11.firstOverdueCount,0) firstOverdueCount
-
-
-        from (
-
-        (SELECT channel.id as channelId,COUNT(channel.id) userRegister,DATE_FORMAT(regist_time,'%Y-%m-%d') time from  cl_user t2 ,cl_channel as channel where channel.id = t2.channel_id GROUP BY time,channel.id ) UNION
-        (SELECT t2.channelId as channelId, COUNT(t2.id) borrowApplyCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId,borrow.id,DATE_FORMAT(borrow.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow,cl_user usr,cl_channel as channel where borrow.user_id = usr.id and usr.channel_id = channel.id ) t2 GROUP BY time ,channelId) UNION
-        (SELECT t2.channelId as channelId,COUNT(t2.id) machineAuditPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='22' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) UNION
-        (SELECT t2.channelId as channelId,COUNT(t2.id) machineAuditNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='21' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId )UNION
-        (SELECT t2.channelId as channelId,COUNT(t2.id) reviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='26' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) UNION
-        (SELECT t2.channelId as channelId,COUNT(t2.id) reviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='27' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) UNION
-        (SELECT t2.channelId as channelId,COUNT(t2.id) firstLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='30' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again='10') t2 GROUP BY time,channelId ) UNION
-        (SELECT t2.channelId as channelId,COUNT(t2.id) againLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='30' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again='20') t2 GROUP BY time,channelId ) UNION
-        (SELECT t2.channelId as channelId ,COUNT(t2.id) overdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(pl.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_pay_log as pl ,cl_user as usr ,cl_channel as channel where pl.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and  pl.type=10 and pl.state=40 ) t2 GROUP BY time,channelId ) UNION
-        (SELECT t2.channelId as channelId ,COUNT(t2.id) firstOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(pl.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_pay_log as pl ,cl_user as usr ,cl_channel as channel where pl.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and  pl.type=10 and pl.state=40 and borrow.again='10') t2 GROUP BY time,channelId )
-
-        ) p
-        left join (SELECT channel.id as channelId,COUNT(channel.id) userRegister,DATE_FORMAT(regist_time,'%Y-%m-%d') time from  cl_user t2 ,cl_channel as channel where channel.id = t2.channel_id GROUP BY time,channelId ) p2 on p.time = p2.time
-        left join (SELECT t2.channelId as channelId, COUNT(t2.id) borrowApplyCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId,borrow.id,DATE_FORMAT(borrow.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow,cl_user usr,cl_channel as channel where borrow.user_id = usr.id and usr.channel_id = channel.id ) t2 GROUP BY time ,channelId) p3 on p.time = p3.time
-        left join (SELECT t2.channelId as channelId,COUNT(t2.id) machineAuditPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='22' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) p4 on p.time = p4.time
-        left join (SELECT t2.channelId as channelId,COUNT(t2.id) machineAuditNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='21' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) p5 on p.time = p5.time
-        left join (SELECT t2.channelId as channelId,COUNT(t2.id) reviewPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='26' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) p6 on p.time = p6.time
-        left join (SELECT t2.channelId as channelId,COUNT(t2.id) reviewNotPassCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='27' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id) t2 GROUP BY time,channelId ) p7 on p.time = p7.time
-        left join (SELECT t2.channelId as channelId,COUNT(t2.id) firstLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='30' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again='10' ) t2 GROUP BY time,channelId ) p8 on p.time = p8.time
-        left join (SELECT t2.channelId as channelId,COUNT(t2.id) againLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId ,borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_user usr ,cl_channel as channel ,cl_borrow as borrow ,cl_borrow_progress as progress where progress.state ='30' and borrow.id = progress.borrow_id and usr.id =borrow.user_id and usr.channel_id = channel.id and borrow.again='20') t2 GROUP BY time,channelId ) p9 on p.time = p9.time
-        left join (SELECT t2.channelId as channelId ,COUNT(t2.id) overdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(pl.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_pay_log as pl ,cl_user as usr ,cl_channel as channel where pl.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and  pl.type=10 and pl.state=40 ) t2 GROUP BY time,channelId ) p10 on p.time = p10.time
-        left join (SELECT t2.channelId as channelId ,COUNT(t2.id) firstOverdueCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT channel.id as channelId , borrow.id,DATE_FORMAT(pl.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_pay_log  as pl ,cl_user as usr ,cl_channel as channel where pl.borrow_id = borrow.id and usr.id = borrow.user_id and usr.channel_id = channel.id and  pl.type=10 and pl.state=40 and borrow.again='10') t2 GROUP BY time,channelId ) p11 on p.time = p11.time
-        <where>
-            <if test="startDate!=null and startDate!=''">
-                and p.time >= #{startDate,jdbcType=VARCHAR}
-            </if>
-            <if test="endDate!=null and endDate!=''">
-                <![CDATA[ and p.time <= #{endDate,jdbcType=VARCHAR} ]]>
-            </if>
-        </where>
-        ) T ORDER BY T.date DESC
-    </select>
-
 
 
 </mapper>

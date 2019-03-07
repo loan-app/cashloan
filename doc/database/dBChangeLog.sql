@@ -704,6 +704,7 @@ INSERT INTO `arc_sys_menu` VALUES ('1019', '0', '审核人员统计', '1016', ''
 INSERT INTO `arc_sys_menu` VALUES ('1020', '0', '还款统计', '1016', '', 'icon-qian', '00000000004', null, '', '2017-01-01 00:00:00', '', '还款统计', '0', 'RepaymentStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1021', '0', '渠道统计', '1016', '', 'icon-qian', '00000000005', null, '', '2017-01-01 00:00:00', '', '渠道统计', '0', 'ChannelStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1022', '0', '放款统计', '1016', '', 'icon-qian', '00000000006', null, '', '2017-01-01 00:00:00', '', '放款统计', '0', 'LoadStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1023', '0', '逾期统计', '1016', '', 'icon-qian', '00000000007', null, '', '2017-01-01 00:00:00', '', '逾期统计', '0', 'OverdueStatistic', null, null, null, null);
 
 -- INSERT INTO `arc_sys_role_menu` VALUES ('', '1', '1016');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1017');
@@ -712,6 +713,8 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1019');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1020');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1021');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1022');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1023');
+
 
 -- 添加定时任务信息表
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertChannelStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzChannelStatistic', now(), '保存渠道统计数据', '0 0 3 * * ?');
@@ -721,6 +724,7 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertLoadStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzLoadStatistic', now(), '保存放款统计数据', '0 0 3 * * ?');
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertAuditingStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzAuditingStatistic', now(), '保存审核统计数据', '0 0 3 * * ?');
 
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertOverdueStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzOverdueStatistic', now(), '保存逾期统计数据', '0 0 3 * * ?');
 
 
 
@@ -729,3 +733,6 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 
 -- 新增渠道后台角色
 INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
+
+
+alter table cl_auditor_statistic_data add again_load_count int(11) NOT NULL DEFAULT '0' COMMENT '复贷放款数';

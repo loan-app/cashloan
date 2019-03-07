@@ -151,7 +151,7 @@ export default React.createClass({
         title: '到期待还金额',
         dataIndex: "remainAmount",
     }, {
-        title: '今日减免金额',
+        title: '到期减免金额',
         dataIndex: "derateAmount",
     }, {
         title: '今日实还金额',
@@ -160,10 +160,6 @@ export default React.createClass({
     var state = this.state;
     return (
       <div className="block-panel">
-          {/*<div className="actionBtns" style={{ marginBottom: 16 }}>*/}
-              {/*<span> 消费总金额：{this.state.totalFee}</span>*/}
-              {/*<dev></dev>*/}
-          {/*</div>*/}
 
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}
