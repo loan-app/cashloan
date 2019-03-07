@@ -220,6 +220,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 			if (auditorStatisticData.getAgainLoadCount() == null){
 			    auditorStatisticData.setAgainLoadCount(0);
             }
+
+            if (auditorStatisticData.getAgainOverdue() == null){
+            	auditorStatisticData.setAgainOverdue(0);
+			}
 		}
 	}
 
