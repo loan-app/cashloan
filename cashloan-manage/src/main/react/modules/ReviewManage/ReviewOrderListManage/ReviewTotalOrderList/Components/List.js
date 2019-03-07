@@ -82,7 +82,7 @@ export default React.createClass({
         current: 1,
       }
     }
-    Utils.ajaxData({
+    Utils.ajaxData({modules/manage/borrow/my/manual/review/list.htm
       url: '/modules/manage/borrow/manual/review/list.htm',
       data: params,
       method: "get",

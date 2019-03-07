@@ -77,7 +77,11 @@ public class ManageBorrowModel extends Borrow {
 	 * 应还款总额 加逾期金额
 	 */
 	private Double repayTotal;
-	
+	/**
+	 * 注册渠道
+	 * */
+	private String channelName;
+
 	/**
 	 * 已还款总额 加逾期金额
 	 */
@@ -163,6 +167,10 @@ public class ManageBorrowModel extends Borrow {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public String getChannelName() { return channelName; }
+
+	public void setChannelName(String channelName) { this.channelName = channelName; }
 
 	/**
 	 * 获取借款订单id

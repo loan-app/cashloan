@@ -34,9 +34,7 @@ let SeachForm = React.createClass({
         });
     },
     render() {
-
         const {getFieldProps} = this.props.form;
-
         return (
             <Form inline>
              <Input type="hidden" {...getFieldProps('state',{initialValue: '30'})} />
@@ -64,8 +62,8 @@ let SeachForm = React.createClass({
                         <Option value="43">还款处理中</Option>
                         <Option value="50">逾期</Option>
                         <Option value="90">坏账</Option>
-             </Select>
-             </FormItem>
+            </Select>
+            </FormItem>
             <FormItem label="借款日期：">
             <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('createTime', { initialValue: '' }) } />
             </FormItem>
