@@ -262,7 +262,7 @@ public class ChargeController extends BaseController {
 					Map<String, Object> param = new HashMap<String, Object>();
 					param.put("id", borrowRepay.getId());
 					param.put("state", BorrowModel.STATE_DELAY_PAY);
-					param.put("amount", payLog.getAmount());
+					param.put("amount", String.valueOf(payLog.getAmount()));
 					param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
 					param.put("repayAccount", bankCard.getCardNo());
 					param.put("serialNumber", payLog.getOrderNo());
