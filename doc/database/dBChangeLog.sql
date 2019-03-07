@@ -696,6 +696,27 @@ CREATE TABLE `cl_auditor_statistic_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核人员统计数据';
 
 
+DROP TABLE IF EXISTS `cl_overdue_statistic_data`;
+CREATE TABLE `cl_overdue_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `new_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '新客未还量',
+  `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '复借未还量',
+  `extend_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '展期未还量',
+  `new_expire` int(11) NOT NULL DEFAULT '0' COMMENT '新客到期量',
+  `again_expire` int(11) NOT NULL DEFAULT '0' COMMENT '复借到期量',
+  `extend_expire` int(11) NOT NULL DEFAULT '0' COMMENT '展期到期量',
+  `new_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '新客已还款量',
+  `again_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '复借已还款量',
+  `extend_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '展期已还款量',
+  `new_overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '新客逾期率',
+  `again_overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '复借逾期率',
+  `extend_overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '展期逾期率',
+  `overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '总逾期率',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='逾期统计数据';
 
 INSERT INTO `arc_sys_menu` VALUES ('1016', '0', '统计报表', '0', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '统计报表', '0', 'StatisticManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1017', '0', '用户统计', '1016', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '用户统计', '0', 'UserStatistic', null, null, null, null);
@@ -736,3 +757,11 @@ INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:0
 
 
 alter table cl_auditor_statistic_data add again_load_count int(11) NOT NULL DEFAULT '0' COMMENT '复贷放款数';
+alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数'
+
+-- 还款计划类型
+ALTER TABLE cl_borrow_repay add column `type` varchar(10)  default '1' COMMENT '还款计划类型 1-正常 2-展期';
+
+-- 初始化还款计划类型
+update `cl_borrow_repay` br,(select borrow_id from `cl_borrow_repay`  GROUP BY borrow_id HAVING(count(borrow_id)) > 1) temp
+set br.type = 2 where br.borrow_id = temp.borrow_id and (state = 10 or state = 20);
