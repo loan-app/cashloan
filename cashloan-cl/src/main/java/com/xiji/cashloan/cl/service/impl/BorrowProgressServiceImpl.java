@@ -80,7 +80,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		searchMap.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		BorrowRepayLog log = borrowRepayLogMapper.findSelective(searchMap);
 
-		searchMap.put("borrowId", borrow.getId());
+		searchMap.put("repayState", "true");
 		List<BorrowRepayModel> repay = borrowRepayMapper.listSelModel(searchMap);
 		Map<String,Object> result = new HashMap<>();
 		ClBorrowModel clBorrowModel = new ClBorrowModel();
@@ -144,8 +144,8 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
 				double delayFee;
-				// 如果当前时间大于应还款时间,那么
-				if(nowDate.after(repayPlanTime)) {
+				// 如果当前时间大于应还款时间,或者当前有逾期
+				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyDay() > 0) {
 					delayFee = BigDecimalUtil.add(borrow.getFee() + clBorrowModel.getPenaltyAmount());
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				} else {

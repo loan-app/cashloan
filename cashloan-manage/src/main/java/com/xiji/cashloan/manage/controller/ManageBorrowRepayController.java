@@ -298,9 +298,8 @@ public class ManageBorrowRepayController extends ManageBaseController {
 			param.put("repayTime",DateUtil.valueOf(repayTime, DateUtil.DATEFORMAT_STR_001));
 			param.put("repayWay", repayWay);
 			param.put("repayAccount", repayAccount);
-			param.put("amount", NumberUtil.getDouble(amount));
+			param.put("amount", amount);
 			param.put("serialNumber", serialNumber);
-			param.put("penaltyAmout", penaltyAmout);
 			param.put("delayDays", delayDays);
 			param.put("state", BorrowModel.STATE_DELAY_PAY);
 			BorrowRepay br = borrowRepayService.getById(id);
