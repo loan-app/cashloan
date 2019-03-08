@@ -60,8 +60,11 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 		List<CallsOutSideFee> list = callsOutSideFeeMapper.listCallsOutSideFee(params);
 
 		BigDecimal totalFee = this.getTotalFee(params);
+		//获取余额
+		BigDecimal balance=this.getBalance(params);
 		for (CallsOutSideFee outSideFee : list){
 			outSideFee.setTotalFee(totalFee);
+			outSideFee.setBalance(balance);
 		}
 		return (Page<CallsOutSideFee>) list;
 	}
@@ -75,5 +78,22 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 	public BigDecimal getTotalFee(Map<String, Object> params){
 		return callsOutSideFeeMapper.getTotalFee(params);
 	}
+
+	/**
+	 * 获取余额
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public BigDecimal getBalance(Map<String, Object> params) {
+		return callsOutSideFeeMapper.getBalance(params);
+	}
+
+	@Override
+	public int save(CallsOutSideFee callsOutSideFee) {
+		int i=callsOutSideFeeMapper.save(callsOutSideFee);
+		return i;
+	}
+
 
 }
