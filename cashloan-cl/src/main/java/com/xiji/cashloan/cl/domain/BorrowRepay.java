@@ -245,4 +245,12 @@ import java.util.Date;
 	public void setType(String type) {
 		this.type = type;
 	}
+
+    public Double getBorrowAmount() {
+        return borrowAmount;
+    }
+
+    public void setBorrowAmount(Double borrowAmount) {
+        this.borrowAmount = borrowAmount;
+    }
 }
