@@ -89,7 +89,7 @@ export default React.createClass({
                         newNamesList.map((item, index) => (
                         <tr key={index} className={index % 2 ? 'table-tr-gray' : ''}>
                             <td style={{textAlign: 'right'}}>{item[0].name}</td>
-                            <td style={{width: '20%', color: [item[0].name] == '用户特征列表' ? '#ff3c3c' : ''}}>{data[item[0].key]}</td>
+                            <td style={{width: '20%', color: [item[0].name] == '用户特征列表' ? '#ff3c3c' : ''}}>{data[item[0].key]+' '}</td>
                             <td style={{textAlign: 'right'}}>{item[1] && item[1].name}</td>
                             <td style={{width: '20%'}}>{item[1] && data[item[1].key]}</td>
                         </tr>
