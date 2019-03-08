@@ -53,7 +53,12 @@ public class ManageBorrowModel extends Borrow {
 	 */
 	private String repayTime;
 
-	/**
+    /**
+     * 还款方式
+     */
+    private String repayWay;
+
+    /**
 	 * 逾期罚金
 	 */
 	private Double penaltyAmout;
@@ -172,7 +177,11 @@ public class ManageBorrowModel extends Borrow {
 
 	public void setChannelName(String channelName) { this.channelName = channelName; }
 
-	/**
+    public String getRepayWay() { return repayWay; }
+
+    public void setRepayWay(String repayWay) { this.repayWay = repayWay; }
+
+    /**
 	 * 获取借款订单id
 	 * @return borrowId
 	 */

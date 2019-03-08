@@ -385,6 +385,7 @@
          <result column="repay_amount" property="repayAmount" jdbcType="DECIMAL" />
          <result column="repay_time" property="repayTime" jdbcType="VARCHAR" />
          <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+         <result column="repay_way" property="repayWay" jdbcType="VARCHAR" />
     </resultMap>
     
     <select id="listReview" resultMap="userBorrowMap" parameterType="java.util.HashMap">
@@ -428,7 +429,7 @@
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,b.time_limit,b.state,b.remark,
 			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue,
-            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name
+            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name,l.repay_way
 		from cl_borrow b 
 		left join cl_user_base_info u on u.user_id=b.user_id 
 		left join

@@ -93,6 +93,20 @@ var Tab6 = React.createClass({
         }
       }
     }, {
+      title: '还款方式',
+      dataIndex: "repayWay",
+      render: (text, record) => {
+          if (text == 10) {
+              return "线上"
+          }else if(text == 20) {
+              return "线下"
+          }else if(text == 30){
+              return '线下'
+          }else{
+              return '--'
+          }
+      }
+    }, {
       title: '状态',
       dataIndex: "stateStr",
     }];
