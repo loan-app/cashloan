@@ -17,11 +17,14 @@
         <result column="again_load_count" property="againLoadCount" jdbcType="INTEGER" />
         <result column="again_load_amount" property="againLoadAmount" jdbcType="DECIMAL" />
         <result column="again_load_principal" property="againLoadPrincipal" jdbcType="DECIMAL" />
+        <result column="online_load_principal" property="onlineLoadPrincipal" jdbcType="DECIMAL"/>
+        <result column="unline_load_principal" property="unlineLoadPrincipal" jdbcType="DECIMAL"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,create_time,update_time,count_time,load_count,load_amount,load_principal,first_load_count,first_load_amount,first_load_principal,again_load_count,again_load_amount,again_load_principal 
+        id,create_time,update_time,count_time,load_count,load_amount,load_principal,first_load_count,first_load_amount,first_load_principal,again_load_count,again_load_amount,again_load_principal,
+         online_load_principal,unline_load_principal
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->

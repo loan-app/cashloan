@@ -68,6 +68,11 @@ import java.util.Date;
 	 */
 	private String type;
 
+    /**
+     * 借款订单金额
+     */
+	private Double borrowAmount;
+
 	/**
 	 * 获取主键Id
 	 *

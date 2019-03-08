@@ -147,6 +147,12 @@ export default React.createClass({
     }, {
         title: '复贷本金',
         dataIndex: "againLoadPrincipal",
+    }, {
+        title: '线上放款本金',
+        dataIndex: "--",
+    }, {
+        title: '线下放款本金',
+        dataIndex: "----",
     }];
     var state = this.state;
     return (

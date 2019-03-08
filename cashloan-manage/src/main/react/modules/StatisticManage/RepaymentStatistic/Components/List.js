@@ -121,41 +121,47 @@ export default React.createClass({
       title: '统计时间',
       dataIndex: 'countTimeStr',
     }, {
-          title: '应还订单笔数',
+          title: '应还订单',
           dataIndex: 'shouldOrder',
     },{
-      title: '待还订单笔数',
+      title: '待还订单',
       dataIndex: 'remainOrder'
     }, {
-      title: '提前还款笔数',
+      title: '提前还款',
       dataIndex: "advanceRepayment",
     }, {
-        title: '正常还款笔数',
+        title: '正常还款',
         dataIndex: "normalRepayment",
     }, {
-        title: '展期还款笔数',
+        title: '展期还款',
         dataIndex: "extendRepayment",
     }, {
-        title: '逾期还款笔数',
+        title: '逾期还款',
         dataIndex: "overdueRepayment",
     }, {
-        title: '到期应还金额',
+        title: '应还金额',
         dataIndex: "shouldAmount",
     }, {
-        title: '到期实还金额',
+        title: '实还金额',
         dataIndex: "realReturnAmount",
     }, {
-        title: '到期放款本金',
+        title: '放款本金',
         dataIndex: "loadAmount",
     },{
-        title: '到期待还金额',
+        title: '待还金额',
         dataIndex: "remainAmount",
     }, {
-        title: '到期减免金额',
+        title: '减免金额',
         dataIndex: "derateAmount",
     }, {
         title: '今日实还金额',
         dataIndex: "todayRealReturnAmount",
+    }, {
+        title: '线上还款金额',
+        dataIndex: "--",
+    }, {
+        title: '线上还款金额',
+        dataIndex: "----",
     }];
     var state = this.state;
     return (

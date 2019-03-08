@@ -14,6 +14,7 @@
         <result column="penalty_day" property="penaltyDay" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="borrow_amount" property="borrowAmount" jdbcType="DECIMAL"/>
     </resultMap>
 
     <resultMap id="BorrowRepayModel" extends="BaseResultMap" type="com.xiji.cashloan.cl.model.BorrowRepayModel" >
@@ -22,7 +23,7 @@
 
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time,type
+        id,user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time,type,borrow_amount
     </sql>
 
     <!-- 基本的sql查询条件公共引用 -->

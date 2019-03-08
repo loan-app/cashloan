@@ -80,6 +80,16 @@ import java.util.Date;
     private Double againLoadPrincipal;
 
     /**
+     * 线上放款本金
+     */
+    private Double onlineLoadPrincipal;
+
+    /**
+     * 线下放款本金
+     */
+    private Double unlineLoadPrincipal;
+
+    /**
      * 统计时间Str
      */
     private String countTimeStr;
@@ -316,6 +326,22 @@ import java.util.Date;
     */
     public void setAgainLoadPrincipal(Double againLoadPrincipal){
         this.againLoadPrincipal = againLoadPrincipal;
+    }
+
+    public Double getOnlineLoadPrincipal() {
+        return onlineLoadPrincipal;
+    }
+
+    public void setOnlineLoadPrincipal(Double onlineLoadPrincipal) {
+        this.onlineLoadPrincipal = onlineLoadPrincipal;
+    }
+
+    public Double getUnlineLoadPrincipal() {
+        return unlineLoadPrincipal;
+    }
+
+    public void setUnlineLoadPrincipal(Double unlineLoadPrincipal) {
+        this.unlineLoadPrincipal = unlineLoadPrincipal;
     }
 
     public String getCountTimeStr() {
