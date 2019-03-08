@@ -59,6 +59,9 @@
             <if test="type != null and type !=''">
                 and type = #{type,jdbcType=VARCHAR}
             </if>
+            <if test="borrowAmount !=null">
+                and borrow_amount = #{borrowAmount,jdbcType=DECIMAL}
+            </if>
         </trim>
     </sql>
 
@@ -66,7 +69,8 @@
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BorrowRepay">
         insert into cl_borrow_repay(user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time,type)
         SELECT #{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{amount,jdbcType=DECIMAL},#{repayTime,jdbcType=TIMESTAMP},
-        #{state,jdbcType=VARCHAR},#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR} FROM DUAL
+        #{state,jdbcType=VARCHAR},#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{type,jdbcType=VARCHAR},#{borrowAmount,jdbcType=DECIMAL} FROM DUAL
         where not exists(select id from cl_borrow_repay where borrow_id = #{borrowId,jdbcType=BIGINT})
     </insert>
 

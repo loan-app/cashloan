@@ -126,8 +126,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		BorrowRepay br = new BorrowRepay();
 		if ("10".equals(beheadFee)) {//启用
 			br.setAmount(borrow.getAmount());
+			br.setBorrowAmount(borrow.getAmount());
 		}else {
 			br.setAmount(borrow.getAmount() + borrow.getFee());
+			br.setBorrowAmount(borrow.getAmount() + borrow.getFee());
 		}
 		br.setBorrowId(borrow.getId());
 		br.setUserId(borrow.getUserId());
@@ -403,6 +405,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		//插入展期扣款的还款计划,状态为展期成功
 		BorrowRepay newBr = new BorrowRepay();
 		double repayAmount = param.get("amount") != null ? (Double) param.get("amount") : 0.0D;
+		newBr.setBorrowAmount(br.getAmount());
 		newBr.setAmount(repayAmount);
 		newBr.setBorrowId(br.getBorrowId());
 		newBr.setUserId(br.getUserId());
