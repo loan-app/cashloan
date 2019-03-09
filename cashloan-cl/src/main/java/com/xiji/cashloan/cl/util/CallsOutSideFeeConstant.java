@@ -31,7 +31,8 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_GRAYSCALE_STAT = 11;
     //新颜行为雷达
     public static int CALLS_TYPE_XINYAN_XWLD = 12;
-
+    //充值类型
+    public static int CALLS_TYPE_TopUp = 13;
     //魔蝎运营商费用
     public static double FEE_OPERATOR = -0.7;
     //魔杖反欺诈费用
