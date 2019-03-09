@@ -4,7 +4,7 @@ CREATE TABLE `cl_magic_basic` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
 	`user_id` BIGINT (20) DEFAULT NULL COMMENT '用户id',
 	`mobile` VARCHAR (11) DEFAULT '' COMMENT '用户手机号',
-	`user_name` VARCHAR (20) DEFAULT '' COMMENT '姓名',
+	`user_name` VARCHAR (100) DEFAULT '' COMMENT '姓名',
 	`idcard` VARCHAR (20) DEFAULT '' COMMENT '身份证号',
 	`idcard_location` VARCHAR (100) DEFAULT '' COMMENT '身份证归属地 省/市/区(县)',
 	`trans_id` VARCHAR (64) DEFAULT '' COMMENT '报告id',
@@ -254,7 +254,7 @@ CREATE TABLE `cl_magic_suspicious_other_name` (
 	`user_id` BIGINT (20) DEFAULT NULL COMMENT '用户id',
 	`trans_id` VARCHAR (64) DEFAULT '' COMMENT '报告id',
 	`latest_used_time` VARCHAR (50) DEFAULT NULL COMMENT '最后使用时间',
-	`name` VARCHAR (50) DEFAULT NULL COMMENT '姓名',
+	`name` VARCHAR (100) DEFAULT NULL COMMENT '姓名',
 	`type` VARCHAR (8) DEFAULT NULL COMMENT '存疑类型 idcard-身份证 mobile-手机 device-设备',
 	`create_time` DATETIME DEFAULT NULL COMMENT '创建时间',
 	PRIMARY KEY (`id`)
