@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import tool.util.BigDecimalUtil;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
@@ -79,7 +80,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		searchMap.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		BorrowRepayLog log = borrowRepayLogMapper.findSelective(searchMap);
 
-		searchMap.put("borrowId", borrow.getId());
+		searchMap.put("repayState", "true");
 		List<BorrowRepayModel> repay = borrowRepayMapper.listSelModel(searchMap);
 		Map<String,Object> result = new HashMap<>();
 		ClBorrowModel clBorrowModel = new ClBorrowModel();
@@ -142,12 +143,16 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
-				if (nowDate.after(repayPlanTime)){
+				double delayFee;
+				// 如果当前时间大于应还款时间,或者当前有逾期
+				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyDay() > 0) {
+					delayFee = BigDecimalUtil.add(borrow.getFee() + clBorrowModel.getPenaltyAmount());
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
-				}else {
+				} else {
+					delayFee = borrow.getFee();
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,delayDays),"yyyy-M-d");
 				}
-				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(borrow.getFee()));
+				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(delayFee));
 				delayItem.put("delayRepayTimeStr",dateStr);
 				result.put("delayItem", delayItem);
 			}

@@ -46,7 +46,7 @@ public class QuartzRepayInform implements Job{
 		BorrowRepayService borrowRepayService = (BorrowRepayService)BeanUtil.getBean("borrowRepayService");
 		ClSmsService clSmsService = (ClSmsService)BeanUtil.getBean("clSmsService");
 		
-		logger.info("进入还款日前0~2天计算...");
+		logger.info("进入还款日前0~1天计算...");
 		String quartzRemark = null;
 		int succeed = 0;
 		int fail = 0;
@@ -58,7 +58,7 @@ public class QuartzRepayInform implements Job{
 			for (int i = 0; i < list.size(); i++) {
 				try {
 					long day = DateUtil.daysBetween(new Date(), list.get(i).getRepayTime());
-					if (day==2||day==1||day==0) {//还款前发送短信通知
+					if (day==1 || day==0) {//还款前发送短信通知
 						clSmsService.repayBefore(list.get(i).getUserId(), list.get(i).getBorrowId());
 					}
 					succeed++;
@@ -70,7 +70,7 @@ public class QuartzRepayInform implements Job{
 				}
 			}
 		}
-		logger.info("还款日前0~2天计算结束");
+		logger.info("还款日前0~1天计算结束");
 		quartzRemark = "执行总次数"+total+",成功"+succeed+"次,失败"+fail+"次";
 		return quartzRemark;
 	}

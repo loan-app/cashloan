@@ -180,6 +180,7 @@ export default React.createClass({
     
     let hasSelected = selectedRowKeys.length > 0;
     const rowSelection = {
+      selectedRowKeys,
        getCheckboxProps: record => ({
              disabled: record.state === "40" ,    // 配置无法勾选的列
         }),
