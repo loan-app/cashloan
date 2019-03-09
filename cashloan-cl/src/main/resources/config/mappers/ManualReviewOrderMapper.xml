@@ -314,6 +314,12 @@
                     and o.user_id is null
                 </if>
             </if>
+            <if test="channelID !='' and channelID !=null">
+              and u.channel_id = #{channelID,jdbcType=VARCHAR}
+            </if>
+            <if test="again !='' and again !=null">
+                and b.again = #{again,jdbcType=VARCHAR}
+            </if>
         </trim>
         ORDER BY create_time DESC
     </select>
