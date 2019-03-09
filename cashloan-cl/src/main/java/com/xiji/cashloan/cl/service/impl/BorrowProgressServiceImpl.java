@@ -145,7 +145,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				}
 				double delayFee;
 				// 如果当前时间大于应还款时间,或者当前有逾期
-				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyDay() > 0) {
+				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyAmount() > 0.0d) {
 					delayFee = BigDecimalUtil.add(borrow.getFee() + clBorrowModel.getPenaltyAmount());
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				} else {
