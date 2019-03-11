@@ -91,7 +91,8 @@ public class YouDunRiskReportServiceImpl extends BaseServiceImpl<YouDunRiskRepor
         map.put("last_modified_time",data.get("last_modified_time").toString());
         //用户特征列表
         map.put("user_features",data.getJSONArray("user_features"));
-
+        //设备信息
+        map.put("devices_list",data.getJSONArray("devices_list"));
         return map;
     }
 
