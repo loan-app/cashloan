@@ -153,6 +153,19 @@ export default React.createClass({
     }, {
         title: '下款总数',
         dataIndex: "loadCount",
+    },{
+        title: '注册下款率',
+        dataIndex: "-- --",
+        render(text,record){
+
+          if (!record.userRegister) {
+            return "0%";
+          }else if(record.newBorrowCount === 0){
+              return record.newBorrowCount/record.userRegister*100+"%"
+          }else {
+              return (record.newBorrowCount/record.userRegister*100).toFixed(2)+"%"
+          }
+        }
     }];
     var state = this.state;
     return (

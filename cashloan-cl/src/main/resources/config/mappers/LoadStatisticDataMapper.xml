@@ -74,7 +74,9 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.LoadStatisticData">
-        insert into cl_load_statistic_data(create_time,update_time,count_time,load_count,load_amount,load_principal,first_load_count,first_load_amount,first_load_principal,again_load_count,again_load_amount,again_load_principal)values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{loadCount,jdbcType=INTEGER},#{loadAmount,jdbcType=DECIMAL},#{loadPrincipal,jdbcType=DECIMAL},#{firstLoadCount,jdbcType=INTEGER},#{firstLoadAmount,jdbcType=DECIMAL},#{firstLoadPrincipal,jdbcType=DECIMAL},#{againLoadCount,jdbcType=INTEGER},#{againLoadAmount,jdbcType=DECIMAL},#{againLoadPrincipal,jdbcType=DECIMAL})
+        insert into cl_load_statistic_data(create_time,update_time,count_time,load_count,load_amount,load_principal,first_load_count,first_load_amount,first_load_principal,again_load_count,again_load_amount,again_load_principal,online_load_principal,unline_load_principal) values
+        (#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{loadCount,jdbcType=INTEGER},#{loadAmount,jdbcType=DECIMAL},#{loadPrincipal,jdbcType=DECIMAL},#{firstLoadCount,jdbcType=INTEGER},#{firstLoadAmount,jdbcType=DECIMAL},
+        #{firstLoadPrincipal,jdbcType=DECIMAL},#{againLoadCount,jdbcType=INTEGER},#{againLoadAmount,jdbcType=DECIMAL},#{againLoadPrincipal,jdbcType=DECIMAL},#{onlineLoadPrincipal,jdbcType=DECIMAL},#{unlineLoadPrincipal,jdbcType=DECIMAL})
     </insert>
 
     
@@ -91,7 +93,10 @@
             first_load_principal = #{firstLoadPrincipal,jdbcType=DECIMAL},
             again_load_count = #{againLoadCount,jdbcType=INTEGER},
             again_load_amount = #{againLoadAmount,jdbcType=DECIMAL},
-            again_load_principal = #{againLoadPrincipal,jdbcType=DECIMAL}
+            again_load_principal = #{againLoadPrincipal,jdbcType=DECIMAL},
+            online_load_principal = #{onlineLoadPrincipal,jdbcType=DECIMAL},
+            unline_load_principal = #{unlineLoadPrincipal,jdbcType=DECIMAL}
+
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -256,7 +261,9 @@
                  T.firstLoadAmount,
                  T.againLoadCount,
                  T.againLoadPrincipal,
-                 T.againLoadAmount
+                 T.againLoadAmount,
+                 T.onlineLoadPrincipal,
+                 T.unlineLoadPrincipal
    		from (
 	   		select DATE_FORMAT(p.time,'%Y-%m-%d') countTime,
                     IFNULL(p1.loadCount,0) loadCount,
@@ -267,9 +274,12 @@
                     IFNULL(p6.firstLoadAmount,0) firstLoadAmount,
                     IFNULL(p7.againLoadCount,0) againLoadCount,
                     IFNULL(p8.againLoadPrincipal,0) againLoadPrincipal,
-                    IFNULL(p9.againLoadAmount,0) againLoadAmount
+                    IFNULL(p9.againLoadAmount,0) againLoadAmount,
+                    IFNULL(p10.onlineLoadPrincipal,0) onlineLoadPrincipal,
+                    IFNULL(p11.unlineLoadPrincipal,0) unlineLoadPrincipal
 
-	   		from (
+
+        from (
                 (SELECT COUNT(id) loadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) UNION
 		        (SELECT sum(real_amount) loadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) UNION
                 (SELECT sum(amount) loadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) UNION
@@ -280,8 +290,10 @@
 
                 (SELECT COUNT(id) againLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) UNION
 		        (SELECT sum(real_amount) againLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) UNION
-                (SELECT sum(amount) againLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time)
+                (SELECT sum(amount) againLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) UNION
 
+                (SELECT sum(amount) onlineLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT log.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow_progress as progress ,cl_pay_log as log where progress.state = '30' and log.id = progress.borrow_id  and log.remark !='线下放款审核' and log.state = '40') t2 GROUP BY time) UNION
+                (SELECT sum(amount) unlineLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT log.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow_progress as progress ,cl_pay_log as log where progress.state = '30' and log.id = progress.borrow_id  and log.remark ='线下放款审核' and log.state = '40') t2 GROUP BY time)
  ) p
            left join (SELECT COUNT(id) loadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) p1 on p.time = p1.time
            left join (SELECT sum(real_amount) loadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id ) t2 GROUP BY time) p2 on p.time = p2.time
@@ -295,6 +307,9 @@
            left join (SELECT COUNT(t2.user_id) againLoadCount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT distinct borrow.user_id,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) p7 on p.time = p7.time
            left join (SELECT sum(real_amount) againLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) p8 on p.time = p8.time
            left join (SELECT sum(amount) againLoadAmount,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT borrow.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow ,cl_borrow_progress as progress where progress.state = '30' and borrow.id = progress.borrow_id and borrow.again = '20') t2 GROUP BY time) p9 on p.time = p9.time
+
+           left join (SELECT sum(amount) onlineLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT log.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow_progress as progress ,cl_pay_log as log where progress.state = '30' and log.id = progress.borrow_id  and log.remark !='线下放款审核' and log.state = '40') t2 GROUP BY time) p10 on p.time = p10.time
+           left join (SELECT sum(amount) unlineLoadPrincipal,DATE_FORMAT(regist_time, '%Y-%m-%d') time FROM ( SELECT log.amount,DATE_FORMAT(progress.create_time, '%Y-%m-%d') regist_time FROM cl_borrow_progress as progress ,cl_pay_log as log where progress.state = '30' and log.id = progress.borrow_id  and log.remark ='线下放款审核' and log.state = '40') t2 GROUP BY time)  p11 on p.time = p11.time
 
         <where>
             <if test="startDate!=null and startDate!=''">

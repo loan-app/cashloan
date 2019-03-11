@@ -15,7 +15,7 @@
     <!-- 统计当日登陆用户数量 -->
     <select id="countLogin" resultType="java.lang.Integer" parameterType="java.util.HashMap">
     	select count(id) from cl_user 
-    	where  TO_DAYS(login_time)-TO_DAYS(SYSDATE())=0    
+    	where  TO_DAYS(login_time)-TO_DAYS(SYSDATE())=0
     </select>
     <!-- 统计当日借款申请的数量 -->
     <select id="countBorrow" resultType="java.lang.Double" parameterType="java.util.HashMap">
@@ -62,6 +62,23 @@
     <!-- 逾期未还款总额 -->
     <select id="sumBorrowOverdueRepay" resultType="java.lang.Double">
     	select sum(amount+penalty_amout) from cl_borrow_repay where state = '20' and penalty_amout>0
+    </select>
+
+
+    <select id="sumOnlineLoadAmount" resultType="java.lang.Double">
+        select sum(amount) from cl_pay_log where scenes = '10' and state = '40' and remark !='线下放款审核'
+    </select>
+
+    <select id="sumUnlineLoadAmount" resultType="java.lang.Double">
+        select sum(amount) from cl_pay_log where scenes = '10' and state = '40' and remark ='线下放款审核'
+    </select>
+
+    <select id="sumOnlineRepaymentAmount" resultType="java.lang.Double">
+        select sum(amount+penalty_amout) from cl_borrow_repay_log where repay_way = '10' and type in('10','20')
+    </select>
+
+    <select id="sumUnlineRepaymentAmount" resultType="java.lang.Double">
+        select sum(amount+penalty_amout) from cl_borrow_repay_log where repay_way in ('20','30') and type in('10','20')
     </select>
     
     <!-- 累计成功借款金额(按地区分组) -->

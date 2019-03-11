@@ -35,13 +35,15 @@ var CreditLoanReport = require('../../CreditReport/CreditLoanReport/index');//�
 var OutsideFee = require('../../FeeManage/OutsideFee/index'); //费用管理 外部数据费用
 var XinyanLoanReport = require('../../CreditReport/XinyanLoanReport/index'); //信用报告 小额网贷报告
 
-var AuditorStatistic = require('../../StatisticManage/AuditorStatistic/index'); //统计管理 审核人员统计
+var AuditorOverdueStatistic = require('../../StatisticManage/AuditorOverdueStatistic/index'); //统计管理 审核人员逾期率统计
 var AuditingStatistic = require('../../StatisticManage/AuditingStatistic/index'); //统计管理 审核统计
 var ChannelStatistic = require('../../StatisticManage/ChannelStatistic/index'); //统计管理 渠道统计
 var UserStatistic = require('../../StatisticManage/UserStatistic/index'); //统计管理 用户统计
 var LoadStatistic = require('../../StatisticManage/LoadStatistic/index'); //统计管理 放款统计
 var RepaymentStatistic = require('../../StatisticManage/RepaymentStatistic/index'); //统计管理 还款统计
-var OverdueStatistic = require('../../StatisticManage/OverdueStatistic/index'); //统计管理 还款统计
+var OverdueStatistic = require('../../StatisticManage/OverdueStatistic/index'); //统计管理 逾期统计
+var AuditorPassStatistic = require('../../StatisticManage/AuditorPassStatistic/index'); //统计管理 逾期统计
+
 
 
 
@@ -83,11 +85,12 @@ module.exports = {
   CreditLoanReport,
   OutsideFee,
   XinyanLoanReport,
-  AuditorStatistic,
+  AuditorOverdueStatistic,
     AuditingStatistic,
     ChannelStatistic,
     UserStatistic,
     LoadStatistic,
     RepaymentStatistic,
-    OverdueStatistic
+    OverdueStatistic,
+    AuditorPassStatistic
 }

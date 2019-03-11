@@ -20,11 +20,13 @@
         <result column="load_amount" property="loadAmount" jdbcType="DECIMAL" />
         <result column="derate_amount" property="derateAmount" jdbcType="DECIMAL" />
         <result column="remain_amount" property="remainAmount" jdbcType="DECIMAL" />
+        <result column="online_amount" property="onlineAmount" jdbcType="DECIMAL"/>
+        <result column="unline_amount" property="unlineAmount" jdbcType="DECIMAL"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,create_time,update_time,count_time,should_order,remain_order,advance_repayment,normal_repayment,extend_repayment,overdue_repayment,should_amount,real_retrun_amount,today_real_return_amount,load_amount,derate_amount,remain_amount
+        id,create_time,update_time,count_time,should_order,remain_order,advance_repayment,normal_repayment,extend_repayment,overdue_repayment,should_amount,real_retrun_amount,today_real_return_amount,load_amount,derate_amount,remain_amount,online_amount,unlineAmount
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -83,7 +85,9 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData">
-        insert into cl_repayment_statistic_data(create_time,update_time,count_time,should_order,remain_order,advance_repayment,normal_repayment,extend_repayment,overdue_repayment,should_amount,real_return_amount,today_real_return_amount,load_amount,derate_amount,remain_amount)values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{shouldOrder,jdbcType=INTEGER},#{remainOrder,jdbcType=INTEGER},#{advanceRepayment,jdbcType=INTEGER},#{normalRepayment,jdbcType=INTEGER},#{extendRepayment,jdbcType=INTEGER},#{overdueRepayment,jdbcType=INTEGER},#{shouldAmount,jdbcType=DECIMAL},#{realReturnAmount,jdbcType=DECIMAL},#{todayRealReturnAmount,jdbcType=DECIMAL},#{loadAmount,jdbcType=DECIMAL},#{derateAmount,jdbcType=DECIMAL},#{remainAmount,jdbcType=DECIMAL})
+        insert into cl_repayment_statistic_data(create_time,update_time,count_time,should_order,remain_order,advance_repayment,normal_repayment,extend_repayment,overdue_repayment,should_amount,real_return_amount,today_real_return_amount,load_amount,derate_amount,remain_amount,online_amount,unline_amount)
+        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{shouldOrder,jdbcType=INTEGER},#{remainOrder,jdbcType=INTEGER},#{advanceRepayment,jdbcType=INTEGER},#{normalRepayment,jdbcType=INTEGER},#{extendRepayment,jdbcType=INTEGER},
+        #{overdueRepayment,jdbcType=INTEGER},#{shouldAmount,jdbcType=DECIMAL},#{realReturnAmount,jdbcType=DECIMAL},#{todayRealReturnAmount,jdbcType=DECIMAL},#{loadAmount,jdbcType=DECIMAL},#{derateAmount,jdbcType=DECIMAL},#{remainAmount,jdbcType=DECIMAL},#{onlineAmount,jdbcType=DECIMAL},#{unlineAmount,jdbcType=DECIMAL})
     </insert>
 
     
@@ -298,8 +302,9 @@
         T.todayRealReturnAmount,
         T.loadAmount,
         T.derateAmount,
-        T.remainAmount
-
+        T.remainAmount,
+        T.onlineAmount,
+        T.unlineAmount
         from (
         select DATE_FORMAT(p.time,'%Y-%m-%d') countTime,
 
@@ -314,7 +319,9 @@
         IFNULL(p9.todayRealReturnAmount,0) todayRealReturnAmount,
         IFNULL(p10.loadAmount,0) loadAmount,
         IFNULL(p11.derateAmount,0) derateAmount,
-        IFNULL(p12.remainAmount,0) remainAmount
+        IFNULL(p12.remainAmount,0) remainAmount,
+        IFNULL(p13.onlineAmount,0) onlineAmount,
+        IFNULL(p14.unlineAmount,0) unlineAmount
 
         from (
 
@@ -326,15 +333,17 @@
         (SELECT COUNT(id) overdueRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) UNION
         (SELECT COUNT(id) extendRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY time  ) UNION
 
-        (SELECT sum(amount) shouldAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) UNION
+        (SELECT sum(borrow_amount) shouldAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.borrow_amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) UNION
         (SELECT sum(amount+penalty_amout) realReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type in(10,20)) t2 GROUP BY time  ) UNION
         (SELECT sum(amount+penalty_amout) todayRealReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type in(10,20)) t2 GROUP BY time  ) UNION
         (SELECT sum(real_amount) loadAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) UNION
 
         (SELECT sum(repayPenaltyAmout+repayAmount-logAmount-logPenaltyAmout) derateAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount as logAmount,log.penalty_amout as logPenaltyAmout, repay.amount as repayAmount ,repay.penalty_amout as repayPenaltyAmout ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) UNION
 
-        (SELECT sum(amount) remainAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id and repay.state ='20') t2 GROUP BY time  )
+        (SELECT sum(borrow_amount) remainAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.borrow_amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id and repay.state ='20') t2 GROUP BY time  ) UNION
 
+        (SELECT sum(amount+penalty_amout) onlineAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repayLog.amount,repayLog.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay ,cl_borrow_repay_log as repayLog where repay.state ='10' and repayLog.borrow_id = repay.borrow_id and repayLog.repay_id = repay.id and repayLog.repay_way ='10' ) t2 GROUP BY time) UNION
+        (SELECT sum(amount+penalty_amout) unlineAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repayLog.amount,repayLog.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay ,cl_borrow_repay_log as repayLog where repay.state ='10' and repayLog.borrow_id = repay.borrow_id and repayLog.repay_id = repay.id and repayLog.repay_way in('20','30') ) t2 GROUP BY time )
 
         ) p
         left join (SELECT COUNT(id) shouldOrder,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay) t2 GROUP BY time  ) p1 on p.time = p1.time
@@ -344,14 +353,16 @@
         left join (SELECT COUNT(id) overdueRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and DATE_FORMAT(repay.repay_time, '%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(log.repay_time, '%Y-%m-%d') and log.type ='10') t2 GROUP BY time  ) p5 on p.time = p5.time
         left join (SELECT COUNT(id) extendRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY time  ) p6 on p.time = p6.time
 
-        left join (SELECT sum(amount) shouldAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) p7 on p.time = p7.time
+        left join (SELECT sum(borrow_amount) shouldAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.borrow_amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) p7 on p.time = p7.time
         left join (SELECT sum(amount+penalty_amout) realReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type in(10,20)) t2 GROUP BY time  ) p8 on p.time = p8.time
         left join (SELECT sum(amount+penalty_amout) todayRealReturnAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount,log.penalty_amout, DATE_FORMAT(log.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type in(10,20)) t2 GROUP BY time  ) p9 on p.time = p9.time
         left join (SELECT sum(real_amount) loadAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT borrow.real_amount ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id) t2 GROUP BY time  ) p10 on p.time = p10.time
 
         left join (SELECT sum(repayPenaltyAmout+repayAmount-logAmount-logPenaltyAmout) derateAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT log.amount as logAmount,log.penalty_amout as logPenaltyAmout, repay.amount as repayAmount ,repay.penalty_amout as repayPenaltyAmout ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and log.type = '10') t2 GROUP BY time  ) p11 on p.time = p11.time
 
-        left join (SELECT sum(amount) remainAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id and repay.state ='20') t2 GROUP BY time  ) p12 on p.time = p12.time
+        left join (SELECT sum(borrow_amount) remainAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repay.borrow_amount,repay.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow as borrow where borrow.id = repay.borrow_id and repay.state ='20') t2 GROUP BY time  ) p12 on p.time = p12.time
+        left join (SELECT sum(amount+penalty_amout) onlineAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repayLog.amount,repayLog.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay ,cl_borrow_repay_log as repayLog where repay.state ='10' and repayLog.borrow_id = repay.borrow_id and repayLog.repay_id = repay.id and repayLog.repay_way ='10' ) t2 GROUP BY time) p13 on p.time = p13.time
+        left join (SELECT sum(amount+penalty_amout) unlineAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') time FROM ( SELECT repayLog.amount,repayLog.penalty_amout,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay ,cl_borrow_repay_log as repayLog where repay.state ='10' and repayLog.borrow_id = repay.borrow_id and repayLog.repay_id = repay.id and repayLog.repay_way in('20','30') ) t2 GROUP BY time ) p14 on p.time = p14.time
 
         <where>
             <if test="startDate!=null and startDate!=''">

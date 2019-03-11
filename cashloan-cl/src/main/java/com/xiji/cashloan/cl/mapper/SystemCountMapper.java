@@ -92,6 +92,30 @@ public interface SystemCountMapper {
 	 * @return
 	 */
 	Double sumBorrowOverdueRepay();
+
+	/**
+	 * 线上放款总额
+	 * @return
+	 */
+	Double sumOnlineLoadAmount();
+
+	/**
+	 * 线下放款总额
+	 * @return
+	 */
+	Double sumUnlineLoadAmount();
+
+	/**
+	 * 线上还款总额
+	 * @return
+	 */
+	Double sumOnlineRepaymentAmount();
+
+	/**
+	 * 线下还款总额
+	 * @return
+	 */
+	Double sumUnlineRepaymentAmount();
 	
 	/**
 	 * 累计成功借款金额(按地区分组)

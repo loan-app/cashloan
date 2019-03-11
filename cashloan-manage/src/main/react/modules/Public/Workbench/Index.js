@@ -242,52 +242,83 @@ export default React.createClass({
                     <Row>
                         <Col><div className="data-panel-left">
 
-                            <dev className ="data-panel-1">
+                            <div className="dev-total-1">
+                                <dev className ="data-panel-1">
                                 <dev className="data-panel-t1"></dev>
                                 <dev className='sp-title'>{br}累计数据</dev>
                                 {/*<span className='sp-title'>累计数据</span>*/}
-                            </dev>
-                            <dev className ="data-panel-2 ">
-                                <dev className ='blk-number-description'>历史放款总量</dev>
-                                <dev className ='blk-number-history'>{formsTotal.borrowLoanHistory}</dev>
+                                </dev>
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史放款总量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.borrowLoanHistory}</dev>
 
-                            </dev>
-                            <dev className ="data-panel-2 ">
-                                <dev className ='blk-number-description'>历史还款总量</dev>
-                                <dev className ='blk-number-history'>{formsTotal.borrowRepayHistory}</dev>
+                                </dev>
 
-                            </dev>
-                            <dev className ="data-panel-3 ">
-                                <dev className ='blk-number-description'>历史总注册量</dev>
-                                <dev className ='blk-number-history'>{formsTotal.registerHistory}</dev>
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史还款总量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.borrowRepayHistory}</dev>
 
-                            </dev>
-                            <dev className ="data-panel-3 ">
-                                <dev className ='blk-number-description'>历史总申请量</dev>
-                                <dev className ='blk-number-history'>{formsTotal.borrowApplyHistory}</dev>
-                            </dev>
+                                </dev>
+                            </div>
+
+                            <div className="dev-total-2">
+
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史总注册量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.registerHistory}</dev>
+
+                                </dev>
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史总申请量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.borrowApplyHistory}</dev>
+                                </dev>
+                            </div>
 
                         </div>
 
 
-
                             <div className="data-panel-right">
-
-
                                 <dev className ="data-panel-5">
                                     <dev className="data-panel-t2"></dev>
                                     <dev className='sp-title'>{br}实时数据</dev>
                                 </dev>
-                                <dev className ="data-panel-4 ">
-                                    <dev className ='blk-number-description'>待还款总余额</dev>
-                                    <dev className ='blk-number-history'>{formsRealTime.needRepay}</dev>
+                                <div className="dev-total-1">
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>待还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.needRepay}</dev>
 
-                                </dev>
-                                <dev className ="data-panel-4 ">
-                                    <dev className ='blk-number-description'>逾期未还款总额</dev>
-                                    <dev className ='blk-number-history'>{formsRealTime.overdueRepay}</dev>
+                                    </dev>
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线上还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumOnlineRepaymentAmount}</dev>
 
-                                </dev>
+                                    </dev>
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线上放款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumOnlineLoadAmount}</dev>
+
+                                    </dev>
+
+                                </div>
+
+                                <div className="dev-total-1">
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>逾期未还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.overdueRepay}</dev>
+
+                                    </dev>
+
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线下还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumUnlineLoadAmount}</dev>
+
+                                    </dev>
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线下放款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumUnlineLoadAmount}</dev>
+
+                                    </dev>
+                                </div>
 
                             </div>
                         </Col>
@@ -364,17 +395,18 @@ export default React.createClass({
                     </div>
                 </div> : <div className="block-chart">
                     <div className='blk-top-change'>
-                            <div>
-                                {location.Map}
-                            </div>
+                            {/*<div>*/}
+                                {/*{location.Map}*/}
+                            {/*</div>*/}
                             <div>
                                 {location.Pie2}
                             </div>
-                            <div> 
+                            <div>
                                 {location.Bar1}
                             </div>
                     </div>
-                </div>}
+                </div>
+                }
             </div>
         )
     }

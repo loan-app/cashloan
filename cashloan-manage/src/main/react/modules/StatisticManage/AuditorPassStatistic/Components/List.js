@@ -120,12 +120,6 @@ export default React.createClass({
     var columns = [{
         title: '审核员',
         dataIndex: 'auditorName',
-    },  {
-        title: '新客逾期未还数',
-        dataIndex: "firstOverdue",
-    }, {
-        title: '老客逾期未还数',
-        dataIndex: "againOverdue",
     },{
         title: '新客审核成功',
         dataIndex: 'firstPassOrder',
@@ -135,33 +129,11 @@ export default React.createClass({
         render(text,record){
             return record.newBorrowApplyCount - record.firstPassOrder;
         }
-    }, {
-        title: '新客放款量',
-        dataIndex: "firstLoadCount",
-    }, {
-        title: '老客放款量',
-        dataIndex: "againLoadCount",
-        render(text,record){
-            return record.againLoadCount;
-        }
     },{
         title: '新客通过率',
         dataIndex: "firstPassRate",
         render(text,record){
          return record.firstPassRate +"%";
-        }
-    },
-        {
-        title: '新客逾期率',
-        dataIndex: 'firstOverdueRate',
-        render(text,record){
-          return record.firstOverdueRate +"%";
-        }
-    }, {
-        title: '老客逾期率',
-        dataIndex: "againOverdueRate",
-        render(text,record){
-            return record.againOverdueRate +"%";
         }
     }];
     var state = this.state;

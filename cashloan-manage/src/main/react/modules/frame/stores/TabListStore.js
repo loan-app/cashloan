@@ -100,13 +100,14 @@ export default Reflux.createStore({
 					'CreditLoanReport',
 					'OutsideFee',
 					'XinyanLoanReport',
-				    'AuditorStatistic',
+				    'AuditorOverdueStatistic',
 				    'AuditingStatistic',
                     'ChannelStatistic',
                     'UserStatistic',
                     'LoadStatistic',
                     'RepaymentStatistic',
-				    'OverdueStatistic'
+				    'OverdueStatistic',
+				    'AuditorPassStatistic'
 			];
 
 			var routeNames3 = [

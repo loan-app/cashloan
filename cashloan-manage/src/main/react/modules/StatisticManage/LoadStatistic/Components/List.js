@@ -149,10 +149,10 @@ export default React.createClass({
         dataIndex: "againLoadPrincipal",
     }, {
         title: '线上放款本金',
-        dataIndex: "--",
+        dataIndex: "onlineLoadPrincipal",
     }, {
         title: '线下放款本金',
-        dataIndex: "----",
+        dataIndex: "unlineLoadPrincipal",
     }];
     var state = this.state;
     return (

@@ -1,8 +1,6 @@
 import React from 'react'
-import {
-  Table,
-  Modal
-} from 'antd';
+import {Modal, Table} from 'antd';
+
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -133,10 +131,12 @@ export default React.createClass({
     }, {
       title: '用户名',
       dataIndex: "userName",
-    }, {
-      title: '工号',
-      dataIndex: 'jobNumber'
-    }, {
+    },
+    //     {
+    //   title: '工号',
+    //   dataIndex: 'jobNumber'
+    // },
+        {
       title: '订单总数',
       dataIndex: 'orderCount',
     }, {
@@ -151,7 +151,14 @@ export default React.createClass({
     }, {
       title: '昨日审核次数',
       dataIndex: 'yesterdayCount',
-    }];
+    }, {
+            title: '今日审核通过订单数',
+            dataIndex: 'todayPassOrderCount',
+        },
+        {
+            title: '今日放款订单数',
+            dataIndex: 'todayLoanOrderCount',
+        }];
     var state = this.state;
     return (
       <div className="block-panel">

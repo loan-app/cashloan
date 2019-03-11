@@ -80,7 +80,7 @@ let SeachForm = React.createClass({
               </Select>
               {/*<Input  {...getFieldProps('auditorName', { initialValue: ''})} />*/}
           </FormItem>
-      <FormItem label="统计时间：">
+      <FormItem label="审核时间：">
           <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('countTime', { initialValue: '' }) } />
       </FormItem>
         <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>

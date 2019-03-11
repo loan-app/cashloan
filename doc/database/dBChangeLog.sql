@@ -718,14 +718,16 @@ CREATE TABLE `cl_overdue_statistic_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='逾期统计数据';
 
+-- 添加统计报表菜单
 INSERT INTO `arc_sys_menu` VALUES ('1016', '0', '统计报表', '0', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '统计报表', '0', 'StatisticManage', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1017', '0', '用户统计', '1016', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '用户统计', '0', 'UserStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1018', '0', '审核统计', '1016', '', 'icon-qian', '00000000002', null, '', '2017-01-01 00:00:00', '', '审核统计', '0', 'AuditingStatistic', null, null, null, null);
-INSERT INTO `arc_sys_menu` VALUES ('1019', '0', '审核人员统计', '1016', '', 'icon-qian', '00000000003', null, '', '2017-01-01 00:00:00', '', '审核人员统计', '0', 'AuditorStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1019', '0', '审核人员逾期率统计', '1016', '', 'icon-qian', '00000000003', null, '', '2017-01-01 00:00:00', '', '审核人员逾期率统计', '0', 'AuditorOverdueStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1020', '0', '还款统计', '1016', '', 'icon-qian', '00000000004', null, '', '2017-01-01 00:00:00', '', '还款统计', '0', 'RepaymentStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1021', '0', '渠道统计', '1016', '', 'icon-qian', '00000000005', null, '', '2017-01-01 00:00:00', '', '渠道统计', '0', 'ChannelStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1022', '0', '放款统计', '1016', '', 'icon-qian', '00000000006', null, '', '2017-01-01 00:00:00', '', '放款统计', '0', 'LoadStatistic', null, null, null, null);
 INSERT INTO `arc_sys_menu` VALUES ('1023', '0', '逾期统计', '1016', '', 'icon-qian', '00000000007', null, '', '2017-01-01 00:00:00', '', '逾期统计', '0', 'OverdueStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1024', '0', '审核人员通过率统计', '1016', '', 'icon-qian', '00000000003', null, '', '2017-01-01 00:00:00', '', '审核人员通过率统计', '0', 'AuditorPassStatistic', null, null, null, null);
 
 -- INSERT INTO `arc_sys_role_menu` VALUES ('', '1', '1016');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1017');
@@ -735,6 +737,8 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1020');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1021');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1022');
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1023');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1024');
+
 
 
 -- 添加定时任务信息表
@@ -765,3 +769,9 @@ ALTER TABLE cl_borrow_repay add column `type` varchar(10)  default '1' COMMENT '
 -- 初始化还款计划类型
 update `cl_borrow_repay` br,(select borrow_id from `cl_borrow_repay`  GROUP BY borrow_id HAVING(count(borrow_id)) > 1) temp
 set br.type = 2 where br.borrow_id = temp.borrow_id and (state = 10 or state = 20);
+
+-- 还款计划表添加借款订单金额属性
+alter table cl_borrow_repay add column `borrow_amount` decimal(12,2)  default '0.0' COMMENT '借款订单金额';
+-- 同步原数据借款订单金额
+update cl_borrow_repay cbr, (select br.borrow_id,b.amount from `cl_borrow_repay` br  LEFT JOIN `cl_borrow` b  on br.borrow_id = b.id) temp set cbr.borrow_amount = temp.amount
+where cbr.borrow_id = temp.borrow_id;

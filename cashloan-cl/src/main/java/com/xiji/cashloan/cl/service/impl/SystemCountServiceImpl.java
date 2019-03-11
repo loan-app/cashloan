@@ -335,6 +335,17 @@ public class SystemCountServiceImpl implements SystemCountService {
 		Double overdueRepay = systemCountMapper.sumBorrowOverdueRepay();
 		rtMap.put("overdueRepay", overdueRepay==null?0.00:overdueRepay);
 
+		Double sumOnlineLoadAmount =systemCountMapper.sumOnlineLoadAmount();
+		rtMap.put("sumOnlineLoadAmount", sumOnlineLoadAmount==null?0.00:sumOnlineLoadAmount);
+
+		Double sumUnlineLoadAmount = systemCountMapper.sumUnlineLoadAmount();
+		rtMap.put("sumUnlineLoadAmount", sumUnlineLoadAmount==null?0.00:sumUnlineLoadAmount);
+
+		Double sumOnlineRepaymentAmount = systemCountMapper.sumOnlineRepaymentAmount();
+		rtMap.put("sumOnlineRepaymentAmount", sumOnlineRepaymentAmount == null?0.00:sumOnlineRepaymentAmount);
+
+		Double sumUnlineRepaymentAmount = systemCountMapper.sumUnlineRepaymentAmount();
+		rtMap.put("sumUnlineRepaymentAmount",sumUnlineRepaymentAmount == null?0.00:sumUnlineRepaymentAmount);
 		return rtMap;
 	}
 

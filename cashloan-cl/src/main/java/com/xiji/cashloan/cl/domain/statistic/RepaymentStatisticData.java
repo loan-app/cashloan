@@ -95,6 +95,17 @@ import java.util.Date;
     private Double remainAmount;
 
     /**
+     *
+     * 线上还款
+     */
+    private Double onlineAmount;
+
+    /**
+     * 线下还款
+     */
+    private Double unlineAmount;
+
+    /**
      * 统计时间Str
      */
     private String countTimeStr;
@@ -408,5 +419,21 @@ import java.util.Date;
 
     public void setCountTimeStr(String countTimeStr) {
         this.countTimeStr = countTimeStr;
+    }
+
+    public Double getOnlineAmount() {
+        return onlineAmount;
+    }
+
+    public void setOnlineAmount(Double onlineAmount) {
+        this.onlineAmount = onlineAmount;
+    }
+
+    public Double getUnlineAmount() {
+        return unlineAmount;
+    }
+
+    public void setUnlineAmount(Double unlineAmount) {
+        this.unlineAmount = unlineAmount;
     }
 }

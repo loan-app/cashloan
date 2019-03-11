@@ -47,7 +47,7 @@ export default React.createClass({
 
   },
   rowKey(record) {
-    return record.id;
+    return record.auditorId;
   },
 
   //分页
@@ -72,7 +72,7 @@ export default React.createClass({
       }
     }
     Utils.ajaxData({
-      url: '/modules/manage/statistic/listRepaymentStatistic.htm',
+      url: '/modules/manage/statistic/listAuditorStatistic.htm',
       data: params,
 
       callback: (result) => {
@@ -118,55 +118,39 @@ export default React.createClass({
  
   render() {
     var columns = [{
-      title: '统计时间',
-      dataIndex: 'countTimeStr',
+        title: '审核员',
+        dataIndex: 'auditorName',
+    },  {
+        title: '新客逾期未还数',
+        dataIndex: "firstOverdue",
     }, {
-          title: '应还订单',
-          dataIndex: 'shouldOrder',
-    },{
-      title: '待还订单',
-      dataIndex: 'remainOrder'
+        title: '老客逾期未还数',
+        dataIndex: "againOverdue",
     }, {
-      title: '提前还款',
-      dataIndex: "advanceRepayment",
+        title: '新客放款量',
+        dataIndex: "firstLoadCount",
     }, {
-        title: '正常还款',
-        dataIndex: "normalRepayment",
+        title: '老客放款量',
+        dataIndex: "againLoadCount",
+        render(text,record){
+            return record.againLoadCount;
+        }
     }, {
-        title: '展期还款',
-        dataIndex: "extendRepayment",
+        title: '新客逾期率',
+        dataIndex: 'firstOverdueRate',
+        render(text,record){
+          return record.firstOverdueRate +"%";
+        }
     }, {
-        title: '逾期还款',
-        dataIndex: "overdueRepayment",
-    }, {
-        title: '应还金额',
-        dataIndex: "shouldAmount",
-    }, {
-        title: '实还金额',
-        dataIndex: "realReturnAmount",
-    }, {
-        title: '放款本金',
-        dataIndex: "loadAmount",
-    },{
-        title: '待还金额',
-        dataIndex: "remainAmount",
-    }, {
-        title: '减免金额',
-        dataIndex: "derateAmount",
-    }, {
-        title: '今日实还金额',
-        dataIndex: "todayRealReturnAmount",
-    }, {
-        title: '线上还款金额',
-        dataIndex: "onlineAmount",
-    }, {
-        title: '线下还款金额',
-        dataIndex: "unlineAmount",
+        title: '老客逾期率',
+        dataIndex: "againOverdueRate",
+        render(text,record){
+            return record.againOverdueRate +"%";
+        }
     }];
     var state = this.state;
     return (
       <div className="block-panel">
-
            <Table columns={columns} rowKey={this.rowKey}
              onRowClick={this.onRowClick}
              dataSource={this.state.data}

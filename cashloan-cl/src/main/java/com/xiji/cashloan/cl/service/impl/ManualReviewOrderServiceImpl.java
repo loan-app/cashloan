@@ -1,22 +1,20 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import javax.annotation.Resource;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.ManualReviewOrder;
+import com.xiji.cashloan.cl.mapper.ManualReviewOrderMapper;
 import com.xiji.cashloan.cl.model.ManualReviewCountModel;
 import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
+import com.xiji.cashloan.cl.service.ManualReviewOrderService;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.xiji.cashloan.core.common.mapper.BaseMapper;
-import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.cl.mapper.ManualReviewOrderMapper;
-import com.xiji.cashloan.cl.domain.ManualReviewOrder;
-import com.xiji.cashloan.cl.service.ManualReviewOrderService;
-
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +64,11 @@ public class ManualReviewOrderServiceImpl extends BaseServiceImpl<ManualReviewOr
 
 			params.put("state", ManualReviewOrderModel.STATE_ORDER_REFUSED);
 			model.setRefusedCount(manualReviewOrderMapper.countOrder(params));
+
+			model.setTodayPassOrderCount(manualReviewOrderMapper.countTodayPassOrder(params));
+
+			model.setTodayLoanOrderCount(manualReviewOrderMapper.countTodayLoanOrder(params));
+
 
 			Date yester = DateUtil.rollDay(DateUtil.getNow(), -1);
 			params.put("startTime", DateUtil.getDayStartTime(yester));
