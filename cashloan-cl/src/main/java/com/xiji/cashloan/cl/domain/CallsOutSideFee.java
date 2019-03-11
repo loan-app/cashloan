@@ -67,6 +67,11 @@ import java.util.Date;
      */
     private BigDecimal totalFee;
 
+    /**
+     * 总余额
+     */
+    private BigDecimal balance;
+
     public CallsOutSideFee() {
         super();
     }
@@ -244,6 +249,13 @@ import java.util.Date;
         this.totalFee = totalFee;
     }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
     public BigDecimal getTotalFee(){
         return totalFee;

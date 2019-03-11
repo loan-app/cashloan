@@ -759,6 +759,12 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 -- 新增渠道后台角色
 INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
 
+-- 新增到期提醒短信模板
+INSERT INTO `cl_sms_tpl` VALUES ('7', 'repayBefore', '到期提醒', '{$name}先生/女士，{$appName}账单处理一下，避免联系亲朋好友，麻烦及时联系客服处理！', 'SMS0678041320', '10');
+
+-- 到期提醒定时任务
+INSERT INTO `cl_quartz_info` VALUES (null, '到期提醒', 'doRepayInform', '0 0 10 * * ?', 'com.xiji.cashloan.manage.job.QuartzRepayInform', '0', '0', '10', '2019-03-04 00:00:00');
+
 
 alter table cl_auditor_statistic_data add again_load_count int(11) NOT NULL DEFAULT '0' COMMENT '复贷放款数';
 alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数'

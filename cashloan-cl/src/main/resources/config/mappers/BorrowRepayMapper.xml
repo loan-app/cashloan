@@ -62,6 +62,9 @@
             <if test="borrowAmount !=null">
                 and borrow_amount = #{borrowAmount,jdbcType=DECIMAL}
             </if>
+            <if test="repayState !=null and repayState !='' ">
+                and state in ('10', '20')
+            </if>
         </trim>
     </sql>
 

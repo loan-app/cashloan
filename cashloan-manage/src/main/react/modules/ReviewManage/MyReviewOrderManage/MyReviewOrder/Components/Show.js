@@ -30,20 +30,6 @@ var Show = React.createClass({
       num: num
     })
   },
-  scrolling(e){
-    var tranZ = this.state.tranZ;
-    e = e || window.event;
-    if (e.deltaY < 0) {
-      //当滑轮向上滚动时
-      tranZ = tranZ >=900 ? tranZ : tranZ+50;
-    }else {
-      //当滑轮向下滚动时
-      tranZ = tranZ <= -200 ? tranZ : tranZ-50;
-    }
-    this.setState({
-      tranZ
-    })
-  },
   render() {
     var props = this.props;
     var state = this.state;
@@ -70,8 +56,8 @@ var Show = React.createClass({
         maskClosable={false}
       >
 
-        <div id='div' onWheel={this.scrolling} style={{ position: "relative", width: 500, height: 500, margin: '0 auto', overflow: 'hidden',perspective: 1000 }}>
-              {props.recordSoure ? <img id='img' onClick={this.change} src={props.recordSoure.userbase[str[state.num]]} style={{ position: "absolute",transition: 'all 0.5s',width: 200,left:0,right:0,top:0,bottom:0, margin: 'auto',transform: 'translateZ('+this.state.tranZ+'px)' }} /> : null}
+        <div id='div' style={{ position: "relative", width: 500, height: 500, margin: '0 auto', overflow: 'hidden',perspective: 1000 }}>
+              {props.recordSoure ? <img id='img' onClick={this.change} src={props.recordSoure.userbase[str[state.num]]} style={{ position: "absolute",transition: 'all 0.5s',width: 460,left:0,right:0,top:0,bottom:0, margin: 'auto' }} /> : null}
         </div>
       </Modal>
     );

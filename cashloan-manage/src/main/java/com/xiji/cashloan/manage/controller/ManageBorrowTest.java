@@ -1,14 +1,16 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
-import com.xiji.cashloan.cl.service.BorrowRepayLogService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.DhbReqLogService;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
+import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.service.CloanUserService;
+import com.xiji.cashloan.core.service.UserBaseInfoService;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.rc.service.TppBusinessService;
 import org.springframework.context.annotation.Scope;
@@ -46,6 +48,10 @@ public class ManageBorrowTest extends ManageBaseController{
 	private TppBusinessService tppBusinessService;
 	@Resource
 	private DhbReqLogService dhbReqLogService;
+    @Resource
+	private UserBaseInfoService userBaseInfoService;
+    @Resource
+    private CallsOutSideFeeService callsOutSideFeeService;
 	
 	@RequestMapping(value = "/modules/manage/user/list.htm")
 	public void list()throws Exception{
@@ -98,6 +104,38 @@ public class ManageBorrowTest extends ManageBaseController{
 		ServletUtils.writeToResponse(response,result);
 	}
 
-	
+    /**
+     *  充值
+     * @param phone
+     * @param money
+     * @throws Exception
+     */
+    @RequestMapping(value = "/modules/manage/borrow/doRechargeable.htm")
+	public void doRechargeable(
+	        @RequestParam(value = "phone")String phone,
+            @RequestParam(value="money") double money
+            )throws Exception{
+
+        HashMap<String, Object> result = new HashMap<>();
+        String taskId = UUIDGenerator.getUUID();
+
+        //插入收费记录表
+        CallsOutSideFee callsOutSideFee = new CallsOutSideFee(null, taskId, CallsOutSideFeeConstant.CALLS_TYPE_TopUp,
+                money, CallsOutSideFeeConstant.CAST_TYPE_RECHARGE, phone);
+        int i = callsOutSideFeeService.save(callsOutSideFee);
+        //获取app名称
+        String appName = Global.getValue("appName");
+        if ( i > 0) {
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "充值成功");
+            result.put("充值金额为: ",money);
+            result.put("产品名称",appName);
+        } else {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "充值失败");
+            result.put(Constant.SESSION_OPERATOR,appName);
+        }
+        ServletUtils.writeToResponse(response,result);
+    }
 	
 }

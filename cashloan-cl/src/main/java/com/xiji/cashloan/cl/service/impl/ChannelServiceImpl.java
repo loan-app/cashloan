@@ -73,6 +73,7 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	public Channel findByCode(String code) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("code", code);
+		paramMap.put("state", "10");
 		return channelMapper.findSelective(paramMap);
 	}
 
