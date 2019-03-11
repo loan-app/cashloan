@@ -270,19 +270,15 @@ public class SystemCountServiceImpl implements SystemCountService {
 		if (CollectionUtil.isNotEmpty(borrowLoanList)){
 			for (Borrow loan:borrowLoanList){
 				if ("10".equals(loan.getAgain())){
-					if ("30".equals(loan.getState())){
 						todayNewLoan++;
 						todayTotalSum =  BigDecimalUtil.add(todayTotalSum,loan.getAmount());
 						todayPrincipal = BigDecimalUtil.add(todayPrincipal,loan.getRealAmount());
-					}
 				}
 
 				if ("20".equals(loan.getAgain())){
-					if ("30".equals(loan.getState())){
 						todayOldLoan++;
 						todayPrincipal = BigDecimalUtil.add(todayPrincipal,loan.getRealAmount());
 						todayTotalSum =  BigDecimalUtil.add(todayTotalSum,loan.getAmount());
-					}
 				}
 			}
 		}

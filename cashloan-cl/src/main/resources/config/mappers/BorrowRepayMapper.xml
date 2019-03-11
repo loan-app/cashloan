@@ -70,7 +70,7 @@
 
 
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BorrowRepay">
-        insert into cl_borrow_repay(user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time,type)
+        insert into cl_borrow_repay(user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time,type,borrow_amount)
         SELECT #{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{amount,jdbcType=DECIMAL},#{repayTime,jdbcType=TIMESTAMP},
         #{state,jdbcType=VARCHAR},#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
         ,#{type,jdbcType=VARCHAR},#{borrowAmount,jdbcType=DECIMAL} FROM DUAL
@@ -326,10 +326,10 @@
     </select>
 
     <insert id="saveReturnId" parameterType="com.xiji.cashloan.cl.domain.BorrowRepay" keyProperty="id" useGeneratedKeys="true">
-        insert into cl_borrow_repay(user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time)
+        insert into cl_borrow_repay(user_id,borrow_id,amount,repay_time,state,penalty_amout,penalty_day,create_time,borrow_amount)
         values (
         #{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{amount,jdbcType=DECIMAL},#{repayTime,jdbcType=TIMESTAMP},
-        #{state,jdbcType=VARCHAR},#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        #{state,jdbcType=VARCHAR},#{penaltyAmout,jdbcType=DECIMAL},#{penaltyDay,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{borrowAmount,jdbcType=DECIMAL}
         )
     </insert>
 

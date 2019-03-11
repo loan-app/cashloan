@@ -5,11 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.service.BorrowProgressService;
 import com.xiji.cashloan.core.common.context.Global;
@@ -18,13 +14,6 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +22,10 @@ import tool.util.BigDecimalUtil;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -80,7 +73,9 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		searchMap.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		BorrowRepayLog log = borrowRepayLogMapper.findSelective(searchMap);
 
+		searchMap.clear();
 		searchMap.put("repayState", "true");
+		searchMap.put("borrowId", borrow.getId());
 		List<BorrowRepayModel> repay = borrowRepayMapper.listSelModel(searchMap);
 		Map<String,Object> result = new HashMap<>();
 		ClBorrowModel clBorrowModel = new ClBorrowModel();
