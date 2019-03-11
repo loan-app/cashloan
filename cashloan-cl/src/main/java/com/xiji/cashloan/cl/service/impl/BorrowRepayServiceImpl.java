@@ -400,9 +400,22 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		if (msg <= 0) {
 			throw new BussinessException("更新还款信息出错" + br.getBorrowId());
 		}
+		//展期金额
+		double repayAmount = NumberUtil.getDouble(param.get("amount") != null ? (String) param.get("amount") : "0.0") - br.getPenaltyAmout();
+		if (br.getAmount() < repayAmount) {
+			result.put("Code", Constant.FAIL_CODE_VALUE);
+			result.put("Msg", "展期金额不能大于还款金额");
+			return result;
+		}
+		//逾期罚金
+		double penaltyAmount = param.get("penaltyAmout") != null ? NumberUtil.getDouble((String) param.get("penaltyAmout")) : br.getPenaltyAmout();
+		if (br.getPenaltyAmout() < penaltyAmount) {
+			result.put("Code", Constant.FAIL_CODE_VALUE);
+			result.put("Msg", "逾期罚金不能大于原逾期罚金");
+			return result;
+		}
 		//插入展期扣款的还款计划,状态为展期成功
 		BorrowRepay newBr = new BorrowRepay();
-		double repayAmount = param.get("amount") != null ? (Double) param.get("amount") : 0.0D;
 		newBr.setAmount(repayAmount);
 		newBr.setBorrowId(br.getBorrowId());
 		newBr.setUserId(br.getUserId());
@@ -410,8 +423,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		repay = repay + " 23:59:59";
 		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
 		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);
-		newBr.setPenaltyAmout(0.0);
-		newBr.setPenaltyDay("0");
+		newBr.setPenaltyAmout(penaltyAmount);
+		newBr.setPenaltyDay(br.getPenaltyDay());
 		newBr.setCreateTime(DateUtil.getNow());
 		msg = borrowRepayMapper.saveReturnId(newBr);
 		if (msg <= 0) {
@@ -424,8 +437,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		delayRepayLog.setUserId(br.getUserId());
 		delayRepayLog.setAmount(repayAmount);// 实际还款金额
 		delayRepayLog.setRepayTime(DateUtil.getNow());// 实际还款时间
-		delayRepayLog.setPenaltyAmout(0.00);
-		delayRepayLog.setPenaltyDay("0");
+		delayRepayLog.setPenaltyAmout(penaltyAmount);
+		delayRepayLog.setPenaltyDay(br.getPenaltyDay());
 		delayRepayLog.setSerialNumber((String) param.get("serialNumber"));
 		delayRepayLog.setRepayAccount((String) param.get("repayAccount"));
 		delayRepayLog.setRepayWay((String) param.get("repayWay"));
@@ -502,18 +515,19 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			log.setRepayTime(repayTime);// 实际还款时间
 			log.setPenaltyDay(br.getPenaltyDay());
 			// 实际还款时间在应还款时间之前或当天（不对比时分秒），重置逾期金额和天数
-			if (!repay_time.after(repayPlanTime)) {
-				log.setPenaltyAmout(0.00);
-				log.setPenaltyDay("0");
+			//这里要考虑到逾期展期的客户,在结清的时候要处理逾期费用,所以这个逻辑去除
+//			if (!repay_time.after(repayPlanTime)) {
+//				log.setPenaltyAmout(0.00);
+//				log.setPenaltyDay("0");
+//			} else {
+			// 金额减免时 罚金可页面填写
+			String penaltyAmout = StringUtil.isNull(param.get("penaltyAmout"));
+			if (StringUtil.isNotBlank(penaltyAmout)) {
+				log.setPenaltyAmout(NumberUtil.getDouble(penaltyAmout));
 			} else {
-				// 金额减免时 罚金可页面填写
-				String penaltyAmout = StringUtil.isNull(param.get("penaltyAmout"));
-				if (StringUtil.isNotBlank(penaltyAmout)) {
-					log.setPenaltyAmout(NumberUtil.getDouble(penaltyAmout));
-				} else {
-					log.setPenaltyAmout(br.getPenaltyAmout());
-				}
+				log.setPenaltyAmout(br.getPenaltyAmout());
 			}
+//			}
 
 			log.setSerialNumber((String) param.get("serialNumber"));
 			log.setRepayAccount((String) param.get("repayAccount"));
@@ -529,6 +543,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		paramMap.put("id", br.getId());
 		paramMap.put("repayTime", repayTime);
 		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
+		paramMap.put("penaltyAmout", "0.0");
+		paramMap.put("penaltyDay", "0");
 		return borrowRepayMapper.updateParam(paramMap);
 	}
 	@Override
@@ -996,7 +1012,12 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		//2、走支付逻辑
 		Double sourceAmount = 0.0;
 		if ((StringUtil.equals("2", type))) {
-			sourceAmount = borrow.getFee();//展期扣除部费用
+			//展期扣除部费用
+			if(borrowRepay.getPenaltyAmout() > 0) {
+				sourceAmount = BigDecimalUtil.add(borrow.getFee() ,borrowRepay.getPenaltyAmout());
+			} else {
+				sourceAmount = borrow.getFee();
+			}
 		}else {
 			// 还款金额
 			double principal = borrowRepay.getAmount();
@@ -1170,7 +1191,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				param.put("state", BorrowModel.STATE_DELAY_PAY);
 				param.put("repayAccount", repaymentLog.getCardNo());
 				param.put("serialNumber", repaymentLog.getOrderNo());
-				param.put("amount", repaymentLog.getAmount());
+				param.put("amount", String.valueOf(repaymentLog.getAmount()));
 				param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
 				if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
 					param.put("delayDays", Global.getValue("delay_days"));

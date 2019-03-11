@@ -19,7 +19,7 @@ let SeachForm = React.createClass({
     },
   handleQuery() {
     var params = this.props.form.getFieldsValue();
-      var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,state: params.state};
+      var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,borrowState:params.borrowState,isDestribute:params.isDestribute,channelID:params.channelID,again:params.again};
       if(params.borrowTime){
           json.startTime = (DateFormat.formatDate(params.borrowTime[0])).substring(0,10);
           json.endTime = (DateFormat.formatDate(params.borrowTime[1])).substring(0,10);
@@ -28,7 +28,10 @@ let SeachForm = React.createClass({
           json.startDate = (DateFormat.formatDate(params.reviewTime[0])).substring(0,10);
           json.endDate = (DateFormat.formatDate(params.reviewTime[1])).substring(0,10);
       }
-    this.props.passParams({
+      if(json.borrowName){
+          json.borrowName = json.borrowName.replace(/\s+/g, "")
+      }
+      this.props.passParams({
       searchParams : JSON.stringify(json),
       pageSize: 10,
       current: 1,
@@ -41,6 +44,19 @@ let SeachForm = React.createClass({
       current: 1,
     });
   },
+    componentDidMount() {
+        this.fetch();
+    },
+    fetch(){
+        Utils.ajaxData({
+            url: '/modules/manage/promotion/channel/listChannel.htm',
+            callback: (result) => {
+            this.setState({
+            data: result.data,
+                });
+            }
+        });
+    },
     disabledDate(startValue) {
         var today = new Date();
         return startValue.getTime() > today.getTime();
@@ -49,6 +65,13 @@ let SeachForm = React.createClass({
     const {
       getFieldProps
     } = this.props.form;
+      var channelList = [];
+      if(this.state.data){
+          channelList.push(<Option key={'全部'} value= {''} >全部</Option>);
+          this.state.data.map(item => {
+              channelList.push(<Option key={item.name} value= {item.id} >{item.name}</Option>)
+        })
+      }
     return (
       <Form inline >
         <FormItem label="借款人姓名：">
@@ -89,13 +112,25 @@ let SeachForm = React.createClass({
               <Option value="20">未分配</Option>
           </Select>
         </FormItem>
-          <FormItem label="借款日期：">
+          <FormItem label="注册渠道：">
+          <Select style={{ width: 170 }} {...getFieldProps('channelID',{initialValue: ''})}>
+            {channelList}
+            </Select>
+        </FormItem>
+        <FormItem label="是否复借:">
+          <Select style={{ width: 80 }} {...getFieldProps('again',{initialValue: ''})} placeholder='请选择...'>
+            <Option value="">全部</Option>
+            <Option value="10">否</Option>
+            <Option value="20">是</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="借款日期：">
           <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('borrowTime', { initialValue: '' }) } />
         </FormItem>
-      <FormItem label="审核日期：">
+        <FormItem label="审核日期：">
           <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('reviewTime', { initialValue: '' }) } />
-      </FormItem>
-      <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
+        </FormItem>
+        <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
         <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
       </Form>
     );

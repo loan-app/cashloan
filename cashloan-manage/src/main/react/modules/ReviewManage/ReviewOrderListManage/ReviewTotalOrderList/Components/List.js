@@ -126,7 +126,7 @@ export default React.createClass({
     var selectedRows = this.state.selectedRows;
     var selectedRowKeys = this.state.selectedRowKeys;
 
-    if (state == 40){
+    if (state == 20 || state == 30){
         this.setState({
             visibleAc: false,})
     }
@@ -215,6 +215,7 @@ export default React.createClass({
     
     let hasSelected = selectedRowKeys.length > 0;
     const rowSelection = {
+        selectedRowKeys,
        getCheckboxProps: record => ({
              disabled: record.state === "20" || record.state === "30" ,    // 配置无法勾选的列
         }),
@@ -298,7 +299,6 @@ export default React.createClass({
       }
     }];
     var state = this.state;
-      console.log(state);
     return (
       <div className="block-panel">
           <div className="actionBtns" style={{ marginBottom: 16 }}>

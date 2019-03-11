@@ -90,6 +90,20 @@ var Tab2 = React.createClass({
       title: '实际还款时间',
       dataIndex: "realTime",
     }, {
+      title: '还款方式',
+      dataIndex: "repayWay",
+      render: (text, record) => {
+          if (text == 10) {
+              return "线上"
+          }else if(text == 20) {
+              return "线下"
+          }else if(text == 30){
+              return '线下'
+          }else{
+              return '--'
+          }
+      }
+    }, {
       title: '还款状态',
       dataIndex: "stateStr",
     }];

@@ -54,6 +54,9 @@
             <if test="createTime !=null">
                 and create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="repayState !=null and repayState !='' ">
+                and state in ('10', '20')
+            </if>
         </trim>
     </sql>
 
