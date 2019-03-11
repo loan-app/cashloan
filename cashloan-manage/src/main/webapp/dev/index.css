@@ -1505,9 +1505,12 @@
     font-size: 20px;
 
 }
-.dev-warning{
+#dev-warning{
     color:#eaff8f;
-    font-size: 30px;
+    font-size: 40px;
+    display: block;
+    float: left;
+    
 }
 
 .dev-remind{

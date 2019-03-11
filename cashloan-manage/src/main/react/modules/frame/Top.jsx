@@ -143,9 +143,9 @@ const Top = React.createClass({
     var formData = this.state.formData;
      this.props.setRoleName(this.state.userMessage.rolename);
      var style ={
-         color:this.state.totalFee < 5000 ? (this.state.totalFee < 0 ? "red":"yellow" ):""
+         color:this.state.totalFee < 5000 ? (this.state.totalFee < 0 ? "red":"yellow" ):"",
+         fontSize:'17px',
       }
-      var kongge ="             " ;
     var modalBtns = [
       <button key="back" type="button" className="ant-btn" onClick={this.handleCancel}>返 回</button>,
       <button key="button" type="button" className="ant-btn ant-btn-primary" loading={this.state.loading}
@@ -177,7 +177,7 @@ const Top = React.createClass({
             <div className="fn-right right-block">
 
 
-                {this.state.code === 200 ? (this.state.totalFee < 5000 ? (this.state.totalFee < 0 ? <dev style={style}>您的数据费用已经欠费，请联系商务充值，以免影响您的正常使用 </dev> :
+                {this.state.code === 200 ? (this.state.totalFee < 5000 ? (this.state.totalFee < 0 ? <dev id="dev-warning" style={style}> 您的数据费用已经欠费，请联系商务充值，以免影响您的正常使用 </dev> :
                     <dev style={style}>您的数据费用余额已经低于预警值，请联系商务尽快充值。 </dev>) : <dev> </dev>):<dev> </dev>}欢迎您，{ userMessage.name }
               <a onClick={this.signOut}>
                 <Icon type="logout"/> 注销
