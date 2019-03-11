@@ -1,8 +1,6 @@
 import React from 'react'
-import {
-  Table,
-  Modal
-} from 'antd';
+import {Modal, Table} from 'antd';
+
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -42,10 +40,10 @@ export default React.createClass({
   },
   //新增
   addModal(title, record, canEdit){
-      this.setState({
-        visibleAdd:true,
-        title:title,  
-      })
+    this.setState({
+      visibleAdd:true,
+      title:title,
+    })
 
   },
   rowKey(record) {
@@ -112,43 +110,43 @@ export default React.createClass({
     var msg = "";
     var tips = "";
     var trueurl = "";
-      if (title == "加入黑名单") {
-        msg = '加入黑名单';
-        status = '20';
-        tips = '您是否确定加入黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      } else if (title == "解除黑名单") {
-        msg = '解除黑名单成功';
-        status = '10';
-        tips = '您是否确定解除黑名单';
-        trueurl = "/modules/manage/user/updateState.htm"
-      }
-      confirm({
-        title: tips,
-        onOk: function() {
-          Utils.ajaxData({
-            url: trueurl,
-            data: {     
-              id: id, 
-              state:status
-            },
-            method: 'post',
-            callback: (result) => {
-              if(result.code==200){
-                Modal.success({
-                 title: result.msg,
-                });     
-              }else{
-                Modal.error({
-                  title:  result.msg,
-                });
-              }
-              me.refreshList();
+    if (title == "加入黑名单") {
+      msg = '加入黑名单';
+      status = '20';
+      tips = '您是否确定加入黑名单';
+      trueurl = "/modules/manage/user/updateState.htm"
+    } else if (title == "解除黑名单") {
+      msg = '解除黑名单成功';
+      status = '10';
+      tips = '您是否确定解除黑名单';
+      trueurl = "/modules/manage/user/updateState.htm"
+    }
+    confirm({
+      title: tips,
+      onOk: function() {
+        Utils.ajaxData({
+          url: trueurl,
+          data: {
+            id: id,
+            state:status
+          },
+          method: 'post',
+          callback: (result) => {
+            if(result.code==200){
+              Modal.success({
+                title: result.msg,
+              });
+            }else{
+              Modal.error({
+                title:  result.msg,
+              });
             }
-          });
-        },
-        onCancel: function() {}
-      });
+            me.refreshList();
+          }
+        });
+      },
+      onCancel: function() {}
+    });
   },
   componentDidMount() {
     this.fetch();
@@ -160,16 +158,16 @@ export default React.createClass({
       selectedrecord: record
     });
   },
- 
+
   render() {
     var me = this;
     const {
-      loading,
-      selectedRowKeys
-    } = this.state;
+        loading,
+        selectedRowKeys
+        } = this.state;
     const rowSelection = {
       selectedRowKeys,
-    }; 
+    };
     const hasSelected = selectedRowKeys.length > 0;
     var columns = [{
       title: '真实姓名',
@@ -233,17 +231,20 @@ export default React.createClass({
           return "-"
         }
       }
+    },{
+      title: '注册时间',
+      dataIndex: 'registTime',
     }];
     var state = this.state;
     return (
-      <div className="block-panel">
-           <Table columns={columns} rowKey={this.rowKey}  
-             onRowClick={this.onRowClick}  
-             dataSource={this.state.data}
-             pagination={this.state.pagination}
-             loading={this.state.loading}
-             onChange={this.handleTableChange}  />
-         </div>
+        <div className="block-panel">
+          <Table columns={columns} rowKey={this.rowKey}
+                 onRowClick={this.onRowClick}
+                 dataSource={this.state.data}
+                 pagination={this.state.pagination}
+                 loading={this.state.loading}
+                 onChange={this.handleTableChange}  />
+        </div>
     );
   }
 })

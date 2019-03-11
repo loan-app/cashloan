@@ -270,6 +270,15 @@
             <if test="borrowTime !=null">
                 and b.create_time = #{borrowTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="borrowTime != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') = #{borrowTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startTime != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime  != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
             <if test="state !='' and state !=null">
                 and o.state = #{state,jdbcType=VARCHAR}
             </if>
@@ -281,6 +290,15 @@
             </if>
             <if test="reviewTime !=null">
                 and o.review_time = #{reviewTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="reviewTime != null">
+                and DATE_FORMAT(o.review_time,'%Y-%m-%d') = #{reviewTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startDate != null">
+            and DATE_FORMAT(o.review_time,'%Y-%m-%d') &gt;= #{startDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDate != null">
+                and DATE_FORMAT(o.review_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
             </if>
             <if test="borrowName !='' and borrowName !=null">
                 and o.borrow_name    like  concat("%",#{borrowName,jdbcType=VARCHAR},"%")
@@ -295,6 +313,12 @@
                 <if test="isDestribute =='20' ">
                     and o.user_id is null
                 </if>
+            </if>
+            <if test="channelID !='' and channelID !=null">
+              and u.channel_id = #{channelID,jdbcType=VARCHAR}
+            </if>
+            <if test="again !='' and again !=null">
+                and b.again = #{again,jdbcType=VARCHAR}
             </if>
         </trim>
         ORDER BY create_time DESC

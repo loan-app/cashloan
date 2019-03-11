@@ -50,5 +50,14 @@ public class UserRemarkServiceImpl extends BaseServiceImpl<UserRemark, Long> imp
 		List<UserRemark> list = userRemarkMapper.listUserRemark(searchParams);
 		return (Page<UserRemark>) list;
 	}
-	
+
+	/**
+	 * 保存备注信息
+	 * @param userRemark
+	 */
+	@Override
+	public int saveUserRemark(UserRemark userRemark){
+		int i=userRemarkMapper.save(userRemark);
+		return i;
+	}
 }

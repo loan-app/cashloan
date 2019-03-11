@@ -71,7 +71,7 @@ public class QuartzUserAuth implements Job {
             qiData.put("fail", quartzInfo.getFail() + 1);
             logger.error(e.getMessage(), e);
         } finally {
-            logger.info("保存代扣还款定时任务执行记录");
+            logger.info("保存更新运营商认证定时任务执行记录");
             quartzLogService.save(quartzLog);
             quartzInfoService.update(qiData);
         }

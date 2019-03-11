@@ -1,10 +1,16 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
+import com.xiji.cashloan.cl.model.statistic.UserStatisticData;
 import com.xiji.cashloan.cl.service.SystemCountService;
+import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.util.DateUtil;
+import com.xiji.cashloan.core.domain.Borrow;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -171,11 +177,9 @@ public class SystemCountServiceImpl implements SystemCountService {
 		double borrowPass = systemCountMapper.countBorrowPass(param);
 		rtMap.put("borrowPass", borrowPass);
 
-		if(borrow>0){
-			rtMap.put("passApr", BigDecimalUtil.decimal(borrowPass/borrow*100,2));
-		} else {
-			rtMap.put("passApr", 0);
-		}
+		double newBorrowPass = systemCountMapper.countNewBorrowPass(param);
+		//rtMap.put("newBorrowPass", newBorrowPass);
+
 
 		Double borrowLoan = systemCountMapper.countBorrowLoan(param);
 		rtMap.put("borrowLoan", borrowLoan);
@@ -218,11 +222,86 @@ public class SystemCountServiceImpl implements SystemCountService {
 		//rtMap.put("todayOverdueRate", String.format("%.2f", todayOverdueRate));
 		rtMap.put("todayShouldCntRate",BigDecimalUtil.decimal(todayShouldCntRate,2));
 
-        if (register > 0){
-        	rtMap.put("borrowRate",BigDecimalUtil.decimal(borrowLoan/register*100,2));
-		}else {
-        	rtMap.put("borrowRate",0);
+		int todayCertification = 0;//当日实名
+		int todayContact = 0;//通讯录认证人数
+		int todayBank = 0;//当日绑卡
+		int todayPhone = 0;//当日运营商认证
+		int todayNewBorrow = 0;//新客借款
+		int todayOldBorrow = 0;//老客借款
+		int todayNewLoan = 0;//当日新客放款
+		int todayOldLoan = 0;//当日老客放款
+		double todayTotalSum = 0;//借出总金额
+		double todayPrincipal = 0;//借出本金
+		List<UserAuth> userAuths = systemCountMapper.listUserAuthByToday();
+		if (CollectionUtil.isNotEmpty(userAuths)){
+			for (UserAuth userAuth :userAuths){
+				if ("30".equals(userAuth.getIdState())){
+					todayCertification ++;
+				}
+				if ("30".equals(userAuth.getContactState())){
+					todayContact++;
+				}
+				if ("30".equals(userAuth.getBankCardState())){
+					todayBank++;
+				}
+				if ("30".equals(userAuth.getPhoneState())){
+					todayPhone++;
+				}
+			}
 		}
+
+		List<Borrow> borrows = systemCountMapper.listBorrowByToday();
+		if (CollectionUtil.isNotEmpty(borrows)){
+			for (Borrow borrow1:borrows){
+				if ("10".equals(borrow1.getAgain())){
+					todayNewBorrow++;
+				}
+				if ("20".equals(borrow1.getAgain())){
+					todayOldBorrow++;
+				}
+			}
+		}
+		if(todayNewBorrow>0){
+			rtMap.put("passApr", BigDecimalUtil.decimal(newBorrowPass/todayNewBorrow*100,2));
+		} else {
+			rtMap.put("passApr", 0);
+		}
+		List<Borrow> borrowLoanList = systemCountMapper.listBorrowStatistics();
+		if (CollectionUtil.isNotEmpty(borrowLoanList)){
+			for (Borrow loan:borrowLoanList){
+				if ("10".equals(loan.getAgain())){
+					if ("30".equals(loan.getState())){
+						todayNewLoan++;
+						todayTotalSum =  BigDecimalUtil.add(todayTotalSum,loan.getAmount());
+						todayPrincipal = BigDecimalUtil.add(todayPrincipal,loan.getRealAmount());
+					}
+				}
+
+				if ("20".equals(loan.getAgain())){
+					if ("30".equals(loan.getState())){
+						todayOldLoan++;
+						todayPrincipal = BigDecimalUtil.add(todayPrincipal,loan.getRealAmount());
+						todayTotalSum =  BigDecimalUtil.add(todayTotalSum,loan.getAmount());
+					}
+				}
+			}
+		}
+		if (register > 0){
+			rtMap.put("borrowRate",BigDecimalUtil.decimal(todayNewLoan/register*100,2));
+		}else {
+			rtMap.put("borrowRate",0);
+		}
+
+		rtMap.put("todayCertification", todayCertification);
+		rtMap.put("todayContact", todayContact);
+		rtMap.put("todayBank", todayBank);
+		rtMap.put("todayPhone", todayPhone);
+		rtMap.put("todayNewBorrow", todayNewBorrow);
+		rtMap.put("todayOldBorrow", todayOldBorrow);
+		rtMap.put("todayNewLoan", todayNewLoan);
+		rtMap.put("todayOldLoan", todayOldLoan);
+		rtMap.put("todayTotalSum", todayTotalSum);
+		rtMap.put("todayPrincipal", todayPrincipal);
 
 		return rtMap;
 	}
@@ -385,4 +464,75 @@ public class SystemCountServiceImpl implements SystemCountService {
 	}
 
 
+	/**
+	 * 用户数据统计
+	 * @param params
+	 * @param current
+	 * @param pageSize
+	 * @return
+	 */
+	@Override
+	public Page<UserStatisticData> listUserStatisticData(Map<String,Object> params, Integer current, Integer pageSize){
+		PageHelper.startPage(current, pageSize);
+		Page<UserStatisticData> userStatisticData = (Page<UserStatisticData>) systemCountMapper.listUserStatisticData(params);
+		return userStatisticData;
+	}
+
+
+
+//	/**
+//	 * 渠道数据统计
+//	 * @param params
+//	 * @param current
+//	 * @param pageSize
+//	 * @return
+//	 */
+//	@Override
+//	public Page<ChannelStatisticModel> listChannelStatisticData(Map<String,Object> params, Integer current, Integer pageSize){
+//		PageHelper.startPage(current, pageSize);
+//
+//		Page<ChannelStatisticModel> channelStatisticData = (Page<ChannelStatisticModel>) systemCountMapper.listChannelStatisticData(params);
+//
+//		for (ChannelStatisticModel statisticData : channelStatisticData){
+//
+//			if (statisticData.getBorrowApplyCount() == null || statisticData.getBorrowApplyCount() <= 0){
+//				statisticData.setMachineAuditPassRate(0.00);
+//				statisticData.setMachineAuditNotPassRate(0.00);
+//				statisticData.setReviewPassRate(0.00);
+//				statisticData.setReviewNotPassRate(0.00);
+//
+//			} else {
+//
+//				statisticData.setMachineAuditPassRate(BigDecimalUtil.decimal((double)statisticData.getMachineAuditPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//				statisticData.setMachineAuditNotPassRate(BigDecimalUtil.decimal((double)statisticData.getMachineAuditNotPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//				statisticData.setReviewNotPassRate(BigDecimalUtil.decimal((double)statisticData.getReviewNotPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//				statisticData.setReviewPassRate(BigDecimalUtil.decimal((double)statisticData.getReviewPassCount()/(double)statisticData.getBorrowApplyCount()*100,2));
+//			}
+//
+//			if (statisticData.getUserRegister() == null || statisticData.getUserRegister() <= 0){
+//				statisticData.setLoadRate(0.00);
+//			} else {
+//				statisticData.setLoadRate(BigDecimalUtil.decimal((double)(statisticData.getFirstLoadCount()+statisticData.getAgainLoadCount())/(double)statisticData.getUserRegister()*100,2));
+//			}
+//
+//			if (statisticData.getAgainLoadCount() == null){
+//				statisticData.setAgainLoadCount(0);
+//			}
+//			if (statisticData.getFirstLoadCount() == null){
+//				statisticData.setFirstLoadCount(0);
+//			}
+//			if (statisticData.getAgainLoadCount() == 0 && statisticData.getFirstLoadCount() == 0){
+//				statisticData.setOverdueRate(0.00);
+//			}else {
+//				statisticData.setOverdueRate(BigDecimalUtil.decimal((double)statisticData.getOverdueCount()/(double)(statisticData.getAgainLoadCount()+statisticData.getFirstLoadCount())*100,2));
+//			}
+//			if (statisticData.getFirstLoadCount() == 0){
+//				statisticData.setFirstOverdueRate(0.00);
+//			}else {
+//				statisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double)statisticData.getFirstOverdueCount()/(double)statisticData.getFirstLoadCount()*100,2));
+//			}
+//
+//		}
+//		return channelStatisticData;
+//	}
 }

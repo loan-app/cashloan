@@ -36,23 +36,23 @@ import java.util.Map;
  * @version 1.0.0
  *
  *
- * 
+ *
  * 未经授权不得进行修改、复制、出售及商业使用
  */
- 
+
 @Service("userAuthService")
 public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> implements UserAuthService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserAuthServiceImpl.class);
-   
-    @Resource
-    private UserAuthMapper userAuthMapper;
-    @Resource
+
+	@Resource
+	private UserAuthMapper userAuthMapper;
+	@Resource
 	private OperatorReqLogService operatorReqLogService;
-    @Resource
-    private OperatorRespDetailService operatorRespDetailService;
-    @Resource
-    private OperatorService operatorService;
+	@Resource
+	private OperatorRespDetailService operatorRespDetailService;
+	@Resource
+	private OperatorService operatorService;
 	@Resource
 	private UserBaseInfoMapper userBaseInfoMapper;
 	@Resource
@@ -68,7 +68,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 		UserAuth userAuth = userAuthMapper.findSelective(paramMap);
 		String phoneState = userAuth.getPhoneState();
 		OperatorReqLog operatorReqLog = operatorReqLogService.findLastRecord(paramMap);
-		
+
 		if (UserAuthModel.STATE_ERTIFICATION.equals(userAuth.getPhoneState()) &&
 				null != operatorReqLog) {
 			int resetTime = 10;
@@ -144,8 +144,8 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				modifyMap.put("userId", userAuth.getUserId());
 				modifyMap.put("phoneState", phoneState);
 				this.updateByUserId(modifyMap);
-			} 
-		}	
+			}
+		}
 		userAuth.setPhoneState(phoneState);
 		return userAuth;
 	}
@@ -154,10 +154,10 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 	public Integer updateByUserId(Map<String, Object> paramMap) {
 		return userAuthMapper.updateByUserId(paramMap);
 	}
-	
+
 	@Override
 	public Page<UserAuthModel> listUserAuth(Map<String, Object> params,
-			int currentPage, int pageSize) {
+											int currentPage, int pageSize) {
 		PageHelper.startPage(currentPage, pageSize);
 		List<UserAuthModel> list = userAuthMapper.listUserAuthModel(params);
 		return (Page<UserAuthModel>) list;
@@ -232,5 +232,67 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 	@Override
 	public int updateAuthByTime(Map<String, Object> userAuth){
 		return userAuthMapper.updateAuthByTime(userAuth);
+	}
+
+
+	/**
+	 *
+	 *
+	 *
+	 * 	认证状态 - 未认证/未完善  10
+	 * 	认证状态 - 认证中/完善中  20
+	 *  认证状态 - 已认证/已完善  30
+	 *
+	 * 查询用户认证列表
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public List<UserAuthModel> listUserAuthModel(Map<String, Object> params){
+
+		List<UserAuthModel> userAuthModels = userAuthMapper.listUserAuthModel(params);
+
+		for(UserAuthModel userAuthModel : userAuthModels){
+			if ("10".equals(userAuthModel.getIdState())){
+				userAuthModel.setIdStateStr("未认证");
+			}
+			if ("20".equals(userAuthModel.getIdState())){
+				userAuthModel.setIdStateStr("认证中");
+			}
+			if ("30".equals(userAuthModel.getIdState())){
+				userAuthModel.setIdStateStr("已认证");
+			}
+
+			if ("10".equals(userAuthModel.getBankCardState())){
+				userAuthModel.setBankCardStateStr("未认证");
+			}
+			if ("20".equals(userAuthModel.getBankCardState())){
+				userAuthModel.setBankCardStateStr("认证中");
+			}
+			if ("30".equals(userAuthModel.getBankCardState())){
+				userAuthModel.setBankCardStateStr("已认证");
+			}
+
+			if ("10".equals(userAuthModel.getContactState())){
+				userAuthModel.setContactStateStr("未完善");
+			}
+			if ("20".equals(userAuthModel.getContactState())){
+				userAuthModel.setContactStateStr("完善中");
+			}
+			if ("30".equals(userAuthModel.getContactState())){
+				userAuthModel.setContactStateStr("已完善");
+			}
+
+			if ("10".equals(userAuthModel.getPhoneState())){
+				userAuthModel.setPhoneStateStr("未认证");
+			}
+			if ("20".equals(userAuthModel.getPhoneState())){
+				userAuthModel.setPhoneStateStr("认证中");
+			}
+			if ("30".equals(userAuthModel.getPhoneState())){
+				userAuthModel.setPhoneStateStr("已认证");
+			}
+		}
+		return userAuthModels;
 	}
 }

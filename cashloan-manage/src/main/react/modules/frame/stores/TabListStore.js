@@ -1,5 +1,6 @@
 var Reflux = require('reflux');
 import React from 'react';
+
 var AppActions = require('../actions/AppActions');
 var Workbench = require('../../Public/Workbench/Index')
 var UserBasicInformation = require('../../UserInformation/UserBasicInformation/index');//客户管理-用户认证信息
@@ -98,7 +99,13 @@ export default Reflux.createStore({
 					'OperatorReport',
 					'CreditLoanReport',
 					'OutsideFee',
-					'XinyanLoanReport'
+					'XinyanLoanReport',
+				    'AuditorStatistic',
+				    'AuditingStatistic',
+                    'ChannelStatistic',
+                    'UserStatistic',
+                    'LoadStatistic',
+                    'RepaymentStatistic'
 			];
 
 			var routeNames3 = [

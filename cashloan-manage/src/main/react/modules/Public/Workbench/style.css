@@ -42,7 +42,7 @@
     margin-right: 12px;
 }
 .icon1{
-       background: url("/dev/images/icon1.png") no-repeat;
+    background: url("/dev/images/icon1.png") no-repeat;
 }
 .icon2{
        background: url("/dev/images/icon2.png") no-repeat;
@@ -119,3 +119,114 @@
     color:#61abd0;
 }
 
+.data-panel-left{
+    display:inline-block;
+    background-color:#ffffff;
+    float: left;
+    width:60%;
+    padding-bottom: 0px;
+    height: 120px;
+}
+
+.data-panel-right{
+    display:inline-block;
+    background-color:#ffffff;
+    width:39%;
+    float: right;
+    height: 120px;
+
+}
+
+.data-panel-1{
+    float: left;
+    width: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-left: 5px;
+    background-color:#e9e6ef;
+    border-right: 4px solid  #bface0;
+    height: 110px;
+}
+.data-panel-2{
+    float: right;
+    text-align:center;
+    width:25%;
+    padding:10px 15px 35px 10px;
+    height : 120px;
+}
+
+.data-panel-3{
+    float: right;
+    text-align:center;
+    width:22%;
+    padding:10px 15px 35px 10px;
+}
+
+.data-panel-t1{
+    padding:10px 0px 0px 35px;
+    border-top: #efefef;
+    background: url("/dev/images/icon1.png") no-repeat;
+}
+
+.sp-title{
+    color: #666;
+    font-size: 13px;
+    height: 200px;
+}
+.data-panel-dev{
+
+}
+.blk-number-history{
+    text-align:center;
+    padding-top: 20px;
+    font-size:24px;
+    height: 50px;
+    display:block;
+}
+.blk-number-description{
+    font-size: 12px;
+    letter-spacing:2px;
+    color: #4d5669;
+}
+
+.data-panel-4{
+    float: right;
+    text-align:center;
+    width:40%;
+    padding:10px 15px 35px 10px;
+}
+.data-panel-5{
+    float: left;
+    width: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-left: 5px;
+    background-color:#edf9e3;
+    border-right: 4px solid  #f1d294;
+    height: 110px;
+}
+.data-panel-t2{
+    padding:10px 0px 0px 35px;
+    border-top: #efefef;
+    background: url("/dev/images/icon4.png") no-repeat;
+
+}
+
+.overdue-title{
+    height: 16px;
+    line-height: 16px;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    border-left: 4px solid  #e2b35d;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+}
+
+.blk-top-item-overdue{
+    border-right: 1px solid #eaff8f;
+    flex: 1;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

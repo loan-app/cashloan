@@ -1505,3 +1505,13 @@
     font-size: 20px;
 
 }
+.dev-warning{
+    color:#eaff8f;
+    font-size: 30px;
+}
+
+.dev-remind{
+    color:#ed4014;
+    font-size: 30px;
+
+}

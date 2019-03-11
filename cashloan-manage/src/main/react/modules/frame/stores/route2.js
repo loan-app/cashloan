@@ -35,6 +35,15 @@ var CreditLoanReport = require('../../CreditReport/CreditLoanReport/index');//�
 var OutsideFee = require('../../FeeManage/OutsideFee/index'); //费用管理 外部数据费用
 var XinyanLoanReport = require('../../CreditReport/XinyanLoanReport/index'); //信用报告 小额网贷报告
 
+var AuditorStatistic = require('../../StatisticManage/AuditorStatistic/index'); //统计管理 审核人员统计
+var AuditingStatistic = require('../../StatisticManage/AuditingStatistic/index'); //统计管理 审核人员统计
+var ChannelStatistic = require('../../StatisticManage/ChannelStatistic/index'); //统计管理 审核人员统计
+var UserStatistic = require('../../StatisticManage/UserStatistic/index'); //统计管理 审核人员统计
+var LoadStatistic = require('../../StatisticManage/LoadStatistic/index'); //统计管理 审核人员统计
+var RepaymentStatistic = require('../../StatisticManage/RepaymentStatistic/index'); //统计管理 审核人员统计
+
+
+
 module.exports = {
   RepaymentPlanList,
   PaymentHistory,
@@ -71,5 +80,11 @@ module.exports = {
   OperatorReport,
   CreditLoanReport,
   OutsideFee,
-  XinyanLoanReport
+  XinyanLoanReport,
+  AuditorStatistic,
+    AuditingStatistic,
+    ChannelStatistic,
+    UserStatistic,
+    LoadStatistic,
+    RepaymentStatistic
 }

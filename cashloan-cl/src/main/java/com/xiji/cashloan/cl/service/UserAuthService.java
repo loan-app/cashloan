@@ -5,6 +5,7 @@ import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.core.common.service.BaseService;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,17 +17,17 @@ import java.util.Map;
  * @version 1.0.0
  *
  *
- * 
+ *
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 public interface UserAuthService extends BaseService<UserAuth, Long>{
 
 	public UserAuth getUserAuth(Map<String,Object> paramMap);
-	
+
 	public Integer updateByUserId(Map<String,Object> paramMap);
-	
+
 	Page<UserAuthModel> listUserAuth(Map<String, Object> params, int currentPage,
-			int pageSize);
+									 int pageSize);
 
 	/**
 	 * 查询认证状态
@@ -34,7 +35,7 @@ public interface UserAuthService extends BaseService<UserAuth, Long>{
 	 * @return
 	 */
 	public UserAuth findSelective(long userId);
-	
+
 	public Map<String, Object> getAuthState(Map<String, Object> paramMap);
 
 	public int updatePhoneState(Map<String, Object> userAuth);
@@ -45,4 +46,11 @@ public interface UserAuthService extends BaseService<UserAuth, Long>{
 	 * @return
 	 */
 	int updateAuthByTime(Map<String, Object> userAuth);
+
+	/**
+	 * 查询用户认证列表
+	 * @param params
+	 * @return
+	 */
+	List<UserAuthModel> listUserAuthModel(Map<String, Object> params);
 }

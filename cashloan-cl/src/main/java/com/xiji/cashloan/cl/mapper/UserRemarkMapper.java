@@ -24,4 +24,10 @@ public interface UserRemarkMapper extends BaseMapper<UserRemark, Long> {
      * @return
      */
     List<UserRemark> listUserRemark(Map<String, Object> paramMap);
+
+    /**
+     * 保存备注信息
+     * @param userRemark
+     */
+    int save(UserRemark userRemark);
 }
