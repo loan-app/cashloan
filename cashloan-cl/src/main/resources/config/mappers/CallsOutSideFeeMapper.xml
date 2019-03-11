@@ -180,15 +180,5 @@
     <select id="getBalance" resultType="decimal" parameterType="java.util.HashMap">
         SELECT SUM(fee) as totalFee
         FROM cl_calls_outside_fee
-        <where>
-            <trim prefixOverrides="and">
-                <if test="startTime != null and startTime != ''">
-                    and DATE_FORMAT(gmt_create,'%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
-                </if>
-                <if test="endTime != null and endTime != ''">
-                    and DATE_FORMAT(gmt_create,'%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
-                </if>
-            </trim>
-        </where>
     </select>
 </mapper>
