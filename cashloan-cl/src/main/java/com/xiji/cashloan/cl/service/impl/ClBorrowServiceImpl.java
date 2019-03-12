@@ -170,6 +170,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private DecisionService decisionService;
 	@Resource
 	private UserRemarkService userRemarkService;
+	@Resource
+	private YouDunRiskService youDunRiskService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1914,7 +1916,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-		} else {
+			//有盾数据查询
+		} else if ("YouDunUserPortrait".equals(nid)){
+			logger.info("进入有盾数据处理");
+			fixedThreadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+                    int count = youDunRiskService.multiPoint(borrow);
+                    syncSceneBusinessLog(borrow.getId(), nid, count);
+                }
+			});
+
+		}
+		else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
 	}

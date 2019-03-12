@@ -418,6 +418,11 @@ INSERT INTO `cl_rc_tpp` VALUES ('4', 'PA', 'pingan', '', '', '', '', '10', '2018
 INSERT INTO `cl_rc_tpp_business` VALUES ('7', '4', 'PA染黑统计', 'PinganGrayscaleStat', '10', '', '', null, '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '10', 0, '10', '10', '2018-12-26 00:00:00');
 
+-- 有盾用户画像数据加入到借款策略中
+INSERT INTO `cl_rc_tpp` VALUES ('6', 'YD', 'youdun', '', '', '', '', '10', '2019-03-12 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('11', '6', 'YD用户画像', 'YouDunUserPortrait', '10', '', '', null, '2019-03-12 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('11', '10', '11', '10', 0, '10', '10', '2019-03-12 00:00:00');
+
 -- 宜信欺诈甄别
 DROP TABLE IF EXISTS `cl_yixin_fraud`;
 CREATE TABLE `cl_yixin_fraud` (
