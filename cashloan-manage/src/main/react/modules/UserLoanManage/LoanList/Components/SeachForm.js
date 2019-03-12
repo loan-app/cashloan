@@ -13,12 +13,13 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state: params.state};
+        params.type = "repay";
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state: params.state,type: params.type};
         if(params.createTime){
             json.startTime = (DateFormat.formatDate(params.createTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.createTime[1])).substring(0,10);
         }
-        params.type = "repay";
+
         this.props.passParams({
             searchParams: JSON.stringify(json),
             pageSize: 10,
