@@ -41,6 +41,13 @@ public interface SysRoleService {
 	List<SysRole> getList(Map<String, Object> paramMap);
 
 	/**
+	 * 根据角色唯一标示查询用户信息角色信息
+	 * @param uid 角色唯一标示
+	 * @return 角色信息
+	 */
+	SysRole getRoleByNid(String uid) throws ServiceException;
+
+	/**
 	 * 角色删除
 	 * @param id
 	 *            主键ID

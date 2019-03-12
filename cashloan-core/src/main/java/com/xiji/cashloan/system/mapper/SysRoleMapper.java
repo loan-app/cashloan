@@ -21,6 +21,8 @@ public interface SysRoleMapper extends BaseMapper<SysRole,Long> {
 
 	List<SysRole> getRoleListByUserId(Long userId);
 
+	SysRole getRoleByNid(String nid);
+
 	List<SysRole> getListByMap(Map<String, Object> param);
 
 	int deleteById(long id);

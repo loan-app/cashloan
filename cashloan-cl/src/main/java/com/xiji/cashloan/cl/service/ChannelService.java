@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
+import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.service.BaseService;
 
 /**
@@ -77,7 +78,12 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	 * 查出所有渠道信息
 	 */
 	List<Channel> listChannel();
-	
+
+	/**
+	 * 根据渠道编码查询渠道信息
+	 */
+	Channel getChannelByCode(String code) throws ServiceException;
+
 	/**
 	 * 查询没有版本信息的渠道id和名称
 	 */

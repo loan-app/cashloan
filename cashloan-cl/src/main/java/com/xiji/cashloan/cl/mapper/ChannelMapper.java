@@ -47,7 +47,10 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 */
 	Page<ChannelCountModel> channelUserList(Map<String, Object> searchMap);
 
-	
+	/**
+	 * 根据渠道编码查询渠道信息
+	 */
+	Channel getChannelByCode(String code);
 	/**
 	 * 查出所有渠道信息
 	 */
