@@ -751,6 +751,8 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertOverdueStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzOverdueStatistic', now(), '保存逾期统计数据', '0 10 2 1/1 * ?');
 
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'updateLoanStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzLoanCompensate', now(), '下款统计补偿', '0 0 12 1/1 * ?');
+
 
 
 

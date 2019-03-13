@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.domain.statistic.UserStatisticData;
 import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.mapper.statistic.UserStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.UserStatisticDataService;
+import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,4 +108,46 @@ public class UserStatisticDataServiceImpl extends BaseServiceImpl<UserStatisticD
 		}
 		return userStatisticDataList;
 	}
+
+	/**
+	 * 更新用户下款数
+	 * @return
+	 */
+	@Override
+	public int updateUserLoanStatistic(Map<String,Object> params){
+
+		List<UserStatisticData> userStatisticDataList = userStatisticDataMapper.listUserStatistic(params);
+		int count = 0;
+		if (CollectionUtil.isEmpty(userStatisticDataList)){
+			return count;
+		}
+		UserStatisticData loadCount = userStatisticDataMapper.loanCount(params);
+
+		params.put("again","10");
+		UserStatisticData newLoadCount = userStatisticDataMapper.loanCount(params);
+
+		params.put("again","20");
+		UserStatisticData oldLoadCount = userStatisticDataMapper.loanCount(params);
+
+		UserStatisticData userStatisticData = userStatisticDataList.get(0);
+
+		if (userStatisticData != null){
+
+			String countTimeStr = DateUtil.dateStr(userStatisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002);
+
+			//String lastDateStr = DateUtil.dateStr((Date)params.get("startDate"),DateUtil.DATEFORMAT_STR_002);
+			if (countTimeStr != null && countTimeStr.equals(params.get("startDate"))){
+				Map<String,Object> userStatisticMap = new HashMap<>();
+				userStatisticMap.put("id",userStatisticData.getId());
+				userStatisticMap.put("loadCount",loadCount.getLoadCount());
+				userStatisticMap.put("newLoadCount",newLoadCount.getLoadCount());
+				userStatisticMap.put("oldLoadCount",oldLoadCount.getLoadCount());
+				userStatisticMap.put("updateTime",new Date());
+				count = userStatisticDataMapper.updateSelective(userStatisticMap);
+			}
+		}
+       return count;
+	}
+
+
 }

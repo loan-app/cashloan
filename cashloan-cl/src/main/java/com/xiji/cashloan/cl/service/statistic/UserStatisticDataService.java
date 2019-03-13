@@ -34,4 +34,10 @@ public interface UserStatisticDataService extends BaseService<UserStatisticData,
      * @return
      */
     Page<UserStatisticData> listUserStatistic(Map<String,Object> params, Integer current, Integer pageSize);
+
+    /**
+     * 更新用户下款数
+     * @return
+     */
+    int updateUserLoanStatistic(Map<String,Object> params);
 }

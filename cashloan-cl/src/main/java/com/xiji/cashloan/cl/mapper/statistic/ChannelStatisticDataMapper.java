@@ -201,4 +201,41 @@ public interface ChannelStatisticDataMapper extends BaseMapper<ChannelStatisticD
      */
     List<ChannelStatisticData> listChannelStatistic(Map<String,Object> params);
 
+
+    /**
+     * 查询 渠道统计列表
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> listChannelLoan(Map<String,Object> params);
+
+    /**
+     *
+     * @param channelStatisticDataList
+     * @return
+     */
+    Integer batchUpdate(List<ChannelStatisticData> channelStatisticDataList);
+
+    /**
+     * 更新
+     * @param channelStatisticData
+     * @return
+     */
+    Integer updateChannelStatistic(ChannelStatisticData channelStatisticData);
+
+
+    /**
+     * 获取 首贷放款笔数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> firstLoadCount(Map<String,Object> params);
+
+    /**
+     * 获取 复贷放款笔数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> againLoadCount(Map<String,Object> params);
+
 }

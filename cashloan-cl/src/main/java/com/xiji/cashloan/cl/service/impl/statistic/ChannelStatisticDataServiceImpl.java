@@ -419,4 +419,46 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 		return channelStatisticModels;
 	}
 
+
+	/**
+	 * 更新渠道下款数
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public int updateChannelLoan(Map<String,Object> params) {
+
+		List<ChannelStatisticData> channelStatisticDataList = channelStatisticDataMapper.listChannelLoan(params);
+
+		int count = 0;
+		if (CollectionUtil.isEmpty(channelStatisticDataList)) {
+			return count;
+		}
+		List<ChannelStatisticData> againLoadCount = channelStatisticDataMapper.againLoadCount(params);
+		List<ChannelStatisticData> firstLoadCount = channelStatisticDataMapper.firstLoadCount(params);
+
+		for (ChannelStatisticData statisticData : channelStatisticDataList) {
+
+			boolean flag = false;
+			for (ChannelStatisticData againLoad : againLoadCount) {
+				if (statisticData.getChannelId().equals(againLoad.getChannelId()) && statisticData.getCountTime().equals(againLoad.getCountTime())) {
+					statisticData.setAgainLoadCount(againLoad.getAgainLoadCount());
+					flag = true;
+				}
+			}
+
+			for (ChannelStatisticData firstLoad : firstLoadCount) {
+				if (statisticData.getChannelId().equals(firstLoad.getChannelId()) && statisticData.getCountTime().equals(firstLoad.getCountTime())) {
+					statisticData.setFirstLoadCount(firstLoad.getFirstLoadCount());
+					flag = true;
+				}
+			}
+			if (flag){
+				statisticData.setUpdateTime(new Date());
+				count = count+channelStatisticDataMapper.updateChannelStatistic(statisticData);
+			}
+		}
+		// count = channelStatisticDataMapper.batchUpdate(channelStatisticDataList);
+		return count;
+	}
 }

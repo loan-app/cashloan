@@ -262,7 +262,7 @@ public class SystemCountServiceImpl implements SystemCountService {
 			}
 		}
 		if(todayNewBorrow>0){
-			rtMap.put("passApr", BigDecimalUtil.decimal(newBorrowPass/todayNewBorrow*100,2));
+			rtMap.put("passApr", BigDecimalUtil.decimal( newBorrowPass/(double) todayNewBorrow*100,2));
 		} else {
 			rtMap.put("passApr", 0);
 		}
@@ -283,7 +283,7 @@ public class SystemCountServiceImpl implements SystemCountService {
 			}
 		}
 		if (register > 0){
-			rtMap.put("borrowRate",BigDecimalUtil.decimal(todayNewLoan/register*100,2));
+			rtMap.put("borrowRate",BigDecimalUtil.decimal((double) todayNewLoan/(double)register*100,2));
 		}else {
 			rtMap.put("borrowRate",0);
 		}

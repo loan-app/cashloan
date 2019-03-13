@@ -38,4 +38,13 @@ public interface UserStatisticDataMapper extends BaseMapper<UserStatisticData, L
      * @return
      */
     List<UserStatisticData> listUserStatistic(Map<String,Object> params);
+
+    /**
+     * 新客下款数
+     * @param params
+     * @return
+     */
+    UserStatisticData loanCount(Map<String,Object> params);
+
+
 }

@@ -38,4 +38,11 @@ public interface ChannelStatisticDataService extends BaseService<ChannelStatisti
      * @return
      */
     Page<ChannelStatisticData> listChannelStatistic(Map<String,Object> params,Integer current,Integer pageSize);
+
+    /**
+     * 更新渠道下款数
+     * @param params
+     * @return
+     */
+    int updateChannelLoan(Map<String,Object> params);
 }
