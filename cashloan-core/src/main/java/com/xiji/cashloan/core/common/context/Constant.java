@@ -36,6 +36,8 @@ public class Constant {
 	public static final String RESPONSE_DATA_CURRENTPAGE = "currentPage";
 	
 	public static final String RESPONSE_DATA_PAGE = "page";
+
+	public static final String RESPONSE_DATA_BALANCE = "balance";
 	
 	
 	public static final String OPERATION_SUCCESS = "操作成功";

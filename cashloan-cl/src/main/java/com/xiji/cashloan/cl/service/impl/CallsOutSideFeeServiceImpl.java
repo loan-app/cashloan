@@ -91,6 +91,11 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 		return callsOutSideFeeMapper.getBalance(params);
 	}
 
+	/**
+	 * 保存外部数据
+	 * @param callsOutSideFee
+	 * @return
+	 */
 	@Override
 	public int save(CallsOutSideFee callsOutSideFee) {
 		int i=callsOutSideFeeMapper.save(callsOutSideFee);
