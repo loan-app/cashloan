@@ -458,7 +458,6 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 				count = count+channelStatisticDataMapper.updateChannelStatistic(statisticData);
 			}
 		}
-		// count = channelStatisticDataMapper.batchUpdate(channelStatisticDataList);
 		return count;
 	}
 }
