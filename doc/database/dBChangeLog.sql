@@ -785,3 +785,6 @@ CREATE TABLE `cl_youdun_risk_report` (
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾风险评估表';
+
+-- 新增人脸认证类型
+ALTER TABLE cl_user_base_info add column `id_type` varchar(10)  default '20' COMMENT '人脸认证类型 10-FACE++ 20-有盾';

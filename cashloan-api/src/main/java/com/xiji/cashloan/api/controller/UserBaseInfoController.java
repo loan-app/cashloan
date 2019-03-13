@@ -24,6 +24,7 @@ import com.xiji.cashloan.cl.service.UserCardCreditLogService;
 import com.xiji.cashloan.cl.service.UserContactsService;
 import com.xiji.cashloan.cl.service.UserMessagesService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.OcrConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.Base64;
@@ -442,6 +443,8 @@ public class UserBaseInfoController extends BaseController {
                         match = faceCheckResult.getScore();
                         taskId = faceCheckResult.getTaskId();
                         log.setConfidence(String.valueOf(match));
+                        //设置人脸认证类型为FACE++
+                        info.setIdType(OcrConstant.OCR_TYPE_FACE);
                     }
 
                     info.setLivingImg(list.get(0).getResPath());
