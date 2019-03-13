@@ -766,14 +766,6 @@
     </if>
 </select>
 
-    <update id="batchUpdate" parameterType="java.util.List">
-        <if test="list != null and list.size() >0 ">
-            <foreach close="" collection="list" index="index" item="item" open="" separator=";">
-                update cl_channel_statistic_data set first_load_count = #{item.firstLoadCount,jdbcType=VARCHAR},again_load_count = #{item.againLoadCount,jdbcType=INTEGER}
-                where id = #{item.id,jdbcType=INTEGER}
-            </foreach>
-        </if>
-    </update>
 
     <update id="updateChannelStatistic" parameterType="com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData">
         update cl_channel_statistic_data
@@ -785,7 +777,7 @@
                 first_load_count = #{firstLoadCount,jdbcType=INTEGER},
             </if>
             <if test="againLoadCount != null">
-                again_load_count = #{againLoadCount,jdbcType=INTEGER},
+                again_load_count = #{againLoadCount,jdbcType=INTEGER}
             </if>
         </set>
         where id = #{id ,jdbcType=INTEGER}

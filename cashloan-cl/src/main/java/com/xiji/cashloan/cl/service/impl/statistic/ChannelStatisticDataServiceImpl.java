@@ -3,7 +3,6 @@ package com.xiji.cashloan.cl.service.impl.statistic;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData;
-import com.xiji.cashloan.cl.mapper.SystemCountMapper;
 import com.xiji.cashloan.cl.mapper.statistic.ChannelStatisticDataMapper;
 import com.xiji.cashloan.cl.model.statistic.ChannelStatisticModel;
 import com.xiji.cashloan.cl.service.statistic.ChannelStatisticDataService;
@@ -39,8 +38,6 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
     @Resource
     private ChannelStatisticDataMapper channelStatisticDataMapper;
 
-    @Resource
-    private SystemCountMapper systemCountMapper;
 
 	@Override
 	public BaseMapper<ChannelStatisticData, Long> getMapper() {
@@ -128,6 +125,10 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 		return statisticDataList;
 	}
 
+	/**
+	 * 计算比率
+	 * @param statisticDataList
+	 */
 	void calculationRatio(List<ChannelStatisticData> statisticDataList){
 
 		if (CollectionUtil.isEmpty(statisticDataList)){
@@ -274,8 +275,6 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 				statisticData.setAgainExpireOverdueCount(0);
 			}
 		}
-
-
 
   }
 

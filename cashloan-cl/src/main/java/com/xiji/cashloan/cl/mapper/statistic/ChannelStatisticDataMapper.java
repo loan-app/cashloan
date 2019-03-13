@@ -209,12 +209,6 @@ public interface ChannelStatisticDataMapper extends BaseMapper<ChannelStatisticD
      */
     List<ChannelStatisticData> listChannelLoan(Map<String,Object> params);
 
-    /**
-     *
-     * @param channelStatisticDataList
-     * @return
-     */
-    Integer batchUpdate(List<ChannelStatisticData> channelStatisticDataList);
 
     /**
      * 更新

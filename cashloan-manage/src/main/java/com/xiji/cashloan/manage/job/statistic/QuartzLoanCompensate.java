@@ -77,7 +77,7 @@ public class QuartzLoanCompensate implements Job {
             qiData.put("fail", quartzInfo.getFail() + 1);
             logger.error(e.getMessage(), e);
         } finally {
-            logger.info("保存放款统计数据定时任务执行记录");
+            logger.info("保存放款统计补偿数据定时任务执行记录");
             quartzLogService.save(quartzLog);
             quartzInfoService.update(qiData);
         }
