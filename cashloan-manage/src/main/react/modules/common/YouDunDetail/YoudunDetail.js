@@ -53,7 +53,6 @@ export default React.createClass({
         const data = this.state.data;
         const devicesData = this.state.data.devices_list;
         const userFeatures = this.state.data.user_features;
-        console.log(userFeatures);
         const names = {
             apply_actual_loan_platform_count_1m: '近1月申请/实际借款平台数',
             repayment_platform_count_1m: '近1月还款平台数',
@@ -80,6 +79,7 @@ export default React.createClass({
         let newNamesList = [];
         for (let i = 0, len = namesList.length; i < len; i += 2) {
             newNamesList.push(namesList.slice(i, i + 2));
+        }
             return (
                 <div className="ant-table ant-table-middle ant-table-bordered">
                     <table>
@@ -88,20 +88,21 @@ export default React.createClass({
                             newNamesList.map((item, index) => (
                                 <tr key={index} className={index % 2 ? 'table-tr-gray' : ''}>
                                     <td style={{textAlign: 'right'}}>{item[0].name}</td>
-                                    {[item[0].name] == '用户特征列表'  ? (<td colSpan={3}>
-                                        <div>{ (userFeatures || []).map((item, index)=> {
-                                            return (
-                                                <Button type='danger' style={{backgroundColor:'#DE1514' ,color:'#FFFFFF'}} key={index}>
-                                                    <div>{item}</div>
-                                                </Button>
-                                            )
-                                        })}
-                                        </div>
-                                    </td>) : ([
-                                        <td style={{width: '20%'}} > {data[item[0].key]}</td>,
-                                        <td style={{textAlign: 'right'}} > {item[1] && item[1].name}</td>,
-                                        <td style={{width: '20%'}}>{item[1] && data[item[1].key]}</td>
-                                    ])}
+
+                                        {[item[0].name] == '用户特征列表'  ? (<td colSpan={3}>
+                                            <div>{ (userFeatures || []).map((item, index)=> {
+                                                return (
+                                                    <Button type='danger' style={{backgroundColor:'#DE1514' ,color:'#FFFFFF'}} key={index}>
+                                                        <div>{item}</div>
+                                                    </Button>
+                                                )
+                                            })}
+                                            </div>
+                                        </td>) : ([
+                                            <td style={{width: '20%'}} > {data[item[0].key]}</td>,
+                                            <td style={{textAlign: 'right'}} > {item[1] && item[1].name}</td>,
+                                            <td style={{width: '20%'}}>{item[1] && data[item[1].key]}</td>
+                                        ])}
 
                                 </tr>
                             ))
@@ -130,6 +131,6 @@ export default React.createClass({
                     </table>
                 </div>
             );
-        }
+
     }
 });
