@@ -16,7 +16,7 @@ export default React.createClass({
       visible: false,
       visibleAdd:false,
         totalFee:null,
-        balance:null
+        balance_is:null
     };
   },
   componentWillReceiveProps(nextProps, nextState) {
@@ -90,9 +90,9 @@ export default React.createClass({
         };
         this.setState({
           loading: false,
+          balance_is:result.balance ? result.balance:'0.00',
           data: result.data,
-            totalFee:result.data[0] ? result.data[0].totalFee:'0.00',
-            balance:result.data[1] ? result.data[1].balance:'0.00',
+          totalFee:result.data[0] ? result.data[0].totalFee:'0.00',
           pagination
         });
       }
@@ -170,7 +170,7 @@ export default React.createClass({
       <div className="block-panel">
           <div className="actionBtns" style={{ marginBottom: 16 }}>
               <span> 消费金额：{this.state.totalFee}</span>
-              <span> 余 额：{this.state.balance}</span>
+              <span> 余 额：{this.state.balance_is}</span>
               <dev></dev>
           </div>
 

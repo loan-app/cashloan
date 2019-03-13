@@ -55,8 +55,11 @@ public class CallsOutSideFeeController extends BaseController {
                      @RequestParam(value = "pageSize") int pageSize){
         Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
         Page<CallsOutSideFee> page = callsOutSideFeeService.listCallsOutSideFee(params,currentPage,pageSize);
+        //获取余额
+        BigDecimal balance = callsOutSideFeeService.getBalance(params);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put(Constant.RESPONSE_DATA, page);
+        result.put(Constant.RESPONSE_DATA_BALANCE,balance);
         result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
