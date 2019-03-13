@@ -341,7 +341,7 @@
         select auditor_id as auditor_id,sum(borrow_apply_count) as borrow_apply_count,
         sum(pass_order) as pass_order,sum(current_overdue) as current_overdue,sum(first_load_count) as first_load_count,
         sum(first_overdue) as first_overdue,sum(load_count) as load_count,sum(first_pass_order) as first_pass_order,
-        sum(new_borrow_apply_count) as new_borrow_apply_count,sum(again_overdue) as again_overdue ,su.name as auditor_name
+        sum(new_borrow_apply_count) as new_borrow_apply_count,sum(again_load_count) as again_load_count, sum(again_overdue) as again_overdue ,su.name as auditor_name
         from cl_auditor_statistic_data as statistic,arc_sys_user as su
       <where>
           su.id = statistic.auditor_id

@@ -310,7 +310,7 @@ export default React.createClass({
 
                                     <dev className ="data-panel-4 ">
                                         <dev className ='blk-number-description'>线下还款总额</dev>
-                                        <dev className ='blk-number-history-1'>{formsRealTime.sumUnlineLoadAmount}</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumUnlineRepaymentAmount}</dev>
 
                                     </dev>
                                     <dev className ="data-panel-4 ">

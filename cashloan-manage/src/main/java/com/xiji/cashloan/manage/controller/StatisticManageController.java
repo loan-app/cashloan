@@ -292,7 +292,7 @@ public class StatisticManageController extends ManageBaseController {
 	}
 
 	/**
-	 * 分页查询 还款数据统计
+	 * 分页查询 逾期数据统计
 	 * @param response
 	 * @param search
 	 * @param current
