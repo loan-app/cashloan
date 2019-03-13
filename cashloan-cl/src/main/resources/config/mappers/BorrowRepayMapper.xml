@@ -88,8 +88,11 @@
             	penalty_amout = #{penaltyAmout,jdbcType=DECIMAL} ,
             </if>
             <if test="repayTime != null ">
-            	repay_time = #{repayTime,jdbcType=TIMESTAMP}
+            	repay_time = #{repayTime,jdbcType=TIMESTAMP},
             </if>
+              <if test="type != null and type != ''">
+                  type = #{type,jdbcType=VARCHAR}
+              </if>
         </set>
         where state = '20' and id = #{id ,jdbcType=BIGINT}
     </update>

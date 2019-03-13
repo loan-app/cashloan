@@ -372,7 +372,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	 * @return
 	 */
 	@Override
-	public Map<String, Object> confirmDelayPay(Map<String, Object> param) {
+	public Map<String, Object> 	confirmDelayPay(Map<String, Object> param) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Long id = (Long) param.get("id");
 		logger.debug("进入确认展期...借款id="+id);
@@ -548,6 +548,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		paramMap.put("penaltyAmout", "0.0");
 		paramMap.put("penaltyDay", "0");
+		paramMap.put("type","2");
 		return borrowRepayMapper.updateParam(paramMap);
 	}
 	@Override
