@@ -164,7 +164,6 @@
                 <if test="type != null">
                     and type = #{type,jdbcType=INTEGER}
                 </if>
-                    and fee <![CDATA[ < ]]> 0
                 <if test="castType != null">
                     and cast_type = #{castType,jdbcType = INTEGER}
                 </if>

@@ -211,7 +211,7 @@ public class SystemCountServiceImpl implements SystemCountService {
 		double todayShouldCntRate = 0;
 		if (todayShouldCnt != 0) {
 			// todayOverdueRate = todayNotRepayCnt * 100 / (double) todayShouldCnt;
-			todayShouldCntRate = todayRepayCnt* 100 / (double) todayShouldCnt;
+			todayShouldCntRate = (todayRepayCnt + todayDeferredCnt)* 100 / (double) todayShouldCnt;
 		}
 
 		rtMap.put("todayShouldCnt", todayShouldCnt);
