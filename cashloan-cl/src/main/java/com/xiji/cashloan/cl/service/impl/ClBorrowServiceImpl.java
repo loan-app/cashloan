@@ -14,6 +14,7 @@ import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.CreditConstant;
+import com.xiji.cashloan.cl.util.OcrConstant;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -170,6 +171,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private DecisionService decisionService;
 	@Resource
 	private UserRemarkService userRemarkService;
+	@Resource
+	private YouDunRiskService youDunRiskService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1843,6 +1846,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusNid())) {
 						continue;
 					}
+					if(OcrConstant.OCR_TYPE_FACE.equals(userBaseInfo.getIdType()) && TppBusinessModel.BUS_NID_YOUDUN.equals(info.getBusNid())) {
+						continue;
+					}
 					boolean needExcute = sceneBusinessLogService.needExcute(realBorrow.getUserId(),info.getBusId(),info.getGetWay(),info.getPeriod());
 					if(needExcute){
 						sceneLog = new SceneBusinessLog(info.getSceneId(), realBorrow.getId(), realBorrow.getUserId(), info.getTppId(), info.getBusId(), info.getBusNid(), realBorrow.getCreateTime(),info.getType());
@@ -1914,7 +1920,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-		} else {
+			//有盾数据查询
+		} else if (TppBusinessModel.BUS_NID_YOUDUN.equals(nid)){
+			logger.info("进入有盾数据处理");
+			fixedThreadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+                    int count = youDunRiskService.multiPoint(borrow);
+                    syncSceneBusinessLog(borrow.getId(), nid, count);
+                }
+			});
+
+		}
+		else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
 	}

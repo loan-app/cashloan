@@ -418,6 +418,11 @@ INSERT INTO `cl_rc_tpp` VALUES ('4', 'PA', 'pingan', '', '', '', '', '10', '2018
 INSERT INTO `cl_rc_tpp_business` VALUES ('7', '4', 'PA染黑统计', 'PinganGrayscaleStat', '10', '', '', null, '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '10', 0, '10', '10', '2018-12-26 00:00:00');
 
+-- 有盾用户画像数据加入到借款策略中
+INSERT INTO `cl_rc_tpp` VALUES ('6', 'YD', 'youdun', '', '', '', '', '10', '2019-03-12 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('11', '6', 'YD用户画像', 'YouDunUserPortrait', '10', '', '', null, '2019-03-12 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('11', '10', '11', '10', 0, '10', '10', '2019-03-12 00:00:00');
+
 -- 宜信欺诈甄别
 DROP TABLE IF EXISTS `cl_yixin_fraud`;
 CREATE TABLE `cl_yixin_fraud` (
@@ -783,3 +788,68 @@ alter table cl_borrow_repay add column `borrow_amount` decimal(12,2)  default '0
 -- 同步原数据借款订单金额
 update cl_borrow_repay cbr, (select br.borrow_id,b.amount from `cl_borrow_repay` br  LEFT JOIN `cl_borrow` b  on br.borrow_id = b.id) temp set cbr.borrow_amount = temp.amount
 where cbr.borrow_id = temp.borrow_id;
+
+-- 英趣思汀
+INSERT INTO `arc_sys_config` VALUES (null, 20, '身份识别sdk选择', 'orc_sdk_select', '1', 1, '身份识别选择：1-face++,2-有盾,2=1234(该值表示2-有盾，选择userId尾号含有1234的)', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'face', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测key', 'k_ocr_base64key', 'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAoQbUJfG8h63o2klN3InuK1qUetS71O0YINFlHyZzzKmRBCgNyvuDt8ZuCjB9Zrexk+FNOeUg2dGV8XSCZKwLmwIDAQABAkEAg/C3ddvMMZQi/nEf9juiRi2zCa4ztbULlyBb7hkwuxlL+HYHln8EhgvBTGAWb596BQTmmDET1iVgDm+pWEfd2QIhANk6cX7/H4AkKr9GLlc5KMJNm7+/tJzoMTw6uETwfL1HAiEAvcRuUYY4azGhBAJmsoxSy/S0DSGYZlohMN+FYjSRmQ0CIH+257GVx2xsVyGb3nTzqy4JuO9Ug5jYvtG9aEdH6N7TAiEAgoeV9l+jeSBHB/H63/+jiAUGwC2GnYiLYgmtvtI4ABUCIQC1BoDi3sip+YcY3gw6+SbChaRNAcfZVoeJK60ZM5+xww==', 1, '英趣思汀活体检测key', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测渠道号', 'k_ocr_channelno', 'CH13IVR8S', 1, '英趣思汀活体检测渠道号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测url', 'k_ocr_checkface_url', 'http://rryqo.com/finance/v1/face/match?applyNo=', 1, '英趣思汀活体检测url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀身份证识别', 'k_ocr_check_idcard_url', 'http://rryqo.com/finance/v1/ocr/idCard?applyNo=', 1, '英趣思汀身份证识别', 1);
+
+
+-- 有盾用户画像
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾密钥', 'youdun_pub_key', 'f2ae8f6d-f6d7-4d50-9daa-ac253b1fb46d', 1, '有盾密钥', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾产品编码', 'youdun_product_code', 'Y1001005', 1, '有盾产品编码', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾安全密钥', 'youdun_secret_key', '250b6c96-b8e0-46b8-9878-8753766cfe83', 1, '有盾产品编码', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾url请求地址', 'youdun_risk_url', 'https://api4.udcredit.com/dsp-front/4.1/dsp-front/default/pubkey/%s/product_code/%s/out_order_id/%s/signature/%s', 1, '有盾url请求地址', 1);
+
+-- 有盾请求记录
+DROP TABLE IF EXISTS `cl_youdun_req_log`;
+CREATE TABLE `cl_youdun_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '同步响应流水号',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `resp_msg` mediumtext COMMENT '同步响应结果',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-风险评估',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾请求记录';
+
+-- 有盾风险评估表
+DROP TABLE IF EXISTS `cl_youdun_risk_report`;
+CREATE TABLE `cl_youdun_risk_report` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾风险评估表';
+
+-- 新增人脸认证类型
+ALTER TABLE cl_user_base_info add column `id_type` varchar(10)  default '20' COMMENT '人脸认证类型 10-FACE++ 20-有盾';
+
+-- 决策数据表新增有盾字段
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月实际借款平台数' after pa_all25ac_times;
+ALTER TABLE cl_decision add column `yd_repayment_times_count` int(11)  default 0 COMMENT '还款次数' after yd_actual_loan_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_6m` int(11)  default 0 COMMENT '近6月实际借款平台数' after yd_repayment_times_count;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_3m` int(11)  default 0 COMMENT '近3月实际借款平台数' after yd_actual_loan_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count` int(11)  default 0 COMMENT '实际借款平台数' after yd_actual_loan_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_3m` int(11)  default 0 COMMENT '近3月申请平台数' after yd_actual_loan_platform_count;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月申请平台数' after yd_loan_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_6m` int(11)  default 0 COMMENT '近6月申请平台数' after yd_loan_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_6m` int(11)  default 0 COMMENT '近6月还款平台数' after yd_loan_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_1m` int(11)  default 0 COMMENT '近1月还款平台数' after yd_repayment_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_3m` int(11)  default 0 COMMENT '近3月还款平台数' after yd_repayment_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count` int(11)  default 0 COMMENT '还款平台总数' after yd_repayment_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count` int(11)  default 0 COMMENT '申请借款平台总数' after yd_repayment_platform_count;
+ALTER TABLE cl_decision add column `yd_risk_evaluation` varchar(100)  default '' COMMENT '风险等级' after yd_loan_platform_count;
+ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估模型得分，分数越高风险越高，0标识缺乏足够信息判断' after yd_risk_evaluation;

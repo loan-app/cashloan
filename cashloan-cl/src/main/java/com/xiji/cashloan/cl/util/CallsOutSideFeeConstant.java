@@ -31,6 +31,9 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_GRAYSCALE_STAT = 11;
     //新颜行为雷达
     public static int CALLS_TYPE_XINYAN_XWLD = 12;
+    //有盾用户画像
+    public static int CALLS_TYPE_YOUDUN_RISK = 13;
+
     //充值类型
     public static int CALLS_TYPE_TopUp = 13;
     //魔蝎运营商费用
@@ -59,6 +62,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_GRAYSCALE_STAT = -0.4;
     //新颜行为雷达费用
     public static double FEE_XINYAN_XWLD = -1;
+    //有盾用户画像费用
+    public static double FEE_YOUDUN_RISK = -0.2;
 
     /**
      * 消费

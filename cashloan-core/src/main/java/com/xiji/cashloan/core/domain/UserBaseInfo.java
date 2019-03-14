@@ -190,6 +190,11 @@ import java.util.Date;
 	private String marital;
 
 	/**
+	 * 人脸认证类型 10-FACE++ 20-有盾
+	 */
+	private String idType;
+
+	/**
 	 * 获取主键Id
 	 *
 	 * @return id
@@ -832,4 +837,11 @@ import java.util.Date;
 		this.marital = marital;
 	}
 
+	public String getIdType() {
+		return idType;
+	}
+
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
 }
