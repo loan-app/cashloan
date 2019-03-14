@@ -156,7 +156,9 @@ export default React.createClass({
           } else if (record.type == 11) {
               return "染黑统计"
           } else if (record.type == 12) {
-              return "行为雷达"
+              return "还款行为"
+          } else if (record.type == 13) {
+              return "借贷多头"
           } else {
               return "-"
           }
