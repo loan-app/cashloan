@@ -403,6 +403,9 @@ export default React.createClass({
             title: '订单号',
             dataIndex: 'orderNo'
         }, {
+            title: '银行卡号',
+            dataIndex: 'cardNo'
+        }, {
             title: '借款金额(元)',
             dataIndex: 'amount'
         }, {
