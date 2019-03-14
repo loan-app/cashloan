@@ -780,6 +780,11 @@ set br.type = 2 where br.borrow_id = temp.borrow_id and (state = 10 or state = 2
 
 -- 还款计划表添加借款订单金额属性
 alter table cl_borrow_repay add column `borrow_amount` decimal(12,2)  default '0.0' COMMENT '借款订单金额';
+
 -- 同步原数据借款订单金额
 update cl_borrow_repay cbr, (select br.borrow_id,b.amount from `cl_borrow_repay` br  LEFT JOIN `cl_borrow` b  on br.borrow_id = b.id) temp set cbr.borrow_amount = temp.amount
 where cbr.borrow_id = temp.borrow_id;
+
+
+-- 渠道统计添加当日到期放款数
+ ALTER table cl_channel_statistic_data add `expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期放款数';
