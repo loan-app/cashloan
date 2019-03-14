@@ -8,6 +8,23 @@ import {
 } from 'antd';
 import './YoudunDetail.css';
 
+const featureTypeMap = {
+    0: '多头借贷',
+    2: '羊毛党',
+    5: '作弊软件',
+    6: '法院失信',
+    7: '网贷失信',
+    8: '关联过多',
+    10: '曾使用可疑设备',
+    11: '安装极多借贷app',
+    13: '身份信息疑似泄漏',
+    17: '活体攻击设备',
+    18: '活体攻击行为',
+    21: '疑似欺诈团伙',
+    23: '网贷不良',
+    24: '短期逾期'
+};
+
 export default React.createClass({
     getInitialState() {
         return {
@@ -93,7 +110,7 @@ export default React.createClass({
                                             <div>{ (userFeatures || []).map((item, index)=> {
                                                 return (
                                                     <Button type='danger' style={{backgroundColor:'#DE1514' ,color:'#FFFFFF'}} key={index}>
-                                                        <div>{item}</div>
+                                                        <div>{featureTypeMap[item.user_feature_type]}</div>
                                                     </Button>
                                                 )
                                             })}
