@@ -161,9 +161,9 @@ export default React.createClass({
           if (!record.userRegister) {
             return "0%";
           }else if(record.newBorrowCount === 0){
-              return record.newBorrowCount/record.userRegister*100+"%"
+              return record.newLoadCount/record.userRegister*100+"%"
           }else {
-              return (record.newBorrowCount/record.userRegister*100).toFixed(2)+"%"
+              return (record.newLoadCount/record.userRegister*100).toFixed(2)+"%"
           }
         }
     }];
