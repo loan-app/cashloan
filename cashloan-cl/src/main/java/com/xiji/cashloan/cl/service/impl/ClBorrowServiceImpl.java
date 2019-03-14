@@ -2599,4 +2599,43 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		list.add(map2);
 		return list;
 	}
+
+	@Override
+	public int offlinePay(Long borrowId, Long userId) {
+		int code = 0;
+		final Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+		if (borrow != null) {
+			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
+				logger.error("线下放款失败,当前状态不是待审核放款");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			}
+			Map<String,Object> map = new HashMap<>();
+			map.put("id", borrowId);
+			map.put("state", BorrowModel.STATE_REPAY);
+			code = clBorrowMapper.loanState(map);
+			if (code!=1) {
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			}
+
+			//添加借款进度
+			BorrowProgress borrowProgress = new BorrowProgress();
+			borrowProgress.setBorrowId(borrow.getId());
+			borrowProgress.setUserId(borrow.getUserId());
+			borrowProgress.setState(BorrowModel.STATE_REPAY);
+			borrowProgress.setRemark("线下放款审核");
+
+			borrowProgress.setAuditUser(userId);
+			borrowProgress.setCreateTime(DateUtil.getNow());
+			borrowProgressMapper.save(borrowProgress);
+
+			// 生成还款计划并授权
+			borrowRepayService.genRepayPlan(borrow);
+			//发送放款成功短信
+			clSmsService.loanInform(borrow.getUserId(), borrow.getId());
+		} else {
+			logger.error("线下放款失败，当前订单不存在");
+			throw new BussinessException("线下放款失败，当前订单不存在");
+		}
+		return code;
+	}
 }
