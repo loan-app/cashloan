@@ -788,3 +788,20 @@ CREATE TABLE `cl_youdun_risk_report` (
 
 -- 新增人脸认证类型
 ALTER TABLE cl_user_base_info add column `id_type` varchar(10)  default '20' COMMENT '人脸认证类型 10-FACE++ 20-有盾';
+
+-- 决策数据表新增有盾字段
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月实际借款平台数' after pa_all25ac_times;
+ALTER TABLE cl_decision add column `yd_repayment_times_count` int(11)  default 0 COMMENT '还款次数' after yd_actual_loan_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_6m` int(11)  default 0 COMMENT '近6月实际借款平台数' after yd_repayment_times_count;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_3m` int(11)  default 0 COMMENT '近3月实际借款平台数' after yd_actual_loan_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count` int(11)  default 0 COMMENT '实际借款平台数' after yd_actual_loan_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_3m` int(11)  default 0 COMMENT '近3月申请平台数' after yd_actual_loan_platform_count;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月申请平台数' after yd_loan_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_6m` int(11)  default 0 COMMENT '近6月申请平台数' after yd_loan_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_6m` int(11)  default 0 COMMENT '近6月还款平台数' after yd_loan_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_1m` int(11)  default 0 COMMENT '近1月还款平台数' after yd_repayment_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_3m` int(11)  default 0 COMMENT '近3月还款平台数' after yd_repayment_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count` int(11)  default 0 COMMENT '还款平台总数' after yd_repayment_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count` int(11)  default 0 COMMENT '申请借款平台总数' after yd_repayment_platform_count;
+ALTER TABLE cl_decision add column `yd_risk_evaluation` varchar(100)  default '' COMMENT '风险等级' after yd_loan_platform_count;
+ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估模型得分，分数越高风险越高，0标识缺乏足够信息判断' after yd_risk_evaluation;

@@ -1324,7 +1324,66 @@ import java.util.Date;
     */
     private Date lastModifyTime;
 
-
+    /**
+    * 近1月实际借款平台数
+    */
+    private Integer ydActualLoanPlatformCount1m;
+    /**
+    * 还款次数
+    */
+    private Integer ydRepaymentTimesCount;
+    /**
+    * 近6月实际借款平台数
+    */
+    private Integer ydActualLoanPlatformCount6m;
+    /**
+    * 近3月实际借款平台数
+    */
+    private Integer ydActualLoanPlatformCount3m;
+    /**
+    * 实际借款平台数
+    */
+    private Integer ydActualLoanPlatformCount;
+    /**
+    * 近3月申请平台数
+    */
+    private Integer ydLoanPlatformCount3m;
+    /**
+    * 近1月申请平台数
+    */
+    private Integer ydLoanPlatformCount1m;
+    /**
+    * 近6月申请平台数
+    */
+    private Integer ydLoanPlatformCount6m;
+    /**
+    * 近6月还款平台数
+    */
+    private Integer ydRepaymentPlatformCount6m;
+    /**
+    * 近1月还款平台数
+    */
+    private Integer ydRepaymentPlatformCount1m;
+    /**
+    * 近3月还款平台数
+    */
+    private Integer ydRepaymentPlatformCount3m;
+    /**
+    * 还款平台总数
+    */
+    private Integer ydRepaymentPlatformCount;
+    /**
+    * 申请借款平台总数
+    */
+    private Integer ydLoanPlatformCount;
+    /**
+    * 风险等级
+    */
+    private String ydRiskEvaluation;
+    /**
+    * 评估模型得分，分数越高风险越高，0标识缺乏足够信息判断
+    */
+    private Integer ydScore;
     /**
     * 获取主键Id
     *
@@ -6041,4 +6100,123 @@ import java.util.Date;
         this.lastModifyTime = lastModifyTime;
     }
 
+   public Integer getYdActualLoanPlatformCount1m() {
+      return ydActualLoanPlatformCount1m;
+   }
+
+   public void setYdActualLoanPlatformCount1m(Integer ydActualLoanPlatformCount1m) {
+      this.ydActualLoanPlatformCount1m = ydActualLoanPlatformCount1m;
+   }
+
+   public Integer getYdRepaymentTimesCount() {
+      return ydRepaymentTimesCount;
+   }
+
+   public void setYdRepaymentTimesCount(Integer ydRepaymentTimesCount) {
+      this.ydRepaymentTimesCount = ydRepaymentTimesCount;
+   }
+
+   public Integer getYdActualLoanPlatformCount6m() {
+      return ydActualLoanPlatformCount6m;
+   }
+
+   public void setYdActualLoanPlatformCount6m(Integer ydActualLoanPlatformCount6m) {
+      this.ydActualLoanPlatformCount6m = ydActualLoanPlatformCount6m;
+   }
+
+   public Integer getYdActualLoanPlatformCount3m() {
+      return ydActualLoanPlatformCount3m;
+   }
+
+   public void setYdActualLoanPlatformCount3m(Integer ydActualLoanPlatformCount3m) {
+      this.ydActualLoanPlatformCount3m = ydActualLoanPlatformCount3m;
+   }
+
+   public Integer getYdActualLoanPlatformCount() {
+      return ydActualLoanPlatformCount;
+   }
+
+   public void setYdActualLoanPlatformCount(Integer ydActualLoanPlatformCount) {
+      this.ydActualLoanPlatformCount = ydActualLoanPlatformCount;
+   }
+
+   public Integer getYdLoanPlatformCount3m() {
+      return ydLoanPlatformCount3m;
+   }
+
+   public void setYdLoanPlatformCount3m(Integer ydLoanPlatformCount3m) {
+      this.ydLoanPlatformCount3m = ydLoanPlatformCount3m;
+   }
+
+   public Integer getYdLoanPlatformCount1m() {
+      return ydLoanPlatformCount1m;
+   }
+
+   public void setYdLoanPlatformCount1m(Integer ydLoanPlatformCount1m) {
+      this.ydLoanPlatformCount1m = ydLoanPlatformCount1m;
+   }
+
+   public Integer getYdLoanPlatformCount6m() {
+      return ydLoanPlatformCount6m;
+   }
+
+   public void setYdLoanPlatformCount6m(Integer ydLoanPlatformCount6m) {
+      this.ydLoanPlatformCount6m = ydLoanPlatformCount6m;
+   }
+
+   public Integer getYdRepaymentPlatformCount6m() {
+      return ydRepaymentPlatformCount6m;
+   }
+
+   public void setYdRepaymentPlatformCount6m(Integer ydRepaymentPlatformCount6m) {
+      this.ydRepaymentPlatformCount6m = ydRepaymentPlatformCount6m;
+   }
+
+   public Integer getYdRepaymentPlatformCount1m() {
+      return ydRepaymentPlatformCount1m;
+   }
+
+   public void setYdRepaymentPlatformCount1m(Integer ydRepaymentPlatformCount1m) {
+      this.ydRepaymentPlatformCount1m = ydRepaymentPlatformCount1m;
+   }
+
+   public Integer getYdRepaymentPlatformCount3m() {
+      return ydRepaymentPlatformCount3m;
+   }
+
+   public void setYdRepaymentPlatformCount3m(Integer ydRepaymentPlatformCount3m) {
+      this.ydRepaymentPlatformCount3m = ydRepaymentPlatformCount3m;
+   }
+
+   public Integer getYdRepaymentPlatformCount() {
+      return ydRepaymentPlatformCount;
+   }
+
+   public void setYdRepaymentPlatformCount(Integer ydRepaymentPlatformCount) {
+      this.ydRepaymentPlatformCount = ydRepaymentPlatformCount;
+   }
+
+   public Integer getYdLoanPlatformCount() {
+      return ydLoanPlatformCount;
+   }
+
+   public void setYdLoanPlatformCount(Integer ydLoanPlatformCount) {
+      this.ydLoanPlatformCount = ydLoanPlatformCount;
+   }
+
+   public String getYdRiskEvaluation() {
+      return ydRiskEvaluation;
+   }
+
+   public void setYdRiskEvaluation(String ydRiskEvaluation) {
+      this.ydRiskEvaluation = ydRiskEvaluation;
+   }
+
+   public Integer getYdScore() {
+      return ydScore;
+   }
+
+   public void setYdScore(Integer ydScore) {
+      this.ydScore = ydScore;
+   }
 }
