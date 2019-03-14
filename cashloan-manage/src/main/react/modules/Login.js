@@ -97,15 +97,9 @@ let Login = React.createClass({
                 <div className="g-loginbox">
                     <div className="g-bd">
                         <div className="m-loginbg" style={{ height: this.state.height }}>
-                            <img src="/dev/images/bg-logo.png" />
                         </div>
                         <div className="m-bgwrap" style={{ cursor: "pointer" }}></div>
                         <div className='center'>
-                            <ul>
-                                <li><img width='150px' src="/dev/images/lg.png" /></li>
-                                <li><img width='500px' src="/dev/images/Graphics.png" /></li>
-                                <li><img width='500px' src="/dev/images/light.png" /></li>
-                            </ul>
                             <div className="m-loginboxbg" ></div>
                             <div className="m-loginbox">
                                 <div className="lbinner" id="J_body_bg">
