@@ -99,9 +99,9 @@ export default React.createClass({
                                             })}
                                             </div>
                                         </td>) : ([
-                                            <td style={{width: '20%'}} > {data[item[0].key]}</td>,
-                                            <td style={{textAlign: 'right'}} > {item[1] && item[1].name}</td>,
-                                            <td style={{width: '20%'}}>{item[1] && data[item[1].key]}</td>
+                                            <td key="td1" style={{width: '20%'}} > {data[item[0].key]}</td>,
+                                            <td key="td2" style={{textAlign: 'right'}} > {item[1] && item[1].name}</td>,
+                                            <td key="td3" style={{width: '20%'}}>{item[1] && data[item[1].key]}</td>
                                         ])}
 
                                 </tr>
