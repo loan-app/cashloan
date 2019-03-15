@@ -57,7 +57,7 @@
     </select>
     <!-- 待还款总额 -->
     <select id="sumBorrowNeedRepay" resultType="java.lang.Double">
-    	select sum(amount+penalty_amout) from cl_borrow_repay where state = '20'
+    	select sum(amount+penalty_amout) from cl_borrow_repay where state = '20' and penalty_amout = 0
     </select>
     <!-- 逾期未还款总额 -->
     <select id="sumBorrowOverdueRepay" resultType="java.lang.Double">

@@ -135,15 +135,25 @@ public class UserStatisticDataServiceImpl extends BaseServiceImpl<UserStatisticD
 
 			String countTimeStr = DateUtil.dateStr(userStatisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002);
 
-			//String lastDateStr = DateUtil.dateStr((Date)params.get("startDate"),DateUtil.DATEFORMAT_STR_002);
 			if (countTimeStr != null && countTimeStr.equals(params.get("startDate"))){
 				Map<String,Object> userStatisticMap = new HashMap<>();
 				userStatisticMap.put("id",userStatisticData.getId());
-				userStatisticMap.put("loadCount",loadCount.getLoadCount());
-				userStatisticMap.put("newLoadCount",newLoadCount.getLoadCount());
-				userStatisticMap.put("oldLoadCount",oldLoadCount.getLoadCount());
+				if (loadCount.getLoadCount() != null){
+					userStatisticMap.put("loadCount",loadCount.getLoadCount());
+				}
+
+				if (newLoadCount.getLoadCount() != null){
+					userStatisticMap.put("newLoadCount",newLoadCount.getLoadCount());
+				}
+
+				if (oldLoadCount.getLoadCount() != null){
+					userStatisticMap.put("oldLoadCount",oldLoadCount.getLoadCount());
+				}
 				userStatisticMap.put("updateTime",new Date());
-				count = userStatisticDataMapper.updateSelective(userStatisticMap);
+
+				if (loadCount.getLoadCount() != null || oldLoadCount.getLoadCount() != null || newLoadCount.getLoadCount() != null){
+					count = userStatisticDataMapper.updateSelective(userStatisticMap);
+				}
 			}
 		}
        return count;

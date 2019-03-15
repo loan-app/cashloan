@@ -148,6 +148,14 @@ public interface ChannelStatisticDataMapper extends BaseMapper<ChannelStatisticD
 
 
     /**
+     * 获取当日到期放款数
+     * @param params
+     * @return
+     */
+    List<ChannelStatisticData> getExpireLoadCount(Map<String,Object> params);
+
+
+    /**
      * 获取 新客申请订单数
      * @param params
      * @return

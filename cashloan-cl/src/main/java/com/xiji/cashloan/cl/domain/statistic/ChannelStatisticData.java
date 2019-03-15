@@ -221,6 +221,12 @@ import java.util.Date;
     private Double newTransformRate;
 
     /**
+     * 到期放款数
+     */
+    private Integer expireLoadCount;
+
+
+    /**
     * 获取主键Id
     *
     * @return id
@@ -761,4 +767,11 @@ import java.util.Date;
         this.newTransformRate = newTransformRate;
     }
 
+    public Integer getExpireLoadCount() {
+        return expireLoadCount;
+    }
+
+    public void setExpireLoadCount(Integer expireLoadCount) {
+        this.expireLoadCount = expireLoadCount;
+    }
 }
