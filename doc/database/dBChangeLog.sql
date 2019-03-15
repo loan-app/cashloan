@@ -774,7 +774,7 @@ INSERT INTO `cl_quartz_info` VALUES (null, '到期提醒', 'doRepayInform', '0 0
 
 
 alter table cl_auditor_statistic_data add again_load_count int(11) NOT NULL DEFAULT '0' COMMENT '复贷放款数';
-alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数'
+alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数';
 
 -- 还款计划类型
 ALTER TABLE cl_borrow_repay add column `type` varchar(10)  default '1' COMMENT '还款计划类型 1-正常 2-展期';
