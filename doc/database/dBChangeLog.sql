@@ -836,6 +836,7 @@ CREATE TABLE `cl_youdun_risk_report` (
 
 -- 新增人脸认证类型
 ALTER TABLE cl_user_base_info add column `id_type` varchar(10)  default '20' COMMENT '人脸认证类型 10-FACE++ 20-有盾';
+update cl_user_base_info set id_type = '10';
 
 -- 决策数据表新增有盾字段
 ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月实际借款平台数' after pa_all25ac_times;
