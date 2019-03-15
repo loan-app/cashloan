@@ -256,7 +256,7 @@
 
 
     <select id="currentOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        SELECT t2.auditorId as auditorId ,COUNT(distinct t2.id) currentOverdue,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow , cl_borrow_progress as progress where  borrow.id = repay.borrow_id and mro.borrow_id = borrow.id  and DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
+        SELECT t2.auditorId as auditorId ,COUNT(distinct t2.borrow_id) currentOverdue,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.borrow_id ,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro , cl_borrow_progress as progress where  mro.borrow_id = repay.borrow_id and DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
@@ -311,7 +311,7 @@
     </select>
 
     <select id="firstExtendOverdueCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstExtendOverdueCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM  cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where  borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and repay.state ='30' and borrow.again = '10' and borrow.is_overdue = '20') t2
+        SELECT t2.auditorId as auditorId ,COUNT(t2.id) firstExtendOverdueCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') review_time FROM  cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow ,cl_borrow_progress as progress where  progress.borrow_id = repay.borrow_id and mro.borrow_id = progress.borrow_id and repay.state ='30' and borrow.again = '10' and progress.state ='50' and DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
