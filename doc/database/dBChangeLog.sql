@@ -785,6 +785,7 @@ set br.type = 2 where br.borrow_id = temp.borrow_id and (state = 10 or state = 2
 
 -- 还款计划表添加借款订单金额属性
 alter table cl_borrow_repay add column `borrow_amount` decimal(12,2)  default '0.0' COMMENT '借款订单金额';
+
 -- 同步原数据借款订单金额
 update cl_borrow_repay cbr, (select br.borrow_id,b.amount from `cl_borrow_repay` br  LEFT JOIN `cl_borrow` b  on br.borrow_id = b.id) temp set cbr.borrow_amount = temp.amount
 where cbr.borrow_id = temp.borrow_id;
@@ -854,3 +855,7 @@ ALTER TABLE cl_decision add column `yd_repayment_platform_count` int(11)  defaul
 ALTER TABLE cl_decision add column `yd_loan_platform_count` int(11)  default 0 COMMENT '申请借款平台总数' after yd_repayment_platform_count;
 ALTER TABLE cl_decision add column `yd_risk_evaluation` varchar(100)  default '' COMMENT '风险等级' after yd_loan_platform_count;
 ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估模型得分，分数越高风险越高，0标识缺乏足够信息判断' after yd_risk_evaluation;
+
+
+-- 渠道统计添加当日到期放款数
+ ALTER table cl_channel_statistic_data add `expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期放款数';

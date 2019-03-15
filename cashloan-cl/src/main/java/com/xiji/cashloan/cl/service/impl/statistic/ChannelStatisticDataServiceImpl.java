@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.ChannelStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.ChannelStatisticDataMapper;
-import com.xiji.cashloan.cl.model.statistic.ChannelStatisticModel;
 import com.xiji.cashloan.cl.service.statistic.ChannelStatisticDataService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -12,7 +11,6 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import tool.util.BeanUtil;
 import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
@@ -82,6 +80,8 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 		List<ChannelStatisticData> newReviewPassCount = channelStatisticDataMapper.getNewReviewPassCount(params);
 		List<ChannelStatisticData> newBorrowApplyCount = channelStatisticDataMapper.getNewBorrowApplyCount(params);
 		List<ChannelStatisticData> againExpireOverdueCount = channelStatisticDataMapper.getAgainExpireOverdueCount(params);
+		List<ChannelStatisticData> expireLoadCount = channelStatisticDataMapper.getExpireLoadCount(params);
+
 
 
 
@@ -110,6 +110,8 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 		setChannelStatisticDataProperty(newReviewNotPassCount,statisticDataList,"newReviewNotPassCount");
 		setChannelStatisticDataProperty(newReviewPassCount,statisticDataList,"newReviewPassCount");
 		setChannelStatisticDataProperty(againExpireOverdueCount,statisticDataList,"againExpireOverdueCount");
+		setChannelStatisticDataProperty(expireLoadCount,statisticDataList,"expireLoadCount");
+
 
 
 		// 设置默认值
@@ -161,10 +163,10 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 			    statisticData.setNewTransformRate(BigDecimalUtil.decimal((double)statisticData.getNewBorrowApplyCount()/(double)statisticData.getUserRegister()*100,2));
 			}
 
-			if (statisticData.getAgainExpireLoadCount() == 0 && statisticData.getFirstExpireLoadCount() == 0 && statisticData.getExtendCount() == 0) {
+			if (statisticData.getExpireLoadCount() == 0) {
 				statisticData.setOverdueRate(0.00);
 			} else {
-				statisticData.setOverdueRate(BigDecimalUtil.decimal((double) statisticData.getExpireOverdueCount() / (double) (statisticData.getAgainExpireLoadCount() + statisticData.getFirstExpireLoadCount()+statisticData.getExtendCount()) * 100, 2));
+				statisticData.setOverdueRate(BigDecimalUtil.decimal((double) statisticData.getExpireOverdueCount() / (double) (statisticData.getExpireLoadCount()) * 100, 2));
 			}
 			if (statisticData.getFirstExpireLoadCount() == 0) {
 				statisticData.setFirstOverdueRate(0.00);
@@ -274,6 +276,10 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 			if (statisticData.getAgainExpireOverdueCount() == null){
 				statisticData.setAgainExpireOverdueCount(0);
 			}
+
+			if (statisticData.getExpireLoadCount() == null){
+				statisticData.setExpireLoadCount(0);
+			}
 		}
 
   }
@@ -348,6 +354,7 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 						case "againExpireOverdueCount" : statisticData.setAgainExpireOverdueCount(channelStatisticData.getAgainExpireOverdueCount());break;
 
 						case "expireOverdueCount" : statisticData.setExpireOverdueCount(channelStatisticData.getExpireOverdueCount());break;
+						case "expireLoadCount" : statisticData.setExpireLoadCount(channelStatisticData.getExpireLoadCount());break;
 						default:break;
 					}
 				}
@@ -373,50 +380,6 @@ public class ChannelStatisticDataServiceImpl extends BaseServiceImpl<ChannelStat
 		return channelStatisticData;
 	}
 
-	/**
-	 * 计算老客申请数、老客机审通过数、老客机审拒绝数、老客人工审核通过数、老客人工拒绝数
-	 * @param channelStatisticDataList
-	 * @return
-	 */
-	public Page<ChannelStatisticModel> listChannelStatisticModel(Page<ChannelStatisticData> channelStatisticDataList){
-
-		Page<ChannelStatisticModel> channelStatisticModels = new Page<>();
-		if (CollectionUtil.isNotEmpty(channelStatisticDataList)){
-
-
-
-			for(ChannelStatisticData channelStatisticData : channelStatisticDataList){
-				ChannelStatisticModel channelStatisticModel = new ChannelStatisticModel();
-				BeanUtil.copyProperties(channelStatisticData,channelStatisticModel);
-				channelStatisticModel.setOldBorrowApplyCount(channelStatisticData.getBorrowApplyCount() - channelStatisticData.getNewBorrowApplyCount());
-				channelStatisticModel.setOldMachineAuditNotPassCount(channelStatisticData.getMachineAuditNotPassCount() -channelStatisticData.getNewMachineAuditNotPassCount());
-			    channelStatisticModel.setOldMachineAuditPassCount(channelStatisticData.getMachineAuditPassCount()- channelStatisticData.getNewMachineAuditPassCount());
-				channelStatisticModel.setOldReviewNotPassCount(channelStatisticData.getReviewNotPassCount() - channelStatisticData.getNewReviewNotPassCount());
-			    channelStatisticModel.setOldReviewPassCount(channelStatisticData.getReviewPassCount() - channelStatisticData.getNewReviewPassCount());
-				channelStatisticModel.setAgainExpireOverdueCount(channelStatisticData.getAgainExpireOverdueCount() + channelStatisticData.getExtendOverdueCount());
-
-				if (channelStatisticData.getNewReviewPassCount() == 0 && channelStatisticData.getNewReviewNotPassCount() == 0){
-					channelStatisticModel.setNewReviewPassRate(0.00);
-					channelStatisticModel.setNewReviewNotPassRate(0.00);
-				}else {
-					channelStatisticModel.setNewReviewPassRate(BigDecimalUtil.decimal((double)channelStatisticData.getNewReviewPassCount()/(double) (channelStatisticData.getNewReviewPassCount()+channelStatisticData.getNewReviewNotPassCount())*100,2));
-					channelStatisticModel.setNewReviewNotPassRate(BigDecimalUtil.decimal((double)channelStatisticData.getNewReviewNotPassCount()/(double) (channelStatisticData.getNewReviewPassCount()+channelStatisticData.getNewReviewNotPassCount())*100,2));
-				}
-
-				if((channelStatisticData.getReviewPassCount() - channelStatisticData.getNewReviewPassCount()) <= 0 && (channelStatisticData.getReviewNotPassCount() -channelStatisticData.getNewReviewNotPassCount()) <= 0){
-					channelStatisticModel.setOldReviewNotPassRate(0.00);
-					channelStatisticModel.setOldReviewPassRate(0.00);
-				}else {
-					channelStatisticModel.setOldReviewNotPassRate(BigDecimalUtil.decimal((double)(channelStatisticData.getReviewNotPassCount() -channelStatisticData.getNewReviewNotPassCount())/(channelStatisticData.getReviewPassCount() - channelStatisticData.getNewReviewPassCount() + channelStatisticData.getReviewNotPassCount() -channelStatisticData.getNewReviewNotPassCount())*100,2));
-					channelStatisticModel.setOldReviewPassRate(BigDecimalUtil.decimal((double)(channelStatisticData.getReviewPassCount() -channelStatisticData.getNewReviewPassCount())/(channelStatisticData.getReviewPassCount() - channelStatisticData.getNewReviewPassCount() + channelStatisticData.getReviewNotPassCount() -channelStatisticData.getNewReviewNotPassCount())*100,2));
-				}
-
-			    channelStatisticModels.add(channelStatisticModel);
-			}
-		}
-
-		return channelStatisticModels;
-	}
 
 
 	/**
