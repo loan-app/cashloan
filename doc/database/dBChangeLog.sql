@@ -774,7 +774,7 @@ INSERT INTO `cl_quartz_info` VALUES (null, '到期提醒', 'doRepayInform', '0 0
 
 
 alter table cl_auditor_statistic_data add again_load_count int(11) NOT NULL DEFAULT '0' COMMENT '复贷放款数';
-alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数'
+alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数';
 
 -- 还款计划类型
 ALTER TABLE cl_borrow_repay add column `type` varchar(10)  default '1' COMMENT '还款计划类型 1-正常 2-展期';
@@ -785,13 +785,12 @@ set br.type = 2 where br.borrow_id = temp.borrow_id and (state = 10 or state = 2
 
 -- 还款计划表添加借款订单金额属性
 alter table cl_borrow_repay add column `borrow_amount` decimal(12,2)  default '0.0' COMMENT '借款订单金额';
-
 -- 同步原数据借款订单金额
 update cl_borrow_repay cbr, (select br.borrow_id,b.amount from `cl_borrow_repay` br  LEFT JOIN `cl_borrow` b  on br.borrow_id = b.id) temp set cbr.borrow_amount = temp.amount
 where cbr.borrow_id = temp.borrow_id;
 
 -- 英趣思汀
-INSERT INTO `arc_sys_config` VALUES (null, 20, '身份识别sdk选择', 'orc_sdk_select', '1', 1, '身份识别选择：1-face++,2-有盾,2=1234(该值表示2-有盾，选择userId尾号含有1234的)', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '身份识别sdk选择', 'orc_sdk_select', '2', 1, '身份识别选择：1-face++,2-有盾,2=1234(该值表示2-有盾，选择userId尾号含有1234的)', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'face', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测key', 'k_ocr_base64key', 'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAoQbUJfG8h63o2klN3InuK1qUetS71O0YINFlHyZzzKmRBCgNyvuDt8ZuCjB9Zrexk+FNOeUg2dGV8XSCZKwLmwIDAQABAkEAg/C3ddvMMZQi/nEf9juiRi2zCa4ztbULlyBb7hkwuxlL+HYHln8EhgvBTGAWb596BQTmmDET1iVgDm+pWEfd2QIhANk6cX7/H4AkKr9GLlc5KMJNm7+/tJzoMTw6uETwfL1HAiEAvcRuUYY4azGhBAJmsoxSy/S0DSGYZlohMN+FYjSRmQ0CIH+257GVx2xsVyGb3nTzqy4JuO9Ug5jYvtG9aEdH6N7TAiEAgoeV9l+jeSBHB/H63/+jiAUGwC2GnYiLYgmtvtI4ABUCIQC1BoDi3sip+YcY3gw6+SbChaRNAcfZVoeJK60ZM5+xww==', 1, '英趣思汀活体检测key', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测渠道号', 'k_ocr_channelno', 'CH13IVR8S', 1, '英趣思汀活体检测渠道号', 1);
@@ -837,6 +836,7 @@ CREATE TABLE `cl_youdun_risk_report` (
 
 -- 新增人脸认证类型
 ALTER TABLE cl_user_base_info add column `id_type` varchar(10)  default '20' COMMENT '人脸认证类型 10-FACE++ 20-有盾';
+update cl_user_base_info set id_type = '10';
 
 -- 决策数据表新增有盾字段
 ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月实际借款平台数' after pa_all25ac_times;
@@ -854,7 +854,3 @@ ALTER TABLE cl_decision add column `yd_repayment_platform_count` int(11)  defaul
 ALTER TABLE cl_decision add column `yd_loan_platform_count` int(11)  default 0 COMMENT '申请借款平台总数' after yd_repayment_platform_count;
 ALTER TABLE cl_decision add column `yd_risk_evaluation` varchar(100)  default '' COMMENT '风险等级' after yd_loan_platform_count;
 ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估模型得分，分数越高风险越高，0标识缺乏足够信息判断' after yd_risk_evaluation;
-
-
--- 渠道统计添加当日到期放款数
- ALTER table cl_channel_statistic_data add `expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期放款数';

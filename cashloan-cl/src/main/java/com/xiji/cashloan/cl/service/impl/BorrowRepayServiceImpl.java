@@ -140,6 +140,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		br.setPenaltyAmout(0.0);
 		br.setPenaltyDay("0");
 		br.setCreateTime(DateUtil.getNow());
+		//  默认还款计划类型为1
+		br.setType("1");
 		int result = borrowRepayMapper.save(br);
 
 		if (result > 0) {
