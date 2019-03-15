@@ -60,7 +60,7 @@ public class QuartzChannelStatistic implements Job{
             channelStatisticData.setCreateTime(new Date());
             channelStatisticDataService.insert(channelStatisticData);
         }
-        return "成功统计了"+channelStatisticDataList.size()+"天渠道数据报表";
+        return "成功统计了"+channelStatisticDataList.size()+"条渠道数据报表";
     }
 
 
