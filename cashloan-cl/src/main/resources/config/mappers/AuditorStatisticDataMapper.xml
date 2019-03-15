@@ -271,7 +271,7 @@
 
 
     <select id="loadCount" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.AuditorStatisticData">
-        SELECT t2.auditorId as auditorId ,COUNT(t2.id) loadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id and repay.type ='1') t2
+        SELECT t2.auditorId as auditorId ,COUNT(distinct t2.id) loadCount,DATE_FORMAT(review_time, '%Y-%m-%d') countTime FROM ( SELECT mro.user_id as auditorId,mro.id ,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') review_time FROM cl_borrow_repay as repay , cl_manual_review_order as mro,cl_borrow as borrow where borrow.id = repay.borrow_id and mro.borrow_id = borrow.id) t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and DATE_FORMAT(review_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}

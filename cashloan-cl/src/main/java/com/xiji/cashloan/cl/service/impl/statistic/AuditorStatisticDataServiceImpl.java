@@ -262,10 +262,10 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 		for(AuditorStatisticData auditorStatisticData :statisticDataList){
 			if (auditorStatisticData.getFirstLoadCount() == 0){
 				auditorStatisticData.setFirstOverdueRate(0.00);
-				auditorStatisticData.setCurrentOverdueRate(0.00);
+				//auditorStatisticData.setCurrentOverdueRate(0.00);
 			}else {
 				auditorStatisticData.setFirstOverdueRate(BigDecimalUtil.decimal((double) (auditorStatisticData.getFirstOverdue())/(double)auditorStatisticData.getFirstLoadCount()*100,2));
-				auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getFirstLoadCount()*100,2));
+				//auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getFirstLoadCount()*100,2));
 			}
 			if (auditorStatisticData.getNewBorrowApplyCount() == 0){
 				auditorStatisticData.setFirstPassRate(0.00);
@@ -277,6 +277,12 @@ public class AuditorStatisticDataServiceImpl extends BaseServiceImpl<AuditorStat
 				auditorStatisticData.setAgainOverdueRate(0.00);
 			}else {
 				auditorStatisticData.setAgainOverdueRate(BigDecimalUtil.decimal((double)(auditorStatisticData.getAgainOverdue())/(double)(auditorStatisticData.getAgainLoadCount())*100,2));
+			}
+
+			if (auditorStatisticData.getLoadCount() == 0){
+				auditorStatisticData.setCurrentOverdueRate(0.00);
+			}else {
+				auditorStatisticData.setCurrentOverdueRate(BigDecimalUtil.decimal((double)auditorStatisticData.getCurrentOverdue()/(double)auditorStatisticData.getLoadCount()*100,2));
 			}
 		}
 	}
