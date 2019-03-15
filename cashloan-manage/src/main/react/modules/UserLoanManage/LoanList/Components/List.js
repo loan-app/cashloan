@@ -314,6 +314,39 @@ export default React.createClass({
         })
     },
 
+    offline(title, record) {
+        var record = record;
+        var me = this;
+        confirm({
+            title: '是否确定线下放款',
+            onOk: function () {
+
+                Utils.ajaxData({
+                    url: '/modules/manage/borrow/offlinePay.htm',
+                    data: {
+                        borrowId: record.id
+                    },
+                    method: "post",
+                    callback: (result) => {
+                        if(result.code == 200){
+                            Modal.success({
+                                title: result.msg
+                            })
+                            me.refreshList();
+                        }else{
+                            Modal.error({
+                                title: result.msg
+                            })
+                        }
+
+
+                    }
+                });
+            },
+            onCancel: function(){}
+        })
+    },
+
     showUserRemark(title, record, canEdit) {
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',
@@ -369,6 +402,9 @@ export default React.createClass({
         }, {
             title: '订单号',
             dataIndex: 'orderNo'
+        }, {
+            title: '银行卡号',
+            dataIndex: 'cardNo'
         }, {
             title: '借款金额(元)',
             dataIndex: 'amount'
@@ -445,6 +481,25 @@ export default React.createClass({
                         return (
                             <div style={{ textAlign: "left" }}>
                                 <a href="#" onClick={me.check.bind(me, '查看详情', record, false)}>查看详情</a>
+                            </div>
+                        );
+                }
+            }
+        },{
+            title: '线下放款',
+            dataIndex: "",
+            render: (value, record) => {
+                switch(record.stateStr){
+                    case '待放款审核':
+                        return (
+                            <div style={{ textAlign: "left" }}>
+                                <a href="#" onClick={me.offline.bind(me, '线下放款', record, false)}>线下放款</a>
+                            </div>
+                        );
+                    default:
+                        return (
+                            <div style={{ textAlign: "left" }}>
+                                —
                             </div>
                         );
                 }

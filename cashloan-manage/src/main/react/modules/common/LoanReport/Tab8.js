@@ -9,6 +9,7 @@ import XindeBlacklist from './XinDe/XindeBlacklist';
 import YXAF from './YXAF/Credit-YXAF';
 import AntiFraud from './AntiFraud/AntiFraud';
 import PinAn from './PinAn/PinAn';
+import YoudunDetail from '../YouDunDetail/YoudunDetail';
 
 
 const objectAssign = require('object-assign');
@@ -35,7 +36,7 @@ var Tab8 = React.createClass({
                         {/*<iframe style={{border: 0, width: "100%", height: 630,}}*/}
                                 {/*src={'/build/magicReport/index.html?userId=' + this.props.userId}/>*/}
                     {/*</TabPane>*/}
-                    <TabPane tab="借贷多头" key="3">
+                    <TabPane tab="还款行为" key="3">
                         <XinyanXwld borrowId={this.props.borrowId}/>
                     </TabPane>
                     <TabPane tab="用户染黑" key="PinAn">
@@ -44,6 +45,9 @@ var Tab8 = React.createClass({
 
                     <TabPane tab="灰名单信息" key="4">
                         <XindeBlacklist borrowId={this.props.borrowId}/>
+                    </TabPane>
+                    <TabPane tab="借贷多头" key="5">
+                        <YoudunDetail borrowId={this.props.borrowId}/>
                     </TabPane>
                 </Tabs>
             </div>

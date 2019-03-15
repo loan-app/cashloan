@@ -75,7 +75,7 @@ public class LinkfaceIDTkOcrRequest extends DsTkCreditRequest {
         try {
             CloseableHttpResponse res = httpClient.execute(httpPost);
 
-            System.out.println(convertStreamToString(res.getEntity().getContent()));
+            System.out.println(convertToString(res.getEntity().getContent()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,19 +96,19 @@ public class LinkfaceIDTkOcrRequest extends DsTkCreditRequest {
         try {
             CloseableHttpResponse res = httpClient.execute(httpPost);
 
-            System.out.println(convertStreamToString(res.getEntity().getContent()));
+            System.out.println(convertToString(res.getEntity().getContent()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static String convertStreamToString(InputStream is) {
+    public static String convertToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line = null;
 
         try {
-            while ((line = reader.readLine()) != null) {
+            while((line = reader.readLine()) != null) {
                 sb.append(line);
             }
         } catch (IOException var14) {

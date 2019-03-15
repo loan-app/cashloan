@@ -14,6 +14,7 @@ import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.CreditConstant;
+import com.xiji.cashloan.cl.util.OcrConstant;
 import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -170,6 +171,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private DecisionService decisionService;
 	@Resource
 	private UserRemarkService userRemarkService;
+	@Resource
+	private YouDunRiskService youDunRiskService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -1843,6 +1846,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusNid())) {
 						continue;
 					}
+					if(OcrConstant.OCR_TYPE_FACE.equals(userBaseInfo.getIdType()) && TppBusinessModel.BUS_NID_YOUDUN.equals(info.getBusNid())) {
+						continue;
+					}
 					boolean needExcute = sceneBusinessLogService.needExcute(realBorrow.getUserId(),info.getBusId(),info.getGetWay(),info.getPeriod());
 					if(needExcute){
 						sceneLog = new SceneBusinessLog(info.getSceneId(), realBorrow.getId(), realBorrow.getUserId(), info.getTppId(), info.getBusId(), info.getBusNid(), realBorrow.getCreateTime(),info.getType());
@@ -1914,7 +1920,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-		} else {
+			//有盾数据查询
+		} else if (TppBusinessModel.BUS_NID_YOUDUN.equals(nid)){
+			logger.info("进入有盾数据处理");
+			fixedThreadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+                    int count = youDunRiskService.multiPoint(borrow);
+                    syncSceneBusinessLog(borrow.getId(), nid, count);
+                }
+			});
+
+		}
+		else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
 	}
@@ -2580,5 +2598,44 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		map2.put("feeDetail", feeMap2);
 		list.add(map2);
 		return list;
+	}
+
+	@Override
+	public int offlinePay(Long borrowId, Long userId) {
+		int code = 0;
+		final Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+		if (borrow != null) {
+			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
+				logger.error("线下放款失败,当前状态不是待审核放款");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			}
+			Map<String,Object> map = new HashMap<>();
+			map.put("id", borrowId);
+			map.put("state", BorrowModel.STATE_REPAY);
+			code = clBorrowMapper.loanState(map);
+			if (code!=1) {
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			}
+
+			//添加借款进度
+			BorrowProgress borrowProgress = new BorrowProgress();
+			borrowProgress.setBorrowId(borrow.getId());
+			borrowProgress.setUserId(borrow.getUserId());
+			borrowProgress.setState(BorrowModel.STATE_REPAY);
+			borrowProgress.setRemark("线下放款审核");
+
+			borrowProgress.setAuditUser(userId);
+			borrowProgress.setCreateTime(DateUtil.getNow());
+			borrowProgressMapper.save(borrowProgress);
+
+			// 生成还款计划并授权
+			borrowRepayService.genRepayPlan(borrow);
+			//发送放款成功短信
+			clSmsService.loanInform(borrow.getUserId(), borrow.getId());
+		} else {
+			logger.error("线下放款失败，当前订单不存在");
+			throw new BussinessException("线下放款失败，当前订单不存在");
+		}
+		return code;
 	}
 }

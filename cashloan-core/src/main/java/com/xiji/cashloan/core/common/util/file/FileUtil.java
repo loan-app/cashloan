@@ -1,30 +1,32 @@
 package com.xiji.cashloan.core.common.util.file;
 
 
+import com.xiji.cashloan.core.common.exception.RDRuntimeException;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.imageio.ImageIO;
-
-import com.xiji.cashloan.core.common.exception.RDRuntimeException;
-import com.xiji.cashloan.core.common.util.DateUtil;
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 import tool.util.StringUtil;
 
 /**
@@ -340,5 +342,93 @@ public class FileUtil {
 		model.setFileFormat(fileType);
 		model.setFileSize(new BigDecimal(picSize));
 		return model;
+	}
+	/**
+	 * @description 图片下载并保存
+	 * @param picUrl
+	 * @param prefix 文件名称前缀
+	 * @param folder 文件夹名称，紧接在/data/image之后
+	 * @return
+	 */
+	public static UploadFileModel uploadImg(String picUrl, String prefix, String folder) {
+		UploadFileModel model = new UploadFileModel();
+		model.setCreateTime(DateUtil.getNow());
+
+		byte[] btImg = getImageFromNetByUrl(picUrl);
+		if (btImg == null) {
+			return model;
+		}
+		// 文件格式
+		String fileType = getFileTypeByStream(btImg);
+		prefix = StringUtil.isBlank(prefix) ? "" : prefix + "_";
+		String picName = prefix + DateUtil.dateStr(DateUtil.getNow(),DateUtil.DATEFORMAT_STR_016)+"."+fileType;
+
+		if (StringUtil.isBlank(fileType)) {
+			model.setErrorMsg("图片格式错误或内容不规范");
+			return model;
+		}
+		// 保存文件
+		String s=File.separator;
+		String filePath = s+"data"+s+"image"+s + folder + s +
+			DateUtil.dateStr(DateUtil.getNow(), DateUtil.DATEFORMAT_STR_013) + s + picName;
+		if(s.equals("\\")){
+			filePath="D:"+filePath;
+		}
+		File files = new File(filePath);
+		if (!files.exists()) {
+			try {
+				if (files.getParentFile() != null && !files.getParentFile().exists()) {
+					files.getParentFile().mkdirs();
+				}
+				files.createNewFile();
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				model.setErrorMsg("文件目录不存在");
+				return model;
+			}
+		}
+		try {
+			FileOutputStream fileOutputStream = new FileOutputStream(files);
+			IOUtils.write(btImg,fileOutputStream);
+			IOUtils.closeQuietly(fileOutputStream);
+		} catch (IllegalStateException | IOException e) {
+			logger.error(e.getMessage(), e);
+			throw new RDRuntimeException(e.getMessage(),e);
+		}
+		// 转存文件
+		model.setResPath(filePath);
+		model.setFileName(picName);
+		model.setFileFormat(fileType);
+		return model;
+	}
+	public static byte[] getImageFromNetByUrl(String strUrl){
+		try {
+			URL url = new URL(strUrl);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setConnectTimeout(3 * 1000);
+			InputStream inStream = conn.getInputStream();//通过输入流获取图片数据
+			byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
+			return btImg;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 从输入流中获取数据
+	 * @param inStream 输入流
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] readInputStream(InputStream inStream) throws Exception{
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		while( (len=inStream.read(buffer)) != -1 ){
+			outStream.write(buffer, 0, len);
+		}
+		inStream.close();
+		return outStream.toByteArray();
 	}
 }  

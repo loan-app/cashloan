@@ -320,7 +320,11 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name);
 
 	/**
-	 *
+	 * 线下放款
+	 * @param borrowId
+	 * @param userId
+	 * @return
 	 */
+	int offlinePay(Long borrowId, Long userId);
 
 }

@@ -2,15 +2,29 @@ package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.api.util.CollectionUtil;
+import com.xiji.cashloan.api.util.OcrUtil;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.domain.UserCardCreditLog;
 import com.xiji.cashloan.cl.domain.UserMessages;
 import com.xiji.cashloan.cl.model.UserAuthModel;
-import com.xiji.cashloan.cl.model.dsdata.LinkfaceHsTkCreditRequest;
-import com.xiji.cashloan.cl.model.dsdata.LinkfaceIDTkOcrRequest;
-import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckBiz;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckIdCardResult;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckReq;
+import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckResult;
+import com.xiji.cashloan.cl.service.BankCardService;
+import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.OperatorReqLogService;
+import com.xiji.cashloan.cl.service.OperatorRespDetailService;
+import com.xiji.cashloan.cl.service.OperatorService;
+import com.xiji.cashloan.cl.service.UserAuthService;
+import com.xiji.cashloan.cl.service.UserBlackInfoService;
+import com.xiji.cashloan.cl.service.UserCardCreditLogService;
+import com.xiji.cashloan.cl.service.UserContactsService;
+import com.xiji.cashloan.cl.service.UserMessagesService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.OcrConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.Base64;
@@ -26,6 +40,19 @@ import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.model.UserWorkInfoModel;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,15 +66,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.*;
 
 /**
  * 用户详情表Controller
@@ -243,34 +261,43 @@ public class UserBaseInfoController extends BaseController {
         saveFile(list, byteFront);
 //        saveFile(list, byteBack);
 
-        LinkfaceIDTkOcrRequest linkfaceIDTkOcrRequest = new LinkfaceIDTkOcrRequest(LINKFACEHOST, new File(list.get(0).getResPath()), null);
-        String result = linkfaceIDTkOcrRequest.request();
+//        LinkfaceIDTkOcrRequest linkfaceIDTkOcrRequest = new LinkfaceIDTkOcrRequest(LINKFACEHOST, new File(list.get(0).getResPath()), null);
+//        String result = linkfaceIDTkOcrRequest.request();
 //        linkfaceIDOcrRequest.setOcrFrontImg(new File(list.get(0).getResPath()));
 //        linkfaceIDOcrRequest.setOcrBackImg(new File(list.get(1).getResPath()));
 //
 //        linkfaceIDOcrRequest.signByKey(SECRETKEY);
 //        String result = linkfaceIDOcrRequest.request();
         logger.info("请求地址--" + LINKFACEHOST);
-        logger.info("ocr返回结果-->" + result);
+//        logger.info("ocr返回结果-->" + result);
+        FaceCheckReq req = new FaceCheckReq();
+        req.setUrl(LINKFACEHOST);
+        req.setFrontImgPath(list.get(0).getResPath());
+        FaceCheckIdCardResult idCardResult = FaceCheckBiz.checkIdCard(req);
 
         Map<String, Object> resultMap = new HashMap<>();
-        JSONObject resultJson = JSONObject.parseObject(result);
-        if (StringUtil.isNotBlank(resultJson)) {
-            JSONObject name = JSONObject.parseObject(StringUtil.isNull(resultJson.get("name")));
-            JSONObject idCard = JSONObject.parseObject(StringUtil.isNull(resultJson.get("idcard_number")));
-            JSONObject address = JSONObject.parseObject(StringUtil.isNull(resultJson.get("address")));
-            resultMap.put("name", name.getString("result"));
-            resultMap.put("idNum", idCard.getString("result"));
-            resultMap.put("address", address.getString("result"));
-            //	if (200 == resultJson.getInteger("code")) {
-            //		JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("data")));
-            //		JSONObject front = JSONObject.parseObject(StringUtil.isNull(data.get("front")));
-            //		JSONObject res = JSONObject.parseObject(StringUtil.isNull(front.get("res")));
-            //		if (StringUtil.isNotBlank(res)) {
-            //			resultMap.put("name",res.getString("name"));
-            //			resultMap.put("idNum",res.getString("idNum"));
-            //			resultMap.put("address",res.getString("address"));
-            //		}
+//        JSONObject resultJson = JSONObject.parseObject(result);
+//        if (StringUtil.isNotBlank(resultJson)) {
+//            JSONObject name = JSONObject.parseObject(StringUtil.isNull(resultJson.get("name")));
+//            JSONObject idCard = JSONObject.parseObject(StringUtil.isNull(resultJson.get("idcard_number")));
+//            JSONObject address = JSONObject.parseObject(StringUtil.isNull(resultJson.get("address")));
+//            resultMap.put("name", name.getString("result"));
+//            resultMap.put("idNum", idCard.getString("result"));
+//            resultMap.put("address", address.getString("result"));
+//            //	if (200 == resultJson.getInteger("code")) {
+//            //		JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("data")));
+//            //		JSONObject front = JSONObject.parseObject(StringUtil.isNull(data.get("front")));
+//            //		JSONObject res = JSONObject.parseObject(StringUtil.isNull(front.get("res")));
+//            //		if (StringUtil.isNotBlank(res)) {
+//            //			resultMap.put("name",res.getString("name"));
+//            //			resultMap.put("idNum",res.getString("idNum"));
+//            //			resultMap.put("address",res.getString("address"));
+//            //		}
+//        }
+        if (idCardResult != null) {
+            resultMap.put("name", idCardResult.getName());
+            resultMap.put("idNum", idCardResult.getIdNum());
+            resultMap.put("address", idCardResult.getAddress());
         }
 
         map.put(Constant.RESPONSE_DATA, resultMap);
@@ -290,6 +317,9 @@ public class UserBaseInfoController extends BaseController {
      * @param education  学历
      * @param liveAddr   居住地址
      * @param detailAddr 居住详细地址
+     * @param ocrType ocr类型，有盾 youdun
+     * @param ocrResult 有盾认证结果json
+     * @param orderNo 有盾认证请求流水号
      * @return void
      * @throws Exception
      * @description 人证对比，上传数据文件，该文件需要APP中的SDK 生成
@@ -305,14 +335,32 @@ public class UserBaseInfoController extends BaseController {
             @RequestParam(value = "education", required = false) String education,
             @RequestParam(value = "liveAddr", required = false) String liveAddr,
             @RequestParam(value = "detailAddr", required = false) String detailAddr,
+            @RequestParam(value = "ocrType", required = false) String ocrType,
+            @RequestParam(value = "ocrResult", required = false) String ocrResult,
+            @RequestParam(value = "orderNo", required = false) String orderNo,
             @RequestParam(value = "liveCoordinate", required = false) String liveCoordinate)
             throws Exception {
         long userId = NumberUtil.getLong(request.getSession().getAttribute("userId").toString());
         Map<String, Object> returnMap = new HashMap<String, Object>();
-        final String LINKFACEHOST = Global.getValue("linkface_liVerification");
-
+        JSONObject ocrResultJson = null;
+        logger.info("youdun_ocrResult:" + ocrResult);
+        if (OcrUtil.ifYoudun(ocrType)) {
+            if (StringUtil.isNotEmpty(ocrResult)) {
+                ocrResultJson = JSONObject.parseObject(ocrResult);
+                if (OcrUtil.success(ocrResultJson)) {
+                    realName = OcrUtil.getIdName(ocrResultJson);
+                    idNo = OcrUtil.getIdCard(ocrResultJson);
+                }
+            }else {
+                returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                returnMap.put(Constant.RESPONSE_CODE_MSG, "认证失败，请到光线充足处重新认证");
+                ServletUtils.writeToResponse(response, returnMap);
+                return;
+            }
+        }
         Map<String, Object> infoMap = new HashMap<String, Object>();
         infoMap.put("idNo", idNo);
+
         UserBaseInfo info = userBaseInfoService.findSelective(infoMap);
         if (info == null) {
             infoMap.clear();
@@ -347,61 +395,61 @@ public class UserBaseInfoController extends BaseController {
 
                 String taskId = "";
                 double match = 0.0;
-                if (livingImg != null && 30 != Integer.parseInt(userAuth.getIdState())) {
+                boolean matchYoudun = false;
+
+                if ((livingImg != null && 30 != Integer.parseInt(userAuth.getIdState()))
+                    || OcrUtil.ifYoudun(ocrType)) {
                     logger.info("用户" + user.getLoginName() + "完善个人信息，进入人证识别比对");
                     response.setContentType("text/html;charset=utf8");
                     List<UploadFileModel> list = new LinkedList<>();
-                    saveMultipartFile(list, livingImg, info.getPhone());
-                    saveMultipartFile(list, frontImg, info.getPhone());
-                    saveMultipartFile(list, backImg, info.getPhone());
-//                    saveFile(list, byteLiving);
-                    info.setLivingImg(list.get(0).getResPath());
-                    info.setFrontImg(list.get(1).getResPath());
-                    info.setBackImg(list.get(2).getResPath());
-//                    info.setOcrImg(list.get(3).getResPath());
-
-//					long timestamp = new Date().getTime();
-//					Header header = new Header(APIKEY, timestamp);
-//					LinkfaceHsRequest linkfaceRequest = new LinkfaceHsRequest(LINKFACEHOST, header);
-//					linkfaceRequest.setLivingImg(new File(list.get(3).getResPath()));
-//			        linkfaceRequest.setName(realName);
-//			        linkfaceRequest.setIdCard(idNo);
-//
-//					linkfaceRequest.signByKey(SECRETKEY);
-//
-//					String result = linkfaceRequest.request();
-
-                    LinkfaceHsTkCreditRequest linkfaceHsTkRequest = new LinkfaceHsTkCreditRequest(LINKFACEHOST, new File(list.get(0).getResPath()), realName, idNo);
-                    String result = linkfaceHsTkRequest.request();
-                    logger.info("用户" + user.getLoginName() + "完善个人信息，进行人证识别比对，result为:" + result);
-
                     UserCardCreditLog log = new UserCardCreditLog();
                     log.setCreateTime(DateUtil.getNow());
                     log.setUserId(info.getUserId());
-                    log.setReqParams(JSONObject.toJSONString(linkfaceHsTkRequest));
-                    log.setReturnParams(result);
 
-                    JSONObject resultJson = JSONObject.parseObject(result);
-         /*           JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("data")));
-                    if (null != resultJson
-                            && StringUtil.isNotBlank(resultJson.get("code"))
-                            && 200 == (Integer) resultJson.get("code")) {
-                        match = data.getDoubleValue("verify_score");
-                        log.setResult(String.valueOf(resultJson.get("code")));
+                    if (OcrUtil.ifYoudun(ocrType)){
+                        savePicFile(list, OcrUtil.getLivingPhoto(ocrResultJson), info.getPhone());
+                        savePicFile(list, OcrUtil.getFrontcard(ocrResultJson), info.getPhone());
+                        savePicFile(list, OcrUtil.getBackcard(ocrResultJson), info.getPhone());
+
+                        log.setReqParams("");
+                        log.setReturnParams(ocrResult);
+                        log.setResult(OcrUtil.getAuth(ocrResultJson));
+                        match = OcrUtil.getScore(ocrResultJson);
                         log.setConfidence(String.valueOf(match));
-                    }*/
-                    if (resultJson.get("request_id") != null) {
-                        taskId = resultJson.get("request_id").toString();
-                    }
-                    JSONObject data = JSONObject.parseObject(StringUtil.isNull(resultJson.get("result_faceid")));
-                    log.setResult(String.valueOf(resultJson.get("code")));
-                    if (data == null){
-                        logger.info("人证识别请求失败"+result);
-                        match = 0.00;
+                        //有盾认证成功.
+                        matchYoudun = StringUtil.equalsIgnoreCase("T",OcrUtil.getAuth(ocrResultJson));
+                        if (!matchYoudun) {
+                            match = 0.0;
+                        }
+                        taskId = orderNo;
                     }else {
-                        match = data.getDoubleValue("confidence");
+                        saveMultipartFile(list, livingImg, info.getPhone());
+                        saveMultipartFile(list, frontImg, info.getPhone());
+                        saveMultipartFile(list, backImg, info.getPhone());
+//                    saveFile(list, byteLiving);
+//                    info.setOcrImg(list.get(3).getResPath());
+
+                        final String LINKFACEHOST = Global.getValue("linkface_liVerification");
+                        FaceCheckReq req = new FaceCheckReq();
+                        req.setUrl(LINKFACEHOST);
+                        req.setIdCard(idNo);
+                        req.setLivingImgPath(list.get(0).getResPath());
+                        req.setFrontImgPath(list.get(1).getResPath());
+                        req.setRealName(user.getLoginName());
+                        FaceCheckResult faceCheckResult = FaceCheckBiz.checkFace(req);
+                        log.setReqParams(faceCheckResult.getReqParams());
+                        log.setReturnParams(faceCheckResult.getReturnParams());
+                        log.setResult(faceCheckResult.getCode());
+                        match = faceCheckResult.getScore();
+                        taskId = faceCheckResult.getTaskId();
+                        log.setConfidence(String.valueOf(match));
+                        //设置人脸认证类型为FACE++
+                        info.setIdType(OcrConstant.OCR_TYPE_FACE);
                     }
-                    log.setConfidence(String.valueOf(match));
+
+                    info.setLivingImg(list.get(0).getResPath());
+                    info.setFrontImg(list.get(1).getResPath());
+                    info.setBackImg(list.get(2).getResPath());
                     userCardCreditLogService.insert(log);
                     logger.info("用户" + user.getLoginName() + "完善个人信息，进行人证识别比对，比对值为:" + match);
                 } else if (UserAuthModel.STATE_VERIFIED.equals(userAuth.getIdState())) {
@@ -410,7 +458,7 @@ public class UserBaseInfoController extends BaseController {
 
                 logger.info("用户" + user.getLoginName() + "完善个人信息，人证识别比对最终值为：" + match);
 
-                if (match >= Global.getDouble("idCard_credit_pass_rate")) {
+                if (match >= Global.getDouble("idCard_credit_pass_rate") || matchYoudun) {
                     int count = userBaseInfoService.updateById(info);
                     returnMap.put("idState", UserAuthModel.STATE_VERIFIED);
                     returnMap.put("idTime", DateUtil.getNow());
@@ -545,6 +593,12 @@ public class UserBaseInfoController extends BaseController {
     private void saveMultipartFile(List<UploadFileModel> list, MultipartFile file, String phone) {
         if (!file.isEmpty()) {
             UploadFileModel model = FileUtil.uploadImg(file, phone, "faceId");
+            list.add(model);
+        }
+    }
+    private void savePicFile(List<UploadFileModel> list, String picUrl, String phone) {
+        if (StringUtil.isNotEmpty(picUrl)) {
+            UploadFileModel model = FileUtil.uploadImg(picUrl, phone, "faceId");
             list.add(model);
         }
     }

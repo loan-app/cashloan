@@ -38,11 +38,12 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="marital" property="marital" jdbcType="VARCHAR" />
+        <result column="id_type" property="idType" jdbcType="VARCHAR" />
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,user_id,phone,real_name,age,sex,national,id_no,id_addr,living_img,ocr_img,front_img,back_img,education,company_name,company_phone,company_addr,company_detail_addr,company_coordinate,salary,working_years,working_img,live_time,live_addr,live_detail_addr,live_coordinate,phone_server_pwd,register_addr,register_coordinate,state,black_reason,update_time,create_time,marital 
+        id,user_id,phone,real_name,age,sex,national,id_no,id_addr,living_img,ocr_img,front_img,back_img,education,company_name,company_phone,company_addr,company_detail_addr,company_coordinate,salary,working_years,working_img,live_time,live_addr,live_detail_addr,live_coordinate,phone_server_pwd,register_addr,register_coordinate,state,black_reason,update_time,create_time,marital,id_type
     </sql>
      <!--用户的基本信息的sql查询字段 公共引用...-->
     <resultMap id="BaseInfoModelMap" extends="BaseResultMap"  type="com.xiji.cashloan.core.model.ManagerUserModel">
@@ -164,12 +165,15 @@
             <if test="marital !=null and marital !=''">
                 and marital = #{marital,jdbcType=VARCHAR}
             </if>
+            <if test="idType !=null and idType !=''">
+                and id_type = #{idType,jdbcType=VARCHAR}
+            </if>
         </trim>
     </sql>
     
     
     <insert id="save" parameterType="com.xiji.cashloan.core.domain.UserBaseInfo">
-        insert into cl_user_base_info(user_id,phone,real_name,age,sex,national,id_no,id_addr,living_img,ocr_img,front_img,back_img,education,company_name,company_phone,company_addr,company_detail_addr,company_coordinate,salary,working_years,working_img,live_time,live_addr,live_detail_addr,live_coordinate,phone_server_pwd,register_addr,register_coordinate,state,black_reason,update_time,create_time,marital)values(#{userId,jdbcType=INTEGER},#{phone,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{sex,jdbcType=VARCHAR},#{national,jdbcType=VARCHAR},#{idNo,jdbcType=VARCHAR},#{idAddr,jdbcType=VARCHAR},#{livingImg,jdbcType=VARCHAR},#{ocrImg,jdbcType=VARCHAR},#{frontImg,jdbcType=VARCHAR},#{backImg,jdbcType=VARCHAR},#{education,jdbcType=VARCHAR},#{companyName,jdbcType=VARCHAR},#{companyPhone,jdbcType=VARCHAR},#{companyAddr,jdbcType=VARCHAR},#{companyDetailAddr,jdbcType=VARCHAR},#{companyCoordinate,jdbcType=VARCHAR},#{salary,jdbcType=VARCHAR},#{workingYears,jdbcType=VARCHAR},#{workingImg,jdbcType=VARCHAR},#{liveTime,jdbcType=VARCHAR},#{liveAddr,jdbcType=VARCHAR},#{liveDetailAddr,jdbcType=VARCHAR},#{liveCoordinate,jdbcType=VARCHAR},#{phoneServerPwd,jdbcType=VARCHAR},#{registerAddr,jdbcType=VARCHAR},#{registerCoordinate,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{blackReason,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{marital,jdbcType=VARCHAR})
+        insert into cl_user_base_info(user_id,phone,real_name,age,sex,national,id_no,id_addr,living_img,ocr_img,front_img,back_img,education,company_name,company_phone,company_addr,company_detail_addr,company_coordinate,salary,working_years,working_img,live_time,live_addr,live_detail_addr,live_coordinate,phone_server_pwd,register_addr,register_coordinate,state,black_reason,update_time,create_time,marital,id_type)values(#{userId,jdbcType=INTEGER},#{phone,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{sex,jdbcType=VARCHAR},#{national,jdbcType=VARCHAR},#{idNo,jdbcType=VARCHAR},#{idAddr,jdbcType=VARCHAR},#{livingImg,jdbcType=VARCHAR},#{ocrImg,jdbcType=VARCHAR},#{frontImg,jdbcType=VARCHAR},#{backImg,jdbcType=VARCHAR},#{education,jdbcType=VARCHAR},#{companyName,jdbcType=VARCHAR},#{companyPhone,jdbcType=VARCHAR},#{companyAddr,jdbcType=VARCHAR},#{companyDetailAddr,jdbcType=VARCHAR},#{companyCoordinate,jdbcType=VARCHAR},#{salary,jdbcType=VARCHAR},#{workingYears,jdbcType=VARCHAR},#{workingImg,jdbcType=VARCHAR},#{liveTime,jdbcType=VARCHAR},#{liveAddr,jdbcType=VARCHAR},#{liveDetailAddr,jdbcType=VARCHAR},#{liveCoordinate,jdbcType=VARCHAR},#{phoneServerPwd,jdbcType=VARCHAR},#{registerAddr,jdbcType=VARCHAR},#{registerCoordinate,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{blackReason,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{marital,jdbcType=VARCHAR},#{idType,jdbcType=VARCHAR})
     </insert>
 
 
@@ -276,7 +280,10 @@
             <if test="marital !=null and marital !=''">
                 marital = #{marital,jdbcType=VARCHAR}
             </if>
-        </set>    
+            <if test="idType !=null and idType !=''">
+                id_type = #{idType,jdbcType=VARCHAR}
+            </if>
+        </set>
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -384,7 +391,10 @@
             <if test="marital !=null and marital !=''">
                 marital = #{marital,jdbcType=VARCHAR}
             </if>
-        </set>    
+            <if test="idType !=null and idType !=''">
+                id_type = #{idType,jdbcType=VARCHAR}
+            </if>
+        </set>
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
