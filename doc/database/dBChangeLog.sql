@@ -857,3 +857,10 @@ ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估
 
 -- 添加渠道统计放款数
  ALTER table cl_channel_statistic_data add `expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期放款数';
+
+-- 线上线下放还款金额
+alter table cl_load_statistic_data add `online_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '线上放款本金';
+alter table cl_load_statistic_data add `unline_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '线下放款本金';
+
+alter table cl_repayment_statistic_data add `online_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线上还款金额';
+alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线下还款金额';
