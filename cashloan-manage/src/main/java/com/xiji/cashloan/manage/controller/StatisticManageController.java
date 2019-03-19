@@ -314,4 +314,18 @@ public class StatisticManageController extends ManageBaseController {
 	}
 
 
+	/**
+	 *
+	 *
+	 *
+	 */
+	@RequestMapping(value = "/modules/manage/statistic/extendCompensate.htm",method={RequestMethod.GET,RequestMethod.POST})
+	public void extendCompensate(){
+
+
+
+		return;
+
+	}
+
 }

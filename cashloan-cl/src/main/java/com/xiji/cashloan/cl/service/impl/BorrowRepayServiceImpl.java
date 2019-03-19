@@ -387,6 +387,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
 		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
+		String type = br.getType();// 还款计划类型
 		int delayDays;
 		if(param.get("delayDays") != null) {
 			delayDays = NumberUtil.getInt(param.get("delayDays").toString());
@@ -431,6 +432,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		newBr.setPenaltyAmout(penaltyAmount);
 		newBr.setPenaltyDay(br.getPenaltyDay());
 		newBr.setCreateTime(DateUtil.getNow());
+		newBr.setType(type);
 		msg = borrowRepayMapper.saveReturnId(newBr);
 		if (msg <= 0) {
 			throw new BussinessException("插入展期还款计划出错" + newBr.getBorrowId());
