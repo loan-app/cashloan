@@ -166,8 +166,8 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param remark
 	 * @return 
 	 */
-	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack);
-	
+	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount);
+
 	/**
 	 * 借款部分还款信息
 	 * @param params

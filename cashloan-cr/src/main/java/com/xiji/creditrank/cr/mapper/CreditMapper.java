@@ -29,6 +29,13 @@ public interface CreditMapper extends BaseMapper<Credit,Long> {
 	 */
 	int updateAmount(Map<String, Object> map);
 
+    /**
+     * 更新总额度
+     * @param map
+     * @return
+     */
+	int updateTotal(Map<String, Object> map);
+
 	/**
 	 * 列表查询返回CreditModel
 	 * @param searchMap

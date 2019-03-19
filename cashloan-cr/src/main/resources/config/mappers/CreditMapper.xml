@@ -89,6 +89,22 @@
         where id = #{id ,jdbcType=INTEGER} and used + #{used,jdbcType=DECIMAL} >= 0 and unuse + #{unuse,jdbcType=DECIMAL} >= 0 and total >= unuse + #{unuse,jdbcType=DECIMAL}
     </update>
 
+    <update id="updateTotal" parameterType="java.util.HashMap">
+        update arc_credit
+        <set>
+            <if test="total != null and total != '' ">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="used != null and used != '' ">
+                used = #{used,jdbcType=DECIMAL},
+            </if>
+            <if test="unuse != null and unuse != '' or unuse == 0 ">
+                unuse = #{unuse,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where consumer_no= #{consumerNo,jdbcType=VARCHAR}
+    </update>
+
     <update id="updateSelective"  parameterType="java.util.HashMap">
         update arc_credit
           <set>

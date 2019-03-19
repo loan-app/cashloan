@@ -3,6 +3,8 @@ import {
   Table,
   Modal
 } from 'antd';
+import AddReviewPersonnel from './AddReviewPersonnel';
+import Reset from "../../../../SystemMng/UserMang/Components/Reset";
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -31,14 +33,17 @@ export default React.createClass({
   //新增跟编辑弹窗
   showModal(title, record, canEdit) {
     var record = record;
+    if (title == '新增') {
+          record = null
+    }
     this.setState({
       canEdit: canEdit,
       visible: true,
       title: title,
       record: record
-    }, () => {
+    }/*, () => {
       this.refs.CustomerWin.setFieldsValue(record);
-    });
+    }*/);
   },
   //新增
   addModal(title, record, canEdit) {
@@ -155,12 +160,20 @@ export default React.createClass({
     var state = this.state;
     return (
       <div className="block-panel">
+        <div className="actionBtns" style={{ marginBottom: 16 }}>
+            <button className="ant-btn" onClick={this.showModal.bind(this,'新增审核专员',null,true)}>
+                新增
+            </button>
+        </div>
         <Table columns={columns} rowKey={this.rowKey}
           onRowClick={this.onRowClick}
           dataSource={this.state.data}
           pagination={this.state.pagination}
           loading={this.state.loading}
           onChange={this.handleTableChange} />
+          <AddReviewPersonnel ref="AddReviewPersonnel"  visible={state.visible}    title={state.title} hideModal={me.hideModal} record={state.record}
+                      canEdit={state.canEdit}/>
+          <Reset ref="Reset"  visible={state.visible1}    title={state.title} hideModal={me.hideModal} record={state.record}/>
       </div>
     );
   }
