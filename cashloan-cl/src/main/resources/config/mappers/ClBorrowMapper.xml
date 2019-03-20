@@ -264,7 +264,7 @@
         from cl_borrow
         <include refid="searchBy"/>
     </select>
-    
+
     <update id="reviewState"  parameterType="java.util.HashMap">
         update cl_borrow
           <set>
@@ -272,7 +272,25 @@
                 state = #{state,jdbcType=VARCHAR},
             </if>
             <if test="remark != null and remark != '' ">        
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null and amount != '' ">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="realAmount != null and realAmount != '' ">
+                real_amount = #{realAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null and fee != '' ">
+                fee = #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee != null and serviceFee != '' ">
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="infoAuthFee != null and infoAuthFee != '' ">
+                info_auth_fee = #{infoAuthFee,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null and interest != '' ">
+                interest = #{interest,jdbcType=DECIMAL}
             </if>
         </set>    
         where id = #{id ,jdbcType=BIGINT} AND state = 22

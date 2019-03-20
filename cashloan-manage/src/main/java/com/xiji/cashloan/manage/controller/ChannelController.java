@@ -59,19 +59,24 @@ public class ChannelController extends ManageBaseController {
 			@RequestParam(value="linker") String linker,
 			@RequestParam(value="phone") String phone) throws Exception {
 		Channel channel=new Channel();
-		channel.setCode(code);
 		channel.setLinker(linker);
 		channel.setName(name);
 		channel.setPhone(phone);
-		boolean flag = channelService.save(channel);
-
+		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
-		if (flag) {
-			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-		} else {
+		if (null != code2) {
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+			result.put(Constant.RESPONSE_CODE_MSG, "渠道编码已存在，不能重复");
+		} else {
+			channel.setCode(code);
+			boolean flag = channelService.save(channel);
+			if (flag) {
+				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+				result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+			} else {
+				result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+			}
 		}
 		ServletUtils.writeToResponse(response, result);
 	}

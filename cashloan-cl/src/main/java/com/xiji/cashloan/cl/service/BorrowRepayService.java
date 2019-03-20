@@ -87,6 +87,13 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 */
 	int updateLate(BorrowRepay data);
 
+    /**
+     * 修改还款金额
+     * @param repayTotal
+     * @return
+     */
+	int updateRepayAmount(Long Id,Double repayTotal);
+
 	/**
 	 * 条件更新还款计划数据
 	 * @param br

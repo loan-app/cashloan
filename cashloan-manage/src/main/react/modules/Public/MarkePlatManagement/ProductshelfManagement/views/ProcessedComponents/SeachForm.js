@@ -32,10 +32,10 @@ export default React.createClass({
         var name = e.target.name;
         newValue[name] = e.target.value;
         this.setState({formData:newValue});
-    },   
-    selectChange(name,value) { 
+    },
+    selectChange(name,value) {
       var newValue = this.state.formData;
-       newValue[name] = value;
+      newValue[name] = value;
       this.setState({formData:newValue});
     },
     postMessage() {  

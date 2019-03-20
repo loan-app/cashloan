@@ -369,6 +369,35 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	}
 
 	/**
+	 * 修改还款金额
+	 * @param id
+	 * @param repayTotal
+	 * @return
+	 */
+	public int updateRepayAmount(Long id,Double repayTotal) {
+		int i = 0;
+        BorrowRepay rapay = borrowRepayMapper.findByPrimary(id);
+        if(repayTotal>=rapay.getPenaltyAmout()){
+            Map<String, Object> repayMap = new HashMap<String, Object>();
+            repayMap.put("id",id);
+            repayMap.put("repayAmount",repayTotal-rapay.getPenaltyAmout());
+            i = borrowRepayMapper.updateRepayAmount(repayMap);
+            if (i!=1){
+                throw new BussinessException("修改还款金额失败");
+            }
+        }else{
+            Map<String, Object> repayMap2 = new HashMap<String, Object>();
+            repayMap2.put("id",id);
+            repayMap2.put("repayAmount",repayTotal-repayTotal);
+            repayMap2.put("penaltyAmout",repayTotal);
+            i = borrowRepayMapper.updateRepayAmount(repayMap2);
+            if (i!=1){
+                throw new BussinessException("修改还款金额失败");
+            }
+        }
+		return i;
+	}
+	/**
 	 * 展期成功。
 	 * @param param
 	 * @return

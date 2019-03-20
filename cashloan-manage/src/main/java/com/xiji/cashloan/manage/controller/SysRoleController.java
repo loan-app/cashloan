@@ -152,20 +152,28 @@ public class SysRoleController extends BaseController {
 			role.setUpdateTime(new Date());
 			role.setUpdateUser(loginUser.getUserName());
 			role.setName(dataMap.get("name") != null ? String.valueOf(dataMap.get("name")) :"");
-			role.setNid(dataMap.get("nid") != null ? String.valueOf(dataMap.get("nid")) :"");
-			role.setRemark(dataMap.get("remark") != null ? String.valueOf(dataMap.get("remark")) :"");
-			int d=0;
-			if(StringUtil.isNotBlank(dataMap.get("isDelete"))){
-				d=(int) dataMap.get("isDelete");
-			}
-			role.setIsDelete((byte)d);
-			long n = sysRoleService.addRole(role);
-			if (n > 0) {
-				responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-				responseMap.put(Constant.RESPONSE_CODE_MSG, "保存成功");
-			} else {
+            role.setRemark(dataMap.get("remark") != null ? String.valueOf(dataMap.get("remark")) :"");
+			// 角色唯一标示验证
+			String nid = String.valueOf(dataMap.get("nid"));
+			SysRole nid2 = sysRoleService.getRoleByNid(nid);
+			if (null != nid2) {
 				responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-				responseMap.put(Constant.RESPONSE_CODE_MSG, "保存失败");
+				responseMap.put(Constant.RESPONSE_CODE_MSG, "角色唯一标示已存在，不能重复");
+			} else {
+				role.setNid(dataMap.get("nid") != null ? String.valueOf(dataMap.get("nid")) : "");
+				int d = 0;
+				if (StringUtil.isNotBlank(dataMap.get("isDelete"))) {
+					d = (int) dataMap.get("isDelete");
+				}
+				role.setIsDelete((byte) d);
+				long n = sysRoleService.addRole(role);
+				if (n > 0) {
+					responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					responseMap.put(Constant.RESPONSE_CODE_MSG, "保存成功");
+				} else {
+					responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					responseMap.put(Constant.RESPONSE_CODE_MSG, "保存失败");
+				}
 			}
 		} else if ("update".equals(status)) {
 			int total = sysRoleService.updateRole(dataMap);

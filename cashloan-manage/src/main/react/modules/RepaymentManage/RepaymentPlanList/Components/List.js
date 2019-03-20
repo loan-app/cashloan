@@ -1,6 +1,7 @@
 import React from 'react'
 import {Table} from 'antd';
 import Lookdetails from "./Lookdetails";
+import Updatedetails from "./Updatedetails";
 import AddWin from "./AddWin";
 import UserRemarkList from "../../../common/UserRemark/UserRemarkList";
 
@@ -24,6 +25,7 @@ export default React.createClass({
             visible: false,
             visible1: false,
             visible2: false,
+            visibleRepay:false,
             pictureData: [],
             creditReportData: [],
             rowRecord:[],
@@ -87,6 +89,17 @@ export default React.createClass({
             this.refs.Lookdetails.setFieldsValue(record);
         })
     },
+    //修改还款金额
+    updateModel(title,record, canEdit) {
+        this.setState({
+            visibleRepay: true,
+            canEdit: canEdit,
+            record: record,
+            title: title,
+        },()=>{
+            this.refs.Updatedetails.setFieldsValue(record);
+        })
+    },
     //新增
     addModal(title, record, canEdit){
         this.setState({
@@ -100,6 +113,7 @@ export default React.createClass({
             visible: false,
             visible1: false,
             visible2: false,
+            visibleRepay:false,
             selectedIndex: '',
             selectedRowKeys: [],
             visibleAdd:false,
@@ -286,6 +300,8 @@ export default React.createClass({
                 }else{
                     return(
                     <div style={{ textAlign: "left" }}>
+                        <a href="#" onClick={me.updateModel.bind(me, '修改还款金额',record, false)}>修改还款金额</a>
+                        <span className="ant-divider"></span>
                         <a href="#" onClick={me.showModal.bind(me, '确认还款',record, false)}>确认还款 </a>
                     </div>
                     )
@@ -312,6 +328,8 @@ export default React.createClass({
                        onChange={this.handleTableChange}
                 />
                 <Lookdetails ref="Lookdetails" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record}
+                canEdit={state.canEdit} />
+                <Updatedetails ref="Updatedetails" visible={state.visibleRepay} title={state.title} hideModal={me.hideModal} record={state.record}
                 canEdit={state.canEdit} />
                 <AddWin ref="AddWin"  visible={state.visibleAdd} hideModal={me.hideModal} title={state.title}/>
 

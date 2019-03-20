@@ -200,7 +200,7 @@
             <if test="orderNo !='' and orderNo !=null">
                 and b.order_no like  concat("%",#{orderNo,jdbcType=VARCHAR},"%")
             </if>
-             <if test="state != null and state != '' ">
+            <if test="state != null and state != '' ">
                 and r.state = #{state,jdbcType=VARCHAR}
             </if>
             <if test="startTime != null">
@@ -260,6 +260,19 @@
         <include refid="searchPayModelBy"/>
         ORDER BY r.repay_time DESC
     </select>
+
+    <update id="updateRepayAmount" parameterType="java.util.HashMap">
+        update cl_borrow_repay
+          <set>
+            <if test="repayAmount != null">
+                amount = #{repayAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="penaltyAmout != null">
+                penalty_amout = #{penaltyAmout,jdbcType=DECIMAL}
+            </if>
+          </set>
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
 
     <update id="updateLate" parameterType="com.xiji.cashloan.cl.domain.BorrowRepay">
         update cl_borrow_repay set

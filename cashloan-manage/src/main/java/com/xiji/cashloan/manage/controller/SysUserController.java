@@ -308,4 +308,144 @@ public class SysUserController extends BaseController {
 		responseMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
 		ServletUtils.writeToResponse(response, responseMap);
 	}
+
+	/**
+	 * 增加审核员
+	 * @param request
+	 * @param response
+	 * @param user
+	 * @param status
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/modules/manage/system/user/saveReview.htm")
+	@RequiresPermission(code = "modules:manage:system:user:save",name = "增加审核员")
+	public void saveReview(HttpServletRequest request, HttpServletResponse response,
+					 @RequestParam(value = "user", required = false) String user,
+					 @RequestParam(value = "status", required = false) String status) throws Exception{
+		Map<String, Object> responseMap = new HashMap<String, Object>();
+		Map<String, Object> userMap = JsonUtil.parse(user, Map.class);
+		// 获取当前登录用户信息
+		SysUser userinfo = this.getLoginUser(request);
+		if(null!=userinfo){
+			String loginUserName = userinfo.getName();
+			Date curDate = new Date();
+			if ("create".equalsIgnoreCase(status)) {// 新建
+				SysUser sysUser = new SysUser();
+				sysUser.setName(String.valueOf(userMap.get("name")));// 真实姓名
+				sysUser.setJobNumber(String.valueOf(userMap.get("jobNumber")));// 工编号
+				// 用户名验证
+				String userName = String.valueOf(userMap.get("userName"));
+				SysUser user2 = sysUserService.getUserByUserName(userName);
+				if (null != user2) {
+					responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					responseMap.put(Constant.RESPONSE_CODE_MSG, "用户名已存在，不能重复");
+				} else {
+					sysUser.setUserName(userName); // 登录名
+					Map<String, Object> temp = new HashMap<String, Object>();
+					temp.put("parentId", 0);
+					String email = String.valueOf(userMap.get("email"));
+					if (StringUtil.isMail(email)) {
+						sysUser.setEmail(email);
+					}
+					if(userMap.get("phone") != null){
+						sysUser.setPhone(String.valueOf(userMap.get("phone")));
+					}
+					if(userMap.get("remark") != null){
+						sysUser.setRemark(String.valueOf(userMap.get("remark")));
+					}
+					String mobile = String.valueOf(userMap.get("mobile"));
+					if (StringUtil.isPhone(mobile)) {
+						sysUser.setMobile(mobile);
+					}
+					sysUser.setAddTime(curDate);
+					sysUser.setAddUser(loginUserName);
+					sysUser.setUpdateTime(curDate);
+					sysUser.setUpdateUser(loginUserName);
+					sysUser.setPassword(passwordEncoder.encodePassword(SystemConstant.SYSTEM_PASSWORD_DEFAULT)); // 账号初始密码
+					sysUser.setStatus(SystemConstant.USER_STATUS_NORMAL); // 用户状态：正常
+					if (!StringUtil.isBlank((String)userMap.get("officeOver"))) {
+						sysUser.setOfficeOver(String.valueOf(userMap.get("officeOver")));
+					}
+					userMap.put("position", 0);
+					sysUserService.addUser(sysUser, "9");// 增加审核员
+					responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					responseMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				}
+			}
+		}else {
+			responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			responseMap.put(Constant.RESPONSE_CODE_MSG,"登录过期请重新登录");
+		}
+		ServletUtils.writeToResponse(response, responseMap);
+	}
+
+    /**
+     * 增加催收员
+     * @param request
+     * @param response
+     * @param user
+     * @param status
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/modules/manage/system/user/saveCollection.htm")
+    @RequiresPermission(code = "modules:manage:system:user:save",name = "增加审核员")
+    public void saveCollection(HttpServletRequest request, HttpServletResponse response,
+                           @RequestParam(value = "user", required = false) String user,
+                           @RequestParam(value = "status", required = false) String status) throws Exception{
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        Map<String, Object> userMap = JsonUtil.parse(user, Map.class);
+        // 获取当前登录用户信息
+        SysUser userinfo = this.getLoginUser(request);
+        if(null!=userinfo){
+            String loginUserName = userinfo.getName();
+            Date curDate = new Date();
+            if ("create".equalsIgnoreCase(status)) {// 新建
+                SysUser sysUser = new SysUser();
+                sysUser.setName(String.valueOf(userMap.get("name")));// 真实姓名
+                sysUser.setJobNumber(String.valueOf(userMap.get("jobNumber")));// 工编号
+                // 用户名验证
+                String userName = String.valueOf(userMap.get("userName"));
+                SysUser user2 = sysUserService.getUserByUserName(userName);
+                if (null != user2) {
+                    responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                    responseMap.put(Constant.RESPONSE_CODE_MSG, "用户名已存在，不能重复");
+                } else {
+                    sysUser.setUserName(userName); // 登录名
+                    Map<String, Object> temp = new HashMap<String, Object>();
+                    temp.put("parentId", 0);
+                    String email = String.valueOf(userMap.get("email"));
+                    if (StringUtil.isMail(email)) {
+                        sysUser.setEmail(email);
+                    }
+                    if(userMap.get("phone") != null){
+                        sysUser.setPhone(String.valueOf(userMap.get("phone")));
+                    }
+                    if(userMap.get("remark") != null){
+                        sysUser.setRemark(String.valueOf(userMap.get("remark")));
+                    }
+                    String mobile = String.valueOf(userMap.get("mobile"));
+                    if (StringUtil.isPhone(mobile)) {
+                        sysUser.setMobile(mobile);
+                    }
+                    sysUser.setAddTime(curDate);
+                    sysUser.setAddUser(loginUserName);
+                    sysUser.setUpdateTime(curDate);
+                    sysUser.setUpdateUser(loginUserName);
+                    sysUser.setPassword(passwordEncoder.encodePassword(SystemConstant.SYSTEM_PASSWORD_DEFAULT)); // 账号初始密码
+                    sysUser.setStatus(SystemConstant.USER_STATUS_NORMAL); // 用户状态：正常
+                    if (!StringUtil.isBlank((String)userMap.get("officeOver"))) {
+                        sysUser.setOfficeOver(String.valueOf(userMap.get("officeOver")));
+                    }
+                    userMap.put("position", 0);
+                    sysUserService.addUser(sysUser, "7");// 增加催收员
+                    responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+                    responseMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+                }
+            }
+        }else {
+            responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            responseMap.put(Constant.RESPONSE_CODE_MSG,"登录过期请重新登录");
+        }
+        ServletUtils.writeToResponse(response, responseMap);
+    }
 }
