@@ -174,7 +174,7 @@ public class QuartzRepayment implements Job {
 
 				RepaymentReqVo vo = new RepaymentReqVo();
 				if ("dev".equals(Global.getValue("app_environment"))) {
-					vo.setAmount(0.01);
+					vo.setAmount(0.2);
 				} else {
 					vo.setAmount(amount);
 				}

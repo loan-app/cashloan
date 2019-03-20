@@ -1048,7 +1048,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Date payReqTime = DateUtil.getNow();
 		RepaymentReqVo vo = new RepaymentReqVo();
 		if ("dev".equals(Global.getValue("app_environment"))) {
-			vo.setAmount(0.01);
+			vo.setAmount(0.2);
 		} else {
 			vo.setAmount(sourceAmount);
 		}
