@@ -1,5 +1,6 @@
 package com.xiji.cashloan.api.controller.assist;
 
+import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.PayLog;
@@ -8,6 +9,7 @@ import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.dto.RepaymentNotifyDto;
+import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayLogService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClSmsService;
@@ -40,6 +42,8 @@ public class RepaymentNotifyAssist {
     private BorrowRepayLogService borrowRepayLogService;
     @Resource
     private ClSmsService clSmsService;
+    @Resource
+    private BankCardService bankCardService;
 
     public String doScenesRepayment(RepaymentNotifyDto model,PayLog payLog)throws Exception {
         logger.info("分期付 (还款)- 异步通知：-支付状态是：" + model.getMessage());
@@ -209,6 +213,7 @@ public class RepaymentNotifyAssist {
                 repayMap.put("borrowId", payLog.getBorrowId());
                 repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
                 BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
+                BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
                 Date repayTime = null;
                 if (borrowRepay != null) {
                     Map<String, Object> param = new HashMap<String, Object>();
@@ -216,7 +221,7 @@ public class RepaymentNotifyAssist {
                     param.put("state", BorrowModel.STATE_DELAY_PAY);
                     param.put("amount", String.valueOf(payLog.getAmount()));
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-//                    param.put("repayAccount", bankCard.getCardNo());
+                    param.put("repayAccount", bankCard.getCardNo());
                     param.put("serialNumber", payLog.getOrderNo());
                     if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
                         param.put("delayDays", Global.getValue("delay_days"));
