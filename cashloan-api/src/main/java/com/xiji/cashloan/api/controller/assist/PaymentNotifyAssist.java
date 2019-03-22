@@ -11,6 +11,7 @@ import com.xiji.cashloan.cl.service.BorrowProgressService;
 import com.xiji.cashloan.cl.service.BorrowRepayLogService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.ClSmsService;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.ProfitAmountService;
 import com.xiji.cashloan.core.common.util.StringUtil;
@@ -48,7 +49,8 @@ public class PaymentNotifyAssist {
     private ProfitAmountService profitAmountService;
     @Resource
     private ContractService contractService;
-
+    @Resource
+    private ClSmsService clSmsService;
     /**
      * 代付，放款异步通知处理
      * @param model
@@ -90,7 +92,8 @@ public class PaymentNotifyAssist {
                 paramMap.put("payOrderNo",model.getPayPlatNo());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
-
+                //发送放款成功短信
+                clSmsService.loanInform(payLog.getUserId(), payLog.getBorrowId());
                 // 生成pdf合同文件
                 new Thread(new Runnable() {
                     @Override

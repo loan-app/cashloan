@@ -61,9 +61,6 @@ public class PayFuiouController extends BaseController{
 	@Autowired
 	private PaymentNotifyAssist paymentNotifyAssist;
 
-	@Resource
-	private ClSmsService clSmsService;
-
 	@RequestMapping(value = "/test.htm")
 	public void test(HttpServletRequest request) throws Exception {
 		contractService.buildPdf("37");

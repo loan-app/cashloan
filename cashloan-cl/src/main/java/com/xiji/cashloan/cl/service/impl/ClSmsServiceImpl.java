@@ -5,13 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.domain.Sms;
 import com.xiji.cashloan.cl.domain.SmsTpl;
 import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
 import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
 import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
@@ -75,8 +73,6 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
     private UrgeRepayOrderMapper urgeRepayOrderMapper;
     @Resource
     private UserBaseInfoMapper userBaseInfoMapper;
-    @Resource
-    private BankCardManage bankCardManage;
 	@Resource
     private CallsOutSideFeeMapper callsOutSideFeeMapper;
 	@Override

@@ -175,7 +175,7 @@ public class QuartzRepayment implements Job {
 
 				Date payReqTime = DateUtil.getNow();
 				double amount = BigDecimalUtil.add(borrowRepay.getAmount(), borrowRepay.getPenaltyAmout());  //计算实际还款金额
-//这里需要检查一下,还款计划状态不是未还款或者还款计划时间大于扣款时间,不处理
+				//这里需要检查一下,还款计划状态不是未还款或者还款计划时间大于扣款时间,不处理
                 BorrowRepay br = borrowRepayService.getById(borrowRepay.getId());
                 if(!BorrowRepayModel.STATE_REPAY_NO.equals(br.getState()) || compareDate.getTime() < br.getRepayTime().getTime()) {
                     continue;

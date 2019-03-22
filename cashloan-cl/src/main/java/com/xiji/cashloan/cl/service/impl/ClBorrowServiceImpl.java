@@ -15,7 +15,6 @@ import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.CreditConstant;
 import com.xiji.cashloan.cl.util.OcrConstant;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
