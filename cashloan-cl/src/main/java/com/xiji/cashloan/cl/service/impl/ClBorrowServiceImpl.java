@@ -1397,10 +1397,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				boolean flag  = judge(borrow.getId());
 				if(!flag){
 					logger.error("放款支付终止，存在待支付或者待审核状态或者支付成功的支付记录，借款id："+borrow.getId());
+					clBorrowMapper.updateState(BorrowModel.STATE_REPAY_FAIL ,borrow.getId());
 					return;
 				}
 				if(bankCard == null){
-					logger.error("放款支付终止，绑卡信息为空，请重新绑卡："+borrow.getId());
+					logger.error("放款支付终止，绑卡信息为空，请通知用户重新绑卡："+borrow.getId());
+					clBorrowMapper.updateState(BorrowModel.STATE_REPAY_FAIL ,borrow.getId());
 					return;
 				}
 				PaymentReqVo vo = new PaymentReqVo();
