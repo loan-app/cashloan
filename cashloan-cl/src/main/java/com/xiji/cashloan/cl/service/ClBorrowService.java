@@ -82,13 +82,13 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param timeLimit
 	 * @return
 	 */
-	Map<String, Object> choice(double amount, String timeLimit);
+	Map<String, Object> choice(double amount, String timeLimit, String userId);
 	
 	/**
 	 * 查询所有借款费用信息
 	 * @return
 	 */
-	List<Map<String,Object>> choices();
+	List<Map<String,Object>> choices(String userId);
 	
 	/**
 	 * 查询
@@ -101,7 +101,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * 查询最新10条借款信息
 	 * @return
 	 */
-	List<IndexModel> listIndex();
+	List<IndexModel> listIndex(String userId);
 
 	/**
 	 * 借款记录查看
@@ -166,8 +166,8 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param remark
 	 * @return 
 	 */
-	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack);
-	
+	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount);
+
 	/**
 	 * 借款部分还款信息
 	 * @param params
@@ -320,7 +320,11 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name);
 
 	/**
-	 *
+	 * 线下放款
+	 * @param borrowId
+	 * @param userId
+	 * @return
 	 */
+	int offlinePay(Long borrowId, Long userId);
 
 }

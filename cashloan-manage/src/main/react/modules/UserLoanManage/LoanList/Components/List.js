@@ -16,6 +16,10 @@ export default React.createClass({
                 pageSize: 10,
                 current: 1
             },
+            pagination1: {
+                pageSize: 5,
+                current: 1
+            },
             canEdit: true,
             visible: false,
             visible1: false,
@@ -310,6 +314,39 @@ export default React.createClass({
         })
     },
 
+    offline(title, record) {
+        var record = record;
+        var me = this;
+        confirm({
+            title: '是否确定线下放款',
+            onOk: function () {
+
+                Utils.ajaxData({
+                    url: '/modules/manage/borrow/offlinePay.htm',
+                    data: {
+                        borrowId: record.id
+                    },
+                    method: "post",
+                    callback: (result) => {
+                        if(result.code == 200){
+                            Modal.success({
+                                title: result.msg
+                            })
+                            me.refreshList();
+                        }else{
+                            Modal.error({
+                                title: result.msg
+                            })
+                        }
+
+
+                    }
+                });
+            },
+            onCancel: function(){}
+        })
+    },
+
     showUserRemark(title, record, canEdit) {
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',
@@ -320,12 +357,12 @@ export default React.createClass({
             },
             method: 'get',
             callback: (result) => {
-                const pagination = this.state.pagination;
-                pagination.current = result.current;
-                pagination.pageSize =result.pageSize;
-                pagination.total = result.page.total;
-                if (!pagination.current) {
-                    pagination.current = 1
+                const pagination1 = this.state.pagination1;
+                pagination1.current = result.current;
+                pagination1.pageSize =result.pageSize;
+                pagination1.total = result.page.total;
+                if (!pagination1.current) {
+                    pagination1.current = 1
                 };
                 //console.log(result.data.logs);
                 this.setState({
@@ -333,7 +370,7 @@ export default React.createClass({
                     canEdit: canEdit,
                     visibleRemark: true,
                     title: title,
-                    pagination:result.page,
+                    pagination1:result.page,
                     record:record
                 });
             }
@@ -365,6 +402,9 @@ export default React.createClass({
         }, {
             title: '订单号',
             dataIndex: 'orderNo'
+        }, {
+            title: '银行卡号',
+            dataIndex: 'cardNo'
         }, {
             title: '借款金额(元)',
             dataIndex: 'amount'
@@ -445,6 +485,25 @@ export default React.createClass({
                         );
                 }
             }
+        },{
+            title: '线下放款',
+            dataIndex: "",
+            render: (value, record) => {
+                switch(record.stateStr){
+                    case '待放款审核':
+                        return (
+                            <div style={{ textAlign: "left" }}>
+                                <a href="#" onClick={me.offline.bind(me, '线下放款', record, false)}>线下放款</a>
+                            </div>
+                        );
+                    default:
+                        return (
+                            <div style={{ textAlign: "left" }}>
+                                —
+                            </div>
+                        );
+                }
+            }
         }];
 
         var state = this.state;
@@ -461,7 +520,7 @@ export default React.createClass({
                     canEdit={state.canEdit} />
 
                 <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
-                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination}/>
+                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination1}/>
             </div>
         );
     }

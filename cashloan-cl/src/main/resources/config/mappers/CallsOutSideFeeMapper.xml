@@ -164,7 +164,6 @@
                 <if test="type != null">
                     and type = #{type,jdbcType=INTEGER}
                 </if>
-
                 <if test="castType != null">
                     and cast_type = #{castType,jdbcType = INTEGER}
                 </if>
@@ -176,5 +175,9 @@
                 </if>
             </trim>
         </where>
+    </select>
+    <select id="getBalance" resultType="decimal" parameterType="java.util.HashMap">
+        SELECT SUM(fee) as totalFee
+        FROM cl_calls_outside_fee
     </select>
 </mapper>

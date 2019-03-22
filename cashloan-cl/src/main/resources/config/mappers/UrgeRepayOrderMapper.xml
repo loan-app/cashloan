@@ -300,7 +300,7 @@
 				</if>
 			</if>
         </trim>
-        ORDER BY o.repay_time DESC
+        ORDER BY o.id DESC
     </select>
     
     <select id="listOrder" resultMap="BaseResultMap" parameterType="java.util.HashMap">

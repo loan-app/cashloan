@@ -73,15 +73,19 @@ public class QuartzRepayment implements Job {
 		PayLogService payLogService = (PayLogService) BeanUtil.getBean("payLogService");
 		ClSmsService clSmsService = (ClSmsService) BeanUtil.getBean("clSmsService");
 		int doRepaymentMax = Global.getInt("do_repayment_max");//代扣最大次数
-		
+		Date compareDate = null;
 		// 查询待还计划
 		Map<String, Object> paramMap = new HashMap<String, Object>();
+
 		String doRepaymentToday = Global.getValue("do_repayment_today"); // 是否代扣今天待还的
 		if("10".equals(doRepaymentToday)){ // 是
 			paramMap.put("repayTime", DateUtil.rollDay(DateUtil.getDayStartTime(DateUtil.getNow()), 1));
+			compareDate = DateUtil.rollDay(DateUtil.getDayStartTime(DateUtil.getNow()), 1);
 		} else { // 否
 			paramMap.put("repayTime", DateUtil.getNow());
+			compareDate = DateUtil.getNow();
 		}
+
 		paramMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		List<BorrowRepay> borrowRepayList = borrowRepayService.findUnRepay(paramMap);
 		logger.info("代扣还款任务，待处理的还款计划总数为：" + borrowRepayList.size());
@@ -171,6 +175,11 @@ public class QuartzRepayment implements Job {
 
 				Date payReqTime = DateUtil.getNow();
 				double amount = BigDecimalUtil.add(borrowRepay.getAmount(), borrowRepay.getPenaltyAmout());  //计算实际还款金额
+//这里需要检查一下,还款计划状态不是未还款或者还款计划时间大于扣款时间,不处理
+                BorrowRepay br = borrowRepayService.getById(borrowRepay.getId());
+                if(!BorrowRepayModel.STATE_REPAY_NO.equals(br.getState()) || compareDate.getTime() < br.getRepayTime().getTime()) {
+                    continue;
+                }
 
 				RepaymentReqVo vo = new RepaymentReqVo();
 				if ("dev".equals(Global.getValue("app_environment"))) {

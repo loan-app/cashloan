@@ -6,16 +6,42 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 let FromBox = React.createClass({
+    getInitialState() {
+        return {
+            formData:{
+                visibleAmount:true
+            },
+        };
+    },
+    // selectChange(name,value) {
+    //     console.log("111");
+    //     var newValue = this.state.formData;
+    //     console.log("111");
+    //     newValue[name] = value;
+    //     this.setState({
+    //         visibleRemark: true,
+    //         formData:newValue
+    //     });
+    // },
     getSValue(sData) {
         sData.value = (sData.value == '20') ? '人工审核通过' : '人工复审拒绝';
         return sData;
     },
-
     // getBlackValue(sblack) {
     //     sblack.value = sblack.value ? '黑名单用户' : '非黑名单用户';
     //     return sblack;
     // },
-
+    changeValue(e) {
+        var newValue = this.state.formData;
+        console.log("1111");
+        console.log(e);
+        var name = e.target.name;
+        newValue[name] = e.target.value;
+        this.setState({
+          formData:newValue,
+          visibleAmount:false
+        });
+     },
     render() {
         let { getFieldProps } = this.props.form;
         let props = this.props;
@@ -28,7 +54,8 @@ let FromBox = React.createClass({
                 span: 12
             },
         };
-        
+        var state = this.state;
+        var formData = this.state.formData;
         return (
            <Form horizontal form={this.props.form}>
                 <Input  {...getFieldProps('id', { initialValue: '' }) } type="hidden" />
@@ -36,7 +63,7 @@ let FromBox = React.createClass({
                     <Col span="24">
                     <FormItem  {...formItemLayout} label="审批意见:">
                         {props.title != "查看" ? (
-                        <Select  {...getFieldProps('state1', { initialValue: "27" }) } disabled={!props.canEdit}>
+                        <Select onChange={this.changeValue} {...getFieldProps('state1', { initialValue: "27" }) } disabled={!props.canEdit}>
                             <Option value="27">人工复审拒绝</Option>
                             <Option value="26">人工复审通过</Option>
                         </Select>) : (<Input type="text" disabled={!props.canEdit}  { ...this.getSValue(getFieldProps('state')) } />)}
@@ -50,15 +77,22 @@ let FromBox = React.createClass({
                     </FormItem>
                     </Col>
                 </Row>
-               <Row>
-                   <Col span="24">
-                       <FormItem  {...formItemLayout} label="是否加入黑名单:">
-                           {props.title != "查看" ? (
-                               <Checkbox {...getFieldProps('isBlack', { initialValue: false })} />
-                               ) : (<Checkbox disabled={!props.canEdit} { ...getFieldProps('isBlack2', { valuePropName: 'checked' }) } />)}
-                       </FormItem>
-                   </Col>
-               </Row>
+                <Row>
+                    <Col span="24">
+                    <FormItem  {...formItemLayout} label="借款金额:">
+                       <Input disabled={state.visibleAmount} type="text" {...getFieldProps('amount')  }/>
+                    </FormItem>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="24">
+                    <FormItem  {...formItemLayout} label="是否加入黑名单:">
+                        {props.title != "查看" ? (
+                           <Checkbox {...getFieldProps('isBlack', { initialValue: false })} />
+                           ) : (<Checkbox disabled={!props.canEdit} { ...getFieldProps('isBlack2', { valuePropName: 'checked' }) } />)}
+                    </FormItem>
+                    </Col>
+                </Row>
             </Form>
         )
     }

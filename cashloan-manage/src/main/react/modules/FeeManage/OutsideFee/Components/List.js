@@ -15,7 +15,8 @@ export default React.createClass({
       canEdit: true,
       visible: false,
       visibleAdd:false,
-        totalFee:null
+        totalFee:null,
+        balance_is:null
     };
   },
   componentWillReceiveProps(nextProps, nextState) {
@@ -89,8 +90,9 @@ export default React.createClass({
         };
         this.setState({
           loading: false,
+          balance_is:result.balance ? result.balance:'0.00',
           data: result.data,
-            totalFee:result.data[0] ? result.data[0].totalFee:'0.00',
+          totalFee:result.data[0] ? result.data[0].totalFee:'0.00',
           pagination
         });
       }
@@ -154,7 +156,9 @@ export default React.createClass({
           } else if (record.type == 11) {
               return "染黑统计"
           } else if (record.type == 12) {
-              return "行为雷达"
+              return "还款行为"
+          } else if (record.type == 13) {
+              return "借贷多头"
           } else {
               return "-"
           }
@@ -167,7 +171,8 @@ export default React.createClass({
     return (
       <div className="block-panel">
           <div className="actionBtns" style={{ marginBottom: 16 }}>
-              <span> 消费总金额：{this.state.totalFee}</span>
+              <span> 消费金额：{this.state.totalFee}</span>
+              <span> 余 额：{this.state.balance_is}</span>
               <dev></dev>
           </div>
 

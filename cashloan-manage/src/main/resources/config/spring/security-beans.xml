@@ -35,6 +35,7 @@
 		<http  pattern="/getByUserPassRolesList.htm"  security="none" />
 		<http  pattern="/modules/common/upload3.htm" security="none" />
 		<http  pattern="/web-service/*" security="none" />
+		<http  pattern="/modules/manage/borrow/doRechargeable.htm" security="none" />
        
 	<http  entry-point-ref="authenticationProcessingFilterEntryPoint" ><!-- entry-point-ref="jilujiaAuthenticationEntryPoint" -->
 		<!-- Spring security配置防用户重复登录 -->

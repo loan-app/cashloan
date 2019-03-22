@@ -65,6 +65,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private PinganGrayscaleMapper pinganGrayscaleMapper;
     @Resource
     private DecisionMapper decisionMapper;
+    @Resource
+    private YouDunRiskReportMapper youDunRiskReportMapper;
 
     @Override
     public BaseMapper<Decision, Long> getMapper() {
@@ -173,6 +175,12 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.put("borrowId", borrowId);
         PinganGrayscale pinganGrayscale = pinganGrayscaleMapper.findSelective(queryMap);
         setPinganGrayscale(pinganGrayscale, decision);
+
+        //处理有盾数据
+        queryMap.clear();
+        queryMap.put("borrowId", borrowId);
+        YouDunRiskReport youDunRiskReport = youDunRiskReportMapper.findSelective(queryMap);
+        setYoudunRisk(youDunRiskReport, decision);
 
         i = decisionMapper.saveSelective(decision);
         return i;
@@ -491,6 +499,36 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             decision.setPaAll25acfriDur(dataJson.getInteger("all25acfri_Dur"));
             decision.setPaAllwdacwkDur(dataJson.getInteger("allwdacwk_Dur"));
             decision.setPaAll25acTimes(dataJson.getInteger("all25ac_Times"));
+        }
+    }
+
+    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision) {
+        if(youDunRiskReport != null && youDunRiskReport.getData() != null) {
+            JSONObject dataJson = JSONObject.parseObject(youDunRiskReport.getData());
+            if (dataJson == null) {
+                return;
+            }
+            if(dataJson.getJSONObject("loan_detail") != null) {
+                JSONObject loanDetail = dataJson.getJSONObject("loan_detail");
+                decision.setYdActualLoanPlatformCount(loanDetail.getInteger("actual_loan_platform_count"));
+                decision.setYdActualLoanPlatformCount1m(loanDetail.getInteger("actual_loan_platform_count_1m"));
+                decision.setYdActualLoanPlatformCount3m(loanDetail.getInteger("actual_loan_platform_count_3m"));
+                decision.setYdActualLoanPlatformCount6m(loanDetail.getInteger("actual_loan_platform_count_6m"));
+                decision.setYdLoanPlatformCount(loanDetail.getInteger("loan_platform_count"));
+                decision.setYdLoanPlatformCount1m(loanDetail.getInteger("loan_platform_count_1m"));
+                decision.setYdLoanPlatformCount3m(loanDetail.getInteger("loan_platform_count_3m"));
+                decision.setYdLoanPlatformCount6m(loanDetail.getInteger("loan_platform_count_6m"));
+                decision.setYdRepaymentPlatformCount(loanDetail.getInteger("repayment_platform_count"));
+                decision.setYdRepaymentPlatformCount1m(loanDetail.getInteger("repayment_platform_count_1m"));
+                decision.setYdRepaymentPlatformCount3m(loanDetail.getInteger("repayment_platform_count_3m"));
+                decision.setYdRepaymentPlatformCount6m(loanDetail.getInteger("repayment_platform_count_6m"));
+                decision.setYdRepaymentTimesCount(loanDetail.getInteger("repayment_times_count"));
+            }
+            if(dataJson.getJSONObject("score_detail") != null) {
+                JSONObject scoreDetail = dataJson.getJSONObject("score_detail");
+                decision.setYdRiskEvaluation(scoreDetail.getString("risk_evaluation"));
+                decision.setYdScore(scoreDetail.getInteger("score"));
+            }
         }
     }
 

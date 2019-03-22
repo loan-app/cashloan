@@ -112,16 +112,16 @@ body.signup-body { background: #48cafb; padding: 0.2666666667rem 0.2666666667rem
 
 .signup form .centerDiv{ width: 6.8rem; margin: 0 auto; position: relative;}
 
-.signup form input { display: inline-block; width: 6.8rem; margin: 0 auto 0.2666666667rem; height: 1.0933333333rem; line-height: 1.0933333333rem; border-radius: 0.2rem; padding: 0 0.2666666667rem; font-size: 0.3466666667rem; border: none; }
+.signup form input { display: inline-block; width: 6.8rem; margin: 0 auto 0.3666666667rem; height: 0.933333333rem; line-height: 0.933333333rem; border-radius: 0.2rem; padding: 0 0.2666666667rem; font-size: 0.3166666667rem; border: none; }
 
 .clear { display: none; position: absolute; width: 0.4rem; height: 0.4rem; margin: 0.4rem 0 0 -0.5rem; border-radius:1rem; background: #ccc; color:#fff; text-align: center; line-height: 0.4rem}
 
-.signup form button { display: block; background: #48cafb; width: 6.8rem; border: none; color: #fff; font-size: 0.4533333333rem; line-height: 1.0933333333rem; height: 1.0933333333rem; margin: 0 auto; border-radius: 0.2rem; box-shadow: 3px 2px 8px #333333; -webkit-box-shadow: 4px 2px 8px #333333; -moz-box-shadow: 3px 2px 8px #333333; }
+.signup form button { display: block; background: #48cafb; width: 6.8rem; border: none; color: #fff; font-size: 0.4533333333rem; line-height: 0.933333333rem; height: 0.933333333rem; margin: 0 auto; border-radius: 0.2rem; box-shadow: 3px 2px 8px #333333; -webkit-box-shadow: 4px 2px 8px #333333; -moz-box-shadow: 3px 2px 8px #333333; }
 
-.signup .reg-btn { display: block; background: #ffd72b; width: 6.8rem; border: none; color: #d32a01; 
-	font-size: 0.4533333333rem; line-height: 1.0933333333rem; height: 1.0933333333rem; margin: 0 auto; border-radius: 0.2rem; box-shadow: 3px 2px 8px #333333; -webkit-box-shadow: 4px 2px 8px #333333; -moz-box-shadow: 3px 2px 8px #333333; text-align:center;}
+.signup .reg-btn { display: block; background: #faf4db; width: 6.8rem; border: none; color: #838182;
+	font-size: 0.4533333333rem; line-height: 0.933333333rem; height: 0.933333333rem; margin: 0 auto; border-radius: 0.2rem; box-shadow: 3px 2px 8px #333333; -webkit-box-shadow: 4px 2px 8px #333333; -moz-box-shadow: 3px 2px 8px #333333; text-align:center;}
 
-.signup form p.special { width: 6.8rem; margin: 0 auto 0.5333333333rem; }
+.signup form p.special { width: 6.8rem; margin: 0 auto 0.3333333333rem; }
 
 .signup form p.picVerify { width: 6.8rem; margin: 0 auto; }
 
@@ -129,9 +129,9 @@ body.signup-body { background: #48cafb; padding: 0.2666666667rem 0.2666666667rem
 
 .signup form p.picVerify input { width: 3.92rem; float: left; }
 
-.signup form p.special button { font-size: 0.3466666667rem; height: 1.0933333333rem; line-height: 1.0933333333rem; width: 2.64rem; float: right; }
+.signup form p.special button { font-size: 0.3466666667rem; height: 0.933333333rem; line-height: 0.933333333rem; width: 2.64rem; float: right; }
 
-.signup form p.picVerify img { height: 1.0933333333rem; line-height: 1.0933333333rem; width: 2.64rem; float: right; }
+.signup form p.picVerify img { height: 0.933333333rem; line-height: 0.933333333rem; width: 2.64rem; float: right; }
 
 .signup form p.other { width: 6.8rem; margin: 0.4rem auto 0; padding-bottom: 0.4rem; }
 
@@ -139,14 +139,14 @@ body.signup-body { background: #48cafb; padding: 0.2666666667rem 0.2666666667rem
 
 .signup form p.other input[type='checkbox']:checked + label i { display: block; }
 
-.signup form p.other label { display: block; float: left; color: #ff4f1f; padding-left: 0.5333333333rem; position: relative; }
+.signup form p.other label { display: block; float: left; color: #838182; padding-left: 0.5333333333rem; position: relative; }
 
 .signup form p.other label:before { content: ''; display: block; width: 0.3733333333rem; height: 0.3733333333rem; background: #d9dbdb; position: absolute; left: 0; top: 50%; margin-top: -0.1866666667rem; border-radius: 0.0666666667rem; }
 
 .signup form p.other label i { width: 0.3733333333rem; height: 0.3733333333rem; position: absolute; left: 0; top: 50%; margin-top: -0.1866666667rem; background-size: 0.3733333333rem 0.3733333333rem;
 	background: url(../images/yes.png) 0px 0px / 0.373333rem 0.373333rem no-repeat;}
 
-.signup form p.other a { display: block; float: right; text-decoration: none; color: #ff4f1f; }
+.signup form p.other a { display: block; float: right; text-decoration: none; color: #838182; }
 
 .signup p { text-align: center; color: #de8d01; font-size: 0.2933333333rem; margin-top: 1rem; }
 
@@ -260,7 +260,7 @@ body.signup-body { background: #48cafb; padding: 0.2666666667rem 0.2666666667rem
 
 .signup-7 .content, .signup-12 .content, .signup-16 .content, .signup-17 .content, .signup-18 .content, .signup-20 .content, .seven .content, .twelve .content, .sixteen .content, .seventeen .content, .eighteen .content, .twenty .content {background-size: 10rem 8.8533333333rem; }
 
-.signup-7 form button, .signup-12 form button, .signup-16 form button, .signup-17 form button, .signup-18 form button, .signup-20 form button, .seven form button, .twelve form button, .sixteen form button, .seventeen form button, .eighteen form button, .twenty form button { background: #ffd72b; color: #d32a01; }
+.signup-7 form button, .signup-12 form button, .signup-16 form button, .signup-17 form button, .signup-18 form button, .signup-20 form button, .seven form button, .twelve form button, .sixteen form button, .seventeen form button, .eighteen form button, .twenty form button { background: #faf4db; color: #838182; }
 
 .signup-7 form p.other label i, .signup-12 form p.other label i, .signup-16 form p.other label i, .signup-17 form p.other label i, .signup-18 form p.other label i, .signup-20 form p.other label i, .seven form p.other label i, .twelve form p.other label i, .sixteen form p.other label i, .seventeen form p.other label i, .eighteen form p.other label i, .twenty form p.other label i {background-size: 0.3733333333rem 0.3733333333rem; }
 

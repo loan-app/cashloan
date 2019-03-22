@@ -62,6 +62,7 @@ import java.util.Date;
         this.taskId = taskId;
         this.report = report;
         this.gmtCreate = DateUtil.getNow();
+        this.gmtModified = DateUtil.getNow();
     }
 
     /**

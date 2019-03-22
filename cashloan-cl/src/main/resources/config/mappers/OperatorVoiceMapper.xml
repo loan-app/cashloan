@@ -206,7 +206,7 @@
         PRIMARY KEY (`id`),
         INDEX `user_id` (`user_id`) USING BTREE,
         INDEX `mobile` (`mobile`) USING BTREE,
-        INDEX `req_log_id` (`req_log_id`) USING BTREE,
+        INDEX `req_log_id` (`req_log_id`) USING BTREE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商-通话记录信息';
     </select>
 

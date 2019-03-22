@@ -148,6 +148,25 @@ public class ManageBorrowRepayController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, resultMap.get("Msg"));
 		ServletUtils.writeToResponse(response, result);
 	}
+    /**
+     * 还款计划修改还款金额
+     * @param id
+     * @throws Exception
+     */
+	@RequestMapping(value = "modules/manage/borrow/repay/updateRepay.htm")
+	public void updateRepay(HttpServletResponse response,@RequestParam(value = "id")Long id,
+							@RequestParam(value = "repayTotal")Double repayTotal) throws Exception {
+        Map<String,Object> result = new HashMap<String,Object>();
+        int msg = borrowRepayService.updateRepayAmount(id,repayTotal);
+        if(msg==1){
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "修改还款金额成功");
+        }else{
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "修改还款金额失败");
+        }
+        ServletUtils.writeToResponse(response,result);
+	}
 
 	/**
 	 * 后台催收管理列表
@@ -298,9 +317,8 @@ public class ManageBorrowRepayController extends ManageBaseController {
 			param.put("repayTime",DateUtil.valueOf(repayTime, DateUtil.DATEFORMAT_STR_001));
 			param.put("repayWay", repayWay);
 			param.put("repayAccount", repayAccount);
-			param.put("amount", NumberUtil.getDouble(amount));
+			param.put("amount", amount);
 			param.put("serialNumber", serialNumber);
-			param.put("penaltyAmout", penaltyAmout);
 			param.put("delayDays", delayDays);
 			param.put("state", BorrowModel.STATE_DELAY_PAY);
 			BorrowRepay br = borrowRepayService.getById(id);

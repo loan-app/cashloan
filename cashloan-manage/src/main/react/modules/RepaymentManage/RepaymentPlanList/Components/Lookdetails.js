@@ -235,13 +235,6 @@ var Lookdetails = React.createClass({
                     </FormItem>
                   </Col>
                 </Row>
-                {this.state.startValue && DateFormat.formatDate(this.state.startValue).substring(0, 10) > this.props.record.repayTime.substring(0, 10) ? <Row>
-                  <Col span="24">
-                    <FormItem {...formItemLayout} label="逾期罚金:">
-                      <Input type="text" placeholder="请输入逾期罚金" {...getFieldProps('penaltyAmout1') } />
-                    </FormItem>
-                  </Col>
-                </Row> : ''}
               </div> :
             state.value == 1 ? "" :
             <div>

@@ -447,6 +447,11 @@ INSERT INTO `cl_rc_tpp` VALUES ('4', 'PA', 'pingan', '', '', '', '', '10', '2018
 INSERT INTO `cl_rc_tpp_business` VALUES ('7', '4', 'PA染黑统计', 'PinganGrayscaleStat', '10', '', '', null, '2018-12-26 00:00:00');
 INSERT INTO `cl_rc_scene_business` VALUES ('7', '10', '7', '10', 0, '10', '10', '2018-12-26 00:00:00');
 
+-- 有盾用户画像数据加入到借款策略中
+INSERT INTO `cl_rc_tpp` VALUES ('6', 'YD', 'youdun', '', '', '', '', '10', '2019-03-12 00:00:00');
+INSERT INTO `cl_rc_tpp_business` VALUES ('11', '6', 'YD用户画像', 'YouDunUserPortrait', '10', '', '', null, '2019-03-12 00:00:00');
+INSERT INTO `cl_rc_scene_business` VALUES ('11', '10', '11', '10', 0, '10', '10', '2019-03-12 00:00:00');
+
 -- 宜信欺诈甄别
 DROP TABLE IF EXISTS `cl_yixin_fraud`;
 CREATE TABLE `cl_yixin_fraud` (
@@ -462,7 +467,6 @@ CREATE TABLE `cl_yixin_fraud` (
 
 -- 通话详情统计表新增最后联系时间字段
 alter table `cl_operator_voice_cnt` add column `last_contact_time` datetime  default null comment '最后联系时间';
-alter table `cl_operator_voice_cnt_1` add column `last_contact_time` datetime  default null comment '最后联系时间';
 
 -- 魔蝎黑灰名单
 INSERT INTO `cl_rc_tpp_business` VALUES ('8', '1', '黑灰名单', 'MagicBlackGray', '10', '', '', null, '2019-01-03 00:00:00');
@@ -480,9 +484,9 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '认证更新周期', 'authenti
 
 INSERT INTO `cl_quartz_info` VALUES ('4', '运营商周期更新', 'doUpdateUserAuth', '0 0 0 * * ?', 'com.xiji.cashloan.manage.job.QuartzUserAuth', '0', '0', '20', '2017-03-27 14:53:27');
 
---最新版本号
+-- 最新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本号', 'last_version', '1.0.1', '1', '系统最新版本号', '1');
---强制更新版本号
+-- 强制更新版本号
 INSERT INTO `arc_sys_config` VALUES (null, '10', '强制更新版本号', 'mandatory_update_version', '1.0.0', '1', '系统强制更新版本号', '1');
 -- 最新版本下载地址 线上
 INSERT INTO `arc_sys_config` VALUES (null, '10', '最新版本下载地址', 'last_version_download_url', 'http://jy.xyhuigou.com/h5/invite.jsp', '1', '最新版本下载地址', '1');
@@ -571,3 +575,321 @@ ALTER TABLE `arc_rule_engine_config` change ccolumn `ccolumn` varchar(100) DEFAU
 ALTER TABLE `arc_rule_engine_config` change column_comment `column_comment` varchar(255) DEFAULT '' COMMENT '字段名称';
 ALTER TABLE `arc_borrow_rule_result` change col_nid `col_nid` varchar(100) NOT NULL DEFAULT '' COMMENT '列名英文名称';
 ALTER TABLE `arc_borrow_rule_result` change col_name `col_name` varchar(255) NOT NULL DEFAULT '' COMMENT '列名中文名称';
+
+
+-- 用户统计数据
+DROP TABLE IF EXISTS `cl_user_statistic_data`;
+CREATE TABLE `cl_user_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `user_register` int(11) NOT NULL COMMENT '当日注册数',
+  `auth_count` int(11) NOT NULL DEFAULT '0' COMMENT '实名认证人数',
+  `contact_count` int(11) NOT NULL DEFAULT '0' COMMENT '通讯录认证数',
+  `bank_count` int(11) NOT NULL DEFAULT '0' COMMENT '银行卡绑定数',
+  `phone_count` int(11) NOT NULL DEFAULT '0' COMMENT '手机运营商认证数',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日申请总数',
+  `new_borrow_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客借款',
+  `old_borrow_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日老客借款数',
+  `new_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客下款数',
+  `old_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日老客下款数',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日下款数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户统计数据';
+
+
+-- 渠道统计数据
+DROP TABLE IF EXISTS `cl_channel_statistic_data`;
+CREATE TABLE `cl_channel_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `channel_id` int(11) NOT NULL COMMENT '渠道ID',
+  `user_register` int(11) NOT NULL COMMENT '当日注册数',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日申请总数',
+  `machine_audit_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日机审通过数',
+  `machine_audit_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日机审拒绝数',
+  `review_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日人工通过数',
+  `review_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日人工拒绝数',
+  `first_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日首贷放款笔数',
+  `again_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日复贷放款笔数',
+  `expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期逾期笔数',
+  `first_expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期首逾笔数',
+  `machine_audit_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审通过率',
+  `machine_audit_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审拒绝率',
+  `review_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审通过率',
+  `review_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审拒绝率',
+  `first_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '首逾率',
+  `overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '逾期率',
+  `load_rate` decimal(10,2) DEFAULT '0.00' COMMENT '放款率',
+  `extend_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期展期数',
+  `extend_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期展期逾期数',
+  `first_extend_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期首贷展期数',
+  `first_extend_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期首贷展期逾期数',
+  `first_expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期首贷放款笔数',
+  `again_expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '今日到期复贷放款笔数',
+  `new_borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客申请量',
+  `new_machine_audit_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客机审通过数',
+  `new_machine_audit_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客机审拒绝数',
+  `new_review_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客人工通过数',
+  `new_review_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日新客人工拒绝数',
+  `again_expire_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期复贷逾期笔数',
+  `again_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '复贷逾期率',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道统计数据';
+
+
+-- 放款统计数据
+DROP TABLE IF EXISTS `cl_load_statistic_data`;
+CREATE TABLE `cl_load_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款笔数',
+  `load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '放款金额',
+  `load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '放款本金',
+  `first_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '首贷人数',
+  `first_load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '首贷金额',
+  `first_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '首贷本金',
+  `again_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '复贷人数',
+  `again_load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '复贷金额',
+  `again_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '复贷本金',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='放款统计数据';
+
+
+-- 审核统计数据
+DROP TABLE IF EXISTS `cl_auditing_statistic_data`;
+CREATE TABLE `cl_auditing_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '申请笔数',
+  `machine_audit_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '机审拒绝数',
+  `machine_audit_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日机审通过数',
+  `review_count` int(11) NOT NULL DEFAULT '0' COMMENT '人工审核笔数',
+  `review_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '人工审核通过笔数',
+  `review_not_pass_count` int(11) NOT NULL DEFAULT '0' COMMENT '人工审核拒绝笔数',
+  `machine_audit_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审通过率',
+  `machine_audit_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '机审拒绝率',
+  `review_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审通过率',
+  `review_not_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '人工复审拒绝率',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款笔数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核统计数据';
+
+
+-- 还款统计数据
+DROP TABLE IF EXISTS `cl_repayment_statistic_data`;
+CREATE TABLE `cl_repayment_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `should_order` int(11) NOT NULL DEFAULT '0' COMMENT '应还订单笔数',
+  `remain_order` int(11) NOT NULL DEFAULT '0' COMMENT '待还订单笔数',
+  `advance_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '提前还款笔数',
+  `normal_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '正常还款笔数',
+  `extend_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '展期还款笔数',
+  `overdue_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '逾期还款笔数',
+  `should_amount` decimal(10,2) DEFAULT '0.00' COMMENT '应还金额',
+  `real_return_amount` decimal(10,2) DEFAULT '0.00' COMMENT '实还金额',
+  `load_amount` decimal(10,2) DEFAULT '0.00' COMMENT '放款本金',
+  `derate_amount` decimal(10,2) DEFAULT '0.00' COMMENT '减免金额',
+  `remain_amount` decimal(10,2) DEFAULT '0.00' COMMENT '待还金额',
+  `today_real_return_amount` decimal(10,2) DEFAULT '0.00' COMMENT '今日实还金额',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='还款统计数据';
+
+
+-- 审核人员统计数据
+DROP TABLE IF EXISTS `cl_auditor_statistic_data`;
+CREATE TABLE `cl_auditor_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `auditor_id` int(11) NOT NULL COMMENT '审核人员ID',
+  `borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '申请笔数',
+  `pass_order` int(11) NOT NULL DEFAULT '0' COMMENT '人审通过总量',
+  `first_pass_rate` decimal(10,2) DEFAULT '0.00' COMMENT '新客通过率',
+  `current_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '总逾期率',
+  `first_overdue_rate` decimal(10,2) DEFAULT '0.00' COMMENT '首逾率',
+  `current_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '总逾期数',
+  `first_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '首贷放款数',
+  `first_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '首贷逾期数',
+  `load_count` int(11) NOT NULL DEFAULT '0' COMMENT '放款订单数',
+  `first_pass_order` int(11) NOT NULL DEFAULT '0' COMMENT '新客通过数',
+  `first_extend_overdue_count` int(11) NOT NULL DEFAULT '0' COMMENT '首贷展期逾期数',
+  `new_borrow_apply_count` int(11) NOT NULL DEFAULT '0' COMMENT '新客申请量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='审核人员统计数据';
+
+
+DROP TABLE IF EXISTS `cl_overdue_statistic_data`;
+CREATE TABLE `cl_overdue_statistic_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `count_time` datetime NOT NULL COMMENT '统计时间',
+  `new_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '新客未还量',
+  `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '复借未还量',
+  `extend_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '展期未还量',
+  `new_expire` int(11) NOT NULL DEFAULT '0' COMMENT '新客到期量',
+  `again_expire` int(11) NOT NULL DEFAULT '0' COMMENT '复借到期量',
+  `extend_expire` int(11) NOT NULL DEFAULT '0' COMMENT '展期到期量',
+  `new_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '新客已还款量',
+  `again_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '复借已还款量',
+  `extend_repayment` int(11) NOT NULL DEFAULT '0' COMMENT '展期已还款量',
+  `new_overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '新客逾期率',
+  `again_overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '复借逾期率',
+  `extend_overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '展期逾期率',
+  `overdue_rate` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '总逾期率',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='逾期统计数据';
+
+-- 添加统计报表菜单
+INSERT INTO `arc_sys_menu` VALUES ('1016', '0', '统计报表', '0', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '统计报表', '0', 'StatisticManage', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1017', '0', '用户统计', '1016', '', 'icon-qian', '00000000001', null, '', '2017-01-01 00:00:00', '', '用户统计', '0', 'UserStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1018', '0', '审核统计', '1016', '', 'icon-qian', '00000000002', null, '', '2017-01-01 00:00:00', '', '审核统计', '0', 'AuditingStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1019', '0', '审核人员逾期率统计', '1016', '', 'icon-qian', '00000000003', null, '', '2017-01-01 00:00:00', '', '审核人员逾期率统计', '0', 'AuditorOverdueStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1020', '0', '还款统计', '1016', '', 'icon-qian', '00000000004', null, '', '2017-01-01 00:00:00', '', '还款统计', '0', 'RepaymentStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1021', '0', '渠道统计', '1016', '', 'icon-qian', '00000000005', null, '', '2017-01-01 00:00:00', '', '渠道统计', '0', 'ChannelStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1022', '0', '放款统计', '1016', '', 'icon-qian', '00000000006', null, '', '2017-01-01 00:00:00', '', '放款统计', '0', 'LoadStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1023', '0', '逾期统计', '1016', '', 'icon-qian', '00000000007', null, '', '2017-01-01 00:00:00', '', '逾期统计', '0', 'OverdueStatistic', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1024', '0', '审核人员通过率统计', '1016', '', 'icon-qian', '00000000003', null, '', '2017-01-01 00:00:00', '', '审核人员通过率统计', '0', 'AuditorPassStatistic', null, null, null, null);
+
+-- INSERT INTO `arc_sys_role_menu` VALUES ('', '1', '1016');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1017');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1018');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1019');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1020');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1021');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1022');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1023');
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1024');
+
+
+
+-- 添加定时任务信息表
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertChannelStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzChannelStatistic', now(), '保存渠道统计数据', '0 10 2 1/1 * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertAuditorStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzAuditorStatistic', now(), '保存审核人员统计数据', '0 10 2 1/1 * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertRepaymentStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzRepaymentStatistic', now(), '保存还款统计数据统计', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertUserStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzUserStatistic', now(), '保存用户统计数据', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertLoadStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzLoadStatistic', now(), '保存放款统计数据', '0 0 3 * * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertAuditingStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzAuditingStatistic', now(), '保存审核统计数据', '0 0 3 * * ?');
+
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'insertOverdueStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzOverdueStatistic', now(), '保存逾期统计数据', '0 10 2 1/1 * ?');
+
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'updateLoanStatistic', '0', 'com.xiji.cashloan.manage.job.statistic.QuartzLoanCompensate', now(), '下款统计补偿', '0 0 12 1/1 * ?');
+
+
+
+
+
+
+-- 新增渠道后台角色
+INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
+
+-- 新增到期提醒短信模板
+INSERT INTO `cl_sms_tpl` VALUES ('7', 'repayBefore', '到期提醒', '{$name}先生/女士，{$appName}账单处理一下，避免联系亲朋好友，麻烦及时联系客服处理！', 'SMS0678041320', '10');
+
+-- 到期提醒定时任务
+INSERT INTO `cl_quartz_info` VALUES (null, '到期提醒', 'doRepayInform', '0 0 10 * * ?', 'com.xiji.cashloan.manage.job.QuartzRepayInform', '0', '0', '10', '2019-03-04 00:00:00');
+
+
+alter table cl_auditor_statistic_data add again_load_count int(11) NOT NULL DEFAULT '0' COMMENT '复贷放款数';
+alter table cl_auditor_statistic_data add `again_overdue` int(11) NOT NULL DEFAULT '0' COMMENT '到期复贷逾期数';
+
+-- 还款计划类型
+ALTER TABLE cl_borrow_repay add column `type` varchar(10)  default '1' COMMENT '还款计划类型 1-正常 2-展期';
+
+-- 初始化还款计划类型
+update `cl_borrow_repay` br,(select borrow_id from `cl_borrow_repay`  GROUP BY borrow_id HAVING(count(borrow_id)) > 1) temp
+set br.type = 2 where br.borrow_id = temp.borrow_id and (state = 10 or state = 20);
+
+-- 还款计划表添加借款订单金额属性
+alter table cl_borrow_repay add column `borrow_amount` decimal(12,2)  default '0.0' COMMENT '借款订单金额';
+-- 同步原数据借款订单金额
+update cl_borrow_repay cbr, (select br.borrow_id,b.amount from `cl_borrow_repay` br  LEFT JOIN `cl_borrow` b  on br.borrow_id = b.id) temp set cbr.borrow_amount = temp.amount
+where cbr.borrow_id = temp.borrow_id;
+
+-- 英趣思汀
+INSERT INTO `arc_sys_config` VALUES (null, 20, '身份识别sdk选择', 'orc_sdk_select', '2', 1, '身份识别选择：1-face++,2-有盾,2=1234(该值表示2-有盾，选择userId尾号含有1234的)', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '活体检查路由', 'k_ocr_checkface_router', 'face', 1, '路由默认是face,其他：rate-身份证末尾1使用face++，face，kface-新接入英趣思汀网络', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测key', 'k_ocr_base64key', 'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAoQbUJfG8h63o2klN3InuK1qUetS71O0YINFlHyZzzKmRBCgNyvuDt8ZuCjB9Zrexk+FNOeUg2dGV8XSCZKwLmwIDAQABAkEAg/C3ddvMMZQi/nEf9juiRi2zCa4ztbULlyBb7hkwuxlL+HYHln8EhgvBTGAWb596BQTmmDET1iVgDm+pWEfd2QIhANk6cX7/H4AkKr9GLlc5KMJNm7+/tJzoMTw6uETwfL1HAiEAvcRuUYY4azGhBAJmsoxSy/S0DSGYZlohMN+FYjSRmQ0CIH+257GVx2xsVyGb3nTzqy4JuO9Ug5jYvtG9aEdH6N7TAiEAgoeV9l+jeSBHB/H63/+jiAUGwC2GnYiLYgmtvtI4ABUCIQC1BoDi3sip+YcY3gw6+SbChaRNAcfZVoeJK60ZM5+xww==', 1, '英趣思汀活体检测key', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测渠道号', 'k_ocr_channelno', 'CH13IVR8S', 1, '英趣思汀活体检测渠道号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀活体检测url', 'k_ocr_checkface_url', 'http://rryqo.com/finance/v1/face/match?applyNo=', 1, '英趣思汀活体检测url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '英趣思汀身份证识别', 'k_ocr_check_idcard_url', 'http://rryqo.com/finance/v1/ocr/idCard?applyNo=', 1, '英趣思汀身份证识别', 1);
+
+
+-- 有盾用户画像
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾密钥', 'youdun_pub_key', 'f2ae8f6d-f6d7-4d50-9daa-ac253b1fb46d', 1, '有盾密钥', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾产品编码', 'youdun_product_code', 'Y1001005', 1, '有盾产品编码', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾安全密钥', 'youdun_secret_key', '250b6c96-b8e0-46b8-9878-8753766cfe83', 1, '有盾产品编码', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '有盾url请求地址', 'youdun_risk_url', 'https://api4.udcredit.com/dsp-front/4.1/dsp-front/default/pubkey/%s/product_code/%s/out_order_id/%s/signature/%s', 1, '有盾url请求地址', 1);
+
+-- 有盾请求记录
+DROP TABLE IF EXISTS `cl_youdun_req_log`;
+CREATE TABLE `cl_youdun_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '同步响应流水号',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `is_success` tinyint(1) DEFAULT NULL COMMENT '请求是否成功 0-失败 1-成功',
+  `resp_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `resp_msg` mediumtext COMMENT '同步响应结果',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT NULL COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT NULL COMMENT '类型 1-风险评估',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾请求记录';
+
+-- 有盾风险评估表
+DROP TABLE IF EXISTS `cl_youdun_risk_report`;
+CREATE TABLE `cl_youdun_risk_report` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `data` longtext COMMENT '返回内容',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='有盾风险评估表';
+
+-- 新增人脸认证类型
+ALTER TABLE cl_user_base_info add column `id_type` varchar(10)  default '20' COMMENT '人脸认证类型 10-FACE++ 20-有盾';
+update cl_user_base_info set id_type = '10';
+
+-- 决策数据表新增有盾字段
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月实际借款平台数' after pa_all25ac_times;
+ALTER TABLE cl_decision add column `yd_repayment_times_count` int(11)  default 0 COMMENT '还款次数' after yd_actual_loan_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_6m` int(11)  default 0 COMMENT '近6月实际借款平台数' after yd_repayment_times_count;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count_3m` int(11)  default 0 COMMENT '近3月实际借款平台数' after yd_actual_loan_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_actual_loan_platform_count` int(11)  default 0 COMMENT '实际借款平台数' after yd_actual_loan_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_3m` int(11)  default 0 COMMENT '近3月申请平台数' after yd_actual_loan_platform_count;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_1m` int(11)  default 0 COMMENT '近1月申请平台数' after yd_loan_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count_6m` int(11)  default 0 COMMENT '近6月申请平台数' after yd_loan_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_6m` int(11)  default 0 COMMENT '近6月还款平台数' after yd_loan_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_1m` int(11)  default 0 COMMENT '近1月还款平台数' after yd_repayment_platform_count_6m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count_3m` int(11)  default 0 COMMENT '近3月还款平台数' after yd_repayment_platform_count_1m;
+ALTER TABLE cl_decision add column `yd_repayment_platform_count` int(11)  default 0 COMMENT '还款平台总数' after yd_repayment_platform_count_3m;
+ALTER TABLE cl_decision add column `yd_loan_platform_count` int(11)  default 0 COMMENT '申请借款平台总数' after yd_repayment_platform_count;
+ALTER TABLE cl_decision add column `yd_risk_evaluation` varchar(100)  default '' COMMENT '风险等级' after yd_loan_platform_count;
+ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估模型得分，分数越高风险越高，0标识缺乏足够信息判断' after yd_risk_evaluation;
+
+-- 添加渠道统计放款数
+ ALTER table cl_channel_statistic_data add `expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期放款数';
+
+-- 线上线下放还款金额
+alter table cl_load_statistic_data add `online_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '线上放款本金';
+alter table cl_load_statistic_data add `unline_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '线下放款本金';
+
+alter table cl_repayment_statistic_data add `online_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线上还款金额';
+alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线下还款金额';

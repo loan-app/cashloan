@@ -576,7 +576,7 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '平台收款账户信息-银�
 INSERT INTO `arc_sys_config` VALUES (null, '20', '平台收款账户信息-支付宝账号', 'repay_collection_info_alipay_account', '', '1', '用于还款登记', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '记为坏账天数', 'bad_debt_day', '60', '1', '逾期多少天自动标记为坏账', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '代扣最大次数', 'do_repayment_max', '20', '1', '单笔还款计划代扣最大次数', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '20', '是否代扣今天的待还', 'do_repayment_today', '20', '1', '10代扣，20不代扣', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '是否代扣今天的待还', 'do_repayment_today', '10', '1', '10代扣，20不代扣', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '一级代理分润率', 'level_one', '20.00', '1', null, '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '普通用户分润率', 'level_three', '5.00', '1', null, '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '奖金发放下限', 'amount_grant_min', '100', '1', '达到一定额度才给予发放奖金', '1');
@@ -1570,8 +1570,8 @@ CREATE TABLE `cl_quartz_info` (
 -- ----------------------------
 -- Records of cl_quartz_info
 -- ----------------------------
-INSERT INTO `cl_quartz_info` VALUES ('1', '代扣还款', 'doRepayment', '0 0 1,20 * * ?', 'com.xiji.cashloan.manage.job.QuartzRepayment', '12', '2', '10', '2017-03-21 18:50:45');
-INSERT INTO `cl_quartz_info` VALUES ('2', '逾期计算', 'doLate', '0 0 2 * * ?', 'com.xiji.cashloan.manage.job.QuartzLate', '2007', '0', '10', '2017-03-15 16:22:04');
+INSERT INTO `cl_quartz_info` VALUES ('1', '代扣还款', 'doRepayment', '0 0 18 * * ?', 'com.xiji.cashloan.manage.job.QuartzRepayment', '0', '0', '10', '2017-03-21 18:50:45');
+INSERT INTO `cl_quartz_info` VALUES ('2', '逾期计算', 'doLate', '0 0 2 * * ?', 'com.xiji.cashloan.manage.job.QuartzLate', '0', '0', '10', '2017-03-15 16:22:04');
 INSERT INTO `cl_quartz_info` VALUES ('3', '发放奖励', 'doProfit', '0 0 3 10 * ?', 'com.xiji.cashloan.manage.job.QuartzProfit', '0', '0', '20', '2017-03-27 14:53:27');
 
 -- ----------------------------

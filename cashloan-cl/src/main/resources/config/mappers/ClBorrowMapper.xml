@@ -25,6 +25,7 @@
         <result column="ip" property="ip" jdbcType="VARCHAR" />
         <result column="sign_service_id" property="signServiceId" jdbcType="VARCHAR" />
         <result column="is_overdue" property="isOverdue" jdbcType="VARCHAR"/>
+        <result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="YixinShareModelMap" type="com.xiji.cashloan.cl.model.YixinShareModel">
@@ -263,7 +264,7 @@
         from cl_borrow
         <include refid="searchBy"/>
     </select>
-    
+
     <update id="reviewState"  parameterType="java.util.HashMap">
         update cl_borrow
           <set>
@@ -271,7 +272,25 @@
                 state = #{state,jdbcType=VARCHAR},
             </if>
             <if test="remark != null and remark != '' ">        
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null and amount != '' ">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="realAmount != null and realAmount != '' ">
+                real_amount = #{realAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null and fee != '' ">
+                fee = #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee != null and serviceFee != '' ">
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="infoAuthFee != null and infoAuthFee != '' ">
+                info_auth_fee = #{infoAuthFee,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null and interest != '' ">
+                interest = #{interest,jdbcType=DECIMAL}
             </if>
         </set>    
         where id = #{id ,jdbcType=BIGINT} AND state = 22
@@ -361,12 +380,21 @@
             <if test="remark != null and remark != ''">        
             	and b.remark like concat("%",#{remark,jdbcType=VARCHAR},"%")  
             </if>
+            <if test="createTime != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') = #{createTime,jdbcType=TIMESTAMP}
+            </if>
             <if test="startTime != null">
                 and DATE_FORMAT(b.create_time,'%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime  != null">
                 and DATE_FORMAT(b.create_time,'%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="channelID != null and channelID != ''">
+                and r.channel_id = #{channelID,jdbcType=BIGINT}
+            </if>
+            <if test="again != null and again != ''">
+            and b.again = #{again,jdbcType=BIGINT}
+        </if>
         </trim>
     </sql>
     
@@ -375,6 +403,8 @@
          <result column="phone" property="phone" jdbcType="VARCHAR" />
          <result column="repay_amount" property="repayAmount" jdbcType="DECIMAL" />
          <result column="repay_time" property="repayTime" jdbcType="VARCHAR" />
+         <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+         <result column="repay_way" property="repayWay" jdbcType="VARCHAR" />
     </resultMap>
     
     <select id="listReview" resultMap="userBorrowMap" parameterType="java.util.HashMap">
@@ -408,7 +438,7 @@
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,
 			b.time_limit,b.state,b.card_id,b.service_fee,b.info_auth_fee,b.interest,b.client,b.remark
-		from cl_borrow b 
+		from cl_borrow b
 		inner join cl_user_base_info u on u.user_id=b.user_id
 		<include refid="searchModelBy" />
 		ORDER BY b.id DESC
@@ -417,7 +447,8 @@
 	<select id="listBorrowModel" resultMap="userBorrowMap"	parameterType="java.util.HashMap">
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,b.time_limit,b.state,b.remark,
-			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue
+			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue,card.card_no,
+            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name,l.repay_way
 		from cl_borrow b 
 		left join cl_user_base_info u on u.user_id=b.user_id 
 		left join
@@ -430,6 +461,8 @@
             </otherwise>
         </choose>
         on l.borrow_id=b.id
+        left join cl_user r on r.id=b.user_id
+        left join cl_bank_card card on u.user_id = card.user_id
 		<include refid="searchModelBy" />
 		ORDER BY b.create_time DESC
 	</select>

@@ -1,6 +1,7 @@
 import React from 'react'
 import {Table} from 'antd';
 import Lookdetails from "./Lookdetails";
+import Updatedetails from "./Updatedetails";
 import AddWin from "./AddWin";
 import UserRemarkList from "../../../common/UserRemark/UserRemarkList";
 
@@ -16,10 +17,15 @@ export default React.createClass({
                 pageSize: 10,
                 current: 1
             },
+            pagination1: {
+                pageSize: 5,
+                current: 1
+            },
             canEdit: true,
             visible: false,
             visible1: false,
             visible2: false,
+            visibleRepay:false,
             pictureData: [],
             creditReportData: [],
             rowRecord:[],
@@ -83,6 +89,17 @@ export default React.createClass({
             this.refs.Lookdetails.setFieldsValue(record);
         })
     },
+    //修改还款金额
+    updateModel(title,record, canEdit) {
+        this.setState({
+            visibleRepay: true,
+            canEdit: canEdit,
+            record: record,
+            title: title,
+        },()=>{
+            this.refs.Updatedetails.setFieldsValue(record);
+        })
+    },
     //新增
     addModal(title, record, canEdit){
         this.setState({
@@ -96,6 +113,7 @@ export default React.createClass({
             visible: false,
             visible1: false,
             visible2: false,
+            visibleRepay:false,
             selectedIndex: '',
             selectedRowKeys: [],
             visibleAdd:false,
@@ -182,12 +200,12 @@ export default React.createClass({
             },
             method: 'get',
             callback: (result) => {
-                const pagination = this.state.pagination;
-                pagination.current = result.current;
-                pagination.pageSize =result.pageSize;
-                pagination.total = result.page.total;
-                if (!pagination.current) {
-                    pagination.current = 1
+                const pagination1 = this.state.pagination1;
+                pagination1.current = result.current;
+                pagination1.pageSize =result.pageSize;
+                pagination1.total = result.page.total;
+                if (!pagination1.current) {
+                    pagination1.current = 1
                 };
                 //console.log(result.data.logs);
                 this.setState({
@@ -195,7 +213,7 @@ export default React.createClass({
                     canEdit: canEdit,
                     visibleRemark: true,
                     title: title,
-                    pagination:result.page,
+                    pagination1:result.page,
                     record:record
                 });
             }
@@ -271,7 +289,6 @@ export default React.createClass({
         },{
             title: '备注',
             render(text, record) {
-                console.log('record == >'+record.userId)
                 return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.userId, true)}>备注</a></div>
             }
         },{
@@ -283,6 +300,8 @@ export default React.createClass({
                 }else{
                     return(
                     <div style={{ textAlign: "left" }}>
+                        <a href="#" onClick={me.updateModel.bind(me, '修改还款金额',record, false)}>修改还款金额</a>
+                        <span className="ant-divider"></span>
                         <a href="#" onClick={me.showModal.bind(me, '确认还款',record, false)}>确认还款 </a>
                     </div>
                     )
@@ -310,11 +329,13 @@ export default React.createClass({
                 />
                 <Lookdetails ref="Lookdetails" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record}
                 canEdit={state.canEdit} />
+                <Updatedetails ref="Updatedetails" visible={state.visibleRepay} title={state.title} hideModal={me.hideModal} record={state.record}
+                canEdit={state.canEdit} />
                 <AddWin ref="AddWin"  visible={state.visibleAdd} hideModal={me.hideModal} title={state.title}/>
 
 
                 <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
-                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination}/>
+                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination1}/>
 
             </div>
         );

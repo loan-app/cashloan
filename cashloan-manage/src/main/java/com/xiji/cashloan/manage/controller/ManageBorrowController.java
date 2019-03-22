@@ -357,7 +357,8 @@ public class ManageBorrowController extends ManageBaseController {
 	public void verifyBorrow(HttpServletRequest request, @RequestParam(value = "borrowId") Long borrowId,
 							 @RequestParam(value = "state") String state,
 							 @RequestParam(value = "remark") String remark,
-							 @RequestParam(value = "isBlack")Boolean isBlack) throws Exception {
+							 @RequestParam(value = "isBlack")Boolean isBlack,
+                             @RequestParam(value = "amount")Double amount) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>();
 		SysUser curUser = null;
 		Object obj = request.getSession().getAttribute("SysUser");
@@ -365,7 +366,7 @@ public class ManageBorrowController extends ManageBaseController {
 			curUser = (SysUser) obj;
 		}
 		try{
-		    int msg =clBorrowService.manualVerifyBorrow(borrowId, state, remark, curUser.getId(),isBlack);
+		    int msg =clBorrowService.manualVerifyBorrow(borrowId, state, remark, curUser.getId(),isBlack,amount);
 			if(msg==1){
 				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "复审成功");
@@ -442,5 +443,32 @@ public class ManageBorrowController extends ManageBaseController {
 		}
 		ServletUtils.writeToResponse(response,result);
 	}
-	
+
+	/**
+	 * 线下放款
+	 * @param borrowId
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/modules/manage/borrow/offlinePay.htm")
+	public void offlinePay(@RequestParam(value = "borrowId") Long borrowId) throws Exception {
+
+		Map<String,Object> result = new HashMap<String,Object>();
+		try{
+			SysUser loginUser = getLoginUser(request);
+			Long userId=loginUser.getId();
+			int msg =clBorrowService.offlinePay(borrowId, userId);
+			if(msg == 1){
+				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+				result.put(Constant.RESPONSE_CODE_MSG, "操作完成");
+			} else {
+				result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				result.put(Constant.RESPONSE_CODE_MSG, "操作失败");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, e.getMessage());
+		}
+		ServletUtils.writeToResponse(response,result);
+	}
 }

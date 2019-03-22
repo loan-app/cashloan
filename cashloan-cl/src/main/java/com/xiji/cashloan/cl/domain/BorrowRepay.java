@@ -64,6 +64,16 @@ import java.util.Date;
      private Date createTime;
 
 	/**
+	 * 还款计划类型 1-正常 2-展期
+	 */
+	private String type;
+
+    /**
+     * 借款订单金额
+     */
+	private Double borrowAmount;
+
+	/**
 	 * 获取主键Id
 	 *
 	 * @return id
@@ -227,5 +237,20 @@ import java.util.Date;
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-    
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+    public Double getBorrowAmount() {
+        return borrowAmount;
+    }
+
+    public void setBorrowAmount(Double borrowAmount) {
+        this.borrowAmount = borrowAmount;
+    }
 }

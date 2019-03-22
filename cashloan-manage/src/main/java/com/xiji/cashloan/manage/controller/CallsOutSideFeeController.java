@@ -4,11 +4,13 @@ import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
-import com.xiji.cashloan.core.model.CloanUserModel;
+import com.xiji.cashloan.system.domain.SysRole;
+import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,26 +55,51 @@ public class CallsOutSideFeeController extends BaseController {
                      @RequestParam(value = "pageSize") int pageSize){
         Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
         Page<CallsOutSideFee> page = callsOutSideFeeService.listCallsOutSideFee(params,currentPage,pageSize);
+        //获取余额
+        BigDecimal balance = callsOutSideFeeService.getBalance(params);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put(Constant.RESPONSE_DATA, page);
+        result.put(Constant.RESPONSE_DATA_BALANCE,balance);
         result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
         ServletUtils.writeToResponse(response,result);
     }
 
-//    /**
-//     * 总消费金额
-//     */
-//    @SuppressWarnings("unchecked")
-//    @RequestMapping(value="/modules/manage/calls/outside/getTotalFee.htm",method={RequestMethod.GET,RequestMethod.POST})
-//    @RequiresPermission(code = "modules:manage:calls:outside:fee:getTotalFee",name = "总消费金额")
-//    public void getTotalFee(){
-//        BigDecimal totalFee = callsOutSideFeeService.getTotalFee(0);
-//        Map<String,Object> result = new HashMap<String,Object>();
-//        result.put(Constant.RESPONSE_DATA, totalFee);
-//        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-//        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
-//        ServletUtils.writeToResponse(response,result);
-//    }
+    /**
+     * 总消费金额
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value="/modules/manage/calls/outside/getTotalFee.htm",method={RequestMethod.GET,RequestMethod.POST})
+    @RequiresPermission(code = "modules:manage:calls:outside:fee:getTotalFee",name = "总消费金额")
+    public void getTotalFee(HttpServletRequest request){
+
+        SysUser user =  getLoginUser(request);
+        List<SysRole> sysRoles = null;
+        try {
+            sysRoles = roleService.getRoleListByUserId((long)user.getId());
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+//      String role = Global.getValue("sysRoles");
+
+        boolean flag = false;
+        for (SysRole sysRole : sysRoles){
+            if ("system".equals(sysRole.getNid())){
+                flag = true;
+            }
+        }
+
+        BigDecimal totalFee = callsOutSideFeeService.getTotalFee(null);
+        Map<String,Object> result = new HashMap<String,Object>();
+        if (flag){
+            result.put(Constant.RESPONSE_DATA, totalFee);
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        } else {
+            result.put(Constant.RESPONSE_DATA, null);
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        }
+        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+        ServletUtils.writeToResponse(response,result);
+    }
 }

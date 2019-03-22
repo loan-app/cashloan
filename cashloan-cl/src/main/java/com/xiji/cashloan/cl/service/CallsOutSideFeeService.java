@@ -35,4 +35,18 @@ public interface CallsOutSideFeeService extends BaseService<CallsOutSideFee, Lon
      * @return
      */
     BigDecimal getTotalFee(Map<String, Object> params);
+
+    /**
+     * 获取余额
+     * @param params
+     * @return
+     */
+    BigDecimal getBalance(Map<String, Object> params);
+
+    /**
+     * 保存
+     * @param callsOutSideFee
+     * @return
+     */
+   int save(CallsOutSideFee callsOutSideFee);
 }

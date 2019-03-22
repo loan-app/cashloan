@@ -13,6 +13,9 @@ import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
+import com.xiji.cashloan.cl.util.CreditConstant;
+import com.xiji.cashloan.cl.util.OcrConstant;
+import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
@@ -46,6 +49,7 @@ import com.xiji.cashloan.rule.model.srule.model.SimpleRule;
 import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -168,6 +172,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private BorrowOperatorLogService borrowOperatorLogService;
 	@Resource
 	private DecisionService decisionService;
+	@Resource
+	private UserRemarkService userRemarkService;
+	@Resource
+	private YouDunRiskService youDunRiskService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -301,7 +309,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 
 	@Override
-	public List<IndexModel> listIndex() {
+	public List<IndexModel> listIndex(String userId) {
 		List<IndexModel> list = clBorrowMapper.listIndex();
 		List indexList = new ArrayList<>();
 		for (int i = 0; i < list.size(); i++) {
@@ -317,9 +325,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				time = DateUtil.minuteBetween(list.get(i).getCreateTime(), list
 						.get(i).getLoanTime());
 			}
-			
-			String value = "尾号" + cardNo + " " + "成功借款" + (int) (money)
-					+ "元 用时" + time + "分钟";
+			String value;
+			if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
+				value = "尾号" + cardNo + " " + "成功借款" + 8000
+						+ "元 用时" + time + "分钟";
+			} else {
+				value = "尾号" + cardNo + " " + "成功借款" + (int) (money)
+						+ "元 用时" + time + "分钟";
+			}
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", i);
 			map.put("value", value);
@@ -331,7 +344,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public Map<String, Object> findIndex(String userId) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+
 		Boolean isBorrow = false;
 		int count;
 		User user = null;
@@ -343,39 +356,64 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				credit = creditMapper.findByConsumerNo(userId);
 			}
 		}
-		
+
 		double loanCeiling = Global.getDouble("loan_ceiling");   //放款上限
-	    double repayTotal = borrowRepayMapper.findRepayTotal(); //当前放款量
-	    // double repayTotal = clBorrowMapper.borrowAmountSum(); 此方法会对DB产生很大的压力，弃用
+		double repayTotal = borrowRepayMapper.findRepayTotal(); //当前放款量
+		// double repayTotal = clBorrowMapper.borrowAmountSum(); 此方法会对DB产生很大的压力，弃用
 		// 计算剩余放款额度
 		if (loanCeiling <= 0 || loanCeiling <= repayTotal) {
 			loanCeiling = 0;
 		} else {
 			loanCeiling -= repayTotal;
-	    }
-		
-		String fee = Global.getValue("fee");// 综合费用
-		String[] fees = fee.split(",");
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
-		String[] days = borrowDay.split(",");
-		int maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
-		int minDays = Integer.parseInt(days[0]);			// 最小借款期限
-		String borrowCredit = Global.getValue("borrow_credit");// 借款额度
-		String[] credits = borrowCredit.split(",");
-		double maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
-		double minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
-		
+		}
+
+		String[] fees;
+		String borrowDay;
+		int maxDays = 0;
+		int minDays = 0;
+		String[] credits = {CreditConstant.AMOUNTS};
+		String[] days = {String.valueOf(CreditConstant.MIN_DAY), String.valueOf(CreditConstant.MAX_DAY)};
+		String borrowCredit;
+		double maxCredit = 0d;
+		double minCredit = 0d;
+		if(user == null) {
+			String fee = CreditConstant.FEE_POWER;
+			fees = fee.split(",");
+			maxDays = CreditConstant.MAX_DAY;
+			minDays = CreditConstant.MIN_DAY;
+			maxCredit = CreditConstant.MAX_CREDIT;
+			minCredit = CreditConstant.MIN_CREDIT;
+		} else {
+			String fee = Global.getValue("fee");// 综合费用
+			fees = fee.split(",");
+			borrowDay = Global.getValue("borrow_day");// 借款天数
+			days = borrowDay.split(",");
+			maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
+			minDays = Integer.parseInt(days[0]);			// 最小借款期限
+			borrowCredit = Global.getValue("borrow_credit");// 借款额度
+			credits = borrowCredit.split(",");
+			maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
+			borrowCredit = getCredit(borrowCredit, credit.getUnuse());
+			credits = borrowCredit.split(",");
+			if(StringUtil.isBlank(credits[0])) {
+				minCredit = (credit != null ? credit.getUnuse() : Double.parseDouble(Global.getValue("init_credit")));
+			} else {
+				minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
+			}
+		}
+
 		if(user != null){
 			result.put("total", credit.getUnuse());
 		} else {
-			result.put("total", Global.getValue("init_credit"));
+//			result.put("total", Global.getValue("init_credit"));
+			result.put("total", CreditConstant.AMOUNTS);
 		}
 		Map<String, Object> auth = new HashMap<String, Object>();
 		auth.put("total", Global.getInt("auth_total")); // 认证总项数量
 		auth.put("result", 0);
 		auth.put("qualified", 0);
 		result.put("cardNo", "");
-		
+
 		if (user != null) {
 			boolean isPwd = false;
 			if (StringUtil.isNotBlank(user.getTradePwd())) {
@@ -893,15 +931,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 
 	@Override
-	public Map<String, Object> choice(double amount, String timeLimit) {
-		String fee_ = Global.getValue("fee");// 综合费用
-		String[] fees = fee_.split(",");
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
-		String[] days = borrowDay.split(",");
+	public Map<String, Object> choice(double amount, String timeLimit, String userId) {
 		double fee = 0;
-		for (int i = 0; i < days.length; i++) {
-			if (timeLimit.equals(days[i])) {
-				fee = BigDecimalUtil.round(BigDecimalUtil.mul(amount, Double.parseDouble(fees[i])));
+		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
+			fee = CreditConstant.FEE;
+		} else {
+			String fee_ = Global.getValue("fee");// 综合费用
+			String[] fees = fee_.split(",");
+			String borrowDay = Global.getValue("borrow_day");// 借款天数
+			String[] days = borrowDay.split(",");
+			for (int i = 0; i < days.length; i++) {
+				if (timeLimit.equals(days[i])) {
+					fee = BigDecimalUtil.round(BigDecimalUtil.mul(amount, Double.parseDouble(fees[i])));
+				}
 			}
 		}
 		Map<String,Object> map = new HashMap<>();
@@ -919,7 +961,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	}
 	
 	@Override
-	public List<Map<String, Object>> choices() {
+	public List<Map<String, Object>> choices(String userId) {
 		String fee_ = Global.getValue("fee");// 综合费用
 		String feeName = sysConfigService.findByCode("fee").getName();// 综合费用
 		String[] fees = fee_.split(",");
@@ -927,49 +969,53 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		String[] days = borrowDay.split(",");
 		String borrowCredit = Global.getValue("borrow_credit");//借款金额
 		String[] borrowCredits = borrowCredit.split(",");
-		
-		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		for (int i = 0; i < days.length; i++) {
-			for (int j = 0; j < borrowCredits.length; j++) {
-				Map<String,Object> map = new HashMap<>();
-				double fee = Double.parseDouble(borrowCredits[j])*Double.parseDouble(fees[i]);
-				map.put("fee", BigDecimalUtil.decimal(fee, 2));
-				map.put("feeName", feeName);
-				
-				double amount = Double.parseDouble(borrowCredits[j]);
-				String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
-				if ("10".equals(beheadFee)) {// 启用
-					map.put("realAmount", amount - fee);
-				} else {
-					map.put("realAmount", amount);
-				}
-				
-				Map<String, Object> feeDetail= new HashMap<String, Object>();
-				List<Map<String,Object>> feeDetailList = new ArrayList<>();
-				double total = 0;
-				Map<String,Object> feeMap=getFeeMap(fee);
-				feeDetail.put("title", feeMap.get("serviceFeeName"));
-				feeDetail.put("value", feeMap.get("serviceFee"));
-				feeDetailList.add(feeDetail);
-				feeDetail= new HashMap<String, Object>();
-				feeDetail.put("title", feeMap.get("infoAuthFeeName"));
-				feeDetail.put("value", feeMap.get("infoAuthFee"));
-				feeDetailList.add(feeDetail);
-				feeDetail= new HashMap<String, Object>();
-				feeDetail.put("title", feeMap.get("interestName"));
-				feeDetail.put("value", feeMap.get("interest"));
-				feeDetailList.add(feeDetail);
-				map.put("feeDetailList", feeDetailList);
-				
-				map.put("timeLimit", days[i]);
-				map.put("amount", amount);
 
-				//IOS端返回数据
-				map.put("feeDetail", feeMap);
-				list.add(map);
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
+			list = getNoUserChoices(feeName);
+		} else {
+			for (int i = 0; i < days.length; i++) {
+				for (int j = 0; j < borrowCredits.length; j++) {
+					Map<String,Object> map = new HashMap<>();
+					double fee = Double.parseDouble(borrowCredits[j])*Double.parseDouble(fees[i]);
+					map.put("fee", BigDecimalUtil.decimal(fee, 2));
+					map.put("feeName", feeName);
+
+					double amount = Double.parseDouble(borrowCredits[j]);
+					String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+					if ("10".equals(beheadFee)) {// 启用
+						map.put("realAmount", amount - fee);
+					} else {
+						map.put("realAmount", amount);
+					}
+
+					Map<String, Object> feeDetail= new HashMap<String, Object>();
+					List<Map<String,Object>> feeDetailList = new ArrayList<>();
+					double total = 0;
+					Map<String,Object> feeMap=getFeeMap(fee);
+					feeDetail.put("title", feeMap.get("serviceFeeName"));
+					feeDetail.put("value", feeMap.get("serviceFee"));
+					feeDetailList.add(feeDetail);
+					feeDetail= new HashMap<String, Object>();
+					feeDetail.put("title", feeMap.get("infoAuthFeeName"));
+					feeDetail.put("value", feeMap.get("infoAuthFee"));
+					feeDetailList.add(feeDetail);
+					feeDetail= new HashMap<String, Object>();
+					feeDetail.put("title", feeMap.get("interestName"));
+					feeDetail.put("value", feeMap.get("interest"));
+					feeDetailList.add(feeDetail);
+					map.put("feeDetailList", feeDetailList);
+
+					map.put("timeLimit", days[i]);
+					map.put("amount", amount);
+
+					//IOS端返回数据
+					map.put("feeDetail", feeMap);
+					list.add(map);
+				}
 			}
 		}
-		
+
 		return list;
 	}
 
@@ -1492,7 +1538,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 人工复审
 	 */
 	@Override
-	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack) {
+	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 
@@ -1501,20 +1547,67 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				logger.error("人工复审失败,当前状态不是待人工复审");
 				throw new BussinessException("复审失败,当前状态不是待人工复审");
 			}
-			Map<String,Object> map = new HashMap<>();
+			Map<String,Object> map = new HashMap<String, Object>();
+            Double fee = Double.parseDouble(Global.getValue("fee"));
 			map.put("id", borrowId);
 			map.put("state", state);   
 			map.put("remark", remark);
-			code = clBorrowMapper.reviewState(map);
-			if (code!=1) {
-				throw new BussinessException("复审失败,当前状态不是待人工复审");
-			}
+            map.put("amount", amount);
+            map.put("realAmount",amount*(1-fee));
+            map.put("fee",amount*fee);
+            map.put("serviceFee",amount*fee*0.5);
+            map.put("infoAuthFee",amount*fee*0.4);
+            map.put("interest",amount*fee*0.1);
+            Map<String, Object> creditMap = new HashMap<String, Object>();
+            creditMap.put("consumerNo", borrow.getUserId());
+            Credit credit = creditMapper.findSelective(creditMap);
+            if(credit!=null) {
+                if (amount <= credit.getTotal()) {
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("consumerNo", borrow.getUserId());
+                    params.put("used",amount);
+                    params.put("unuse",credit.getTotal()-amount);
+                    int result = creditMapper.updateTotal(params);
+                    if (result != 1) {
+                        throw new BussinessException("修改借款额度失败");
+                    }
+                    code = clBorrowMapper.reviewState(map);
+                    if (code != 1) {
+                        throw new BussinessException("人工复审失败");
+                    }
+                } else {
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("consumerNo", borrow.getUserId());
+                    params.put("total",credit.getTotal()+(amount-credit.getTotal()));
+                    params.put("used",amount);
+                    params.put("unuse",credit.getTotal()+(amount-credit.getTotal())-amount);
+                    int result = creditMapper.updateTotal(params);
+                    if (result != 1) {
+                        throw new BussinessException("修改借款额度失败");
+                    }
+                    code = clBorrowMapper.reviewState(map);
+                    if (code != 1) {
+                        throw new BussinessException("人工复审失败");
+                    }
+                }
+            }
 			savePressState(borrow, state,"");
 			//更新审核表
 			map.put("userId", userId);
 			map.put("reviewTime", DateUtil.getNow());
 			map.put("state", BorrowModel.STATE_PASS.equals(state) ? ManualReviewOrderModel.STATE_ORDER_PASS : ManualReviewOrderModel.STATE_ORDER_REFUSED);
 			manualReviewOrderMapper.reviewState(map);
+
+			if(StringUtil.isNotBlank(remark)) {
+				UserRemark userRemark = new UserRemark();
+				userRemark.setCreateTime(new Date());
+ 				userRemark.setOperateTime(new Date());
+				userRemark.setRemark(remark);
+				userRemark.setOperateId(userId);
+				userRemark.setUserId(borrow.getUserId());
+				userRemarkService.insert(userRemark);
+			}
+
 			if (BorrowModel.STATE_REFUSED.equals(state)|| BorrowModel.STATE_AUTO_REFUSED.equals(state)) {
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
@@ -1752,6 +1845,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 							updateMap.put("tableName", tableName1);
 							updateMap.put("userId", borrow.getUserId());
 							updateMap.put("peerNumber", key);
+							updateMap.put("reqLogId", operatorReqLog.getId());
 							updateMap.put("lastContactTime", lastContactMap.get(key));
 							operatorVoiceCntMapper.updateLastContactTime(updateMap);
 						}
@@ -1795,6 +1889,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				for(TppServiceInfoModel info : infoList){
 					//忽略新颜行为雷达查询
 					if(!xwldFlag && TppBusinessModel.BUS_NID_XWLD.equals(info.getBusNid())) {
+						continue;
+					}
+					if(OcrConstant.OCR_TYPE_FACE.equals(userBaseInfo.getIdType()) && TppBusinessModel.BUS_NID_YOUDUN.equals(info.getBusNid())) {
 						continue;
 					}
 					boolean needExcute = sceneBusinessLogService.needExcute(realBorrow.getUserId(),info.getBusId(),info.getGetWay(),info.getPeriod());
@@ -1868,7 +1965,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					syncSceneBusinessLog(borrow.getId(), nid, count);
 				}
 			});
-		} else {
+			//有盾数据查询
+		} else if (TppBusinessModel.BUS_NID_YOUDUN.equals(nid)){
+			logger.info("进入有盾数据处理");
+			fixedThreadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+                    int count = youDunRiskService.multiPoint(borrow);
+                    syncSceneBusinessLog(borrow.getId(), nid, count);
+                }
+			});
+
+		}
+		else {
 			logger.error("没有找到"+nid+"对应的第三方接口信息");
 		}
 	}
@@ -2459,5 +2568,119 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		manualReviewOrder.setPhone(userInfo.getPhone());
 		manualReviewOrder.setState(ManualReviewOrderModel.STATE_ORDER_PRE);
 		return manualReviewOrder;
+	}
+
+	private String getCredit(String borrowCredit, double userCredit) {
+		String[] split = borrowCredit.split(",");
+		String result = StringUtils.EMPTY;
+		for (int i = 0; i < split.length; i++) {
+			double creditTemp = Double.parseDouble(split[i]);
+			int creditInt = new Double(creditTemp).intValue();
+			if (userCredit >= creditInt) {
+				if (i != 0) {
+					result += ",";
+				}
+				result += creditInt;
+			}
+		}
+		return result;
+	}
+
+	private List<Map<String,Object>> getNoUserChoices(String feeName) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("fee", CreditConstant.FEE);
+		map.put("feeName", feeName);
+		map.put("realAmount", CreditConstant.AMOUNT - CreditConstant.FEE);
+		Map<String, Object> feeDetail= new HashMap<>();
+		List<Map<String,Object>> feeDetailList = new ArrayList<>();
+		Map<String,Object> feeMap=getFeeMap(CreditConstant.FEE);
+		feeDetail.put("title", feeMap.get("serviceFeeName"));
+		feeDetail.put("value", feeMap.get("serviceFee"));
+		feeDetailList.add(feeDetail);
+		feeDetail= new HashMap<>();
+		feeDetail.put("title", feeMap.get("infoAuthFeeName"));
+		feeDetail.put("value", feeMap.get("infoAuthFee"));
+		feeDetailList.add(feeDetail);
+		feeDetail= new HashMap<>();
+		feeDetail.put("title", feeMap.get("interestName"));
+		feeDetail.put("value", feeMap.get("interest"));
+		feeDetailList.add(feeDetail);
+		map.put("feeDetailList", feeDetailList);
+
+		map.put("timeLimit", CreditConstant.MIN_DAY);
+		map.put("amount", CreditConstant.AMOUNT);
+
+		//IOS端返回数据
+		map.put("feeDetail", feeMap);
+		List<Map<String,Object>> list = new ArrayList<>();
+		list.add(map);
+
+
+		Map<String,Object> map2 = new HashMap<>();
+		map2.put("fee", CreditConstant.FEE);
+		map2.put("feeName", feeName);
+		map2.put("realAmount", CreditConstant.AMOUNT - CreditConstant.FEE);
+		Map<String, Object> feeDetail2 = new HashMap<>();
+		List<Map<String,Object>> feeDetailList2 = new ArrayList<>();
+		Map<String,Object> feeMap2 = getFeeMap(CreditConstant.FEE);
+		feeDetail2.put("title", feeMap2.get("serviceFeeName"));
+		feeDetail2.put("value", feeMap2.get("serviceFee"));
+		feeDetailList2.add(feeDetail2);
+		feeDetail2= new HashMap<>();
+		feeDetail2.put("title", feeMap2.get("infoAuthFeeName"));
+		feeDetail2.put("value", feeMap2.get("infoAuthFee"));
+		feeDetailList2.add(feeDetail2);
+		feeDetail2 = new HashMap<>();
+		feeDetail2.put("title", feeMap2.get("interestName"));
+		feeDetail2.put("value", feeMap2.get("interest"));
+		feeDetailList2.add(feeDetail2);
+		map2.put("feeDetailList", feeDetailList2);
+
+		map2.put("timeLimit", CreditConstant.MAX_DAY);
+		map2.put("amount", CreditConstant.AMOUNT);
+
+		//IOS端返回数据
+		map2.put("feeDetail", feeMap2);
+		list.add(map2);
+		return list;
+	}
+
+	@Override
+	public int offlinePay(Long borrowId, Long userId) {
+		int code = 0;
+		final Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+		if (borrow != null) {
+			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
+				logger.error("线下放款失败,当前状态不是待审核放款");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			}
+			Map<String,Object> map = new HashMap<>();
+			map.put("id", borrowId);
+			map.put("state", BorrowModel.STATE_REPAY);
+			code = clBorrowMapper.loanState(map);
+			if (code!=1) {
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			}
+
+			//添加借款进度
+			BorrowProgress borrowProgress = new BorrowProgress();
+			borrowProgress.setBorrowId(borrow.getId());
+			borrowProgress.setUserId(borrow.getUserId());
+			borrowProgress.setState(BorrowModel.STATE_REPAY);
+			borrowProgress.setRemark("线下放款审核");
+
+			borrowProgress.setAuditUser(userId);
+			borrowProgress.setCreateTime(DateUtil.getNow());
+			borrowProgressMapper.save(borrowProgress);
+
+			// 生成还款计划并授权
+			borrowRepayService.genRepayPlan(borrow);
+			//发送放款成功短信
+			clSmsService.loanInform(borrow.getUserId(), borrow.getId());
+		} else {
+			logger.error("线下放款失败，当前订单不存在");
+			throw new BussinessException("线下放款失败，当前订单不存在");
+		}
+		return code;
 	}
 }

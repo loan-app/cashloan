@@ -260,14 +260,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		if("repayBefore".equals(smsType)){
 			message = ret(smsType);
 			message = message
-					.replace("{$loan}", StringUtil.isNull(map.get("loan")))
-					.replace(
-							"{$time}",
-							DateUtil.dateStr(DateUtil.valueOf(
-									DateUtil.dateStr(DateUtil.valueOf(map.get("time").toString()), DateUtil.DATEFORMAT_STR_002)),"M月dd日"))
 					.replace("{$name}", StringUtil.isNull(map.get("name")))
-					.replace("{$cardNo}", StringUtil.isNull(map.get("cardNo")))
-					.replace("{$bankCardNo}", StringUtil.isNull(map.get("bankCardNo")));
+					.replace("{$appName}", StringUtil.isNull(map.get("appName")));
 		}
 		if("delayPlan".equals(smsType)){
 			message = ret(smsType);
@@ -547,22 +541,15 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		search.put("borrowId", borrowId);
 		BorrowRepay repay=borrowRepayMapper.findByBorrowIdState(search);
 		UserBaseInfo baseInfo=userBaseInfoMapper.findByUserId(userId);
-		search.clear();
-		search.put("userId", userId);
-		BankCard bankCard = bankCardManage.findSelective(search);
-		if (baseInfo != null && repay != null && bankCard != null) {
+		if (baseInfo != null && repay != null) {
 			search.clear();
 			search.put("type", "repayBefore");
 			search.put("state", "10");
 			SmsTpl tpl = smsTplMapper.findSelective(search);
 			if (tpl!=null) {
 				search = new HashMap<>();
-				search.put("time", DateUtil.dateStr(repay.getRepayTime(),DateUtil.DATEFORMAT_STR_001));//还款时间
-				search.put("cardNo", baseInfo.getPhone().substring(7, 11));//手机尾号
 				search.put("name", baseInfo.getRealName());//姓名
-				search.put("loan", repay.getAmount());//待还款金额
-				int len=bankCard.getCardNo().length();
-				search.put("bankCardNo", bankCard.getCardNo().substring(len-4, len));//银行卡号
+				search.put("appName", Global.getValue("appName"));
 				Map<String, Object> payload = new HashMap<>();
 				payload.put("mobile",baseInfo.getPhone());
 				payload.put("message", changeMessage("repayBefore",search));

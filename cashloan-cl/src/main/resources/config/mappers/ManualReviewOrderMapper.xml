@@ -196,6 +196,23 @@
         </trim>
     </select>
 
+    <select id="countTodayPassOrder" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        SELECT count(1) FROM cl_manual_review_order
+        where TO_DAYS(review_time)-TO_DAYS(SYSDATE()) = 0  and state ='20'
+            <if test="userId != null and userId != '' and userId != '0' ">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+    </select>
+
+
+    <select id="countTodayLoanOrder" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        SELECT count(1) FROM cl_manual_review_order as mro left join cl_pay_log as log on mro.borrow_id = log.borrow_id
+        where TO_DAYS(log.create_time)-TO_DAYS(SYSDATE()) = 0  and mro.state ='20' and log.scenes = '10' and log.state ='40'
+        <if test="userId != null and userId != '' and userId != '0' ">
+            and mro.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+    </select>
+
     <select id="countByTime" resultType="java.lang.Integer" parameterType="java.util.HashMap">
         SELECT count(1) FROM cl_manual_review_order
         <trim prefix="where" prefixOverrides="and|or">
@@ -270,6 +287,15 @@
             <if test="borrowTime !=null">
                 and b.create_time = #{borrowTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="borrowTime != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') = #{borrowTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startTime != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime  != null">
+                and DATE_FORMAT(b.create_time,'%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
             <if test="state !='' and state !=null">
                 and o.state = #{state,jdbcType=VARCHAR}
             </if>
@@ -281,6 +307,15 @@
             </if>
             <if test="reviewTime !=null">
                 and o.review_time = #{reviewTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="reviewTime != null">
+                and DATE_FORMAT(o.review_time,'%Y-%m-%d') = #{reviewTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startDate != null">
+            and DATE_FORMAT(o.review_time,'%Y-%m-%d') &gt;= #{startDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDate != null">
+                and DATE_FORMAT(o.review_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
             </if>
             <if test="borrowName !='' and borrowName !=null">
                 and o.borrow_name    like  concat("%",#{borrowName,jdbcType=VARCHAR},"%")
@@ -295,6 +330,12 @@
                 <if test="isDestribute =='20' ">
                     and o.user_id is null
                 </if>
+            </if>
+            <if test="channelID !='' and channelID !=null">
+              and u.channel_id = #{channelID,jdbcType=VARCHAR}
+            </if>
+            <if test="again !='' and again !=null">
+                and b.again = #{again,jdbcType=VARCHAR}
             </if>
         </trim>
         ORDER BY create_time DESC

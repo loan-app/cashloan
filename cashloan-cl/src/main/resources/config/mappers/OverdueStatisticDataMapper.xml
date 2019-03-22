@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_overdue_statistic_data表:逾期统计数据模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.statistic.OverdueStatisticDataMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="count_time" property="countTime" jdbcType="TIMESTAMP" />
+        <result column="new_overdue" property="newOverdue" jdbcType="INTEGER" />
+        <result column="again_overdue" property="againOverdue" jdbcType="INTEGER" />
+        <result column="extend_overdue" property="extendOverdue" jdbcType="INTEGER" />
+        <result column="new_expire" property="newExpire" jdbcType="INTEGER" />
+        <result column="again_expire" property="againExpire" jdbcType="INTEGER" />
+        <result column="extend_expire" property="extendExpire" jdbcType="INTEGER" />
+        <result column="new_repayment" property="newRepayment" jdbcType="INTEGER" />
+        <result column="again_repayment" property="againRepayment" jdbcType="INTEGER" />
+        <result column="extend_repayment" property="extendRepayment" jdbcType="INTEGER" />
+        <result column="new_overdue_rate" property="newOverdueRate" jdbcType="DECIMAL" />
+        <result column="again_overdue_rate" property="againOverdueRate" jdbcType="DECIMAL" />
+        <result column="extend_overdue_rate" property="extendOverdueRate" jdbcType="DECIMAL" />
+        <result column="overdue_rate" property="overdueRate" jdbcType="DECIMAL"/>
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,create_time,update_time,count_time,new_overdue,again_overdue,extend_overdue,new_expire,again_expire,extend_expire,new_repayment,again_repayment,extend_repayment,new_overdue_rate,again_overdue_rate,extend_overdue_rate ,overdue_rate
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="countTime != null">
+                and count_time = #{countTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="newOverdue != null">
+                and new_overdue = #{newOverdue,jdbcType=INTEGER}
+            </if>
+            <if test="againOverdue != null">
+                and again_overdue = #{againOverdue,jdbcType=INTEGER}
+            </if>
+            <if test="extendOverdue != null">
+                and extend_overdue = #{extendOverdue,jdbcType=INTEGER}
+            </if>
+            <if test="newExpire != null">
+                and new_expire = #{newExpire,jdbcType=INTEGER}
+            </if>
+            <if test="againExpire != null">
+                and again_expire = #{againExpire,jdbcType=INTEGER}
+            </if>
+            <if test="extendExpire != null">
+                and extend_expire = #{extendExpire,jdbcType=INTEGER}
+            </if>
+            <if test="newRepayment != null">
+                and new_repayment = #{newRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="againRepayment != null">
+                and again_repayment = #{againRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="extendRepayment != null">
+                and extend_repayment = #{extendRepayment,jdbcType=INTEGER}
+            </if>
+            <if test="newOverdueRate != null">
+                and new_overdue_rate = #{newOverdueRate,jdbcType=DECIMAL}
+            </if>
+            <if test="againOverdueRate != null">
+                and again_overdue_rate = #{againOverdueRate,jdbcType=DECIMAL}
+            </if>
+            <if test="extendOverdueRate != null">
+                and extend_overdue_rate = #{extendOverdueRate,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        insert into cl_overdue_statistic_data(create_time,update_time,count_time,new_overdue,again_overdue,extend_overdue,new_expire,again_expire,extend_expire,new_repayment,again_repayment,extend_repayment,new_overdue_rate,again_overdue_rate,extend_overdue_rate,overdue_rate)
+        values(#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{countTime,jdbcType=TIMESTAMP},#{newOverdue,jdbcType=INTEGER},#{againOverdue,jdbcType=INTEGER},#{extendOverdue,jdbcType=INTEGER},#{newExpire,jdbcType=INTEGER},#{againExpire,jdbcType=INTEGER},
+        #{extendExpire,jdbcType=INTEGER},#{newRepayment,jdbcType=INTEGER},#{againRepayment,jdbcType=INTEGER},#{extendRepayment,jdbcType=INTEGER},#{newOverdueRate,jdbcType=DECIMAL},#{againOverdueRate,jdbcType=DECIMAL},#{extendOverdueRate,jdbcType=DECIMAL},#{overdueRate,jdbcType=DECIMAL})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        update cl_overdue_statistic_data set 
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            count_time = #{countTime,jdbcType=TIMESTAMP},
+            new_overdue = #{newOverdue,jdbcType=INTEGER},
+            again_overdue = #{againOverdue,jdbcType=INTEGER},
+            extend_overdue = #{extendOverdue,jdbcType=INTEGER},
+            new_expire = #{newExpire,jdbcType=INTEGER},
+            again_expire = #{againExpire,jdbcType=INTEGER},
+            extend_expire = #{extendExpire,jdbcType=INTEGER},
+            new_repayment = #{newRepayment,jdbcType=INTEGER},
+            again_repayment = #{againRepayment,jdbcType=INTEGER},
+            extend_repayment = #{extendRepayment,jdbcType=INTEGER},
+            new_overdue_rate = #{newOverdueRate,jdbcType=DECIMAL},
+            again_overdue_rate = #{againOverdueRate,jdbcType=DECIMAL},
+            extend_overdue_rate = #{extendOverdueRate,jdbcType=DECIMAL},
+            overdue_rate = #{overdueRate,jdbcType=DECIMAL}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_overdue_statistic_data
+          <set>
+            <if test="createTime != null">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null">        
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="countTime != null">        
+                count_time = #{countTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="newOverdue != null">        
+                new_overdue = #{newOverdue,jdbcType=INTEGER},                
+            </if>
+            <if test="againOverdue != null">        
+                again_overdue = #{againOverdue,jdbcType=INTEGER},                
+            </if>
+            <if test="extendOverdue != null">        
+                extend_overdue = #{extendOverdue,jdbcType=INTEGER},                
+            </if>
+            <if test="newExpire != null">        
+                new_expire = #{newExpire,jdbcType=INTEGER},                
+            </if>
+            <if test="againExpire != null">        
+                again_expire = #{againExpire,jdbcType=INTEGER},                
+            </if>
+            <if test="extendExpire != null">        
+                extend_expire = #{extendExpire,jdbcType=INTEGER},                
+            </if>
+            <if test="newRepayment != null">        
+                new_repayment = #{newRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="againRepayment != null">        
+                again_repayment = #{againRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="extendRepayment != null">        
+                extend_repayment = #{extendRepayment,jdbcType=INTEGER},                
+            </if>
+            <if test="newOverdueRate != null">        
+                new_overdue_rate = #{newOverdueRate,jdbcType=DECIMAL},                
+            </if>
+            <if test="againOverdueRate != null">        
+                again_overdue_rate = #{againOverdueRate,jdbcType=DECIMAL},                
+            </if>
+            <if test="extendOverdueRate != null">        
+                extend_overdue_rate = #{extendOverdueRate,jdbcType=DECIMAL}                
+            </if>
+              <if test="overdueRate != null">
+                  overdue_rate = #{overdueRate,jdbcType=DECIMAL}
+              </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_overdue_statistic_data
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_overdue_statistic_data
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_overdue_statistic_data
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        insert into cl_overdue_statistic_data
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="countTime != null">
+                count_time,
+            </if>
+            <if test="newOverdue != null">
+                new_overdue,
+            </if>
+            <if test="againOverdue != null">
+                again_overdue,
+            </if>
+            <if test="extendOverdue != null">
+                extend_overdue,
+            </if>
+            <if test="newExpire != null">
+                new_expire,
+            </if>
+            <if test="againExpire != null">
+                again_expire,
+            </if>
+            <if test="extendExpire != null">
+                extend_expire,
+            </if>
+            <if test="newRepayment != null">
+                new_repayment,
+            </if>
+            <if test="againRepayment != null">
+                again_repayment,
+            </if>
+            <if test="extendRepayment != null">
+                extend_repayment,
+            </if>
+            <if test="newOverdueRate != null">
+                new_overdue_rate,
+            </if>
+            <if test="againOverdueRate != null">
+                again_overdue_rate,
+            </if>
+            <if test="extendOverdueRate != null">
+                extend_overdue_rate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="countTime != null">
+                #{countTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="newOverdue != null">
+                #{newOverdue,jdbcType=INTEGER},
+            </if>
+            <if test="againOverdue != null">
+                #{againOverdue,jdbcType=INTEGER},
+            </if>
+            <if test="extendOverdue != null">
+                #{extendOverdue,jdbcType=INTEGER},
+            </if>
+            <if test="newExpire != null">
+                #{newExpire,jdbcType=INTEGER},
+            </if>
+            <if test="againExpire != null">
+                #{againExpire,jdbcType=INTEGER},
+            </if>
+            <if test="extendExpire != null">
+                #{extendExpire,jdbcType=INTEGER},
+            </if>
+            <if test="newRepayment != null">
+                #{newRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="againRepayment != null">
+                #{againRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="extendRepayment != null">
+                #{extendRepayment,jdbcType=INTEGER},
+            </if>
+            <if test="newOverdueRate != null">
+                #{newOverdueRate,jdbcType=DECIMAL},
+            </if>
+            <if test="againOverdueRate != null">
+                #{againOverdueRate,jdbcType=DECIMAL},
+            </if>
+            <if test="extendOverdueRate != null">
+                #{extendOverdueRate,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getLateDate" resultType="java.util.Date">
+        select count_time from cl_overdue_statistic_data order by count_time desc limit 1;
+    </select>
+
+    <select id="newOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(distinct t2.id) newOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay , cl_borrow_progress as progress  where repay.borrow_id = borrow.id and progress.borrow_id = borrow.id  and progress.state = '50' and repay.type ='1' and borrow.again ='10' AND DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="againOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(distinct t2.id) againOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay , cl_borrow_progress as progress  where repay.borrow_id = borrow.id and progress.borrow_id = borrow.id  and progress.state = '50' and repay.type ='1' and borrow.again ='20' AND DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="extendOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(distinct t2.id) extendOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay , cl_borrow_progress as progress  where repay.borrow_id = borrow.id and progress.borrow_id = borrow.id  and progress.state = '50' and repay.type ='2' and DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="newExpire" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(t2.id) newExpire,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay  where repay.borrow_id = borrow.id and borrow.again ='10'and repay.type ='1' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+    <select id="againExpire" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(t2.id) againExpire,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay  where repay.borrow_id = borrow.id and borrow.again ='20'and repay.type ='1' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="extendExpire" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(t2.id) extendExpire,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay  where repay.borrow_id = borrow.id and repay.type ='2' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="newRepayment" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(t2.id) newRepayment,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay  where repay.borrow_id = borrow.id and borrow.again ='10'and repay.type ='1' and repay.state ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="againRepayment" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(t2.id) againRepayment,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay  where repay.borrow_id = borrow.id and borrow.again ='20'and repay.type ='1' and repay.state ='10') t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="extendRepayment" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(t2.id) extendRepayment,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay  where repay.borrow_id = borrow.id and repay.type ='2' and repay.state ='10' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(regist_time,'%Y-%m-%d') > #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(regist_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="listOverdueStatistic" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select * from cl_overdue_statistic_data
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(count_time,'%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(count_time,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+        order by count_time desc
+    </select>
+
+
+</mapper>

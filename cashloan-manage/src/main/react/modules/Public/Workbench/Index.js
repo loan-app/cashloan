@@ -120,6 +120,7 @@ export default React.createClass({
         let formsToday = this.state.formsToday;
         let formsTotal = this.state.formsTotal;
         let formsRealTime = this.state.formsRealTime;
+        let br=<br></br>;
         return (
             <div id='box' style={{ minWidth: 820 }}>
                 <div className="block-panel">
@@ -130,114 +131,256 @@ export default React.createClass({
                             <div className='blk-number'>{formsToday.register}</div>
                         </div>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>借款申请数</div>
-                            <div className='blk-number'>{formsToday.borrow}</div>
+                            <div className='blk-title'>新客申请量</div>
+                            <div className='blk-number'>{formsToday.todayNewBorrow}</div>
                         </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>老客申请量</div>
+                            <div className='blk-number'>{formsToday.todayOldBorrow}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>新客放款量</div>
+                            <div className='blk-number'>{formsToday.todayNewLoan}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>老客放款量</div>
+                            <div className='blk-number'>{formsToday.todayOldLoan}</div>
+                        </div>
+                        {/*<div className='blk-top-item'>*/}
+                            {/*<div className='blk-title'>借款申请数</div>*/}
+                            {/*<div className='blk-number'>{formsToday.borrow}</div>*/}
+                        {/*</div>*/}
                         <div className='blk-top-item'>
                             <div className='blk-title'>通过次数</div>
                             <div className='blk-number'>{formsToday.borrowPass}</div>
                         </div>
                         <div className='blk-top-item'>
-                            <div className='blk-title'>通过率</div>
+                            <div className='blk-title'>新客通过率</div>
                             <div className='blk-number'>{formsToday.passApr}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
-                        <div className='blk-top-item'>
-                            <div className='blk-title'>放款量</div>
-                            <div className='blk-number'>{formsToday.borrowLoan}</div>
-                        </div>
+                        {/*<div className='blk-top-item'>*/}
+                            {/*<div className='blk-title'>放款量</div>*/}
+                            {/*<div className='blk-number'>{formsToday.borrowLoan}</div>*/}
+                        {/*</div>*/}
                         <div className='blk-top-item' >
                             <div className='blk-title'>还款量</div>
                             <div className='blk-number'>{formsToday.borrowRepay}</div>
                         </div>
                         <div className='blk-top-item blk-top-item-last' >
-                            <div className='blk-title'>放款率</div>
+                            <div className='blk-title'>新客放款率</div>
                             <div className='blk-number'>{formsToday.borrowRate}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
                     </div>
                 </div>
 
+
                 <div className="block-panel">
-                    <h2 className="navLine-title">逾期统计</h2>
+                    <h2 className="navLine-title">今日认证</h2>
                     <div className='blk-top'>
+
                         <div className='blk-top-item'>
+                            <div className='blk-title'>实名人数</div>
+                            <div className='blk-number'>{formsToday.todayCertification}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>通讯录认证人数</div>
+                            <div className='blk-number'>{formsToday.todayContact}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>绑卡人数</div>
+                            <div className='blk-number'>{formsToday.todayBank}</div>
+                        </div>
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>运营商认证人数</div>
+                            <div className='blk-number'>{formsToday.todayPhone}</div>
+                        </div>
+
+
+                        <div className='blk-top-item'>
+                            <div className='blk-title'>借出总金额</div>
+                            <div className='blk-number'>{formsToday.todayTotalSum}</div>
+                        </div>
+                        <div className='blk-top-item blk-top-item-last'>
+                            <div className='blk-title'>借出本金</div>
+                            <div className='blk-number'>{formsToday.todayPrincipal}</div>
+                        </div>
+                        {/*<div className='blk-top-item'>*/}
+                        {/*<div className='blk-title'>借款申请数</div>*/}
+                        {/*<div className='blk-number'>{formsToday.borrow}</div>*/}
+                        {/*</div>*/}
+                    </div>
+                </div>
+
+                <div className="block-panel">
+                    <h2 className="navLine-title overdue-title">逾期统计</h2>
+                    <div className='blk-top'>
+                        <div className='blk-top-item-overdue'>
                             <div className='blk-title'>今日应还</div>
                             <div className='blk-number'>{formsToday.todayShouldCnt}</div>
                         </div>
-                        <div className='blk-top-item'>
+                        <div className='blk-top-item-overdue'>
                             <div className='blk-title'>今日结清</div>
                             <div className='blk-number'>{formsToday.todayRepayCnt}</div>
                         </div>
-                        <div className='blk-top-item'>
+                        <div className='blk-top-item-overdue'>
                             <div className='blk-title'>今日待还</div>
                             <div className='blk-number'>{formsToday.todayNotRepayCnt}</div>
                         </div>
-                        <div className='blk-top-item'>
+                        <div className='blk-top-item-overdue'>
                             <div className='blk-title'>今日展期</div>
                             <div className='blk-number'>{formsToday.todayDeferredCnt}</div>
                         </div>
-                        <div className='blk-top-item'>
+                        <div className='blk-top-item blk-top-item-last'>
                             <div className='blk-title'>今日还款率</div>
                             <div className='blk-number'>{formsToday.todayShouldCntRate}<span style={{ fontSize: '12px' }}>% </span></div>
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <div className="data-panel">
-                        <div className="block-panel">
-                            <h2 className="navLine-title">累计数据</h2>
-                            <Row>
-                                <Col span='12'>
-                                    <div className='blk-bottom'>
-                                        <span className='workBench-icon icon1'> </span>
-                                        <span className='blk-title'>历史放款总量</span>
-                                        <span className='blk-number'>{formsTotal.borrowLoanHistory}</span>笔
-                                    </div>
-                                </Col>
-                                <Col span='12'>
-                                    <div className='blk-bottom'>
-                                        <span className='workBench-icon icon2'> </span>
-                                        <span className='blk-title'>历史还款总量</span>
-                                        <span className='blk-number'>{formsTotal.borrowRepayHistory}</span>笔
-                                    </div>
-                                </Col>
-                                <Col span='12'>
-                                    <div className='blk-bottom'>
-                                        <span className='blk-title'>历史总注册量</span>
-                                        <span className='blk-number'>{formsTotal.registerHistory}</span>
-                                    </div>
-                                </Col>
-                                <Col span='12'>
-                                    <div className='blk-bottom'>
-                                        <span className='blk-title'>历史总申请量</span>
-                                        <span className='blk-number'>{formsTotal.borrowApplyHistory}</span>
-                                    </div>
-                                </Col>
-                            </Row>
+                <div className ='data-panel-dev'>
+
+                    <Row>
+                        <Col><div className="data-panel-left">
+
+                            <div className="dev-total-1">
+                                <dev className ="data-panel-1">
+                                <dev className="data-panel-t1"></dev>
+                                <dev className='sp-title'>{br}累计数据</dev>
+                                {/*<span className='sp-title'>累计数据</span>*/}
+                                </dev>
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史放款总量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.borrowLoanHistory}</dev>
+
+                                </dev>
+
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史还款总量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.borrowRepayHistory}</dev>
+
+                                </dev>
+                            </div>
+
+                            <div className="dev-total-2">
+
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史总注册量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.registerHistory}</dev>
+
+                                </dev>
+                                <dev className ="data-panel-2 ">
+                                    <dev className ='blk-number-description'>历史总申请量</dev>
+                                    <dev className ='blk-number-history-1'>{formsTotal.borrowApplyHistory}</dev>
+                                </dev>
+                            </div>
+
                         </div>
-                    </div>
-                    <div className="data-panel">
-                        <div className="block-panel">
-                            <h2 className="navLine-title">实时数据</h2>
-                            <Row>
-                                <Col span='12'>
-                                    <div className='blk-bottom'>
-                                        <span className='workBench-icon icon3'> </span>
-                                        <span className='blk-title'>待还款总余额</span>
-                                        <span className='blk-number'>{formsRealTime.needRepay}</span>元
-                                    </div>
-                                </Col>
-                                <Col span='12'>
-                                    <div className='blk-bottom'>
-                                        <span className='workBench-icon icon4'> </span>
-                                        <span className='blk-title'>逾期未还款总额</span>
-                                        <span className='blk-number'>{formsRealTime.overdueRepay}</span>元
-                                    </div>
-                                </Col>
-                            </Row>
-                        </div>
-                    </div>
+
+
+                            <div className="data-panel-right">
+                                <dev className ="data-panel-5">
+                                    <dev className="data-panel-t2"></dev>
+                                    <dev className='sp-title'>{br}实时数据</dev>
+                                </dev>
+                                <div className="dev-total-1">
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>待还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.needRepay}</dev>
+
+                                    </dev>
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线上还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumOnlineRepaymentAmount}</dev>
+
+                                    </dev>
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线上放款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumOnlineLoadAmount}</dev>
+
+                                    </dev>
+
+                                </div>
+
+                                <div className="dev-total-1">
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>逾期未还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.overdueRepay}</dev>
+
+                                    </dev>
+
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线下还款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumUnlineRepaymentAmount}</dev>
+
+                                    </dev>
+                                    <dev className ="data-panel-4 ">
+                                        <dev className ='blk-number-description'>线下放款总额</dev>
+                                        <dev className ='blk-number-history-1'>{formsRealTime.sumUnlineLoadAmount}</dev>
+
+                                    </dev>
+                                </div>
+
+                            </div>
+                        </Col>
+                    </Row>
+
                 </div>
+                {/*<div>*/}
+                    {/*<div className="data-panel">*/}
+                        {/*<div className="block-panel">*/}
+                            {/*<h2 className="navLine-title">累计数据</h2>*/}
+                            {/*<Row>*/}
+                                {/*<Col span='12'>*/}
+                                    {/*<div className='blk-bottom'>*/}
+                                        {/*<span className='workBench-icon icon1'> </span>*/}
+                                        {/*<span className='blk-title'>历史放款总量</span>*/}
+                                        {/*<span className='blk-number'>{formsTotal.borrowLoanHistory}</span>笔*/}
+                                    {/*</div>*/}
+                                {/*</Col>*/}
+                                {/*<Col span='12'>*/}
+                                    {/*<div className='blk-bottom'>*/}
+                                        {/*<span className='workBench-icon icon2'> </span>*/}
+                                        {/*<span className='blk-title'>历史还款总量</span>*/}
+                                        {/*<span className='blk-number'>{formsTotal.borrowRepayHistory}</span>笔*/}
+                                    {/*</div>*/}
+                                {/*</Col>*/}
+                                {/*<Col span='12'>*/}
+                                    {/*<div className='blk-bottom'>*/}
+                                        {/*<span className='blk-title'>历史总注册量</span>*/}
+                                        {/*<span className='blk-number'>{formsTotal.registerHistory}</span>*/}
+                                    {/*</div>*/}
+                                {/*</Col>*/}
+                                {/*<Col span='12'>*/}
+                                    {/*<div className='blk-bottom'>*/}
+                                        {/*<span className='blk-title'>历史总申请量</span>*/}
+                                        {/*<span className='blk-number'>{formsTotal.borrowApplyHistory}</span>*/}
+                                    {/*</div>*/}
+                                {/*</Col>*/}
+                            {/*</Row>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
+                    {/*<div className="data-panel">*/}
+                        {/*<div className="block-panel">*/}
+                            {/*<h2 className="navLine-title">实时数据</h2>*/}
+                            {/*<Row>*/}
+                                {/*<Col span='12'>*/}
+                                    {/*<div className='blk-bottom'>*/}
+                                        {/*<span className='workBench-icon icon3'> </span>*/}
+                                        {/*<span className='blk-title'>待还款总余额</span>*/}
+                                        {/*<span className='blk-number'>{formsRealTime.needRepay}</span>元*/}
+                                    {/*</div>*/}
+                                {/*</Col>*/}
+                                {/*<Col span='12'>*/}
+                                    {/*<div className='blk-bottom'>*/}
+                                        {/*<span className='workBench-icon icon4'> </span>*/}
+                                        {/*<span className='blk-title'>逾期未还款总额</span>*/}
+                                        {/*<span className='blk-number'>{formsRealTime.overdueRepay}</span>元*/}
+                                    {/*</div>*/}
+                                {/*</Col>*/}
+                            {/*</Row>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
                 { change ? <div className="block-chart">
                     <div className='blk-top'>
                         <div className='blk-top-item'>
@@ -252,17 +395,18 @@ export default React.createClass({
                     </div>
                 </div> : <div className="block-chart">
                     <div className='blk-top-change'>
-                            <div>
-                                {location.Map}
-                            </div>
+                            {/*<div>*/}
+                                {/*{location.Map}*/}
+                            {/*</div>*/}
                             <div>
                                 {location.Pie2}
                             </div>
-                            <div> 
+                            <div>
                                 {location.Bar1}
                             </div>
                     </div>
-                </div>}
+                </div>
+                }
             </div>
         )
     }

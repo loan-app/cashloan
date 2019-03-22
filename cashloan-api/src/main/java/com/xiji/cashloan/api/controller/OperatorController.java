@@ -73,7 +73,7 @@ public class OperatorController extends BaseController {
     @Resource
     private OperatorVoiceCntService operatorVoiceCntService;
 
-    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(20);
 
     /**
      * @return void
@@ -275,6 +275,7 @@ public class OperatorController extends BaseController {
         }
 
         if (StringUtil.equals(eventName.toLowerCase(), "report")) {
+            logger.info("开始保存userId" + userId + "运营商报告");
             if (requestJson.containsKey("result")) {
                 String result = requestJson.get("result").toString();
                 if (StringUtil.equals(result, "false")) {

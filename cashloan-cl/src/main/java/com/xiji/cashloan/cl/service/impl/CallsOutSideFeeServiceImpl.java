@@ -1,21 +1,19 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import javax.annotation.Resource;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.core.model.CloanUserModel;
+import com.xiji.cashloan.cl.domain.CallsOutSideFee;
+import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
+import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
+import com.xiji.cashloan.core.common.mapper.BaseMapper;
+import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.xiji.cashloan.core.common.mapper.BaseMapper;
-import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
-import com.xiji.cashloan.cl.domain.CallsOutSideFee;
-import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
-
+import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,9 +57,16 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 		PageHelper.startPage(currentPage, pageSize);
 		List<CallsOutSideFee> list = callsOutSideFeeMapper.listCallsOutSideFee(params);
 
+		if(params == null){
+			params = new HashMap<>();
+		}
+		params.put("castType","0");
 		BigDecimal totalFee = this.getTotalFee(params);
+		//获取余额
+		BigDecimal balance=this.getBalance(params);
 		for (CallsOutSideFee outSideFee : list){
 			outSideFee.setTotalFee(totalFee);
+			outSideFee.setBalance(balance);
 		}
 		return (Page<CallsOutSideFee>) list;
 	}
@@ -75,5 +80,27 @@ public class CallsOutSideFeeServiceImpl extends BaseServiceImpl<CallsOutSideFee,
 	public BigDecimal getTotalFee(Map<String, Object> params){
 		return callsOutSideFeeMapper.getTotalFee(params);
 	}
+
+	/**
+	 * 获取余额
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public BigDecimal getBalance(Map<String, Object> params) {
+		return callsOutSideFeeMapper.getBalance(params);
+	}
+
+	/**
+	 * 保存外部数据
+	 * @param callsOutSideFee
+	 * @return
+	 */
+	@Override
+	public int save(CallsOutSideFee callsOutSideFee) {
+		int i=callsOutSideFeeMapper.save(callsOutSideFee);
+		return i;
+	}
+
 
 }

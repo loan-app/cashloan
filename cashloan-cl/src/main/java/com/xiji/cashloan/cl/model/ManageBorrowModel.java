@@ -53,7 +53,12 @@ public class ManageBorrowModel extends Borrow {
 	 */
 	private String repayTime;
 
-	/**
+    /**
+     * 还款方式
+     */
+    private String repayWay;
+
+    /**
 	 * 逾期罚金
 	 */
 	private Double penaltyAmout;
@@ -77,7 +82,11 @@ public class ManageBorrowModel extends Borrow {
 	 * 应还款总额 加逾期金额
 	 */
 	private Double repayTotal;
-	
+	/**
+	 * 注册渠道
+	 * */
+	private String channelName;
+
 	/**
 	 * 已还款总额 加逾期金额
 	 */
@@ -164,7 +173,15 @@ public class ManageBorrowModel extends Borrow {
 		this.phone = phone;
 	}
 
-	/**
+	public String getChannelName() { return channelName; }
+
+	public void setChannelName(String channelName) { this.channelName = channelName; }
+
+    public String getRepayWay() { return repayWay; }
+
+    public void setRepayWay(String repayWay) { this.repayWay = repayWay; }
+
+    /**
 	 * 获取借款订单id
 	 * @return borrowId
 	 */

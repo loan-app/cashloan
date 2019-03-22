@@ -1,10 +1,11 @@
 import React from 'react';
-import {Icon,Modal,Tooltip } from "antd";
+import {Icon, Modal, Tooltip} from "antd";
+import AddWin from '../forgetPwd'
+
 var Reflux = require('reflux');
 var reqwest = require('reqwest');
  var AppActions = require('./actions/AppActions');
  var UserMessageStore = require('./stores/UserMessageStore');
-import AddWin from '../forgetPwd'
 const Top = React.createClass({
    mixins: [
      Reflux.connect(UserMessageStore, "userMessage")
@@ -13,6 +14,8 @@ const Top = React.createClass({
     return {
       userMessage: {},
       formData: {},
+        totalFee:null,
+        code:null,
     };
   },
   toggleMenu(){
@@ -31,6 +34,31 @@ const Top = React.createClass({
        }
      });
    },
+
+    componentWillReceiveProps(nextProps, nextState) {
+        this.fetch(nextProps.params);
+    },
+
+    fetch(params = {}) {
+        this.setState({
+            loading: true
+        });
+        Utils.ajaxData({
+            url: '/modules/manage/calls/outside/getTotalFee.htm',
+            data: params,
+
+            callback: (result) => {
+                console.log('result ===>'+ result.data),
+                    this.setState({
+                    loading: false,
+                    totalFee: result.data,
+                        code:result.code,
+
+                });
+            }
+        });
+    },
+
   signOut(e){ 
     let req = new XMLHttpRequest();
     req.open('POST', `/system/user/logout.htm`, true);
@@ -113,6 +141,10 @@ const Top = React.createClass({
     var me = this;
     var formData = this.state.formData;
      this.props.setRoleName(this.state.userMessage.rolename);
+     var style ={
+         color:this.state.totalFee < 5000 ? (this.state.totalFee < 0 ? "red":"yellow" ):"",
+         fontSize:'17px',
+      }
     var modalBtns = [
       <button key="back" type="button" className="ant-btn" onClick={this.handleCancel}>返 回</button>,
       <button key="button" type="button" className="ant-btn ant-btn-primary" loading={this.state.loading}
@@ -122,14 +154,14 @@ const Top = React.createClass({
     ];
     
      var userMessage = this.state.userMessage;
-    var roleList;
+      var roleList;
     if (userMessage.roleList) {
        roleList = userMessage.roleList.map((role) => {
          return <a key={role.id} onClick={this.handleClick.bind(this,role.id)}>{role.name}</a>
        });
      }
      var toggleRole = (<div> {roleList} </div>);
-    
+
     return (
       <div className="main-header">
         <div className="logo">
@@ -142,7 +174,10 @@ const Top = React.createClass({
           </a>
           <div className="navbar-custom-menu">
             <div className="fn-right right-block">
-              欢迎您，{ userMessage.name }
+
+
+                {this.state.code === 200 ? (this.state.totalFee < 5000 ? (this.state.totalFee < 0 ? <dev id="dev-warning" style={style}> 您的数据费用已经欠费，请联系商务充值，以免影响您的正常使用 </dev> :
+                    <dev style={style}>您的数据费用余额已经低于预警值，请联系商务尽快充值。 </dev>) : <dev> </dev>):<dev> </dev>}欢迎您，{ userMessage.name }
               <a onClick={this.signOut}>
                 <Icon type="logout"/> 注销
               </a>

@@ -1,10 +1,10 @@
 package com.xiji.cashloan.cl.mapper;
 
+import com.xiji.cashloan.cl.domain.ManualReviewOrder;
 import com.xiji.cashloan.cl.model.ManualReviewCountModel;
 import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
-import com.xiji.cashloan.cl.domain.ManualReviewOrder;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,15 @@ public interface ManualReviewOrderMapper extends BaseMapper<ManualReviewOrder, L
 
 
     int countOrder(Map<String, Object> params);
+
+    /**
+     *  当日审核通过数
+     * @param params
+     * @return
+     */
+    int countTodayPassOrder(Map<String, Object> params);
+
+    int countTodayLoanOrder(Map<String, Object> params);
 
     int countByTime(Map<String, Object> params);
 

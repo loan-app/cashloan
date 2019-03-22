@@ -13,6 +13,10 @@ export default React.createClass({
       loading: false,
       data: [],
       pagination: {},
+      pagination1:{
+          pageSize:5,
+          current:1
+      },
       canEdit: true,
       visible: false,
       visibleAdd: false,
@@ -122,7 +126,7 @@ export default React.createClass({
     var selectedRows = this.state.selectedRows;
     var selectedRowKeys = this.state.selectedRowKeys;
 
-    if (state == 40){
+    if (state == 20 || state == 30){
         this.setState({
             visibleAc: false,})
     }
@@ -181,12 +185,12 @@ export default React.createClass({
             },
             method: 'get',
             callback: (result) => {
-                const pagination = this.state.pagination;
-                pagination.current = result.current;
-                pagination.pageSize =result.pageSize;
-                pagination.total = result.page.total;
-                if (!pagination.current) {
-                    pagination.current = 1
+                const pagination1 = this.state.pagination1;
+                pagination1.current = result.current;
+                pagination1.pageSize =result.pageSize;
+                pagination1.total = result.page.total;
+                if (!pagination1.current) {
+                    pagination1.current = 1
                 };
                 //console.log(result.data.logs);
                 this.setState({
@@ -194,7 +198,7 @@ export default React.createClass({
                     canEdit: canEdit,
                     visibleRemark: true,
                     title: title,
-                    pagination:result.page,
+                    pagination1:result.page,
                     record:record
                 });
             }
@@ -211,6 +215,7 @@ export default React.createClass({
     
     let hasSelected = selectedRowKeys.length > 0;
     const rowSelection = {
+        selectedRowKeys,
        getCheckboxProps: record => ({
              disabled: record.state === "20" || record.state === "30" ,    // 配置无法勾选的列
         }),
@@ -277,7 +282,6 @@ export default React.createClass({
     },{
         title: '备注',
         render(text, record) {
-            console.log('record == >'+record.borrowUserId)
             return <div ><a href="#" onClick={me.showUserRemark.bind(me, '备注', record.borrowUserId, true)}>备注</a></div>
         }
     },{
@@ -295,7 +299,6 @@ export default React.createClass({
       }
     }];
     var state = this.state;
-      console.log(state);
     return (
       <div className="block-panel">
           <div className="actionBtns" style={{ marginBottom: 16 }}>
@@ -317,7 +320,7 @@ export default React.createClass({
              record={state.selectedrecord} dataRecord={state.dataRecord}  canEdit={state.canEdit} selectedRowKeys1={state.selectedRowKeys1} />
 
              <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
-                             dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination}/>
+                             dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination1}/>
       </div>
     );
   }

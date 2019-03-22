@@ -53,6 +53,16 @@ public class ManualReviewCountModel {
     private double allPassRatio;
 
     /**
+     * 今日审核通过订单数
+     */
+    private double todayPassOrderCount;
+
+    /**
+     * 今日放款订单数
+     */
+    private double todayLoanOrderCount;
+
+    /**
      *
      */
     private int yesterdayCount;
@@ -143,5 +153,21 @@ public class ManualReviewCountModel {
 
     public void setYesterdayCount(int yesterdayCount) {
         this.yesterdayCount = yesterdayCount;
+    }
+
+    public double getTodayPassOrderCount() {
+        return todayPassOrderCount;
+    }
+
+    public void setTodayPassOrderCount(double todayPassOrderCount) {
+        this.todayPassOrderCount = todayPassOrderCount;
+    }
+
+    public double getTodayLoanOrderCount() {
+        return todayLoanOrderCount;
+    }
+
+    public void setTodayLoanOrderCount(double todayLoanOrderCount) {
+        this.todayLoanOrderCount = todayLoanOrderCount;
     }
 }
