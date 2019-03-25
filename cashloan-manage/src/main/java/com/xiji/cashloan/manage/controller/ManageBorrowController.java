@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
@@ -264,11 +265,11 @@ public class ManageBorrowController extends ManageBaseController {
 				}
 				
 			}
-			params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		} else {
 			params = new HashMap<>();
-			params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
 		}
+		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+		params.put("agreeCompany", Global.getValue("pay_model_select"));
 		Page<ManageBorrowModel> page = clBorrowService.listBorrowModel(params,current,pageSize);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_DATA, page);
@@ -335,6 +336,7 @@ public class ManageBorrowController extends ManageBaseController {
 		Map<String,Object> params = new HashMap<>();
 		params.put("userId", userId);
 		params.put("type", BorrowRepayLogModel.REPAY_TYPE_CHARGE);
+		params.put("agreeCompany", Global.getValue("pay_model_select"));
 		Page<ManageBorrowModel> page = clBorrowService.listBorrowModel(params, current, pageSize);
 		
 		Map<String, Object> data = new HashMap<String, Object>();
