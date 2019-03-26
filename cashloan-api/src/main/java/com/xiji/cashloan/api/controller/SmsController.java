@@ -166,16 +166,16 @@ public class SmsController extends BaseController {
 	 */
 	@RequestMapping(value = "/api/user/h5SendSms.htm")
 	public void h5SendSms(){
-		String code = request.getParameter("code");
+		/*String code = request.getParameter("code");*/
 		String phone = request.getParameter("phone");
 		String type = request.getParameter("type");
 		long countDown = 0;
 		HttpSession session = request.getSession();  
-		String sessionCode = (String) session.getAttribute("code"); 
+		/*String sessionCode = (String) session.getAttribute("code"); */
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		String result = null;
-		if (StringUtil.isNotBlank(code) && code.length() == 4 && code.equals(sessionCode)) {
-			session.removeAttribute("code");
+		/*if (StringUtil.isNotBlank(code) && code.length() == 4 && code.equals(sessionCode)) {
+			session.removeAttribute("code");*/
 			
 			result = this.check(phone, type);
 			
@@ -214,10 +214,10 @@ public class SmsController extends BaseController {
 				resultMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 				resultMap.put(Constant.RESPONSE_CODE_MSG, result);
 			}*/
-		} else {
+		/*} else {
 			resultMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			resultMap.put(Constant.RESPONSE_CODE_MSG, "图片验证码错误");
-		}
+		}*/
 		
 		ServletUtils.writeToResponse(response,resultMap);
 	}

@@ -41,10 +41,10 @@
                  <%if(channelCode != null&&!channelCode.equals("")&&!channelCode.equals("null")){ %>
                 <div class='centerDiv'><input id='channelCode' name="channelCode" type="hidden" value="<%=channelCode%>" /></div>
                 <%} %>
-                <p class="picVerify clearfix">
-                    <input type="text" id="code" maxlength="4" name="code" placeholder="请输入图片验证码" />  
-                    <img id="imgObj" alt="验证码"  src="/api/h5/imgCode/generate.htm" onclick="changeImg()"/> 
-                </p>
+              <%--  <p class="picVerify clearfix">
+                    <input type="text" id="code" maxlength="4" name="code" placeholder="请输入图片验证码" />
+                    <img id="imgObj" alt="验证码"  src="/api/h5/imgCode/generate.htm" onclick="changeImg()"/>
+                </p>--%>
                 <p class="special clearfix">
                     <input name="vcode" type="text" value="" placeholder="请输入验证码" maxlength="4"/>
                     <button id="btn">获取验证码</button>
@@ -142,12 +142,12 @@
         }
         i++;
     } 
- // 刷新图片  
+/* // 刷新图片
     function changeImg() {  
         var imgSrc = $("#imgObj");  
         var times = (new Date()).getTime(); 
         imgSrc.attr("src", '/api/h5/imgCode/generate.htm?timestamp='+times);  
-    }
+    }*/
     //头部图片
     $('img').eq(0).attr('src',getInvite_img());
     //app下载地址
