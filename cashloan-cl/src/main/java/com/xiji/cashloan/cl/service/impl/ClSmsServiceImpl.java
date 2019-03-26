@@ -5,8 +5,17 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.*;
-import com.xiji.cashloan.cl.mapper.*;
+import com.xiji.cashloan.cl.domain.BorrowRepay;
+import com.xiji.cashloan.cl.domain.CallsOutSideFee;
+import com.xiji.cashloan.cl.domain.Sms;
+import com.xiji.cashloan.cl.domain.SmsTpl;
+import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
+import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
+import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.SmsMapper;
+import com.xiji.cashloan.cl.mapper.SmsTplMapper;
+import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.dsdata.SmsTkCreditRequest;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
@@ -64,8 +73,6 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
     private UrgeRepayOrderMapper urgeRepayOrderMapper;
     @Resource
     private UserBaseInfoMapper userBaseInfoMapper;
-    @Resource
-    private BankCardMapper bankCardMapper;
 	@Resource
     private CallsOutSideFeeMapper callsOutSideFeeMapper;
 	@Override
@@ -145,8 +152,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 						map.put("time", uro.getRepayTime());
 						map.put("overdueDay", uro.getPenaltyDay());
 						map.put("amercement", uro.getPenaltyAmout());
-						map.put("phone", uro.getPhone().subSequence(7, 11));	
-						
+						map.put("phone", uro.getPhone().subSequence(7, 11));
+
 						Map<String, Object> payload = new HashMap<>();
 						payload.put("mobile", uro.getPhone());
 				        payload.put("message", changeMessage("overdue",map));
@@ -250,7 +257,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			message = ret(smsType);
 			message = message
 					.replace("{$name}", StringUtil.isNull(map.get("name")))
-					.replace("{$appName}", StringUtil.isNull(map.get("appName")));
+					.replace("{$telephone}", StringUtil.isNull(map.get("telephone")));
 		}
 		if("delayPlan".equals(smsType)){
 			message = ret(smsType);
@@ -287,7 +294,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			message = ret("loanInform");
 		}else if ("repayInform".equals(code)) {
 			message = ret("repayInform");
-		}else if ("repayBefore".equals(code)) {
+		}else if ("repayBefore".equals(code)){
 			message = ret("repayBefore");
 		}
 		return message;
@@ -538,7 +545,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			if (tpl!=null) {
 				search = new HashMap<>();
 				search.put("name", baseInfo.getRealName());//姓名
-				search.put("appName", Global.getValue("appName"));
+				search.put("telephone", Global.getValue("telephone"));
 				Map<String, Object> payload = new HashMap<>();
 				payload.put("mobile",baseInfo.getPhone());
 				payload.put("message", changeMessage("repayBefore",search));

@@ -4,18 +4,16 @@ import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.ProfitAmount;
 import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.ProfitAmountService;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.ServiceException;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.model.UserBaseInfoModel;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
@@ -27,7 +25,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -82,45 +79,27 @@ public class QuartzProfit implements Job {
 					if(baseInfo != null && UserBaseInfoModel.USER_STATE_BLACK.equals(baseInfo.getState())){
 						continue;
 					}
-					String orderNo = OrderNoUtil.getSerialNumber();
-					Date date = DateUtil.getNow();
-					
-//					PaymentModel payment = new PaymentModel(orderNo);
-//					payment.setDt_order(DateUtil.dateStr3(date));
-//					if ("dev".equals(Global.getValue("app_environment"))) {
-//						payment.setMoney_order("0.01");
-//					} else {
-//						payment.setMoney_order(StringUtil.isNull(profitAmount.getNoCashed()));
-//					}
-//					payment.setAmount(profitAmount.getNoCashed());
-//					payment.setCard_no(bankCard.getCardNo());
-//					payment.setAcct_name(baseInfo.getRealName());
-//					payment.setInfo_order(profitAmount.getId() + "付款");
-//					payment.setMemo(profitAmount.getId() + "付款");
-//					payment.setNotify_url(Global.getValue("server_host") + "/pay/lianlian/profitNotify.htm");
-//
-//					LianLianHelper helper = new LianLianHelper();
-//					payment = (PaymentModel) helper.payment(payment);
-
-					PayforreqModel model = new PayforreqModel();
-					model.setMerdt(tool.util.DateUtil.dateStr7(date));
-					model.setOrderno(orderNo);
-					model.setAccntno(bankCard.getCardNo());
-					model.setAccntnm(baseInfo.getRealName());
-					if ("dev".equals(Global.getValue("app_environment"))) {
-						model.setAmt(AmtUtil.convertAmtToBranch(3.0));
-					} else {
-						model.setAmt(AmtUtil.convertAmtToBranch(profitAmount.getNoCashed()));
+					if (PayCommonHelper.isEmpty(bankCard)) {
+						logger.error("绑卡信息异常，请联系客户重新绑卡！userId:" +baseInfo.getUserId());
+						continue;
 					}
-					model.setMobile(bankCard.getPhone());
-					model.setEntseq(profitAmount.getId()+"付款");
-					model.setMemo(profitAmount.getId() + "付款");
-					model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
-					FuiouHelper fuiouHelper = new FuiouHelper();
-					PayforrspModel payResult = fuiouHelper.payment(model);
-					
+					Date date = DateUtil.getNow();
+
+					PaymentReqVo vo = new PaymentReqVo();
+					if ("dev".equals(Global.getValue("app_environment"))) {
+						vo.setAmount(3.0);
+					} else {
+						vo.setAmount(profitAmount.getNoCashed());
+					}
+					vo.setBankCardName(baseInfo.getRealName());
+					vo.setBankCardNo(bankCard.getCardNo());
+					vo.setBorrowOrderNo(profitAmount.getId()+"");
+					vo.setMobile(bankCard.getPhone());
+					vo.setShareKey(bankCard.getUserId());
+					PaymentResponseVo result = PayCommonUtil.payment(vo);
+
 					PayLog payLog = new PayLog();
-					payLog.setOrderNo(orderNo);
+					payLog.setOrderNo(result.getOrderNo());
 					payLog.setUserId(profitAmount.getUserId());
 					payLog.setAmount(profitAmount.getNoCashed());
 					payLog.setCardNo(bankCard.getCardNo());
@@ -128,20 +107,20 @@ public class QuartzProfit implements Job {
 					payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
 					payLog.setType(PayLogModel.TYPE_PAYMENT);
 					payLog.setScenes(PayLogModel.SCENES_PROFIT);
-					if (payResult.acceptSuccess() || payResult.success()) { //受理成功
+					if (PayCommonUtil.success(result.getStatus())) { //受理成功
 						payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-					} else if (payResult.error()) { // 疑似重复订单，待人工审核
+					} else if (PayCommonUtil.needCheck(result.getStatus())) { // 疑似重复订单，待人工审核
 						payLog.setState(PayLogModel.STATE_PENDING_REVIEW);
 //					payLog.setConfirmCode(payment.getConfirm_code());
 						payLog.setUpdateTime(com.xiji.cashloan.core.common.util.DateUtil.getNow());
 					} else {
-						BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), fuiouHelper.getRemark(payResult));
+						BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), result.getMessage());
 						payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
 						payLog.setUpdateTime(com.xiji.cashloan.core.common.util.DateUtil.getNow());
 					}
 
-					payLog.setCode(payResult.getRet());
-					payLog.setRemark(fuiouHelper.getRemark(payResult));
+					payLog.setCode(result.getStatusCode());
+					payLog.setRemark(result.getMessage());
 					payLog.setPayReqTime(date);
 					payLog.setCreateTime(DateUtil.getNow());
 					payLogService.save(payLog);

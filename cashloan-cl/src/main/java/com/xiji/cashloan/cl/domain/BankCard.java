@@ -52,7 +52,10 @@ import java.util.Date;
 	 * 签约协议编号
 	 */
 	private String agreeNo;
-	
+	/**
+	 * 签约协议公司
+	 */
+	private String agreeCompany;
 
 	/**
 	 * 获取主键Id
@@ -184,6 +187,12 @@ import java.util.Date;
 	public void setAgreeNo(String agreeNo) {
 		this.agreeNo = agreeNo;
 	}
-    
 
+	public String getAgreeCompany() {
+		return agreeCompany;
+	}
+
+	public void setAgreeCompany(String agreeCompany) {
+		this.agreeCompany = agreeCompany;
+	}
 }

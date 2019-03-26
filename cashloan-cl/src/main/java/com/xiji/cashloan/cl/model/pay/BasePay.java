@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.model.pay.fuiou.util;
+package com.xiji.cashloan.cl.model.pay;
 
 import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.service.PayReqLogService;

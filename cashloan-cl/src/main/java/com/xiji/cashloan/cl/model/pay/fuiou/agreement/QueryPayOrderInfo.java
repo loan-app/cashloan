@@ -1,16 +1,14 @@
 package com.xiji.cashloan.cl.model.pay.fuiou.agreement;
 
+import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+
 /**
  * @Auther: king
  * @Date: 2018/12/4 14:06
  * @Description:
  */
 public class QueryPayOrderInfo {
-    public static String PAY_SUCCESS = "1";
-    public static String PAY_PROCESSING = "2";
-    public static String PAY_FAIL = "3";
-    public static String PAY_ERROR = "4";
-    private String code = PAY_ERROR;//1支付成功、2支付处理中、3其他失败状态、4查询异常
+    private String code = PayConstant.QUERY_PAY_ERROR;//1支付成功、2支付处理中、3其他失败状态、4查询异常
     private String msg;
     private String orderNo;
 

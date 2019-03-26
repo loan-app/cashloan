@@ -7,12 +7,11 @@ import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
 import com.xiji.cashloan.cl.mapper.PayLogMapper;
 import com.xiji.cashloan.cl.model.ManagePayLogModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransrspModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentQueryResponseVo;
 import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.util.fuiou.FuiouDateUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
@@ -105,16 +104,12 @@ public class PayLogServiceImpl extends BaseServiceImpl<PayLog, Long> implements 
 	public Map<String, Object> checkPay(Long id) {
 		PayLog payLog = payLogMapper.findByPrimary(id);
 		Map<String, Object> checkMap = new HashedMap();
-		QrytransreqModel model = new QrytransreqModel();
-		model.setOrderno(payLog.getOrderNo());
-		model.setVer(FuiouConstant.DAIFU_PAYFOR_VERSION);
-		model.setBusicd(FuiouConstant.DAIFU_PAYFOR_DAIFU_TYPE);
-		model.setStartdt(FuiouDateUtil.getDate(14));
-		model.setEnddt(FuiouDateUtil.getDate(1));
-		FuiouHelper fuiouHelper = new FuiouHelper();
-		QrytransrspModel result = fuiouHelper.queryPayment(model);
-		if (result != null) {
-			if (StringUtil.equalsIgnoreCase(result.getRet(), FuiouConstant.DAIFU_RESPONSE_NO_SENDREQ_CODE)) {
+		PaymentQueryVo vo = new PaymentQueryVo();
+		vo.setOrderNo(payLog.getOrderNo());
+		vo.setShareKey(payLog.getUserId());
+		PaymentQueryResponseVo responseVo = PayCommonUtil.queryPayment(vo);
+		if (responseVo != null) {
+			if (StringUtil.equalsIgnoreCase(responseVo.getStatus(), PayConstant.STATUS_PAYQUERY_NO_REQ)) {
 				checkMap.put("msg", "没有查询到交易请求");
 				Map<String, Object> paramMap = new HashMap<>();
 				paramMap.put("id", id);

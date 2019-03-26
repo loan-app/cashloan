@@ -24,15 +24,6 @@ import com.xiji.cashloan.core.service.UserBaseInfoService;
 import com.xiji.cashloan.rc.model.TppBusinessModel;
 import com.xiji.cashloan.rc.service.SceneBusinessLogService;
 import credit.ApiSignUtil;
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +35,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 借款申请风控接口执行记录
@@ -225,7 +226,7 @@ public class ClBorrowController extends BaseController {
 			@RequestParam(value="amount") double amount,
 			@RequestParam(value="timeLimit") String timeLimit,
 			@RequestParam(value="tradePwd") String tradePwd,
-			@RequestParam(value="cardId") long cardId,
+			@RequestParam(value="cardId",required=false) Long cardId,
 			@RequestParam(value="client") String client,
 			@RequestParam(value="address",required=false) String address,
 			@RequestParam(value="coordinate",required=false) String coordinate,
@@ -244,6 +245,13 @@ public class ClBorrowController extends BaseController {
 			xwldFlag = Boolean.FALSE;
 		}
 		Map<String,Object> result = new HashMap<String,Object>();
+
+		if (cardId == null || cardId == 0){
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "请重新绑定银行卡");
+			ServletUtils.writeToResponse(response,result);
+			return;
+		}
 		Borrow borrow = new Borrow(userId, amount, timeLimit, cardId, client, address, coordinate,ip);
 		ClBorrowModel borrowModel = clBorrowService.rcBorrowApply(borrow, tradePwd, mobileType, xwldFlag);
 		if(borrowModel.isNeedApprove()){

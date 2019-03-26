@@ -14,6 +14,6 @@ import com.xiji.cashloan.cl.domain.BorrowOperatorLog;
 @RDBatisDao
 public interface BorrowOperatorLogMapper extends BaseMapper<BorrowOperatorLog, Long> {
 
-    
+
 
 }

@@ -7,27 +7,26 @@ import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.ManageBRepayLogModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QueryPayOrderInfo;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayLogService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.IpUtil;
 import com.xiji.cashloan.core.common.util.JsonUtil;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
@@ -40,6 +39,7 @@ import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import javax.annotation.Resource;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -124,49 +124,35 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		Borrow borrow = clBorrowService.getById(borrowRepayLog.getBorrowId());
 
 		Date date = DateUtil.getNow();
-		String orderNo = OrderNoUtil.getSerialNumber();
 		if (borrow.getFee() < NumberUtils.toDouble(amount)) {
 			Map<String,Object> result = new HashMap<String, Object>();
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "付款金额超过综合服务费了，请调整支付金额！");
 			ServletUtils.writeToResponse(response, result);
 		}
-//		PaymentModel payment = new PaymentModel(orderNo);
-//		payment.setDt_order(DateUtil.dateStr3(date));
-//		if ("dev".equals(Global.getValue("app_environment"))) {
-//			payment.setMoney_order("0.01");
-//		} else {
-//			payment.setMoney_order(amount);
-//		}
-//		payment.setAmount(NumberUtil.getDouble(amount));
-//
-//		payment.setCard_no(bankCard.getCardNo());
-//		payment.setAcct_name(baseInfo.getRealName());
-//		payment.setInfo_order(borrow.getOrderNo() + "付款");
-//		payment.setMemo(borrow.getOrderNo() + "付款");
-//		payment.setNotify_url(Global.getValue("server_host") + "/pay/lianlian/refundNotify.htm");
-//		LianLianHelper helper = new LianLianHelper();
-//		payment = (PaymentModel) helper.payment(payment);
-
-		PayforreqModel model = new PayforreqModel();
-		model.setMerdt(tool.util.DateUtil.dateStr7(date));
-		model.setOrderno(orderNo);
-		model.setAccntno(bankCard.getCardNo());
-		model.setAccntnm(baseInfo.getRealName());
-		if ("dev".equals(Global.getValue("app_environment"))) {
-			model.setAmt(AmtUtil.convertAmtToBranch(3.0));
-		} else {
-			model.setAmt(AmtUtil.convertAmtToBranch(amount));
+		if (PayCommonHelper.isEmpty(bankCard)) {
+			Map<String,Object> result = new HashMap<String, Object>();
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡");
+			ServletUtils.writeToResponse(response, result);
 		}
-		model.setMobile(bankCard.getPhone());
-		model.setEntseq(borrow.getOrderNo());//借款号
-		model.setMemo(borrow.getOrderNo() + "付款");
-		model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
-		FuiouHelper fuiouHelper = new FuiouHelper();
-		PayforrspModel payResult = fuiouHelper.payment(model);
+
+		PaymentReqVo vo = new PaymentReqVo();
+		if ("dev".equals(Global.getValue("app_environment"))) {
+			vo.setAmount(3.0);
+		} else {
+			vo.setAmount(NumberUtils.toDouble(amount));
+		}
+		vo.setBankCardName(baseInfo.getRealName());
+		vo.setBankCardNo(bankCard.getCardNo());
+		vo.setBorrowId(borrow.getId());
+		vo.setBorrowOrderNo(borrow.getOrderNo());
+		vo.setMobile(bankCard.getPhone());
+		vo.setShareKey(bankCard.getUserId());
+		PaymentResponseVo result = PayCommonUtil.payment(vo);
 
 		PayLog payLog = new PayLog();
-		payLog.setOrderNo(orderNo);
+		payLog.setOrderNo(result.getOrderNo());
 		payLog.setUserId(borrow.getUserId());
 		payLog.setBorrowId(borrow.getId());
 		payLog.setAmount(NumberUtil.getDouble(amount));
@@ -176,28 +162,28 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		payLog.setType(PayLogModel.TYPE_PAYMENT);
 		payLog.setScenes(PayLogModel.SCENES_REFUND);
 
-		if (payResult.acceptSuccess() || payResult.success()) { //受理成功
+		if (PayCommonUtil.success(result.getStatus())) { //受理成功
 			payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-		} else if (payResult.error()) { // 接口调用异常，待人工审核
+		} else if (PayCommonUtil.needCheck(result.getStatus())) {  // 接口调用异常，待人工审核
 			payLog.setState(PayLogModel.STATE_PENDING_REVIEW);
 //					payLog.setConfirmCode(payment.getConfirm_code());
 			payLog.setUpdateTime(DateUtil.getNow());
 		} else {
-			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), fuiouHelper.getRemark(payResult));
+			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), result.getMessage());
 			payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
 			payLog.setUpdateTime(DateUtil.getNow());
 		}
 
-		payLog.setCode(payResult.getRet());
-		payLog.setRemark(fuiouHelper.getRemark(payResult));
+		payLog.setCode(result.getStatusCode());
+		payLog.setRemark(result.getMessage());
 		payLog.setPayReqTime(date);
 		payLog.setCreateTime(DateUtil.getNow());
 		payLogService.save(payLog);
 		
-		Map<String,Object> result = new HashMap<String, Object>();
-		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-		result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-		ServletUtils.writeToResponse(response, result);
+		Map<String,Object> resultMap = new HashMap<String, Object>();
+		resultMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		resultMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+		ServletUtils.writeToResponse(response, resultMap);
 	}
 	
 	
@@ -224,13 +210,16 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		payLogMap.put("type", PayLogModel.TYPE_COLLECT);
 		payLogMap.put("scenes",PayLogModel.SCENES_DEDUCTION);
 		PayLog deductionLog = payLogService.findLatestOne(payLogMap);
-		FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
 		// 订单存在并不是支付失败记录
 		if (null != deductionLog
 				&& !PayLogModel.STATE_PAYMENT_FAILED.equals(deductionLog.getState())) {
-			QueryPayOrderInfo payOrderInfo = payHelper.queryPayInfo(deductionLog);
+			RepaymentQueryVo vo = new RepaymentQueryVo();
+			vo.setOrderNo(deductionLog.getOrderNo());
+			vo.setPayPlatNo(deductionLog.getPayOrderNo());
+			vo.setShareKey(deductionLog.getUserId());
+			RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 
-			if (StringUtil.equals(payOrderInfo.getCode(),QueryPayOrderInfo.PAY_SUCCESS)) {
+			if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_SUCCESS)) {
 				// 更新订单状态
 				deductionLog.setState(PayLogModel.STATE_PAYMENT_SUCCESS);
 				deductionLog.setUpdateTime(DateUtil.getNow());
@@ -239,37 +228,40 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		}
 		logger.info("进行补扣代扣" + amount);
 		Date payReqTime = DateUtil.getNow();
-		String orderNo = OrderNoUtil.getSerialNumber();
-		OrderXmlBeanReq beanReq = new OrderXmlBeanReq();
-		beanReq.setUserId(user.getUuid());
-		beanReq.setUserIp(IpUtil.getLocalIp());
-		beanReq.setType("03");
-		beanReq.setMchntOrderId(orderNo);
-		if ("dev".equals(Global.getValue("app_environment"))) {
-			beanReq.setAmt(AmtUtil.convertAmtToBranch("0.01"));
-		} else {
-			beanReq.setAmt(AmtUtil.convertAmtToBranch(amount));
+
+		if (PayCommonHelper.isEmpty(bankCard)) {
+			Map<String,Object> result = new HashMap<String, Object>();
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡");
+			ServletUtils.writeToResponse(response, result);
 		}
 
-		beanReq.setProtocolNo(bankCard.getAgreeNo());
-		beanReq.setNeedSendMsg("0");
-		beanReq.setBackUrl(Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
-		beanReq.setRem1("还款" + borrow.getOrderNo());
-		beanReq.setRem2("repayment_" + borrow.getOrderNo());
-		String key = Global.getValue("fuiou_protocol_mchntcd_key");
-		OrderXmlBeanResp resp = payHelper.repayment(beanReq);
+		RepaymentReqVo vo = new RepaymentReqVo();
+		if ("dev".equals(Global.getValue("app_environment"))) {
+			vo.setAmount(0.2);
+		} else {
+			vo.setAmount(NumberUtils.toDouble(amount));
+		}
+
+		vo.setIp(IpUtil.getLocalIp());
+		vo.setUserId(user.getUuid());
+		vo.setProtocolNo(bankCard.getAgreeNo());
+		vo.setBorrowOrderNo(borrow.getOrderNo());
+		vo.setRemark("还款" + borrow.getOrderNo());
+		vo.setRemark2("repayment_" + borrow.getOrderNo());
+		vo.setTerminalId(UUID.randomUUID().toString());
+		vo.setTerminalType("OTHER");
+		vo.setShareKey(bankCard.getUserId());
+		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
+
 		String payMsg = "";
 		String payOrderNo = "";
-		if (resp.checkSign(key)) {
-			payMsg = resp.getResponseMsg();
-			if (resp.checkReturn() && StringUtil.isNotEmpty(resp.getOrderId())) {
-				payMsg = resp.getOrderId()+"|" + payMsg;
-			}
-			payOrderNo = resp.getOrderId();
+		if (PayCommonUtil.success(responseVo.getStatus())) {
+			payOrderNo = responseVo.getOrderNo();
 		}
 
 		PayLog payLog = new PayLog();
-		payLog.setOrderNo(orderNo);
+		payLog.setOrderNo(responseVo.getOrderNo());
 		if (StringUtil.isNotEmpty(payOrderNo)) {
 			payLog.setPayOrderNo(payOrderNo);
 		}

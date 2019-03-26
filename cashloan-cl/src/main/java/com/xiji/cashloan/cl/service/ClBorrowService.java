@@ -166,8 +166,8 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @param remark
 	 * @return 
 	 */
-	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack);
-	
+	int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount);
+
 	/**
 	 * 借款部分还款信息
 	 * @param params
@@ -318,6 +318,13 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
      * @return
      */
 	List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name);
+
+	/**
+	 * 审核不通过拉回
+	 * @param borrowId
+	 * @return
+	 */
+	int comeBackBorrow(long borrowId);
 
 	/**
 	 * 线下放款

@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.fuiou.mpay.encrypt.DESCoderFUIOU;
 import com.fuiou.mpay.encrypt.RSAUtils;
 import com.fuiou.util.MD5;
-import com.xiji.cashloan.cl.domain.PayLog;
+import com.xiji.cashloan.cl.model.pay.BasePay;
+import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
@@ -497,47 +499,47 @@ public class FuiouAgreementPayHelper extends BasePay {
         return sign;
     }
 
-    public QueryPayOrderInfo queryPayInfo(PayLog payLog) {
+    public QueryPayOrderInfo queryPayInfo(RepaymentQueryVo vo) {
         QueryPayOrderInfo orderInfo = new QueryPayOrderInfo();
-        if (payLog == null) {
+        if (vo == null) {
             return orderInfo;
         }
         String key = Global.getValue("fuiou_protocol_mchntcd_key");
         //优先使用支付号查询
-        if (StringUtil.isNotEmpty(payLog.getPayOrderNo())) {
+        if (StringUtil.isNotEmpty(vo.getPayPlatNo())) {
             QryByFuiouOrderReq beanReq = new QryByFuiouOrderReq();
-            beanReq.setOrderId(payLog.getPayOrderNo());
+            beanReq.setOrderId(vo.getPayPlatNo());
             QryByFuiouOrderResp resp = queryOrderId(beanReq);
 
             if (resp.checkSign(key)) {
                 if (StringUtil.equals(FuiouConstant.PROTOCOL_QUERYORDERID_PAYSUCCESS, resp.getRcd())) {
-                    orderInfo.setCode(QueryPayOrderInfo.PAY_SUCCESS);
+                    orderInfo.setCode(PayConstant.QUERY_PAY_SUCCESS);
                 } else if (StringUtil.equals(FuiouConstant.PROTOCOL_QUERYORDERID_PAYING, resp.getRcd())) {
-                    orderInfo.setCode(QueryPayOrderInfo.PAY_PROCESSING);
+                    orderInfo.setCode(PayConstant.QUERY_PAY_PROCESSING);
                 } else {
-                    orderInfo.setCode(QueryPayOrderInfo.PAY_FAIL);
+                    orderInfo.setCode(PayConstant.QUERY_PAY_FAIL);
                 }
                 orderInfo.setMsg(resp.getrDesc());
             } else {
-                orderInfo.setCode(QueryPayOrderInfo.PAY_ERROR);
+                orderInfo.setCode(PayConstant.QUERY_PAY_ERROR);
             }
-        }else  if (StringUtil.isNotEmpty(payLog.getOrderNo())) {
+        }else  if (StringUtil.isNotEmpty(vo.getOrderNo())) {
             OrderQryByMSsn beanreq = new OrderQryByMSsn();
-            beanreq.setMchntOrderId(payLog.getOrderNo());
+            beanreq.setMchntOrderId(vo.getOrderNo());
 
             OrderQryResp resp = checkResult(beanreq);
 
             if (resp.checkSign(key)){
                 if (StringUtil.equals(FuiouConstant.RESPONSE_SUCCESS_CODE, resp.getResponseCode())) {
-                    orderInfo.setCode(QueryPayOrderInfo.PAY_SUCCESS);
+                    orderInfo.setCode(PayConstant.QUERY_PAY_SUCCESS);
                 } else if (StringUtil.equals(FuiouConstant.RESPONSE_PAY_PROCESSING, resp.getResponseCode())) {
-                    orderInfo.setCode(QueryPayOrderInfo.PAY_PROCESSING);
+                    orderInfo.setCode(PayConstant.QUERY_PAY_PROCESSING);
                 } else {
-                    orderInfo.setCode(QueryPayOrderInfo.PAY_FAIL);
+                    orderInfo.setCode(PayConstant.QUERY_PAY_FAIL);
                 }
                 orderInfo.setMsg(resp.getResponseMsg());
             }else {
-                orderInfo.setCode(QueryPayOrderInfo.PAY_ERROR);
+                orderInfo.setCode(PayConstant.QUERY_PAY_ERROR);
             }
         }
         return orderInfo;

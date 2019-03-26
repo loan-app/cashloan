@@ -101,6 +101,15 @@ public class SysRoleServiceImpl extends BaseServiceImpl implements SysRoleServic
 	}
 
 	@Override
+	public SysRole getRoleByNid(String nid) throws ServiceException {
+		try {
+			return sysRoleMapper.getRoleByNid(nid);
+		} catch (Exception e) {
+			throw new ServiceException(e.getMessage(),e,Constant.FAIL_CODE_VALUE);
+		}
+	}
+
+	@Override
 	public List<SysRole> getList(Map<String, Object> paramMap) {
 		return sysRoleMapper.listSelective(paramMap);
 	}

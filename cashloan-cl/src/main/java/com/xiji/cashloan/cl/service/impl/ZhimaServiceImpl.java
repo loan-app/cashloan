@@ -1,14 +1,7 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import com.xiji.cashloan.cl.domain.Zhima;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
+import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.mapper.ZhimaMapper;
 import com.xiji.cashloan.cl.model.UserAuthModel;
@@ -17,20 +10,23 @@ import com.xiji.cashloan.cl.model.zmxy.authorize.AuthCallBackResp;
 import com.xiji.cashloan.cl.model.zmxy.base.ZmQueryCreator;
 import com.xiji.cashloan.cl.model.zmxy.creditScore.ZmScoreQuery;
 import com.xiji.cashloan.cl.model.zmxy.creditScore.ZmScoreResp;
-import com.xiji.cashloan.cl.service.ZhimaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import tool.util.DateUtil;
-
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
+import com.xiji.cashloan.cl.service.ZhimaService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tool.util.DateUtil;
 
 /**
  *
@@ -53,7 +49,7 @@ public class ZhimaServiceImpl extends BaseServiceImpl<Zhima, Long> implements Zh
     private UserBaseInfoMapper userBaseinfoMapper;
     
     @Resource
-    private BankCardMapper bankCardMapper;
+    private BankCardManage bankCardManage;
     
 	@Override
 	public BaseMapper<Zhima, Long> getMapper() {

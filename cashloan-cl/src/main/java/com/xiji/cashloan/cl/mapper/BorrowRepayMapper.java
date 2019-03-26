@@ -39,6 +39,11 @@ public interface BorrowRepayMapper extends BaseMapper<BorrowRepay,Long> {
 	 */
 	int updateLate(BorrowRepay data);
 	/**
+	 * 修改还款金额
+	 * @param paramMap
+	 */
+	int updateRepayAmount(Map<String, Object> paramMap);
+	/**
 	 * 
 	 * @param paramMap
 	 */

@@ -264,7 +264,7 @@
         from cl_borrow
         <include refid="searchBy"/>
     </select>
-    
+
     <update id="reviewState"  parameterType="java.util.HashMap">
         update cl_borrow
           <set>
@@ -272,7 +272,25 @@
                 state = #{state,jdbcType=VARCHAR},
             </if>
             <if test="remark != null and remark != '' ">        
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null and amount != '' ">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="realAmount != null and realAmount != '' ">
+                real_amount = #{realAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null and fee != '' ">
+                fee = #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee != null and serviceFee != '' ">
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="infoAuthFee != null and infoAuthFee != '' ">
+                info_auth_fee = #{infoAuthFee,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null and interest != '' ">
+                interest = #{interest,jdbcType=DECIMAL}
             </if>
         </set>    
         where id = #{id ,jdbcType=BIGINT} AND state = 22
@@ -375,8 +393,8 @@
                 and r.channel_id = #{channelID,jdbcType=BIGINT}
             </if>
             <if test="again != null and again != ''">
-            and b.again = #{again,jdbcType=BIGINT}
-        </if>
+                and b.again = #{again,jdbcType=BIGINT}
+            </if>
         </trim>
     </sql>
     
@@ -444,7 +462,16 @@
         </choose>
         on l.borrow_id=b.id
         left join cl_user r on r.id=b.user_id
-        left join cl_bank_card card on u.user_id = card.user_id
+        left join
+        <choose>
+            <when test="agreeCompany !=null and agreeCompany != ''">
+                (select * from cl_bank_card where agree_company = #{agreeCompany,jdbcType=VARCHAR}) card
+            </when>
+            <otherwise>
+                cl_bank_card card
+            </otherwise>
+        </choose>
+        on u.user_id = card.user_id
 		<include refid="searchModelBy" />
 		ORDER BY b.create_time DESC
 	</select>

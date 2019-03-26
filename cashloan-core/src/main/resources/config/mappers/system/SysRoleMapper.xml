@@ -171,7 +171,15 @@
  	  where
  	  id = #{id}
  	</delete>
- 	
+
+    <select id="getRoleByNid" parameterType="String" resultMap="roleResult">
+        select
+        <include refid="searchSql" />
+        from arc_sys_role
+        where
+        nid = #{nid}
+    </select>
+
  	<select id="getRolePageList" parameterType="java.util.HashMap" resultMap="roleResult">
 		select
 			<include refid="searchSql" />
@@ -179,7 +187,7 @@
 		<include refid="searchByPo" />
 		order by id asc
 	</select>
-	
+
  	<select id="getRolecount" parameterType="java.util.HashMap" resultType="int">
 		select count(1)  
 		from arc_sys_role

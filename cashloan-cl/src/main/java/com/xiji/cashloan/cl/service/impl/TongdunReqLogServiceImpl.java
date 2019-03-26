@@ -1,26 +1,5 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import javax.annotation.Resource;
-
-import com.xiji.cashloan.cl.model.TongdunReqLogModel;
-import com.xiji.cashloan.cl.model.tongdun.model.PreloanApplyModel;
-import com.xiji.cashloan.cl.model.tongdun.sdk.PreloanReportResponse;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.TongdunReqLogService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
@@ -31,7 +10,7 @@ import com.xiji.cashloan.cl.domain.TongdunRespDetail;
 import com.xiji.cashloan.cl.domain.UserAuth;
 import com.xiji.cashloan.cl.domain.UserEmerContacts;
 import com.xiji.cashloan.cl.domain.UserEquipmentInfo;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
+import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
 import com.xiji.cashloan.cl.mapper.TongdunReqLogMapper;
 import com.xiji.cashloan.cl.mapper.TongdunRespDetailMapper;
@@ -39,8 +18,13 @@ import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.mapper.UserContactsMapper;
 import com.xiji.cashloan.cl.mapper.UserEmerContactsMapper;
 import com.xiji.cashloan.cl.mapper.UserEquipmentInfoMapper;
+import com.xiji.cashloan.cl.model.TongdunReqLogModel;
 import com.xiji.cashloan.cl.model.tongdun.PreloanApi;
+import com.xiji.cashloan.cl.model.tongdun.model.PreloanApplyModel;
+import com.xiji.cashloan.cl.model.tongdun.sdk.PreloanReportResponse;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.TongdunReqLogService;
 import com.xiji.cashloan.core.common.exception.BaseRuntimeException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
@@ -55,6 +39,19 @@ import com.xiji.cashloan.core.mapper.UserMapper;
 import com.xiji.cashloan.core.mapper.UserOtherInfoMapper;
 import com.xiji.cashloan.rc.domain.TppBusiness;
 import com.xiji.cashloan.rc.mapper.TppBusinessMapper;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import javax.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -82,7 +79,7 @@ public class TongdunReqLogServiceImpl extends
 	@Resource
 	private ClBorrowMapper clBorrowMapper;
 	@Resource
-	private BankCardMapper bankCardMapper;
+	private BankCardManage bankCardManage;
 	@Resource
 	private UserAuthMapper userAuthMapper;
 	@Resource
@@ -325,7 +322,7 @@ public class TongdunReqLogServiceImpl extends
 		//银行卡信息
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("userId", userId);
-		BankCard card = bankCardMapper.findSelective(paramMap);
+		BankCard card = bankCardManage.findSelective(paramMap);
 		if (card != null) {
 			model.setCard_number(card.getCardNo());
 		}

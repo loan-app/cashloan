@@ -4,25 +4,27 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.*;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.CreditConstant;
 import com.xiji.cashloan.cl.util.OcrConstant;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
 import com.xiji.cashloan.core.common.exception.SimpleMessageException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
-import com.xiji.cashloan.core.common.util.*;
+import com.xiji.cashloan.core.common.util.DateUtil;
+import com.xiji.cashloan.core.common.util.NidGenerator;
+import com.xiji.cashloan.core.common.util.ShardTableUtil;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
@@ -88,7 +90,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Resource
 	private BorrowRepayLogMapper borrowRepayLogMapper;
 	@Resource
-	private BankCardMapper bankCardMapper;
+	private BankCardManage bankCardManage;
 	@Resource
 	private UserInviteMapper userInviteMapper;
 	@Resource
@@ -417,12 +419,18 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				isPwd = true;
 			}
 			result.put("isPwd", isPwd);
-			
-			BankCard bc = bankCardMapper.findByUserId(user.getId());
+
+			Map<String, Object> bankParam = new HashMap<String, Object>();
+			bankParam.put("userId",user.getId());
+			BankCard bc = bankCardManage.findByUserId(bankParam);
 			if (bc != null) {
 				result.put("cardId", bc.getId());
 				result.put("cardNo", bc.getCardNo());
 				result.put("cardName", bc.getBank());
+			}else {
+				result.put("cardId", 0);
+				result.put("cardName", "");
+				result.put("cardNo", "");
 			}
 			
 			count = clBorrowMapper.successCount(user.getId());
@@ -1258,7 +1266,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 //			public void run() {
 //				Map<String, Object> bankCardMap = new HashMap<String, Object>();
 //				bankCardMap.put("userId", borrow.getUserId());
-//				BankCard bankCard = bankCardMapper.findSelective(bankCardMap);
+//				BankCard bankCard = bankCardManage.findSelective(bankCardMap);
 //
 //				UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
 //				String orderNo = OrderNoUtil.getSerialNumber();
@@ -1382,34 +1390,36 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			public void run() {
 				Map<String, Object> bankCardMap = new HashMap<String, Object>();
 				bankCardMap.put("userId", borrow.getUserId());
-				BankCard bankCard = bankCardMapper.findSelective(bankCardMap);
+				BankCard bankCard = bankCardManage.findSelective(bankCardMap);
 
 				UserBaseInfo baseInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
-				String orderNo = OrderNoUtil.getSerialNumber();
-				PayforreqModel model = new PayforreqModel();
-				model.setMerdt(tool.util.DateUtil.dateStr7(new Date()));
-				model.setOrderno(orderNo);
-				model.setAccntno(bankCard.getCardNo());
-				model.setAccntnm(baseInfo.getRealName());
-				if ("dev".equals(Global.getValue("app_environment"))) {
-					model.setAmt(AmtUtil.convertAmtToBranch(3.0));
-				} else {
-					model.setAmt(AmtUtil.convertAmtToBranch(borrow.getRealAmount()));
-				}
-				model.setMobile(bankCard.getPhone());
-				model.setEntseq(borrow.getOrderNo());//借款号
-				model.setMemo(borrow.getOrderNo() + "付款");
-				model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
+
 				boolean flag  = judge(borrow.getId());
 				if(!flag){
 					logger.error("放款支付终止，存在待支付或者待审核状态或者支付成功的支付记录，借款id："+borrow.getId());
+					clBorrowMapper.updateState(BorrowModel.STATE_REPAY_FAIL ,borrow.getId());
 					return;
 				}
-				FuiouHelper fuiouHelper = new FuiouHelper();
-				PayforrspModel result = fuiouHelper.payment(model);
-
+				if(bankCard == null){
+					logger.error("放款支付终止，绑卡信息为空，请通知用户重新绑卡："+borrow.getId());
+					clBorrowMapper.updateState(BorrowModel.STATE_REPAY_FAIL ,borrow.getId());
+					return;
+				}
+				PaymentReqVo vo = new PaymentReqVo();
+				if ("dev".equals(Global.getValue("app_environment"))) {
+					vo.setAmount(3.0);
+				} else {
+					vo.setAmount(borrow.getRealAmount());
+				}
+				vo.setBankCardName(baseInfo.getRealName());
+				vo.setBankCardNo(bankCard.getCardNo());
+				vo.setBorrowId(borrow.getId());
+				vo.setBorrowOrderNo(borrow.getOrderNo());
+				vo.setMobile(bankCard.getPhone());
+				vo.setShareKey(bankCard.getUserId());
+				PaymentResponseVo result = PayCommonUtil.payment(vo);
 				PayLog payLog = new PayLog();
-				payLog.setOrderNo(model.getOrderno());
+				payLog.setOrderNo(result.getOrderNo());
 				payLog.setUserId(borrow.getUserId());
 				payLog.setBorrowId(borrow.getId());
 				payLog.setAmount(borrow.getRealAmount());
@@ -1419,21 +1429,21 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				payLog.setType(PayLogModel.TYPE_PAYMENT);
 				payLog.setScenes(PayLogModel.SCENES_LOANS);
 
-				if (result.acceptSuccess() || result.success()) { //受理成功
+				if (PayCommonUtil.success(result.getStatus())) { //受理成功
 					payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-				} else if (result.error()) { // 疑似重复订单，待人工审核
+				} else if (PayCommonUtil.needCheck(result.getStatus())) { // 疑似重复订单，待人工审核
 					payLog.setState(PayLogModel.STATE_PENDING_REVIEW);
 //					payLog.setConfirmCode(payment.getConfirm_code());
 					payLog.setUpdateTime(DateUtil.getNow());
 				} else {
-					BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), fuiouHelper.getRemark(result));
+					BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), result.getMessage());
 					payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
 					payLog.setUpdateTime(DateUtil.getNow());
 
 					clBorrowMapper.updateState(BorrowModel.STATE_REPAY_FAIL ,borrow.getId());
 				}
-
-				payLog.setRemark(fuiouHelper.getRemark(result));
+				payLog.setCode(result.getStatusCode());
+				payLog.setRemark(result.getMessage());
 				payLog.setPayReqTime(date);
 				payLog.setCreateTime(DateUtil.getNow());
 				payLogMapper.save(payLog);
@@ -1529,7 +1539,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 人工复审
 	 */
 	@Override
-	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack) {
+	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 
@@ -1538,14 +1548,52 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				logger.error("人工复审失败,当前状态不是待人工复审");
 				throw new BussinessException("复审失败,当前状态不是待人工复审");
 			}
-			Map<String,Object> map = new HashMap<>();
+			Map<String,Object> map = new HashMap<String, Object>();
+            Double fee = Double.parseDouble(Global.getValue("fee"));
 			map.put("id", borrowId);
 			map.put("state", state);   
 			map.put("remark", remark);
-			code = clBorrowMapper.reviewState(map);
-			if (code!=1) {
-				throw new BussinessException("复审失败,当前状态不是待人工复审");
-			}
+            map.put("amount", amount);
+            map.put("realAmount",amount*(1-fee));
+            map.put("fee",amount*fee);
+            map.put("serviceFee",amount*fee*0.5);
+            map.put("infoAuthFee",amount*fee*0.4);
+            map.put("interest",amount*fee*0.1);
+            Map<String, Object> creditMap = new HashMap<String, Object>();
+            creditMap.put("consumerNo", borrow.getUserId());
+            Credit credit = creditMapper.findSelective(creditMap);
+            if(credit!=null) {
+                if (amount >=0&&amount <= credit.getTotal()) {
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("consumerNo", borrow.getUserId());
+                    params.put("used",amount);
+                    params.put("unuse",credit.getTotal()-amount);
+                    int result = creditMapper.updateTotal(params);
+                    if (result != 1) {
+                        throw new BussinessException("修改借款额度失败");
+                    }
+                    code = clBorrowMapper.reviewState(map);
+                    if (code != 1) {
+                        throw new BussinessException("人工复审失败");
+                    }
+                } else if(amount > credit.getTotal()){
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("consumerNo", borrow.getUserId());
+                    params.put("total",credit.getTotal()+(amount-credit.getTotal()));
+                    params.put("used",amount);
+                    params.put("unuse",credit.getTotal()+(amount-credit.getTotal())-amount);
+                    int result = creditMapper.updateTotal(params);
+                    if (result != 1) {
+                        throw new BussinessException("修改借款额度失败");
+                    }
+                    code = clBorrowMapper.reviewState(map);
+                    if (code != 1) {
+                        throw new BussinessException("人工复审失败");
+                    }
+                }else {
+					throw new BussinessException("借款金额不能为负数");
+				}
+            }
 			savePressState(borrow, state,"");
 			//更新审核表
 			map.put("userId", userId);
@@ -1556,7 +1604,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if(StringUtil.isNotBlank(remark)) {
 				UserRemark userRemark = new UserRemark();
 				userRemark.setCreateTime(new Date());
-				userRemark.setOperateTime(new Date());
+ 				userRemark.setOperateTime(new Date());
 				userRemark.setRemark(remark);
 				userRemark.setOperateId(userId);
 				userRemark.setUserId(borrow.getUserId());
@@ -2487,6 +2535,39 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 		}
 		return yixinShareModels;
+	}
+
+	@Override
+	public int comeBackBorrow(long borrowId) {
+        Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+
+        UserBaseInfo userInfo = userBaseInfoService.findByUserId(borrow.getUserId());
+
+        if (userInfo==null){
+            logger.info("该订单没有对应的用户信息.");
+            return 0;
+        }
+        int result=0;
+        if ("21".equals(borrow.getState())){
+             result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_AUTO_REFUSED);
+
+        } else if ("27".equals(borrow.getState())){
+
+             result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_REFUSED);
+        }
+		logger.info("审核不通过(自动审核不通过,人工复审不通过),拉回重审,返回结果result: "+result);
+		if(result == 1){
+			//插入人工审核订单表
+			manualReviewOrderMapper.save(getManualReviewOrder(borrowId, userInfo));
+			//信用额度修改
+            modifyCredit(borrow.getUserId(), borrow.getAmount(), "used");
+            //添加借款进度
+			savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,"");
+
+			return 1;
+		}
+
+		return 0;
 	}
 
 	private Map<String,Object> getFeeMap(double fee){

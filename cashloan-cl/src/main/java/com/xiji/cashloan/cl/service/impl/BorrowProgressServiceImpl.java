@@ -5,8 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.mapper.*;
-import com.xiji.cashloan.cl.model.*;
+import com.xiji.cashloan.cl.manage.BankCardManage;
+import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
+import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
+import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
+import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
+import com.xiji.cashloan.cl.model.BorrowRepayModel;
+import com.xiji.cashloan.cl.model.ClBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowModel;
+import com.xiji.cashloan.cl.model.ManageBorrowProgressModel;
 import com.xiji.cashloan.cl.service.BorrowProgressService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -14,6 +22,13 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,10 +37,6 @@ import tool.util.BigDecimalUtil;
 import tool.util.DateUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
-
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 
 /**
@@ -56,7 +67,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
     @Resource
     private BorrowRepayLogMapper borrowRepayLogMapper;
     @Resource
-    private BankCardMapper bankCardMapper;
+    private BankCardManage bankCardManage;
     @Resource
 	private UserBaseInfoMapper userBaseInfoMapper;
     
@@ -93,8 +104,8 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 		}
 		searchMap.clear();
 		searchMap.put("userId", borrow.getUserId());
-		BankCard card = bankCardMapper.findSelective(searchMap);
-		if(StringUtil.isNotBlank(searchMap)){
+		BankCard card = bankCardManage.findSelective(searchMap);
+		if(StringUtil.isNotBlank(searchMap) && card != null){
 			clBorrowModel.setCardNo(card.getCardNo());
 			clBorrowModel.setBank(card.getBank());
 			if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
@@ -125,7 +136,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 			//存在还款计划时，才需要展示展期信息
 			if (repayDate != null) {
 				Map<String,Object> delayItem = new HashMap<>();
-				if(StringUtil.isNotBlank(searchMap)){
+				if(StringUtil.isNotBlank(searchMap) && card != null){
 					if (StringUtil.isNotEmpty(card.getBank()) && StringUtil.isNotEmpty(card.getCardNo())) {
 						delayItem.put("bankMsg",card.getBank()+"("+card.getCardNo().substring(card.getCardNo().length() - 4)+")");
 					}

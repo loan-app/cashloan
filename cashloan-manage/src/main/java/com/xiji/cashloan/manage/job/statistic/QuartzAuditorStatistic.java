@@ -61,7 +61,7 @@ public class QuartzAuditorStatistic implements Job {
             auditorStatisticData.setCreateTime(new Date());
             auditorStatisticDataService.insert(auditorStatisticData);
         }
-        return "成功统计了"+auditorStatisticDataList.size()+"天审核人员数据报表";
+        return "成功统计了"+auditorStatisticDataList.size()+"条审核人员数据报表";
     }
 
     @Override

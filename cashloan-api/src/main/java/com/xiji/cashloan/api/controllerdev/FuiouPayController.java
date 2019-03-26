@@ -1,29 +1,26 @@
 package com.xiji.cashloan.api.controllerdev;
 
 import com.alibaba.fastjson.JSON;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryByMSsn;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderQryResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QryByFuiouOrderReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QryByFuiouOrderResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransreqModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.payfor.QrytransrspModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouHelper;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
-import com.xiji.cashloan.cl.util.fuiou.FuiouDateUtil;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.UnbindCardVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.UnbindCardResponseVo;
 import com.xiji.cashloan.core.common.context.Global;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
-import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import java.io.IOException;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +31,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import tool.util.DateUtil;
+import tool.util.StringUtil;
 
 /**
  * @Auther: king
@@ -49,49 +46,25 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/bindMsg.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void bindMsg(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            String version = "1.0";
-            String mchntSsn = req.getParameter("mchntssn");
-            String tradeDate = req.getParameter("tradedate");
-            String mchntcd = req.getParameter("mchntcd");
-            String key = req.getParameter("key");
             String userid = req.getParameter("userid");
             String account = req.getParameter("account");
             String cardNo = req.getParameter("cardno");
-            String idType = req.getParameter("idtype");
             String idCard = req.getParameter("idcard");
             String mobileNo = req.getParameter("mobileno");
-            String cvn = req.getParameter("cvn");
-            String exp = req.getParameter("exp");
-            String cvn2 = "";
-//            if(cvn != null && !"".equals(cvn.trim())&& exp!=null && !"".equals(exp.trim())){
-//                cvn2 = RSAUtils.encryptByPublicKey(cvn+";"+exp, Constants.FUIOU_PUB_KEY);
-//            }
+            String sharekey = req.getParameter("shareKey");
 
-            BindXmlBeanReq beanReq = new BindXmlBeanReq();
-            beanReq.setVersion(version);
-            if (StringUtil.isEmpty(tradeDate)) {
-                beanReq.setTradeDate(DateUtil.dateStr7(new Date()));
-            } else {
-                beanReq.setTradeDate(tradeDate);
+            BindCardMsgVo vo = new BindCardMsgVo();
+            vo.setUserId(userid);
+            vo.setBankCardNo(cardNo);
+            vo.setBankCardName(account);
+            vo.setIdCard(idCard);
+            vo.setMobile(mobileNo);
+            if (StringUtil.isNotEmpty(sharekey)) {
+                vo.setShareKey(NumberUtils.toLong(sharekey));
             }
-            if (StringUtil.isEmpty(mchntSsn)) {
-                beanReq.setMchntSsn(OrderNoUtil.getSerialNumber());
-            } else {
-                beanReq.setMchntSsn(mchntSsn);
-            }
+            BindCardMsgResponseVo responseVo = PayCommonUtil.bindMsg(vo);
 
-            beanReq.setMchntCd(mchntcd);
-            beanReq.setUserId(userid);
-            beanReq.setAccount(account);
-            beanReq.setCardNo(cardNo);
-            beanReq.setIdType(idType);
-            beanReq.setIdCard(idCard);
-            beanReq.setMobileNo(mobileNo);
-//            beanReq.setMchntSsn(mchntSsn);
-            beanReq.setCvn(cvn2);
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            BindXmlBeanResp bindXmlBeanResp = payHelper.bindMsg(beanReq);
-            String result = JSON.toJSONString(bindXmlBeanResp);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
@@ -105,36 +78,25 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/bindCommit.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void bindCommit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            String version = "1.0";
-            String mchntSsn = req.getParameter("mchntssn");
-            String tradeDate = req.getParameter("tradedate");
-            String mchntcd = req.getParameter("mchntcd");
+            String mchntcd = req.getParameter("mchntssn");
             String userid = req.getParameter("userid");
             String account = req.getParameter("account");
             String cardNo = req.getParameter("cardno");
             String idType = req.getParameter("idtype");
             String idCard = req.getParameter("idcard");
             String mobileNo = req.getParameter("mobileno");
-            String cvn = req.getParameter("cvn");
             String msgcode = req.getParameter("msgcode");
 
-            BindXmlBeanReq beanReq = new BindXmlBeanReq();
-            beanReq.setVersion(version);
-            beanReq.setTradeDate(tradeDate);
-            beanReq.setMchntCd(mchntcd);
-            beanReq.setUserId(userid);
-            beanReq.setAccount(account);
-            beanReq.setCardNo(cardNo);
-            beanReq.setIdType(idType);
-            beanReq.setIdCard(idCard);
-            beanReq.setMobileNo(mobileNo);
-            beanReq.setMchntSsn(mchntSsn);
-            beanReq.setCvn(cvn);
-            beanReq.setMsgCode(msgcode);
-
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            BindXmlBeanResp bindXmlBeanResp = payHelper.bindCommit(beanReq);
-            String result = JSON.toJSONString(bindXmlBeanResp);
+            BindCardMsgVo vo = new BindCardMsgVo();
+            vo.setUserId(userid);
+            vo.setBankCardNo(cardNo);
+            vo.setBankCardName(account);
+            vo.setIdCard(idCard);
+            vo.setMobile(mobileNo);
+            vo.setMsgCode(msgcode);
+            vo.setOrderNo(mchntcd);
+            BindCardMsgResponseVo responseVo = PayCommonUtil.bindCommit(vo);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
@@ -150,14 +112,11 @@ public class FuiouPayController extends BaseController {
         try {
             String userid = req.getParameter("userid");
             String protocolno = req.getParameter("protocolno");
-
-            BindXmlBeanReq beanReq = new BindXmlBeanReq();
-            beanReq.setUserId(userid);
-            beanReq.setProtocolNo(protocolno);
-
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            BindXmlBeanResp bindXmlBeanResp = payHelper.unbind(beanReq);
-            String result = JSON.toJSONString(bindXmlBeanResp);
+            UnbindCardVo vo = new UnbindCardVo();
+            vo.setProtocolNo(protocolno);
+            vo.setUserId(userid);
+            UnbindCardResponseVo responseVo = PayCommonUtil.unbind(vo);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
@@ -171,11 +130,10 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/bindQuery.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void bindQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            BindXmlBeanReq beanReq = new BindXmlBeanReq();
-            beanReq.setUserId(req.getParameter("userid"));
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            BindXmlBeanResp bindXmlBeanResp = payHelper.bindQuery(beanReq);
-            String result = JSON.toJSONString(bindXmlBeanResp);
+            BindCardQueryVo vo = new BindCardQueryVo();
+            vo.setUserId(req.getParameter("userid"));
+            BindCardQueryResponseVo responseVo = PayCommonUtil.bindCardQuery(vo);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
@@ -206,33 +164,25 @@ public class FuiouPayController extends BaseController {
             String exp = req.getParameter("exp");
             String cvn2 = "";
 
-            OrderXmlBeanReq beanReq = new OrderXmlBeanReq();
-            beanReq.setVersion(version);
-            beanReq.setType(type);
-            beanReq.setMchntOrderId(mchntorderid);
-            beanReq.setUserId(userid);
-            beanReq.setAmt(amt);
-            beanReq.setProtocolNo(protocolno);
-            beanReq.setCvn(cvn2);
-            beanReq.setBackUrl(backurl);
-            beanReq.setRem1(rem1);
-            beanReq.setRem2(rem2);
-            beanReq.setRem3(rem3);
-            beanReq.setOrderAliveTime(orderalivetime);
-            beanReq.setUserIp(userip);
             String result = "";
-//            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-//            OrderXmlBeanResp orderXmlBeanResp = payHelper.repayment(beanReq);
-//            result = JSON.toJSONString(orderXmlBeanResp);
-//            logger.info(result);
-//            resp.setContentType("application/json");
-//            resp.setCharacterEncoding("utf8");
-//            String key = Global.getValue("fuiou_protocol_mchntcd_key");
-//            if (orderXmlBeanResp.checkSign(key)) {
-//                resp.getOutputStream().write(result.getBytes("utf8"));
-//            }else {
-                resp.getOutputStream().write(("sign异常|"+result).getBytes("utf8"));
-//            }
+
+            RepaymentReqVo vo = new RepaymentReqVo();
+            vo.setAmount(NumberUtils.toDouble(amt));
+            vo.setIp(userip);
+            vo.setUserId(userid);
+            vo.setProtocolNo(protocolno);
+            vo.setBorrowOrderNo("borrowId");
+            vo.setRemark("还款");
+            vo.setTerminalId("xyz-id");
+            vo.setTerminalType("OTHER");
+//            vo.setShareKey();
+            RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
+
+            result = JSON.toJSONString(responseVo);
+            logger.info(result);
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("utf8");
+            resp.getOutputStream().write(result.getBytes("utf8"));
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             resp.getOutputStream().write(e.getMessage().getBytes("utf8"));
@@ -241,20 +191,15 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/orderQry.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void orderQry(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            QryByFuiouOrderReq beanReq = new QryByFuiouOrderReq();
-            beanReq.setOrderId(req.getParameter("orderId"));
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            QryByFuiouOrderResp bindXmlBeanResp = payHelper.queryOrderId(beanReq);
-            String result = JSON.toJSONString(bindXmlBeanResp);
+            RepaymentQueryVo vo = new RepaymentQueryVo();
+            vo.setPayPlatNo(req.getParameter("orderId"));
+            RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
             String key = Global.getValue("fuiou_protocol_mchntcd_key");
-            if (bindXmlBeanResp.checkSign(key)) {
-                resp.getOutputStream().write(result.getBytes("utf8"));
-            }else {
-                resp.getOutputStream().write(("sign异常|"+result).getBytes("utf8"));
-            }
+            resp.getOutputStream().write(result.getBytes("utf8"));
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             resp.getOutputStream().write(e.getMessage().getBytes("utf8"));
@@ -263,34 +208,16 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/checkResult.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void checkResult(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            String version = req.getParameter("version");
-            String mchntCd = req.getParameter("mchntCd");
-            String mchntKey = req.getParameter("mchntKey");
             String mchntOrderId = req.getParameter("mchntOrderId");
-            String rem1 = req.getParameter("rem1");
-            String rem2 = req.getParameter("rem2");
-            String rem3 = req.getParameter("rem3");
-
-            OrderQryByMSsn data = new OrderQryByMSsn();
-            data.setMchntCd(mchntCd);
-            data.setMchntOrderId(mchntOrderId);
-            data.setRem1(rem1);
-            data.setRem2(rem2);
-            data.setRem3(rem3);
-            data.setVersion(version);
-
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            OrderQryResp bindXmlBeanResp = payHelper.checkResult(data);
-            String result = JSON.toJSONString(bindXmlBeanResp);
+            RepaymentQueryVo vo = new RepaymentQueryVo();
+            vo.setOrderNo(mchntOrderId);
+            RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
             String key = Global.getValue("fuiou_protocol_mchntcd_key");
-            if (bindXmlBeanResp.checkSign(key)) {
-                resp.getOutputStream().write(result.getBytes("utf8"));
-            }else {
-                resp.getOutputStream().write(("sign异常|"+result).getBytes("utf8"));
-            }
+            resp.getOutputStream().write(result.getBytes("utf8"));
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             resp.getOutputStream().write(e.getMessage().getBytes("utf8"));
@@ -300,21 +227,14 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/cardBinQuery.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void cardBinQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            BankCardReq beanreq = new BankCardReq();
-            beanreq.setOno(req.getParameter("cardNo"));
-
-            FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-            BankCardResp bankCardResp = payHelper.cardBinQuery(beanreq);
-            String result = JSON.toJSONString(bankCardResp);
+            CardBinQueryVo vo = new CardBinQueryVo();
+            vo.setBankCardNo(req.getParameter("cardNo"));
+            CardBinQueryResponseVo responseVo = PayCommonUtil.queryCardBin(vo);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
-            String key = Global.getValue("fuiou_protocol_mchntcd_key");
-            if (bankCardResp.checkSign(key)) {
-                resp.getOutputStream().write(result.getBytes("utf8"));
-            }else {
-                resp.getOutputStream().write(("sign异常|"+result).getBytes("utf8"));
-            }
+            resp.getOutputStream().write(result.getBytes("utf8"));
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             resp.getOutputStream().write(e.getMessage().getBytes("utf8"));
@@ -324,16 +244,17 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/payQuery.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void payQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            QrytransreqModel model = new QrytransreqModel();
-            model.setOrderno(req.getParameter("orderId"));
-            model.setVer(FuiouConstant.DAIFU_PAYFOR_VERSION);
-            model.setBusicd(FuiouConstant.DAIFU_PAYFOR_DAIFU_TYPE);
-            model.setStartdt(FuiouDateUtil.getDate(NumberUtils.toInt(req.getParameter("startdt"),2)));
-            model.setEnddt(FuiouDateUtil.getDate(NumberUtils.toInt(req.getParameter("enddt"),1)));
+//            QrytransreqModel model = new QrytransreqModel();
+//            model.setOrderno(req.getParameter("orderId"));
+//            model.setVer(FuiouConstant.DAIFU_PAYFOR_VERSION);
+//            model.setBusicd(FuiouConstant.DAIFU_PAYFOR_DAIFU_TYPE);
+//            model.setStartdt(FuiouDateUtil.getDate(NumberUtils.toInt(req.getParameter("startdt"),2)));
+//            model.setEnddt(FuiouDateUtil.getDate(NumberUtils.toInt(req.getParameter("enddt"),1)));
+            PaymentQueryVo vo = new PaymentQueryVo();
+            vo.setOrderNo(req.getParameter("orderId"));
+            PaymentQueryResponseVo responseVo = PayCommonUtil.queryPayment(vo);
 
-            FuiouHelper fuiouHelper = new FuiouHelper();
-            QrytransrspModel qrytransrspModel = fuiouHelper.queryPayment(model);
-            String result = JSON.toJSONString(qrytransrspModel);
+            String result = JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");
@@ -347,23 +268,33 @@ public class FuiouPayController extends BaseController {
     @RequestMapping(value = "/fuiou/payCommit.htm",method = {RequestMethod.POST, RequestMethod.GET})
     public void payCommit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            String orderNo = OrderNoUtil.getSerialNumber();
-            PayforreqModel model = new PayforreqModel();
-            model.setMerdt(DateUtil.dateStr7(new Date()));
-            model.setVer(FuiouConstant.DAIFU_PAYFOR_VERSION);
-            model.setAmt(AmtUtil.convertAmtToBranch(req.getParameter("amt")));
-            model.setAccntno(req.getParameter("accntno"));
-            model.setAccntnm(req.getParameter("accntnm"));
-            model.setEntseq(req.getParameter("entseq"));
-            model.setMemo(req.getParameter("memo"));
-            model.setMobile(req.getParameter("mobile"));
-            model.setOrderno(orderNo);
-            model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
+//            String orderNo = OrderNoUtil.getSerialNumber();
+//            PayforreqModel model = new PayforreqModel();
+//            model.setMerdt(DateUtil.dateStr7(new Date()));
+//            model.setVer(FuiouConstant.DAIFU_PAYFOR_VERSION);
+//            model.setAmt(AmtUtil.convertAmtToBranch(req.getParameter("amt")));
+//            model.setAccntno(req.getParameter("accntno"));
+//            model.setAccntnm(req.getParameter("accntnm"));
+//            model.setEntseq(req.getParameter("entseq"));
+//            model.setMemo(req.getParameter("memo"));
+//            model.setMobile(req.getParameter("mobile"));
+//            model.setOrderno(orderNo);
+//            model.setAddDesc(FuiouConstant.DAIFU_PAYFOR_ADDDESC);
 
-            FuiouHelper fuiouHelper = new FuiouHelper();
+            PaymentReqVo vo = new PaymentReqVo();
+            double am = NumberUtils.toDouble(req.getParameter("amt"));
+            if (am > 10) {
+                am = 10.0;
+            }
+            vo.setAmount(am);
+            vo.setBankCardName(req.getParameter("accntnm"));
+            vo.setBankCardNo(req.getParameter("accntno"));
+            vo.setBorrowOrderNo("borrowid");
+            vo.setMobile(req.getParameter("mobile"));
+            PaymentResponseVo responseVo = PayCommonUtil.payment(vo);
+
             String result = "";
-//            PayforrspModel qrytransrspModel = fuiouHelper.payment(model);
-//            result = orderNo+"|"+JSON.toJSONString(qrytransrspModel);
+            result = responseVo.getOrderNo()+"|"+JSON.toJSONString(responseVo);
             logger.info(result);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("utf8");

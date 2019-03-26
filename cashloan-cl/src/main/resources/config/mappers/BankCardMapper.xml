@@ -11,12 +11,13 @@
         <result column="bank" property="bank" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="agree_no" property="agreeNo" jdbcType="VARCHAR" />
-        
+        <result column="agree_company" property="agreeCompany" jdbcType="VARCHAR" />
+
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,card_no,bind_time,user_id,bank,phone,agree_no 
+        id,card_no,bind_time,user_id,bank,phone,agree_no,agree_company
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -43,12 +44,15 @@
             <if test="agreeNo != null and agreeNo != ''">
                 and agree_no = #{agreeNo,jdbcType=VARCHAR}
             </if>
+            <if test="agreeCompany != null and agreeCompany != ''">
+                and agree_company = #{agreeCompany,jdbcType=VARCHAR}
+            </if>
         </trim>
     </sql>
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.BankCard">
-        insert into cl_bank_card(card_no,bind_time,user_id,bank,phone,agree_no)values(#{cardNo,jdbcType=VARCHAR},#{bindTime,jdbcType=TIMESTAMP},#{userId,jdbcType=BIGINT},#{bank,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{agreeNo,jdbcType=VARCHAR})
+        insert into cl_bank_card(card_no,bind_time,user_id,bank,phone,agree_no,agree_company)values(#{cardNo,jdbcType=VARCHAR},#{bindTime,jdbcType=TIMESTAMP},#{userId,jdbcType=BIGINT},#{bank,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{agreeNo,jdbcType=VARCHAR},#{agreeCompany,jdbcType=VARCHAR})
     </insert>
 
     
@@ -59,7 +63,8 @@
             user_id = #{userId,jdbcType=BIGINT},
             bank = #{bank,jdbcType=VARCHAR},
             phone = #{phone,jdbcType=VARCHAR},
-            agree_no = #{agreeNo,jdbcType=VARCHAR}
+            agree_no = #{agreeNo,jdbcType=VARCHAR},
+            agree_company = #{agreeCompany,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -83,8 +88,11 @@
                 phone = #{phone,jdbcType=VARCHAR},           
             </if>
             <if test="agreeNo != null and agreeNo != ''">
-                agree_no = #{agreeNo,jdbcType=VARCHAR}
+                agree_no = #{agreeNo,jdbcType=VARCHAR},
             </if>
+              <if test="agreeCompany != null and agreeCompany != ''">
+                 agree_company = #{agreeCompany,jdbcType=VARCHAR}
+              </if>
         </set>    
         where id = #{id ,jdbcType=INTEGER}
     </update>
@@ -97,11 +105,11 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     
-    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
         <include refid="Base_Column_List" />
         from cl_bank_card
-        where user_id = #{userId,jdbcType=BIGINT}
+        where user_id = #{userId,jdbcType=BIGINT} and agree_company = #{agreeCompany,jdbcType=VARCHAR}
     </select>
 
 	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">

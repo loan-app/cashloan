@@ -9,6 +9,8 @@ import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
 import com.xiji.cashloan.cl.service.ChannelService;
+import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
@@ -84,6 +86,15 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		Page<ChannelModel> page = (Page<ChannelModel>) channelMapper
 				.page(searchMap);
 		return page;
+	}
+
+	@Override
+	public Channel getChannelByCode(String code) throws ServiceException {
+		try {
+			return channelMapper.getChannelByCode(code);
+		} catch (Exception e) {
+			throw new ServiceException(e.getMessage(),e,Constant.FAIL_CODE_VALUE);
+		}
 	}
 
 	@Override

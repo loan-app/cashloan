@@ -1,3 +1,32 @@
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付代付地址', 'helipay_transfer_url', 'http://test.trx.helipay.com/trx/transfer/interface.action', '1', '合利支付代付地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付快捷支付', 'helipay_quickpay_api_url', 'http://test.trx.helipay.com/trx/quickPayApi/interface.action', '1', '合利支付快捷支付', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付商务号', 'helipay_customer_no', 'C1800000002', '1', '合利支付商务号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付rsakey', 'helipay_transfer_sign_key', 'MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAM+PcQN9JmrYJ+sKwI9kmBLAsBS6HHDT2Sgkh8BYbyTKovSMQat1II6l42HhUH6lr7bXwnRUw8I4qrNBZjz4cWZBi+vgkSL/1f1M/erW27t61DobvpgDpZQTtmQ7IDsiLuY7C7We+WwaBcddnju74ij3FPWCpgYBHGwdv5wwzRxdAgMBAAECgYBAzSreiPsujm/gDQpTeneUGz6eKgDpJOr+gnEzlyiUFwPLT+LM0hOpFZepHnxQHhB/CFu4kCJSB/kbYAa4cGSOlPo8zBLCfNajClZMLaKMAIb+0TmYNAnVcadC/4fXibzAW0zRS2/OK4H7wWUVEYyC66m+ieBaH5Jt/72+e6aYTQJBAPjjhGanLk22ml8i5+MzN94RBQStbGNxI6xtBXoKEIB2W/INPddZ877e7tknh+fVvctTZlE4Q5V1TT2ZL4wzke8CQQDVfaE9Cbc+aeg3Mb+Ap64tCK4WTHhWzHySN7VGTLdeF41ZjqTrIS7SSQyZOPOt/lMfFgXO0EnSdCqL+aexXFJzAkBeHyxi5bZNDVEzyS+IbEYkZKtRKYRj1tV2z4PSsxuqeRgsYXWRiyLye7w3wwtSUTKFQfTfojdsvf+H2/ZvPtFhAkAMygfctjZKAOIuXEaSmHjwrbJwF4il+n4D7F5ppbLeah7HnKn4g/ZgFowwqZ6/b5rfI9yZNRUXDGp4FC6di2BNAkB572zRbBT5Ot9mx9xVg6g/t0s3+LLEs1LBFEWQatRR9oC6qUzGNKTnZ/d5254ngnYXSRaQEZT698cJQV7kvmg4', '1', '合利支付RSAKEY', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付开关', 'helipay_switch', '1', '1', '合利支付开关', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付md5key', 'helipay_daifu_md5_key', 'Vx977zHtKzoMkb3vZjxLzVvNHg1469cO', '1', '合利支付md5key', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付cert', 'helipay_cert_name', 'helipay.cer', '1', '合利支付cert', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付pfx', 'helipay_pfx_name', 'C1800000002.pfx', '1', '合利支付pfx', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '合利支付pwd', 'helipay_pfx_pwd', 'qwer1234', '1', '合利支付pwd', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '支付公司选择', 'pay_model_select', 'fuiou', '1', '支付公司选择，fuiou,helipay', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '支付测试指定userid和公司', 'pay_model_test', '', '1', '支付测试指定userid和公司：1=helipay', '1');
+alter table cl_bank_card add column `agree_company` varchar(32) DEFAULT '' COMMENT '签约协议公司，fuiou或者helipay';
+update cl_bank_card set agree_company = 'fuiou';
+CREATE TABLE `k_bank_card_bin` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `name` varchar(128) NOT NULL DEFAULT '' COMMENT '分行名称',
+  `bank_code` varchar(32) NOT NULL DEFAULT '' COMMENT '银行编码',
+  `bank_name` varchar(128) NOT NULL DEFAULT '' COMMENT '银行名称',
+  `card_name` varchar(128) NOT NULL DEFAULT '' COMMENT '卡名称',
+  `card_type` varchar(24) NOT NULL DEFAULT '' COMMENT '卡类型，借记卡，准贷记卡，贷记卡等',
+  `card_bin` varchar(24) NOT NULL DEFAULT '' COMMENT '卡bin',
+  `bin_len` tinyint(4) NOT NULL DEFAULT '6' COMMENT '卡bin长度',
+  `card_len` tinyint(4) NOT NULL DEFAULT '0' COMMENT '卡长度',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `yn` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否有效：1-有效;0-无效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED COMMENT='卡bin信息';
+
 -- 添加token获取地址，2018-11-16
 INSERT INTO `arc_sys_config` VALUES (null, 70, 'token', 'token_apihost', 'https://api.dsdatas.com/credit/api/token', 1, '获取token的host', 1);
 
@@ -767,7 +796,7 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 INSERT INTO `arc_sys_role` VALUES (null, '渠道', 'QuDao',  '2019-01-01 00:00:00', 'system', '2019-01-01 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
 
 -- 新增到期提醒短信模板
-INSERT INTO `cl_sms_tpl` VALUES ('7', 'repayBefore', '到期提醒', '{$name}先生/女士，{$appName}账单处理一下，避免联系亲朋好友，麻烦及时联系客服处理！', 'SMS0678041320', '10');
+INSERT INTO `cl_sms_tpl` VALUES ('7', 'repayBefore', '到期提醒', '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理', 'SMS0678041320', '10');
 
 -- 到期提醒定时任务
 INSERT INTO `cl_quartz_info` VALUES (null, '到期提醒', 'doRepayInform', '0 0 10 * * ?', 'com.xiji.cashloan.manage.job.QuartzRepayInform', '0', '0', '10', '2019-03-04 00:00:00');
@@ -857,3 +886,10 @@ ALTER TABLE cl_decision add column `yd_score` int(11)  default 0 COMMENT '评估
 
 -- 添加渠道统计放款数
  ALTER table cl_channel_statistic_data add `expire_load_count` int(11) NOT NULL DEFAULT '0' COMMENT '当日到期放款数';
+
+-- 线上线下放还款金额
+alter table cl_load_statistic_data add `online_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '线上放款本金';
+alter table cl_load_statistic_data add `unline_load_principal` decimal(10,2) DEFAULT '0.00' COMMENT '线下放款本金';
+
+alter table cl_repayment_statistic_data add `online_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线上还款金额';
+alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线下还款金额';

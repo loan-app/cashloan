@@ -55,7 +55,7 @@ var Lookdetails = React.createClass({
         onOk: function () {
           Utils.ajaxData({
             url: '/modules/manage/borrow/verifyBorrow.htm',
-            data: { borrowId: record.borrowId, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark,isBlack :params.state1 == "0" ? "20" :params.isBlack},
+            data: { borrowId: record.borrowId, state: params.state1 == "0"?"":params.state1,type:params.state1 == "0"?"1":"", remark: params.remark,isBlack :params.state1 == "0" ? "20" :params.isBlack,amount:params.amount},
             callback: (result) => {
               if (result.code == 200) {
                 me.handleCancel();
@@ -135,7 +135,6 @@ var Lookdetails = React.createClass({
           {/*<TabPane tab="规则报告" key='2'>*/}
           {/*<RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>*/}
           {/*</TabPane>*/}
-
         </Tabs>
         <ManualReviewForm ref="ManualReviewForm" canEdit={props.canEdit} title={props.title}/>
       </Modal>

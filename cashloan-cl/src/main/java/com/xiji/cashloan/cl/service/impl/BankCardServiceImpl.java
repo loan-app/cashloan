@@ -1,10 +1,10 @@
 package com.xiji.cashloan.cl.service.impl;
 
 import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.mapper.BankCardMapper;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
+import com.xiji.cashloan.cl.manage.BankCardManage;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.UnbindCardVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.UnbindCardResponseVo;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
@@ -13,7 +13,6 @@ import com.xiji.cashloan.core.mapper.UserMapper;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,19 +39,19 @@ public class BankCardServiceImpl extends BaseServiceImpl<BankCard, Long> impleme
 	private static final Logger logger = LoggerFactory.getLogger(BankCardServiceImpl.class);
    
     @Resource
-    private BankCardMapper bankCardMapper;
+    private BankCardManage bankCardManage;
     
     @Resource
     private UserMapper userMapper;
     
 	@Override
 	public BaseMapper<BankCard, Long> getMapper() {
-		return bankCardMapper;
+		return bankCardManage;
 	}
 
 	@Override
 	public boolean save(BankCard bankCard) {
-		int result = bankCardMapper.save(bankCard);
+		int result = bankCardManage.save(bankCard);
 		if (result > 0) {
 			return true;
 		}
@@ -64,7 +63,7 @@ public class BankCardServiceImpl extends BaseServiceImpl<BankCard, Long> impleme
 		try {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("userId", userId);
-			return bankCardMapper.findSelective(paramMap);
+			return bankCardManage.findSelective(paramMap);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
@@ -73,7 +72,7 @@ public class BankCardServiceImpl extends BaseServiceImpl<BankCard, Long> impleme
 
 	@Override
 	public BankCard findSelective(Map<String, Object> paramMap) {
-		return bankCardMapper.findSelective(paramMap);
+		return bankCardManage.findSelective(paramMap);
 	}
 
 	@Override
@@ -81,26 +80,26 @@ public class BankCardServiceImpl extends BaseServiceImpl<BankCard, Long> impleme
 		int result;
 		// 查询用户并解约
 		User user  = userMapper.findByPrimary(card.getUserId());
-		BindXmlBeanResp resp = null;
+		UnbindCardResponseVo responseVo = null;
 		if(null != user && StringUtil.isNotBlank(card.getAgreeNo())){
-			BindXmlBeanReq beanReq = new BindXmlBeanReq();
-			beanReq.setUserId(user.getUuid());
-			beanReq.setProtocolNo(card.getAgreeNo());
-			FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-			resp = payHelper.unbind(beanReq);
+			UnbindCardVo vo = new UnbindCardVo();
+			vo.setProtocolNo(card.getAgreeNo());
+			vo.setUserId(user.getUuid());
+			vo.setShareKey(card.getUserId());
+			responseVo = PayCommonUtil.unbind(vo);
 		}
 		// 解约成功 修改银行卡
-		if(null != resp &&  resp.checkReturn()){
-			result = bankCardMapper.update(card);
+		if(null != responseVo &&  PayCommonUtil.success(responseVo.getStatus())){
+			result = bankCardManage.update(card);
 		}else{
-			result = bankCardMapper.update(card);
+			result = bankCardManage.update(card);
 		}
 		return result;
 	}
 
 	@Override
 	public boolean updateSelective(Map<String, Object> paramMap) {
-		int result = bankCardMapper.updateSelective(paramMap);
+		int result = bankCardManage.updateSelective(paramMap);
 		if (result > 0L) {
 			return true;
 		}

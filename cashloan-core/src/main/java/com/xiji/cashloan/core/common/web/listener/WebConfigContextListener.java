@@ -1,13 +1,13 @@
 package com.xiji.cashloan.core.common.web.listener;
 
+
+import com.xiji.cashloan.core.common.context.BankCardBinUtil;
+import com.xiji.cashloan.core.common.util.CacheUtil;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
-
 import org.apache.log4j.Logger;
-
-import com.xiji.cashloan.core.common.util.CacheUtil;
 
 /**
  * 监听器
@@ -35,6 +35,7 @@ public class WebConfigContextListener implements ServletContextListener,HttpSess
 		
 		// 系统参数
 		CacheUtil.initSysConfig();
+		BankCardBinUtil.initCardBin();
 	}
 
 	@Override

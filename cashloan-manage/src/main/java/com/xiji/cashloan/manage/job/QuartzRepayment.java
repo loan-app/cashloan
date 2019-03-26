@@ -6,21 +6,22 @@ import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.QueryPayOrderInfo;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.cl.service.ClSmsService;
 import com.xiji.cashloan.cl.service.PayLogService;
-import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.IpUtil;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
@@ -36,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -100,7 +102,10 @@ public class QuartzRepayment implements Job {
 				UserBaseInfo baseInfo = userBaseInfoService.findByUserId(borrowRepay.getUserId());
 				Borrow borrow = clBorrowService.getById(borrowRepay.getBorrowId());
 				BankCard bankCard = bankCardService.getBankCardByUserId(borrowRepay.getUserId());
-				
+				if (PayCommonHelper.isEmpty(bankCard)) {
+					logger.error("绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡,userId:"+user.getId());
+					continue;
+				}
 				// 达到单笔代扣次数上限的不用再代扣
 				int doRepaymentCount = payLogService.doRepaymentNum(borrow.getId());
 				if(doRepaymentMax > 0 && doRepaymentCount >= doRepaymentMax){
@@ -119,16 +124,19 @@ public class QuartzRepayment implements Job {
 				payLogMap.put("type", PayLogModel.TYPE_COLLECT);
 				payLogMap.put("scenes", PayLogModel.SCENES_REPAYMENT);
 				PayLog repaymentLog = payLogService.findLatestOne(payLogMap);
-				FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
 
 				// 支付记录存在且不是支付失败，需要查询支付方得到准确结果
 				if (null != repaymentLog && !PayLogModel.STATE_PAYMENT_FAILED.equals(repaymentLog.getState())) {
 					if (PayLogModel.STATE_PAYMENT_SUCCESS.equals(repaymentLog.getState())) {
 						continue;
 					}
-					QueryPayOrderInfo payOrderInfo = payHelper.queryPayInfo(repaymentLog);
+					RepaymentQueryVo vo = new RepaymentQueryVo();
+					vo.setOrderNo(repaymentLog.getOrderNo());
+					vo.setPayPlatNo(repaymentLog.getPayOrderNo());
+					vo.setShareKey(repaymentLog.getUserId());
+					RepaymentQueryResponseVo responseVo = PayCommonUtil.queryOrder(vo);
 
-					if (StringUtil.equals(payOrderInfo.getCode(),QueryPayOrderInfo.PAY_SUCCESS)) {
+					if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_SUCCESS)) {
 						// 查找对应的还款计划
 						Map<String, Object> param = new HashMap<String, Object>();
 						param.put("id", borrowRepay.getId());
@@ -153,9 +161,9 @@ public class QuartzRepayment implements Job {
 						// 发送代扣还款成功短信提醒
 						clSmsService.repayInform(borrowRepay.getUserId(), borrowRepay.getBorrowId());
 						continue;
-					}else if (StringUtil.equals(payOrderInfo.getCode(),QueryPayOrderInfo.PAY_PROCESSING)) {
+					}else if (StringUtil.equals(responseVo.getCode(),PayConstant.QUERY_PAY_PROCESSING)) {
 						continue;
-					} else if (StringUtil.equals(payOrderInfo.getCode(), QueryPayOrderInfo.PAY_FAIL)) {
+					} else if (StringUtil.equals(responseVo.getCode(), PayConstant.QUERY_PAY_FAIL)) {
 						// 更新订单状态
 						Map<String, Object> payLogParamMap = new HashMap<String, Object>();
 						payLogParamMap.put("state",PayLogModel.STATE_PAYMENT_FAILED);
@@ -166,77 +174,37 @@ public class QuartzRepayment implements Job {
 				}
 
 				Date payReqTime = DateUtil.getNow();
-				String orderNo = OrderNoUtil.getSerialNumber();
-//				RepaymentModel repayment = new RepaymentModel(orderNo);
-//				repayment.setUser_id(user.getUuid());
-//				repayment.setBusi_partner(LianLianConstant.GOODS_VIRTUAL);
-//				repayment.setDt_order(DateUtil.dateStr3(payReqTime));
-//				repayment.setName_goods("还款" + borrow.getOrderNo());
-//				repayment.setInfo_order("repayment_" + borrow.getOrderNo());
-//
 				double amount = BigDecimalUtil.add(borrowRepay.getAmount(), borrowRepay.getPenaltyAmout());  //计算实际还款金额
-//				if ("dev".equals(Global.getValue("app_environment"))) {
-//					repayment.setMoney_order("0.01");
-//				} else {
-//					repayment.setMoney_order(StringUtil.isNull(amount));
-//				}
-//
-//				repayment.setAmount(amount);
-//				RiskItems riskItems = new RiskItems();
-//				riskItems.setFrms_ware_category("2010");
-//				riskItems.setUser_info_mercht_userno(user.getUuid());
-//				riskItems.setUser_info_bind_phone(baseInfo.getPhone());
-//				riskItems.setUser_info_dt_register(DateUtil.dateStr3(user.getRegistTime()));
-//				riskItems.setUser_info_full_name(baseInfo.getRealName());
-//				riskItems.setUser_info_id_no(baseInfo.getIdNo());
-//				riskItems.setUser_info_identify_type("1");
-//				riskItems.setUser_info_identify_state("1");
-//				repayment.setRisk_item(JSONObject.toJSONString(riskItems));
-//				repayment.setSchedule_repayment_date(DateUtil.dateStr2(borrowRepay.getRepayTime()));
-//				repayment.setRepayment_no(borrow.getOrderNo());
-//				repayment.setNo_agree(bankCard.getAgreeNo());
-//				repayment.setNotify_url(Global.getValue("server_host") + "/pay/lianlian/repaymentNotify.htm");
-//
-//
-//				LianLianHelper helper = new LianLianHelper();
-//				//请求连连代扣，repayment里面有返回值
-//				repayment = (RepaymentModel) helper.repayment(repayment);
-
 				//这里需要检查一下,还款计划状态不是未还款或者还款计划时间大于扣款时间,不处理
-				BorrowRepay br = borrowRepayService.getById(borrowRepay.getId());
-				if(!BorrowRepayModel.STATE_REPAY_NO.equals(br.getState()) || compareDate.getTime() < br.getRepayTime().getTime()) {
-					continue;
-				}
+                BorrowRepay br = borrowRepayService.getById(borrowRepay.getId());
+                if(!BorrowRepayModel.STATE_REPAY_NO.equals(br.getState()) || compareDate.getTime() < br.getRepayTime().getTime()) {
+                    continue;
+                }
 
-				OrderXmlBeanReq beanReq = new OrderXmlBeanReq();
-				beanReq.setUserId(user.getUuid());
-				beanReq.setUserIp(IpUtil.getLocalIp());
-				beanReq.setType("03");
-				beanReq.setMchntOrderId(orderNo);
+				RepaymentReqVo vo = new RepaymentReqVo();
 				if ("dev".equals(Global.getValue("app_environment"))) {
-					beanReq.setAmt(AmtUtil.convertAmtToBranch("0.01"));
+					vo.setAmount(0.2);
 				} else {
-					beanReq.setAmt(AmtUtil.convertAmtToBranch(amount));
+					vo.setAmount(amount);
 				}
 
-				beanReq.setProtocolNo(bankCard.getAgreeNo());
-				beanReq.setNeedSendMsg("0");
-				beanReq.setBackUrl(Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
-				beanReq.setRem1("还款" + borrow.getOrderNo());
-				beanReq.setRem2("repayment_" + borrow.getOrderNo());
-				String key = Global.getValue("fuiou_protocol_mchntcd_key");
-				OrderXmlBeanResp resp = payHelper.repayment(beanReq);
-				String payMsg = "";
+				vo.setIp(IpUtil.getLocalIp());
+				vo.setUserId(user.getUuid());
+				vo.setProtocolNo(bankCard.getAgreeNo());
+				vo.setBorrowOrderNo(borrow.getOrderNo());
+				vo.setRemark("还款" + borrow.getOrderNo());
+				vo.setRemark2("repayment_" + borrow.getOrderNo());
+				vo.setTerminalId(UUID.randomUUID().toString());
+				vo.setTerminalType("OTHER");
+				vo.setShareKey(bankCard.getUserId());
+				RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
+
 				String payOrderNo = "";
-				if (resp.checkSign(key)) {
-					payMsg = resp.getResponseMsg();
-					if (resp.checkReturn() && StringUtil.isNotEmpty(resp.getOrderId())) {
-						payMsg = resp.getOrderId()+"|" + payMsg;
-					}
-					payOrderNo = resp.getOrderId();
+				if (PayCommonUtil.success(responseVo.getStatus())) {
+					payOrderNo = responseVo.getOrderNo();
 				}
 				PayLog payLog = new PayLog();
-				payLog.setOrderNo(orderNo);
+				payLog.setOrderNo(responseVo.getOrderNo());
 				if (StringUtil.isNotEmpty(payOrderNo)) {
 					payLog.setPayOrderNo(payOrderNo);
 				}
@@ -249,8 +217,8 @@ public class QuartzRepayment implements Job {
 				payLog.setType(PayLogModel.TYPE_COLLECT);
 				payLog.setScenes(PayLogModel.SCENES_REPAYMENT);
 				payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-				payLog.setCode(resp.getResponseCode());
-				payLog.setRemark(payMsg);
+				payLog.setCode(responseVo.getStatusCode());
+				payLog.setRemark(responseVo.getMessage());
 				payLog.setPayReqTime(payReqTime);
 				payLog.setCreateTime(DateUtil.getNow());
 				payLogService.save(payLog);

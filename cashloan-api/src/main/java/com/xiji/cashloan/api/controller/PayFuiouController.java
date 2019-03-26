@@ -1,35 +1,39 @@
 package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.xiji.cashloan.api.controller.assist.PaymentNotifyAssist;
 import com.xiji.cashloan.api.user.service.ContractService;
-import com.xiji.cashloan.cl.domain.BorrowProgress;
-import com.xiji.cashloan.cl.domain.BorrowRepayLog;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.domain.PayRespLog;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.PayRespLogModel;
+import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
+import com.xiji.cashloan.cl.model.pay.common.dto.RepaymentNotifyDto;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforNotifyModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
-import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
+import com.xiji.cashloan.cl.service.PayLogService;
+import com.xiji.cashloan.cl.service.PayReqLogService;
+import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
-import com.xiji.cashloan.core.domain.Borrow;
-import com.xiji.cashloan.core.model.BorrowModel;
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tool.util.DateUtil;
+import tool.util.StringUtil;
 
 /**
- * 连连实时付款(代付)异步通知
+ * 实时付款(代付)异步通知
  * 
  * @author wnb
  * @version 1.0.0
@@ -52,25 +56,17 @@ public class PayFuiouController extends BaseController{
 	@Resource
 	private PayLogService payLogService;
 	@Resource
-	private ClBorrowService clBorrowService;
-	@Resource
-	private BorrowProgressService borrowProgressService;
-	@Resource
-	private BorrowRepayService borrowRepayService;
-	@Resource
-	private BorrowRepayLogService borrowRepayLogService;
-	@Resource
-	private ProfitAmountService profitAmountService;
-	@Resource
     private ContractService contractService;
-	@Resource
-	private ClSmsService clSmsService;
-	
+
+	@Autowired
+	private PaymentNotifyAssist paymentNotifyAssist;
+
 	@RequestMapping(value = "/test.htm")
 	public void test(HttpServletRequest request) throws Exception {
 		contractService.buildPdf("37");
 	}
 	/**
+	 * 富有异步通知
 	 * 代付（支付）- 成功通知接口 - 异步通知处理
 	 * @param model
 	 * @throws Exception
@@ -80,6 +76,7 @@ public class PayFuiouController extends BaseController{
 		doNotifyMessage(model,true);
 	}
 	/**
+	 * 富有异步通知
 	 * 代付（支付）业务 - 失败退票 - 异步通知处理
 	 * @param model
 	 * @throws Exception
@@ -123,176 +120,96 @@ public class PayFuiouController extends BaseController{
 			logger.warn("未查询到对应的支付订单");
 			return ;
 		}
+		RepaymentNotifyDto dto = new RepaymentNotifyDto();
+		dto.setPayPlatNo(model.getFuorderno());
+		if (ifPaySuccess) {
+			dto.setStatus(PayConstant.RESULT_SUCCESS);
+		}else {
+			dto.setStatus(PayConstant.STATUS_FAIL);
+		}
+
+		String message = "";
 		if (PayLogModel.SCENES_LOANS.equals(payLog.getScenes())) {
-			doScenesLoans(model,ifPaySuccess,payLog);
+			message = paymentNotifyAssist.doScenesLoans(dto,payLog);
 		}else if (PayLogModel.SCENES_PROFIT.equals(payLog.getScenes())){
-			doScenesProfit(model,ifPaySuccess,payLog);
+			message = paymentNotifyAssist.doScenesProfit(dto,payLog);
 		}else if (PayLogModel.SCENES_REFUND.equals(payLog.getScenes())){
-			doScenesRefund(model,ifPaySuccess,payLog);
+			message = paymentNotifyAssist.doScenesRefund(dto,payLog);
 		}else {
 			logger.error("没有合适的场景，异步通知处理失败" + model.getOrderno());
+		}
+
+		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
+			writeResult(response, "1");
 		}
 	}
 
 	/**
-	 * 代付，放款异步通知处理
+	 * 合利宝异步通知接口：
+	 * 代付（支付）- 成功通知接口 - 异步通知处理
 	 * @param model
-	 * @param ifPaySuccess
-	 * @param payLog
 	 * @throws Exception
 	 */
-	private void doScenesLoans(PayforNotifyModel model, boolean ifPaySuccess,PayLog payLog)throws Exception {
-		logger.info("实时付款(放款) - 异步通知-支付状态是：" +ifPaySuccess);
-		if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-			|| PayLogModel.STATE_AUDIT_PASSED.equals(payLog.getState())|| PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+	@RequestMapping(value = "/pay/helipay/paymentNotify.htm")
+	public void helipayPaymentNotify(HeliPayForPaymentNotifyVo model) throws Exception {
+		String params = JSON.toJSONString(model);
+		logger.info("实时付款 - 异步通知:" + params);
 
-			// 代付成功，更新借款状态及支付订单 ，否则只更新订单状态
-			if (ifPaySuccess) {
-				// 修改借款状态
-				Map<String, Object> map = new HashMap<>();
-				map.put("id", payLog.getBorrowId());
-				map.put("state", BorrowModel.STATE_REPAY);
-				clBorrowService.updatePayState(map);
-
-				// 放款进度添加
-				BorrowProgress bp = new BorrowProgress();
-				bp.setUserId(payLog.getUserId());
-				bp.setBorrowId(payLog.getBorrowId());
-				bp.setState(BorrowModel.STATE_REPAY);
-				bp.setRemark(BorrowModel.convertBorrowRemark(bp.getState()));
-				bp.setCreateTime(DateUtil.getNow());
-				borrowProgressService.save(bp);
-
-				final Borrow borrow = clBorrowService.getById(payLog.getBorrowId());
-
-				// 生成还款计划并授权
-				borrowRepayService.genRepayPlan(borrow);
-				// 更新订单状态
-				Map<String,Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
-				paramMap.put("updateTime",DateUtil.getNow());
-				paramMap.put("payOrderNo",model.getFuorderno());
-				paramMap.put("id",payLog.getId());
-				payLogService.updateSelective(paramMap);
-				//发送放款成功短信
-				clSmsService.loanInform(payLog.getUserId(), payLog.getBorrowId());
-				// 生成pdf合同文件
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						contractService.buildPdf(borrow.getId().toString());
-					}
-				}).start();
-
-			}else{
-				Map<String, Object> borrowMap = new HashMap<String, Object>();
-				borrowMap.put("id", payLog.getBorrowId());
-				borrowMap.put("state", BorrowModel.STATE_REPAY_FAIL);
-				clBorrowService.updatePayState(borrowMap);
-
-				Map<String,Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
-				paramMap.put("updateTime",DateUtil.getNow());
-//				paramMap.put("remark",model.getInfo_order());
-				paramMap.put("id",payLog.getId());
-				payLogService.updateSelective(paramMap);
-
-			}
-		}else{
-			logger.info("订单" + payLog.getOrderNo() + "已处理");
+		String orderNo = model.getRt5_orderId();
+		if (!HelipayUtil.checkNotifySign(model)) {
+			logger.error("验签失败" + orderNo);
+			return;
 		}
-		writeResult(response, "1");
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("进入订单" + orderNo + "处理中.....");
+		}
+
+		PayReqLog payReqLog = payReqLogService.findByOrderNo(model.getRt5_orderId());
+
+		if (payReqLog != null) {
+			// 保存respLog
+			PayRespLog payRespLog = new PayRespLog(orderNo,PayRespLogModel.RESP_LOG_TYPE_NOTIFY,params);
+			payRespLogService.save(payRespLog);
+
+			// 更新reqLog
+			modifyPayReqLog(payReqLog,params);
+		}
+
+		PayLog payLog = payLogService.findByOrderNo(orderNo);
+
+		if(null  == payLog ){
+			logger.warn("未查询到对应的支付订单");
+			return ;
+		}
+		RepaymentNotifyDto dto = new RepaymentNotifyDto();
+		dto.setPayPlatNo(model.getRt6_serialNumber());
+		if (StringUtil.equals(model.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS)) {
+			dto.setStatus(PayConstant.RESULT_SUCCESS);
+		}else {
+			dto.setStatus(PayConstant.STATUS_FAIL);
+		}
+
+		String message = "";
+		if (PayLogModel.SCENES_LOANS.equals(payLog.getScenes())) {
+			message = paymentNotifyAssist.doScenesLoans(dto,payLog);
+		}else if (PayLogModel.SCENES_PROFIT.equals(payLog.getScenes())){
+			message = paymentNotifyAssist.doScenesProfit(dto,payLog);
+		}else if (PayLogModel.SCENES_REFUND.equals(payLog.getScenes())){
+			message = paymentNotifyAssist.doScenesRefund(dto,payLog);
+		}else {
+			logger.error("没有合适的场景，异步通知处理失败" + orderNo);
+		}
+
+		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
+			writeResult(response, "success");
+		}
 	}
 
 	private void writeResult(HttpServletResponse response,String result)throws Exception {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf8");
 		response.getOutputStream().write(result.getBytes("utf8"));
-	}
-	/**
-	 * 取现（分润），放款异步通知处理
-	 * @param model
-	 * @param ifPaySuccess
-	 * @param payLog
-	 * @throws Exception
-	 */
-	private void doScenesProfit(PayforNotifyModel model, boolean ifPaySuccess,PayLog payLog)throws Exception {
-		logger.info("实时付款(取现) - 异步通知-支付状态是：" +ifPaySuccess);
-
-		if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-			|| PayLogModel.STATE_AUDIT_PASSED.equals(payLog.getState())|| PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
-
-			// 代付成功，更新借款状态及支付订单 ，否则只更新订单状态
-			if (ifPaySuccess) {
-				// 更新取现金额， 添加取现记录
-				profitAmountService.cash(payLog.getUserId(), payLog.getAmount());
-
-				// 更新订单状态
-				Map<String,Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
-				paramMap.put("updateTime",DateUtil.getNow());
-				paramMap.put("payOrderNo",model.getFuorderno());
-				paramMap.put("id",payLog.getId());
-				payLogService.updateSelective(paramMap);
-
-			}else{
-				Map<String,Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
-				paramMap.put("updateTime",DateUtil.getNow());
-				paramMap.put("id",payLog.getId());
-				payLogService.updateSelective(paramMap);
-			}
-		}else{
-			logger.info("订单" + payLog.getOrderNo() + "已处理");
-
-		}
-		writeResult(response, "1");
-	}
-	/**
-	 * 退还，异步通知处理
-	 * @param model
-	 * @param ifPaySuccess
-	 * @param payLog
-	 * @throws Exception
-	 */
-	private void doScenesRefund(PayforNotifyModel model, boolean ifPaySuccess,PayLog payLog)throws Exception {
-		logger.info("实时付款(退还) - 异步通知-支付状态是：" +ifPaySuccess);
-		if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-			|| PayLogModel.STATE_AUDIT_PASSED.equals(payLog.getState())|| PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
-
-			//代付成功 ，否则只更新订单状态
-			if (ifPaySuccess){
-				// 查询还款记录
-				Map<String, Object> repayLogMap =  new HashMap<String, Object>();
-				repayLogMap.put("borrowId", payLog.getBorrowId());
-				repayLogMap.put("userId", payLog.getUserId());
-				BorrowRepayLog repayLog = borrowRepayLogService.findSelective(repayLogMap);
-
-				// 更新还款记录
-				Map<String, Object> refundDeductionMap = new HashMap<String, Object>();
-				refundDeductionMap.put("id", repayLog.getId());
-				refundDeductionMap.put("refundDeduction", - payLog.getAmount());
-				refundDeductionMap.put("payTime", DateUtil.getNow());
-				borrowRepayLogService.refundDeduction(refundDeductionMap);
-
-				// 更新订单状态
-				Map<String,Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
-				paramMap.put("updateTime",DateUtil.getNow());
-				paramMap.put("payOrderNo",model.getFuorderno());
-				paramMap.put("id",payLog.getId());
-				payLogService.updateSelective(paramMap);
-			}else {
-				Map<String,Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
-				paramMap.put("updateTime",DateUtil.getNow());
-				paramMap.put("id",payLog.getId());
-				payLogService.updateSelective(paramMap);
-			}
-		}else{
-			logger.info("订单" + payLog.getOrderNo() + "已处理");
-		}
-		writeResult(response, "1");
 	}
 
 	private void modifyPayReqLog (PayReqLog payReqLog,String params){

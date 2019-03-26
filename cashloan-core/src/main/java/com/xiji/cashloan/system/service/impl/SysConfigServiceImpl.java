@@ -72,7 +72,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfig,Long> implem
 	public long updateSysConfig(SysConfig sysConfig) throws ServiceException {
 		try {
 			return	sysConfigMapper.update(sysConfig);
-			
+
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
 			throw new ServiceException(e.getMessage(),e,Constant.FAIL_CODE_VALUE);
@@ -85,7 +85,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfig,Long> implem
 	 * @throws ServiceException
 	 */
 	public Page<SysConfig> getSysConfigPageList(int currentPage,int pageSize,Map<String, Object> paramMap) throws ServiceException {
-		
+
 		try {
 			PageHelper.startPage(currentPage, pageSize);
 			return(Page<SysConfig>)sysConfigMapper.listSelective(paramMap);

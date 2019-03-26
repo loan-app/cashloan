@@ -1,17 +1,15 @@
 package com.xiji.cashloan.api.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.model.BankCardModel;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BankCardResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.fuiou.agreement.BindXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
-import com.xiji.cashloan.cl.model.pay.lianlian.AgreementList;
-import com.xiji.cashloan.cl.model.pay.lianlian.QueryAuthSignModel;
-import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
-import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
@@ -22,7 +20,6 @@ import com.xiji.cashloan.cl.service.UserBlackInfoService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
-import com.xiji.cashloan.core.common.util.OrderNoUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.Borrow;
@@ -31,7 +28,6 @@ import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.model.BorrowModel;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,9 +103,11 @@ public class BankCardController extends BaseController {
 		List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(NumberUtil.getLong(userId));
 	    if (null != list && !list.isEmpty()) {
 	    	Borrow borrow = list.get(0);
-	    	if(borrow != null && !BorrowModel.STATE_REPAY_FAIL.equals(borrow.getState())){
-	    		model.setChangeAble(BankCardModel.STATE_DISABLE);
-	    	}
+			if (card != null && PayCommonHelper.isCurrentPayCompany(card)) {
+				if(borrow != null && !BorrowModel.STATE_REPAY_FAIL.equals(borrow.getState())){
+					model.setChangeAble(BankCardModel.STATE_DISABLE);
+				}
+			}
 		}
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
@@ -171,7 +169,8 @@ public class BankCardController extends BaseController {
 		@RequestParam(value = "mobileNo", required = true) String mobileNo){
 		//校验更换绑卡时，是否存在未结束的借款
 		String bindCardSwitch = Global.getValue("bindCardSwitch");//10支持接口结束前换卡，20不支持
-		if (StringUtil.equals(bindCardSwitch, "10")) {
+		BankCard card = bankCardService.getBankCardByUserId(NumberUtil.getLong(userId));
+		if (StringUtil.equals(bindCardSwitch, "10") && card != null && PayCommonHelper.isCurrentPayCompany(card)) {
 			List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(NumberUtil.getLong(userId));
 			if (null != list && !list.isEmpty()) {
 				Borrow borrow = list.get(0);
@@ -211,22 +210,17 @@ public class BankCardController extends BaseController {
 				logger.info("发送短信，phone：" + phone + "， type：" + type + "，发送前的校验结果message：" + message);
 			} else {
 				logger.info("发送短信，phone：" + phone + "， type：" + type + "，准备发送");
-				BindXmlBeanReq beanReq = new BindXmlBeanReq();
-				beanReq.setUserId(user.getUuid());
-				beanReq.setTradeDate(DateUtil.dateStr7(new Date()));
-				beanReq.setMchntSsn(OrderNoUtil.getSerialNumber());
-				beanReq.setAccount(baseInfo.getRealName());
-				beanReq.setCardNo(cardNo);
-				beanReq.setIdType("0");
-				beanReq.setIdCard(baseInfo.getIdNo());
-				beanReq.setMobileNo(phone);
-
-				FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-				BindXmlBeanResp resp = payHelper.bindMsg(beanReq);//调富有接口发送验证码，同时验证四要素，卡号，证件类型，身份证，手机号，
-
-				if (resp.checkReturn()) {
+				BindCardMsgVo vo = new BindCardMsgVo();
+				vo.setUserId(user.getUuid());
+				vo.setBankCardNo(cardNo);
+				vo.setBankCardName(baseInfo.getRealName());
+				vo.setIdCard(baseInfo.getIdNo());
+				vo.setMobile(phone);
+				vo.setShareKey(baseInfo.getUserId());
+				BindCardMsgResponseVo responseVo = PayCommonUtil.bindMsg(vo);
+				if (PayCommonUtil.success(responseVo.getStatus())) {
 					data.put("state", "10");
-					data.put("orderNo", beanReq.getMchntSsn());
+					data.put("orderNo", responseVo.getOrderNo());
 					result.put(Constant.RESPONSE_DATA, data);
 					result.put(Constant.RESPONSE_CODE,Constant.SUCCEED_CODE_VALUE);
 					result.put(Constant.RESPONSE_CODE_MSG,"已发送，请注意查收");
@@ -234,15 +228,15 @@ public class BankCardController extends BaseController {
 				}else {
 					result.put(Constant.RESPONSE_CODE,Constant.FAIL_CODE_VALUE);
 					data.put("countDown", countDown);
-					if (StringUtil.isNotEmpty(resp.getResponseMsg())) {
-						result.put(Constant.RESPONSE_CODE_MSG,resp.getResponseMsg());
-						message = resp.getResponseMsg();
+					if (StringUtil.isNotEmpty(responseVo.getMessage())) {
+						result.put(Constant.RESPONSE_CODE_MSG,responseVo.getMessage());
+						message = responseVo.getMessage();
 					} else {
 						result.put(Constant.RESPONSE_CODE_MSG,"发送失败");
 						message = "发送失败";
 					}
 				}
-				clSmsService.saveSmsBankCard(resp.checkReturn(),phone, type,resp.getResponseMsg());
+				clSmsService.saveSmsBankCard(PayCommonUtil.success(responseVo.getStatus()),phone, type,responseVo.getMessage());
 			}
 		}
 		if (StringUtil.isNotEmpty(message)) {
@@ -271,9 +265,10 @@ public class BankCardController extends BaseController {
         @RequestParam(value = "orderNo", required = true) String orderNo,
 		@RequestParam(value = "mobileNo", required = true) String mobileNo) {
         long userid = NumberUtil.getLong(userId);
+		BankCard card = bankCardService.getBankCardByUserId(userid);
         //校验更换绑卡时，是否存在未结束的借款
         String bindCardSwitch = Global.getValue("bindCardSwitch");//10支持接口结束前换卡，20不支持
-        if (StringUtil.equals(bindCardSwitch, "10")) {
+        if (StringUtil.equals(bindCardSwitch, "10") && card != null && PayCommonHelper.isCurrentPayCompany(card)) {
             List<Borrow> list = clBorrowService.findUserUnFinishedBorrow(userid);
             if (null != list && !list.isEmpty()) {
                 Borrow borrow = list.get(0);
@@ -303,31 +298,39 @@ public class BankCardController extends BaseController {
 
         //黑名单操作
         userBlackInfoService.validUserBlackInfo(baseInfo);
-        //签约，即授权绑卡
-        BindXmlBeanReq beanReq = new BindXmlBeanReq();
-        beanReq.setUserId(user.getUuid());
-        beanReq.setTradeDate(DateUtil.dateStr7(new Date()));
-        beanReq.setMchntSsn(orderNo);//需要使用发送验证码时的流水号
-        beanReq.setAccount(baseInfo.getRealName());
-        beanReq.setCardNo(cardNo);
-        beanReq.setIdType("0");
-        beanReq.setIdCard(baseInfo.getIdNo());
-        beanReq.setMobileNo(mobileNo);
-        beanReq.setMsgCode(captcha);//验证码
 
-        FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-        BindXmlBeanResp resp = payHelper.bindCommit(beanReq);//绑卡
-        if (resp.checkReturn()) {
-            String agreeNo = resp.getProtocolNo();
+		BindCardMsgVo vo = new BindCardMsgVo();
+		vo.setUserId(user.getUuid());
+		vo.setBankCardNo(cardNo);
+		vo.setBankCardName(baseInfo.getRealName());
+		vo.setIdCard(baseInfo.getIdNo());
+		vo.setMobile(mobileNo);
+		vo.setMsgCode(captcha);
+		vo.setOrderNo(orderNo);
+		vo.setShareKey(baseInfo.getUserId());
+		BindCardMsgResponseVo responseVo = PayCommonUtil.bindCommit(vo);
+
+        if (PayCommonUtil.success(responseVo.getStatus())) {
+            String agreeNo = responseVo.getProtocolNo();
             if (!StringUtil.isNotEmpty(agreeNo)) {//没有协议号的情况下，需要重新查一下
-                BindXmlBeanReq bindQuery = new BindXmlBeanReq();
-                beanReq.setUserId(user.getUuid());
-                BindXmlBeanResp bindResp = payHelper.bindQuery(bindQuery);
-                if (bindResp.checkReturn()) {
-                    agreeNo = bindResp.getProtocolNo();
+				BindCardQueryVo bindCardQueryVo = new BindCardQueryVo();
+				bindCardQueryVo.setUserId(user.getUuid());
+				bindCardQueryVo.setShareKey(user.getId());
+				BindCardQueryResponseVo cardQueryResponseVo = PayCommonUtil.bindCardQuery(bindCardQueryVo);
+                if (PayCommonUtil.success(cardQueryResponseVo.getStatus())) {
+                    agreeNo = cardQueryResponseVo.getProtocolNo();
                 }
             }
-            BankCard bankCard = bankCardService.getBankCardByUserId(userid);
+            //绑卡没有取得协议号，则绑卡失败
+			if (StringUtil.isEmpty(agreeNo)) {
+				Map<String,Object> result=new HashMap<String,Object>();
+				result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				ServletUtils.writeToResponse(response,result);
+				return;
+			}
+
+			BankCard bankCard = bankCardService.getBankCardByUserId(userid);
             boolean flag = saveOrUpdate(userid, cardNo, bankCard, agreeNo,mobileNo);
             if (flag) {
                 Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -351,80 +354,78 @@ public class BankCardController extends BaseController {
         }
 	}
 	
-	/**
-	 * 签约响应回调
-	 * 
-	 * @param uuid
-	 * @param signResult
-	 * @param userId
-	 */
-	@RequestMapping(value = "/api/act/mine/bankCard/authSignReturn.htm", method = RequestMethod.POST)
-	public void authSignReturn(
-			@RequestParam(value = "uuid", required = true) String uuid,
-			@RequestParam(value = "agreeNo", required = true) String agreeNo,
-			@RequestParam(value = "signResult", required = true) String signResult,
-			@RequestParam(value = "userId", required = true) Long userId,
-			@RequestParam(value = "bank", required = false) String bank,
-			@RequestParam(value = "cardNo", required = true) String cardNo) {
-		Map<String, Object> result = new HashMap<String, Object>();
-
-		if (StringUtil.isEmpty(uuid) || StringUtil.isEmpty(signResult)) {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "参数不能为空");
-			ServletUtils.writeToResponse(response, result);
-			return;
-		}
-
-		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
-
-		boolean flag = false;
-		if (LianLianConstant.RESULT_SUCCESS.equals(signResult)) {
-			flag = saveOrUpdate(userId, cardNo, bankCard, agreeNo,"");
-		} else if (LianLianConstant.RESULT_PROCESSING.equals(signResult)) {
-			String orderNo = OrderNoUtil.getSerialNumber();
-			QueryAuthSignModel model = new QueryAuthSignModel(orderNo);
-			model.setUser_id(StringUtil.isNull(uuid));
-			LianLianHelper helper = new LianLianHelper();
-			model = (QueryAuthSignModel) helper.queryAuthSign(model);
-			List<AgreementList> agreementList = JSONArray.parseArray(model.getAgreement_list(), AgreementList.class);
-			if (null != agreementList && !agreementList.isEmpty()) {
-				AgreementList agreement = agreementList.get(0);
-				flag = saveOrUpdate(userId, cardNo, bankCard, agreement.getNo_agree(),"");
-			}
-		}
-
-		if (flag) {
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("userId", userId);
-			paramMap.put("bankCardState", "30");
-			userAuthService.updateByUserId(paramMap);
-		}
-
-		// 签约成功之后 ，查询是否有未还款的借款，进行重新授权
-		borrowRepayService.authSignApply(userId);	
-		
-		if (flag) {
-			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "保存成功");
-		} else {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "保存失败");
-		}
-
-		ServletUtils.writeToResponse(response, result);
-	}
+//	/**
+//	 * 签约响应回调
+//	 *
+//	 * @param uuid
+//	 * @param signResult
+//	 * @param userId
+//	 */
+//	@RequestMapping(value = "/api/act/mine/bankCard/authSignReturn.htm", method = RequestMethod.POST)
+//	public void authSignReturn(
+//			@RequestParam(value = "uuid", required = true) String uuid,
+//			@RequestParam(value = "agreeNo", required = true) String agreeNo,
+//			@RequestParam(value = "signResult", required = true) String signResult,
+//			@RequestParam(value = "userId", required = true) Long userId,
+//			@RequestParam(value = "bank", required = false) String bank,
+//			@RequestParam(value = "cardNo", required = true) String cardNo) {
+//		Map<String, Object> result = new HashMap<String, Object>();
+//
+//		if (StringUtil.isEmpty(uuid) || StringUtil.isEmpty(signResult)) {
+//			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+//			result.put(Constant.RESPONSE_CODE_MSG, "参数不能为空");
+//			ServletUtils.writeToResponse(response, result);
+//			return;
+//		}
+//
+//		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+//
+//		boolean flag = false;
+//		if (LianLianConstant.RESULT_SUCCESS.equals(signResult)) {
+//			flag = saveOrUpdate(userId, cardNo, bankCard, agreeNo,"");
+//		} else if (LianLianConstant.RESULT_PROCESSING.equals(signResult)) {
+//			String orderNo = OrderNoUtil.getSerialNumber();
+//			QueryAuthSignModel model = new QueryAuthSignModel(orderNo);
+//			model.setUser_id(StringUtil.isNull(uuid));
+//			LianLianHelper helper = new LianLianHelper();
+//			model = (QueryAuthSignModel) helper.queryAuthSign(model);
+//			List<AgreementList> agreementList = JSONArray.parseArray(model.getAgreement_list(), AgreementList.class);
+//			if (null != agreementList && !agreementList.isEmpty()) {
+//				AgreementList agreement = agreementList.get(0);
+//				flag = saveOrUpdate(userId, cardNo, bankCard, agreement.getNo_agree(),"");
+//			}
+//		}
+//
+//		if (flag) {
+//			Map<String, Object> paramMap = new HashMap<String, Object>();
+//			paramMap.put("userId", userId);
+//			paramMap.put("bankCardState", "30");
+//			userAuthService.updateByUserId(paramMap);
+//		}
+//
+//		// 签约成功之后 ，查询是否有未还款的借款，进行重新授权
+//		borrowRepayService.authSignApply(userId);
+//
+//		if (flag) {
+//			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+//			result.put(Constant.RESPONSE_CODE_MSG, "保存成功");
+//		} else {
+//			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+//			result.put(Constant.RESPONSE_CODE_MSG, "保存失败");
+//		}
+//
+//		ServletUtils.writeToResponse(response, result);
+//	}
 
 	private boolean saveOrUpdate(Long userId, String cardNo, BankCard bankCard, String agreeNo,String mobileNo) {
 		boolean flag = false;
-        BankCardReq beanreq = new BankCardReq();
-        beanreq.setOno(cardNo);
-
-        FuiouAgreementPayHelper payHelper = new FuiouAgreementPayHelper();
-        BankCardResp resp = payHelper.cardBinQuery(beanreq);
+		CardBinQueryVo vo = new CardBinQueryVo();
+		vo.setBankCardNo(cardNo);
+		vo.setShareKey(userId);
+		CardBinQueryResponseVo responseVo = PayCommonUtil.queryCardBin(vo);
         String bank = "";
-		String key = Global.getValue("fuiou_protocol_mchntcd_key");
-        if (resp.checkReturn() && resp.checkSign(key)) {
-			bank = StringUtil.isNull(resp.getCnm());
+        if (PayCommonUtil.success(responseVo.getStatus())) {
+			bank = StringUtil.isNull(responseVo.getBank());
         }
 		
 		if (null == bankCard) {

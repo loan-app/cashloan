@@ -1,6 +1,7 @@
 package com.xiji.cashloan.cl.model.pay.fuiou.util;
 
 import com.alibaba.fastjson.JSON;
+import com.xiji.cashloan.cl.model.pay.BasePay;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforreqModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforrspModel;
@@ -24,7 +25,7 @@ import tool.util.StringUtil;
  * @date 2018/11/30
  * @version 1.0.0
  */
-public class FuiouHelper extends BasePay{
+public class FuiouHelper extends BasePay {
 
 	public static final Logger logger = LoggerFactory.getLogger(FuiouHelper.class);
 	/**
