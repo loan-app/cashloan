@@ -265,6 +265,39 @@ export default React.createClass({
             })
         }
     },
+    //拉回
+    comeBack(title, record) {
+        var record = record;
+        var me = this;
+        confirm({
+            title: '是否拉回?',
+            onOk: function () {
+
+                Utils.ajaxData({
+                    url: '/modules/manage/borrow/comeBack.htm',
+                    data: {
+                        borrowId: record.id
+                    },
+                    method: "post",
+                    callback: (result) => {
+                        if(result.code == 200){
+                            Modal.success({
+                                title: result.msg
+                            })
+                            me.refreshList();
+                        }else{
+                            Modal.error({
+                                title: result.msg
+                            })
+                        }
+
+
+                    }
+                });
+            },
+            onCancel: function(){}
+        })
+    },
 
     render() {
         const {
@@ -333,6 +366,11 @@ export default React.createClass({
                             <span>
                                 <span className="ant-divider"></span>
                                 <a href={`${record.protocolPath}`}>查看合同</a>
+                            </span> : '-' }
+                        {record.state == 21 || record.state == 27  ?
+                            <span>
+                                <span className="ant-divider"></span>
+                                <a href="#" onClick={me.comeBack.bind(me, '拉回', record)}>拉回</a>
                             </span> : '-' }
                     </div>
                 )

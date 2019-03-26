@@ -2489,6 +2489,39 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		return yixinShareModels;
 	}
 
+	@Override
+	public int comeBackBorrow(long borrowId) {
+        Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+
+        UserBaseInfo userInfo = userBaseInfoService.findByUserId(borrow.getUserId());
+
+        if (userInfo==null){
+            logger.info("该订单没有对应的用户信息.");
+            return 0;
+        }
+        int result=0;
+        if ("21".equals(borrow.getState())){
+             result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_AUTO_REFUSED);
+
+        } else if ("27".equals(borrow.getState())){
+
+             result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_REFUSED);
+        }
+		logger.info("审核不通过(自动审核不通过,人工复审不通过),拉回重审,返回结果result: "+result);
+		if(result == 1){
+			//插入人工审核订单表
+			manualReviewOrderMapper.save(getManualReviewOrder(borrowId, userInfo));
+			//信用额度修改
+            modifyCredit(borrow.getUserId(), borrow.getAmount(), "used");
+            //添加借款进度
+			savePressState(borrow, BorrowModel.STATE_NEED_REVIEW,"");
+
+			return 1;
+		}
+
+		return 0;
+	}
+
 	private Map<String,Object> getFeeMap(double fee){
 		Map<String,Object> feeMap=new HashMap<>();
 		String fee_map = Global.getValue("fee_map");

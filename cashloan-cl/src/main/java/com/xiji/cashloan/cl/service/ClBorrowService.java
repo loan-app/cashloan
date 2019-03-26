@@ -320,6 +320,13 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name);
 
 	/**
+	 * 审核不通过拉回
+	 * @param borrowId
+	 * @return
+	 */
+	int comeBackBorrow(long borrowId);
+
+	/**
 	 *
 	 */
 
