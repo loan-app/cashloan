@@ -152,8 +152,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 						map.put("time", uro.getRepayTime());
 						map.put("overdueDay", uro.getPenaltyDay());
 						map.put("amercement", uro.getPenaltyAmout());
-						map.put("phone", uro.getPhone().subSequence(7, 11));	
-						
+						map.put("phone", uro.getPhone().subSequence(7, 11));
+
 						Map<String, Object> payload = new HashMap<>();
 						payload.put("mobile", uro.getPhone());
 				        payload.put("message", changeMessage("overdue",map));
@@ -257,7 +257,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			message = ret(smsType);
 			message = message
 					.replace("{$name}", StringUtil.isNull(map.get("name")))
-					.replace("{$appName}", StringUtil.isNull(map.get("appName")));
+					.replace("{$telephone}", StringUtil.isNull(map.get("telephone")));
 		}
 		if("delayPlan".equals(smsType)){
 			message = ret(smsType);
@@ -294,7 +294,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			message = ret("loanInform");
 		}else if ("repayInform".equals(code)) {
 			message = ret("repayInform");
-		}else if ("repayBefore".equals(code)) {
+		}else if ("repayBefore".equals(code)){
 			message = ret("repayBefore");
 		}
 		return message;
@@ -545,7 +545,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			if (tpl!=null) {
 				search = new HashMap<>();
 				search.put("name", baseInfo.getRealName());//姓名
-				search.put("appName", Global.getValue("appName"));
+				search.put("telephone", Global.getValue("telephone"));
 				Map<String, Object> payload = new HashMap<>();
 				payload.put("mobile",baseInfo.getPhone());
 				payload.put("message", changeMessage("repayBefore",search));

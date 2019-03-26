@@ -1563,7 +1563,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
             creditMap.put("consumerNo", borrow.getUserId());
             Credit credit = creditMapper.findSelective(creditMap);
             if(credit!=null) {
-                if (amount <= credit.getTotal()) {
+                if (amount >=0&&amount <= credit.getTotal()) {
                     Map<String, Object> params = new HashMap<String, Object>();
                     params.put("consumerNo", borrow.getUserId());
                     params.put("used",amount);
@@ -1576,7 +1576,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
                     if (code != 1) {
                         throw new BussinessException("人工复审失败");
                     }
-                } else {
+                } else if(amount > credit.getTotal()){
                     Map<String, Object> params = new HashMap<String, Object>();
                     params.put("consumerNo", borrow.getUserId());
                     params.put("total",credit.getTotal()+(amount-credit.getTotal()));
@@ -1590,7 +1590,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
                     if (code != 1) {
                         throw new BussinessException("人工复审失败");
                     }
-                }
+                }else {
+					throw new BussinessException("借款金额不能为负数");
+				}
             }
 			savePressState(borrow, state,"");
 			//更新审核表

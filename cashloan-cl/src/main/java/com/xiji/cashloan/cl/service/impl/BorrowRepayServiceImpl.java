@@ -421,7 +421,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
             if (i!=1){
                 throw new BussinessException("修改还款金额失败");
             }
-        }else{
+        }else if(repayTotal>=0){
             Map<String, Object> repayMap2 = new HashMap<String, Object>();
             repayMap2.put("id",id);
             repayMap2.put("repayAmount",repayTotal-repayTotal);
@@ -430,7 +430,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
             if (i!=1){
                 throw new BussinessException("修改还款金额失败");
             }
-        }
+        }else{
+			throw new BussinessException("还款金额不能为负数");
+		}
 		return i;
 	}
 	/**

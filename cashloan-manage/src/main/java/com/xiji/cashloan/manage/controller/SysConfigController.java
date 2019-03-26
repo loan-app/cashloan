@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -57,11 +58,11 @@ public class SysConfigController extends BaseController {
     @RequiresPermission(code = "modules:manage:system:config:save", name = "系统管理-系统参数设置-新增")
     public void saveOrUpdate(HttpServletRequest request,HttpServletResponse response,
     	@RequestParam(value = "json" ,required = false)String json,
-    	@RequestParam(value = "status" ,required = false)String status  //执行的动作
+    	@RequestParam(value = "status" ,required = false)String status//执行的动作
     	)throws Exception {
 	     Map<String,Object> returnMap=new HashMap<String,Object>();
 	     long flag;
-     
+
         SysConfig sysConfig = new SysConfig();
         //对json对象进行转换
         if (!StringUtils.isEmpty(json))
@@ -78,8 +79,28 @@ public class SysConfigController extends BaseController {
 		}
 		
 		if(flag>0){//判断操作是否成功
-        	returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-        	returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS+",刷新缓存后生效");
+			if(sysConfig.getCode().equals("fee")){
+				SysConfig config = sysConfigService.findByCode("borrow_day");
+				if((BigDecimalUtil.div(Double.parseDouble(sysConfig.getValue()),Double.parseDouble(config.getValue()))*365)>0.36) {
+					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					returnMap.put(Constant.RESPONSE_CODE_MSG, "根据我国相关法律条例规定，年利率不得高于36%");
+				}else {
+					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS + ",刷新缓存后生效");
+				}
+			}else if(sysConfig.getCode().equals("borrow_day")){
+				SysConfig config = sysConfigService.findByCode("fee");
+				if((BigDecimalUtil.div(Double.parseDouble(config.getValue()),Double.parseDouble(sysConfig.getValue()))*365)>0.36){
+					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					returnMap.put(Constant.RESPONSE_CODE_MSG, "根据我国相关法律条例规定，年利率不得高于36%");
+				}else {
+					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS + ",刷新缓存后生效");
+				}
+			}else{
+				returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+				returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS + ",刷新缓存后生效");
+			}
         }else{
         	returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
         	returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
