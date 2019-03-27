@@ -1,14 +1,14 @@
 package com.xiji.cashloan.cl.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 还款计划Dao
@@ -102,4 +102,21 @@ public interface BorrowRepayMapper extends BaseMapper<BorrowRepay,Long> {
 	 * @return
 	 */
 	BorrowRepay findByBorrowIdState(Map<String, Object> paramMap);
+
+	/**
+	 * 查询所有展期的借款订单对应的还款计划ID
+	 * @return
+	 */
+	List<Integer> listRepayId();
+
+	/**
+	 * 查询所有首借还款计划ID
+	 * @return
+	 */
+	List<Integer> listFirstRepayId();
+
+	/**
+	 * 更新还款计划类型
+	 */
+	int updateBatchTypeByRepayId(List<Integer> repayIds);
 }

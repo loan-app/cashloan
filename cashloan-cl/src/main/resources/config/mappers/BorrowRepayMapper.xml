@@ -363,4 +363,27 @@
         and (state = 10 or state = 20)
     </select>
 
+
+    <!--查询所有展期的借款订单对应的还款计划ID-->
+    <select id="listRepayId" resultType="java.lang.Integer">
+        SELECT br.id
+        from cl_borrow  as borrow,(select borrow_id from `cl_borrow_repay`  GROUP BY borrow_id HAVING(count(borrow_id)) > 1 ) as repay ,cl_borrow_repay as br
+        where borrow.id = repay.borrow_id and br.borrow_id = repay.borrow_id
+    </select>
+
+    <!--查询所有首借还款计划ID-->
+    <select id="listFirstRepayId" resultType="java.lang.Integer">
+        SELECT a.repayId from (SELECT borrow.*,br.repay_time , br.id as repayId from cl_borrow  as borrow,(select borrow_id from `cl_borrow_repay`  GROUP BY borrow_id HAVING(count(borrow_id)) > 1 ) as repay,cl_borrow_repay as br where borrow.id = repay.borrow_id and br.borrow_id = repay.borrow_id) as a,
+        (SELECT repay.borrow_id,min(repay.repay_time) AS repayTime FROM cl_borrow_repay repay  GROUP BY borrow_id) as b where DATE_FORMAT(a.repay_time,'%Y-%m-%d') = DATE_FORMAT(b.repayTime,'%Y-%m-%d') and a.id = b.borrow_id;
+    </select>
+
+    <update id="updateBatchTypeByRepayId" parameterType="list">
+        update cl_borrow_repay
+        set type = '2'
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
 </mapper>

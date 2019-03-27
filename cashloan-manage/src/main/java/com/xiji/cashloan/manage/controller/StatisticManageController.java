@@ -7,11 +7,13 @@ import com.xiji.cashloan.cl.model.DayNeedAmountModel;
 import com.xiji.cashloan.cl.model.ExpendDetailModel;
 import com.xiji.cashloan.cl.model.IncomeAndExpendModel;
 import com.xiji.cashloan.cl.model.IncomeDetailModel;
+import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.StatisticManageService;
 import com.xiji.cashloan.cl.service.statistic.*;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +63,12 @@ public class StatisticManageController extends ManageBaseController {
 
 	@Resource
 	private OverdueStatisticDataService overdueStatisticDataService;
+
+	@Resource
+	private BorrowRepayService borrowRepayService;
+
+
+	private static final Logger logger = Logger.getLogger(StatisticManageController.class);
 
 	/**
 	 * 每日未还本金
@@ -316,16 +325,19 @@ public class StatisticManageController extends ManageBaseController {
 
 	/**
 	 *
-	 *
+	 * 还款计划的还款计划类型更新
 	 *
 	 */
-	@RequestMapping(value = "/modules/manage/statistic/extendCompensate.htm",method={RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/modules/manage/statistic/extendCompensate.htm")
 	public void extendCompensate(){
 
-
-
-		return;
-
+		logger.info("进入还款计划类型更新.....");
+		int count = borrowRepayService.updateBatchType();
+		logger.info("在"+new Date() +"更新了"+count+"条数据");
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, count);
+		result.put(Constant.RESPONSE_CODE_MSG, "更新成功");
+		ServletUtils.writeToResponse(response, result);
 	}
 
 }
