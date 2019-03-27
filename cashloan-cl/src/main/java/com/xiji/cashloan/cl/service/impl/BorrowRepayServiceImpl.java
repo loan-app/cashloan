@@ -1298,12 +1298,16 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		List<Integer> repayIds = new ArrayList<>();
 
 		for(Integer repayId: listRepayId){
+			boolean flag = true;
 			for(Integer firstRepayId:listFirstRepayId){
 				if ( repayId != null && repayId.equals(firstRepayId)){
+					flag = false;
 					break;
 				}
 			}
-			repayIds.add(repayId);
+			if (flag){
+				repayIds.add(repayId);
+			}
 		}
 		int count = 0;
 		if (CollectionUtil.isNotEmpty(repayIds)){
