@@ -82,10 +82,10 @@ public class UserService {
     }
 
 	@Transactional
-    public Map registerUser(HttpServletRequest request, String phone, String pwd, String vcode, String invitationCode,
+    public Map userRegister(HttpServletRequest request, String phone, String vcode, String invitationCode,
                             String registerCoordinate,String registerAddr,String regClient, String signMsg, String channelCode) {
         try {
-            if (StringUtil.isEmpty(phone) || !StringUtil.isPhone(phone) || StringUtil.isEmpty(pwd) || StringUtil.isEmpty(vcode) || pwd.length() < 32) {
+            if (StringUtil.isEmpty(phone) || !StringUtil.isPhone(phone) || StringUtil.isEmpty(vcode)) {
                 Map ret = new LinkedHashMap();
                 ret.put("success", false);
                 ret.put("msg", "参数有误");
@@ -163,7 +163,6 @@ public class UserService {
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             long userId = dbService.insert(SqlUtil.buildInsertSqlMap("cl_user", new Object[][]{
                 {"login_name", phone},
-                {"login_pwd", pwd},
                 {"invitation_code", randomInvitationCode(6)},
                 {"regist_time", new Date()},
                 {"uuid", uuid},
@@ -214,6 +213,152 @@ public class UserService {
             //2017.5.6 仅用于demo演示环境
             demoUser(userId);
             
+            Map result = new LinkedHashMap();
+            result.put("success", true);
+            result.put("msg", "注册成功");
+            return result;
+        } catch (Exception e) {
+            logger.error("注册失败", e);
+            Map ret = new LinkedHashMap();
+            ret.put("success", false);
+            ret.put("msg", "注册失败");
+            return ret;
+        }
+    }
+
+    @Transactional
+    public Map registerUser(HttpServletRequest request, String phone, String pwd, String vcode, String invitationCode,
+                            String registerCoordinate,String registerAddr,String regClient, String signMsg, String channelCode) {
+        try {
+            if (StringUtil.isEmpty(phone) || !StringUtil.isPhone(phone) || StringUtil.isEmpty(pwd) || StringUtil.isEmpty(vcode) || pwd.length() < 32) {
+                Map ret = new LinkedHashMap();
+                ret.put("success", false);
+                ret.put("msg", "参数有误");
+                return ret;
+            }
+
+            CloanUserService cloanUserService = (CloanUserService) BeanUtil.getBean("cloanUserService");
+            long todayCount = cloanUserService.todayCount();
+            String dayRegisterMax_ = Global.getValue("day_register_max");
+            if(StringUtil.isNotBlank(dayRegisterMax_)){
+                int dayRegisterMax = Integer.parseInt(dayRegisterMax_);
+                if(dayRegisterMax > 0 && todayCount >= dayRegisterMax){
+                    Map ret = new LinkedHashMap();
+                    ret.put("success", false);
+                    ret.put("msg", "今日注册用户数已达上限，请明日再来");
+                    return ret;
+                }
+            }
+
+            ClSmsService clSmsService = (ClSmsService)BeanUtil.getBean("clSmsService");
+            int results = clSmsService.verifySms(phone, SmsModel.SMS_TYPE_REGISTER, vcode);
+            String vmsg;
+            if (results == 1) {
+                vmsg = null;
+            }else if(results == -1){
+                vmsg="验证码已过期";
+            }else {
+                vmsg="手机号码或验证码错误";
+            }
+            if (vmsg != null) {
+                Map ret = new LinkedHashMap();
+                ret.put("success", false);
+                ret.put("msg", vmsg);
+                return ret;
+            }
+            Map invitor = null;
+            if (!StringUtil.isEmpty(invitationCode)) {
+                invitor = mybatisService.queryRec("usr.queryUserByInvitation", invitationCode);
+                if (invitor == null) {
+                    Map ret = new LinkedHashMap();
+                    ret.put("success", false);
+                    ret.put("msg", "邀请人不存在");
+                    return ret;
+                }
+            }
+//
+            Map old = mybatisService.queryRec("usr.queryUserByLoginName", phone);
+            if (old != null) {
+                Map ret = new LinkedHashMap();
+                ret.put("success", false);
+                ret.put("msg", "该手机号码已被注册");
+                return ret;
+            }
+
+            // 渠道
+            long channelId = 0;
+            if(StringUtil.isNotBlank(channelCode)){
+                ChannelService channelService = (ChannelService) BeanUtil.getBean("channelService");
+                Channel channel = channelService.findByCode(channelCode);
+                if (channel != null) {
+                    channelId=channel.getId();
+                } else {
+                    Map ret = new LinkedHashMap();
+                    ret.put("success", false);
+                    ret.put("msg", "您的资质未达到我们平台的标准，请关注日用钱包获取更多贷款资讯");
+                    return ret;
+                }
+            } else {
+                Map ret = new LinkedHashMap();
+                ret.put("success", false);
+                ret.put("msg", "您的资质未达到我们平台的标准，请关注日用钱包获取更多贷款资讯");
+                return ret;
+            }
+
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            long userId = dbService.insert(SqlUtil.buildInsertSqlMap("cl_user", new Object[][]{
+                    {"login_name", phone},
+                    {"login_pwd", pwd},
+                    {"invitation_code", randomInvitationCode(6)},
+                    {"regist_time", new Date()},
+                    {"uuid", uuid},
+                    {"level", 3},
+                    {"register_client", regClient},
+                    {"channel_id", channelId}
+            }));
+
+            dbService.insert(SqlUtil.buildInsertSqlMap("cl_user_base_info", new Object[][]{
+                    {"user_id", userId},
+                    {"phone", phone},
+                    {"register_coordinate", registerCoordinate},
+                    {"register_addr", registerAddr}
+            }));
+
+            dbService.insert(SqlUtil.buildInsertSqlMap("arc_credit", new Object[][]{
+                    {"consumer_no", userId},
+                    {"total", Global.getValue("init_credit")},
+                    {"unuse", Global.getValue("init_credit")},
+                    {"state", 10}
+            }));
+            dbService.insert(SqlUtil.buildInsertSqlMap("cl_profit_amount", new Object[][]{
+                    {"user_id", userId},
+                    {"state", "10"}
+            }));
+
+            dbService.insert(SqlUtil.buildInsertSqlMap("cl_user_auth", new Object[][]{
+                    {"user_id", userId},
+                    {"id_state", 10},
+                    {"zhima_state", 10},
+                    {"phone_state", 10},
+                    {"contact_state", 10},
+                    {"bank_card_state", 10},
+                    {"work_info_state", 10},
+                    {"other_info_state", 10},
+            }));
+
+            if (invitor != null) {
+                dbService.insert(SqlUtil.buildInsertSqlMap("cl_user_invite", new Object[][]{
+                        {"invite_time", new Date()},
+                        {"invite_id", userId},
+                        {"invite_name", phone},
+                        {"user_id", invitor.get("id")},
+                        {"user_name", invitor.get("login_name")},
+                }));
+            }
+
+            //2017.5.6 仅用于demo演示环境
+            demoUser(userId);
+
             Map result = new LinkedHashMap();
             result.put("success", true);
             result.put("msg", "注册成功");
@@ -288,6 +433,27 @@ public class UserService {
     }
 
 
+    //设置密码
+    public Object setPwd(String phone, String Pwd,String signMsg) {
+
+        if (dbService.update(SqlUtil.buildUpdateSql("cl_user", MapUtil.array2Map(new Object[][]{
+                {"login_name", phone},
+                {"login_pwd", Pwd},
+                {"loginpwd_modify_time", new Date()}
+        }), "login_name")) == 1) {
+            Map ret = new LinkedHashMap();
+            ret.put("success", true);
+            ret.put("msg", "设置密码成功");
+            return ret;
+        } else {
+            Map ret = new LinkedHashMap();
+            ret.put("success", false);
+            ret.put("msg", "设置密码失败");
+            return ret;
+        }
+
+    }
+
     public Object forgetPwd(String phone, String newPwd, String vcode,String signMsg) {
              
             if (!StringUtil.isEmpty(vcode)) {
@@ -340,7 +506,6 @@ public class UserService {
             String dbPwd = (String) user.get("login_pwd");
             if (dbPwd.equalsIgnoreCase(loginPwd)) {
                 AppSessionBean session = appDbSession.create(request, loginName);
-
                 cloanUserService.modify(loginName);//修改登陆时间
                 userEquipmentInfoService.save(loginName,blackBox);
                 Map ret = new LinkedHashMap();
@@ -361,4 +526,39 @@ public class UserService {
             return ret;
         }
     }
+
+    //根据手机号和验证码完成登录
+    public Map loginPhone(final HttpServletRequest request, final String loginName,final String vcode, String blackBox) {
+        try {
+            Map user = mybatisService.queryRec("usr.queryUserByLoginName", loginName);
+            if (user == null) {
+                Map ret = new LinkedHashMap();
+                ret.put("success", false);
+                ret.put("msg", "账户不存在");
+                return ret;
+            }
+            String dbCode = (String) user.get("code");
+            if (dbCode.equalsIgnoreCase(vcode)) {
+                AppSessionBean session = appDbSession.create(request, loginName);
+                cloanUserService.modify(loginName);//修改登陆时间
+                userEquipmentInfoService.save(loginName,blackBox);
+                Map ret = new LinkedHashMap();
+                ret.put("success", true);
+                ret.put("msg", "登录成功");
+                ret.put("data", session.getFront());
+                return ret;
+            }
+            Map ret = new LinkedHashMap();
+            ret.put("success", false);
+            ret.put("msg", "验证码错误");
+            return ret;
+        } catch (Exception e) {
+            logger.error("登录异常", e);
+            Map ret = new LinkedHashMap();
+            ret.put("code", 500);
+            ret.put("msg", "系统异常");
+            return ret;
+        }
+    }
+
 }

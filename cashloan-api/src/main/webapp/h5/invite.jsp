@@ -31,17 +31,17 @@
         <div class="content">
             <form action="/api/user/wxRegister.htm">
                 <div class='centerDiv'><input name="phone" type="tel" value="" maxlength="11" placeholder="请输入手机号"/><span class='clear'  >x</span></div>
-                <div class='centerDiv'><input name="password" type="password" value="" maxlength="16" placeholder="设置登录密码"/><span class='clear' >x</span></div>
+                <%--<div class='centerDiv'><input name="password" type="password" value="" maxlength="16" placeholder="设置登录密码"/><span class='clear' >x</span></div>--%>
                 <%if(channelCode != null&&!channelCode.equals("")&&!channelCode.equals("null")){ %>
                 <div class='centerDiv'><input id='channelCode' name="channelCode" type="hidden" value="<%=channelCode%>"/></div>
                 <%} %>
                 <%if(invitationCode != null&&!invitationCode.equals("")&&!invitationCode.equals("null")){ %>
                 <div class='centerDiv'><input id='invitation' name="invitationCode" type="text" value="<%=invitationCode%>" disabled="true" placeholder="推荐人"/></div>
                 <%} %>
-                 <%if(channelCode != null&&!channelCode.equals("")&&!channelCode.equals("null")){ %>
+                <%-- <%if(channelCode != null&&!channelCode.equals("")&&!channelCode.equals("null")){ %>
                 <div class='centerDiv'><input id='channelCode' name="channelCode" type="hidden" value="<%=channelCode%>" /></div>
-                <%} %>
-              <%--  <p class="picVerify clearfix">
+                <%}%>
+                <p class="picVerify clearfix">
                     <input type="text" id="code" maxlength="4" name="code" placeholder="请输入图片验证码" />
                     <img id="imgObj" alt="验证码"  src="/api/h5/imgCode/generate.htm" onclick="changeImg()"/>
                 </p>--%>
@@ -54,7 +54,7 @@
                     <input id="checkbox" name="yes" type="checkbox" value=""/>
                     <label for="checkbox" onclick="click_a();">同意<a href="protocol_register.jsp">《使用协议》</a>
                           <i src="/static/images/yes.png" id="click_a"></i>
-                    </label> 
+                    </label>
                     <a href="#">APP下载</a>
                 </p>
             </form>
@@ -84,11 +84,11 @@
     </div>
 </body>
 </html>
- 
+
 <script src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/placeholders.js" ></script> 
+<script type="text/javascript" src="/static/js/placeholders.js" ></script>
 <script type="text/javascript" src="/static/js/signup.js" ></script>
-<script type="text/javascript" src="/static/js/jquery.md5.js" ></script>
+<%--<script type="text/javascript" src="/static/js/jquery.md5.js" ></script>--%>
 <script type="text/javascript" src="/static/js/config.js" ></script>
 <script>
     //头部信息
@@ -96,11 +96,11 @@
     (function() {
       var hm = document.createElement("script");
       hm.src = "/static/js/hm.js";
-      var s = document.getElementsByTagName("script")[0]; 
+      var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
 
-    kdlcJsApiShareBack(); 
+    kdlcJsApiShareBack();
     function kdlcJsApiShareBack(){
         if (typeof(kdlcJsApi) != 'undefined') {
             kdlcJsApi.pageAddShare('{"isShare":1,"shareBtnTitle":"\u6309\u94ae\u6587\u6848","shareTitle":"\u5206\u4eabtitle","sharePageTitle":"\u5206\u4eab\u6709\u5956\u63cf\u8ff0","shareContent":"\u5206\u4eab\u63cf\u8ff0","shareUrl":"http:\/\/www.koudailc.com","shareImg":"http:\/\/res.koudailc.com\/article\/20160506\/3572c6e05464b6.png","sharePlatform":["wx","wechatf","qq","qqzone","sina","sms"],"shareSuccessAlert":"\u5206\u4eab\u6210\u529f\u5f39\u6846\u6587\u6848","shareIsUp":1,"shareUpId":11,"shareUpType":1,"shareUpUrl":"http:\/\/www.koudailc.com"}');
@@ -122,7 +122,7 @@
     //var reg ='/api/user/register.htm';
     //微信渠道注册接口
     var reg ='/api/user/wxRegister.htm';
-    
+
     var invitationCode='<%=invitationCode%>';
     var inviteUserId='<%=inviteUserId%>';
     var channelCode='<%=channelCode%>';
@@ -141,13 +141,13 @@
             $('#click_a').css('background','url('+ src + ') 0 0 no-repeat').css('background-size','0.3733333333rem 0.3733333333rem');
         }
         i++;
-    } 
-/* // 刷新图片
-    function changeImg() {  
-        var imgSrc = $("#imgObj");  
-        var times = (new Date()).getTime(); 
-        imgSrc.attr("src", '/api/h5/imgCode/generate.htm?timestamp='+times);  
-    }*/
+    }
+ // 刷新图片
+    function changeImg() {
+        var imgSrc = $("#imgObj");
+        var times = (new Date()).getTime();
+        imgSrc.attr("src", '/api/h5/imgCode/generate.htm?timestamp='+times);
+    }
     //头部图片
     $('img').eq(0).attr('src',getInvite_img());
     //app下载地址

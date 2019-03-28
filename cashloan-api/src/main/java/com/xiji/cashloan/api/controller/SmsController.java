@@ -101,7 +101,7 @@ public class SmsController extends BaseController {
 				String orderNo = clSmsService.sendSms(phone, type);
 				if (StringUtil.isNotBlank(orderNo)) {
 					clSmsService.getReportByOrderNo(orderNo, phone, type);
-					
+
 					data.put("state", "10");
 					resultMap.put(Constant.RESPONSE_DATA, data);
 					resultMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
