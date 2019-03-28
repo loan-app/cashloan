@@ -509,7 +509,7 @@
     	select
     		<include refid="Base_Column_List" />
     	from cl_borrow 
-    	where state not in (21,27,40,41) 
+    	where state not in (21,27,40,41,303)
     	and user_id = #{userId,jdbcType=BIGINT}
     </select>
     
