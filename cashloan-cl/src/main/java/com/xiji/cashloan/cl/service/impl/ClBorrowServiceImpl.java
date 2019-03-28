@@ -2540,6 +2540,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public int comeBackBorrow(long borrowId) {
         Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+        //查询该用户的最后一条借款的id
+        Long lastId = clBorrowMapper.findLastBorrow(borrow.getUserId()).getId();
+
+        if (borrowId!=lastId){
+            return 2;
+        }
 
         UserBaseInfo userInfo = userBaseInfoService.findByUserId(borrow.getUserId());
 
