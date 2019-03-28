@@ -70,7 +70,7 @@
     </select>
 
     <select id="sumUnlineLoadAmount" resultType="java.lang.Double">
-        select sum(amount) from cl_pay_log where scenes = '10' and state = '40' and remark ='线下放款审核'
+      select sum(b.real_amount) from (select borrow_id from `cl_borrow_progress` where remark ='线下放款审核')  bp left join `cl_borrow` b  on b.id = bp.borrow_id
     </select>
 
     <select id="sumOnlineRepaymentAmount" resultType="java.lang.Double">
