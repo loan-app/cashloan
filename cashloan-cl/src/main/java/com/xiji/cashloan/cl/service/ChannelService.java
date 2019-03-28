@@ -85,6 +85,11 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	Channel getChannelByCode(String code) throws ServiceException;
 
 	/**
+	 * 根据id查询渠道信息
+	 */
+	Channel getChannelById(Long id) throws ServiceException;
+
+	/**
 	 * 查询没有版本信息的渠道id和名称
 	 */
 	List<Channel> listChannelWithoutApp();
