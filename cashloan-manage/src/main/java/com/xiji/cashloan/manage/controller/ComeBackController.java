@@ -32,7 +32,10 @@ public class ComeBackController {
         if (res==1) {
             result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-        } else {
+        } else if (res==2){
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "该订单不是的本用户最新一条借款,不能拉回!");
+        }else {
             result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
         }
