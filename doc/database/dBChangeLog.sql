@@ -893,3 +893,6 @@ alter table cl_load_statistic_data add `unline_load_principal` decimal(10,2) DEF
 
 alter table cl_repayment_statistic_data add `online_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线上还款金额';
 alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线下还款金额';
+
+-- 到期提醒短信发送url
+INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_apihost2', 'https://api.dsdatas.com/movek/movekSimpleInfoV2', 1, '到期短信发送host', 1);
