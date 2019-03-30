@@ -357,6 +357,17 @@
         where borrow_id = #{id ,jdbcType=BIGINT}  AND user_id = #{userId ,jdbcType=BIGINT} AND state = 11
     </update>
 
+    <select id="listAllocated" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select mro.* from cl_manual_review_order as mro left join cl_borrow as borrow on mro.borrow_id = borrow.id
+        WHERE borrow.again = '10' and mro.state = '10'
+        order by mro.create_time ASC
+    </select>
+
+
+    <select id="listToBeAssignedCount" resultType="java.util.HashMap">
+       SELECT count(mro.id) as reviewCount, mro.user_id as userId FROM cl_manual_review_order as mro left join cl_borrow as borrow on mro.borrow_id = borrow.id where mro.state ='11' and borrow.again = '10' GROUP BY mro.user_id;
+    </select>
+
     <update id="updateByBorrowId"  parameterType="java.util.HashMap">
         update cl_manual_review_order
         <set>
@@ -373,5 +384,35 @@
             </if>
         </set>
         where borrow_id = #{borrowId ,jdbcType=BIGINT}
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        update cl_manual_review_order
+        <trim prefix="set" suffixOverrides=",">
+        <trim prefix="state =case" suffix="end,">
+            <foreach collection="list" item="item">
+                <if test="item.state != null">
+                    when id=#{item.id} then #{item.state}
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="user_id =case" suffix="end,">
+            <foreach collection="list" item="item">
+                    when id=#{item.id} then #{item.userId}
+            </foreach>
+        </trim>
+        <trim prefix="user_name =case" suffix="end,">
+            <foreach collection="list" item="item">
+                <if test="item.userName != null">
+                    when id=#{item.id} then #{item.userName}
+                </if>
+            </foreach>
+        </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id = #{item.id}
+            </foreach>
+        </where>
     </update>
 </mapper>

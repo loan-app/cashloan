@@ -893,3 +893,6 @@ alter table cl_load_statistic_data add `unline_load_principal` decimal(10,2) DEF
 
 alter table cl_repayment_statistic_data add `online_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线上还款金额';
 alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线下还款金额';
+
+
+insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
