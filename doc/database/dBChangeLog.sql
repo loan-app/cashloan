@@ -896,3 +896,4 @@ alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAUL
 
 
 insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0 12 1/1 * ?');
