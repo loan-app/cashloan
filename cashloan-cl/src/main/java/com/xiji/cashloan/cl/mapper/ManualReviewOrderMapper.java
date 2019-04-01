@@ -40,4 +40,12 @@ public interface ManualReviewOrderMapper extends BaseMapper<ManualReviewOrder, L
     int orderAllotUser(Map<String, Object> params);
 
     int reviewState(Map<String, Object> map);
+
+    /**
+     *
+     *根据borrowId修改状态
+     * @param map
+     *            更新条件
+     */
+    int updateByBorrowId(Map<String, Object> map);
 }

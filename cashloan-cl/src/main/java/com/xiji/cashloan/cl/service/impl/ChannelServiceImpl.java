@@ -98,6 +98,15 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	}
 
 	@Override
+	public Channel getChannelById(Long id) throws ServiceException {
+		try {
+			return channelMapper.getChannelById(id);
+		} catch (Exception e) {
+			throw new ServiceException(e.getMessage(),e,Constant.FAIL_CODE_VALUE);
+		}
+	}
+
+	@Override
 	public Page<ChannelCountModel> channelUserList(int current, int pageSize,
 			Map<String, Object> searchMap) {
 		PageHelper.startPage(current, pageSize);

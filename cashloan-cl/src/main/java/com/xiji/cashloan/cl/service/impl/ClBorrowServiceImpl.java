@@ -2540,6 +2540,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public int comeBackBorrow(long borrowId) {
         Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+        //查询该用户的最后一条借款的id
+        Long lastId = clBorrowMapper.findLastBorrow(borrow.getUserId()).getId();
+
+        if (borrowId!=lastId){
+            return 2;
+        }
 
         UserBaseInfo userInfo = userBaseInfoService.findByUserId(borrow.getUserId());
 
@@ -2549,16 +2555,23 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
         }
         int result=0;
         if ("21".equals(borrow.getState())){
+            //修改状态
              result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_AUTO_REFUSED);
+            //插入人工审核订单表
+            manualReviewOrderMapper.save(getManualReviewOrder(borrowId, userInfo));
 
         } else if ("27".equals(borrow.getState())){
 
-             result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_REFUSED);
+            result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_REFUSED);
+            HashMap<String, Object> map = new HashMap<>();
+            //更新人工审核订单表
+            map.put("borrowId", borrowId);
+            map.put("reviewTime", DateUtil.getNow());
+            map.put("state", UrgeRepayOrderModel.STATE_ORDER_PRE);
+            manualReviewOrderMapper.updateByBorrowId(map);
         }
 		logger.info("审核不通过(自动审核不通过,人工复审不通过),拉回重审,返回结果result: "+result);
 		if(result == 1){
-			//插入人工审核订单表
-			manualReviewOrderMapper.save(getManualReviewOrder(borrowId, userInfo));
 			//信用额度修改
             modifyCredit(borrow.getUserId(), borrow.getAmount(), "used");
             //添加借款进度

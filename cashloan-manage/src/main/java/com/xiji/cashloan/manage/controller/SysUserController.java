@@ -162,17 +162,35 @@ public class SysUserController extends BaseController {
 				if (StringUtil.isNotBlank((String)userMap.get("officeOver"))) {
 					userMap.put("officeOver", String.valueOf(userMap.get("officeOver")));
 				}
-			
+
 				if (StringUtil.isBlank(String.valueOf(userMap.get("position")))) {
 					userMap.put("position", 0);
 				}
-				
-				SysUser updateUser = getLoginUser(request);
-				userMap.put("updateUser", updateUser.getUserName());
-				boolean istrue = sysUserService.updateSysUserById(userMap);// 更新用户信息及对应的角色信息
-				if (istrue) {
-					responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-					responseMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				Long ID = Long.valueOf(String.valueOf(userMap.get("id")));
+				SysUser userID = sysUserService.getUserById(ID);
+				String userName = String.valueOf(userMap.get("userName"));
+				SysUser user2 = sysUserService.getUserByUserName(userName);
+				if(userID.getUserName().equals(userName)){
+					SysUser updateUser = getLoginUser(request);
+					userMap.put("updateUser", updateUser.getUserName());
+					boolean istrue = sysUserService.updateSysUserById(userMap);// 更新用户信息及对应的角色信息
+					if (istrue) {
+						responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						responseMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					}
+				}else{
+					if (null != user2) {
+						responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						responseMap.put(Constant.RESPONSE_CODE_MSG, "用户名已存在，不能重复");
+					}else{
+						SysUser updateUser = getLoginUser(request);
+						userMap.put("updateUser", updateUser.getUserName());
+						boolean istrue = sysUserService.updateSysUserById(userMap);// 更新用户信息及对应的角色信息
+						if (istrue) {
+							responseMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+							responseMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+						}
+					}
 				}
 			} else {
 				responseMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
