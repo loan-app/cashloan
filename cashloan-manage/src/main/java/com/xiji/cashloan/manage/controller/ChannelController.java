@@ -146,22 +146,35 @@ public class ChannelController extends ManageBaseController {
 		paramMap.put("name", name);
 		paramMap.put("linker", linker);
 		paramMap.put("phone", phone);
+        Channel channelId = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
-		if (null != code2) {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, "渠道编码已存在，不能重复");
-		} else {
-			paramMap.put("code", code);
-			boolean flag = channelService.update(paramMap);
-			if (flag) {
-				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-				result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-			} else {
-				result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-				result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
-			}
-		}
+		if(channelId.getCode().equals(code)){
+            paramMap.put("code", code);
+            boolean flag = channelService.update(paramMap);
+            if (flag) {
+                result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+            } else {
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+            }
+        }else {
+            if (null != code2) {
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE_MSG, "渠道编码已存在，不能重复");
+            } else {
+                paramMap.put("code", code);
+                boolean flag = channelService.update(paramMap);
+                if (flag) {
+                    result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+                    result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+                } else {
+                    result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                    result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+                }
+            }
+        }
 		ServletUtils.writeToResponse(response, result);
 	}
 

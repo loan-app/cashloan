@@ -184,6 +184,7 @@ public class UserService {
                 {"unuse", Global.getValue("init_credit")},
                 {"state", 10}
             }));
+
             dbService.insert(SqlUtil.buildInsertSqlMap("cl_profit_amount", new Object[][]{
                 {"user_id", userId},
                 {"state", "10"}
@@ -330,6 +331,7 @@ public class UserService {
                     {"unuse", Global.getValue("init_credit")},
                     {"state", 10}
             }));
+
             dbService.insert(SqlUtil.buildInsertSqlMap("cl_profit_amount", new Object[][]{
                     {"user_id", userId},
                     {"state", "10"}
@@ -371,6 +373,7 @@ public class UserService {
             return ret;
         }
     }
+
 	/**
 	 * 给注册用户添加芝麻和银行卡演示数据
 	 * @param userId
