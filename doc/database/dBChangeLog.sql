@@ -896,3 +896,6 @@ alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAUL
 
 -- 到期提醒短信发送url
 INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_apihost2', 'https://api.dsdatas.com/movek/movekSimpleInfoV2', 1, '到期短信发送host', 1);
+
+-- 修改到期提醒短信模板
+update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
