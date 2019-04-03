@@ -80,7 +80,7 @@ let FromBox = React.createClass({
                 <Row>
                     <Col span="24">
                     <FormItem  {...formItemLayout} label="借款金额:">
-                       <Input disabled={state.visibleAmount} type="text" {...getFieldProps('amount')  }/>
+                       <Input disabled={state.visibleAmount} type="number" placeholder="请输入要修改的借款金额"{...getFieldProps('amount', {rules:[{ required: true, message: '不能为空' }]})  }/>
                     </FormItem>
                     </Col>
                 </Row>

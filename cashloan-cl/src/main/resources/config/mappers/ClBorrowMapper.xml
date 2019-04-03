@@ -274,22 +274,22 @@
             <if test="remark != null and remark != '' ">        
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="amount != null and amount != '' ">
+            <if test="amount != null ">
                 amount = #{amount,jdbcType=DECIMAL},
             </if>
-            <if test="realAmount != null and realAmount != '' ">
+            <if test="realAmount != null ">
                 real_amount = #{realAmount,jdbcType=DECIMAL},
             </if>
-            <if test="fee != null and fee != '' ">
+            <if test="fee != null ">
                 fee = #{fee,jdbcType=DECIMAL},
             </if>
-            <if test="serviceFee != null and serviceFee != '' ">
+            <if test="serviceFee != null ">
                 service_fee = #{serviceFee,jdbcType=DECIMAL},
             </if>
-            <if test="infoAuthFee != null and infoAuthFee != '' ">
+            <if test="infoAuthFee != null ">
                 info_auth_fee = #{infoAuthFee,jdbcType=DECIMAL},
             </if>
-            <if test="interest != null and interest != '' ">
+            <if test="interest != null ">
                 interest = #{interest,jdbcType=DECIMAL}
             </if>
         </set>    
