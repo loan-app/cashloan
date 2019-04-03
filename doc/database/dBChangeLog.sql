@@ -894,6 +894,11 @@ alter table cl_load_statistic_data add `unline_load_principal` decimal(10,2) DEF
 alter table cl_repayment_statistic_data add `online_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线上还款金额';
 alter table cl_repayment_statistic_data add `unline_amount` decimal(10,2) DEFAULT '0.00' COMMENT '线下还款金额';
 
+-- 到期提醒短信发送url
+INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_apihost2', 'https://api.dsdatas.com/movek/movekSimpleInfoV2', 1, '到期短信发送host', 1);
+
+-- 修改到期提醒短信模板
+update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
 
 insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0 12 1/1 * ?');

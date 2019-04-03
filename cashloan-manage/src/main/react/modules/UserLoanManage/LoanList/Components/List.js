@@ -563,6 +563,12 @@ export default React.createClass({
                                 <a href="#" onClick={me.offline.bind(me, '线下放款', record, false)}>线下放款</a>
                             </div>
                         );
+                    case '放款失败':
+                        return (
+                            <div style={{ textAlign: "left" }}>
+                                <a href="#" onClick={me.offline.bind(me, '线下放款', record, false)}>线下放款</a>
+                            </div>
+                        );
                     default:
                         return (
                             <div style={{ textAlign: "left" }}>

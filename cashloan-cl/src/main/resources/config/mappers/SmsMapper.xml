@@ -124,6 +124,7 @@
         <include refid="Base_Column_List" />
         from cl_sms
         <include refid="searchBy"/>
+        order by id desc
     </select>
     
     <!-- 查询最新的一条 -->
