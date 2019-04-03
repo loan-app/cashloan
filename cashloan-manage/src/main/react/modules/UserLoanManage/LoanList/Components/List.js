@@ -259,7 +259,7 @@ export default React.createClass({
         var selectedRows = this.state.selectedRows;
         // var data = this.state.data
         var selectedRowKeys = this.state.selectedRowKeys;
-        if (selectedRowKeys.indexOf(id) < 0 && record.state === '301') {
+        if (selectedRowKeys.indexOf(id) < 0 && (record.state === '301' || record.state ==='31')) {
             selectedRowKeys.push(id);
             selectedRows.push(record);
         } else {
@@ -293,7 +293,7 @@ export default React.createClass({
     rowClassName(record) {
         let selected = this.state.selectedIndex;
         //console.log('selected', this.state.selectedIndex)
-        return (record.id == selected && selected !== '') ? 'selectRow' : '';
+        return (record.id === selected && selected !== '') ? 'selectRow' : '';
 
     },
 
@@ -450,7 +450,7 @@ export default React.createClass({
             type: 'checkbox',
             selectedRowKeys,
             getCheckboxProps: record => ({
-                disabled: record.state !== "301" ,    // 配置无法勾选的列
+                disabled: record.state !== "301" && record.state !== "31" ,    // 配置无法勾选的列
             }),
             onSelectAll: this.onSelectAll,
         };

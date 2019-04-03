@@ -2526,6 +2526,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			int code = 0;
 			Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 			if (borrow != null) {
+				if(borrow.getState().equals(BorrowModel.STATE_REPAY_FAIL)){
+					borrowLoan(borrow, new Date());
+					break;
+				}
 				if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
 					logger.error("审核失败,当前状态不是待审核放款");
 					break;
@@ -2549,9 +2553,6 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				borrowProgress.setAuditUser(userId);
 				borrowProgress.setCreateTime(DateUtil.getNow());
 				borrowProgressMapper.save(borrowProgress);
-
-				// 审核不通过返回信用额度
-				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
 				// 审核放款通过 放款
 				borrowLoan(borrow, new Date());
 			} else {
