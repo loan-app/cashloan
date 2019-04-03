@@ -176,6 +176,7 @@ public class ManualReviewOrderServiceImpl extends BaseServiceImpl<ManualReviewOr
 			});
 		}
 
+		// 批量更新
 		if (CollectionUtil.isNotEmpty(reviewOrders)){
 			count = manualReviewOrderMapper.batchUpdate(reviewOrders);
 			if (count != reviewOrders.size()){

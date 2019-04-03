@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * @auther : wnb
  * @date : 2019/3/29
- * @describe :
+ * @describe : 订单自动分配
  */
 @Component
 @Lazy(value = false)

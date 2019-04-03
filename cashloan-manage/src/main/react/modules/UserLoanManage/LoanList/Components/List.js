@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal, Table} from 'antd';
+import {Button, Modal, Table} from 'antd';
 import Check from "./Check";
 import UserRemarkList from "../../../common/UserRemark/UserRemarkList";
 
@@ -9,6 +9,7 @@ const confirm = Modal.confirm;
 export default React.createClass({
     getInitialState() {
         return {
+            selectedRows:[],
             selectedRowKeys: [], // 这里配置默认勾选列
             loading: false,
             data: [],
@@ -251,13 +252,40 @@ export default React.createClass({
 
     //行点击事件
     onRowClick(record) {
+
+
+        var button = this.state.button;
+        var id = record.id;
+        var selectedRows = this.state.selectedRows;
+        // var data = this.state.data
+        var selectedRowKeys = this.state.selectedRowKeys;
+        if (selectedRowKeys.indexOf(id) < 0 && record.state === '301') {
+            selectedRowKeys.push(id);
+            selectedRows.push(record);
+        } else {
+            selectedRowKeys.remove(id);
+            selectedRows.remove(record);
+        }
+        //console.log(selectedRowKeys);
+        if (selectedRowKeys[0]) {
+            button = true;
+        } else {
+            //console.log(11111111);
+            button = false;
+        }
         //console.log(record)
+        // this.setState({
+        //     selectedRowKeys: [record.id],
+        //     selectedRow: record,
+        //     rowRecord: record
+        // }, () => {
+        //     this
+        // });
+
         this.setState({
-            selectedRowKeys: [record.id],
-            selectedRow: record,
-            rowRecord: record
-        }, () => {
-            this
+            selectedRows: selectedRows,
+            selectedRowKeys: selectedRowKeys,
+            button: button
         });
     },
 
@@ -269,17 +297,22 @@ export default React.createClass({
 
     },
 
-    //选择
+    // 选择
     onSelectAll(selected, selectedRowKeys, selectedRows, changeRows) {
+        var selectedRowKeys = this.state.selectedRowKeys;
         if (selected) {
-            this.setState({
-                selectedRowKeys
-            })
+            for (var i = 0; i < selectedRows.length; i++) {
+                selectedRowKeys.push(selectedRows[i].id);
+            }
         } else {
-            this.setState({
-                selectedRowKeys: []
-            })
+            selectedRowKeys = [];
         }
+        //console.log(selectedRowKeys);
+        this.setState({
+            selectedRows: selectedRows,
+            selectedRowKeys: selectedRowKeys,
+            button: selected,
+        })
     },
     again(title, record) {
     	var record = record;
@@ -347,6 +380,38 @@ export default React.createClass({
         })
     },
 
+
+    batchLoan() {
+        var me = this;
+        var ids = me.state.selectedRowKeys.toString();
+        confirm({
+            title: '是否确定批量放款',
+            onOk: function () {
+
+                Utils.ajaxData({
+                    url: '/modules/manage/borrow/batchBorrowLoan.htm',
+                    data: {
+                        borrowId: ids
+                    },
+                    method: "post",
+                    callback: (result) => {
+                        if(result.code == 200){
+                            Modal.success({
+                                title: result.msg
+                            })
+                            me.refreshList();
+                        }else{
+                            Modal.error({
+                                title: result.msg
+                            })
+                        }
+                    }
+                });
+            },
+            onCancel: function(){}
+        })
+    },
+
     showUserRemark(title, record, canEdit) {
         Utils.ajaxData({
             url: '/modules/manage/user/remark/list.htm',
@@ -376,7 +441,6 @@ export default React.createClass({
             }
         });
     },
-
     render() {
         const {
             loading,
@@ -385,6 +449,9 @@ export default React.createClass({
         const rowSelection = {
             type: 'checkbox',
             selectedRowKeys,
+            getCheckboxProps: record => ({
+                disabled: record.state !== "301" ,    // 配置无法勾选的列
+            }),
             onSelectAll: this.onSelectAll,
         };
         let me = this;
@@ -509,8 +576,15 @@ export default React.createClass({
         var state = this.state;
         return (
             <div className="block-panel">
+
+                <div className="actionBtns" style={{ marginBottom: 16 }}>
+                    <Button disabled={!hasSelected} onClick = {me.batchLoan.bind(me, '批量放款')}>
+                        批量放款
+                    </Button>
+                </div>
                 <Table columns={columns} rowKey={this.rowKey} ref="table"
-                    onRowClick={this.onRowClick}
+                       rowSelection={rowSelection}
+                       onRowClick={this.onRowClick}
                     dataSource={this.state.data}
                     rowClassName={this.rowClassName}
                     pagination={this.state.pagination}

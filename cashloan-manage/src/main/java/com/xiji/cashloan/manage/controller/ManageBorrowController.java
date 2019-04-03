@@ -25,10 +25,7 @@ import tool.util.StringUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 借款信息表Controller
@@ -81,7 +78,7 @@ public class ManageBorrowController extends ManageBaseController {
 	}
 
 	/**
-	 *借款进度列表
+	 * 借款进度列表
 	 * @param searchParams
 	 * @param currentPage
 	 * @param pageSize
@@ -429,8 +426,8 @@ public class ManageBorrowController extends ManageBaseController {
 		try{
 			SysUser loginUser = getLoginUser(request);
 			Long userId=loginUser.getId();
-			
-		    int msg =clBorrowService.auditBorrowLoan(borrowId, state, remark,userId);
+
+		    int msg = clBorrowService.auditBorrowLoan(borrowId, state, remark,userId);
 			if(msg==1){
 				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "操作完成");
@@ -438,6 +435,34 @@ public class ManageBorrowController extends ManageBaseController {
 				result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "操作失败");
 			}
+		} catch (Exception e) {
+			logger.error(e);
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, e.getMessage());
+		}
+		ServletUtils.writeToResponse(response,result);
+	}
+
+
+	/**
+	 * 批量放款
+	 * @param borrowId
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/modules/manage/borrow/batchBorrowLoan.htm")
+	public void batchBorrowLoan(@RequestParam(value = "borrowId") String borrowId) throws Exception {
+		Map<String,Object> result = new HashMap<String,Object>();
+		try{
+			SysUser loginUser = getLoginUser(request);
+			Long userId=loginUser.getId();
+			List<String> strings =  Arrays.asList(borrowId.split(","));
+			List<Long> borrowIds = new ArrayList<>();
+			for (String string : strings) {
+				borrowIds.add(Long.valueOf(string));
+			}
+			clBorrowService.batchBorrowLoan(borrowIds, userId);
+			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, "操作完成");
 		} catch (Exception e) {
 			logger.error(e);
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
