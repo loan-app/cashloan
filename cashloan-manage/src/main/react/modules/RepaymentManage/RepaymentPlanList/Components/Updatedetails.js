@@ -99,7 +99,7 @@ var Updatedetails = React.createClass({
           <Row>
             <Col span="24">
               <FormItem {...formItemLayout} label="还款金额:">
-                <Input type="number" placeholder="请输入要修改的还款金额" {...getFieldProps('repayTotal') } />
+                <Input type="number" placeholder="请输入要修改的还款金额" {...getFieldProps('repayTotal',{rules:[{ required: true, message: '不能为空' }]}) } />
               </FormItem>
             </Col>
           </Row>
