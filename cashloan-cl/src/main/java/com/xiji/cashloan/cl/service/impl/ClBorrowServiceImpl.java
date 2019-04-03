@@ -2699,16 +2699,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		int code = 0;
 		final Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 		if (borrow != null) {
-			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
-				logger.error("线下放款失败,当前状态不是待审核放款");
-				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN) && !borrow.getState().equals(BorrowModel.STATE_REPAY_FAIL)){
+				logger.error("线下放款失败,当前状态不是待审核放款或放款失败");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款或放款失败");
 			}
 			Map<String,Object> map = new HashMap<>();
 			map.put("id", borrowId);
 			map.put("state", BorrowModel.STATE_REPAY);
 			code = clBorrowMapper.loanState(map);
 			if (code!=1) {
-				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款或放款失败");
 			}
 
 			//添加借款进度

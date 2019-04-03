@@ -255,9 +255,16 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		}
 		if("repayBefore".equals(smsType)){
 			message = ret(smsType);
-			message = message
-					.replace("{$name}", StringUtil.isNull(map.get("name")))
-					.replace("{$telephone}", StringUtil.isNull(map.get("telephone")));
+			//小猪钱包到期短信不包含手机号码
+			if("小猪钱包".equals(Global.getValue("title"))) {
+				message = message
+						.replace("{$name}", StringUtil.isNull(map.get("name")))
+						.replace("{$telephone}", StringUtil.EMPTY);
+			} else {
+				message = message
+						.replace("{$name}", StringUtil.isNull(map.get("name")))
+						.replace("{$telephone}", StringUtil.isNull(map.get("telephone")));
+			}
 		}
 		if("delayPlan".equals(smsType)){
 			message = ret(smsType);
@@ -404,6 +411,21 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		}
 		return "";
 	}
+
+	//大圣短信通道2(到期提醒短信发送)
+	private String dsSendSm2(Map<String, Object> payload, String smsNo){
+		final String APIHOST = Global.getValue("sms_apihost2");//发送地址
+
+		SmsTkCreditRequest creditRequest = new SmsTkCreditRequest(APIHOST,smsNo);
+		creditRequest.setPayload(payload);
+		String result=null;
+		try {
+			result = creditRequest.request();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+		return result;
+	}
 	
 	//大圣短信
 	private String dsSendSms(Map<String, Object> payload, String smsNo){
@@ -549,7 +571,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 				Map<String, Object> payload = new HashMap<>();
 				payload.put("mobile",baseInfo.getPhone());
 				payload.put("message", changeMessage("repayBefore",search));
-				String result = sendCode(payload,tpl.getNumber());
+				String result = dsSendSm2(payload,tpl.getNumber());
 				logger.debug("短信发送结果"+result);
 				return result(result, baseInfo.getPhone(), "repayBefore",0);
 			}
