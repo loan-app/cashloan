@@ -257,7 +257,6 @@ export default React.createClass({
         var button = this.state.button;
         var id = record.id;
         var selectedRows = this.state.selectedRows;
-        // var data = this.state.data
         var selectedRowKeys = this.state.selectedRowKeys;
         if (selectedRowKeys.indexOf(id) < 0 && (record.state === '301' || record.state ==='31')) {
             selectedRowKeys.push(id);
@@ -266,26 +265,17 @@ export default React.createClass({
             selectedRowKeys.remove(id);
             selectedRows.remove(record);
         }
-        //console.log(selectedRowKeys);
         if (selectedRowKeys[0]) {
             button = true;
         } else {
             //console.log(11111111);
             button = false;
         }
-        //console.log(record)
-        // this.setState({
-        //     selectedRowKeys: [record.id],
-        //     selectedRow: record,
-        //     rowRecord: record
-        // }, () => {
-        //     this
-        // });
 
         this.setState({
-            selectedRows: selectedRows,
+            //selectedRows: selectedRows,
             selectedRowKeys: selectedRowKeys,
-            button: button
+            //button: button
         });
     },
 
@@ -307,7 +297,6 @@ export default React.createClass({
         } else {
             selectedRowKeys = [];
         }
-        //console.log(selectedRowKeys);
         this.setState({
             selectedRows: selectedRows,
             selectedRowKeys: selectedRowKeys,
@@ -338,8 +327,6 @@ export default React.createClass({
                                 title: result.msg
                             })
                         }
-
-
                     }
                 });
             },
@@ -350,6 +337,7 @@ export default React.createClass({
     offline(title, record) {
         var record = record;
         var me = this;
+        var selectedRowKeys = this.state.selectedRowKeys;
         confirm({
             title: '是否确定线下放款',
             onOk: function () {
@@ -371,8 +359,10 @@ export default React.createClass({
                                 title: result.msg
                             })
                         }
-
-
+                        selectedRowKeys.remove(record.id)
+                        me.setState({
+                            selectedRowKeys: selectedRowKeys,
+                        })
                     }
                 });
             },
@@ -395,7 +385,7 @@ export default React.createClass({
                     },
                     method: "post",
                     callback: (result) => {
-                        if(result.code == 200){
+                        if(result.code === 200){
                             Modal.success({
                                 title: result.msg
                             })
@@ -405,6 +395,11 @@ export default React.createClass({
                                 title: result.msg
                             })
                         }
+                        me.setState({
+                            selectedRows: [],
+                            selectedRowKeys: [],
+                            button: false,
+                        })
                     }
                 });
             },
@@ -451,15 +446,15 @@ export default React.createClass({
             selectedRowKeys,
             getCheckboxProps: record => ({
                 disabled: record.state !== "301" && record.state !== "31" ,    // 配置无法勾选的列
-            }),
+        }),
             onSelectAll: this.onSelectAll,
         };
         let me = this;
         const hasSelected = selectedRowKeys.length > 0;
-        let openEdit = true;
-        if (hasSelected && selectedRowKeys.indexOf("0") === -1) {
-            openEdit = false;
-        }
+        // let openEdit = true;
+        // if (hasSelected && selectedRowKeys.indexOf("0") === -1) {
+        //     openEdit = false;
+        // }
         var columns = [{
             title: '真实姓名',
             dataIndex: 'realName'
@@ -584,7 +579,7 @@ export default React.createClass({
             <div className="block-panel">
 
                 <div className="actionBtns" style={{ marginBottom: 16 }}>
-                    <Button disabled={!hasSelected} onClick = {me.batchLoan.bind(me, '批量放款')}>
+                    <Button disabled={!hasSelected} onClick = {me.batchLoan.bind(me, '批量放款')} >
                         批量放款
                     </Button>
                 </div>
