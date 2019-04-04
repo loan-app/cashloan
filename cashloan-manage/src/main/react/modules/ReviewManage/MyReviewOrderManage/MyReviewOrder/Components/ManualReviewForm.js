@@ -8,9 +8,7 @@ const Option = Select.Option;
 let FromBox = React.createClass({
     getInitialState() {
         return {
-            formData:{
-                visibleAmount:true
-            },
+            visibleAmount:true
         };
     },
     // selectChange(name,value) {
@@ -32,20 +30,19 @@ let FromBox = React.createClass({
     //     return sblack;
     // },
     changeValue(e) {
-        var newValue = this.state.formData;
-        console.log("1111");
-        console.log(e);
-        var name = e.target.name;
-        newValue[name] = e.target.value;
-        this.setState({
-          formData:newValue,
-          visibleAmount:false
-        });
+        if(e == 26) {
+            this.setState({
+                visibleAmount:false
+            });
+        } else {
+            this.setState({
+                visibleAmount:true
+            });
+        }
      },
     render() {
         let { getFieldProps } = this.props.form;
         let props = this.props;
-        console.log(props);
         const formItemLayout = {
             labelCol: {
                 span: 8
@@ -55,7 +52,6 @@ let FromBox = React.createClass({
             },
         };
         var state = this.state;
-        var formData = this.state.formData;
         return (
            <Form horizontal form={this.props.form}>
                 <Input  {...getFieldProps('id', { initialValue: '' }) } type="hidden" />
@@ -63,7 +59,7 @@ let FromBox = React.createClass({
                     <Col span="24">
                     <FormItem  {...formItemLayout} label="审批意见:">
                         {props.title != "查看" ? (
-                        <Select onChange={this.changeValue} {...getFieldProps('state1', { initialValue: "27" }) } disabled={!props.canEdit}>
+                        <Select {...getFieldProps('state1', { initialValue: "27", onChange:this.changeValue }) } disabled={!props.canEdit}>
                             <Option value="27">人工复审拒绝</Option>
                             <Option value="26">人工复审通过</Option>
                         </Select>) : (<Input type="text" disabled={!props.canEdit}  { ...this.getSValue(getFieldProps('state')) } />)}
@@ -80,7 +76,7 @@ let FromBox = React.createClass({
                 <Row>
                     <Col span="24">
                     <FormItem  {...formItemLayout} label="借款金额:">
-                       <Input disabled={state.visibleAmount} type="number" placeholder="请输入要修改的借款金额"{...getFieldProps('amount', {rules:[{ required: true, message: '不能为空' }]})  }/>
+                       <Input disabled={ this.state.visibleAmount } type="number" placeholder="请输入要修改的借款金额"{...getFieldProps('amount', {rules:[{ required: true, message: '不能为空' }]})  }/>
                     </FormItem>
                     </Col>
                 </Row>
