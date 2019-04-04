@@ -550,7 +550,7 @@
                 remark = #{remark,jdbcType=VARCHAR}
             </if>
         </set>    
-        where id = #{id ,jdbcType=BIGINT} AND state = 301
+        where id = #{id ,jdbcType=BIGINT} AND (state = 301 or state = 31)
     </update>
     
     <select id="borrowCountByUserId" resultType="java.lang.String" parameterType="java.lang.String">

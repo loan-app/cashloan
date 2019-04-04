@@ -742,9 +742,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 						day = DateUtil.daysBetween(new Date(),
 								repay.getRepayTime());
 						if (day > 0) {
-							progress.setRemark("您需要在" + day + "天后还款" + repayAmount + "元");
+							progress.setRemark("您需要在" + day + "天后还款" + repay.getAmount()+repay.getPenaltyAmout() + "元");
 						} else if (day == 0) {
-							progress.setRemark("您需要在今天还款" + repayAmount + "元");
+							progress.setRemark("您需要在今天还款" + repay.getAmount()+repay.getPenaltyAmout() + "元");
 						}
 					}
 					
