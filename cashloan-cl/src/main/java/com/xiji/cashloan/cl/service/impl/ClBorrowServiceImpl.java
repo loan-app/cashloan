@@ -1557,7 +1557,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if(BorrowModel.STATE_REFUSED.equals(state)&&!borrow.getAmount().equals(amount)){
 				throw new BussinessException("当前状态为人工复审拒绝，订单无法修改金额");
 			}else {
-				map.put("realAmount", amount * (1 - fee));
+				String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+				if ("10".equals(beheadFee)) {//启用
+					map.put("realAmount", amount * (1 - fee));
+				}else {
+					map.put("realAmount", amount);
+				}
 				map.put("fee", amount * fee);
 				map.put("serviceFee", amount * fee * 0.5);
 				map.put("infoAuthFee", amount * fee * 0.4);
