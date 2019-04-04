@@ -92,13 +92,13 @@
     <update id="updateTotal" parameterType="java.util.HashMap">
         update arc_credit
         <set>
-            <if test="total != null and total != '' ">
+            <if test="total != null">
                 total = #{total,jdbcType=DECIMAL},
             </if>
-            <if test="used != null and used != '' ">
+            <if test="used != null">
                 used = #{used,jdbcType=DECIMAL},
             </if>
-            <if test="unuse != null and unuse != '' or unuse == 0 ">
+            <if test="unuse != null">
                 unuse = #{unuse,jdbcType=DECIMAL}
             </if>
         </set>
