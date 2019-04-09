@@ -120,6 +120,15 @@ public class QuartzLate implements Job{
 									msg = clBorrowService.updateSelective(data);
 									logger.debug("---------添加逾期结束---------");
 								}
+								if (count >= 1 && ("50".equals(borrow.getState()) || "90".equals(borrow.getState()))){
+									logger.debug("---------展期后逾期添加逾期进度---------");
+									clBorrowService.savePressState(borrow, BorrowModel.STATE_DELAY,"");
+									data = new HashMap<>();
+									data.put("id", list.get(i).getBorrowId());
+									data.put("state", BorrowModel.STATE_DELAY);
+									msg = clBorrowService.updateSelective(data);
+									logger.debug("---------展期后逾期添加逾期结束---------");
+								}
 								
 								//催收计划
 								logger.debug("---------修改催收计划start-------");

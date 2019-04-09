@@ -8,6 +8,7 @@ import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.model.BorrowModel;
 import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.StringUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -135,6 +137,21 @@ public class ManageManualReviewOrderController extends ManageBaseController {
                 params = new HashMap<>();
             }
         }
+        List stateList ;
+        String state = StringUtil.isNull(params.get("borrowState"));
+        // 放款成功的订单
+        if (!StringUtil.isBlank(state) && state.equals(BorrowModel.STATE_REPAY)) {
+            stateList = Arrays.asList(
+                    BorrowModel.STATE_REPAY,
+                    BorrowModel.STATE_FINISH,
+                    BorrowModel.STATE_REMISSION_FINISH,
+                    BorrowModel.STATE_DELAY,
+                    BorrowModel.STATE_REPAY_PROCESSING,
+                    BorrowModel.STATE_BAD,
+                    BorrowModel.STATE_DELAY_PAY);
+            params.put("stateList", stateList);
+            params.put("borrowState","");
+        }
         Page<ManualReviewOrderModel> page = manualReviewOrderService.list(params, current, pageSize);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put(Constant.RESPONSE_DATA, page);
@@ -169,7 +186,23 @@ public class ManageManualReviewOrderController extends ManageBaseController {
             if (params == null) {
                 params = new HashMap<>();
             }
+            List stateList;
+
             params.put("userId", sysUser.getId());
+            String state = StringUtil.isNull(params.get("borrowState"));
+            // 放款成功的订单
+            if (!StringUtil.isBlank(state) && state.equals(BorrowModel.STATE_REPAY)) {
+                    stateList = Arrays.asList(
+                            BorrowModel.STATE_REPAY,
+                            BorrowModel.STATE_FINISH,
+                            BorrowModel.STATE_REMISSION_FINISH,
+                            BorrowModel.STATE_DELAY,
+                            BorrowModel.STATE_REPAY_PROCESSING,
+                            BorrowModel.STATE_BAD,
+                            BorrowModel.STATE_DELAY_PAY);
+                    params.put("stateList", stateList);
+                    params.put("borrowState","");
+            }
             page = manualReviewOrderService.list(params, current, pageSize);
             result.put(Constant.RESPONSE_DATA, page);
             result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));

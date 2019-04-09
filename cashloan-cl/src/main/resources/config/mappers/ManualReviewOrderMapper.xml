@@ -299,6 +299,12 @@
             <if test="state !='' and state !=null">
                 and o.state = #{state,jdbcType=VARCHAR}
             </if>
+            <if test="stateList !=null">
+                and b.state  in
+                <foreach item="item" index="index" collection="stateList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="remark !='' and remark !=null">
                 and o.remark = #{state,jdbcType=VARCHAR}
             </if>
