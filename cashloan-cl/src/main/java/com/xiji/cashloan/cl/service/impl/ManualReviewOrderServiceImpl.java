@@ -207,4 +207,13 @@ public class ManualReviewOrderServiceImpl extends BaseServiceImpl<ManualReviewOr
     public int batchUpdate(List<ManualReviewOrder> manualReviewOrders){
         return manualReviewOrderMapper.batchUpdate(manualReviewOrders);
     }
+
+	/**
+	 * 复借人工审核订单
+	 * @return
+	 */
+	@Override
+	public List<ManualReviewOrder> listAgainBorrowOrder(Map<String, Object> map){
+		return manualReviewOrderMapper.listAgainBorrowOrder(map);
+	}
 }

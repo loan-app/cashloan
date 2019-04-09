@@ -2,6 +2,7 @@ package com.xiji.cashloan.manage.controller;
 
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.ManualReviewOrder;
+import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.cl.service.ManualReviewOrderService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -51,7 +52,8 @@ public class SysUserController extends BaseController {
 	private PasswordEncoder passwordEncoder;// 密码加密
 	@Resource
 	private ManualReviewOrderService manualReviewOrderService;
-	
+	@Resource
+	private ClBorrowService clBorrowService;
 	/**
 	 * 修改密码
 	 * @param request
@@ -487,10 +489,11 @@ public class SysUserController extends BaseController {
 
 			params.put("userId",id);
 			params.put("state","11");
-			List<ManualReviewOrder>  manualReviewOrders = manualReviewOrderService.listManualReviewOrder(params);
-
+			params.put("again","10");
+			List<ManualReviewOrder>  manualReviewOrders = manualReviewOrderService.listAgainBorrowOrder(params);
 			if (CollectionUtil.isNotEmpty(manualReviewOrders)){
 				for (ManualReviewOrder manualReviewOrder : manualReviewOrders){
+
 					manualReviewOrder.setState("10");
 					manualReviewOrder.setUserName(" ");
 					manualReviewOrder.setUserId(null);

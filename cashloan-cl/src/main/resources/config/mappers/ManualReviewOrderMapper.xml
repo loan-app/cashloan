@@ -421,4 +421,19 @@
             </foreach>
         </where>
     </update>
+
+    <select id="listAgainBorrowOrder" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        
+        select cmro.* from cl_manual_review_order as cmro left join cl_borrow as cb on cmro.borrow_id = cb.id
+        where 1=1
+        <if test="state !='' and state !=null">
+            and cmro.state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="userId !='' and userId !=null">
+            and cmro.user_id = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="again != null and again !=''">
+            and cb.again = #{again,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

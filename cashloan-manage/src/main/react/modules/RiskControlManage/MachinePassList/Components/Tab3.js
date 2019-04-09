@@ -85,7 +85,7 @@ var Tab3 = React.createClass({
             title: '对方姓名',
             dataIndex: "peerName",
             render(text,record){
-                return record.peerName === null ? '--':record.peerName;
+                return record.peerName == null ? '--':record.peerName;
             }
         }, {
             title: '对方号码',

@@ -43,4 +43,10 @@ public interface ManualReviewOrderService extends BaseService<ManualReviewOrder,
      * @return
      */
     int batchUpdate(List<ManualReviewOrder> manualReviewOrders);
+
+    /**
+     * 复借人工审核订单
+     * @return
+     */
+    List<ManualReviewOrder> listAgainBorrowOrder(Map<String, Object> map);
 }
