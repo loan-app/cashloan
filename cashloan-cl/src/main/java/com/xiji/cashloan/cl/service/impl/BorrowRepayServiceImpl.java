@@ -14,11 +14,14 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
+import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
+import com.xiji.cashloan.cl.util.fuiou.AmtUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
@@ -41,12 +44,6 @@ import com.xiji.creditrank.cr.domain.CreditLog;
 import com.xiji.creditrank.cr.mapper.CreditLogMapper;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,9 +57,6 @@ import tool.util.BigDecimalUtil;
 import tool.util.IPUtil;
 import tool.util.NumberUtil;
 import tool.util.StringUtil;
-
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
