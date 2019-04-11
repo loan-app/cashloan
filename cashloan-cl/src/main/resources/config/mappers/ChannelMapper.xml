@@ -167,14 +167,6 @@
 		code = #{code}
 	</select>
 
-	<select id="getChannelById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select
-		<include refid="Base_Column_List" />
-		from cl_channel
-		where
-		id = #{id}
-	</select>
-
 	<select id="listChannelWithoutApp" resultMap="BaseResultMap">
 		select c.id, c.name from cl_channel c where not exists (select DISTINCT
 		a.channel_id from cl_channel_app a where a.channel_id = c.id) and state = 10
