@@ -87,7 +87,7 @@ public class QuartzChannelStatistic implements Job{
             qiData.put("fail", quartzInfo.getFail() + 1);
             logger.error(e.getMessage(), e);
         } finally {
-            logger.info("保存用户统计数据定时任务执行记录");
+            logger.info("保存渠道统计数据定时任务执行记录");
             quartzLogService.save(quartzLog);
             quartzInfoService.update(qiData);
         }

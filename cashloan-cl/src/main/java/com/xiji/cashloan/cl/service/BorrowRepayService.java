@@ -1,18 +1,17 @@
 package com.xiji.cashloan.cl.service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
+import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.domain.PayLog;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.model.ManageBorrowModel;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.Borrow;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 还款计划Service
@@ -177,6 +176,12 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 */
 	void repayCheck(long borrowId);
 	Map<String, String> confirmPay(Long borrowId,Long userId, String ip,String type);
+
+	/**
+	 * 更新还款类型
+	 * @return
+	 */
+	int updateBatchType();
 
 	Map<String, String> getReqParameter(Long borrowId, long userId ,String ip,String type);
 
