@@ -87,4 +87,9 @@ public class FuiouConstant {
     public static final String PROTOCOL_QUERYORDERID_PAYSUCCESS = "5185";
     /** 协议支付-接口标记 - 订单结果查询接口(富友订单号)-状态码- 支付处理中*/
     public static final String PROTOCOL_QUERYORDERID_PAYING = "51B3";
+
+    /** 笔笔验证-常量- 版本号 */
+    public static final String BIBIVERIFY_VERSION = "1.0";
+    /** 笔笔验证-接口标记 - 代扣-付款 */
+    public static final String BIBIVERIFY_ORDER = "FyPay.pay";
 }

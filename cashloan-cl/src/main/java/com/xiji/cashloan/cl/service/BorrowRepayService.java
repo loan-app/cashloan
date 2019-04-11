@@ -177,4 +177,7 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 */
 	void repayCheck(long borrowId);
 	Map<String, String> confirmPay(Long borrowId,Long userId, String ip,String type);
+
+	Map<String, String> getReqParameter(Long borrowId, long userId ,String ip,String type);
+
 }

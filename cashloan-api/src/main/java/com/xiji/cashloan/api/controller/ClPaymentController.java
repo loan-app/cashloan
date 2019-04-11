@@ -84,4 +84,19 @@ public class ClPaymentController extends BaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, payMap.get("msg"));
 		ServletUtils.writeToResponse(response,result);
 	}
+
+	/**
+	 * 笔笔验证
+	 * 获取请求参数
+	 *
+	 */
+	@RequestMapping(value = "/api/act/borrow/bibiVerify/getReqParameter.htm", method = RequestMethod.POST)
+	public void getReqParameter(@RequestParam(value="borrowId") Long borrowId,
+                                @RequestParam(value="ip",required = false) String ip,
+                                @RequestParam(value="type") String type)throws Exception{
+        long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+        Map<String,String> payMap = borrowRepayService.getReqParameter(borrowId, userId, ip, type);
+
+        ServletUtils.writeToResponseString(response,payMap);
+	}
 }
