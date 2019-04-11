@@ -66,7 +66,7 @@ public class RepaymentNotifyAssist {
                     //param.put("repayTime", DateUtil.dateStr4(DateUtil.getNow()));
                     param.put("repayTime", DateUtil.getNow());
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-                    param.put("repayAccount", model.getCardNo());
+                    param.put("repayAccount", payLog.getCardNo());
                     param.put("amount", payLog.getAmount());
                     param.put("serialNumber", payLog.getOrderNo());
                     param.put("penaltyAmout", borrowRepay.getPenaltyAmout());
@@ -161,7 +161,7 @@ public class RepaymentNotifyAssist {
                     //param.put("repayTime", DateUtil.dateStr4(DateUtil.getNow()));
                     param.put("repayTime", DateUtil.getNow());
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-                    param.put("repayAccount", model.getCardNo());
+                    param.put("repayAccount", payLog.getCardNo());
                     param.put("amount", payLog.getAmount());
                     param.put("serialNumber", payLog.getOrderNo());
                     param.put("penaltyAmout", borrowRepay.getPenaltyAmout());
@@ -221,7 +221,7 @@ public class RepaymentNotifyAssist {
                     param.put("state", BorrowModel.STATE_DELAY_PAY);
                     param.put("amount", String.valueOf(payLog.getAmount()));
                     param.put("repayWay", BorrowRepayLogModel.REPAY_WAY_CHARGE);
-                    param.put("repayAccount", bankCard.getCardNo());
+                    param.put("repayAccount", payLog.getCardNo());
                     param.put("serialNumber", payLog.getOrderNo());
                     if(StringUtil.isNotBlank(Global.getValue("delay_days"))) {
                         param.put("delayDays", Global.getValue("delay_days"));

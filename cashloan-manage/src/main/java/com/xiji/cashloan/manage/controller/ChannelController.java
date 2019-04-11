@@ -146,10 +146,10 @@ public class ChannelController extends ManageBaseController {
 		paramMap.put("name", name);
 		paramMap.put("linker", linker);
 		paramMap.put("phone", phone);
-        Channel channelId = channelService.getChannelById(id);
+		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
-		if(channelId.getCode().equals(code)){
+		if(channelID.getCode().equals(code)){
             paramMap.put("code", code);
             boolean flag = channelService.update(paramMap);
             if (flag) {

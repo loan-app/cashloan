@@ -742,9 +742,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 						day = DateUtil.daysBetween(new Date(),
 								repay.getRepayTime());
 						if (day > 0) {
-							progress.setRemark("您需要在" + day + "天后还款" + repayAmount + "元");
+							progress.setRemark("您需要在" + day + "天后还款" + repay.getAmount()+repay.getPenaltyAmout() + "元");
 						} else if (day == 0) {
-							progress.setRemark("您需要在今天还款" + repayAmount + "元");
+							progress.setRemark("您需要在今天还款" + repay.getAmount()+repay.getPenaltyAmout() + "元");
 						}
 					}
 					
@@ -1545,55 +1545,64 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 		if (borrow != null) {
 			if(!borrow.getState().equals(BorrowModel.STATE_NEED_REVIEW)){
-				logger.error("人工复审失败,当前状态不是待人工复审");
-				throw new BussinessException("复审失败,当前状态不是待人工复审");
+				logger.error("人工复审失败，当前状态不是待人工复审");
+				throw new BussinessException("复审失败，当前状态不是待人工复审");
 			}
 			Map<String,Object> map = new HashMap<String, Object>();
             Double fee = Double.parseDouble(Global.getValue("fee"));
 			map.put("id", borrowId);
 			map.put("state", state);   
 			map.put("remark", remark);
-            map.put("amount", amount);
-            map.put("realAmount",amount*(1-fee));
-            map.put("fee",amount*fee);
-            map.put("serviceFee",amount*fee*0.5);
-            map.put("infoAuthFee",amount*fee*0.4);
-            map.put("interest",amount*fee*0.1);
-            Map<String, Object> creditMap = new HashMap<String, Object>();
-            creditMap.put("consumerNo", borrow.getUserId());
-            Credit credit = creditMapper.findSelective(creditMap);
-            if(credit!=null) {
-                if (amount >=0&&amount <= credit.getTotal()) {
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("consumerNo", borrow.getUserId());
-                    params.put("used",amount);
-                    params.put("unuse",credit.getTotal()-amount);
-                    int result = creditMapper.updateTotal(params);
-                    if (result != 1) {
-                        throw new BussinessException("修改借款额度失败");
-                    }
-                    code = clBorrowMapper.reviewState(map);
-                    if (code != 1) {
-                        throw new BussinessException("人工复审失败");
-                    }
-                } else if(amount > credit.getTotal()){
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("consumerNo", borrow.getUserId());
-                    params.put("total",credit.getTotal()+(amount-credit.getTotal()));
-                    params.put("used",amount);
-                    params.put("unuse",credit.getTotal()+(amount-credit.getTotal())-amount);
-                    int result = creditMapper.updateTotal(params);
-                    if (result != 1) {
-                        throw new BussinessException("修改借款额度失败");
-                    }
-                    code = clBorrowMapper.reviewState(map);
-                    if (code != 1) {
-                        throw new BussinessException("人工复审失败");
-                    }
-                }else {
-					throw new BussinessException("借款金额不能为负数");
+			map.put("amount", amount);
+			if(BorrowModel.STATE_REFUSED.equals(state)&&!borrow.getAmount().equals(amount)){
+				throw new BussinessException("当前状态为人工复审拒绝，订单无法修改金额");
+			}else {
+				String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+				if ("10".equals(beheadFee)) {//启用
+					map.put("realAmount", amount * (1 - fee));
+				}else {
+					map.put("realAmount", amount);
 				}
-            }
+				map.put("fee", amount * fee);
+				map.put("serviceFee", amount * fee * 0.5);
+				map.put("infoAuthFee", amount * fee * 0.4);
+				map.put("interest", amount * fee * 0.1);
+				Map<String, Object> creditMap = new HashMap<String, Object>();
+				creditMap.put("consumerNo", borrow.getUserId());
+				Credit credit = creditMapper.findSelective(creditMap);
+				if (credit != null) {
+					if (amount >= 0 && amount <= credit.getTotal()) {
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("consumerNo", borrow.getUserId());
+						params.put("used", amount);
+						params.put("unuse", credit.getTotal() - amount);
+						int result = creditMapper.updateTotal(params);
+						if (result != 1) {
+							throw new BussinessException("修改借款额度失败");
+						}
+						code = clBorrowMapper.reviewState(map);
+						if (code != 1) {
+							throw new BussinessException("人工复审失败");
+						}
+					} else if (amount > credit.getTotal()) {
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("consumerNo", borrow.getUserId());
+						params.put("total", credit.getTotal() + (amount - credit.getTotal()));
+						params.put("used", amount);
+						params.put("unuse", credit.getTotal() + (amount - credit.getTotal()) - amount);
+						int result = creditMapper.updateTotal(params);
+						if (result != 1) {
+							throw new BussinessException("修改借款额度失败");
+						}
+						code = clBorrowMapper.reviewState(map);
+						if (code != 1) {
+							throw new BussinessException("人工复审失败");
+						}
+					} else {
+						throw new BussinessException("借款金额不能为负数");
+					}
+				}
+			}
 			savePressState(borrow, state,"");
 			//更新审核表
 			map.put("userId", userId);
@@ -2540,6 +2549,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public int comeBackBorrow(long borrowId) {
         Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+        //查询该用户的最后一条借款的id
+        Long lastId = clBorrowMapper.findLastBorrow(borrow.getUserId()).getId();
+
+        if (borrowId!=lastId){
+            return 2;
+        }
 
         UserBaseInfo userInfo = userBaseInfoService.findByUserId(borrow.getUserId());
 
@@ -2549,16 +2564,23 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
         }
         int result=0;
         if ("21".equals(borrow.getState())){
+            //修改状态
              result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_AUTO_REFUSED);
+            //插入人工审核订单表
+            manualReviewOrderMapper.save(getManualReviewOrder(borrowId, userInfo));
 
         } else if ("27".equals(borrow.getState())){
 
-             result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_REFUSED);
+            result = modifyState(borrowId, BorrowModel.STATE_NEED_REVIEW,BorrowModel.STATE_REFUSED);
+            HashMap<String, Object> map = new HashMap<>();
+            //更新人工审核订单表
+            map.put("borrowId", borrowId);
+            map.put("reviewTime", DateUtil.getNow());
+            map.put("state", UrgeRepayOrderModel.STATE_ORDER_PRE);
+            manualReviewOrderMapper.updateByBorrowId(map);
         }
 		logger.info("审核不通过(自动审核不通过,人工复审不通过),拉回重审,返回结果result: "+result);
 		if(result == 1){
-			//插入人工审核订单表
-			manualReviewOrderMapper.save(getManualReviewOrder(borrowId, userInfo));
 			//信用额度修改
             modifyCredit(borrow.getUserId(), borrow.getAmount(), "used");
             //添加借款进度
@@ -2686,16 +2708,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		int code = 0;
 		final Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 		if (borrow != null) {
-			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
-				logger.error("线下放款失败,当前状态不是待审核放款");
-				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN) && !borrow.getState().equals(BorrowModel.STATE_REPAY_FAIL)){
+				logger.error("线下放款失败,当前状态不是待审核放款或放款失败");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款或放款失败");
 			}
 			Map<String,Object> map = new HashMap<>();
 			map.put("id", borrowId);
 			map.put("state", BorrowModel.STATE_REPAY);
 			code = clBorrowMapper.loanState(map);
 			if (code!=1) {
-				throw new BussinessException("线下放款失败,当前状态不是待审核放款");
+				throw new BussinessException("线下放款失败,当前状态不是待审核放款或放款失败");
 			}
 
 			//添加借款进度

@@ -1,12 +1,15 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.cl.domain.CallsOutSideFee;
 import com.xiji.cashloan.cl.model.ManageBorrowTestModel;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.fuiou.MD5Util;
 import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.util.HttpsUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.service.CloanUserService;
@@ -137,5 +140,46 @@ public class ManageBorrowTest extends ManageBaseController{
         }
         ServletUtils.writeToResponse(response,result);
     }
-	
+
+    /**
+     *  测试环境模拟放款
+     * @param orderNo
+     * @throws Exception
+     */
+    @RequestMapping(value = "/modules/manage/borrow/testPaymentNotify.htm")
+	public void testPaymentNotify(@RequestParam(value = "orderNo") String orderNo)throws Exception{
+
+		String url = "http://47.110.61.233:8080/pay/fuiou/paymentNotify.htm";
+		//String url = "http://jy.xyhuigou.com/pay/fuiou/paymentNotify.htm";
+		Map<String,String> param = new HashMap<String, String>();
+		param.put("accntnm","陈纯洪");
+		param.put("accntno","6228480328744607875");
+		param.put("amt","100000");
+		param.put("bankno","0103");
+		param.put("fuorderno","690909545406");
+//        param.put("futporderno","690909545406");
+		String mac = getSign("0002900F0345178","123456",orderNo,"20181129","6228480328744607875","100000");
+		param.put("mac",mac);
+		param.put("merdt","20181129");
+		param.put("orderno",orderNo);
+		param.put("reason","自助退票");
+		param.put("result","渠道资金到账已复核,交易已发送");
+		param.put("state","1");
+//        param.put("tpmerdt","20181129");
+		String resp = HttpsUtil.postClient(url, param);
+        HashMap<String, Object> result = new HashMap<>();
+        if ("1".equals(resp)) {
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "放款成功");
+        } else {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "放款失败");
+        }
+        ServletUtils.writeToResponse(response,result);
+    }
+
+	private String getSign(String merid, String pwd, String orderno, String merdt, String accntno, String amt) {
+		String str=merid+"|"+pwd+"|"+orderno+"|"+merdt+"|"+accntno+"|"+amt;
+		return MD5Util.MD5Encode(str,"UTF-8");
+	}
 }
