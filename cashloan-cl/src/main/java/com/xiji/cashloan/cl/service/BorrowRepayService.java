@@ -5,6 +5,7 @@ import com.xiji.cashloan.cl.domain.BorrowRepay;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.ManageBRepayModel;
 import com.xiji.cashloan.cl.model.ManageBorrowModel;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.Borrow;
 import org.springframework.web.multipart.MultipartFile;
@@ -185,4 +186,5 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 
 	Map<String, String> getReqParameter(Long borrowId, long userId ,String ip,String type);
 
+	Map<String, String> saveResParameter(RepaymentResponseVo responseVo);
 }

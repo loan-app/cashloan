@@ -899,3 +899,6 @@ INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_ap
 
 -- 修改到期提醒短信模板
 update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
+
+-- 富友支付选择
+INSERT INTO `arc_sys_config` VALUES (null, 20, '富友支付选择', 'fuiou_payment_select', '1', 1, '富友支付选择：1-协议支付,2-笔笔验证', 1);

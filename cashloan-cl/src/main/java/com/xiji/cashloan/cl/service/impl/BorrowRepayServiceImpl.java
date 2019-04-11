@@ -1284,7 +1284,57 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         return reqParameterMap;
 	}
 
-	public Map<String, String> checkRepaymentLog(BorrowRepay borrowRepay,BankCard bankCard) {
+    @Override
+    public Map<String, String> saveResParameter(RepaymentResponseVo responseVo) {
+        PayLog payLog = new PayLog();
+        Map<String, String> result = new HashMap<>();
+        String payOrderNo = "";
+        boolean paySuccess = false;
+        if (PayCommonUtil.success(responseVo.getStatus())) {
+            paySuccess = true;
+            payOrderNo = responseVo.getPayPlatNo();
+        }else {
+            result.put("code", "12");
+            result.put("msg", responseVo.getMessage());
+        }
+        payLog.setOrderNo(responseVo.getOrderNo());
+        if (StringUtil.isNotEmpty(payOrderNo)) {
+            payLog.setPayOrderNo(payOrderNo);
+        }
+/*        payLog.setUserId(userId);
+        payLog.setBorrowId(borrowId);
+        payLog.setAmount(sourceAmount);
+        payLog.setCardNo(bankCard.getCardNo());
+        payLog.setBank(bankCard.getBank());*/
+        payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
+
+        //只有2为展期
+/*        if (StringUtil.equals("2", type)) {
+            payLog.setType(PayLogModel.TYPE_AUTH_DELAY);
+            payLog.setScenes(PayLogModel.SCENES_ACTIVE_DELAYPAY);
+            if (paySuccess) {
+                result.put("code", "10");
+                result.put("msg", "展期处理中,请耐心等候！");
+            }
+        } else {
+            payLog.setType(PayLogModel.TYPE_AUTH_PAY);
+            payLog.setScenes(PayLogModel.SCENES_ACTIVE_REPAYMENT);
+            if (paySuccess) {
+                result.put("code", "10");
+                result.put("msg", "还款处理中,请耐心等候！");
+            }
+        }*/
+        payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+        payLog.setCode(responseVo.getStatusCode());
+        payLog.setRemark(responseVo.getMessage());
+//        payLog.setPayReqTime(payReqTime);
+        payLog.setCreateTime(DateUtil.getNow());
+        payLogService.save(payLog);
+
+        return result;
+    }
+
+    public Map<String, String> checkRepaymentLog(BorrowRepay borrowRepay,BankCard bankCard) {
 		Map<String, String> result = new HashMap<>();
 		Map<String, Object> payLogMap = new HashMap<String, Object>();
 		payLogMap.put("userId", borrowRepay.getUserId());

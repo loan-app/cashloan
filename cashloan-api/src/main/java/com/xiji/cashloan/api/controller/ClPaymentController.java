@@ -1,7 +1,10 @@
 package com.xiji.cashloan.api.controller;
 
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import java.util.HashMap;
@@ -99,4 +102,52 @@ public class ClPaymentController extends BaseController {
 
         ServletUtils.writeToResponseString(response,payMap);
 	}
+
+    /**
+     *
+     * 获取笔笔验证响应参数结果
+     */
+    @RequestMapping(value = "/api/act/borrow/bibiVerify/saveResParameter.htm", method = RequestMethod.POST)
+    public void saveResParameter(){
+
+        RepaymentResponseVo responseVo = new RepaymentResponseVo();
+        Map<String, String> payMap= borrowRepayService.saveResParameter(responseVo);
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        if (StringUtil.equals(payMap.get("code"), "12")) {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+        } else {
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        }
+        result.put(Constant.RESPONSE_CODE_MSG, payMap.get("msg"));
+        ServletUtils.writeToResponse(response,result);
+
+    }
+
+    /**
+     * 支付选择接口
+     * @param userId
+     * @throws Exception
+     */
+    @RequestMapping(value = "/api/act/payment/select.htm")
+    public void select(
+            @RequestParam(value="userId", required = true) Long userId)throws Exception{
+        Map<String,Object> data = new HashMap<>();
+        String payType = Global.getValue("fuiou_payment_select");
+        data.put("payType",1);//默认使用协议支付
+        //判断是否为富友支付
+        if("fuiou".equals(PayCommonUtil.payCompany(userId))){
+            if (StringUtil.equals("1", payType)) {
+                data.put("payType",1);//协议支付
+            }else if (StringUtil.equals("2", payType)){
+                data.put("payType",2);//笔笔验证
+            }
+        }
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put(Constant.RESPONSE_DATA, data);
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+        ServletUtils.writeToResponse(response,result);
+    }
+
 }
