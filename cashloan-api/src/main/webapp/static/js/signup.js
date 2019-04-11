@@ -60,9 +60,9 @@ $(function() {
   };
 
   var verify = function() {
-    // var pwd = $('input[name=password]').val();
+    var pwd = $('input[name=password]').val();
     //MD5加密
-    // var pwd_md5 = $.md5(pwd);
+    var pwd_md5 = $.md5(pwd);
     var re = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,16})$/;
     var code = $('input[name=vcode]').val();
     var inviteCode = $('input[name=invitationCode]').val();
@@ -72,10 +72,10 @@ $(function() {
       return false;
     }
 
-    /*if (!re.test(pwd)) {
+    if (!re.test(pwd)) {
       show('必须输入6到16位字母与数字组合的密码');
       return false;
-    }*/
+    }
     if (code === '') {
       show('验证码不能为空');
       return false;
@@ -88,7 +88,7 @@ $(function() {
 
     return {
       'loginName': tel,
-      // 'loginPwd': pwd_md5,
+      'loginPwd': pwd_md5,
       'type': 'register ',
       'invitationCode': inviteCode,
       'channelCode': channelCode,

@@ -31,7 +31,7 @@
         <div class="content">
             <form action="/api/user/wxRegister.htm">
                 <div class='centerDiv'><input name="phone" type="tel" value="" maxlength="11" placeholder="请输入手机号"/><span class='clear'  >x</span></div>
-                <%--<div class='centerDiv'><input name="password" type="password" value="" maxlength="16" placeholder="设置登录密码"/><span class='clear' >x</span></div>--%>
+                <div class='centerDiv'><input name="password" type="password" value="" maxlength="16" placeholder="设置登录密码"/><span class='clear' >x</span></div>
                 <%if(channelCode != null&&!channelCode.equals("")&&!channelCode.equals("null")){ %>
                 <div class='centerDiv'><input id='channelCode' name="channelCode" type="hidden" value="<%=channelCode%>"/></div>
                 <%} %>
@@ -88,7 +88,7 @@
 <script src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/placeholders.js" ></script>
 <script type="text/javascript" src="/static/js/signup.js" ></script>
-<%--<script type="text/javascript" src="/static/js/jquery.md5.js" ></script>--%>
+<script type="text/javascript" src="/static/js/jquery.md5.js" ></script>
 <script type="text/javascript" src="/static/js/config.js" ></script>
 <script>
     //头部信息
