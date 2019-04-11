@@ -97,6 +97,12 @@
 			<artifactId>bcmail-jdk15</artifactId>
 			<version>1.46</version>
 		</dependency>
+
+		<dependency>
+			<groupId>ml.dmlc</groupId>
+			<artifactId>xgboost4j</artifactId>
+			<version>0.82</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
