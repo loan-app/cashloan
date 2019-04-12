@@ -1,35 +1,16 @@
 package com.xiji.cashloan.api.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.cl.model.moxie.MxConstant;
 import com.xiji.cashloan.cl.model.moxie.MxCreditRequest;
 import com.xiji.cashloan.cl.model.moxie.OperatorStatusEnum;
 import com.xiji.cashloan.cl.model.moxie.SignatureUtils;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.alibaba.fastjson.JSONObject;
-import com.xiji.cashloan.cl.model.UserAuthModel;
+import com.xiji.cashloan.cl.util.token.HttpRestUtils;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.DateUtil;
@@ -38,6 +19,25 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 运营商认证
@@ -86,6 +86,7 @@ public class OperatorController extends BaseController {
     @RequestMapping(value = "/api/act/mine/operator/operatorCredit.htm")
     public void operatorCredit() throws Exception {
         long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+        //long userId = 1;
         Map<String, Object> respMap = new HashMap<>();
         boolean isCanCredit = operatorReqLogService.checkUserOperator(userId);
         if (!isCanCredit) {
@@ -94,20 +95,50 @@ public class OperatorController extends BaseController {
         } else {
             UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
 
-            //上数运营商
-            Map<String, Object> data = new HashMap<>();
-            String url = Global.getValue("mx_operator_url");
+            String operatorSelect = Global.getValue("operator_select");
             String backUrl = Global.getValue("server_host") + "/api/operatorReturnback.htm";
-            backUrl = "&backUrl=" + URLEncoder.encode(backUrl, "UTF-8");
-            url += "?apiKey=" + Global.getValue("mx_apikey") + "&userId=" + userId + "&phone=" + userBaseInfo.getPhone()
-                    + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8") + backUrl;
 
-            data.put("url", url);
+            Map<String, Object> data = new HashMap<>();
+            if ("moxie".equals(operatorSelect)){
+                //上数运营商
+                String url = Global.getValue("mx_operator_url");
+                backUrl = "&backUrl=" + URLEncoder.encode(backUrl, "UTF-8");
+                url += "?apiKey=" + Global.getValue("mx_apikey") + "&userId=" + userId + "&phone=" + userBaseInfo.getPhone()
+                        + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8") + backUrl;
 
+                data.put("url", url);
+            }else if ("gxb".equals(operatorSelect)){
+                long timestamp = System.currentTimeMillis();
+                String appId = Global.getValue("gxb_appid");
+                String appSecret = Global.getValue("gxb_appsecret");
+                String gxbGetTokenUrl = Global.getValue("gxb_get_token_url");
+                String sequenceNo = HttpRestUtils.getRandomNumber("hzxjgxb");
+                String sign = DigestUtils.md5Hex(String.format("%s%s%s%s%s",appId, appSecret, "operator_plus", timestamp, sequenceNo));
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("appId",appId);
+                jsonObject.put("sign",sign);
+                jsonObject.put("sequenceNo",sequenceNo);
+                jsonObject.put("authItem","operator_plus");
+                jsonObject.put("timestamp",timestamp);
+                jsonObject.put("name",userBaseInfo.getRealName());
+                jsonObject.put("phone",userBaseInfo.getPhone());
+                jsonObject.put("idcard",userBaseInfo.getIdNo());
+                jsonObject.put("authVersion","v1");
+                String token = "";
+                try {
+                    token = HttpRestUtils.postRequest(gxbGetTokenUrl,null,jsonObject.toJSONString());
+                } catch (Exception e) {
+                    logger.error("公信宝获取token失败   jsonObject ==> "+jsonObject.toJSONString());
+                }
+                JSONObject result = JSONObject.parseObject(token);
+                backUrl = "?returnUrl=" + URLEncoder.encode(backUrl, "UTF-8");
+                String gxbH5Url = Global.getValue("gxb_h5_url");
+                gxbH5Url += backUrl +"&token="+ JSONObject.parseObject(result.getString("data")).getString("token");
+                data.put("url", gxbH5Url);
+            }
             respMap.put(Constant.RESPONSE_DATA, data);
             respMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
             respMap.put(Constant.RESPONSE_CODE_MSG, "获取成功");
-
         }
 
         ServletUtils.writeToResponse(response, respMap);
@@ -189,7 +220,6 @@ public class OperatorController extends BaseController {
                 return;
             }
         }
-
         final Long reqLogId = operatorReqLog.getId();
         //登录结果
         //{"mobile":"15368098198","timestamp":1476084445670,"result":false,"message":"[CALO-22001-10]-服务密码错误，请确认正确后输入。","user_id":"374791","task_id":"fdda6b30-8eba-11e6-b7e9-00163e10b2cd"}
@@ -348,6 +378,126 @@ public class OperatorController extends BaseController {
 //        long reqLogId= 12022L;
 //        operatorVoiceCntService.paserReportDetail(res, userId, updateTime, reqLogId);
 //    }
+
+    /**
+     * 公信宝运营商认证回调
+     * @param body
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/api/moxie/gxbCallback.htm")
+    public void gxbCallback(@RequestBody String body, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        logger.info("--------------------------公信宝运营商回调开始--------------------------");
+        Map<String, Object> respMap = new HashMap<>();
+        respMap.put("retCode",2);
+        respMap.put("retMsg","失败");
+        if (response.getStatus() != 200){
+            ServletUtils.writeToResponse(response, respMap);
+            logger.info("--------------------------公信宝运营商回调接收失败且结束--------------------------");
+            return;
+        }
+        JSONObject requestJson = JSON.parseObject(body);
+        String sequenceNo = requestJson.getString("sequenceNo");
+        String phone = requestJson.getString("phone");
+        String authJson = requestJson.getString("authJson");
+        String token = requestJson.getString("token");
+
+        if (StringUtil.isBlank(sequenceNo) || StringUtil.isBlank(phone) || StringUtil.isBlank(authJson) || StringUtil.isBlank(token)){
+            ServletUtils.writeToResponse(response, respMap);
+            logger.info("--------------------------公信宝运营商回调数据推送为空且结束-------------------------requestJson ==>"+requestJson);
+            return;
+        }
+        Map<String,Object> params = new HashMap<>();
+        params.put("phone",phone);
+        UserBaseInfo userBaseInfo = userBaseInfoService.findSelective(params);
+
+        if (userBaseInfo != null){
+            // 保存运营商认证记录
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("taskId", sequenceNo);
+            OperatorReqLog operatorReqLog = operatorReqLogService.findSelective(temp);
+            if (operatorReqLog == null){
+                operatorReqLog = new OperatorReqLog();
+                operatorReqLog.setRespTime( DateUtil.getNow());
+                operatorReqLog.setCreateTime( DateUtil.getNow());
+                operatorReqLog.setUserId(userBaseInfo.getUserId());
+                operatorReqLog.setTaskId(sequenceNo);
+                operatorReqLogService.insert(operatorReqLog);
+            }
+            final Long reqLogId = operatorReqLog.getId();
+
+            logger.info("--------------------------公信宝运营商回调保存原始数据--------------------------");
+            // 保存原始数据
+            OperatorRespDetail respDetail = operatorRespDetailService.getByTaskId(sequenceNo);
+            if (respDetail == null) {
+                OperatorRespDetail operatorRespDetail = new OperatorRespDetail(reqLogId, sequenceNo, authJson);
+                operatorRespDetailService.insert(operatorRespDetail);
+            } else {
+                Map<String, Object> updateMap = new HashMap<>();
+                updateMap.put("id", respDetail.getId());
+                updateMap.put("operatorData", authJson);
+                operatorRespDetailService.updateSelective(updateMap);
+            }
+
+            logger.info("--------------------------公信宝运营商数据分类保存--------------------------");
+            // 将运营商数据分类保存
+            int start = DateUtil.getNowTime();
+            operatorService.saveOperatorInfos(authJson, userBaseInfo.getUserId(), DateUtil.getNow(),phone,reqLogId);
+            int end = DateUtil.getNowTime();
+            logger.info("保存userId " + userBaseInfo.getUserId() + "运营商数据，耗时" + (end - start) + "秒");
+
+            // 插入调用外部数据接口费用表
+            CallsOutSideFee callsOutSideFee = callsOutSideFeeService.getByTaskId(sequenceNo);
+            if(callsOutSideFee == null) {
+                callsOutSideFee = new CallsOutSideFee(userBaseInfo.getUserId(), sequenceNo, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,phone);
+                callsOutSideFeeService.insert(callsOutSideFee);
+            }
+
+            logger.info(userBaseInfo.getUserId()+"运营商原始数据回调模式获取成功,准备拉取运营商报告");
+            String  gxbPullAllReportUrl = Global.getValue("gxb_pull_all_report_url");
+            String appId = Global.getValue("gxb_appid");
+            String appSecret = Global.getValue("gxb_appsecret");
+            long timestamp = System.currentTimeMillis();
+            String sign = DigestUtils.md5Hex(String.format("%s%s%s", appId, appSecret, timestamp));
+            gxbPullAllReportUrl = gxbPullAllReportUrl +token +"?appId="+appId+"&timestamp="+timestamp+"&sign="+sign;
+            String reportStr = HttpRestUtils.getRequest(gxbPullAllReportUrl,null);
+            JSONObject reportJson = JSONObject.parseObject(reportStr);
+            if (reportJson != null && "1".equals(reportJson.getString("retCode"))){
+
+                // 保存运营商报告
+                OperatorReport oldReport = operatorReportService.getByTaskId(sequenceNo);
+                if (oldReport == null) {
+                    OperatorReport operatorReport = new OperatorReport(userBaseInfo.getUserId(), reqLogId, sequenceNo, reportStr);
+                    operatorReportService.insert(operatorReport);
+                } else {
+                    Map<String, Object> updateMap = new HashMap<>();
+                    updateMap.put("id", oldReport.getId());
+                    updateMap.put("report", reportStr);
+                    updateMap.put("gmtModified", DateUtil.getNow());
+                    operatorReportService.updateSelective(updateMap);
+                }
+                start = DateUtil.getNowTime();
+                operatorVoiceCntService.paserReportDetail(reportStr, userBaseInfo.getUserId(), DateUtil.getNow(), reqLogId);
+                operatorVoiceCntService.lastContactTime(userBaseInfo.getUserId(), reqLogId);
+                end = DateUtil.getNowTime();
+                logger.info("保存userId " + userBaseInfo.getUserId() + "运营商报告，详情统计，耗时" + (end - start) + "秒");
+
+                // 修改认证状态为认证完成
+                Map<String, Object> userAuth = new HashMap<String, Object>();
+                userAuth.put("userId", userBaseInfo.getUserId());
+                userAuth.put("phoneTime", DateUtil.getNow());
+                userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
+                userAuthService.updateByUserId(userAuth);
+            }
+        }
+        logger.info("--------------------------公信宝运营商回调结束--------------------------");
+        respMap.put("retCode",1);
+        respMap.put("retMsg","成功");
+        ServletUtils.writeToResponse(response, respMap);
+    }
+
 
     private void updateOperatorLogState(long id, String eventName, String message, long respTime) {
         OperatorReqLog updateReqLog = new OperatorReqLog();

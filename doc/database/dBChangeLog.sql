@@ -902,3 +902,19 @@ update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请�
 
 insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0 12 1/1 * ?');
+
+
+
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝appId', 'gxb_appid', 'gxb51864c27832a59be', '1', '公信宝appId', '1');
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝appSecret', 'gxb_appsecret', 'a22a93d48cdd4ca29b653e6970108b01', '1', '公信宝appSecret', '1');
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝获取token的接口地址', 'gxb_get_token_url', 'https://prod.gxb.io/crawler/auth/v2/get_auth_token', '1', '公信宝获取token的接口地址', '1');
+
+INSERT INTO `arc_sys_config` VALUES (null, '20', '运营商公司选择', 'operator_select', 'moxie', '1', '运营商公司选择，moxie,gxb', '1');
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝H5接入地址', 'gxb_h5_url', 'https://prod.gxb.io/v2/auth', '1', '公信宝H5接入地址', '1');
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝拉取全部运营商报告数据url', 'gxb_pull_all_report_url', 'https://prod.gxb.io/crawler/data/report/', '1', '公信宝拉取全部运营商报告数据url', '1');
+
