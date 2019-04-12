@@ -1259,7 +1259,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         String key = Global.getValue("fuiou_protocol_mchntcd_key");//商户密钥
         //TYPE+"|"+VERSION+"|"+MCHNTCD+"|"+MCHNTORDERID+"|"+USERID+"|"+PROTOCOLNO+"|"+AMT+"|"+BACKURL+"|"+USERIP+"|"+"商户key"
         String signStr = beanReq.signStr(key);
-        reqParameterMap.put("singKey",signStr);
+        reqParameterMap.put("signKey",signStr);
         reqParameterMap.put("userId",vo.getUserId());
         reqParameterMap.put("cardNo",bankCard.getCardNo());
         reqParameterMap.put("idNo",baseInfo.getIdNo());
