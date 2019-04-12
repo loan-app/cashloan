@@ -466,20 +466,31 @@ public class OperatorController extends BaseController {
             JSONObject reportJson = JSONObject.parseObject(reportStr);
             if (reportJson != null && "1".equals(reportJson.getString("retCode"))){
 
+                String data = reportJson.getString("data");
+                String authResult = null;
+                if (StringUtil.isNotBlank(data)){
+                    authResult = JSONObject.parseObject(data).getString("authResult");
+                }
+                if (authResult == null){
+                    ServletUtils.writeToResponse(response, respMap);
+                    logger.info("--------------------------公信宝运运营商报告为空且结束-------------------------phone ==>"+phone);
+                    return;
+                }
+
                 // 保存运营商报告
                 OperatorReport oldReport = operatorReportService.getByTaskId(sequenceNo);
                 if (oldReport == null) {
-                    OperatorReport operatorReport = new OperatorReport(userBaseInfo.getUserId(), reqLogId, sequenceNo, reportStr);
+                    OperatorReport operatorReport = new OperatorReport(userBaseInfo.getUserId(), reqLogId, sequenceNo, authResult);
                     operatorReportService.insert(operatorReport);
                 } else {
                     Map<String, Object> updateMap = new HashMap<>();
                     updateMap.put("id", oldReport.getId());
-                    updateMap.put("report", reportStr);
+                    updateMap.put("report", authResult);
                     updateMap.put("gmtModified", DateUtil.getNow());
                     operatorReportService.updateSelective(updateMap);
                 }
                 start = DateUtil.getNowTime();
-                operatorVoiceCntService.paserReportDetail(reportStr, userBaseInfo.getUserId(), DateUtil.getNow(), reqLogId);
+                operatorVoiceCntService.paserReportDetail(authResult, userBaseInfo.getUserId(), DateUtil.getNow(), reqLogId);
                 operatorVoiceCntService.lastContactTime(userBaseInfo.getUserId(), reqLogId);
                 end = DateUtil.getNowTime();
                 logger.info("保存userId " + userBaseInfo.getUserId() + "运营商报告，详情统计，耗时" + (end - start) + "秒");
