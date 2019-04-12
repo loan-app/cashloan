@@ -406,7 +406,7 @@ public class OperatorController extends BaseController {
 
         if (StringUtil.isBlank(sequenceNo) || StringUtil.isBlank(phone) || StringUtil.isBlank(authJson) || StringUtil.isBlank(token)){
             ServletUtils.writeToResponse(response, respMap);
-            logger.info("--------------------------公信宝运营商回调数据推送为空且结束-------------------------requestJson ==>"+requestJson);
+            logger.info("--------------------------公信宝运营商回调数据推送为空且结束-------------------------phone ==>"+phone);
             return;
         }
         Map<String,Object> params = new HashMap<>();
