@@ -16,6 +16,7 @@ import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseV
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
+import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
 import com.xiji.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
@@ -1209,12 +1210,11 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         }
 
         //其他情况，为代扣还款
-        Date payReqTime = DateUtil.getNow();
         RepaymentReqVo vo = new RepaymentReqVo();
         if ("dev".equals(Global.getValue("app_environment"))) {
-            vo.setAmount(0.2);
+            vo.setAmount(0.2*100);//以分为单位;
         } else {
-            vo.setAmount(sourceAmount);
+            vo.setAmount(sourceAmount*100);
         }
 
         if (StringUtil.isNotEmpty(ip)) {
@@ -1252,21 +1252,30 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         beanReq.setProtocolNo(vo.getProtocolNo());
         beanReq.setBackUrl(Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
         beanReq.setVersion(FuiouConstant.BIBIVERIFY_VERSION);
-
+        beanReq.setCardNo(bankCard.getCardNo());
+        beanReq.setUserName(baseInfo.getRealName());
+        beanReq.setIdCardNo(baseInfo.getIdNo());
+        beanReq.setIdCardType(baseInfo.getIdType());
         reqParameterMap.put("mchntCd",mchntcd);
-        reqParameterMap.put("amt",vo.getAmount()+"");
+        reqParameterMap.put("amt",vo.getAmount().intValue()+"");
         reqParameterMap.put("orderId",orderNo);
         String key = Global.getValue("fuiou_protocol_mchntcd_key");//商户密钥
-        //TYPE+"|"+VERSION+"|"+MCHNTCD+"|"+MCHNTORDERID+"|"+USERID+"|"+PROTOCOLNO+"|"+AMT+"|"+BACKURL+"|"+USERIP+"|"+"商户key"
-        String signStr = beanReq.signStr(key);
+        String privatekey = Global.getValue("fuiou_protocol_privatekey");//商户RSA私钥
+        String signStr = beanReq.signStrMsg(key);
+        try {
+            signStr = FuiouAgreementPayHelper.getSign(signStr, FuiouConstant.SIGNTP, privatekey);//MD5加密sign
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw  new RuntimeException("MD5加密异常");
+        }
         reqParameterMap.put("signKey",signStr);
         reqParameterMap.put("userId",vo.getUserId());
         reqParameterMap.put("cardNo",bankCard.getCardNo());
         reqParameterMap.put("idNo",baseInfo.getIdNo());
-        reqParameterMap.put("IDCardType","0");
+        reqParameterMap.put("IDCardType",FuiouConstant.BIBIVERIFY_IDCARDTYPE);//身份证0
         reqParameterMap.put("userName",baseInfo.getRealName());
         reqParameterMap.put("backUrl",Global.getValue("server_host")+ "/pay/fuiou/repaymentNotify.htm");
-        reqParameterMap.put("payType","mobilePay");
+        reqParameterMap.put("payType","mobilePay");//手机支付固定mobilePay
         //保存支付请求记录
         PayReqLog payReqLog = new PayReqLog();
         payReqLog.setOrderNo(orderNo);
@@ -1286,6 +1295,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
     @Override
     public Map<String, String> saveResParameter(RepaymentResponseVo responseVo) {
+        Date payReqTime = DateUtil.getNow();
         PayLog payLog = new PayLog();
         Map<String, String> result = new HashMap<>();
         String payOrderNo = "";
@@ -1301,7 +1311,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         if (StringUtil.isNotEmpty(payOrderNo)) {
             payLog.setPayOrderNo(payOrderNo);
         }
-/*        payLog.setUserId(userId);
+/*      payLog.setUserId(userId);
         payLog.setBorrowId(borrowId);
         payLog.setAmount(sourceAmount);
         payLog.setCardNo(bankCard.getCardNo());
@@ -1327,7 +1337,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
         payLog.setCode(responseVo.getStatusCode());
         payLog.setRemark(responseVo.getMessage());
-//        payLog.setPayReqTime(payReqTime);
+        payLog.setPayReqTime(payReqTime);
         payLog.setCreateTime(DateUtil.getNow());
         payLogService.save(payLog);
 

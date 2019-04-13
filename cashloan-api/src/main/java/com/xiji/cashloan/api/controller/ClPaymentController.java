@@ -99,8 +99,11 @@ public class ClPaymentController extends BaseController {
                                 @RequestParam(value="type") String type)throws Exception{
         long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
         Map<String,String> payMap = borrowRepayService.getReqParameter(borrowId, userId, ip, type);
-
-        ServletUtils.writeToResponseString(response,payMap);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put(Constant.RESPONSE_DATA, payMap);
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "参数封装成功");
+        ServletUtils.writeToResponse(response,result);
 	}
 
     /**

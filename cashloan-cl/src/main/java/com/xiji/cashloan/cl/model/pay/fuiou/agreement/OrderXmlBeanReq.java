@@ -45,9 +45,46 @@ public class OrderXmlBeanReq {
 	private String orderAliveTime;//ORDERALIVETIME
 	@XNode("NEEDSENDMSG")
 	private String needSendMsg;
-	
-	
-	
+	@XNode("CARDNO")
+	private String cardNo;
+	@XNode("USERNAME")
+	private String userName;
+	@XNode("IDCARDNO")
+	private String idCardNo;
+	@XNode("IDCARDTYPE")
+	private String idCardType;
+
+	public String getCardNo() {
+		return cardNo;
+	}
+
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getIdCardNo() {
+		return idCardNo;
+	}
+
+	public void setIdCardNo(String idCardNo) {
+		this.idCardNo = idCardNo;
+	}
+
+	public String getIdCardType() {
+		return idCardType;
+	}
+
+	public void setIdCardType(String idCardType) {
+		this.idCardType = idCardType;
+	}
 	public String getNeedSendMsg() {
 		return needSendMsg;
 	}
@@ -222,6 +259,38 @@ public class OrderXmlBeanReq {
 		.append(key);
 //		System.out.println("md5StrPay信息-----"+stringBuffer.toString());
 		return stringBuffer.toString();
+	}
+
+
+	public String signStrMsg(String key) {
+		StringBuffer buffer = new StringBuffer();
+		//TYPE+"|"+VERSION+"|"+MCHNTCD+"|"+MCHNTORDERID+"|"+USERID+"|"+PROTOCOLNO+"|"+AMT+"|"+cardNo+"|"+backUrl+"|"+userName+"|"+
+		// 	+idCardNo+"|"+idCardType+"|"+"商户key"
+		buffer.append(type)
+				.append("|")
+				.append(version)
+				.append("|")
+				.append(mchntCd)
+				.append("|")
+				.append(mchntOrderId)
+				.append("|")
+				.append(userId)
+				.append("|")
+				.append(amt)
+				.append("|")
+				.append(cardNo)
+				.append("|")
+				.append(backUrl)
+				.append("|")
+				.append(userName)
+				.append("|")
+				.append(idCardNo)
+				.append("|")
+				.append(idCardType)
+				.append("|")
+				.append(key);
+//				System.out.println("返回信息明文-----"+buffer.toString());
+		return buffer.toString();
 	}
 	
 
