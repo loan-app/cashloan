@@ -8,7 +8,6 @@ import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.DecisionService;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
-import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
@@ -706,13 +705,15 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
 
                 //处理用户行为检测
                 JSONArray behaviorCheckArray = reportJson.getJSONArray("behavior_check");
-                String operatorSelect = Global.getValue("operator_select");
-                if (behaviorCheckArray != null && "moxie".equals(operatorSelect)) {
+                if (behaviorCheckArray != null && behaviorCheckArray.size() > 0) {
 
                     for (Object obj : behaviorCheckArray) {
                         JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
                         String checkPoint = jsonObject.getString("check_point");
                         String checkResult = jsonObject.getString("result");
+                        if (StringUtil.isBlank(checkPoint) || StringUtil.isBlank(checkResult)){
+                            continue;
+                        }
                         switch (checkPoint) {
                             case "phone_silent":
                                 if (checkResult.indexOf("天无通话记录") > -1) {
