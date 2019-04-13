@@ -1,9 +1,9 @@
 package com.xiji.cashloan.cl.domain;
 
+import tool.util.DateUtil;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import tool.util.DateUtil;
 
 /**
  * 运营商认证中间表实体
@@ -74,6 +74,11 @@ import tool.util.DateUtil;
 	 * 结果描述
 	 */
 	private String message;
+
+	/**
+	 * 授权token
+	 */
+	private String reqToken;
 
     public OperatorReqLog(){
     	super();
@@ -189,5 +194,13 @@ import tool.util.DateUtil;
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getReqToken() {
+		return reqToken;
+	}
+
+	public void setReqToken(String reqToken) {
+		this.reqToken = reqToken;
 	}
 }

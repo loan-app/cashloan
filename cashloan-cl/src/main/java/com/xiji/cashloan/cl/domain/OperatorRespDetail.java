@@ -1,9 +1,9 @@
 package com.xiji.cashloan.cl.domain;
 
+import tool.util.DateUtil;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import tool.util.DateUtil;
 
 /**
  * 运营商认证通知详情表实体
@@ -48,7 +48,7 @@ import tool.util.DateUtil;
     	super();
     }
     
-    public OperatorRespDetail(long reqLogId, String taskId, String notifyParams){
+    public OperatorRespDetail(Long reqLogId, String taskId, String notifyParams){
     	super();
     	this.reqLogId = reqLogId;
     	this.taskId = taskId;
