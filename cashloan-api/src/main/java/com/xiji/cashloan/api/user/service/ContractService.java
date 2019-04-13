@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import tool.util.BigDecimalUtil;
 import tool.util.FreemarkerUtil;
 
 import com.itextpdf.text.pdf.BaseFont;
@@ -72,7 +73,8 @@ public class ContractService {
             String sfz = user.get("id_no").toString();
             String mobile = user.get("phone").toString();
             String appName = Global.getValue("appName");
-            
+
+            double repayAmount = BigDecimalUtil.add(Double.valueOf(borrow.get("amount").toString()), Double.valueOf(borrow.get("fee").toString()));
             
             html = FreemarkerUtil.fillTemplate(html, MapUtil.array2Map(new Object[][]{
                 {"htno", orderNo},
@@ -85,7 +87,8 @@ public class ContractService {
                 {"customerName", customerName},
                 {"amount",borrow.get("amount")},
                 {"fee",borrow.get("fee")},
-                {"appName",appName}
+                {"appName",appName},
+                {"repayAmount",repayAmount}
             }));
 
             String s = File.separator;
