@@ -89,7 +89,7 @@ public class FuiouConstant {
     public static final String PROTOCOL_QUERYORDERID_PAYING = "51B3";
 
     /** 笔笔验证-常量- 版本号 */
-    public static final String BIBIVERIFY_VERSION = "1.0";
+    public static final String BIBIVERIFY_VERSION = "2.0";
     /** 笔笔验证-接口标记 - 代扣-付款 */
     public static final String BIBIVERIFY_ORDER = "FyPay.pay";
     /** 笔笔验证-常量- 证件类型(身份证：0     其他证件：7) */
