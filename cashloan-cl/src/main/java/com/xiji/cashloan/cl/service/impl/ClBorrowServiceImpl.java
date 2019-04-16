@@ -15,6 +15,7 @@ import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.CreditConstant;
 import com.xiji.cashloan.cl.util.OcrConstant;
+import com.xiji.cashloan.cl.util.model.ModelUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
@@ -48,6 +49,9 @@ import com.xiji.cashloan.rule.model.srule.model.SimpleRule;
 import com.xiji.cashloan.system.service.SysConfigService;
 import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
+import ml.dmlc.xgboost4j.java.Booster;
+import ml.dmlc.xgboost4j.java.DMatrix;
+import ml.dmlc.xgboost4j.java.XGBoost;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1999,6 +2003,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		Borrow borrow = getById(borrowId);
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
+		Map<String, Object> modelData = clBorrowMapper.getModelData(borrowId);
 
 		//如果是复借用户,直接机审通过
 		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
@@ -2741,4 +2746,30 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		return code;
 	}
+
+	public Float getModelScore(Long borrowId) {
+		String[] featureNameArr = ModelUtil.getFeatureNames();
+		Map<String, Object> naiveFeatures = clBorrowMapper.getModelData(borrowId);
+		try {
+			if(naiveFeatures != null) {
+				Map<String, Float> hashMap = ModelUtil.getCleanedFeatures(naiveFeatures);
+				float[] cleanedFeatures = ModelUtil.getFeaturesFromMap(hashMap, featureNameArr);
+				int colSize = cleanedFeatures.length;
+				DMatrix matrix = new DMatrix(cleanedFeatures, 1, colSize, -9999999f);
+				Booster boosterModel = XGBoost.loadModel("/Users/szb/Downloads/ext_fin_v1.model");
+				float[] scoreArray = boosterModel.predict(matrix)[0];
+				float score = scoreArray[0];
+				logger.info("订单" + borrowId + " 模型分值为:" + score);
+				return score;
+			} else {
+				logger.info("订单:" + borrowId + " 不存在对应的变量数据");
+				return 0f;
+			}
+		} catch (Exception e) {
+			logger.error("获取订单:" + borrowId + " 变量数据异常");
+			return 0f;
+		}
+
+	}
+
 }
