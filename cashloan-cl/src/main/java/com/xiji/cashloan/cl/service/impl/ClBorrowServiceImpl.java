@@ -15,6 +15,7 @@ import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
 import com.xiji.cashloan.cl.util.CreditConstant;
 import com.xiji.cashloan.cl.util.OcrConstant;
+import com.xiji.cashloan.cl.util.model.CarrierMxUtils;
 import com.xiji.cashloan.cl.util.model.ModelUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -53,6 +54,7 @@ import ml.dmlc.xgboost4j.java.Booster;
 import ml.dmlc.xgboost4j.java.DMatrix;
 import ml.dmlc.xgboost4j.java.XGBoost;
 import org.apache.commons.lang.StringUtils;
+import org.mybatis.spring.SqlSessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -179,6 +181,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private UserRemarkService userRemarkService;
 	@Resource
 	private YouDunRiskService youDunRiskService;
+	@Resource
+	private OperatorReportMapper operatorReportMapper;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -2750,6 +2754,26 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public Float getModelScore(Long borrowId) {
 		String[] featureNameArr = ModelUtil.getFeatureNames();
 		Map<String, Object> naiveFeatures = clBorrowMapper.getModelData(borrowId);
+		OperatorReport operator = operatorReportMapper.getOperatorReport(borrowId);
+		if(operator != null) {
+			//运营商报告内容
+			String report = operator.getReport();
+			//调用工具类解析运营商报告内容
+			JSONObject operatorJson = CarrierMxUtils.parse(report);
+			//遍历josn对象
+			for (String key : operatorJson.keySet()) {
+				//根据key获得value,
+				String value = operatorJson.getString(key);
+				naiveFeatures.put(key, operatorJson.get(key));
+			}
+			logger.info("运营商数据处理完毕");
+		} else {
+			JSONObject operatorJSON = getOperatorJSON(borrow_id);
+			for (String key : operatorJSON.keySet()) {
+				naiveFeatures.put(key, -99999);
+			}
+			logger.info("订单" + borrowId + "运营商数据为空");
+		}
 		try {
 			if(naiveFeatures != null) {
 				Map<String, Float> hashMap = ModelUtil.getCleanedFeatures(naiveFeatures);
