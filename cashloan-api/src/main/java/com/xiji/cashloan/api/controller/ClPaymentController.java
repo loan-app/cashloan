@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -110,11 +111,10 @@ public class ClPaymentController extends BaseController {
      *
      * 获取笔笔验证响应参数结果
      */
-    @RequestMapping(value = "/api/act/borrow/bibiVerify/saveResParameter.htm", method = RequestMethod.POST)
-    public void saveResParameter(){
+    @RequestMapping(value = "/api/act/borrow/bibiVerify/saveResParameter.htm", method = RequestMethod.GET)
+    public void saveResParameter(@RequestBody String body){
 
-        RepaymentResponseVo responseVo = new RepaymentResponseVo();
-        Map<String, String> payMap= borrowRepayService.saveResParameter(responseVo);
+        Map<String, String> payMap= borrowRepayService.saveResParameter(body);
         Map<String,Object> result = new HashMap<String,Object>();
 
         if (StringUtil.equals(payMap.get("code"), "12")) {

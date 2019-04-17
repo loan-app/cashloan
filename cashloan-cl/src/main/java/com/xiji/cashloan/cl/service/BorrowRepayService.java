@@ -186,5 +186,5 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 
 	Map<String, String> getReqParameter(Long borrowId, long userId ,String ip,String type);
 
-	Map<String, String> saveResParameter(RepaymentResponseVo responseVo);
+	Map<String, String> saveResParameter(String responseVo);
 }
