@@ -1327,25 +1327,22 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         RepaymentResponseVo responseVo = new RepaymentResponseVo();
         Map<String, String> result = new HashMap<>();
         String key = Global.getValue("fuiou_protocol_mchntcd_key");
-        String resp="";
 
-        try {
-            //解密
-            resp = DESCoderFUIOU.desDecrypt(body, DESCoderFUIOU.getKeyLength8(key));
-        }catch (Exception e){
-            logger.error(e.getMessage(), e);
-            bindResult.setErrorCode("3003");
-        }
-        if (!isException(resp)) {
+        if (!isException(body)) {
             //将结果转换成对象
-            bindResult = XMapUtil.parseStr2Obj(OrderXmlBeanResp.class, resp);
+            bindResult = XMapUtil.parseStr2Obj(OrderXmlBeanResp.class, body);
         } else {
-            bindResult.setErrorCode(resp);
+            bindResult.setErrorCode(body);
         }
         //获取PayLogService
         PayLogService payLogService = (PayLogService) BeanUtil.getBean("payLogService");
         //根据商户订单号获取paylog
         PayLog payLog = payLogService.findByOrderNo(bindResult.getMchntOrderId());
+        if (payLog==null){
+            result.put("code","12");
+            result.put("msg","该商户订单号不存在.");
+            return result;
+        }
         String payOrderNo = "";
         String payMsg = bindResult.getResponseMsg();
         //结果验签
@@ -1370,7 +1367,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         //更新paylog返回的数据
         int i = payLogService.updateById(payLog);
         //更新payReqlog数据
-        int j = modifyPayReqLog(bindResult.getMchntOrderId(), resp);
+        int j = modifyPayReqLog(bindResult.getMchntOrderId(), body);
 
         if (i>0 && j>0){
             result.put("code","10");

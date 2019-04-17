@@ -112,7 +112,7 @@ public class ClPaymentController extends BaseController {
      * 获取笔笔验证响应参数结果
      */
     @RequestMapping(value = "/api/act/borrow/bibiVerify/saveResParameter.htm", method = RequestMethod.GET)
-    public void saveResParameter(@RequestBody String body){
+    public void saveResParameter(@RequestParam String body){
 
         Map<String, String> payMap= borrowRepayService.saveResParameter(body);
         Map<String,Object> result = new HashMap<String,Object>();
