@@ -10,6 +10,8 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -111,8 +113,8 @@ public class ClPaymentController extends BaseController {
      *
      * 获取笔笔验证响应参数结果
      */
-    @RequestMapping(value = "/api/act/borrow/bibiVerify/saveResParameter.htm", method = RequestMethod.GET)
-    public void saveResParameter(@RequestParam String body){
+    @RequestMapping(value = "/api/act/borrow/bibiVerify/saveResParameter.htm",method = RequestMethod.POST)
+    public void saveResParameter(@RequestParam("body") String body, HttpServletRequest request){
 
         Map<String, String> payMap= borrowRepayService.saveResParameter(body);
         Map<String,Object> result = new HashMap<String,Object>();

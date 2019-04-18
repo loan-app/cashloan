@@ -47,6 +47,8 @@ import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.domain.CreditLog;
 import com.xiji.creditrank.cr.mapper.CreditLogMapper;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
+
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -1327,10 +1329,18 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         RepaymentResponseVo responseVo = new RepaymentResponseVo();
         Map<String, String> result = new HashMap<>();
         String key = Global.getValue("fuiou_protocol_mchntcd_key");
-
+        logger.info("body---->"+body);
         if (!isException(body)) {
-            //将结果转换成对象
-            bindResult = XMapUtil.parseStr2Obj(OrderXmlBeanResp.class, body);
+            try{
+                //将返回的字典转换成json字符串
+                body=URLDecoder.decode(body);
+                logger.info("body--->"+body);
+                //将json字符串转换成OrderXmlBeanResp对象,
+                bindResult = JSONObject.parseObject(body, OrderXmlBeanResp.class);
+            }catch (Exception e){
+                //将结果转换成对象
+                bindResult = XMapUtil.parseStr2Obj(OrderXmlBeanResp.class, body);
+            }
         } else {
             bindResult.setErrorCode(body);
         }
@@ -1368,7 +1378,6 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         int i = payLogService.updateById(payLog);
         //更新payReqlog数据
         int j = modifyPayReqLog(bindResult.getMchntOrderId(), body);
-
         if (i>0 && j>0){
             result.put("code","10");
             result.put("msg","参数更新成功.");
