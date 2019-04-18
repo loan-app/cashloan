@@ -63,29 +63,29 @@ public class Ext_Fin_V1 {
         System.out.println(score);
 
 
-
-        for (Map<String, Object> map : carrierMxList) {
-            i++;
-            logger.info("开始处理第" + i + "条记录");
-            StringBuilder stringBuilder = new StringBuilder();
-            //替换数据中的逗号',' 再进行订单数据拼接
-            for (String key : map.keySet()) {
-                //这里要替换空格和换行
-                naiveFeatures.put(key, map.get(key));
-            }
-        }
-
-        logger.info("开始处理第" + i + "条记录运营商数据");
-        JSONObject operatorJson = CarrierMxUtils.parse(report);
-        //遍历josn对象
-        operatorJson.key
-        for (String key : operatorJson.keySet()) {
-            //根据key获得value,
-            String value = operatorJson.getString(key);
-            //拼接
-            stringBuilder.append(value + ",");
-            naiveFeatures.put(key, operatorJson.getString(key));
-        }
+//
+//        for (Map<String, Object> map : carrierMxList) {
+//            i++;
+//            logger.info("开始处理第" + i + "条记录");
+//            StringBuilder stringBuilder = new StringBuilder();
+//            //替换数据中的逗号',' 再进行订单数据拼接
+//            for (String key : map.keySet()) {
+//                //这里要替换空格和换行
+//                naiveFeatures.put(key, map.get(key));
+//            }
+//        }
+//
+//        logger.info("开始处理第" + i + "条记录运营商数据");
+//        JSONObject operatorJson = CarrierMxUtils.parse(report);
+//        //遍历josn对象
+//        operatorJson.key
+//        for (String key : operatorJson.keySet()) {
+//            //根据key获得value,
+//            String value = operatorJson.getString(key);
+//            //拼接
+//            stringBuilder.append(value + ",");
+//            naiveFeatures.put(key, operatorJson.getString(key));
+//        }
     }
 
     public static HashMap<String, Float> getCleanedFeatures(Map<String, Object> naiveFeatures) {

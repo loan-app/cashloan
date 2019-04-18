@@ -183,6 +183,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private YouDunRiskService youDunRiskService;
 	@Resource
 	private OperatorReportMapper operatorReportMapper;
+	@Resource
+	private BorrowModelScoreMapper borrowModelScoreMapper;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -2007,6 +2009,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		Borrow borrow = getById(borrowId);
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
+		Float modelScore = getModelScore(borrowId);
+		BorrowModelScore borrowModelScore = new BorrowModelScore(borrowId, modelScore);
+		borrowModelScoreMapper.save(borrowModelScore);
+
 		Map<String, Object> modelData = clBorrowMapper.getModelData(borrowId);
 
 		//如果是复借用户,直接机审通过
@@ -2767,12 +2773,6 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				naiveFeatures.put(key, operatorJson.get(key));
 			}
 			logger.info("运营商数据处理完毕");
-		} else {
-			JSONObject operatorJSON = getOperatorJSON(borrow_id);
-			for (String key : operatorJSON.keySet()) {
-				naiveFeatures.put(key, -99999);
-			}
-			logger.info("订单" + borrowId + "运营商数据为空");
 		}
 		try {
 			if(naiveFeatures != null) {

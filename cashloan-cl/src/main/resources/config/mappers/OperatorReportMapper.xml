@@ -121,4 +121,11 @@
         <include refid="Base_Column_List" />
         from cl_operator_report where user_id = #{userId,jdbcType=BIGINT} order by id desc limit 1
     </select>
+
+    <select id="getOperatorReport" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_operator_report
+        WHERE req_log_id = (select req_log_id from cl_borrow_operator_log WHERE borrow_id = #{borrowId,jdbcType=BIGINT});
+    </select>
 </mapper>

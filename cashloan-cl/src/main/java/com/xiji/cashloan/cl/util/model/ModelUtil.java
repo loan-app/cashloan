@@ -39,7 +39,12 @@ public class ModelUtil {
     public static float[] getFeaturesFromMap(Map<String, Float> hashMap, String[] featureNames) {
         float[] bars = new float[featureNames.length];
         for (int i = 0; i < featureNames.length; ++i) {
-            bars[i] = hashMap.get(featureNames[i]);
+            //极限情况下存在运营商报告变量为空,赋值为-99999f
+            if(hashMap.get(featureNames[i]) == null) {
+                bars[i] = -99999f;
+            } else {
+                bars[i] = hashMap.get(featureNames[i]);
+            }
         }
         return bars;
     }
