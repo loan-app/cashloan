@@ -77,9 +77,9 @@ public class H5Controller extends BaseController{
 	 * @param search
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/api/h5/imgCode/generate.htm", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/api/h5/imgCode/generate.htm", method = RequestMethod.GET)
 	public void generate() throws Exception {
 		super.generateImgCode();
-	}
+	}*/
 
 }

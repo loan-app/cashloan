@@ -151,20 +151,20 @@
 		<include refid="searchLikeBy" />
 	</select>
 
-	<select id="getChannelByCode" resultMap="BaseResultMap" parameterType="String">
-		select
-		<include refid="Base_Column_List" />
-		from cl_channel
-		where
-		code = #{code}
-	</select>
-
 	<select id="getChannelById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from cl_channel
 		where
 		id = #{id}
+	</select>
+
+	<select id="getChannelByCode" resultMap="BaseResultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from cl_channel
+		where
+		code = #{code}
 	</select>
 
 	<select id="listChannelWithoutApp" resultMap="BaseResultMap">
