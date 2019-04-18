@@ -133,7 +133,7 @@ public class OperatorController extends BaseController {
                 JSONObject result = JSONObject.parseObject(token);
                 backUrl = "?returnUrl=" + URLEncoder.encode(backUrl, "UTF-8");
                 String gxbH5Url = Global.getValue("gxb_h5_url");
-                gxbH5Url += backUrl +"&token="+ JSONObject.parseObject(result.getString("data")).getString("token");
+                gxbH5Url += backUrl +"&token="+ JSONObject.parseObject(result.getString("data")).getString("token")+"&username="+userBaseInfo.getPhone();
                 data.put("url", gxbH5Url);
             }
             respMap.put(Constant.RESPONSE_DATA, data);
