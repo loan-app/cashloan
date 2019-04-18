@@ -1338,6 +1338,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
                 //将json字符串转换成OrderXmlBeanResp对象,
                 bindResult = JSONObject.parseObject(body, OrderXmlBeanResp.class);
             }catch (Exception e){
+                body = body.replace("\"", "");
+                body =body.replace("\\", "\"");
                 //将结果转换成对象
                 bindResult = XMapUtil.parseStr2Obj(OrderXmlBeanResp.class, body);
             }
