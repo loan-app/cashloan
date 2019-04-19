@@ -1329,18 +1329,16 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         RepaymentResponseVo responseVo = new RepaymentResponseVo();
         Map<String, String> result = new HashMap<>();
         String key = Global.getValue("fuiou_protocol_mchntcd_key");
-        logger.info("body---->"+body);
         if (!isException(body)) {
             try{
-                //将返回的字典转换成json字符串
+                //将ios返回的字典转换成json字符串
                 body=URLDecoder.decode(body);
-                logger.info("body--->"+body);
                 //将json字符串转换成OrderXmlBeanResp对象,
                 bindResult = JSONObject.parseObject(body, OrderXmlBeanResp.class);
             }catch (Exception e){
                 body = body.replace("\"", "");
                 body =body.replace("\\", "\"");
-                //将结果转换成对象
+                //将Android返回的xml结果转换成对象
                 bindResult = XMapUtil.parseStr2Obj(OrderXmlBeanResp.class, body);
             }
         } else {
