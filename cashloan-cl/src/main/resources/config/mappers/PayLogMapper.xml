@@ -117,7 +117,8 @@
             remark = #{remark,jdbcType=VARCHAR},
             pay_req_time = #{payReqTime,jdbcType=TIMESTAMP},
             update_time = #{updateTime,jdbcType=TIMESTAMP},
-            create_time = #{createTime,jdbcType=TIMESTAMP}
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            pay_order_no = #{payOrderNo,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
