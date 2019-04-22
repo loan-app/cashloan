@@ -2010,6 +2010,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
 		Float modelScore = getModelScore(borrowId);
+		logger.info("借款订单" + borrowId + "模型分为:" + modelScore);
 		BorrowModelScore borrowModelScore = new BorrowModelScore(borrowId, modelScore);
 		borrowModelScoreMapper.save(borrowModelScore);
 
@@ -2780,7 +2781,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				float[] cleanedFeatures = ModelUtil.getFeaturesFromMap(hashMap, featureNameArr);
 				int colSize = cleanedFeatures.length;
 				DMatrix matrix = new DMatrix(cleanedFeatures, 1, colSize, -9999999f);
-				Booster boosterModel = XGBoost.loadModel("/Users/szb/Downloads/ext_fin_v1.model");
+				Booster boosterModel = XGBoost.loadModel("/Users/szb/Downloads/ext_fin_v2.model");
 				float[] scoreArray = boosterModel.predict(matrix)[0];
 				float score = scoreArray[0];
 				logger.info("订单" + borrowId + " 模型分值为:" + score);
