@@ -455,113 +455,113 @@ public class OperatorController extends BaseController {
             userAuth.put("phoneState", UserAuthModel.STATE_ERTIFICATION);
             userAuthService.updateByUserId(userAuth);
             fixedThreadPool.execute(new Runnable(){
-                                        public void run() {
+                public void run() {
 
-                                            // 保存运营商认证记录
-                                            Map<String, Object> temp = new HashMap<>();
-                                            temp.put("taskId", sequenceNo);
-                                            OperatorReqLog operatorReqLog = operatorReqLogService.findSelective(temp);
-                                            if (operatorReqLog == null){
-                                                operatorReqLog = new OperatorReqLog();
-                                                operatorReqLog.setRespTime( DateUtil.getNow());
-                                                operatorReqLog.setCreateTime( DateUtil.getNow());
-                                                operatorReqLog.setUserId(userBaseInfo.getUserId());
-                                                operatorReqLog.setTaskId(sequenceNo);
-                                                operatorReqLog.setReqToken(token);
-                                                operatorReqLogService.insert(operatorReqLog);
-                                            }
-                                            Long reqLogId = operatorReqLog.getId();
+                    // 保存运营商认证记录
+                    Map<String, Object> temp = new HashMap<>();
+                    temp.put("taskId", sequenceNo);
+                    OperatorReqLog operatorReqLog = operatorReqLogService.findSelective(temp);
+                    if (operatorReqLog == null){
+                        operatorReqLog = new OperatorReqLog();
+                        operatorReqLog.setRespTime( DateUtil.getNow());
+                        operatorReqLog.setCreateTime( DateUtil.getNow());
+                        operatorReqLog.setUserId(userBaseInfo.getUserId());
+                        operatorReqLog.setTaskId(sequenceNo);
+                        operatorReqLog.setReqToken(token);
+                        operatorReqLogService.insert(operatorReqLog);
+                    }
+                    Long reqLogId = operatorReqLog.getId();
 
-                                            Map<String, Object> userAuth = new HashMap<String, Object>();
-                                            userAuth.put("userId", userBaseInfo.getUserId());
-                                            userAuth.put("phoneTime", DateUtil.getNow());
-                                            logger.info("--------------------------公信宝运营商回调保存原始数据--------------------------");
-                                            int start = 0;
-                                            int end = 0;
-                                            try {
-                                                // 保存原始数据
-                                                OperatorRespDetail respDetail = operatorRespDetailService.getByTaskId(sequenceNo);
-                                                if (respDetail == null) {
-                                                    OperatorRespDetail operatorRespDetail = new OperatorRespDetail();
-                                                    operatorRespDetail.setCreateTime(DateUtil.getNow());
-                                                    operatorRespDetail.setTaskId(sequenceNo);
-                                                    operatorRespDetail.setReqLogId(reqLogId);
-                                                    operatorRespDetail.setOperatorData(authJson);
-                                                    operatorRespDetailService.insert(operatorRespDetail);
+                    Map<String, Object> userAuth = new HashMap<String, Object>();
+                    userAuth.put("userId", userBaseInfo.getUserId());
+                    userAuth.put("phoneTime", DateUtil.getNow());
+                    logger.info("--------------------------公信宝运营商回调保存原始数据--------------------------");
+                    int start = 0;
+                    int end = 0;
+                    try {
+                        // 保存原始数据
+                        OperatorRespDetail respDetail = operatorRespDetailService.getByTaskId(sequenceNo);
+                        if (respDetail == null) {
+                            OperatorRespDetail operatorRespDetail = new OperatorRespDetail();
+                            operatorRespDetail.setCreateTime(DateUtil.getNow());
+                            operatorRespDetail.setTaskId(sequenceNo);
+                            operatorRespDetail.setReqLogId(reqLogId);
+                            operatorRespDetail.setOperatorData(authJson);
+                            operatorRespDetailService.insert(operatorRespDetail);
 
-                                                    logger.info("--------------------------公信宝运营商数据分类保存--------------------------");
-                                                    // 将运营商数据分类保存
-                                                    start = DateUtil.getNowTime();
-                                                    operatorService.saveOperatorInfos(authJson, userBaseInfo.getUserId(), DateUtil.getNow(),phone,reqLogId);
-                                                    end = DateUtil.getNowTime();
-                                                    logger.info("保存userId " + userBaseInfo.getUserId() + "运营商数据，耗时" + (end - start) + "秒");
-                                                } else {
-                                                    Map<String, Object> updateMap = new HashMap<>();
-                                                    updateMap.put("id", respDetail.getId());
-                                                    updateMap.put("operatorData", authJson);
-                                                    operatorRespDetailService.updateSelective(updateMap);
-                                                }
+                            logger.info("--------------------------公信宝运营商数据分类保存--------------------------");
+                            // 将运营商数据分类保存
+                            start = DateUtil.getNowTime();
+                            operatorService.saveOperatorInfos(authJson, userBaseInfo.getUserId(), DateUtil.getNow(),phone,reqLogId);
+                            end = DateUtil.getNowTime();
+                            logger.info("保存userId " + userBaseInfo.getUserId() + "运营商数据，耗时" + (end - start) + "秒");
+                        } else {
+                            Map<String, Object> updateMap = new HashMap<>();
+                            updateMap.put("id", respDetail.getId());
+                            updateMap.put("operatorData", authJson);
+                            operatorRespDetailService.updateSelective(updateMap);
+                        }
 
-                                                // 插入调用外部数据接口费用表
-                                                CallsOutSideFee callsOutSideFee = callsOutSideFeeService.getByTaskId(sequenceNo);
-                                                if(callsOutSideFee == null) {
-                                                    callsOutSideFee = new CallsOutSideFee(userBaseInfo.getUserId(), sequenceNo, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,phone);
-                                                    callsOutSideFeeService.insert(callsOutSideFee);
-                                                }
+                        // 插入调用外部数据接口费用表
+                        CallsOutSideFee callsOutSideFee = callsOutSideFeeService.getByTaskId(sequenceNo);
+                        if(callsOutSideFee == null) {
+                            callsOutSideFee = new CallsOutSideFee(userBaseInfo.getUserId(), sequenceNo, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,phone);
+                            callsOutSideFeeService.insert(callsOutSideFee);
+                        }
 
-                                                logger.info("用户 "+userBaseInfo.getUserId()+"： 运营商原始数据回调模式获取成功,准备拉取运营商报告");
-                                                String  gxbPullAllReportUrl = Global.getValue("gxb_pull_all_report_url");
-                                                String appId = Global.getValue("gxb_appid");
-                                                String appSecret = Global.getValue("gxb_appsecret");
-                                                long timestamp = System.currentTimeMillis();
-                                                String sign = DigestUtils.md5Hex(String.format("%s%s%s", appId, appSecret, timestamp));
-                                                gxbPullAllReportUrl = gxbPullAllReportUrl +token +"?appId="+appId+"&timestamp="+timestamp+"&sign="+sign;
-                                                String reportStr = HttpRestUtils.getRequest(gxbPullAllReportUrl,null);
-                                                JSONObject reportJson = JSONObject.parseObject(reportStr);
-                                                if (reportJson != null && "1".equals(reportJson.getString("retCode"))){
-                                                    String data = reportJson.getString("data");
-                                                    String authResult = null;
-                                                    if (StringUtil.isNotBlank(data)){
-                                                        authResult = JSONObject.parseObject(data).getString("authResult");
-                                                    }
+                        logger.info("用户 "+userBaseInfo.getUserId()+"： 运营商原始数据回调模式获取成功,准备拉取运营商报告");
+                        String  gxbPullAllReportUrl = Global.getValue("gxb_pull_all_report_url");
+                        String appId = Global.getValue("gxb_appid");
+                        String appSecret = Global.getValue("gxb_appsecret");
+                        long timestamp = System.currentTimeMillis();
+                        String sign = DigestUtils.md5Hex(String.format("%s%s%s", appId, appSecret, timestamp));
+                        gxbPullAllReportUrl = gxbPullAllReportUrl +token +"?appId="+appId+"&timestamp="+timestamp+"&sign="+sign;
+                        String reportStr = HttpRestUtils.getRequest(gxbPullAllReportUrl,null);
+                        JSONObject reportJson = JSONObject.parseObject(reportStr);
+                        if (reportJson != null && "1".equals(reportJson.getString("retCode"))){
+                            String data = reportJson.getString("data");
+                            String authResult = null;
+                            if (StringUtil.isNotBlank(data)){
+                                authResult = JSONObject.parseObject(data).getString("authResult");
+                            }
 
-                                                    if (authResult == null){
-                                                        userAuth.put("phoneState", UserAuthModel.STATE_NOT_CERTIFIED);
-                                                        userAuthService.updateByUserId(userAuth);
-                                                        logger.info("--------------------------公信宝运运营商报告为空且结束-------------------------phone ==>"+phone);
-                                                        return;
-                                                    }
+                            if (authResult == null){
+                                userAuth.put("phoneState", UserAuthModel.STATE_NOT_CERTIFIED);
+                                userAuthService.updateByUserId(userAuth);
+                                logger.info("--------------------------公信宝运运营商报告为空且结束-------------------------phone ==>"+phone);
+                                return;
+                            }
 
-                                                    // 保存运营商报告
-                                                    OperatorReport oldReport = operatorReportService.getByTaskId(sequenceNo);
-                                                    if (oldReport == null) {
-                                                        OperatorReport operatorReport = new OperatorReport(userBaseInfo.getUserId(), reqLogId, sequenceNo, authResult);
-                                                        operatorReportService.insert(operatorReport);
+                            // 保存运营商报告
+                            OperatorReport oldReport = operatorReportService.getByTaskId(sequenceNo);
+                            if (oldReport == null) {
+                                OperatorReport operatorReport = new OperatorReport(userBaseInfo.getUserId(), reqLogId, sequenceNo, authResult);
+                                operatorReportService.insert(operatorReport);
 
-                                                        start = DateUtil.getNowTime();
-                                                        operatorVoiceCntService.paserReportDetail(authResult, userBaseInfo.getUserId(), DateUtil.getNow(), reqLogId);
-                                                        operatorVoiceCntService.lastContactTime(userBaseInfo.getUserId(), reqLogId);
-                                                        end = DateUtil.getNowTime();
-                                                        logger.info("保存userId " + userBaseInfo.getUserId() + "运营商报告，详情统计，耗时" + (end - start) + "秒");
-                                                    } else {
-                                                        Map<String, Object> updateMap = new HashMap<>();
-                                                        updateMap.put("id", oldReport.getId());
-                                                        updateMap.put("report", authResult);
-                                                        updateMap.put("gmtModified", DateUtil.getNow());
-                                                        operatorReportService.updateSelective(updateMap);
-                                                    }
-                                                }
-                                                // 运营商认证完成
-                                                userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
-                                                userAuthService.updateByUserId(userAuth);
-                                                logger.info("--------------------------公信宝运营商认证完成--------------------------");
-                                            } catch (Exception e){
-                                                // 异常时 运营商认证修改为 未认证
-                                                userAuth.put("phoneState", UserAuthModel.STATE_NOT_CERTIFIED);
-                                                userAuthService.updateByUserId(userAuth);
-                                                logger.info("--------------------------公信宝运营商认证异常--------------------------");
-                                            }
-                                        }
+                                start = DateUtil.getNowTime();
+                                operatorVoiceCntService.paserReportDetail(authResult, userBaseInfo.getUserId(), DateUtil.getNow(), reqLogId);
+                                operatorVoiceCntService.lastContactTime(userBaseInfo.getUserId(), reqLogId);
+                                end = DateUtil.getNowTime();
+                                logger.info("保存userId " + userBaseInfo.getUserId() + "运营商报告，详情统计，耗时" + (end - start) + "秒");
+                            } else {
+                                Map<String, Object> updateMap = new HashMap<>();
+                                updateMap.put("id", oldReport.getId());
+                                updateMap.put("report", authResult);
+                                updateMap.put("gmtModified", DateUtil.getNow());
+                                operatorReportService.updateSelective(updateMap);
+                            }
+                        }
+                        // 运营商认证完成
+                        userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
+                        userAuthService.updateByUserId(userAuth);
+                        logger.info("--------------------------公信宝运营商认证完成--------------------------");
+                    } catch (Exception e){
+                        // 异常时 运营商认证修改为 未认证
+                        userAuth.put("phoneState", UserAuthModel.STATE_NOT_CERTIFIED);
+                        userAuthService.updateByUserId(userAuth);
+                        logger.info("--------------------------公信宝运营商认证异常--------------------------");
+                    }
+                }
             });
         }
         logger.info("--------------------------公信宝运营商回调结束--------------------------");
