@@ -2020,10 +2020,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
 		if (finishCount > 0) {
 			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
-			handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "复借用户机审直接通过,待人工复审");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "复借用户机审直接通过");
 			return;
 		}
 
+		if(modelScore > 0.678719) {
+			logger.info("借款订单" + borrowId + "模型分大于临界值,机审拒绝");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "模型分大于临界值,机审拒绝");
+			return;
+		}
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);
 		List<RuleEngine> ruleEngieList = ruleEngineMapper.listSelective(paramMap);
@@ -2125,7 +2130,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if (i == (configCollection.size() - 1)) {
 				//对借款申请进行审核处理
 				if(review){
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"");
 				}else{
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"");
 				}
@@ -2781,7 +2786,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				float[] cleanedFeatures = ModelUtil.getFeaturesFromMap(hashMap, featureNameArr);
 				int colSize = cleanedFeatures.length;
 				DMatrix matrix = new DMatrix(cleanedFeatures, 1, colSize, -9999999f);
-				Booster boosterModel = XGBoost.loadModel("/Users/szb/Downloads/ext_fin_v2.model");
+				Booster boosterModel = XGBoost.loadModel("ext_fin_v2.model");
 				float[] scoreArray = boosterModel.predict(matrix)[0];
 				float score = scoreArray[0];
 				logger.info("订单" + borrowId + " 模型分值为:" + score);
