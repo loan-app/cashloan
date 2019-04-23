@@ -899,3 +899,14 @@ INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_ap
 
 -- 修改到期提醒短信模板
 update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
+
+-- 创建借款订单模型评分表
+DROP TABLE IF EXISTS `cl_borrow_model_score`;
+CREATE TABLE `cl_borrow_model_score` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,6) NOT NULL COMMENT '模型分数',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='借款订单模型评分表';

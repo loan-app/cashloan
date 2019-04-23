@@ -58,11 +58,13 @@ import org.mybatis.spring.SqlSessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -2010,6 +2012,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
 		Float modelScore = getModelScore(borrowId);
+		if(modelScore == 0.0f) {
+			return;
+		}
 		logger.info("借款订单" + borrowId + "模型分为:" + modelScore);
 		BorrowModelScore borrowModelScore = new BorrowModelScore(borrowId, modelScore);
 		borrowModelScoreMapper.save(borrowModelScore);
@@ -2786,7 +2791,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				float[] cleanedFeatures = ModelUtil.getFeaturesFromMap(hashMap, featureNameArr);
 				int colSize = cleanedFeatures.length;
 				DMatrix matrix = new DMatrix(cleanedFeatures, 1, colSize, -9999999f);
-				Booster boosterModel = XGBoost.loadModel("ext_fin_v2.model");
+				Booster boosterModel = XGBoost.loadModel(getClass().getClassLoader().getResourceAsStream("ext_fin_v2.model"));
+//				Booster boosterModel = XGBoost.loadModel(new ClassPathResource("ext_fin_v2.model").getInputStream());
 				float[] scoreArray = boosterModel.predict(matrix)[0];
 				float score = scoreArray[0];
 				logger.info("订单" + borrowId + " 模型分值为:" + score);
@@ -2797,7 +2803,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 		} catch (Exception e) {
 			logger.error("获取订单:" + borrowId + " 变量数据异常");
-			return 0f;
+			return 1.0f;
 		}
 
 	}
