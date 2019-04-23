@@ -2020,7 +2020,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
 		if (finishCount > 0) {
 			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
-			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "复借用户机审直接通过,待人工复审");
 			return;
 		}
 
