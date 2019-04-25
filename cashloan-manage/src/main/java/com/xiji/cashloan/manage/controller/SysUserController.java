@@ -1,22 +1,18 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.domain.ManualReviewOrder;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.cl.service.ManualReviewOrderService;
+import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.system.constant.SystemConstant;
+import com.xiji.cashloan.system.domain.SysRole;
 import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
 import com.xiji.cashloan.system.security.authentication.encoding.PasswordEncoder;
@@ -29,9 +25,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.pagehelper.Page;
-import com.xiji.cashloan.core.common.util.StringUtil;
-import com.xiji.cashloan.system.domain.SysRole;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 
 /**
@@ -52,7 +50,10 @@ public class SysUserController extends BaseController {
 	private SysRoleService sysRoleService;
 	@Resource
 	private PasswordEncoder passwordEncoder;// 密码加密
-	
+	@Resource
+	private ManualReviewOrderService manualReviewOrderService;
+	@Resource
+	private ClBorrowService clBorrowService;
 	/**
 	 * 修改密码
 	 * @param request
@@ -232,6 +233,11 @@ public class SysUserController extends BaseController {
 				int count = sysUserService.userUpdate(sysUser);
 				if(count > 0){
 					successcount ++;
+				}
+
+				if ("lock".equals(status)){
+					// 还原待审核订单 为 待分配订单
+					this.restoreOrders(userid);
 				}
 			}
 		}
@@ -466,4 +472,38 @@ public class SysUserController extends BaseController {
         }
         ServletUtils.writeToResponse(response, responseMap);
     }
+
+	/**
+	 *
+	 * 还原待审核订单 为 待分配订单
+	 * @param id
+	 */
+	private void restoreOrders(Long id){
+
+		Map<String,Object>  params = new HashMap<>();
+		params.put("id",id);
+		params.put("name","reviewSpecialist");
+		List<SysUser> sysUsers = sysUserService.queryByUserIdAndRole(params);
+		params.clear();
+		if (CollectionUtil.isNotEmpty(sysUsers)){
+
+			params.put("userId",id);
+			params.put("state","11");
+			params.put("again","10");
+			List<ManualReviewOrder>  manualReviewOrders = manualReviewOrderService.listAgainBorrowOrder(params);
+			if (CollectionUtil.isNotEmpty(manualReviewOrders)){
+				for (ManualReviewOrder manualReviewOrder : manualReviewOrders){
+
+					manualReviewOrder.setState("10");
+					manualReviewOrder.setUserName(" ");
+					manualReviewOrder.setUserId(null);
+				}
+				int batchUpdateCount = manualReviewOrderService.batchUpdate(manualReviewOrders);
+				if (batchUpdateCount != manualReviewOrders.size()){
+					logger.error("审核专员用户锁定，待审核订单还原待分配订单失败");
+				}
+			}
+		}
+	}
+
 }

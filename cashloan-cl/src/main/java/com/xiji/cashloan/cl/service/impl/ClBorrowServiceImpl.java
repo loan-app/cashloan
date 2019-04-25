@@ -2486,7 +2486,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			map.put("state", state);
 			map.put("remark", remark);
 			code = clBorrowMapper.loanState(map);
-			if (code!=1) {
+			if (code != 1) {
 				throw new BussinessException("放款审核失败,当前状态不是待审核放款");
 			}
 			
@@ -2517,6 +2517,61 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		return code;
 	}
+
+
+
+	/**
+	 *
+	 * @description 批量放款
+	 * @param borrowIds
+	 * @author mcwang
+	 * @return void
+	 * @since  1.0.0
+	 */
+	@Override
+	public void batchBorrowLoan(List<Long> borrowIds,Long userId){
+
+		for (Long borrowId : borrowIds){
+			int code = 0;
+			Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+			if (borrow != null) {
+				if(borrow.getState().equals(BorrowModel.STATE_REPAY_FAIL)){
+					borrowLoan(borrow, new Date());
+					break;
+				}
+				if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
+					logger.error("审核失败,当前状态不是待审核放款");
+					break;
+				}
+				Map<String,Object> map = new HashMap<>();
+				map.put("id", borrowId);
+				map.put("state", BorrowModel.AUDIT_LOAN_PASS);
+				code = clBorrowMapper.loanState(map);
+				if (code != 1) {
+					logger.info("放款审核失败,当前状态不是待审核放款");
+					break;
+				}
+				//添加借款进度
+				BorrowProgress borrowProgress = new BorrowProgress();
+				borrowProgress.setBorrowId(borrow.getId());
+				borrowProgress.setUserId(borrow.getUserId());
+				borrowProgress.setState(BorrowModel.AUDIT_LOAN_PASS);
+				borrowProgress.setRemark("人工放款审核");
+
+				borrowProgress.setAuditRemark("批量放款");
+				borrowProgress.setAuditUser(userId);
+				borrowProgress.setCreateTime(DateUtil.getNow());
+				borrowProgressMapper.save(borrowProgress);
+				// 审核放款通过 放款
+				borrowLoan(borrow, new Date());
+			} else {
+				logger.error("审核放款失败，当前标不存在");
+				break;
+			}
+		}
+	}
+
+
 
 	@Override
 	public List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name) {

@@ -1,11 +1,9 @@
 package com.xiji.cashloan.system.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.system.domain.SysRole;
@@ -22,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.core.common.exception.ServiceException;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -216,5 +214,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 	public BaseMapper<SysUser, Long> getMapper() {
 		return sysUserMapper;
 	}
+
+	@Override
+	public List<SysUser> queryByUserIdAndRole(Map<String, Object> params){
+		return sysUserMapper.queryByUserIdAndRole(params);
+	}
+
 
 }

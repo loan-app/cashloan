@@ -582,6 +582,9 @@
 		INNER JOIN arc_sys_user_role ur on u.id = ur.user_id
 		INNER JOIN arc_sys_role r on r.id = ur.role_id
 		where r.nid = #{roleName}
+		<if test="status != '' and status != null">
+			and status = #{status}
+		</if>
 		<if test="officeOver != null">
 			and u.office_id in
 			<foreach item="item" index="index" collection="officeOver"
@@ -613,6 +616,24 @@
 			and u.job_num like concat("%",#{jobNum, jdbcType=VARCHAR},"%")
 		</if>
     </select>
-    
+
+
+	<select id="queryByUserIdAndRole" resultMap="sysUserResult">
+		select
+		u.*
+		from arc_sys_user u
+		INNER JOIN arc_sys_user_role ur on u.id = ur.user_id
+		INNER JOIN arc_sys_role r on r.id = ur.role_id
+		<where>
+			<trim prefixOverrides="and">
+				<if test="roleName != null and roleName != ''">
+					and r.nid = #{roleName}
+				</if>
+				<if test="id != null">
+					and u.id = #{id}
+				</if>
+			</trim>
+		</where>
+	</select>
     
 </mapper>     

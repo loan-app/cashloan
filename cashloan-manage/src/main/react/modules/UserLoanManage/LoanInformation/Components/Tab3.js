@@ -1,7 +1,6 @@
 import React from 'react';
-import {
-  Table,
-} from 'antd';
+import {Table,} from 'antd';
+
 const objectAssign = require('object-assign');
 var Tab3 = React.createClass({
   getInitialState() {
@@ -83,8 +82,11 @@ var Tab3 = React.createClass({
   },
   render() {
     var columns = [{
-      title: '用户号码',
-      dataIndex: "mobile",
+      title: '对方姓名',
+      dataIndex: "peerName",
+        render(text,record){
+            return record.peerName == null ? '--':record.peerName;
+        }
     }, {
       title: '对方号码',
       dataIndex: "peerNumber",
@@ -104,7 +106,7 @@ var Tab3 = React.createClass({
       title: '通话类型',
       dataIndex: "dialType",
         render(text, record) {
-            return record.dialType == 'DIAL' ? '主叫' : '被叫'
+            return record.dialType === 'DIAL' ? '主叫' : '被叫'
         }
     }];
     return (<div className="block-panel">

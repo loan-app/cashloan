@@ -299,6 +299,12 @@
             <if test="state !='' and state !=null">
                 and o.state = #{state,jdbcType=VARCHAR}
             </if>
+            <if test="stateList !=null">
+                and b.state  in
+                <foreach item="item" index="index" collection="stateList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="remark !='' and remark !=null">
                 and o.remark = #{state,jdbcType=VARCHAR}
             </if>
@@ -357,6 +363,17 @@
         where borrow_id = #{id ,jdbcType=BIGINT}  AND user_id = #{userId ,jdbcType=BIGINT} AND state = 11
     </update>
 
+    <select id="listAllocated" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select mro.* from cl_manual_review_order as mro left join cl_borrow as borrow on mro.borrow_id = borrow.id
+        WHERE borrow.again = '10' and mro.state = '10'
+        order by mro.create_time ASC
+    </select>
+
+
+    <select id="listToBeAssignedCount" resultType="java.util.HashMap">
+       SELECT count(mro.id) as reviewCount, mro.user_id as userId FROM cl_manual_review_order as mro left join cl_borrow as borrow on mro.borrow_id = borrow.id where mro.state ='11' and borrow.again = '10' GROUP BY mro.user_id;
+    </select>
+
     <update id="updateByBorrowId"  parameterType="java.util.HashMap">
         update cl_manual_review_order
         <set>
@@ -374,4 +391,49 @@
         </set>
         where borrow_id = #{borrowId ,jdbcType=BIGINT}
     </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        update cl_manual_review_order
+        <trim prefix="set" suffixOverrides=",">
+        <trim prefix="state =case" suffix="end,">
+            <foreach collection="list" item="item">
+                <if test="item.state != null">
+                    when id=#{item.id} then #{item.state}
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="user_id =case" suffix="end,">
+            <foreach collection="list" item="item">
+                    when id=#{item.id} then #{item.userId}
+            </foreach>
+        </trim>
+        <trim prefix="user_name =case" suffix="end,">
+            <foreach collection="list" item="item">
+                <if test="item.userName != null">
+                    when id=#{item.id} then #{item.userName}
+                </if>
+            </foreach>
+        </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id = #{item.id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="listAgainBorrowOrder" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        
+        select cmro.* from cl_manual_review_order as cmro left join cl_borrow as cb on cmro.borrow_id = cb.id
+        where 1=1
+        <if test="state !='' and state !=null">
+            and cmro.state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="userId !='' and userId !=null">
+            and cmro.user_id = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="again != null and again !=''">
+            and cb.again = #{again,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

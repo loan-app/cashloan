@@ -1,14 +1,13 @@
 package com.xiji.cashloan.system.service;
 
-import java.util.List;
-import java.util.Map;
-
-import com.xiji.cashloan.system.domain.SysUser;
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.system.domain.SysRole;
+import com.xiji.cashloan.system.domain.SysUser;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -88,4 +87,5 @@ public interface SysUserService {
 
 	List<Map<String, Object>> getUserInfo(Map<String, Object> params) throws ServiceException;
 
+	List<SysUser> queryByUserIdAndRole(Map<String, Object> params);
 }

@@ -3,6 +3,7 @@ import {Form, Modal, Select, Tabs,} from 'antd';
 import ManualReviewForm from './ManualReviewForm'
 import Tab1 from './Tab1';
 import Tab2 from './Tab2';
+import Tab3 from './Tab3';
 import Tab9 from './Tab9';
 import Tab8 from '../../../../common/LoanReport/Tab8';
 import Operator from '../../../../common/OperatorInfo/Operator';
@@ -129,9 +130,9 @@ var Lookdetails = React.createClass({
           <TabPane tab="通讯录" key="3">
             <Tab2 ref="Tab2" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
           </TabPane>
-          {/*<TabPane tab="通话记录" key="4">*/}
-            {/*<Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>*/}
-          {/*</TabPane>*/}
+          <TabPane tab="通话记录" key="4">
+            <Tab3 ref="Tab3" record={props.record}  canEdit={props.canEdit} visible={props.visible} activekey={this.state.activekey}/>
+          </TabPane>
           {/*<TabPane tab="规则报告" key='2'>*/}
           {/*<RuleReport  record={this.props.record} visible={props.visible} activekey={this.state.activekey}/>*/}
           {/*</TabPane>*/}
