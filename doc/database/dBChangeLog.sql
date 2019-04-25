@@ -910,3 +910,6 @@ CREATE TABLE `cl_borrow_model_score` (
   `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='借款订单模型评分表';
+
+-- 模型分拒绝阈值
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分拒绝阈值', 'model_score', '0.508719', 1, '模型分拒绝阈值', 1);

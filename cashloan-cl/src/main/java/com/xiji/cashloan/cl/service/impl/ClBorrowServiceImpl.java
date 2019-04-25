@@ -2029,7 +2029,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			return;
 		}
 
-		if(modelScore > 0.678719) {
+		float defaultScore = 0.528719f;
+		String defaultModelScore = Global.getValue("model_score");
+		logger.info("系统配置模型分值为:" + defaultModelScore);
+		if(StringUtil.isNotBlank(defaultModelScore)) {
+			defaultScore = Float.valueOf(defaultModelScore);
+		}
+		if(modelScore > defaultScore) {
 			logger.info("借款订单" + borrowId + "模型分大于临界值,机审拒绝");
 			handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "模型分大于临界值,机审拒绝");
 			return;
