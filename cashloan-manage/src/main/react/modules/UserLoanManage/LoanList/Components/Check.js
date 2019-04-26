@@ -138,7 +138,7 @@ var Check = React.createClass({
           <Row>
             <Col span="24">
               <FormItem  {...formItemLayout} label="放款审核:">
-                  <Select style={{width:'200px'}}  {...getFieldProps('state1', { initialValue: "" }) }>
+                  <Select style={{width:'200px'}}  {...getFieldProps('state1', {rules:[{ required: true, message: '不能为空,请您选择' }]}) }>
                     <Option value="302">审核通过</Option>
                     <Option value="303">审核不通过</Option>
                   </Select>
