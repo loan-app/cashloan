@@ -900,9 +900,6 @@ INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_ap
 -- 修改到期提醒短信模板
 update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
 
--- 富友支付选择
-INSERT INTO `arc_sys_config` VALUES (null, 20, '富友支付选择', 'fuiou_payment_select', '1', 1, '富友支付选择：1-协议支付,2-笔笔验证', 1);
-
 insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0 12 1/1 * ?');
 
@@ -916,3 +913,6 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '运营商公司选择', 'opera
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝H5接入地址', 'gxb_h5_url', 'https://prod.gxb.io/v2/auth', '1', '公信宝H5接入地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝拉取全部运营商报告数据url', 'gxb_pull_all_report_url', 'https://prod.gxb.io/crawler/data/report/', '1', '公信宝拉取全部运营商报告数据url', '1');
 ALTER table cl_operator_req_log add req_token varchar(64) DEFAULT '' COMMENT '授权token';
+
+-- 修改字段长度
+alter table cl_operator_basic change city `city` varchar(100) DEFAULT  '' COMMENT '城市';
