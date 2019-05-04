@@ -916,3 +916,4 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '运营商公司选择', 'opera
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝H5接入地址', 'gxb_h5_url', 'https://prod.gxb.io/v2/auth', '1', '公信宝H5接入地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝拉取全部运营商报告数据url', 'gxb_pull_all_report_url', 'https://prod.gxb.io/crawler/data/report/', '1', '公信宝拉取全部运营商报告数据url', '1');
 ALTER table cl_operator_req_log add req_token varchar(64) DEFAULT '' COMMENT '授权token';
+

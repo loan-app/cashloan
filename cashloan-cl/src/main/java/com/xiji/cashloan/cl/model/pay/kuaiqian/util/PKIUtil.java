@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.util;
+package com.xiji.cashloan.cl.model.pay.kuaiqian.util;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;

@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.vo;
+package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo;
 
 import javax.xml.bind.annotation.*;
 

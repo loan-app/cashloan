@@ -1,4 +1,4 @@
-package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor;
+package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock;
 
 import java.util.HashMap;
 import java.util.Map;

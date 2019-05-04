@@ -14,6 +14,11 @@ public class PaymentReqVo  extends PayReq {
     private String remark;
     private Long borrowId;
 
+    /**
+     * 用户名称
+     */
+    private String creditName;
+
     public String getBankCardNo() {
         return bankCardNo;
     }
@@ -68,5 +73,13 @@ public class PaymentReqVo  extends PayReq {
 
     public void setBorrowId(Long borrowId) {
         this.borrowId = borrowId;
+    }
+
+    public String getCreditName() {
+        return creditName;
+    }
+
+    public void setCreditName(String creditName) {
+        this.creditName = creditName;
     }
 }
