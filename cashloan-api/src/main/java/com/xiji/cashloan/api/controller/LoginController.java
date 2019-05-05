@@ -58,6 +58,18 @@ public class LoginController {
 		};
 	}
 
+	//根据手机和验证码登录
+	@RequestMapping("loginPhone")
+	public void loginPhone(final HttpServletRequest request,
+					  HttpServletResponse response, final String loginName,final String vcode,final String blackBox) {
+		new AppAbsActionWrapper(response) {
+			@Override
+			public Object doAction() {
+				return userService.loginPhone(request, loginName, vcode,blackBox);
+			}
+		};
+	}
+
 	@RequestMapping("autoLogin")
 	public void autoLogin(final HttpServletRequest request,
 			final HttpServletResponse response, final String refresh_token) {
@@ -190,6 +202,19 @@ public class LoginController {
 					result.put("msg", "注册成功!");
 				}
 				return result;
+			}
+		};
+	}
+
+	//设置登录密码
+	@RequestMapping("login/setPwd.htm")
+	public void setPwd(final HttpServletRequest request,
+						  HttpServletResponse response, final String phone,
+						  final String Pwd, final String signMsg) {
+		new AppAbsActionWrapper(response) {
+			@Override
+			public Object doAction() {
+				return userService.setPwd(phone, Pwd, signMsg);
 			}
 		};
 	}

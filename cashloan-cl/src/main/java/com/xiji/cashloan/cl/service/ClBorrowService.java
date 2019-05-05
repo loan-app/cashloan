@@ -311,6 +311,16 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	int auditBorrowLoan(Long borrowId, String state, String remark,Long userId);
 
 	/**
+	 *
+	 * @description 批量放款
+	 * @param borrowIds
+	 * @author mcwang
+	 * @return void
+	 * @since  1.0.0
+	 */
+	void batchBorrowLoan(List<Long> borrowIds,Long userId);
+
+	/**
 	 * 共享数据给宜信
 	 * @param userId
 	 * @param idNo

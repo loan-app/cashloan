@@ -11,11 +11,12 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="resp_time" property="respTime" jdbcType="TIMESTAMP" />
 		<result column="message" property="message" jdbcType="VARCHAR" />
+        <result column="req_token" property="reqToken" jdbcType="VARCHAR"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-		id, user_id, task_id, task_state, create_time, resp_time, message
+		id, user_id, task_id, task_state, create_time, resp_time, message,req_token
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -42,12 +43,15 @@
             <if test="message !=null">
                 and message = #{message,jdbcType=VARCHAR}
             </if>
+            <if test="reqToken != null">
+                and req_token = #{reqToken,jdbcType=VARCHAR}
+            </if>
         </trim>
     </sql>
     
-    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorReqLog">
-        insert into cl_operator_req_log(user_id,task_id,task_state,create_time,resp_time,message)
-        values(#{userId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{taskState,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{respTime,jdbcType=TIMESTAMP},#{message,jdbcType=VARCHAR})
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.OperatorReqLog" useGeneratedKeys="true" keyProperty="id">
+        insert into cl_operator_req_log(user_id,task_id,task_state,create_time,resp_time,message,req_token)
+        values(#{userId,jdbcType=BIGINT},#{taskId,jdbcType=VARCHAR},#{taskState,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{respTime,jdbcType=TIMESTAMP},#{message,jdbcType=VARCHAR},#{reqToken,jdbcType=VARCHAR})
     </insert>
     
     <update id="update" parameterType="com.xiji.cashloan.cl.domain.OperatorReqLog">
@@ -63,8 +67,11 @@
 				resp_time = #{respTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="message!=null and message!=''">
-                message = #{message,jdbcType=VARCHAR}
+                message = #{message,jdbcType=VARCHAR},
 			</if>
+            <if test="reqToken != null and reqToken !=''">
+                req_token = #{reqToken,jdbcType=VARCHAR}
+            </if>
 		</set>
         where id = #{id ,jdbcType=BIGINT}
     </update>
@@ -82,8 +89,11 @@
 				resp_time = #{respTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="message!=null and message!=''">
-                message = #{message,jdbcType=VARCHAR}
+                message = #{message,jdbcType=VARCHAR},
 			</if>
+            <if test="reqToken != null and reqToken !=''">
+                req_token = #{reqToken,jdbcType=VARCHAR}
+            </if>
 		</set>
         where id = #{id ,jdbcType=BIGINT}
     </update>

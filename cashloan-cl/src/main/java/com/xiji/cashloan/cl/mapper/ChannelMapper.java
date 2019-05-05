@@ -56,7 +56,7 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * 根据id查询渠道信息
 	 */
 	Channel getChannelById(Long id);
-	
+
 	/**
 	 * 查出所有渠道信息
 	 */

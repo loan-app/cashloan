@@ -652,8 +652,12 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                             decision.setMxPhoneWithOtherIdcards(searchJson.getJSONArray("phone_with_other_idcards").toJSONString());
                             decision.setMxPhoneWithOtherNames(searchJson.getJSONArray("phone_with_other_names").toJSONString());
                             decision.setMxRegisterOrgCnt(searchJson.getInteger("register_org_cnt"));
-                            decision.setMxRegisterOrgType(searchJson.getJSONArray("register_org_type").toJSONString());
-                            decision.setMxArisedOpenWeb(searchJson.getJSONArray("arised_open_web").toJSONString());
+                            if (searchJson.getJSONArray("register_org_type") != null){
+                                decision.setMxRegisterOrgType(searchJson.getJSONArray("register_org_type").toJSONString());
+                            }
+                            if (searchJson.getJSONArray("arised_open_web") != null){
+                                decision.setMxArisedOpenWeb(searchJson.getJSONArray("arised_open_web").toJSONString());
+                            }
                         }
 
                         JSONObject blackJson = infoCheckJson.getJSONObject("check_black_info");
@@ -701,64 +705,70 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
 
                 //处理用户行为检测
                 JSONArray behaviorCheckArray = reportJson.getJSONArray("behavior_check");
-                for (Object obj : behaviorCheckArray) {
-                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
-                    String checkPoint = jsonObject.getString("check_point");
-                    String checkResult = jsonObject.getString("result");
-                    switch (checkPoint) {
-                        case "phone_silent":
-                            if(checkResult.indexOf("天无通话记录") > -1) {
-                                decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
+                if (behaviorCheckArray != null && behaviorCheckArray.size() > 0) {
+
+                    for (Object obj : behaviorCheckArray) {
+                        JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
+                        String checkPoint = jsonObject.getString("check_point");
+                        String checkResult = jsonObject.getString("result");
+                        if (StringUtil.isBlank(checkPoint) || StringUtil.isBlank(checkResult)){
+                            continue;
+                        }
+                        switch (checkPoint) {
+                            case "phone_silent":
+                                if (checkResult.indexOf("天无通话记录") > -1) {
+                                    decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
+                                    break;
+                                }
+                            case "contact_loan":
+                                decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
+                                decision.setMxContactLoan(checkResult);
                                 break;
-                            }
-                        case "contact_loan":
-                            decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
-                            decision.setMxContactLoan(checkResult);
-                            break;
-                        case "regular_circle":
-                            decision.setMxRegularCircle(checkResult);
-                            break;
-                        case "phone_used_time":
-                            decision.setMxPhoneUsedTime(checkResult);
-                            break;
-                        case "phone_power_off":
-                            decision.setMxPhonePowerOff(checkResult);
-                            break;
-                        case "contact_each_other":
-                            decision.setMxContactEachOther(checkResult);
-                            break;
-                        case "contact_macao":
-                            decision.setMxContactMacao(checkResult);
-                            break;
-                        case "contact_110":
-                            decision.setMxContact110(checkResult);
-                            break;
-                        case "contact_120":
-                            decision.setMxContact120(checkResult);
-                            break;
-                        case "contact_lawyer":
-                            decision.setMxContactLawyer(checkResult);
-                            break;
-                        case "contact_court":
-                            decision.setMxContactCourt(checkResult);
-                            break;
-                        case "contact_bank":
-                            decision.setMxContactBank(checkResult);
-                            break;
-                        case "contact_credit_card":
-                            decision.setMxContactCreditCard(checkResult);
-                            break;
-                        case "contact_collection":
-                            decision.setMxContactCollection(checkResult);
-                            break;
-                        case "contact_night":
-                            decision.setMxContactNight(checkResult);
-                            break;
-                        case "phone_call":
-                            decision.setMxPhoneCall(checkResult);
-                            break;
-                        default:
-                            break;
+                            case "regular_circle":
+                                decision.setMxRegularCircle(checkResult);
+                                break;
+                            case "phone_used_time":
+                                decision.setMxPhoneUsedTime(checkResult);
+                                break;
+                            case "phone_power_off":
+                                decision.setMxPhonePowerOff(checkResult);
+                                break;
+                            case "contact_each_other":
+                                decision.setMxContactEachOther(checkResult);
+                                break;
+                            case "contact_macao":
+                                decision.setMxContactMacao(checkResult);
+                                break;
+                            case "contact_110":
+                                decision.setMxContact110(checkResult);
+                                break;
+                            case "contact_120":
+                                decision.setMxContact120(checkResult);
+                                break;
+                            case "contact_lawyer":
+                                decision.setMxContactLawyer(checkResult);
+                                break;
+                            case "contact_court":
+                                decision.setMxContactCourt(checkResult);
+                                break;
+                            case "contact_bank":
+                                decision.setMxContactBank(checkResult);
+                                break;
+                            case "contact_credit_card":
+                                decision.setMxContactCreditCard(checkResult);
+                                break;
+                            case "contact_collection":
+                                decision.setMxContactCollection(checkResult);
+                                break;
+                            case "contact_night":
+                                decision.setMxContactNight(checkResult);
+                                break;
+                            case "phone_call":
+                                decision.setMxPhoneCall(checkResult);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
                 //朋友圈信息
