@@ -917,3 +917,6 @@ INSERT INTO `arc_sys_config` VALUES (null, 20, '富友支付选择', 'fuiou_paym
 
 -- 修改字段长度
 alter table cl_operator_basic change city `city` varchar(100) DEFAULT  '' COMMENT '城市';
+
+-- 修改紧急联系人姓名字段编码格式
+alter table `cl_user_emer_contacts`  change name name varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '联系人';
