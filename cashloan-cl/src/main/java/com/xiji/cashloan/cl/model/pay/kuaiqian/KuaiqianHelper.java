@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.kuaiqian;
 
+import com.alibaba.fastjson.JSON;
 import com.bill99.asap.exception.CryptoException;
 import com.bill99.asap.service.ICryptoService;
 import com.bill99.asap.service.impl.CryptoServiceFactory;
@@ -23,6 +24,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import tool.util.BeanUtil;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.ServletInputStream;
@@ -66,7 +68,7 @@ public class KuaiqianHelper extends BasePay {
             msg = this.invokeCSSCollection(requestXml,KuaiqianUtil.getPayforPayUrl());
             pay2bankOrderReturn = this.unsealMsg(msg);
         } catch (Exception e) {
-            logger.error("payment is error, e ==>"+e.getMessage());
+            logger.error("payment is error, e ==>"+e);
         }
         logger.info("--------------------------快钱放款支付核心逻辑结束-------------------------");
         return pay2bankOrderReturn;
@@ -229,8 +231,11 @@ public class KuaiqianHelper extends BasePay {
             rtnString = PKIUtil.byte2UTF8String(sealedData.getOriginalData());
         }
         logger.info("快钱代付解密后返回报文 ==> "+rtnString);
-        pay2bankOrderReturn = XmlBeanUtils.convertXml2Bean(rtnString, Pay2bankOrderReturn.class);
+        Pay2bankOrder pay2bankOrder = KuaiqianUtil.converyToJavaBean(rtnString, Pay2bankOrder.class);
 
+        logger.info("payment unsealMsg pay2bankOrder ==> "  + JSON.toJSONString(pay2bankOrder));
+        BeanUtil.copyProperties(pay2bankOrder,pay2bankOrderReturn);
+        logger.info("payment unsealMsg pay2bankOrderReturn ==> "  + JSON.toJSONString(pay2bankOrderReturn));
         this.modifyReqLog(pay2bankOrderReturn.getOrderId(),rtnString);
         return pay2bankOrderReturn;
     }

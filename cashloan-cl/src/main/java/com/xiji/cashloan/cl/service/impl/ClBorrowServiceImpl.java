@@ -1417,6 +1417,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				vo.setBorrowOrderNo(borrow.getOrderNo());
 				vo.setMobile(bankCard.getPhone());
 				vo.setShareKey(bankCard.getUserId());
+				vo.setBankName(bankCard.getBank());
 				PaymentResponseVo result = PayCommonUtil.payment(vo);
 				PayLog payLog = new PayLog();
 				payLog.setOrderNo(result.getOrderNo());

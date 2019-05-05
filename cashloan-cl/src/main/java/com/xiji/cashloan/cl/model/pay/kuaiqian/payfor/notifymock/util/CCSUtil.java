@@ -1,9 +1,10 @@
 package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util;
 
+
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyHead;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyResponse;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyResponseBody;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.SealDataType;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.SealDataType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;

@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock;
 
+import com.alibaba.fastjson.JSON;
 import com.bill99.asap.exception.CryptoException;
 import com.bill99.asap.service.ICryptoService;
 import com.bill99.asap.service.impl.CryptoServiceFactory;
@@ -9,8 +10,10 @@ import com.bill99.schema.asap.data.UnsealedData;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.util.CCSUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.util.PKIUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankRequest;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankResponse;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianUtil;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
@@ -71,9 +74,15 @@ public class Pay2bankTestForSt3 {
         if (null != decryptedData) {
             String rtnString = PKIUtil.byte2UTF8String(decryptedData);
             System.out.println("解密后返回报文 = " + rtnString);
+            Pay2bankOrderReturn pay2bankOrder = KuaiqianUtil.converyToJavaBean(rtnString,Pay2bankOrderReturn.class);
+
+            System.out.println("pay2bankOrder ==> "+ JSON.toJSONString(pay2bankOrder));
         } else {
             String  rtnString = PKIUtil.byte2UTF8String(sealedData.getOriginalData());
             System.out.println("解密后返回报文 = " + rtnString);
+            Pay2bankOrder pay2bankOrder = KuaiqianUtil.converyToJavaBean(rtnString,Pay2bankOrder.class);
+
+            System.out.println("pay2bankOrder"+ JSON.toJSONString(pay2bankOrder));
         }
 
     }

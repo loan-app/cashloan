@@ -11,6 +11,7 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderRe
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchDetail;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequestParam;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianUtil;
+import com.xiji.cashloan.core.common.context.Global;
 
 
 /**
@@ -27,12 +28,15 @@ public class KuaiqianPayBiz implements PayCommon {
         Pay2bankOrder order = new Pay2bankOrder();
         order.setOrderId(KuaiqianUtil.getOrderId());
         // 无小数点，单位分
-        order.setAmount(vo.getAmount() *100 +"");
+        order.setAmount((int)(vo.getAmount() *100) +"");
         order.setRemark(vo.getRemark());
         order.setBankAcctId(vo.getBankCardNo());
         order.setMobile(vo.getMobile());
-        order.setBankName(vo.getBankCardName());
-        order.setCreditName(vo.getCreditName());
+        order.setBankName(vo.getBankName());
+        order.setCreditName(vo.getBankCardName());
+        if ("dev".equals(Global.getValue("app_environment"))) {
+            order.setRemark("模拟交易成功");
+        }
         PaymentResponseVo responseVo = new PaymentResponseVo();
         Pay2bankOrderReturn pay2bankOrderReturn = kuaiqianHelper.payment(order);
         if (KuaiqianConstant.RESPONSE_SUCCESS_CODE.equals(pay2bankOrderReturn.getErrorCode())){
@@ -46,6 +50,7 @@ public class KuaiqianPayBiz implements PayCommon {
             responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
         }
         responseVo.setMessage(pay2bankOrderReturn.getErrorMsg());
+        responseVo.setOrderNo(order.getOrderId());
         return responseVo;
     }
 
