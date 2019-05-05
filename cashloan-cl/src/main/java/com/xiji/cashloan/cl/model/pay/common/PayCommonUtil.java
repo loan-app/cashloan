@@ -2,6 +2,7 @@ package com.xiji.cashloan.cl.model.pay.common;
 
 import com.xiji.cashloan.cl.model.pay.common.biz.FuiouPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.biz.HeliPayBiz;
+import com.xiji.cashloan.cl.model.pay.common.biz.KuaiqianPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayModelEnum;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
@@ -38,6 +39,7 @@ public class PayCommonUtil{
     static {
         payMode.put(PayConstant.PAY_MODE_FUIOU, new FuiouPayBiz());
         payMode.put(PayConstant.PAY_MODE_HELIPAY, new HeliPayBiz());
+        payMode.put(PayConstant.PAY_MODE_KUAIQIAN, new KuaiqianPayBiz());
     }
 
     public static PaymentResponseVo payment(PaymentReqVo vo) {

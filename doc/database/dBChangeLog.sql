@@ -916,3 +916,12 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '运营商公司选择', 'opera
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝H5接入地址', 'gxb_h5_url', 'https://prod.gxb.io/v2/auth', '1', '公信宝H5接入地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝拉取全部运营商报告数据url', 'gxb_pull_all_report_url', 'https://prod.gxb.io/crawler/data/report/', '1', '公信宝拉取全部运营商报告数据url', '1');
 ALTER table cl_operator_req_log add req_token varchar(64) DEFAULT '' COMMENT '授权token';
+
+-- 块钱协议支付相关配置
+INSERT INTO `arc_sys_config` VALUES (null, 80, '商户号', 'kuaiqian_protocol_merchantId', '104110045112012', 1, '商户号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '终端号', 'kuaiqian_protocol_terminalId', '00002012', 1, '终端号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码测试地址', 'kq_Captcha_test_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth', '1', '块钱发送短信验证码测试地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码生产地址', 'kq_Captcha_production_url', 'https://mas.99bill.com/cnp/ind_auth', '1', '块钱发送短信验证码生产地址', '1');
+ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
+
+
