@@ -146,7 +146,7 @@ public class KuaiqianHelper extends BasePay {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
             sealedData = service.seal(mpf, orderXml.getBytes());
         } catch (CryptoException e) {
-            System.out.println(e);
+            logger.error(" query 加签、加密异常 ==> "+e);
         }
         Pay2bankSearchRequest request = KuaiqianUtil.genRequest(KuaiqianUtil.getMemberCode(), VERSION);
         byte[] nullbyte = {};

@@ -64,8 +64,6 @@ public class PayFuiouController extends BaseController{
 	private PayLogService payLogService;
 	@Resource
     private ContractService contractService;
-	@Resource
-	private KuaiqianHelper kuaiqianHelper;
 
 	@Autowired
 	private PaymentNotifyAssist paymentNotifyAssist;
@@ -225,6 +223,7 @@ public class PayFuiouController extends BaseController{
 	@RequestMapping(value = "/api/pay/kuaiqian/payforNotify.htm")
 	public void payforNotify(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
 
+		KuaiqianHelper kuaiqianHelper = new KuaiqianHelper();
 		long start = System.currentTimeMillis();
 		logger.info("---------------------快钱实时付款 - 异步通知开始----------------------" );
 		//获取客户端请求报文
@@ -232,12 +231,14 @@ public class PayFuiouController extends BaseController{
 		NotifyRequest request = CCSUtil.converyToJavaBean(requestXml, NotifyRequest.class);
 		String requestStr = kuaiqianHelper.unsealxml(request);//解密请求报文
 		if (requestStr == null){
+			logger.error("快钱异步请求参数异常  ==>"+requestXml);
 			return;
 		}
 		//调用单笔快到银api2.0服务
 		String responseXml = kuaiqianHelper.sealxml(request.getNotifyRequestBody().getSealDataType().getOriginalData());
 
 		if (responseXml == null){
+			logger.error("快钱异步通知响应参数异常  ==>"+request.getNotifyRequestBody().getSealDataType());
 			return;
 		}
 		Pay2bankNotify pay2bankNotify = KuaiqianUtil.converyToJavaBean(requestXml, Pay2bankNotify.class);
@@ -278,7 +279,6 @@ public class PayFuiouController extends BaseController{
 		}else {
 			logger.error("没有合适的场景，异步通知处理失败" + pay2bankNotify.getMerchant_id());
 		}
-
 
 		//返回响应报文
 		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
