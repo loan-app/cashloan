@@ -2,9 +2,11 @@ package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.api.controller.assist.RepaymentNotifyAssist;
+import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.domain.PayRespLog;
+import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.PayRespLogModel;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
@@ -36,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 连连分期付(代扣)异步通知
@@ -63,6 +66,8 @@ public class ChargeController extends BaseController {
 	@Autowired
 	private RepaymentNotifyAssist repaymentNotifyAssist;
 
+    @Autowired
+	private BankCardManage bankCardManage;
 	/**
 	 * 补扣 - 异步通知处理
 	 * @param request
@@ -247,11 +252,12 @@ public class ChargeController extends BaseController {
 				}
 				RepaymentNotifyDto dto = new RepaymentNotifyDto();
 				dto.setMessage(notifyResp.getResponseTextMessage());
+                String cardNo = this.getCardNo(payLog.getUserId(),notifyResp.getStorableCardNo());
 
 				//当应答码responseCode的值为00时，交易成功 ,txnType :PUR是消费
 				if("00".equals(notifyResp.getResponseCode())){
 					dto.setStatus(PayConstant.RESULT_SUCCESS);
-					dto.setCardNo(notifyResp.getStorableCardNo());
+					dto.setCardNo(cardNo);
 				}
 
 				String message = "";
@@ -371,4 +377,35 @@ public class ChargeController extends BaseController {
 		agreementNotifyResp.setSignature((String)respXml.get("signature"));
 		return agreementNotifyResp;
 	}
+
+    /**
+     *
+     * @param userId
+     * @param storableCardNo
+     * @return
+     */
+	private String getCardNo(Long userId,String storableCardNo){
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",userId);
+        BankCard bankCard = bankCardManage.findByUserId(params);
+
+        if (bankCard == null || StringUtil.isBlank(bankCard.getCardNo())){
+            return storableCardNo;
+        }
+
+        if (bankCard.getCardNo().length() > 10){
+            String startCardNo = bankCard.getCardNo().trim().substring(0,6);
+            String endCardNo = bankCard.getCardNo().trim().substring(bankCard.getCardNo().length()-4);
+
+            String startStorable = storableCardNo.trim().substring(0,6);
+            String endStorable = startStorable.trim().substring(startStorable.length()-4);
+
+            if (startCardNo.equals(startStorable) && endCardNo.equals(endStorable)){
+                return bankCard.getCardNo();
+            }
+        }
+        return storableCardNo;
+    }
+
 }
