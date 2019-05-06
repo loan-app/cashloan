@@ -899,3 +899,8 @@ INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_ap
 
 -- 修改到期提醒短信模板
 update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
+
+-- 添加用户管理列表 未借款用户信息
+INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
+
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');

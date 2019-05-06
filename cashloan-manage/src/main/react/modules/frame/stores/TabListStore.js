@@ -71,6 +71,7 @@ export default Reflux.createStore({
 					'DeductionsList',
 					'StayDeductionsList',
 					'UserBasicInformation',
+					'UserNotBorrowAgain',
 					'UserAuthenticationList',
 					'UserFeedback',
 					'UserEducationList',

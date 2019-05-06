@@ -152,12 +152,14 @@ public class CloanUserModel {
 	/**
 	 * create_time
 	 */
-	private String createTime;
+	private Date createTime;
 
 	/**
 	 * update_time
 	 */
-	private String updateTime;
+	private Date updateTime;
+
+	private String orderNO;
 
 	/**
 	 * 获取主键Id
@@ -605,7 +607,7 @@ public class CloanUserModel {
 	 * 获取create_time
 	 * @return createTime
 	 */
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
@@ -613,7 +615,7 @@ public class CloanUserModel {
 	 * 设置create_time
 	 * @param createTime
 	 */
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
@@ -621,7 +623,7 @@ public class CloanUserModel {
 	 * 获取update_time
 	 * @return updateTime
 	 */
-	public String getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
@@ -629,7 +631,7 @@ public class CloanUserModel {
 	 * 设置update_time
 	 * @param updateTime
 	 */
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 
@@ -647,4 +649,11 @@ public class CloanUserModel {
 		this.channelId = channelId;
 	}
 
+	public String getOrderNO() {
+		return orderNO;
+	}
+
+	public void setOrderNO(String orderNO) {
+		this.orderNO = orderNO;
+	}
 }

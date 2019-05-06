@@ -35,8 +35,9 @@
         <result column="education" property="education" jdbcType="VARCHAR" />
         <result column="working_years" property="workingYears" jdbcType="VARCHAR" />
         <result column="salary" property="salary" jdbcType="VARCHAR" />
-        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
-        <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="order_no" property="orderNO" jdbcType="VARCHAR" />
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
@@ -226,7 +227,27 @@
        	<include refid="searchBaseBy"/>
        	order by u.id desc
     </select>
-    
+
+    <select id="listNotBorrowAgain" resultMap="BaseInfoModelMap" parameterType="java.util.HashMap">
+        select u.id,a.real_name,a.phone,a.id_no,b.create_time,b.order_no
+        from cl_user u
+        left join cl_user_base_info a
+        on u.id = a.user_id
+        left join cl_borrow b
+        on b.user_id=a.user_id
+        inner join (select id from (select id,user_id,state,create_time from cl_borrow x where create_time = (select max(create_time) from cl_borrow y where x.user_id=y.user_id)) as a where state = '40' or state ='41') as i
+        on i.id = b.id
+        inner join (select user_id from (select user_id,state,create_time from cl_borrow x where create_time = (select max(create_time) from cl_borrow y where x.user_id=y.user_id)) as a where state = '40' or state ='41') as j
+        on j.user_id = a.user_id
+        <if test="realName !='' and realName !=null">
+            and a.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="phone !='' and phone !=null">
+            and a.phone like concat("%",#{phone,jdbcType=VARCHAR},"%")
+        </if>
+        order by u.id
+    </select>
+
     <select id="getModel" resultMap="BaseInfoModelMap" parameterType="java.lang.Long">
         select
         <include refid="Base_User_Column_List" />

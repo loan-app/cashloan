@@ -29,7 +29,17 @@ public interface CloanUserService extends BaseService<User, Long> {
 	 */
 	Page<CloanUserModel> listUser(Map<String, Object> params, int currentPage,
 			int pageSize);
-	
+
+	/**
+	 * 查询未借用户信息列表
+	 * @param params
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	Page<CloanUserModel> listUserNotBorrowagain(Map<String, Object> params, int currentPage,
+								  int pageSize);
+
 	/**
 	 * 查询用户详细信息
 	 * @param id
