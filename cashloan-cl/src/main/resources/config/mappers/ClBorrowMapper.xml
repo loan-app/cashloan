@@ -705,7 +705,7 @@
         on b.id = r.borrow_id where b.user_id = #{userId ,jdbcType=BIGINT};
     </select>
 
-    <select id="getModelData" resultType="java.util.HashMap" >
+    <select id="getModelData" resultType="java.util.Map" >
         select
         IFNULL(b.id,-99999) id,IFNULL(u.phone,-99999) phone,IFNULL(u.id_no,-99999) id_no,
         IFNULL(u.live_addr,-99999) live_addr,IFNULL(ec.phone,-99999) as emer_phone,IFNULL(u.company_name,-99999) company_name,
@@ -838,5 +838,13 @@
         left join `cl_decision` d on b.id = d.borrow_id
         left join `cl_borrow_repay` br  on  b.id=br.borrow_id
         where b.id =  #{borrowId ,jdbcType=BIGINT};;
+    </select>
+
+    <select id="findLastButOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow
+        where user_id = #{userId,jdbcType=BIGINT} and id != #{borrowId,jdbcType=BIGINT}
+        ORDER BY id DESC LIMIT 1
     </select>
 </mapper>

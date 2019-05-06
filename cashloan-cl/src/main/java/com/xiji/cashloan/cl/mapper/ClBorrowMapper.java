@@ -266,4 +266,9 @@ public interface ClBorrowMapper extends BaseMapper<Borrow,Long> {
 	 * @return
      */
 	Map<String,Object> getModelData(Long borrowId);
+
+	/**
+	 * 获取用户上笔借款订单id
+	 */
+	Borrow findLastButOne(@Param("userId") Long userId, @Param("borrowId") Long borrowId);
 }

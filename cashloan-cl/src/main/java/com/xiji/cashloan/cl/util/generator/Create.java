@@ -26,11 +26,11 @@ public class Create {
 		
 		// 数据库及数据表名称
 		String database = "cashloan_master1.0.4";
-		String table = "cl_borrow_model_score";
+		String table = "cl_zm_model";
 		
 		// 配置作者及Domain说明
 		String classAuthor = "szb";
-		String functionName = "借款订单模型评分";
+		String functionName = "指迷模型分";
  
 		// 公共包路径 (例如 BaseDao、 BaseService、 BaseServiceImpl)
 		String commonName ="com.xiji.cashloan.core.common";
@@ -43,7 +43,7 @@ public class Create {
 		String db="mysql";
 		
 		//类名前缀
-		String classNamePrefix = "borrowModelScore";
+		String classNamePrefix = "zmModel";
 
 		try {
 			MybatisGenerate.generateCode(db,url, MysqlUser, mysqlPassword, database, table,commonName,packageName,batisName,moduleName,classAuthor,functionName,classNamePrefix);

@@ -33,6 +33,8 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_XINYAN_XWLD = 12;
     //有盾用户画像
     public static int CALLS_TYPE_YOUDUN_RISK = 13;
+    //指迷模型分
+    public static int CALLS_TYPE_ZHIMI_MODEL = 14;
 
     //充值类型
     public static int CALLS_TYPE_TopUp = 13;
@@ -64,6 +66,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_XINYAN_XWLD = -1;
     //有盾用户画像费用
     public static double FEE_YOUDUN_RISK = -0.2;
+    //指迷模型分费用
+    public static double FEE_ZHIMI_MODEL = -1.5;
 
     /**
      * 消费

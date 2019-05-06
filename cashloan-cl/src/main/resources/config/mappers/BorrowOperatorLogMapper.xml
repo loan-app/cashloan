@@ -93,5 +93,12 @@
         from cl_borrow_operator_log
         <include refid="searchBy"/>
     </select>
-    
+
+    <select id="findByBorrowId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_operator_log
+        where borrow_id = #{borrowId,jdbcType=BIGINT} limit 1
+    </select>
+
 </mapper>

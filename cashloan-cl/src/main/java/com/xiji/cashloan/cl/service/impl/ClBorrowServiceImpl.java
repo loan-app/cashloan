@@ -187,6 +187,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private OperatorReportMapper operatorReportMapper;
 	@Resource
 	private BorrowModelScoreMapper borrowModelScoreMapper;
+	@Resource
+	private ZmRiskService zmRiskService;
+	@Resource
+	private ZmModelMapper zmModelMapper;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -2011,6 +2015,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		Borrow borrow = getById(borrowId);
 		//计算借款订单对应决策数据的值
 		decisionService.saveBorrowDecision(borrow);
+
 		Float modelScore = getModelScore(borrowId);
 		if(modelScore == 0.0f) {
 			return;
@@ -2019,35 +2024,40 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		BorrowModelScore borrowModelScore = new BorrowModelScore(borrowId, modelScore);
 		borrowModelScoreMapper.save(borrowModelScore);
 
-		Map<String, Object> modelData = clBorrowMapper.getModelData(borrowId);
-
-		//如果是复借用户,直接机审通过
-		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
-		if (finishCount > 0) {
-			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
-			handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "复借用户机审直接通过");
-			return;
-		}
-
-		float defaultScore = 0.528719f;
-		String defaultModelScore = Global.getValue("model_score");
-		logger.info("系统配置模型分值为:" + defaultModelScore);
-		if(StringUtil.isNotBlank(defaultModelScore)) {
-			defaultScore = Float.valueOf(defaultModelScore);
-		}
-		if(modelScore > defaultScore) {
-			logger.info("借款订单" + borrowId + "模型分大于临界值,机审拒绝");
-			handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "模型分大于临界值,机审拒绝");
-			return;
-		}
 		Map<String,Object> paramMap = new HashMap<String, Object>();
+
+		//如果是复借用户,判断最后一笔订单是否逾期超过N天,超过N天拒绝,不超过放款
+		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
+		int defaultPenaltyDay = 5;
+		String againPenaltyDay = Global.getValue("again_penalty_day");
+		if(StringUtil.isNotBlank(againPenaltyDay)) {
+			defaultPenaltyDay = Integer.valueOf(againPenaltyDay);
+		}
+		if (finishCount > 0) {
+			Borrow lastBorrow = clBorrowMapper.findLastButOne(borrow.getUserId(), borrowId);
+			paramMap.put("borrowId", lastBorrow.getId());
+			BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(paramMap);
+			if(borrowRepay == null) {
+				throw new BussinessException("复借客户无任何还款计划");
+			}
+			if(Integer.valueOf(borrowRepay.getPenaltyDay()) > defaultPenaltyDay ) {
+				logger.info("复借客户最后一笔订单逾期天数大于" + defaultPenaltyDay + "天,机审拒绝");
+				handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "复借用户最后一笔订单逾期天数大于" + defaultPenaltyDay  + "天,机审拒绝");
+			} else {
+				handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "复借用户机审通过");
+			}
+			return;
+		}
+
+		//先过策略
+		paramMap.clear();
 		paramMap.put("state", 10);
 		List<RuleEngine> ruleEngieList = ruleEngineMapper.listSelective(paramMap);
 		//没有找到规则配置，则借款不进行任何处理
 		if(ruleEngieList == null || ruleEngieList.isEmpty()) {
 			return;
 		}
-		
+
 		boolean review = false;
 		paramMap.clear();
 		paramMap.put("adaptedId", "10");
@@ -2139,13 +2149,32 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			
 			// 直到规则执行到最后一项，如果没有命中人工复审或者审核不通过  ，则借款申请为审核通过
 			if (i == (configCollection.size() - 1)) {
-				//对借款申请进行审核处理
-				if(review){
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"");
-				}else{
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"");
+				//再过自己的模型
+				float defaultScore = 0.528719f;
+				String defaultModelScore = Global.getValue("model_score");
+				logger.info("系统配置模型分值为:" + defaultModelScore);
+				if(StringUtil.isNotBlank(defaultModelScore)) {
+					defaultScore = Float.valueOf(defaultModelScore);
 				}
-				
+				if(modelScore > defaultScore) {
+					logger.info("借款订单" + borrowId + "模型分大于临界值,机审拒绝");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "模型分大于临界值,机审拒绝");
+					return;
+				}
+
+				//对于无法决策以及机审决策通过的订单,查询指迷
+				double zmScore = zmRiskService.getScore(borrow, finishCount > 0 ? true : false);
+				if (zmScore < 0) {
+					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分失败,待人工复审");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
+				} else if (zmScore >= 560d) {
+					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分大于放款阈值,机审通过");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"机审通过");
+				} else {
+					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值,机审拒绝");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
+				}
+
 			}
 		}	
 	}
