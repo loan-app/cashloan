@@ -2034,16 +2034,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			defaultPenaltyDay = Integer.valueOf(againPenaltyDay);
 		}
 		if (finishCount > 0) {
-			Borrow lastBorrow = clBorrowMapper.findLastButOne(borrow.getUserId(), borrowId);
-			paramMap.put("borrowId", lastBorrow.getId());
-			BorrowRepay borrowRepay = borrowRepayMapper.findByBorrowIdState(paramMap);
+			BorrowRepay borrowRepay = borrowRepayMapper.findLastRepay(borrow.getUserId());
 			if(borrowRepay == null) {
 				throw new BussinessException("复借客户无任何还款计划");
 			}
 			if(Integer.valueOf(borrowRepay.getPenaltyDay()) > defaultPenaltyDay ) {
-				logger.info("复借客户最后一笔订单逾期天数大于" + defaultPenaltyDay + "天,机审拒绝");
-				handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "复借用户最后一笔订单逾期天数大于" + defaultPenaltyDay  + "天,机审拒绝");
+				logger.info("复借客户最后一笔还款订单逾期天数大于" + defaultPenaltyDay + "天,机审拒绝");
+				handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "复借用户最后一笔还款订单逾期天数大于" + defaultPenaltyDay  + "天,机审拒绝");
 			} else {
+				logger.info("复借客户,机审通过");
 				handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "复借用户机审通过");
 			}
 			return;

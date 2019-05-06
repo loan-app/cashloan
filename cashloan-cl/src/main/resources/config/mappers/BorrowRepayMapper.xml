@@ -386,4 +386,15 @@
             #{item,jdbcType=BIGINT}
         </foreach>
     </update>
+
+
+    <select id="findLastRepay" resultType="com.xiji.cashloan.cl.domain.BorrowRepay">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_repay where 1=1
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        and (state = 10 or state = 20) order by borrow_id desc limit 1
+    </select>
 </mapper>
