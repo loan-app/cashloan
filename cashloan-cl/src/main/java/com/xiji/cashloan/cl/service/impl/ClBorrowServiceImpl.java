@@ -2163,10 +2163,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 				//对于无法决策以及机审决策通过的订单,查询指迷
 				double zmScore = zmRiskService.getScore(borrow, finishCount > 0 ? true : false);
+				double defaultZmPassScore = 560d;
+				String zmModelPassScore = Global.getValue("zm_model_pass_score");
+				if(StringUtil.isNotBlank(zmModelPassScore)) {
+					defaultZmPassScore = Double.valueOf(zmModelPassScore);
+				}
 				if (zmScore < 0) {
 					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分失败,待人工复审");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
-				} else if (zmScore >= 560d) {
+				} else if (zmScore >= defaultZmPassScore) {
 					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分大于放款阈值,机审通过");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"机审通过");
 				} else {

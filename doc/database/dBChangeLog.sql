@@ -967,3 +967,4 @@ CREATE TABLE `cl_zm_model` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='指迷模型分';
 
 INSERT INTO `arc_sys_config` VALUES (null, 20, '复借客户拒绝逾期天数阈值', 'again_penalty_day', '5', 1, '复借客户拒绝逾期天数阈值,上笔订单逾期天数大于该值,直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分通过阈值', 'zm_model_pass_score', '560', 1, '模型分通过阈值,大于该值,机审通过', 1);
