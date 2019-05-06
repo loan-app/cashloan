@@ -35,7 +35,7 @@ public class KuaiqianPayBiz implements PayCommon {
         order.setBankName(vo.getBankName());
         order.setCreditName(vo.getBankCardName());
         if ("dev".equals(Global.getValue("app_environment"))) {
-            order.setRemark("模拟交易成功");
+            order.setRemark("模拟交易失败");
         }
         PaymentResponseVo responseVo = new PaymentResponseVo();
         Pay2bankOrderReturn pay2bankOrderReturn = kuaiqianHelper.payment(order);

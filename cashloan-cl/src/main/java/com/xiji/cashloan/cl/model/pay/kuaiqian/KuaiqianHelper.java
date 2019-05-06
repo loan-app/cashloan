@@ -314,7 +314,7 @@ public class KuaiqianHelper extends BasePay {
 
 
     /**
-     *
+     * 加密加签 请求报文
      * @param ori
      * @return
      */
@@ -325,7 +325,7 @@ public class KuaiqianHelper extends BasePay {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
             sealedData = service.seal(mpf, ori.getBytes());
         } catch (CryptoException e) {
-            logger.error("响应解密验签失败 e ==> "+e);
+            logger.error("响应加签加密验签失败 e ==> "+e);
             return null;
         }
         NotifyResponse response = KuaiqianUtil.genResponse(KuaiqianUtil.getMemberCode() , VERSION);
@@ -349,7 +349,7 @@ public class KuaiqianHelper extends BasePay {
     }
 
     /**
-     *
+     * 解密请求报文
      * @param request
      */
     public String unsealxml(NotifyRequest request){

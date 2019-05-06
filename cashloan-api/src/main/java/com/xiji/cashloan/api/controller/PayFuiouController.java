@@ -241,7 +241,7 @@ public class PayFuiouController extends BaseController{
 			logger.error("快钱异步通知响应参数异常  ==>"+request.getNotifyRequestBody().getSealDataType());
 			return;
 		}
-		Pay2bankNotify pay2bankNotify = KuaiqianUtil.converyToJavaBean(requestXml, Pay2bankNotify.class);
+		Pay2bankNotify pay2bankNotify = KuaiqianUtil.converyToJavaBean(requestStr, Pay2bankNotify.class);
 
 		PayReqLog payReqLog = payReqLogService.findByOrderNo(pay2bankNotify.getMerchant_id());
 		String params = JSON.toJSONString(pay2bankNotify);
