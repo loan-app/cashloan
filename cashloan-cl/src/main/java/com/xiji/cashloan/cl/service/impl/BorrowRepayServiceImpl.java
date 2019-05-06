@@ -1218,7 +1218,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         if ("dev".equals(Global.getValue("app_environment"))) {
             vo.setAmount(2.0);//以分为单位;
         } else {
-            vo.setAmount(sourceAmount*100);
+            vo.setAmount(sourceAmount);
         }
 
         if (StringUtil.isNotEmpty(ip)) {
@@ -1261,7 +1261,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
         beanReq.setIdCardNo(baseInfo.getIdNo());
         beanReq.setIdCardType(FuiouConstant.BIBIVERIFY_IDCARDTYPE);//身份证0
         reqParameterMap.put("mchntCd",mchntcd);
-        reqParameterMap.put("amt",vo.getAmount().intValue()+"");
+        reqParameterMap.put("amt",AmtUtil.convertAmtToBranch(vo.getAmount()) + "");
         reqParameterMap.put("orderId",orderNo);
         String key = Global.getValue("fuiou_protocol_mchntcd_key");//商户密钥
         String privatekey = Global.getValue("fuiou_protocol_privatekey");//商户RSA私钥
