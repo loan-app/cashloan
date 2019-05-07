@@ -17,15 +17,70 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciQueryRes
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.QueryTxnResp;
 
 
+/**
+ * @auther : wnb
+ * @date : 2019/4/30
+ * @describe : 快钱支付实现类
+ */
 public class KuaiqianPayBiz implements PayCommon {
+
     @Override
     public PaymentResponseVo payment(PaymentReqVo vo) {
-        return null;
+
+        KuaiqianPayHelper kuaiqianPayHelper = new KuaiqianPayHelper();
+        Pay2bankOrder order = new Pay2bankOrder();
+        order.setOrderId(KuaiqianPayUtil.getOrderId());
+        // 无小数点，单位分
+        order.setAmount((int)(vo.getAmount() *100) +"");
+        order.setRemark(vo.getRemark());
+        order.setBankAcctId(vo.getBankCardNo());
+        order.setMobile(vo.getMobile());
+        order.setBankName(vo.getBankName());
+        order.setCreditName(vo.getBankCardName());
+        if ("dev".equals(Global.getValue("app_environment"))) {
+            order.setRemark("模拟交易失败");
+        }
+        PaymentResponseVo responseVo = new PaymentResponseVo();
+        Pay2bankOrderReturn pay2bankOrderReturn = kuaiqianPayHelper.payment(order);
+        if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pay2bankOrderReturn.getErrorCode())){
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
+        }else if(KuaiqianPayConstant.RESPONSE_CHECK_FAIL.equals(pay2bankOrderReturn.getErrorCode())){
+            responseVo.setStatus(PayConstant.STATUS_NEED_CHECK);
+            responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
+        }else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+            responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
+        }
+        responseVo.setMessage(pay2bankOrderReturn.getErrorMsg());
+        responseVo.setOrderNo(order.getOrderId());
+        return responseVo;
     }
 
     @Override
     public PaymentQueryResponseVo queryPayment(PaymentQueryVo vo) {
-        return null;
+        Pay2bankSearchRequestParam order = new Pay2bankSearchRequestParam();
+        order.setTargetPage(KuaiqianPayConstant.QUERY_TARGETPAGE);
+        //每页条数  必填  1-20  正整数
+        order.setPageSize(KuaiqianPayConstant.QUERY_PGAE_SIZE);
+        //商家订单号
+        order.setOrderId(vo.getOrderNo());
+        //开始时间 必填
+        order.setStartDate(KuaiqianPayUtil.getDate(7)); //2017-11-19 08:12:12
+        //结束时间 必填  结束-开始<=7天
+        order.setEndDate(KuaiqianPayUtil.getDate(1)); //2017-11-21 23:59:59
+
+        KuaiqianPayHelper kuaiqianPayHelper = new KuaiqianPayHelper();
+        Pay2bankSearchDetail result = kuaiqianPayHelper.queryPayment(order);
+        PaymentQueryResponseVo responseVo = new PaymentQueryResponseVo();
+        if (result != null) {
+            if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(result.getErrorCode())) {
+                responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            }else {
+                responseVo.setStatus(PayConstant.STATUS_PAYQUERY_NO_REQ);
+            }
+        }
+        return responseVo;
     }
 
     @Override

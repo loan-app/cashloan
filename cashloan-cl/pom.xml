@@ -97,6 +97,87 @@
 			<artifactId>bcmail-jdk15</artifactId>
 			<version>1.46</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>fo-jibx-commons</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>fo-jibx-pay2acct</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>fo-jibx-pay2bank</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-crypto-client</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-crypto-metadata</artifactId>
+			<version>4.3.20</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.kuaiqian</groupId>-->
+			<!--<artifactId>if-crypto-sdk</artifactId>-->
+			<!--<version>1.0.0</version>-->
+		<!--</dependency>-->
+
+		<!--<dependency>-->
+		   <!--<groupId>com.kuaiqian</groupId>-->
+		   <!--<artifactId>if-crypto-sdk</artifactId>-->
+		   <!--<version>3.3.2</version>-->
+	  <!--</dependency>-->
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-crypto-sdk</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-framework</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-jibx-schema-asap</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-jibx-schema-commons</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>if-util</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>jibx-run</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
+		<!--<dependency>-->
+			<!--<groupId>com.kuaiqian</groupId>-->
+			<!--<artifactId>commons-lang</artifactId>-->
+			<!--<version>1.0.0</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.kuaiqian</groupId>
 			<artifactId>jdom</artifactId>

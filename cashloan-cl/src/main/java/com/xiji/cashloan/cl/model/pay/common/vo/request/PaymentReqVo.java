@@ -7,12 +7,20 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
  */
 public class PaymentReqVo  extends PayReq {
     private String bankCardNo;
+    /**
+     * 用户名称（银行卡拥有者姓名）
+     */
     private String bankCardName;
     private Double amount;
     private String mobile;
     private String borrowOrderNo;
     private String remark;
     private Long borrowId;
+
+    /**
+     * 银行名称
+     */
+    private String bankName;
 
     public String getBankCardNo() {
         return bankCardNo;
@@ -68,5 +76,13 @@ public class PaymentReqVo  extends PayReq {
 
     public void setBorrowId(Long borrowId) {
         this.borrowId = borrowId;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }
