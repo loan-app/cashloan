@@ -5,9 +5,16 @@ import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.KuaiqianpayHelper;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.BindXmlBeanReq;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.PciDelReq;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.PciQueryReq;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.QueryTxnReq;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.BindXmlBeanResp;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciDelResp;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciQueryResp;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.QueryTxnResp;
 
 
 public class KuaiqianPayBiz implements PayCommon {
@@ -49,7 +56,22 @@ public class KuaiqianPayBiz implements PayCommon {
 
     @Override
     public UnbindCardResponseVo unbind(UnbindCardVo vo) {
-        return null;
+        UnbindCardResponseVo responseVo = new UnbindCardResponseVo();
+        PciDelReq pciDelReq = new PciDelReq();
+        pciDelReq.setCustomerId(vo.getUserId());
+        pciDelReq.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
+        pciDelReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
+        pciDelReq.setPayToken(vo.getProtocolNo());
+        KuaiqianpayHelper kuaiqianpayHelper = new KuaiqianpayHelper();
+        PciDelResp pciDelResp = kuaiqianpayHelper.unbind(pciDelReq);
+        if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pciDelResp.getResponseCode())){
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setMessage(pciDelResp.getErrorMessage());
+        } else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+            responseVo.setMessage(pciDelResp.getErrorMessage());
+        }
+        return responseVo;
     }
 
     @Override
@@ -74,11 +96,42 @@ public class KuaiqianPayBiz implements PayCommon {
 
     @Override
     public BindCardQueryResponseVo bindCardQuery(BindCardQueryVo vo) {
-        return null;
+
+        PciQueryReq queryReq = new PciQueryReq();
+        queryReq.setCustomerId(vo.getUserId());
+        queryReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
+        queryReq.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
+        queryReq.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
+        queryReq.setBindType("0");
+        KuaiqianpayHelper kuaiqianpayHelper = new KuaiqianpayHelper();
+        PciQueryResp pciQueryResp = kuaiqianpayHelper.bindQuery(queryReq);
+        BindCardQueryResponseVo responseVo = new BindCardQueryResponseVo();
+        if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pciQueryResp.getResponseCode())){
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setProtocolNo(pciQueryResp.getPayToken());
+            responseVo.setMessage(pciQueryResp.getErrorMessage());
+        }else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+            responseVo.setMessage(pciQueryResp.getErrorMessage());
+        }
+        return responseVo;
     }
 
     @Override
     public CardBinQueryResponseVo queryCardBin(CardBinQueryVo vo) {
-        return null;
+        QueryTxnReq queryTxnReq = new QueryTxnReq();
+        queryTxnReq.setCardNo(vo.getBankCardNo());
+        queryTxnReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
+        queryTxnReq.setTxnType(KuaiqianPayConstant.TXN_TYPE);
+        KuaiqianpayHelper kuaiqianpayHelper = new KuaiqianpayHelper();
+        QueryTxnResp queryTxnResp = kuaiqianpayHelper.cardBinQuery(queryTxnReq);
+        CardBinQueryResponseVo responseVo = new CardBinQueryResponseVo();
+        if ("1".equals(queryTxnResp.getValidFlag())){
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setBank(queryTxnResp.getIssuer());
+        }else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+        }
+        return responseVo;
     }
 }

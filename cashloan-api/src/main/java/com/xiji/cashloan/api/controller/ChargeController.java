@@ -379,7 +379,7 @@ public class ChargeController extends BaseController {
 	}
 
     /**
-     *
+     * 获取银行卡号
      * @param userId
      * @param storableCardNo
      * @return

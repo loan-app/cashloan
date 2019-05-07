@@ -1,34 +1,26 @@
 package com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-
-
-import java.io.InputStream;
-
-import java.io.OutputStream;
-
-import java.net.URL;
-
-import java.util.HashMap;
-
-import java.security.KeyStore;
-
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-
 
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.TransInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-public class Post
-{
+import javax.net.ssl.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.security.KeyStore;
+import java.util.HashMap;
+
+public class Post {
+
+	public static final Logger logger = LoggerFactory.getLogger(Post.class);
+
 	/**
 	* 向指定URL发送POST方法的请求
 	* @param url 发送请求的URL
@@ -48,9 +40,9 @@ public class Post
 		OutputStream out = null;
 		HashMap respXml = null;
 		Resource fileRource = new ClassPathResource("10411004511201290.jks");
-//		String jksFile = Post.class.getResource("10411004511201290.jks").toURI().getPath();
-//		//获取证书路径
-//		File certFile = new File(jksFile);  //测试证书，生产环境需要替换
+		//String jksFile = Post.class.getResource("10411004511201290.jks").toURI().getPath();
+		//获取证书路径
+		//File certFile = new File(jksFile);  //测试证书，生产环境需要替换
 	    //访问Java密钥库，JKS是keytool创建的Java密钥库，保存密钥。
 		KeyStore ks = KeyStore.getInstance("JKS");
 		ks.load(fileRource.getInputStream(), "vpos123".toCharArray());
@@ -85,7 +77,7 @@ public class Post
 		    conn.setReadTimeout(100000);
 		    
 		    //设置通用的请求属性  812451145110002 104110045112012
-		    String authString = "104110045112012" + ":" + "vpos123";//测试帐号，生产环境需要替换生产商户编号812451145110002
+		    String authString = KuaiqianPayUtil.getAgreementAuth() + ":" + "vpos123";//测试帐号，生产环境需要替换生产商户编号812451145110002
 			String auth = "Basic " + Base64Binrary.encodeBase64Binrary(authString.getBytes());
 		    conn.setRequestProperty("Authorization", auth);
 		    
@@ -115,17 +107,14 @@ public class Post
 		    System.out.println("tr2报文："+reqData);
 			respXml= parseUtil.parseXML(reqData,transInfo);//给解析XML的函数传递快钱返回的TR2的XML数据流
 		    
-	    }
-	    catch(Exception e)
-	    {
-		    System.out.println("发送POST请求出现异常！" + e);
-		    e.printStackTrace();
+	    } catch(Exception e) {
+			logger.error("快钱发送POST请求出现异常！"+e);
 	    }
 	    //使用finally块来关闭输出流、输入流
-	    finally
-	    {
-	    	if (out != null){out.close();}
-			
+	    finally {
+	    	if (out != null){
+	    		out.close();
+	    	}
 	    }
 	    return respXml;
 	}
