@@ -4,7 +4,7 @@ import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
 
 @XObject(value = "REQUEST")
-public class BindXmlBeanReq {
+public class AgreementSendValidateCodeReqVo {
 
     @XNode("VERSION")
     private String version;//版本号
@@ -128,29 +128,4 @@ public class BindXmlBeanReq {
         this.phoneNO = phoneNO;
     }
 
-    public String sendMsgSignStr() {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(version);
-        sb.append("|");
-        sb.append(merchantId);
-        sb.append("|");
-        sb.append(terminalId);
-        sb.append("|");
-        sb.append(customerId);
-        sb.append("|");
-        sb.append(externalRefNumber);
-        sb.append("|");
-        sb.append(Pan);
-        sb.append("|");
-        sb.append(cardHolderName);
-        sb.append("|");
-        sb.append(idType);
-        sb.append("|");
-        sb.append(cardHolderId);
-        sb.append("|");
-        sb.append(phoneNO);
-
-        return sb.toString();
-    }
 }

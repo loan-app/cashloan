@@ -12,7 +12,7 @@ public class KuaiqianPayConstant {
     /**
      * 表明交易申请成功
      */
-    public static final String RESPONSE_SUCCESS_CODE = "0000";
+    public static final String PAYFOR_RESPONSE_SUCCESS_CODE = "0000";
     /**
      * 验签解密失败
      */
@@ -35,4 +35,23 @@ public class KuaiqianPayConstant {
      * 字符编码
      */
     private static String ENCODEING = "UTF-8";
+
+    /**
+     * 交易成功
+     */
+    public static final String RESPONSE_SUCCESS_CODE = "00";
+
+    /** 协议支付-常量- 版本号 */
+    public static final String PROTOCOL_VERSION = "1.0";
+    /** 协议支付-常量- 交易类型 */
+    public static final String PROTOCOL_TXNTYPE = "PUR";//PUR:消费交易
+    /** 协议支付-常量- 消息交互状态 */
+    public static final String PROTOCOL_INTERACTIVESTATUS = "TR1";
+    /** 协议支付-常量- 特殊交易 标志 QPay02=协议支付 */
+    public static final String PROTOCOL_SPFLAG = "QPay02";
+    /** 协议支付-接口标记 - 发送验证码 */
+    public static final String PROTOCOL_BINDMSG = "bindMsg.pay";
+    /** 协议支付-接口标记 - 绑卡 */
+    public static final String PROTOCOL_BINDCOMMIT = "bindCommit.pay";
+
 }

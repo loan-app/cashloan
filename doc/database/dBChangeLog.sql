@@ -923,6 +923,14 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, '终端号', 'kuaiqian_protocol_t
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码测试地址', 'kq_Captcha_test_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth', '1', '块钱发送短信验证码测试地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码生产地址', 'kq_Captcha_production_url', 'https://mas.99bill.com/cnp/ind_auth', '1', '块钱发送短信验证码生产地址', '1');
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送绑卡测试地址', 'kq_bindCard_test_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth_verify', '1', '块钱发送绑卡测试地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送绑卡生产地址', 'kq_bindCard_production_url', 'https://mas.99bill.com/cnp/ind_auth_verify', '1', '块钱发送绑卡生产地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱协议支付接口测试地址', 'kq_protocol_pay_test_url', 'https://sandbox.99bill.com:9445/cnp/purchase', '1', '块钱协议支付接口测试地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱协议支付接口生产地址', 'kq_protocol_pay_production_url', 'https://mas.99bill.com/cnp/purchase', '1', '块钱协议支付接口生产地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱查询交易状态接口测试地址', 'kq_query_status_test_url', 'https://sandbox.99bill.com:9445/cnp/query_txn', '1', '块钱查询交易状态接口测试地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱查询交易状态接口生产地址', 'kq_query_status_production_url', 'https://mas.99bill.com/cnp/query_txn', '1', '块钱查询交易状态接口生产地址', '1');
+
+
 
 
 

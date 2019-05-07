@@ -1,8 +1,7 @@
 package com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response;
 
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.ProtocolResp;
-import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.constant.KuaiqianPayConstant;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
 import org.nuxeo.common.xmap.annotation.XNode;
 import org.nuxeo.common.xmap.annotation.XObject;
 import tool.util.StringUtil;
@@ -13,7 +12,7 @@ import tool.util.StringUtil;
  * @version 1.0.0
  */
 @XObject(value = "RESPONSE")
-public class BindXmlBeanResp extends ProtocolResp{
+public class AgreementSendValidateCodeRespVo extends ProtocolResp{
 	@XNode("VERSION")
 	private String version;		//版本号(1.0)
 	@XNode("ERRORCODE")
@@ -128,8 +127,25 @@ public class BindXmlBeanResp extends ProtocolResp{
 		this.responseTextMessage = responseTextMessage;
 	}
 
+	@Override
+	public String toString() {
+		return "AgreementSendValidateCodeRespVo{" +
+				"version='" + version + '\'' +
+				", errorCode='" + errorCode + '\'' +
+				", errorMessage='" + errorMessage + '\'' +
+				", merchantId='" + merchantId + '\'' +
+				", terminalId='" + terminalId + '\'' +
+				", customerId='" + customerId + '\'' +
+				", externalRefNumber='" + externalRefNumber + '\'' +
+				", storablePan='" + storablePan + '\'' +
+				", token='" + token + '\'' +
+				", responseCode='" + responseCode + '\'' +
+				", responseTextMessage='" + responseTextMessage + '\'' +
+				'}';
+	}
+
 	public boolean checkReturn() {
-		return StringUtil.equals(responseCode, KuaiqianPayConstant.RESPONSE_SUCCESS_CODE);
+		return StringUtil.equals(responseCode, KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE);
 	}
 
 }

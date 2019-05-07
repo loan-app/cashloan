@@ -1,11 +1,31 @@
 package com.xiji.cashloan.cl.model.pay.common.biz;
 
+
 import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.KuaiqianpayHelper;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util.KuaiqianPayUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.AgreementSendValidateCodeReqVo;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.BindCardReqVo;
+
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.QueryStatusReqVO;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.AgreementSendValidateCodeRespVo;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.BindCardRespVo;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.QueryStatusRespVO;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchDetail;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequestParam;
+import com.xiji.cashloan.cl.service.BankCardService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
+import com.xiji.cashloan.core.common.context.Global;
+
+
+
+import javax.annotation.Resource;
 
 
 /**
@@ -14,6 +34,13 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util.KuaiqianPayUtil;
  * @describe : 快钱支付实现类
  */
 public class KuaiqianPayBiz implements PayCommon {
+
+    @Resource
+    private ClBorrowService borrowService;
+
+    @Resource
+    private BankCardService bankCardService;
+
 
     @Override
     public PaymentResponseVo payment(PaymentReqVo vo) {
@@ -33,7 +60,7 @@ public class KuaiqianPayBiz implements PayCommon {
         }
         PaymentResponseVo responseVo = new PaymentResponseVo();
         Pay2bankOrderReturn pay2bankOrderReturn = kuaiqianPayHelper.payment(order);
-        if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pay2bankOrderReturn.getErrorCode())){
+        if (KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(pay2bankOrderReturn.getErrorCode())){
             responseVo.setStatus(PayConstant.RESULT_SUCCESS);
             responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
         }else if(KuaiqianPayConstant.RESPONSE_CHECK_FAIL.equals(pay2bankOrderReturn.getErrorCode())){
@@ -65,7 +92,7 @@ public class KuaiqianPayBiz implements PayCommon {
         Pay2bankSearchDetail result = kuaiqianPayHelper.queryPayment(order);
         PaymentQueryResponseVo responseVo = new PaymentQueryResponseVo();
         if (result != null) {
-            if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(result.getErrorCode())) {
+            if (KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(result.getErrorCode())) {
                 responseVo.setStatus(PayConstant.RESULT_SUCCESS);
             }else {
                 responseVo.setStatus(PayConstant.STATUS_PAYQUERY_NO_REQ);
@@ -76,7 +103,7 @@ public class KuaiqianPayBiz implements PayCommon {
 
     @Override
     public BindCardMsgResponseVo bindMsg(BindCardMsgVo vo) {
-        BindXmlBeanReq beanReq = new BindXmlBeanReq();
+        AgreementSendValidateCodeReqVo beanReq = new AgreementSendValidateCodeReqVo();
         beanReq.setCustomerId(vo.getUserId());
         beanReq.setExternalRefNumber(KuaiqianPayUtil.getOrderId());
         beanReq.setPan(vo.getBankCardNo());
@@ -85,8 +112,8 @@ public class KuaiqianPayBiz implements PayCommon {
         beanReq.setIdType("0");
         beanReq.setPhoneNO(vo.getMobile());
 
-        KuaiqianpayHelper payHelper = new KuaiqianpayHelper();
-        BindXmlBeanResp result = payHelper.bindMsg(beanReq);//调块钱接口发送验证码，同时验证四要素，卡号，证件类型，身份证，手机号，
+        KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
+        AgreementSendValidateCodeRespVo result = payHelper.bindMsg(beanReq);//调块钱接口发送验证码，同时验证四要素，卡号，证件类型，身份证，手机号，
         BindCardMsgResponseVo responseVo = new BindCardMsgResponseVo();
         if (result.checkReturn()) {
             responseVo.setStatus(PayConstant.RESULT_SUCCESS);
@@ -108,11 +135,27 @@ public class KuaiqianPayBiz implements PayCommon {
     @Override
     public BindCardMsgResponseVo bindCommit(BindCardMsgVo vo) {
         BindCardMsgResponseVo responseVo = new BindCardMsgResponseVo();
-        BindXmlBeanReq beanReq = new BindXmlBeanReq();
+        BindCardReqVo reqVo = new BindCardReqVo();
 
-        beanReq.setCustomerId(vo.getUserId());
-        beanReq.setExternalRefNumber(KuaiqianPayUtil.getOrderId());
-        return null;
+        reqVo.setCustomerId(vo.getUserId());
+        reqVo.setExternalRefNumber(vo.getOrderNo());
+        reqVo.setPan(vo.getBankCardNo());
+        reqVo.setPhoneNO(vo.getMobile());
+        reqVo.setValidCode(vo.getMsgCode());
+        reqVo.setToken(vo.getToken());
+        KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
+
+        BindCardRespVo result=payHelper.bindCommit(reqVo);//绑卡
+
+        if (result.checkReturn()) {
+            responseVo.setStatus(PayConstant.RESULT_SUCCESS);
+            responseVo.setProtocolNo(result.getPayToken());
+            responseVo.setMessage(result.getResponseTextMessage());
+        }else {
+            responseVo.setStatus(PayConstant.STATUS_FAIL);
+            responseVo.setMessage(result.getResponseTextMessage());
+        }
+        return responseVo;
     }
 
     @Override
@@ -122,7 +165,30 @@ public class KuaiqianPayBiz implements PayCommon {
 
     @Override
     public RepaymentQueryResponseVo queryOrder(RepaymentQueryVo vo) {
-        return null;
+        QueryStatusReqVO reqVO = new QueryStatusReqVO();
+        RepaymentQueryResponseVo responseVo = new RepaymentQueryResponseVo();
+        reqVO.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
+
+        KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
+        QueryStatusRespVO result=payHelper.queryOrder(reqVO);//订单查询
+
+        responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
+        if ("00".equals(result.getResponseCode())){
+
+        }
+
+
+        if (result.checkReturn()) {
+            responseVo.setCode(result.getResponseCode());
+            responseVo.setMsg(result.getResponseTextMessage());
+        }else {
+            responseVo.setCode(result.getResponseCode());
+            responseVo.setMsg(result.getResponseTextMessage());
+        }
+
+        responseVo.setOrderNo(reqVO.getExternalRefNumber());
+
+        return responseVo;
     }
 
     @Override
