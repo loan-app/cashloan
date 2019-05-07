@@ -4,26 +4,18 @@ import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.KuaiqianPayHelper;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.constant.KuaiqianPayConstant;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util.KuaiqianPayUtil;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.BindXmlBeanReq;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.PciDelReq;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.PciQueryReq;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.QueryTxnReq;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.BindXmlBeanResp;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciDelResp;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciQueryResp;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.QueryTxnResp;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.*;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.*;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchDetail;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequestParam;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Global;
-
-
 
 import javax.annotation.Resource;
 
@@ -234,7 +226,7 @@ public class KuaiqianPayBiz implements PayCommon {
         QueryTxnReq queryTxnReq = new QueryTxnReq();
         queryTxnReq.setCardNo(vo.getBankCardNo());
         queryTxnReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
-        queryTxnReq.setTxnType(KuaiqianPayConstant.TXN_TYPE);
+        queryTxnReq.setTxnType(KuaiqianPayConstant.PROTOCOL_TXNTYPE);
         KuaiqianPayHelper kuaiqianpayHelper = new KuaiqianPayHelper();
         QueryTxnResp queryTxnResp = kuaiqianpayHelper.cardBinQuery(queryTxnReq);
         CardBinQueryResponseVo responseVo = new CardBinQueryResponseVo();
