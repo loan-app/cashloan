@@ -66,7 +66,7 @@ public class OperatorVoiceServiceImpl extends BaseServiceImpl<OperatorVoice, Lon
 			userContactsMapper.createTable(userContacts);
 		}
 		Map<String,Object> map = new HashMap<>();
-		params.put("userId", userId);
+		map.put("userId", userId);
 		List<UserContacts> userContactsList = userContactsMapper.listShardSelective(userContacts, map);
 
 		if (CollectionUtil.isNotEmpty(list) && CollectionUtil.isNotEmpty(userContactsList)){
