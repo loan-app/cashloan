@@ -21,10 +21,6 @@ import com.xiji.cashloan.manage.domain.QuartzInfo;
 import com.xiji.cashloan.manage.domain.QuartzLog;
 import com.xiji.cashloan.manage.service.QuartzInfoService;
 import com.xiji.cashloan.manage.service.QuartzLogService;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -33,6 +29,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import tool.util.BeanUtil;
 import tool.util.DateUtil;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 自动奖励发放
@@ -96,6 +97,7 @@ public class QuartzProfit implements Job {
 					vo.setBorrowOrderNo(profitAmount.getId()+"");
 					vo.setMobile(bankCard.getPhone());
 					vo.setShareKey(bankCard.getUserId());
+					vo.setBankName(bankCard.getBank());
 					PaymentResponseVo result = PayCommonUtil.payment(vo);
 
 					PayLog payLog = new PayLog();

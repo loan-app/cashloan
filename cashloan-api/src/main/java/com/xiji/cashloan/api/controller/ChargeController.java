@@ -18,9 +18,6 @@ import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tool.util.DateUtil;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 连连分期付(代扣)异步通知
@@ -179,6 +180,9 @@ public class ChargeController extends BaseController {
 			writeResult(response, "success");
 		}
 	}
+
+
+
 
 
 	private void modifyPayReqLog (PayReqLog payReqLog,String params){

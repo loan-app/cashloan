@@ -1,4 +1,6 @@
-package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.vo;
+package com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo;
+
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.SealDataType;
 
 import javax.xml.bind.annotation.*;
 
@@ -9,8 +11,8 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)  
 @XmlRootElement  
-@XmlType(name = "requestBody", propOrder = {"sealDataType"})  
-public class RequestBody {
+@XmlType(name = "searchRequestBody", propOrder = {"sealDataType"})  
+public class SearchRequestBody {
 
 	
 	@XmlElement(name = "sealDataType")  

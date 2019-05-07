@@ -925,3 +925,5 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码生
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
 
 
+
+
