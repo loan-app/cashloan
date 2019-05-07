@@ -22,6 +22,9 @@ public class KuaiqianPayConstant {
 
     /** 协议支付-接口标记 - 商户支持卡 Bin 查询接口 */
     public static final String PROTOCOL_CARDBINQUERY = "cardBinQuery.pay";
+    /**
+     * 交易类型 编码 消费常量
+     */
     public static final String TXN_TYPE = "PUR";
 
 

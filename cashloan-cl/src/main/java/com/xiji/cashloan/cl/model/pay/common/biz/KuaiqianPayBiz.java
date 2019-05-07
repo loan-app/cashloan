@@ -4,7 +4,7 @@ import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.KuaiqianpayHelper;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.KuaiqianPayHelper;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.BindXmlBeanReq;
@@ -39,7 +39,7 @@ public class KuaiqianPayBiz implements PayCommon {
         beanReq.setIdType("0");
         beanReq.setPhoneNO(vo.getMobile());
 
-        KuaiqianpayHelper payHelper = new KuaiqianpayHelper();
+        KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
         BindXmlBeanResp result = payHelper.bindMsg(beanReq);//调块钱接口发送验证码，同时验证四要素，卡号，证件类型，身份证，手机号，
         BindCardMsgResponseVo responseVo = new BindCardMsgResponseVo();
         if (result.checkReturn()) {
@@ -62,7 +62,7 @@ public class KuaiqianPayBiz implements PayCommon {
         pciDelReq.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
         pciDelReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
         pciDelReq.setPayToken(vo.getProtocolNo());
-        KuaiqianpayHelper kuaiqianpayHelper = new KuaiqianpayHelper();
+        KuaiqianPayHelper kuaiqianpayHelper = new KuaiqianPayHelper();
         PciDelResp pciDelResp = kuaiqianpayHelper.unbind(pciDelReq);
         if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pciDelResp.getResponseCode())){
             responseVo.setStatus(PayConstant.RESULT_SUCCESS);
@@ -103,7 +103,7 @@ public class KuaiqianPayBiz implements PayCommon {
         queryReq.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
         queryReq.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
         queryReq.setBindType("0");
-        KuaiqianpayHelper kuaiqianpayHelper = new KuaiqianpayHelper();
+        KuaiqianPayHelper kuaiqianpayHelper = new KuaiqianPayHelper();
         PciQueryResp pciQueryResp = kuaiqianpayHelper.bindQuery(queryReq);
         BindCardQueryResponseVo responseVo = new BindCardQueryResponseVo();
         if (KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pciQueryResp.getResponseCode())){
@@ -123,7 +123,7 @@ public class KuaiqianPayBiz implements PayCommon {
         queryTxnReq.setCardNo(vo.getBankCardNo());
         queryTxnReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
         queryTxnReq.setTxnType(KuaiqianPayConstant.TXN_TYPE);
-        KuaiqianpayHelper kuaiqianpayHelper = new KuaiqianpayHelper();
+        KuaiqianPayHelper kuaiqianpayHelper = new KuaiqianPayHelper();
         QueryTxnResp queryTxnResp = kuaiqianpayHelper.cardBinQuery(queryTxnReq);
         CardBinQueryResponseVo responseVo = new CardBinQueryResponseVo();
         if ("1".equals(queryTxnResp.getValidFlag())){

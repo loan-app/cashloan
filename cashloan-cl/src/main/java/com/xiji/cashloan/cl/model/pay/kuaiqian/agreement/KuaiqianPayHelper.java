@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class KuaiqianpayHelper extends BasePay {
+public class KuaiqianPayHelper extends BasePay {
 
-    public static final Logger logger = LoggerFactory.getLogger(KuaiqianpayHelper.class);
+    public static final Logger logger = LoggerFactory.getLogger(KuaiqianPayHelper.class);
 
     /**
      * 获取验证码
