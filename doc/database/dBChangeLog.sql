@@ -920,3 +920,7 @@ alter table cl_operator_basic change city `city` varchar(100) DEFAULT  '' COMMEN
 
 -- 修改紧急联系人姓名字段编码格式
 alter table `cl_user_emer_contacts`  change name name varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '联系人';
+
+-- 修改表字段长度
+ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `fee` decimal(9,2)  NOT NULL COMMENT '收取费用' AFTER `type`;
+ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别' AFTER `task_id`;
