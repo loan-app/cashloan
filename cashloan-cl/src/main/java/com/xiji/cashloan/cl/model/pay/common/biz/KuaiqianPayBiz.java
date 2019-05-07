@@ -15,6 +15,11 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.BindXmlBean
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciDelResp;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PciQueryResp;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.QueryTxnResp;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchDetail;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequestParam;
+import com.xiji.cashloan.core.common.context.Global;
 
 
 /**
