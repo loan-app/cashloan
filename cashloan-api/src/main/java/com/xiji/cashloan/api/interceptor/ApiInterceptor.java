@@ -121,6 +121,10 @@ public class ApiInterceptor implements HandlerInterceptor {
 		// 登录后的请求地址都带有/act/
 		boolean flag;
 		if (uri.contains("/act/")) {
+			//兼容IOS未登录也调用了该接口
+			if(uri.contains("/api/act/app/list/addAppList.htm")) {
+				return true;
+			}
 			if (StringUtil.isEmpty(token) || StringUtil.isEmpty(signMsg)) {
 				rec.put("code", 400);
 				rec.put("msg", "没有token或signMsg");
