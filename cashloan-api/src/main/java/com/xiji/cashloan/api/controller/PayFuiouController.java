@@ -15,12 +15,12 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianHelper;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianConstant;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyRequest;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.Pay2bankNotify;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.CCSUtil;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
@@ -223,25 +223,25 @@ public class PayFuiouController extends BaseController{
 	@RequestMapping(value = "/api/pay/kuaiqian/payforNotify.htm")
 	public void payforNotify(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
 
-		KuaiqianHelper kuaiqianHelper = new KuaiqianHelper();
+		KuaiqianPayHelper kuaiqianPayHelper = new KuaiqianPayHelper();
 		long start = System.currentTimeMillis();
 		logger.info("---------------------快钱实时付款 - 异步通知开始----------------------" );
 		//获取客户端请求报文
-		String requestXml = kuaiqianHelper.genRequestXml(httpRequest);
+		String requestXml = kuaiqianPayHelper.genRequestXml(httpRequest);
 		NotifyRequest request = CCSUtil.converyToJavaBean(requestXml, NotifyRequest.class);
-		String requestStr = kuaiqianHelper.unsealxml(request);//解密请求报文
+		String requestStr = kuaiqianPayHelper.unsealxml(request);//解密请求报文
 		if (requestStr == null){
 			logger.error("快钱异步请求参数异常  ==>"+requestXml);
 			return;
 		}
 		//调用单笔快到银api2.0服务
-		String responseXml = kuaiqianHelper.sealxml(request.getNotifyRequestBody().getSealDataType().getOriginalData());
+		String responseXml = kuaiqianPayHelper.sealxml(request.getNotifyRequestBody().getSealDataType().getOriginalData());
 
 		if (responseXml == null){
 			logger.error("快钱异步通知响应参数异常  ==>"+request.getNotifyRequestBody().getSealDataType());
 			return;
 		}
-		Pay2bankNotify pay2bankNotify = KuaiqianUtil.converyToJavaBean(requestStr, Pay2bankNotify.class);
+		Pay2bankNotify pay2bankNotify = KuaiqianPayUtil.converyToJavaBean(requestStr, Pay2bankNotify.class);
 
 		PayReqLog payReqLog = payReqLogService.findByOrderNo(pay2bankNotify.getMerchant_id());
 		String params = JSON.toJSONString(pay2bankNotify);
@@ -263,7 +263,7 @@ public class PayFuiouController extends BaseController{
 
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
 		dto.setPayPlatNo(pay2bankNotify.getOrder_seq_id());
-		if ("111".equals(pay2bankNotify.getStatus()) && KuaiqianConstant.RESPONSE_SUCCESS_CODE.equals(pay2bankNotify.getError_code())) {
+		if ("111".equals(pay2bankNotify.getStatus()) && KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pay2bankNotify.getError_code())) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
 		}else {
 			dto.setStatus(PayConstant.STATUS_FAIL);

@@ -13,7 +13,7 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankRequest;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankResponse;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
@@ -74,13 +74,13 @@ public class Pay2bankTestForSt3 {
         if (null != decryptedData) {
             String rtnString = PKIUtil.byte2UTF8String(decryptedData);
             System.out.println("解密后返回报文 = " + rtnString);
-            Pay2bankOrderReturn pay2bankOrder = KuaiqianUtil.converyToJavaBean(rtnString,Pay2bankOrderReturn.class);
+            Pay2bankOrderReturn pay2bankOrder = KuaiqianPayUtil.converyToJavaBean(rtnString,Pay2bankOrderReturn.class);
 
             System.out.println("pay2bankOrder ==> "+ JSON.toJSONString(pay2bankOrder));
         } else {
             String  rtnString = PKIUtil.byte2UTF8String(sealedData.getOriginalData());
             System.out.println("解密后返回报文 = " + rtnString);
-            Pay2bankOrder pay2bankOrder = KuaiqianUtil.converyToJavaBean(rtnString,Pay2bankOrder.class);
+            Pay2bankOrder pay2bankOrder = KuaiqianPayUtil.converyToJavaBean(rtnString,Pay2bankOrder.class);
 
             System.out.println("pay2bankOrder"+ JSON.toJSONString(pay2bankOrder));
         }

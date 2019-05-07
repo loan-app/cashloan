@@ -8,17 +8,17 @@ import com.bill99.schema.asap.commons.Mpf;
 import com.bill99.schema.asap.data.SealedData;
 import com.bill99.schema.asap.data.UnsealedData;
 import com.xiji.cashloan.cl.model.pay.BasePay;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianConstant;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyRequest;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyResponse;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.util.CCSUtil;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.util.PKIUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankRequest;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankResponse;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.*;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.PKIUtil;
 import com.xiji.cashloan.cl.util.fuiou.XmlBeanUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -39,7 +39,7 @@ import java.io.InputStreamReader;
  * @date : 2019/4/30
  * @describe :
  */
-public class KuaiqianHelper extends BasePay {
+public class KuaiqianPayHelper extends BasePay {
 
     //接口版本
     private static String VERSION = "1.0";
@@ -50,7 +50,7 @@ public class KuaiqianHelper extends BasePay {
     //策略编码，固定值 F41
     private static String fetureCode = "F41";
 
-    private Logger logger = Logger.getLogger(KuaiqianHelper.class);
+    private Logger logger = Logger.getLogger(KuaiqianPayHelper.class);
 
     /**
      * 放款支付
@@ -65,7 +65,7 @@ public class KuaiqianHelper extends BasePay {
         Pay2bankOrderReturn pay2bankOrderReturn = new Pay2bankOrderReturn();
         String msg = null;
         try {
-            msg = this.invokeCSSCollection(requestXml,KuaiqianUtil.getPayforPayUrl());
+            msg = this.invokeCSSCollection(requestXml, KuaiqianPayUtil.getPayforPayUrl());
             pay2bankOrderReturn = this.unsealMsg(msg);
         } catch (Exception e) {
             logger.error("payment is error, e ==>"+e);
@@ -85,7 +85,7 @@ public class KuaiqianHelper extends BasePay {
         String msg = null;
         Pay2bankSearchDetail pay2bankSearchDetail = null;
         try {
-            msg =  invokeCSSCollection(requestXml,KuaiqianUtil.getPayforQueryUrl());
+            msg =  invokeCSSCollection(requestXml, KuaiqianPayUtil.getPayforQueryUrl());
             pay2bankSearchDetail = this.unsealMsgQuery(msg);
         } catch (Exception e) {
             logger.error("queryPayment is error, e ==>"+e.getMessage());
@@ -101,9 +101,9 @@ public class KuaiqianHelper extends BasePay {
         logger.info("快钱放款支付请求明文报文 requestXml ==> "+orderXml);
 
         // 保存代付请求数据
-        saveReqLog(KuaiqianConstant.BTYPE_PAY_MOCK,order.getOrderId(),"",orderXml);
+        saveReqLog(KuaiqianPayConstant.BTYPE_PAY_MOCK,order.getOrderId(),"",orderXml);
         //加签、加密
-        Mpf mpf = genMpf(fetureCode , KuaiqianUtil.getMemberCode());
+        Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         SealedData sealedData = null;
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
@@ -111,7 +111,7 @@ public class KuaiqianHelper extends BasePay {
         } catch (CryptoException e) {
             logger.error("快钱放款支付加签、加密失败  e ==> "+e);
         }
-        Pay2bankRequest request = CCSUtil.genRequest(KuaiqianUtil.getMemberCode(), VERSION);
+        Pay2bankRequest request = CCSUtil.genRequest(KuaiqianPayUtil.getMemberCode(), VERSION);
         byte[] nullbyte = {};
         byte[] byteOri = sealedData.getOriginalData() == null ? nullbyte : sealedData.getOriginalData();
         byte[] byteEnc = sealedData.getEncryptedData() == null ? nullbyte : sealedData.getEncryptedData();
@@ -134,13 +134,13 @@ public class KuaiqianHelper extends BasePay {
 
     public  String genPKIMsgQuery(Pay2bankSearchRequestParam orderDto) {
         //构建一个订单对象  获取原始报文
-        String orderXml = KuaiqianUtil.convertToXml(orderDto, encoding);
+        String orderXml = KuaiqianPayUtil.convertToXml(orderDto, encoding);
         logger.info(" query 请求明文报文 ==> "+orderXml);
         // 保存代付请求数据
-        saveReqLog(KuaiqianConstant.BTYPE_QUERY_MOCK,orderDto.getOrderId(),"",orderXml);
+        saveReqLog(KuaiqianPayConstant.BTYPE_QUERY_MOCK,orderDto.getOrderId(),"",orderXml);
 
         //加签、加密
-        Mpf mpf = genMpf(fetureCode , KuaiqianUtil.getMemberCode());
+        Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         SealedData sealedData = null;
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
@@ -148,7 +148,7 @@ public class KuaiqianHelper extends BasePay {
         } catch (CryptoException e) {
             logger.error(" query 加签、加密异常 ==> "+e);
         }
-        Pay2bankSearchRequest request = KuaiqianUtil.genRequest(KuaiqianUtil.getMemberCode(), VERSION);
+        Pay2bankSearchRequest request = KuaiqianPayUtil.genRequest(KuaiqianPayUtil.getMemberCode(), VERSION);
         byte[] nullbyte = {};
         byte[] byteOri = sealedData.getOriginalData() == null ? nullbyte : sealedData.getOriginalData();
         byte[] byteEnc = sealedData.getEncryptedData() == null ? nullbyte : sealedData.getEncryptedData();
@@ -215,7 +215,7 @@ public class KuaiqianHelper extends BasePay {
         sealedData.setSignedData(response.getResponseBody().getSealDataType().getSignedData()==null?null:PKIUtil.utf8String2ByteWithBase64(response.getResponseBody().getSealDataType().getSignedData()));
         sealedData.setEncryptedData(response.getResponseBody().getSealDataType().getEncryptedData()==null?null:PKIUtil.utf8String2ByteWithBase64(response.getResponseBody().getSealDataType().getEncryptedData()));
         sealedData.setDigitalEnvelope(response.getResponseBody().getSealDataType().getDigitalEnvelope()==null?null:PKIUtil.utf8String2ByteWithBase64(response.getResponseBody().getSealDataType().getDigitalEnvelope()));
-        Mpf mpf = genMpf(fetureCode , KuaiqianUtil.getMemberCode());
+        Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         UnsealedData unsealedData = null;
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
@@ -231,7 +231,7 @@ public class KuaiqianHelper extends BasePay {
             rtnString = PKIUtil.byte2UTF8String(sealedData.getOriginalData());
         }
         logger.info("快钱代付解密后返回报文 ==> "+rtnString);
-        Pay2bankOrder pay2bankOrder = KuaiqianUtil.converyToJavaBean(rtnString, Pay2bankOrder.class);
+        Pay2bankOrder pay2bankOrder = KuaiqianPayUtil.converyToJavaBean(rtnString, Pay2bankOrder.class);
 
         logger.info("payment unsealMsg pay2bankOrder ==> "  + JSON.toJSONString(pay2bankOrder));
         BeanUtil.copyProperties(pay2bankOrder,pay2bankOrderReturn);
@@ -254,7 +254,7 @@ public class KuaiqianHelper extends BasePay {
         sealedData.setSignedData(response.getSearchResponseBody().getSealDataType().getSignedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getSignedData()));
         sealedData.setEncryptedData(response.getSearchResponseBody().getSealDataType().getEncryptedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getEncryptedData()));
         sealedData.setDigitalEnvelope(response.getSearchResponseBody().getSealDataType().getDigitalEnvelope()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getDigitalEnvelope()));
-        Mpf mpf = genMpf(fetureCode , KuaiqianUtil.getMemberCode());
+        Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         UnsealedData unsealedData = null;
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
@@ -319,7 +319,7 @@ public class KuaiqianHelper extends BasePay {
      * @return
      */
     public String sealxml(String ori){
-        Mpf mpf = genMpf(fetureCode ,KuaiqianUtil.getMemberCode());
+        Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         SealedData sealedData = null;
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
@@ -328,7 +328,7 @@ public class KuaiqianHelper extends BasePay {
             logger.error("响应加签加密验签失败 e ==> "+e);
             return null;
         }
-        NotifyResponse response = KuaiqianUtil.genResponse(KuaiqianUtil.getMemberCode() , VERSION);
+        NotifyResponse response = KuaiqianPayUtil.genResponse(KuaiqianPayUtil.getMemberCode() , VERSION);
         byte[] nullbyte = {};
         byte[] byteOri = sealedData.getOriginalData() == null ? nullbyte : sealedData.getOriginalData();
         byte[] byteEnc = sealedData.getEncryptedData() == null ? nullbyte : sealedData.getEncryptedData();
@@ -343,7 +343,7 @@ public class KuaiqianHelper extends BasePay {
         response.getNotifyResponseBody().getSealDataType().setDigitalEnvelope(PKIUtil.byte2UTF8StringWithBase64(byteEnv));
 
         //请求报文
-        String requestXml = KuaiqianUtil.convertToXml(response, "utf-8");
+        String requestXml = KuaiqianPayUtil.convertToXml(response, "utf-8");
         logger.info("notify 请求加密报文 ==> "+requestXml);
         return requestXml;
     }
@@ -358,7 +358,7 @@ public class KuaiqianHelper extends BasePay {
         sealedData.setSignedData(request.getNotifyRequestBody().getSealDataType().getSignedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getSignedData()));
         sealedData.setEncryptedData(request.getNotifyRequestBody().getSealDataType().getEncryptedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getEncryptedData()));
         sealedData.setDigitalEnvelope(request.getNotifyRequestBody().getSealDataType().getDigitalEnvelope()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getDigitalEnvelope()));
-        Mpf mpf = genMpf(fetureCode , KuaiqianUtil.getMemberCode());
+        Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         UnsealedData unsealedData = null;
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();

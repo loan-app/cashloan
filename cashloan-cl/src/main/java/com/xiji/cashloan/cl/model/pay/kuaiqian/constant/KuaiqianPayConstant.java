@@ -5,7 +5,7 @@ package com.xiji.cashloan.cl.model.pay.kuaiqian.constant;
  * @date : 2019/5/3
  * @describe : 快钱常量
  */
-public class KuaiqianConstant {
+public class KuaiqianPayConstant {
 
     /** 接口类型 - 代付 */
     public static final String BTYPE_PAY_MOCK = "PayMock";

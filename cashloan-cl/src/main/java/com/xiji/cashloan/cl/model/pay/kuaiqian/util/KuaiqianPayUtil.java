@@ -24,7 +24,7 @@ import java.util.Date;
  * @date : 2019/4/30
  * @describe :
  */
-public class KuaiqianUtil {
+public class KuaiqianPayUtil {
 
     public static String getOrderId() {
         return "xjkq" + OrderNoUtil.getSerialNumber();
