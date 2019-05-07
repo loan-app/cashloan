@@ -42,6 +42,17 @@ public class KuaiqianPayUtil {
         return Global.getValue("kuaiqian_payfor_query_url");
     }
 
+    public static String getMerchantId(){
+
+        return Global.getValue("kuaiqian_protocol_merchantId");
+
+    }
+    public static String getTerminalId(){
+
+        return Global.getValue("kuaiqian_protocol_terminalId");
+
+    }
+
     /**
      * 获取对应格式的 时间
      * @param i

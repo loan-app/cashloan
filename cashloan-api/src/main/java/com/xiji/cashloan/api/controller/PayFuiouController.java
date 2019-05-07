@@ -263,7 +263,7 @@ public class PayFuiouController extends BaseController{
 
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
 		dto.setPayPlatNo(pay2bankNotify.getOrder_seq_id());
-		if ("111".equals(pay2bankNotify.getStatus()) && KuaiqianPayConstant.RESPONSE_SUCCESS_CODE.equals(pay2bankNotify.getError_code())) {
+		if ("111".equals(pay2bankNotify.getStatus()) && KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(pay2bankNotify.getError_code())) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
 		}else {
 			dto.setStatus(PayConstant.STATUS_FAIL);

@@ -97,6 +97,11 @@
 			<artifactId>bcmail-jdk15</artifactId>
 			<version>1.46</version>
 		</dependency>
+		<dependency>
+			<groupId>com.kuaiqian</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.kuaiqian</groupId>
@@ -178,11 +183,6 @@
 			<!--<artifactId>commons-lang</artifactId>-->
 			<!--<version>1.0.0</version>-->
 		<!--</dependency>-->
-		<dependency>
-			<groupId>com.kuaiqian</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 	</dependencies>
 	
 	<build>

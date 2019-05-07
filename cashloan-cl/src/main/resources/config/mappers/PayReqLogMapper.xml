@@ -16,11 +16,12 @@
         <result column="result" property="result" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="ip" property="ip" jdbcType="VARCHAR" />
+        <result column="token" property="token" jdbcType="VARCHAR" />
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,service,order_no,params,req_detail_params,return_params,return_time,notify_params,notify_time,result,create_time,ip 
+        id,service,order_no,params,req_detail_params,return_params,return_time,notify_params,notify_time,result,create_time,ip,token
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -70,7 +71,7 @@
     
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.PayReqLog">
-        insert into cl_pay_req_log(service,order_no,params,req_detail_params,return_params,return_time,notify_params,notify_time,result,create_time,ip)values(#{service,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{params,jdbcType=VARCHAR},#{reqDetailParams,jdbcType=VARCHAR},#{returnParams,jdbcType=VARCHAR},#{returnTime,jdbcType=TIMESTAMP},#{notifyParams,jdbcType=VARCHAR},#{notifyTime,jdbcType=TIMESTAMP},#{result,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{ip,jdbcType=VARCHAR})
+        insert into cl_pay_req_log(service,order_no,params,req_detail_params,return_params,return_time,notify_params,notify_time,result,create_time,ip,token)values(#{service,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{params,jdbcType=VARCHAR},#{reqDetailParams,jdbcType=VARCHAR},#{returnParams,jdbcType=VARCHAR},#{returnTime,jdbcType=TIMESTAMP},#{notifyParams,jdbcType=VARCHAR},#{notifyTime,jdbcType=TIMESTAMP},#{result,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{ip,jdbcType=VARCHAR},#{token,jdbcType=VARCHAR})
     </insert>
 
     
