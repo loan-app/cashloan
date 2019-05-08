@@ -227,6 +227,6 @@ public class PayForRespVo {
     }
 
     public boolean checkReturn() {
-        return StringUtil.equals(responseCode, KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE);
+        return StringUtil.equals(responseCode, KuaiqianPayConstant.RESPONSE_SUCCESS_CODE);
     }
 }

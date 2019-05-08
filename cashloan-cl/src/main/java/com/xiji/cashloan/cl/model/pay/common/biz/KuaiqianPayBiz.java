@@ -1,7 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.common.biz;
 
 
-import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
@@ -15,13 +14,10 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderRe
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchDetail;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequestParam;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
+
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
-import com.xiji.cashloan.core.domain.Borrow;
 
-import javax.annotation.Resource;
 import java.util.Date;
 
 
@@ -32,11 +28,6 @@ import java.util.Date;
  */
 public class KuaiqianPayBiz implements PayCommon {
 
-    @Resource
-    private ClBorrowService borrowService;
-
-    @Resource
-    private BankCardService bankCardService;
 
 
     @Override
@@ -173,22 +164,19 @@ public class KuaiqianPayBiz implements PayCommon {
     @Override
     public RepaymentResponseVo repayment(RepaymentReqVo vo) {
         RepaymentResponseVo responseVo = new RepaymentResponseVo();
-
         PayForReqVo reqVo = new PayForReqVo();
-        Borrow borrow = borrowService.findByPrimary(vo.getBorrowId());
-        BankCard bankCard = bankCardService.getBankCardByUserId(borrow.getUserId());
-
         reqVo.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
         reqVo.setTxnType(KuaiqianPayConstant.PROTOCOL_TXNTYPE);
         reqVo.setInteractiveStatus(KuaiqianPayConstant.PROTOCOL_INTERACTIVESTATUS);
         reqVo.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
         reqVo.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
-        reqVo.setCustomerId(borrow.getUserId().toString());
+
+        reqVo.setCustomerId(vo.getUserId());
         reqVo.setSpFlag(KuaiqianPayConstant.PROTOCOL_SPFLAG);
         reqVo.setExternalRefNumber(KuaiqianPayUtil.getOrderId());
         reqVo.setEntryTime(new Date().toString());
         reqVo.setAmount(vo.getAmount());
-        reqVo.setPayToken(bankCard.getAgreeNo());
+        reqVo.setPayToken(vo.getProtocolNo());
         reqVo.setTr3Url(Global.getValue("server_host")+"/api/pay/kuaiqian/agreementNotify.htm");
 
         KuaiqianPayHelper kuaiqianpayHelper = new KuaiqianPayHelper();
@@ -216,22 +204,34 @@ public class KuaiqianPayBiz implements PayCommon {
         QueryStatusReqVO reqVO = new QueryStatusReqVO();
         RepaymentQueryResponseVo responseVo = new RepaymentQueryResponseVo();
         reqVO.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
-
+        //平台流水号,快钱交易号
+        reqVO.setRefNumber(vo.getPayPlatNo());
+        reqVO.setTxnType(KuaiqianPayConstant.PROTOCOL_TXNTYPE);
+        reqVO.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
+        reqVO.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
         KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
         QueryStatusRespVO result=payHelper.queryOrder(reqVO);//订单查询
         try{
             responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
-            if ("00".equals(result.getResponseCode())){
-                responseVo.setCode(PayConstant.QUERY_PAY_SUCCESS);
-            }else if ("09".equals(result.getResponseCode()) || "TAIS.ORDER.002".equals(result.getResponseCode())){
-                responseVo.setCode(PayConstant.QUERY_PAY_PROCESSING);
+            if (StringUtil.isNotEmpty(result.getErrorCode())){
+                responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
+                responseVo.setMsg(result.getErrorMessage());
             }else {
-                responseVo.setCode(PayConstant.QUERY_PAY_FAIL);
+                if (result.checkReturn()){
+                    responseVo.setCode(PayConstant.QUERY_PAY_SUCCESS);
+                }else if (StringUtil.equals(KuaiqianPayConstant.ORDER_STATUS_DOING,result.getResponseCode())
+                        || StringUtil.equals(KuaiqianPayConstant.ORDER_STATUS_NOTPAY,result.getResponseCode())){
+                    responseVo.setCode(PayConstant.QUERY_PAY_PROCESSING);
+                }else {
+                    responseVo.setCode(PayConstant.QUERY_PAY_FAIL);
+                }
+                responseVo.setMsg(result.getResponseTextMessage());
+
             }
+
         }catch(Exception e) {
             responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
         }
-        responseVo.setOrderNo(reqVO.getExternalRefNumber());
         return responseVo;
     }
 

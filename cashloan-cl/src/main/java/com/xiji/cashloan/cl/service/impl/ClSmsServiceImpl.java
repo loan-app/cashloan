@@ -393,7 +393,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			sms.setOrderNo("");
 			sms.setState("40");
 			smsMapper.save(sms);
-			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_12, phone, msg);
+			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_13, phone, msg);
 		}
 	}
 

@@ -41,6 +41,14 @@ public class KuaiqianPayConstant {
      */
     public static final String RESPONSE_SUCCESS_CODE = "00";
 
+    /** 订单状态 未支付*/
+    public static final String ORDER_STATUS_NOTPAY = "TAIS.ORDER.002";
+
+    /** 订单状态 处理中*/
+    public static final String ORDER_STATUS_DOING = "09";
+
+
+
     /** 协议支付-常量- 版本号 */
     public static final String PROTOCOL_VERSION = "1.0";
     /** 协议支付-常量- 交易类型 */

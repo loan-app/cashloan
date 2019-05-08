@@ -40,7 +40,7 @@ public class Post {
 		ParseUtil parseUtil =new ParseUtil();
 		OutputStream out = null;
 		HashMap respXml = null;
-		Resource fileRource = new ClassPathResource("10411004511201290.jks");
+		Resource fileRource = new ClassPathResource("jks/10411004511201290.jks");
 		//String jksFile = Post.class.getResource("10411004511201290.jks").toURI().getPath();
 		//获取证书路径
 		//File certFile = new File(jksFile);  //测试证书，生产环境需要替换

@@ -781,7 +781,7 @@ public class KuaiqianPayHelper extends BasePay {
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
                     modifyReqLog(orderNo, respXml.toString());
-                    logger.info("卡信息验证交易成功");
+                    logger.info("绑卡信息验证交易成功");
                 }
             }
         }catch (Exception e){
@@ -810,8 +810,8 @@ public class KuaiqianPayHelper extends BasePay {
         str1Xml += "<txnType>" + reqVO.getTxnType() + "</txnType>";
         str1Xml += "<merchantId>" + reqVO.getMerchantId() + "</merchantId>";
         str1Xml += "<terminalId>" + reqVO.getTerminalId() + "</terminalId>";
-        str1Xml += "<externalRefNumber>" + reqVO.getExternalRefNumber() + "</externalRefNumber>";
-//        str1Xml += "<refNumber>" + refNumber + "</refNumber>";
+ //       str1Xml += "<externalRefNumber>" + reqVO.getExternalRefNumber() + "</externalRefNumber>";
+        str1Xml += "<refNumber>" + reqVO.getRefNumber() + "</refNumber>";
 //        str1Xml += "<txnStatus>" + txnStatus + "</txnStatus>";
         str1Xml += "</QryTxnMsgContent>";
         str1Xml += "</MasMessage>";
