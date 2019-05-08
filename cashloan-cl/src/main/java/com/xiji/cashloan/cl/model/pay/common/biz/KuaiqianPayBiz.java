@@ -16,8 +16,10 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearc
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -174,7 +176,9 @@ public class KuaiqianPayBiz implements PayCommon {
         reqVo.setCustomerId(vo.getUserId());
         reqVo.setSpFlag(KuaiqianPayConstant.PROTOCOL_SPFLAG);
         reqVo.setExternalRefNumber(KuaiqianPayUtil.getOrderId());
-        reqVo.setEntryTime(new Date().toString());
+        Date createDate = DateUtil.getNow();
+        String entryTime = new SimpleDateFormat("yyyyMMddHHmmss").format(createDate);// 商户端交易时间
+        reqVo.setEntryTime(entryTime);
         reqVo.setAmount(vo.getAmount());
         reqVo.setPayToken(vo.getProtocolNo());
         reqVo.setTr3Url(Global.getValue("server_host")+"/api/pay/kuaiqian/agreementNotify.htm");
