@@ -107,7 +107,6 @@ public class Post {
 		    }
 		    System.out.println("tr2报文："+reqData);
 			respXml= parseUtil.parseXML(reqData,transInfo);//给解析XML的函数传递快钱返回的TR2的XML数据流
-		    
 	    } catch(Exception e) {
 			logger.error("快钱发送POST请求出现异常！"+e);
 	    }
