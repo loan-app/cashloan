@@ -123,8 +123,8 @@ public class KuaiqianPayHelper extends BasePay {
                 .append("<merchantId>" + pciDelReq.getMerchantId() + "</merchantId>")
                 .append("<customerId>" + pciDelReq.getCustomerId() + "</customerId>")
                 .append("<payToken>" + pciDelReq.getPayToken() + "</payToken>")
-                .append("<pan>" + pciDelReq.getPan() + "</pan>")
-                .append("<storablePan>" + pciDelReq.getStorablePan() + "</storablePan>")
+//                .append("<pan>" + pciDelReq.getPan() + "</pan>")
+//                .append("<storablePan>" + pciDelReq.getStorablePan() + "</storablePan>")
                 .append("<bankId>" + pciDelReq.getBankId() + "</bankId>")
                 .append("</PciDeleteContent>")
                 .append("</MasMessage>");
@@ -189,7 +189,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         TransInfo transInfo = new TransInfo();
         //设置消费交易的两个节点
-        transInfo.setRecordeText_1("QryCardContent");
+        transInfo.setRecordeText_1("CardInfoContent");
         transInfo.setRecordeText_2("ErrorMsgContent");
         //Tr1报文拼接
         StringBuffer str1Xml = new StringBuffer();
