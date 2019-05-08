@@ -541,10 +541,10 @@ public class KuaiqianPayHelper extends BasePay {
      */
     public String unsealxml(NotifyRequest request){
         SealedData sealedData = new SealedData();
-        sealedData.setOriginalData(request.getNotifyRequestBody().getSealDataType().getOriginalData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getOriginalData()));
-        sealedData.setSignedData(request.getNotifyRequestBody().getSealDataType().getSignedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getSignedData()));
-        sealedData.setEncryptedData(request.getNotifyRequestBody().getSealDataType().getEncryptedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getEncryptedData()));
-        sealedData.setDigitalEnvelope(request.getNotifyRequestBody().getSealDataType().getDigitalEnvelope()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.util.PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getDigitalEnvelope()));
+        sealedData.setOriginalData(request.getNotifyRequestBody().getSealDataType().getOriginalData()==null?null: PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getOriginalData()));
+        sealedData.setSignedData(request.getNotifyRequestBody().getSealDataType().getSignedData()==null?null: PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getSignedData()));
+        sealedData.setEncryptedData(request.getNotifyRequestBody().getSealDataType().getEncryptedData()==null?null: PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getEncryptedData()));
+        sealedData.setDigitalEnvelope(request.getNotifyRequestBody().getSealDataType().getDigitalEnvelope()==null?null: PKIUtil.utf8String2ByteWithBase64(request.getNotifyRequestBody().getSealDataType().getDigitalEnvelope()));
         Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         UnsealedData unsealedData = null;
         try {
@@ -579,7 +579,7 @@ public class KuaiqianPayHelper extends BasePay {
 
 
     /**
-     * 放款支付
+     * 还款支付
      * @param reqVo
      * @return
      */
@@ -622,8 +622,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         logger.info("放款支付tr1报文  str1Xml = " + str1Xml);
 
-        String url = Global.getValue("kq_protocol_pay_test_url");    //测试环境地址
-        //String url = "kq_protocol_pay_production_url";     //生产环境地址
+        String url = Global.getValue("kq_protocol_pay_url");    //测试环境地址
 
         //保存请求log
         saveReqLog(KuaiqianPayConstant.PROTOCOL_BINDMSG, reqVo.getExternalRefNumber(),"", JSON.toJSONString(reqVo));
@@ -695,8 +694,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         logger.info("获取验证码tr1报文  str1Xml = " + str1Xml);
 
-        String url = Global.getValue("kq_Captcha_test_url");    //测试环境地址
-        //String url = "kq_Captcha_production_url";     //生产环境地址
+        String url = Global.getValue("kq_Captcha_url");
 
         //保存请求log
         saveReqLog(KuaiqianPayConstant.PROTOCOL_BINDMSG, reqVo.getExternalRefNumber(),"", JSON.toJSONString(reqVo));
@@ -765,8 +763,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         logger.info("绑卡tr1报文  str1Xml = " + str1Xml);
 
-        String url = Global.getValue("kq_bindCard_test_url");    //测试环境地址
-        //String url = "kq_bindCard_production_url";     //生产环境地址
+        String url = Global.getValue("kq_bindCard_url");
         //保存请求log
         saveReqLog(KuaiqianPayConstant.PROTOCOL_BINDCOMMIT, orderNo, "", JSON.toJSONString(beanReq));
 
@@ -821,9 +818,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         logger.info("查询交易订单tr1报文  str1Xml = " + str1Xml);
 
-        String url = Global.getValue("kq_query_status_test_url");    //测试环境地址
-        // String url = Global.getValue("kq_query_status_production_url");    //生产环境地址
-
+        String url = Global.getValue("kq_query_status_url");
         //保存请求log
         saveReqLog(KuaiqianPayConstant.PROTOCOL_BINDCOMMIT, reqVO.getExternalRefNumber(), "", JSON.toJSONString(reqVO));
 
