@@ -660,8 +660,8 @@ public class KuaiqianPayHelper extends BasePay {
     public AgreementSendValidateCodeRespVo bindMsg(AgreementSendValidateCodeReqVo reqVo) {
         AgreementSendValidateCodeRespVo bindResult = new AgreementSendValidateCodeRespVo();
         reqVo.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
-        reqVo.setMerchantId(KuaiqianPayUtil.getMerchantId());
-        reqVo.setTerminalId(KuaiqianPayUtil.getTerminalId());
+        reqVo.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
+        reqVo.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
 
         TransInfo transInfo = new TransInfo();
         //设置手机动态鉴权节点
@@ -734,8 +734,8 @@ public class KuaiqianPayHelper extends BasePay {
     public BindCardRespVo bindCommit(BindCardReqVo beanReq) {
         BindCardRespVo bindResult = new BindCardRespVo();
         beanReq.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
-        beanReq.setMerchantId(KuaiqianPayUtil.getMerchantId());
-        beanReq.setTerminalId(KuaiqianPayUtil.getTerminalId());
+        beanReq.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
+        beanReq.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
         String orderNo = KuaiqianPayUtil.getOrderId();
 
         TransInfo transInfo = new TransInfo();

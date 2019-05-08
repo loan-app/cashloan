@@ -45,15 +45,6 @@ public class KuaiqianPayUtil {
         return Global.getValue("kuaiqian_payfor_query_url");
     }
 
-    public static String getMerchantId(){
-        return Global.getValue("kuaiqian_protocol_merchantId");
-    }
-    public static String getTerminalId(){
-
-        return Global.getValue("kuaiqian_protocol_terminalId");
-
-    }
-
 
 
     /**

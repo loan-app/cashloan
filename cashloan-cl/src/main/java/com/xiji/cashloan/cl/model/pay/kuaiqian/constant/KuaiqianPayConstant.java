@@ -8,7 +8,7 @@ package com.xiji.cashloan.cl.model.pay.kuaiqian.constant;
 public class KuaiqianPayConstant {
 
     /** 接口类型 - 代付 */
-    public static final String BTYPE_PAY_MOCK = "PayMock";
+    public static final String BTYPE_PAY_MOCK = "payMock.kq";
     /**
      * 表明交易申请成功
      */
@@ -18,7 +18,7 @@ public class KuaiqianPayConstant {
      */
     public static final String RESPONSE_CHECK_FAIL ="0004";
     /** 接口类型 - 代付单查询 */
-    public static final String BTYPE_QUERY_MOCK = "QueryMock";
+    public static final String BTYPE_QUERY_MOCK = "queryMock.kq";
     /**
      * 默认查询目标页数
      */
@@ -50,14 +50,14 @@ public class KuaiqianPayConstant {
     /** 协议支付-常量- 特殊交易 标志 QPay02=协议支付 */
     public static final String PROTOCOL_SPFLAG = "QPay02";
     /** 协议支付-接口标记 - 发送验证码 */
-    public static final String PROTOCOL_BINDMSG = "bindMsg.pay";
+    public static final String PROTOCOL_BINDMSG = "bindMsg.pay.kq";
     /** 协议支付-接口标记 - 绑卡 */
-    public static final String PROTOCOL_BINDCOMMIT = "bindCommit.pay";
+    public static final String PROTOCOL_BINDCOMMIT = "bindCommit.pay.kq";
     /** 协议支付-接口标记 - 解绑 */
-    public static final String PROTOCOL_UNBIND = "unbind.pay";
+    public static final String PROTOCOL_UNBIND = "unbind.pay.kq";
     /** 协议支付-接口标记 - 绑卡查询 */
-    public static final String PROTOCOL_BINDQUERY = "bindQuery.pay";
+    public static final String PROTOCOL_BINDQUERY = "bindQuery.pay.kq";
     /** 协议支付-接口标记 - 商户支持卡 Bin 查询接口 */
-    public static final String PROTOCOL_CARDBINQUERY = "cardBinQuery.pay";
+    public static final String PROTOCOL_CARDBINQUERY = "cardBinQuery.pay.kq";
 
 }

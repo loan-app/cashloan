@@ -7,8 +7,6 @@ import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.PayForReqVo;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.PayForRespVo;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
@@ -22,8 +20,6 @@ import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
-
-
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -185,8 +181,8 @@ public class KuaiqianPayBiz implements PayCommon {
         reqVo.setVersion(KuaiqianPayConstant.PROTOCOL_VERSION);
         reqVo.setTxnType(KuaiqianPayConstant.PROTOCOL_TXNTYPE);
         reqVo.setInteractiveStatus(KuaiqianPayConstant.PROTOCOL_INTERACTIVESTATUS);
-        reqVo.setMerchantId(KuaiqianPayUtil.getMerchantId());
-        reqVo.setTerminalId(KuaiqianPayUtil.getTerminalId());
+        reqVo.setMerchantId(KuaiqianPayUtil.getAgreementMerchantId());
+        reqVo.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
         reqVo.setCustomerId(borrow.getUserId().toString());
         reqVo.setSpFlag(KuaiqianPayConstant.PROTOCOL_SPFLAG);
         reqVo.setExternalRefNumber(KuaiqianPayUtil.getOrderId());
