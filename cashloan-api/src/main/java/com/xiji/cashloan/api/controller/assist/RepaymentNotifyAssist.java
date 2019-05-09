@@ -48,7 +48,8 @@ public class RepaymentNotifyAssist {
     public String doScenesRepayment(RepaymentNotifyDto model,PayLog payLog)throws Exception {
         logger.info("分期付 (还款)- 异步通知：-支付状态是：" + model.getMessage());
         if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())
+                || PayLogModel.STATE_PAYMENT_FAILED.equals(payLog.getState())) {
 
             // 分期付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
             if (StringUtil.equals(model.getStatus(), PayConstant.RESULT_SUCCESS)) {
@@ -101,7 +102,8 @@ public class RepaymentNotifyAssist {
     public String doScenesDeduction(RepaymentNotifyDto model,PayLog payLog)throws Exception {
         logger.info("分期付 (补扣)- 异步通知：-支付状态是：" + model.getMessage());
         if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())
+                || PayLogModel.STATE_PAYMENT_FAILED.equals(payLog.getState())) {
 
             // 分期付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
             if (StringUtil.equals(model.getStatus(), PayConstant.RESULT_SUCCESS)) {
@@ -142,7 +144,8 @@ public class RepaymentNotifyAssist {
     public String doScenesActiveRepayment(RepaymentNotifyDto model,PayLog payLog)throws Exception {
         logger.info("主动扣款 - 异步通知：-支付状态是：" + model.getMessage());
         if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())
+                || PayLogModel.STATE_PAYMENT_FAILED.equals(payLog.getState())) {
 
             //付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
             // 分期付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
@@ -203,7 +206,8 @@ public class RepaymentNotifyAssist {
     public String doScenesActiveDelay(RepaymentNotifyDto model,PayLog payLog)throws Exception {
         logger.info("主动展期 - 异步通知：-支付状态是：" + model.getMessage());
         if (PayLogModel.STATE_PAYMENT_WAIT.equals(payLog.getState())
-            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())) {
+            || PayLogModel.STATE_PENDING_REVIEW.equals(payLog.getState())
+                || PayLogModel.STATE_PAYMENT_FAILED.equals(payLog.getState())) {
 
             // 分期付扣款成功，更新借款状态及支付订单 ，否则只更新订单状态
             if (StringUtil.equals(model.getStatus(), PayConstant.RESULT_SUCCESS)) {
