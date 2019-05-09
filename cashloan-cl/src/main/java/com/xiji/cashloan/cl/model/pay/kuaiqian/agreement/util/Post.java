@@ -10,10 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.net.ssl.*;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.security.KeyStore;
 import java.util.HashMap;
@@ -37,10 +34,11 @@ public class Post {
 		//                  1. linux，在catalina.sh加上JAVA_OPTS="$JAVA_OPTS -Djsse.enableSNIExtension=false"
 		//                  2. win，在catalina.bat加上JAVA_OPTS="$JAVA_OPTS -Djsse.enableSNIExtension=false"
 		System.setProperty("jsse.enableSNIExtension", "false");
-		ParseUtil parseUtil =new ParseUtil();
+		ParseUtil parseUtil = new ParseUtil();
 		OutputStream out = null;
 		HashMap respXml = null;
 		Resource fileRource = new ClassPathResource("jks/10411004511201290.jks");
+		logger.info("fileRource ==> " +fileRource.getURL().getPath());
 		//String jksFile = Post.class.getResource("10411004511201290.jks").toURI().getPath();
 		//获取证书路径
 		//File certFile = new File(jksFile);  //测试证书，生产环境需要替换
@@ -121,7 +119,16 @@ public class Post {
 	public static void main(String[] args) {
 
 		File certFile1 = new File("/Users/a51/IdeaProjects/cashloan-1.0/cashloan-cl/src/main/java/com/xiji/cashloan/cl/model/pay/kuaiqian/agreement/Receive/mgw.cer");
+		Resource fileRource = new ClassPathResource("jks/10411004511201290.jks");
+		String certFile = null;
+		try {
+			 certFile = fileRource.getURL().getPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		System.out.println(certFile1.toString());
+
+		System.out.println("certFile ==>"+certFile);
 	}
 	
 }
