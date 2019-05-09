@@ -41,11 +41,17 @@ public class KuaiqianPayConstant {
      */
     public static final String RESPONSE_SUCCESS_CODE = "00";
 
-    /** 订单状态 未支付*/
+    /** 协议支付-接口标记 - 订单结果查询接口(快钱订单号)-状态码-未支付*/
     public static final String ORDER_STATUS_NOTPAY = "TAIS.ORDER.002";
 
-    /** 订单状态 处理中*/
+    /** 协议支付-接口标记 - 订单结果查询接口(快钱订单号)-状态码-处理中*/
     public static final String ORDER_STATUS_DOING = "09";
+
+    /** 协议支付-接口标记 - 订单结果查询接口(快钱订单号)-状态码-订单已支付 */
+    public static final String PROTOCOL_QUERYORDERID_PAYSUCCESS = "J4";
+
+    /** 协议支付-接口标记 - 订单结果查询接口(快钱订单号)-状态码- 订单支付中*/
+    public static final String PROTOCOL_QUERYORDERID_PAYING = "J5";
 
 
 
