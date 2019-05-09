@@ -73,5 +73,9 @@ public class KuaiqianPayConstant {
     public static final String PROTOCOL_BINDQUERY = "bindQuery.pay.kq";
     /** 协议支付-接口标记 - 商户支持卡 Bin 查询接口 */
     public static final String PROTOCOL_CARDBINQUERY = "cardBinQuery.pay.kq";
+    /** 协议支付-接口标记 - 查询订单 */
+    public static final String PROTOCOL_QUERYORDER = "queryOrder.pay.kq";
+    /** 协议支付-接口标记 - 还款支付 */
+    public static final String PROTOCOL_REPAYMENT = "repayment.pay.kq";
 
 }

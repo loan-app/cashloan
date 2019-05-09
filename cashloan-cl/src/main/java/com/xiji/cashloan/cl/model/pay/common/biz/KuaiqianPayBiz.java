@@ -218,7 +218,7 @@ public class KuaiqianPayBiz implements PayCommon {
             reqVO.setTerminalId(KuaiqianPayUtil.getAgreementTerminalId());
             KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
             QueryStatusRespVO result=payHelper.queryOrder(reqVO);//订单查询
-
+            responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
             //订单已支付
             if (StringUtil.equals(KuaiqianPayConstant.PROTOCOL_QUERYORDERID_PAYSUCCESS, result.getResponseCode())) {
                 responseVo.setCode(PayConstant.QUERY_PAY_SUCCESS);
@@ -240,6 +240,7 @@ public class KuaiqianPayBiz implements PayCommon {
             KuaiqianPayHelper payHelper = new KuaiqianPayHelper();
             QueryStatusRespVO result=payHelper.queryOrder(reqVO);//订单查询
 
+            responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
             if (StringUtil.isNotEmpty(result.getErrorCode())){
                 responseVo.setCode(PayConstant.QUERY_PAY_ERROR);
                 responseVo.setMsg(result.getErrorMessage());

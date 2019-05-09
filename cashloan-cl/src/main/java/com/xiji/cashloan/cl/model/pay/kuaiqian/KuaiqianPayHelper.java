@@ -27,6 +27,7 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.util.PKIUtil;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.util.fuiou.XmlBeanUtils;
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -625,7 +626,7 @@ public class KuaiqianPayHelper extends BasePay {
         String url = Global.getValue("kq_protocol_pay_url");    //测试环境地址
 
         //保存请求log
-        saveReqLog(KuaiqianPayConstant.PROTOCOL_BINDMSG, reqVo.getExternalRefNumber(),"", JSON.toJSONString(reqVo));
+        saveReqLog(KuaiqianPayConstant.PROTOCOL_REPAYMENT, reqVo.getExternalRefNumber(),"", JSON.toJSONString(reqVo));
 
         HashMap respXml=null;
         try{
@@ -797,6 +798,7 @@ public class KuaiqianPayHelper extends BasePay {
         //设置消费交易的两个节点
         transInfo.setRecordeText_1("TxnMsgContent");
         transInfo.setRecordeText_2("ErrorMsgContent");
+        String orderNo=KuaiqianPayUtil.getOrderId();
 
         //Tr1报文拼接
         String str1Xml = "";
@@ -810,8 +812,11 @@ public class KuaiqianPayHelper extends BasePay {
         str1Xml += "<txnType>" + reqVO.getTxnType() + "</txnType>";
         str1Xml += "<merchantId>" + reqVO.getMerchantId() + "</merchantId>";
         str1Xml += "<terminalId>" + reqVO.getTerminalId() + "</terminalId>";
- //       str1Xml += "<externalRefNumber>" + reqVO.getExternalRefNumber() + "</externalRefNumber>";
-        str1Xml += "<refNumber>" + reqVO.getRefNumber() + "</refNumber>";
+        if (StringUtil.isNotEmpty(reqVO.getExternalRefNumber())){
+            str1Xml += "<externalRefNumber>" + reqVO.getExternalRefNumber() + "</externalRefNumber>";
+        }else if (StringUtil.isNotEmpty(reqVO.getRefNumber())){
+            str1Xml += "<refNumber>" + reqVO.getRefNumber() + "</refNumber>";
+        }
 //        str1Xml += "<txnStatus>" + txnStatus + "</txnStatus>";
         str1Xml += "</QryTxnMsgContent>";
         str1Xml += "</MasMessage>";
@@ -820,7 +825,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         String url = Global.getValue("kq_query_status_url");
         //保存请求log
-        saveReqLog(KuaiqianPayConstant.PROTOCOL_BINDCOMMIT, reqVO.getExternalRefNumber(), "", JSON.toJSONString(reqVO));
+        saveReqLog(KuaiqianPayConstant.PROTOCOL_QUERYORDER, orderNo, "", JSON.toJSONString(reqVO));
 
         HashMap respXml=null;
         try{
@@ -835,7 +840,7 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(reqVO.getExternalRefNumber(), respXml.toString());
+                    modifyReqLog(orderNo, respXml.toString());
                     logger.info("查询交易成功");
                 }
             }
