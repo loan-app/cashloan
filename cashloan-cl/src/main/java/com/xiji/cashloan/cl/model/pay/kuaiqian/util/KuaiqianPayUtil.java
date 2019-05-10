@@ -1,12 +1,12 @@
 package com.xiji.cashloan.cl.model.pay.kuaiqian.util;
 
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyHead;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyResponse;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyResponseBody;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.SealDataType;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchHead;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequest;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.SearchRequestBody;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyHead;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyResponse;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyResponseBody;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.SealDataType;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.Pay2bankSearchHead;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.Pay2bankSearchRequest;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.SearchRequestBody;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.OrderNoUtil;
 
@@ -198,6 +198,7 @@ public class KuaiqianPayUtil {
 
         return t;
     }
+
 
 
     /**

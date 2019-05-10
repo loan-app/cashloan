@@ -205,13 +205,8 @@ public class ChargeController extends BaseController {
 
 		// inputStream 流 转化成 String
 		String reqData = KuaiqianPayUtil.streamToStr(request);
-		logger.error("TR3信息 : "+reqData);
-
+		logger.info("TR3信息 : "+reqData);
 		if(SignUtil.veriSignForXml(reqData)) {
-			logger.info("--------------------ReceiveTR3ToTR4:验签失败---------------------");
-			response.setStatus(400);
-			return;
-		}else{
 			logger.info("--------------------ReceiveTR3ToTR4:验签成功---------------------");
 
 			//返回TR3后的第一个标志字段
@@ -252,7 +247,7 @@ public class ChargeController extends BaseController {
 				}
 				RepaymentNotifyDto dto = new RepaymentNotifyDto();
 				dto.setMessage(notifyResp.getResponseTextMessage());
-                String cardNo = this.getCardNo(payLog.getUserId(),notifyResp.getStorableCardNo());
+				String cardNo = this.getCardNo(payLog.getUserId(),notifyResp.getStorableCardNo());
 
 				//当应答码responseCode的值为00时，交易成功 ,txnType :PUR是消费
 				if("00".equals(notifyResp.getResponseCode())){
@@ -281,6 +276,11 @@ public class ChargeController extends BaseController {
 					logger.info("----------------快钱协议支付回调成功且支付成功---------------");
 				}
 			}
+
+		}else{
+			logger.info("--------------------ReceiveTR3ToTR4:验签失败---------------------");
+			response.setStatus(400);
+			return;
 		}
 	}
 

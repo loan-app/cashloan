@@ -9,10 +9,10 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchDetail;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.Pay2bankSearchRequestParam;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.Pay2bankOrder;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.Pay2bankOrderReturn;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.Pay2bankSearchDetail;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.Pay2bankSearchRequestParam;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.DateUtil;
@@ -45,7 +45,7 @@ public class KuaiqianPayBiz implements PayCommon {
         order.setBankName(vo.getBankName());
         order.setCreditName(vo.getBankCardName());
         if ("dev".equals(Global.getValue("app_environment"))) {
-            order.setRemark("模拟交易失败");
+            order.setRemark("模拟交易成功");
         }
         PaymentResponseVo responseVo = new PaymentResponseVo();
         Pay2bankOrderReturn pay2bankOrderReturn = kuaiqianPayHelper.payment(order);

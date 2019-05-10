@@ -14,14 +14,14 @@ import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.TransInfo;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.vo.response.*;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyRequest;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.dto.NotifyResponse;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.util.CCSUtil;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrder;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankOrderReturn;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankRequest;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.vo.Pay2bankResponse;
-import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.vo.*;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyRequest;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyResponse;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.Pay2bankOrder;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.Pay2bankOrderReturn;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.Pay2bankRequest;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.paymock.Pay2bankResponse;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.*;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.CCSUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.PKIUtil;
 import com.xiji.cashloan.cl.service.PayReqLogService;
@@ -101,7 +101,7 @@ public class KuaiqianPayHelper extends BasePay {
             msg =  invokeCSSCollection(requestXml, KuaiqianPayUtil.getPayforQueryUrl());
             pay2bankSearchDetail = this.unsealMsgQuery(msg);
         } catch (Exception e) {
-            logger.error("queryPayment is error, e ==>"+e.getMessage());
+            logger.error("queryPayment is error, e ==>"+e);
         }
         return pay2bankSearchDetail;
     }
@@ -289,7 +289,7 @@ public class KuaiqianPayHelper extends BasePay {
         logger.info("快钱放款支付请求明文报文 requestXml ==> "+orderXml);
 
         // 保存代付请求数据
-        saveReqLog(KuaiqianPayConstant.BTYPE_PAY_MOCK,order.getOrderId(),"",orderXml);
+        saveReqLog(KuaiqianPayConstant.BTYPE_PAY_MOCK,order.getOrderId(),JSON.toJSONString(order),JSON.toJSONString(order));
         //加签、加密
         Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         SealedData sealedData = null;
@@ -325,7 +325,7 @@ public class KuaiqianPayHelper extends BasePay {
         String orderXml = KuaiqianPayUtil.convertToXml(orderDto, encoding);
         logger.info(" query 请求明文报文 ==> "+orderXml);
         // 保存代付请求数据
-        saveReqLog(KuaiqianPayConstant.BTYPE_QUERY_MOCK,orderDto.getOrderId(),"",orderXml);
+        saveReqLog(KuaiqianPayConstant.BTYPE_QUERY_MOCK,orderDto.getOrderId(),"",JSON.toJSONString(orderDto));
 
         //加签、加密
         Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
@@ -397,7 +397,6 @@ public class KuaiqianPayHelper extends BasePay {
         Pay2bankOrderReturn pay2bankOrderReturn = new Pay2bankOrderReturn();
         pay2bankOrderReturn.setErrorCode(response.getResponseBody().getErrorCode());
         pay2bankOrderReturn.setErrorMsg(response.getResponseBody().getErrorMsg());
-        // response.getResponseBody().getErrorCode().equals("0000");
         SealedData sealedData = new SealedData();
         sealedData.setOriginalData(response.getResponseBody().getSealDataType().getOriginalData()==null?null: PKIUtil.utf8String2ByteWithBase64(response.getResponseBody().getSealDataType().getOriginalData()));
         sealedData.setSignedData(response.getResponseBody().getSealDataType().getSignedData()==null?null:PKIUtil.utf8String2ByteWithBase64(response.getResponseBody().getSealDataType().getSignedData()));
@@ -410,6 +409,7 @@ public class KuaiqianPayHelper extends BasePay {
             unsealedData = service.unseal(mpf, sealedData);
         } catch (CryptoException e) {
             logger.error(this.getClass().getName()+"  unsealMsg  e ==>{}",e);
+            return pay2bankOrderReturn;
         }
         byte[] decryptedData = unsealedData.getDecryptedData();
         String rtnString = null;
@@ -421,10 +421,9 @@ public class KuaiqianPayHelper extends BasePay {
         logger.info("快钱代付解密后返回报文 ==> "+rtnString);
         Pay2bankOrder pay2bankOrder = KuaiqianPayUtil.converyToJavaBean(rtnString, Pay2bankOrder.class);
 
-        logger.info("payment unsealMsg pay2bankOrder ==> "  + JSON.toJSONString(pay2bankOrder));
         BeanUtil.copyProperties(pay2bankOrder,pay2bankOrderReturn);
         logger.info("payment unsealMsg pay2bankOrderReturn ==> "  + JSON.toJSONString(pay2bankOrderReturn));
-        this.modifyReqLog(pay2bankOrderReturn.getOrderId(),rtnString);
+        this.modifyReqLog(pay2bankOrderReturn.getOrderId(),JSON.toJSONString(pay2bankOrderReturn));
         return pay2bankOrderReturn;
     }
 
@@ -438,12 +437,13 @@ public class KuaiqianPayHelper extends BasePay {
         logger.info("query 加密返回报文 ==> "+msg);
         Pay2bankSearchResponse response = CCSUtil.converyToJavaBean(msg, Pay2bankSearchResponse.class);
         SealedData sealedData = new SealedData();
-        sealedData.setOriginalData(response.getSearchResponseBody().getSealDataType().getOriginalData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getOriginalData()));
-        sealedData.setSignedData(response.getSearchResponseBody().getSealDataType().getSignedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getSignedData()));
-        sealedData.setEncryptedData(response.getSearchResponseBody().getSealDataType().getEncryptedData()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getEncryptedData()));
-        sealedData.setDigitalEnvelope(response.getSearchResponseBody().getSealDataType().getDigitalEnvelope()==null?null: com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.querymock.util.PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getDigitalEnvelope()));
+        sealedData.setOriginalData(response.getSearchResponseBody().getSealDataType().getOriginalData()==null?null: PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getOriginalData()));
+        sealedData.setSignedData(response.getSearchResponseBody().getSealDataType().getSignedData()==null?null: PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getSignedData()));
+        sealedData.setEncryptedData(response.getSearchResponseBody().getSealDataType().getEncryptedData()==null?null: PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getEncryptedData()));
+        sealedData.setDigitalEnvelope(response.getSearchResponseBody().getSealDataType().getDigitalEnvelope()==null?null: PKIUtil.utf8String2ByteWithBase64(response.getSearchResponseBody().getSealDataType().getDigitalEnvelope()));
         Mpf mpf = genMpf(fetureCode , KuaiqianPayUtil.getMemberCode());
         UnsealedData unsealedData = null;
+        Pay2bankSearchDetail pay2bankSearchDetail = new Pay2bankSearchDetail();
         try {
             ICryptoService service = CryptoServiceFactory.createCryptoService();
             unsealedData = service.unseal(mpf, sealedData);
@@ -459,11 +459,10 @@ public class KuaiqianPayHelper extends BasePay {
         }
         logger.info(" query 解密后返回报文 ==>"+rtnString);
         Pay2bankSearchResult pay2bankSearchResult= XmlBeanUtils.convertXml2Bean(rtnString, Pay2bankSearchResult.class);
-        Pay2bankSearchDetail pay2bankSearchDetail = new Pay2bankSearchDetail();
         if (pay2bankSearchResult != null && pay2bankSearchResult.getResultList() != null && pay2bankSearchResult.getResultList().size() > 0){
             pay2bankSearchDetail = pay2bankSearchResult.getResultList().get(0);
         }
-        modifyReqLog(pay2bankSearchDetail.getOrderId(), rtnString);
+        modifyReqLog(pay2bankSearchDetail.getOrderId(), JSON.toJSONString(pay2bankSearchDetail));
         return pay2bankSearchDetail;
     }
 

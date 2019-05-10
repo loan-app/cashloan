@@ -917,11 +917,11 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝H5接入地址', 'gxb
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝拉取全部运营商报告数据url', 'gxb_pull_all_report_url', 'https://prod.gxb.io/crawler/data/report/', '1', '公信宝拉取全部运营商报告数据url', '1');
 ALTER table cl_operator_req_log add req_token varchar(64) DEFAULT '' COMMENT '授权token';
 
--- 块钱协议支付相关配置
--- 快钱自动付款相关配置
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_payfor_pay_url', 'https://sandbox.99bill.com/fo-pay/pay2bank/pay', 1, '快钱付款url', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_payfor_query_url', 'https://sandbox.99bill.com/fo-pay-query/pay2bank/query', 1, '快钱付款订单查询url', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_payfor_membercode', '10012138842', 1, '快钱付款商户唯一标识', 1);
+
+-- 快钱自动付款相关配置测试环境
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱付款url', 'kuaiqian_payfor_pay_url', 'https://sandbox.99bill.com/fo-pay/pay2bank/pay', 1, '快钱付款url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱付款订单查询url', 'kuaiqian_payfor_query_url', 'https://sandbox.99bill.com/fo-pay-query/pay2bank/query', 1, '快钱付款订单查询url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱付款商户唯一标识', 'kuaiqian_payfor_membercode', '10012138842', 1, '快钱付款商户唯一标识', 1);
 -- 块钱协议支付相关配置
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码地址', 'kq_Captcha_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth', '1', '块钱发送短信验证码地址', '1');
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
@@ -930,11 +930,11 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱协议支付接口地址
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱查询交易状态接口地址', 'kq_query_status_url', 'https://sandbox.99bill.com:9445/cnp/query_txn', '1', '块钱查询交易状态接口地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_query_txn', 'https://sandbox.99bill.com:9445/cnp/query_txn', 1, '快钱协议支付卡bin查询url', 1);
 -- 通用的请求属性  生产 ：812451145110002  测试：104110045112012
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_auth', '104110045112012', 1, '通用的请求属性', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_pci_query', 'https://sandbox.99bill.com:9445/cnp/pci_query', 1, '快钱协议支付查询绑卡信息', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_merchantId', '104110045112012', 1, '快钱协议支付商户号', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_terminalId', '00002012', 1, '快钱协议支付终端号', 1);
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_pci_del', 'https://sandbox.99bill.com/cnp/pci_del', 1, '快钱银行卡解绑url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '通用的请求属性', 'kuaiqian_agreement_auth', '104110045112012', 1, '通用的请求属性', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付查询绑卡信息', 'kuaiqian_agreement_pci_query', 'https://sandbox.99bill.com:9445/cnp/pci_query', 1, '快钱协议支付查询绑卡信息', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付商户号', 'kuaiqian_agreement_merchantId', '104110045112012', 1, '快钱协议支付商户号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付终端号', 'kuaiqian_agreement_terminalId', '00002012', 1, '快钱协议支付终端号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱银行卡解绑url', 'kuaiqian_agreement_pci_del', 'https://sandbox.99bill.com/cnp/pci_del', 1, '快钱银行卡解绑url', 1);
 
 
 

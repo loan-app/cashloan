@@ -3,7 +3,6 @@ package com.xiji.cashloan.cl.model.pay.kuaiqian.agreement.util;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -27,14 +26,14 @@ public class SignUtil {
 	 * @return 如果验签通过，就返回true
 	 * @throws RuntimeException
 	 */
-	public static boolean veriSign(byte[] data, byte[] signData, String certFile)
+	public static boolean veriSign(byte[] data, byte[] signData, Resource fileRource)
 			throws RuntimeException{
 
 		InputStream is = null;
 		try {
 			//加载公钥
-			is = new FileInputStream(certFile);
-
+			//is = new FileInputStream(certFile);
+			  is = fileRource.getInputStream();
 			CertificateFactory cf = CertificateFactory.getInstance("X.509");
 			Certificate cert = cf.generateCertificate(is);
 
@@ -68,11 +67,9 @@ public class SignUtil {
 
 	public static boolean veriSignForXml(String tr3Xml)
 	{
-		String certFile="";
+		Resource fileRource = null;
 		try {
-			Resource fileRource = new ClassPathResource("cer/mgw.cer");
-			certFile = fileRource.getURL().toString();
-			//certFile = SignUtil.class.getResource("mgw.cer").toURI().getPath();
+			fileRource = new ClassPathResource("mgw.cer");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -84,30 +81,13 @@ public class SignUtil {
 
 		try {
 			return veriSign(dataBeforeSign.getBytes("UTF-8"),
-					signData.getBytes("UTF-8"), certFile);
+					signData.getBytes("UTF-8"), fileRource);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		String tr3Xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><MasMessage xmlns=\"http://www.99bill.com/mas_cnp_merchant_interface\"><version>1.0</version><TxnMsgContent><txnType>PUR</txnType><interactiveStatus>TR3</interactiveStatus><amount>0.2</amount><merchantId>104110045112012</merchantId><terminalId>00002012</terminalId><entryTime>20190509141252</entryTime><externalRefNumber>xjkq1905091336597346</externalRefNumber><transTime>20190509141252</transTime><refNumber>110070172591</refNumber><responseCode>00</responseCode><cardOrg>CU</cardOrg><storableCardNo>6217851473</storableCardNo><authorizationCode>372646</authorizationCode><signature>HNemeg4bBy5kV+6yEyxHLhr3bac3EGSsjg7YQ6BiYipK4sRyjPXyAOLjXrmP0ETTpdXCb4PSpRFghFhWLJieGNMGVqjjJc5V7vIEycZDB66xfI+yoVJMRxeEfXK9eMW2UI7+9ENJNFLwdf/9cuJsRsIzkAmYrN/Rajqew344iTM=</signature></TxnMsgContent></MasMessage>";
-		Resource fileRource = new ClassPathResource("cer/mgw.cer");
-		String certFile = ((ClassPathResource) fileRource).getURL().getPath();
-		//String certFile_1 = SignUtil.class.getResource("mgw.cer").toURI().getPath();
-		System.out.println("certFile ==>" + certFile );
-
-		System.out.println("fileRource.exists() ==>"+fileRource.exists());
-
-		System.out.println("fileRource).getURL() ==>"+fileRource.getFilename());
-
-		Boolean b = veriSignForXml(tr3Xml);
-
-		System.out.println("b ==>"+b);
-		//System.out.println("certFile_1 == >" + certFile_1);
-	}
 
 }
 	
