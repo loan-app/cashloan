@@ -164,7 +164,7 @@
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
 	<session-config>
-		<session-timeout>30</session-timeout>
+		<session-timeout>120</session-timeout>
 	</session-config>
 	<welcome-file-list>
 		<welcome-file>/dev/index.html</welcome-file>
