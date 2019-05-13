@@ -119,7 +119,7 @@ public class QuartzLate implements Job{
 									data.put("isOverdue","20");
 									msg = clBorrowService.updateSelective(data);
 									logger.debug("---------添加逾期结束---------");
-								} else if (!"50".equals(borrow.getState()) || !"90".equals(borrow.getState())){
+								} else if (!"50".equals(borrow.getState()) && !"90".equals(borrow.getState())){
 									logger.debug("---------展期后逾期添加逾期进度---------");
 									clBorrowService.savePressState(borrow, BorrowModel.STATE_DELAY,"");
 									data = new HashMap<>();
