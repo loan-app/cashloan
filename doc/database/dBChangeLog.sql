@@ -927,7 +927,7 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码地
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送绑卡地址', 'kq_bindCard_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth_verify', '1', '块钱发送绑卡地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱协议支付接口地址', 'kq_protocol_pay_url', 'https://sandbox.99bill.com:9445/cnp/purchase', '1', '块钱协议支付接口地址', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱查询交易状态接口地址', 'kq_query_status_url', 'https://sandbox.99bill.com:9445/cnp/query_txn', '1', '块钱查询交易状态接口地址', '1');
-INSERT INTO `arc_sys_config` VALUES (null, 80, '', 'kuaiqian_agreement_query_txn', 'https://sandbox.99bill.com:9445/cnp/query_txn', 1, '快钱协议支付卡bin查询url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付卡bin查询url', 'kuaiqian_agreement_query_txn', 'https://sandbox.99bill.com:9445/cnp/query_txn', 1, '快钱协议支付卡bin查询url', 1);
 -- 通用的请求属性  生产 ：812451145110002  测试：104110045112012
 INSERT INTO `arc_sys_config` VALUES (null, 80, '通用的请求属性', 'kuaiqian_agreement_auth', '104110045112012', 1, '通用的请求属性', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付查询绑卡信息', 'kuaiqian_agreement_pci_query', 'https://sandbox.99bill.com:9445/cnp/pci_query', 1, '快钱协议支付查询绑卡信息', 1);
