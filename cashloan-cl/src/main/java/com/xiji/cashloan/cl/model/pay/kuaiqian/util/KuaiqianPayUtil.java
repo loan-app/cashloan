@@ -95,6 +95,21 @@ public class KuaiqianPayUtil {
 //        return Global.getValue("kuaiqian_agreement_auth");
 //    }
     /**
+     * 获取通用的请求属性
+     * @return
+     */
+    public static String getAgreementAuth(){
+        return Global.getValue("kuaiqian_agreement_auth");
+    }
+
+    /**
+     *  获取网关证书文件名
+     * @return
+     */
+    public static String getCertificateName(){
+        return Global.getValue("kuaiqian_certificate_name");
+    }
+    /**
      * inputStream 流 转化成 String
      * @param request
      * @return

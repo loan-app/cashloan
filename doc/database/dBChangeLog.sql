@@ -934,7 +934,7 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付查询绑卡�
 INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付商户号', 'kuaiqian_agreement_merchantId', '104110045112012', 1, '快钱协议支付商户号', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付终端号', 'kuaiqian_agreement_terminalId', '00002012', 1, '快钱协议支付终端号', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱银行卡解绑url', 'kuaiqian_agreement_pci_del', 'https://sandbox.99bill.com/cnp/pci_del', 1, '快钱银行卡解绑url', 1);
-
+INSERT INTO `arc_sys_config` VALUES (null, 80, '块钱网关证书文件名', 'kuaiqian_certificate_name', '81233006051007790', 1, '块钱网关证书文件名', 1);
 -- 支付请求记录表
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
 
