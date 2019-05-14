@@ -87,13 +87,13 @@ public class KuaiqianPayUtil {
         return Global.getValue("kuaiqian_agreement_terminalId");
     }
 
-    /**
-     * 获取通用的请求属性
-     * @return
-     */
-    public static String getAgreementAuth(){
-        return Global.getValue("kuaiqian_agreement_auth");
-    }
+//    /**
+//     * 获取通用的请求属性
+//     * @return
+//     */
+//    public static String getAgreementAuth(){
+//        return Global.getValue("kuaiqian_agreement_auth");
+//    }
     /**
      * inputStream 流 转化成 String
      * @param request

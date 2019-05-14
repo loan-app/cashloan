@@ -188,7 +188,7 @@ public class KuaiqianPayHelper extends BasePay {
 
         TransInfo transInfo = new TransInfo();
         //设置消费交易的两个节点
-        transInfo.setRecordeText_1("CardInfoContent");
+        transInfo.setRecordeText_1("CardInfoContent");// QryTxnMsgContent
         transInfo.setRecordeText_2("ErrorMsgContent");
         //Tr1报文拼接
         StringBuffer str1Xml = new StringBuffer();

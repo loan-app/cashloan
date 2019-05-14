@@ -23,7 +23,7 @@ public class Post {
 	/**
 	* 向指定URL发送POST方法的请求
 	* @param url 发送请求的URL
-	* @param param 请求参数，请求参数应该是name1=value1&name2=value2的形式。
+	* @param tr1XML 请求参数，请求参数应该是name1=value1&name2=value2的形式。
     * @return URL所代表远程资源的响应
 	 * @throws Exception 
     */
@@ -76,7 +76,7 @@ public class Post {
 		    conn.setReadTimeout(100000);
 		    
 		    //设置通用的请求属性  812451145110002 104110045112012
-		    String authString = KuaiqianPayUtil.getAgreementAuth() + ":" + "vpos123";//测试帐号，生产环境需要替换生产商户编号812451145110002
+		    String authString = KuaiqianPayUtil.getAgreementMerchantId() + ":" + "vpos123";//测试帐号，生产环境需要替换生产商户编号812451145110002
 			String auth = "Basic " + Base64Binrary.encodeBase64Binrary(authString.getBytes());
 		    conn.setRequestProperty("Authorization", auth);
 		    
@@ -103,6 +103,7 @@ public class Post {
 				}
 				reqData = new String(bos.toByteArray(), "UTF-8");//编码后的tr2报文
 		    }
+		    logger.info("reqData ==>"+reqData);
 			respXml= parseUtil.parseXML(reqData,transInfo);//给解析XML的函数传递快钱返回的TR2的XML数据流
 	    } catch(Exception e) {
 			logger.error("快钱发送POST请求出现异常！"+e);

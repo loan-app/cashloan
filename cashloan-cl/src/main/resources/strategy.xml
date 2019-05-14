@@ -7,7 +7,8 @@ http://www.99bill.com/schema/asap/commons http://www.99bill.com/schema/asap/comm
 			<strategy>
 		<mpf>
 		    <!-- 商户会员号 -->
-			<commons:member-code>10012138842</commons:member-code>
+			<!--<commons:member-code>10012138842</commons:member-code>-->
+			<commons:member-code>10210509513</commons:member-code>
 			<!-- 策略编码，固定值 F41-->
 			<commons:feature-code>F41</commons:feature-code>
 		</mpf>
@@ -22,17 +23,18 @@ http://www.99bill.com/schema/asap/commons http://www.99bill.com/schema/asap/comm
 		</crypto-strategy>
 		<key-strategy>
 		    <!-- 快钱公钥路径-->
-			<bill99-public-key-file-path>99bill.cert.rsa.20340630sandbox.cer</bill99-public-key-file-path>
+			<!--<bill99-public-key-file-path>99bill.cert.rsa.20340630sandbox.cer</bill99-public-key-file-path>-->
+			<bill99-public-key-file-path>99bill.cert.rsa.20340630.cer</bill99-public-key-file-path>
 			<mpf-keystore>
 			    <!-- 商户私钥路径-->
-				<path>10012138842.pfx</path>
+				<path>10210509513.pfx</path>
 				<key-store-type>PKCS12</key-store-type>
 				<!-- 商户私钥密码-->
-				<key-store-password>123456</key-store-password>
+				<key-store-password>rryq_1234</key-store-password>
 				<!-- 商户私钥别名-->
 				<alias>test-alias</alias>
 				<!-- 商户私钥密码-->
-				<key-password>123456</key-password>
+				<key-password>rryq_1234</key-password>
 			</mpf-keystore>
 		</key-strategy>
 	</strategy>		
