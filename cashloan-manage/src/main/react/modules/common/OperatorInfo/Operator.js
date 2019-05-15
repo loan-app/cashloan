@@ -76,15 +76,15 @@ var Operator = React.createClass({
                     <tbody>
                     <tr>
                         <td className={'table-td-title'}>姓名</td>
-                        <td colSpan="4">{basic.name}</td>
+                        <td colSpan="3">{basic.name}</td>
                         <td>年龄</td>
                         <td>{basic.age}</td>
-                        <td>性别</td>
-                        <td>{basic.gender}</td>
+                        <td>开户时长(月)</td>
+                        <td>{basic.inTime}</td>
                     </tr>
                     <tr className={'table-tr-gray'}>
                         <td className={'table-td-title'}>身份证</td>
-                        <td colSpan="4">
+                        <td colSpan="3">
                             {basic.idNo} &nbsp;
                             {
                                 basic.in_court_black !== undefined
@@ -104,7 +104,9 @@ var Operator = React.createClass({
                             }
                         </td>
                         <td>地址</td>
-                        <td colSpan="3">{basic.native_place}</td>
+                        <td>{basic.native_place}</td>
+                        <td>性别</td>
+                        <td>{basic.gender}</td>
                     </tr>
                     <tr>
                         <td rowSpan="3" className={'table-td-title'}>手机号码</td>
