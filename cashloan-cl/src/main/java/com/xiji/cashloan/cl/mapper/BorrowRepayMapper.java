@@ -119,4 +119,11 @@ public interface BorrowRepayMapper extends BaseMapper<BorrowRepay,Long> {
 	 * 更新还款计划类型
 	 */
 	int updateBatchTypeByRepayId(List<Integer> repayIds);
+
+	/**
+	 * 查询最后还款计划
+	 * @param userId
+	 * @return
+     */
+	BorrowRepay findLastRepay(Long userId);
 }

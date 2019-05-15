@@ -21,4 +21,6 @@ public interface OperatorReportMapper extends BaseMapper<OperatorReport, Long> {
     OperatorReport getByTaskId(String taskId);
 
     OperatorReport getLastRecord(Long userId);
+
+    OperatorReport getOperatorReport(Long borrowId);
 }

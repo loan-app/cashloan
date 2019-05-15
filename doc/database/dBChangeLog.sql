@@ -921,6 +921,54 @@ alter table cl_operator_basic change city `city` varchar(100) DEFAULT  '' COMMEN
 -- 修改紧急联系人姓名字段编码格式
 alter table `cl_user_emer_contacts`  change name name varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '联系人';
 
+-- 创建借款订单模型评分表
+DROP TABLE IF EXISTS `cl_borrow_model_score`;
+CREATE TABLE `cl_borrow_model_score` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,6) NOT NULL COMMENT '模型分数',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='借款订单模型评分表';
+
+-- 模型分拒绝阈值
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分拒绝阈值', 'model_score', '0.508719', 1, '模型分拒绝阈值', 1);
+
+-- 指迷
+INSERT INTO `arc_sys_config` VALUES (null, '80', '指迷模型url', 'zm_model_url', 'http://47.93.185.26/risk/gzip/', '1', '指迷模型url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '指迷模型名称-魔蝎', 'zm_model_name_mx', 'xiji_v1', '1', '指迷模型名称-魔蝎', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '指迷模型名称-公信宝', 'zm_model_name_gxb', 'xiji_v2', '1', '指迷模型名称-公信宝', '1');
+
+DROP TABLE IF EXISTS `cl_zm_req_log`;
+CREATE TABLE `cl_zm_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `return_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `return_info` text COMMENT '同步响应message',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT 0 COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT 1 COMMENT '类型 1-模型',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='指迷请求记录';
+
+DROP TABLE IF EXISTS `cl_zm_model`;
+CREATE TABLE `cl_zm_model` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,2) DEFAULT '0.00' COMMENT '模型分',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='指迷模型分';
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '复借客户拒绝逾期天数阈值', 'again_penalty_day', '5', 1, '复借客户拒绝逾期天数阈值,上笔订单逾期天数大于该值,直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分通过阈值', 'zm_model_pass_score', '560', 1, '模型分通过阈值,大于该值,机审通过', 1);
+
 -- 修改表字段长度
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `fee` decimal(9,2)  NOT NULL COMMENT '收取费用' AFTER `type`;
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别' AFTER `task_id`;
