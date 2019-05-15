@@ -228,6 +228,10 @@ public class PayFuiouController extends BaseController{
 		logger.info("---------------------快钱实时付款 - 异步通知开始----------------------" );
 		//获取客户端请求报文
 		String requestXml = kuaiqianPayHelper.genRequestXml(httpRequest);
+		if (StringUtil.isBlank(requestXml)){
+			logger.error("快钱回调请求参数为空，请正确传参");
+			return;
+		}
 		NotifyRequest request = CCSUtil.converyToJavaBean(requestXml, NotifyRequest.class);
 		String requestStr = kuaiqianPayHelper.unsealxml(request);//解密请求报文
 		if (requestStr == null){

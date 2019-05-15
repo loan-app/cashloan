@@ -205,6 +205,11 @@ public class ChargeController extends BaseController {
 
 		// inputStream 流 转化成 String
 		String reqData = KuaiqianPayUtil.streamToStr(request);
+		if (StringUtil.isBlank(reqData)){
+			logger.error("快钱回调请求参数为空，请正确传参");
+			response.setStatus(400);
+			return;
+		}
 		logger.info("TR3信息 : "+reqData);
 		if(SignUtil.veriSignForXml(reqData)) {
 			logger.info("--------------------ReceiveTR3ToTR4:验签成功---------------------");
