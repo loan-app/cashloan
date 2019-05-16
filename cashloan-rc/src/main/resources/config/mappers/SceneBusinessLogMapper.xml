@@ -76,8 +76,8 @@
 		</set>
 		where id = #{id,jdbcType=BIGINT}
 	</update>
-	
-	<!-- 查询未完成的（失败的/需要重新执行的）记录数 -->
+
+    <!-- 查询未完成的（失败的/需要重新执行的）记录数 -->
 	<select id="countUnFinishLog" parameterType="java.lang.Long" resultType="int">
 		 select count(1) from cl_rc_scene_business_log where borrow_id = #{borrowId,jdbcType=BIGINT} and (rs_state is null or rs_state = '' or rs_state = '0')
 	</select>
@@ -102,4 +102,8 @@
             and nid = #{nid,jdbcType=VARCHAR}
         </if>
     </select>
+
+    <update id="updateBusinessLogByBorrowId">
+        update cl_rc_scene_business_log set update_time = now(),rs_state=1,rs_desc='成功' where rs_state = '' or rs_state = '0'
+    </update>
 </mapper>

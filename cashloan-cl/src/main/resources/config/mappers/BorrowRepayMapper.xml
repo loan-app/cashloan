@@ -313,12 +313,12 @@
         ORDER BY b.id DESC
     </select>
 
-	<!-- 查询未还款借款项目 borrowState 30:放款成功  50:逾期  90:坏账 -->
+	<!-- 查询未还款借款项目 borrowState 30:放款成功  ,44:展期 50:逾期  90:坏账 -->
 	<select id="findUnRepay" resultMap="BaseResultMap" parameterType="java.util.HashMap">
 		select
 			repay.id,repay.user_id,repay.borrow_id,repay.amount,repay.repay_time,repay.state,repay.penalty_amout,repay.penalty_day
 		from cl_borrow_repay repay left join cl_borrow borrow on repay.`borrow_id` = borrow.id
-		where  borrow.`state` in (30,50,90)
+		where  borrow.`state` in (30,44,50,90)
 		<if test="repayTime != null ">
 			and repay.repay_time &lt; #{repayTime,jdbcType=TIMESTAMP}
 		</if>
