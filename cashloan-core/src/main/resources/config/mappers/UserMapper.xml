@@ -215,7 +215,7 @@
                 and register_client = #{registerClient,jdbcType=VARCHAR}              
             </if>
             <if test="channelId != null and channelId != ''">
-                and channel_id = #{channelId,jdbcType=BIGINT}
+                and f = #{channelId,jdbcType=BIGINT}
             </if>
         </trim>
     </sql>
@@ -235,9 +235,15 @@
         on u.id = a.user_id
         left join cl_borrow b
         on b.user_id=a.user_id
-        inner join (select id from (select id,user_id,state,create_time from cl_borrow x where create_time = (select max(create_time) from cl_borrow y where x.user_id=y.user_id)) as a where state = '40' or state ='41') as i
+        inner join
+        (select id from
+        (select id,user_id,state,create_time from
+        cl_borrow x where create_time = (select max(create_time) from cl_borrow y where x.user_id=y.user_id)) as a where state = '40' or state ='41') as i
         on i.id = b.id
-        inner join (select user_id from (select user_id,state,create_time from cl_borrow x where create_time = (select max(create_time) from cl_borrow y where x.user_id=y.user_id)) as a where state = '40' or state ='41') as j
+        inner join
+        (select user_id from
+        (select user_id,state,create_time
+        from cl_borrow x where create_time = (select max(create_time) from cl_borrow y where x.user_id=y.user_id)) as a where state = '40' or state ='41') as j
         on j.user_id = a.user_id
         <if test="realName !='' and realName !=null">
             and a.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")

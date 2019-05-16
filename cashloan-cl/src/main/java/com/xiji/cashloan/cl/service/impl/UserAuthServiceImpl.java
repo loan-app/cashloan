@@ -292,6 +292,13 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 			if ("30".equals(userAuthModel.getPhoneState())){
 				userAuthModel.setPhoneStateStr("已认证");
 			}
+
+			if("1".equals(userAuthModel.getUserFlag())){
+				userAuthModel.setUserFlag("是");
+			}
+			if("0".equals(userAuthModel.getUserFlag())){
+				userAuthModel.setUserFlag("否");
+			}
 		}
 		return userAuthModels;
 	}

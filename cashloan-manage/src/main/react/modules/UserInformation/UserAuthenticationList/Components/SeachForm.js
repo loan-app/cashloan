@@ -14,7 +14,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,bankCardState:params.bankCardState,contactState:params.contactState,idState:params.idState,phoneState:params.phoneState};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,bankCardState:params.bankCardState,contactState:params.contactState,idState:params.idState,phoneState:params.phoneState,channelId:params.channelId,userFlag:params.userFlag};
         if(params.registTime[0]){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -42,7 +42,7 @@ let SeachForm = React.createClass({
 
     handleOut() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,bankCardState:params.bankCardState,contactState:params.contactState,idState:params.idState,phoneState:params.phoneState};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,bankCardState:params.bankCardState,contactState:params.contactState,idState:params.idState,phoneState:params.phoneState,channelId:params.channelId,userFlag:params.userFlag};
         if(params.registTime[0]){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -56,10 +56,32 @@ let SeachForm = React.createClass({
         window.open("/modules/manage/userAuth/export.htm?searchParams="+encodeURI(JSON.stringify(json)));
 
     },
+
+    componentDidMount() {
+        this.fetch();
+    },
+    fetch(){
+        Utils.ajaxData({
+            url: '/modules/manage/promotion/channel/listChannel.htm',
+            callback: (result) => {
+                this.setState({
+                    data: result.data,
+                });
+            }
+        });
+    },
+
     render() {
         const {
             getFieldProps
             } = this.props.form;
+        var channelList = [];
+        if(this.state.data){
+            channelList.push(<Option key={'全部'} value= {''} >全部</Option>);
+            this.state.data.map(item => {
+                channelList.push(<Option key={item.name} value= {item.id} >{item.name}</Option>)
+            })
+        }
         return (
             <Form inline >
                 <FormItem label="真实姓名：">
@@ -103,7 +125,18 @@ let SeachForm = React.createClass({
                 {/*<Option value="30">已授信</Option>*/}
                 {/*</Select>*/}
                 {/*</FormItem>*/}
-
+                <FormItem label="注册渠道：">
+                    <Select style={{ width: 100 }} {...getFieldProps('channelId',{initialValue: ''})}>
+                        {channelList}
+                    </Select>
+                </FormItem>
+                <FormItem label="是否借款:">
+                    <Select style={{ width: 80 }} {...getFieldProps('userFlag',{initialValue: ''})} placeholder='请选择...'>
+                        <Option value="">全部</Option>
+                        <Option value="0">否</Option>
+                        <Option value="1">是</Option>
+                    </Select>
+                </FormItem>
                 <FormItem label="注册时间：">
                     <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('registTime', { initialValue: '' }) } />
                 </FormItem>

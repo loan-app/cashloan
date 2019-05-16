@@ -66,6 +66,15 @@ public class UserAuthModel extends UserAuth {
 	 */
 	private String phoneStateStr;
 
+	/**
+	 * 渠道名称
+	 */
+	private String channelName;
+
+	/**
+	 * 认证完成是否借款
+	 */
+	private String userFlag;
 
 	public String getLoginName() {
 		return loginName;
@@ -124,5 +133,21 @@ public class UserAuthModel extends UserAuth {
 
 	public void setPhoneStateStr(String phoneStateStr) {
 		this.phoneStateStr = phoneStateStr;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+
+	public String getUserFlag() {
+		return userFlag;
+	}
+
+	public void setUserFlag(String userFlag) {
+		this.userFlag = userFlag;
 	}
 }
