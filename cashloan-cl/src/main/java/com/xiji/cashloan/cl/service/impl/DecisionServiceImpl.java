@@ -198,7 +198,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.clear();
         queryMap.put("borrowId", borrowId);
         YouDunRiskReport youDunRiskReport = youDunRiskReportMapper.findSelective(queryMap);
-        setYoudunRisk(youDunRiskReport, decision, yixinRiskReport);
+        setYoudunRisk(youDunRiskReport, decision, yixinRiskReport, xinyanXwld);
 
         i = decisionMapper.saveSelective(decision);
         return i;
@@ -523,7 +523,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         }
     }
 
-    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision, YixinRiskReport yixinRiskReport) {
+    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision, YixinRiskReport yixinRiskReport, XinyanXwld xinyanXwld) {
         if(youDunRiskReport != null && youDunRiskReport.getData() != null) {
             JSONObject dataJson = JSONObject.parseObject(youDunRiskReport.getData());
             if (dataJson == null) {
@@ -581,10 +581,10 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     decision.setYxLoaningAm3m(1);
                 }
 
-                //阿福无下款数据,借贷多头半年未下款且1个月申请平台大于30
+                //新颜无数据,阿福无下款数据,有盾借贷多头半年未下款且有盾1个月申请平台大于30
                 int ydLoanPlatformCount1m = decision.getYdLoanPlatformCount1m() == null ? 0 : decision.getYdLoanPlatformCount1m();
                 int ydActualLoanPlatformCount6m = decision.getYdActualLoanPlatformCount6m() == null ? 0 : decision.getYdActualLoanPlatformCount6m();
-                if(countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0 && ydLoanPlatformCount1m > 30) {
+                if((xinyanXwld == null || xinyanXwld.getData() == null) && countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0 && ydLoanPlatformCount1m > 30) {
                     decision.setYxYdNoLoan(1);
                 }
             }

@@ -2162,9 +2162,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					}
 				}
 			}
-				
-			
-			
+
 			// 直到规则执行到最后一项，如果没有命中审核不通过，则借款申请为审核通过
 			if (i == (configCollection.size() - 1)) {
 				logger.info("借款订单" + borrow.getId() + "指迷通过,机审规则通过,进行放款");
