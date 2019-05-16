@@ -924,3 +924,6 @@ alter table `cl_user_emer_contacts`  change name name varchar(50) CHARACTER SET 
 -- 修改表字段长度
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `fee` decimal(9,2)  NOT NULL COMMENT '收取费用' AFTER `type`;
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别' AFTER `task_id`;
+
+-- 处理卡在待机审的订单(暂时解决办法)
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0 12 1/1 * ?');
