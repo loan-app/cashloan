@@ -901,7 +901,7 @@ INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_ap
 update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
 
 insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
-insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0 12 1/1 * ?');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0/5 * * * ?');
 
 -- 公信宝对接sql
 INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝appId', 'gxb_appid', 'gxb51864c27832a59be', '1', '公信宝appId', '1');
@@ -979,3 +979,6 @@ ALTER TABLE cl_decision add column `yd_refused_feature` TINYINT(1) NOT NULL DEFA
 ALTER TABLE cl_decision add column `yx_yd_no_loan` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '宜信有盾无下款,0-否 1-是' after yd_refused_feature;
 ALTER TABLE cl_decision add column `mx_voice_has_sensitive_phone` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '通话详情包含敏感号码,0-否 1-是' after yx_yd_no_loan;
 ALTER TABLE cl_decision add column `company_name` varchar(128) DEFAULT '' COMMENT '公司名称' after mx_voice_has_sensitive_phone;
+
+-- 处理卡在待机审的订单(暂时解决办法)
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');

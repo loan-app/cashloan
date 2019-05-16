@@ -101,4 +101,9 @@ public class SceneBusinessLogServiceImpl extends BaseServiceImpl<SceneBusinessLo
 		return count > 0 ? true : false;
 	}
 
+	@Override
+	public int updateBusinessLogByBorrowId(Long borrowId) {
+		return sceneBusinessLogMapper.updateBusinessLogByBorrowId(borrowId);
+	}
+
 }

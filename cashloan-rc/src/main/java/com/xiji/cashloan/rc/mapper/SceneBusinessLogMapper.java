@@ -52,4 +52,9 @@ public interface SceneBusinessLogMapper extends BaseMapper<SceneBusinessLog,Long
      * @return
      */
 	int haveNeedExcuteByNid(@Param("borrowId") Long borrowId, @Param("nid") String nid);
+
+	/**
+	 * 修改未执行完成的接口状态(用于临时解决订单卡住待机审)
+	 */
+	int updateBusinessLogByBorrowId(Long borrowId);
 }
