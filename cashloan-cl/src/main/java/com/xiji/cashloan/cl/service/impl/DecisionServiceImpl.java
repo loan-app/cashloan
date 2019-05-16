@@ -3,6 +3,8 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.DecisionService;
@@ -67,6 +69,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private DecisionMapper decisionMapper;
     @Resource
     private YouDunRiskReportMapper youDunRiskReportMapper;
+    @Resource
+    private OperatorVoiceCntMapper operatorVoiceCntMapper;
 
     @Override
     public BaseMapper<Decision, Long> getMapper() {
@@ -87,6 +91,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         decision.setBorrowId(borrowId);
         UserBaseInfo userBaseInfo = userBaseInfoMapper.findByUserId(userId);
         decision.setAge(userBaseInfo.getAge());
+        decision.setCompanyName(userBaseInfo.getCompanyName());
 
         queryMap.put("userId", userId);
         String contactTableName = ShardTableUtil.generateTableNameById("cl_user_contacts", userId, 30000);
@@ -100,7 +105,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.put("userId", userId);
         queryMap.put("sumDuration", 0);
         int matchingCnt = userContactsMapper.countContacts(contactTableName, queryMap);
-        decision.setMxContactMatchingVoiceSituation(matchingCnt < 2 ? 1 : 0);
+        decision.setMxContactMatchingVoiceSituation(matchingCnt < 4 ? 1 : 0);
 
         //处理魔蝎运营商报告
         queryMap.clear();
@@ -112,6 +117,19 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.put("reqLogId", reqLogId);
         OperatorReport operatorReport = operatorReportMapper.findSelective(queryMap);
         setOperatorData(operatorReport, decision);
+
+        //处理通话记录详情 TOP10是否包含12599
+        queryMap.clear();
+        queryMap.put("reqLogId", reqLogId);
+        String tableName = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
+        PageHelper.startPage(0, 10);
+        Page<OperatorVoiceCnt> operatorVoiceCntPage = (Page<OperatorVoiceCnt>) operatorVoiceCntMapper
+                .listShardSelective(tableName,queryMap);
+        for (OperatorVoiceCnt operatorVoiceCnt : operatorVoiceCntPage) {
+            if("12599".equals(operatorVoiceCnt.getPeerNum())) {
+                decision.setMxVoiceHasSensitivePhone(1);
+            }
+        }
 
         //处理至诚宜信阿福报告
         queryMap.clear();
@@ -180,7 +198,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.clear();
         queryMap.put("borrowId", borrowId);
         YouDunRiskReport youDunRiskReport = youDunRiskReportMapper.findSelective(queryMap);
-        setYoudunRisk(youDunRiskReport, decision);
+        setYoudunRisk(youDunRiskReport, decision, yixinRiskReport);
 
         i = decisionMapper.saveSelective(decision);
         return i;
@@ -198,6 +216,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             int countBorrowApply = 0;
             // 借款申请已同意数
             int countApprovalAccept = 0;
+            // 借贷正常订单数量
+            int countNormal = 0;
             JSONArray loanRecordsJsonArray = JSON.parseObject(yixinRiskReport.getData()).getJSONArray("loanRecords");
             if (loanRecordsJsonArray != null){
                 Iterator iterator = loanRecordsJsonArray.iterator();
@@ -220,6 +240,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     if (StringUtil.isNotBlank(json.getString("overdueStatus"))) {
                         countOverdueHistory = countOverdueHistory + 1;
                     }
+
                 }
             }
             decision.setYxOverdueHistoryCount(countOverdueHistory);
@@ -502,7 +523,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         }
     }
 
-    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision) {
+    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision, YixinRiskReport yixinRiskReport) {
         if(youDunRiskReport != null && youDunRiskReport.getData() != null) {
             JSONObject dataJson = JSONObject.parseObject(youDunRiskReport.getData());
             if (dataJson == null) {
@@ -529,6 +550,60 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 decision.setYdRiskEvaluation(scoreDetail.getString("risk_evaluation"));
                 decision.setYdScore(scoreDetail.getInteger("score"));
             }
+
+            // 借贷正常订单数量
+            int countApprovalAccept = 0;
+
+            if(yixinRiskReport != null) {
+                int countNormal = 0;
+                JSONArray loanRecordsJsonArray = JSON.parseObject(yixinRiskReport.getData()).getJSONArray("loanRecords");
+                if (loanRecordsJsonArray != null) {
+                    Iterator iterator = loanRecordsJsonArray.iterator();
+                    while (iterator.hasNext()) {
+                        String str = iterator.next().toString();
+                        JSONObject json = JSON.parseObject(str);
+                        if (json.get("approvalStatus") != null) {
+                            String result = json.get("approvalStatus").toString();
+                            if ("ACCEPT".equals(result)) {
+                                countApprovalAccept = countApprovalAccept++;
+                            }
+                        }
+                        if (json.get("loanStatus") != null) {
+                            if ("NORMAL".equals(json.get("loanStatus").toString())) {
+                                countNormal++;
+                            }
+                        }
+                    }
+                }
+                //借贷正常N笔以上 且借贷多头近3月申请平台大于M家
+                int ydLoanPlatformCount3m = decision.getYdLoanPlatformCount3m() == null ? 0 : decision.getYdLoanPlatformCount3m();
+                if (countNormal > 8 && ydLoanPlatformCount3m > 50) {
+                    decision.setYxLoaningAm3m(1);
+                }
+
+                //阿福无下款数据,借贷多头半年未下款且1个月申请平台大于30
+                int ydLoanPlatformCount1m = decision.getYdLoanPlatformCount1m() == null ? 0 : decision.getYdLoanPlatformCount1m();
+                int ydActualLoanPlatformCount6m = decision.getYdActualLoanPlatformCount6m() == null ? 0 : decision.getYdActualLoanPlatformCount6m();
+                if(countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0 && ydLoanPlatformCount1m > 30) {
+                    decision.setYxYdNoLoan(1);
+                }
+            }
+
+            //是否命中有盾拒绝风险项--关联过多
+            int ydRefusedFeature = 0;
+            if(dataJson.getJSONArray("user_features") != null) {
+                JSONArray userFeatures = dataJson.getJSONArray("user_features");
+                for (Object userFeature : userFeatures) {
+                    JSONObject featureJson = JSON.parseObject(userFeature.toString());
+                    String userFeatureType = featureJson.getString("user_feature_type");
+                    if("8".equals(userFeatureType)) {
+                        ydRefusedFeature = 1;
+                        break;
+                    }
+                }
+            }
+            decision.setYdRefusedFeature(ydRefusedFeature);
+
         }
     }
 
