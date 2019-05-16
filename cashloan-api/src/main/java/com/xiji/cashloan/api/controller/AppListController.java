@@ -5,6 +5,7 @@ import com.xiji.cashloan.cl.service.AppListService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.Base64;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,12 @@ public class AppListController extends BaseController {
      */
     @RequestMapping(value = "/api/act/app/list/addAppList.htm", method = RequestMethod.POST)
     public void addAppList(@RequestParam(value="appList", required = true) String appList, @RequestParam(value = "userId", required = true) String userId) throws ParseException {
+        if(StringUtil.isBlank(userId)) {
+            Map<String, Object> returnMap = new HashMap<String, Object>();
+            returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+            returnMap.put(Constant.RESPONSE_CODE_MSG, "保存成功");
+            ServletUtils.writeToResponse(response, returnMap);
+        }
         String info = new String(Base64.decode(appList));
         AppList list = new AppList();
         list.setCreateTime(new Date());
