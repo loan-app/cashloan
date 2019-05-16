@@ -120,6 +120,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
 
         //处理通话记录详情 TOP10是否包含12599
         queryMap.clear();
+        queryMap.put("userId", userId);
         queryMap.put("reqLogId", reqLogId);
         String tableName = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
         PageHelper.startPage(0, 10);
