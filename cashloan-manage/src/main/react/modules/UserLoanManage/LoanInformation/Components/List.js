@@ -357,6 +357,9 @@ export default React.createClass({
             title: '注册渠道',
             dataIndex: 'channelName',
         }, {
+            title: '模型分数',
+            dataIndex: 'zmScore',
+        }, {
             title: '订单状态',
             dataIndex: "stateStr",
         }, {

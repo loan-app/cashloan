@@ -90,6 +90,12 @@ public class ManageBorrowModel extends Borrow {
 	 */
 	private Double repayYesTotal;
 
+	/**
+	 * 模型分数
+	 */
+	private Double zmScore;
+
+
 	public Double getRepayTotal() {
 		return repayTotal;
 	}
@@ -207,5 +213,13 @@ public class ManageBorrowModel extends Borrow {
         }
 		String protocolPath = rootFile + filePath;
 		return protocolPath;
+	}
+
+	public Double getZmScore() {
+		return zmScore;
+	}
+
+	public void setZmScore(Double zmScore) {
+		this.zmScore = zmScore;
 	}
 }

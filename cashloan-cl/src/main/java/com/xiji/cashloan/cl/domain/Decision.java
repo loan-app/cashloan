@@ -1385,6 +1385,28 @@ import java.util.Date;
     */
     private Integer ydScore;
     /**
+    * 借贷正常N笔以上 且借贷多头近3月申请平台大于M家,0-否 1-是
+    */
+    private Integer yxLoaningAm3m;
+    /**
+    * 是否命中有盾拒绝风险项,0-否 1-是
+    */
+    private Integer ydRefusedFeature;
+    /**
+    * 宜信有盾无下款,0-否 1-是
+    */
+    private Integer yxYdNoLoan;
+    /**
+    * 通话详情包含敏感号码,0-否 1-是
+    */
+    private Integer mxVoiceHasSensitivePhone;
+    /**
+    * 公司名称
+    */
+    private String companyName;
+
+
+    /**
     * 获取主键Id
     *
     * @return id
@@ -6218,5 +6240,45 @@ import java.util.Date;
 
    public void setYdScore(Integer ydScore) {
       this.ydScore = ydScore;
+   }
+
+   public Integer getYxLoaningAm3m() {
+      return yxLoaningAm3m;
+   }
+
+   public void setYxLoaningAm3m(Integer yxLoaningAm3m) {
+      this.yxLoaningAm3m = yxLoaningAm3m;
+   }
+
+   public Integer getYdRefusedFeature() {
+      return ydRefusedFeature;
+   }
+
+   public void setYdRefusedFeature(Integer ydRefusedFeature) {
+      this.ydRefusedFeature = ydRefusedFeature;
+   }
+
+   public Integer getYxYdNoLoan() {
+      return yxYdNoLoan;
+   }
+
+   public void setYxYdNoLoan(Integer yxYdNoLoan) {
+      this.yxYdNoLoan = yxYdNoLoan;
+   }
+
+   public Integer getMxVoiceHasSensitivePhone() {
+      return mxVoiceHasSensitivePhone;
+   }
+
+   public void setMxVoiceHasSensitivePhone(Integer mxVoiceHasSensitivePhone) {
+      this.mxVoiceHasSensitivePhone = mxVoiceHasSensitivePhone;
+   }
+
+   public String getCompanyName() {
+      return companyName;
+   }
+
+   public void setCompanyName(String companyName) {
+      this.companyName = companyName;
    }
 }

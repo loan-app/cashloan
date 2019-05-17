@@ -973,5 +973,12 @@ INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分通过阈值', 'zm_mode
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `fee` decimal(9,2)  NOT NULL COMMENT '收取费用' AFTER `type`;
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别' AFTER `task_id`;
 
+-- 决策数据表新增规则
+ALTER TABLE cl_decision add column `yx_loaning_AM3m` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '借贷正常N笔以上 且借贷多头近3月申请平台大于M家,0-否 1-是' after yd_score;
+ALTER TABLE cl_decision add column `yd_refused_feature` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否命中有盾拒绝风险项,0-否 1-是' after yx_loaning_AM3m;
+ALTER TABLE cl_decision add column `yx_yd_no_loan` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '宜信有盾无下款,0-否 1-是' after yd_refused_feature;
+ALTER TABLE cl_decision add column `mx_voice_has_sensitive_phone` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '通话详情包含敏感号码,0-否 1-是' after yx_yd_no_loan;
+ALTER TABLE cl_decision add column `company_name` varchar(128) DEFAULT '' COMMENT '公司名称' after mx_voice_has_sensitive_phone;
+
 -- 处理卡在待机审的订单(暂时解决办法)
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');

@@ -159,6 +159,8 @@ export default React.createClass({
               return "还款行为"
           } else if (record.type == 13) {
               return "借贷多头"
+          } else if (record.type == 14) {
+              return "模型评分"
           } else {
               return "-"
           }
