@@ -36,7 +36,7 @@ let Login = React.createClass({
                     localStorage.Token = result.Token;
                     location.reload();
                 } else {
-                    me.changeImg();
+                   // me.changeImg();
                     Modal.error({
                         title: result.msg,
                         onOk: () => {
@@ -73,11 +73,11 @@ let Login = React.createClass({
             $('ul').css({ 'transform': 'rotateX(' + mY + 'deg) rotateY(' + mX + 'deg)' });
         });
     },
-    changeImg() {
-        var imgSrc = document.getElementsByClassName("imgCode")[0];
-        var times = Date.now();
-        imgSrc.setAttribute("src", '/system/user/imgCode/generate.htm?timestamp=' + times);
-    },
+    // changeImg() {
+    //     var imgSrc = document.getElementsByClassName("imgCode")[0];
+    //     var times = Date.now();
+    //     imgSrc.setAttribute("src", '/system/user/imgCode/generate.htm?timestamp=' + times);
+    // },
     componentWillUnmount() {
         window.removeEventListener('resize', this.onWindowResize)
     },

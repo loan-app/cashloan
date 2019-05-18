@@ -128,7 +128,7 @@ public class SysLoginController extends BaseController {
 				throw new UnknownAccountException("未找到该账号对应的角色");
 			}
 			
-			res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			// res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		} catch (SysAccessCodeException ex){
 			logger.error("访问码无效", ex);
 			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
