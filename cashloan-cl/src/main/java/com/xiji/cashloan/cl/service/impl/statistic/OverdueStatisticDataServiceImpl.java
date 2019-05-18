@@ -262,7 +262,9 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 
 		Page<OverdueStatisticData> overdueStatisticData = (Page<OverdueStatisticData>) overdueStatisticDataMapper.listOverdueStatistic(params);
 		OverdueStatisticData nowOverdueStatisticData = this.queryNowOverdueStatistic();
-		overdueStatisticData.add(0, nowOverdueStatisticData);
+		if(null != nowOverdueStatisticData) {
+			overdueStatisticData.add(0, nowOverdueStatisticData);
+		}
 		if (CollectionUtil.isNotEmpty(overdueStatisticData)){
 			for(OverdueStatisticData statisticData :overdueStatisticData){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
