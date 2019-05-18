@@ -37,4 +37,10 @@ public interface OverdueStatisticDataService extends BaseService<OverdueStatisti
      * @return
      */
     Page<OverdueStatisticData> listOverdueStatistic(Map<String,Object> params, Integer current, Integer pageSize);
+
+    /**
+     * 统计当前逾期率
+     * @return
+     */
+    OverdueStatisticData queryNowOverdueStatistic();
 }

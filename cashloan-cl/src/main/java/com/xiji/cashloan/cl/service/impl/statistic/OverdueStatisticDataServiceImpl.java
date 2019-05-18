@@ -15,10 +15,9 @@ import org.springframework.stereotype.Service;
 import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -262,13 +261,33 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		PageHelper.startPage(current, pageSize);
 
 		Page<OverdueStatisticData> overdueStatisticData = (Page<OverdueStatisticData>) overdueStatisticDataMapper.listOverdueStatistic(params);
-
+		OverdueStatisticData nowOverdueStatisticData = this.queryNowOverdueStatistic();
+		overdueStatisticData.add(0, nowOverdueStatisticData);
 		if (CollectionUtil.isNotEmpty(overdueStatisticData)){
 			for(OverdueStatisticData statisticData :overdueStatisticData){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
 			}
 		}
 		return overdueStatisticData;
+	}
+
+	@Override
+	public OverdueStatisticData queryNowOverdueStatistic() {
+		Map<String,Object> params = new HashMap<>();
+		DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String startDateStr = dateFormat.format(DateUtil.getDayStartTime(new Date()));
+		params.put("startDate", startDateStr);
+		Date countTime = new Date();
+		String endDateStr = dateFormat.format(countTime);
+		params.put("endDate", endDateStr);
+		List<OverdueStatisticData> list = this.listOverdueStatisticData(params);
+		if(list != null && list.size() > 0) {
+			OverdueStatisticData nowOverdueStatisticData = list.get(0);
+			nowOverdueStatisticData.setCountTime(countTime);
+			nowOverdueStatisticData.setCountTimeStr(endDateStr);
+			return nowOverdueStatisticData;
+		}
+		return null;
 	}
 }
 
