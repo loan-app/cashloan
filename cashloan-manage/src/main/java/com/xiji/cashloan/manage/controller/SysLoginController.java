@@ -87,8 +87,9 @@ public class SysLoginController extends BaseController {
 
 	@RequestMapping(value = "/system/user/login.htm")
 	public void loginAjax(@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "vCode", required = false) String vCode,
+						  @RequestParam(value = "password", required = true) String password,
+						  @RequestParam(value = "accessCode", required = false) String accessCode,
+						  @RequestParam(value = "vCode", required = false) String vCode,
 
 			HttpServletResponse response,
 			HttpServletRequest request, HttpSession session) throws Exception {
@@ -108,7 +109,7 @@ public class SysLoginController extends BaseController {
 			
 			//图片验证码校验
 			//checkImgCode(request.getParameter("code"),session.getAttribute("code"));
-			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_REGISTER, vCode);
+			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
 			if (result == 1) {
 				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 			} else if (result == -1) {

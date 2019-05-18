@@ -184,9 +184,8 @@ let Login = React.createClass({
                                                     <Input type="text" className="ipt ipt-pwd1" name="vCode" autoComplete="off"
                                                         {...getFieldProps('vCode', {
                                                             rules: [{
-                                                                required: true,
                                                                 whitespace: false,
-                                                                message: '请输入图片验证码'
+                                                                message: '请输入短信验证码'
                                                             }],
                                                             trigger: 'onBlur'
                                                         })
