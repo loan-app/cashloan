@@ -20,7 +20,6 @@ let Login = React.createClass({
                 //console.log('Errors in form!!!');
                 return;
             }
-            //console.log(values);
             var params = values;
             this.login(params);
         });
@@ -115,16 +114,10 @@ let Login = React.createClass({
                             }, 1000);
                             Modal.success({
                                 title: result.msg,
-                                // onOk: () => {
-                                //     this.handleCancel();
-                                // }
                             });
                         } else {
                             Modal.error({
                                 title: result.msg,
-                                // onOk: () => {
-                                //     this.handleCancel();
-                                // }
                             });
                         }
                     }
@@ -187,20 +180,21 @@ let Login = React.createClass({
                                                        {...getFieldProps('accessCode')}
                                                        placeholder="访问码"/>
                                             </FormItem>*/}
-                                                {/*<FormItem >*/}
-                                                    {/*<Input type="text" className="ipt ipt-pwd1" name="code" autoComplete="off"*/}
-                                                        {/*{...getFieldProps('code', {*/}
-                                                            {/*rules: [{*/}
-                                                                {/*required: true,*/}
-                                                                {/*whitespace: false,*/}
-                                                                {/*message: '请输入图片验证码'*/}
-                                                            {/*}],*/}
-                                                            {/*trigger: 'onBlur'*/}
-                                                        {/*})*/}
-                                                        {/*}*/}
-                                                        {/*placeholder="验证码" />*/}
+                                                <FormItem >
+                                                    <Input type="text" className="ipt ipt-pwd1" name="vCode" autoComplete="off"
+                                                        {...getFieldProps('vCode', {
+                                                            rules: [{
+                                                                required: true,
+                                                                whitespace: false,
+                                                                message: '请输入图片验证码'
+                                                            }],
+                                                            trigger: 'onBlur'
+                                                        })
+                                                        }
+                                                        placeholder="验证码" />
+                                                    <Button id="btn" className="ipt ipt-btn" type ="light" onClick={this.verifyPhone} >获取验证码</Button>
                                                     {/*<img onClick={this.changeImg} className='imgCode' src="/system/user/imgCode/generate.htm" alt="图片验证码" />*/}
-                                                {/*</FormItem>*/}
+                                                </FormItem>
                                                 <Button type="primary" size="large" className="ant-input u-loginbtn" htmlType="submit">登录</Button>
                                             </Form>
                                         </div>

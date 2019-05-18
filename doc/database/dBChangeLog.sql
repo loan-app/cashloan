@@ -927,3 +927,6 @@ ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COM
 
 -- 处理卡在待机审的订单(暂时解决办法)
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');
+
+-- 添加登录验证码过期时间
+INSERT INTO `arc_sys_config` VALUES (null, '60', '登录短信验证码过期时间', 'login_sms_time_limit', '20', '1', '单位：分钟', '1');

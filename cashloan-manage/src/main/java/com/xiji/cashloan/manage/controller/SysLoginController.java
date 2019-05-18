@@ -1,7 +1,9 @@
 package com.xiji.cashloan.manage.controller;
 
+import com.xiji.cashloan.cl.model.SmsModel;
 import com.xiji.cashloan.cl.service.ClSmsService;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.ImgCodeException;
 import com.xiji.cashloan.core.common.exception.ServiceException;
 import com.xiji.cashloan.core.common.exception.SysAccessCodeException;
@@ -86,7 +88,8 @@ public class SysLoginController extends BaseController {
 	@RequestMapping(value = "/system/user/login.htm")
 	public void loginAjax(@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "accessCode", required = false) String accessCode,
+			@RequestParam(value = "vCode", required = false) String vCode,
+
 			HttpServletResponse response,
 			HttpServletRequest request, HttpSession session) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -104,8 +107,17 @@ public class SysLoginController extends BaseController {
 			SysUser sysUser = (SysUser) user.getSession().getAttribute("SysUser");
 			
 			//图片验证码校验
-			checkImgCode(request.getParameter("code"),session.getAttribute("code"));
-			
+			//checkImgCode(request.getParameter("code"),session.getAttribute("code"));
+			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_REGISTER, vCode);
+			if (result == 1) {
+				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			} else if (result == -1) {
+				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				res.put(Constant.RESPONSE_CODE_MSG, "验证码已过期");
+			} else {
+				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				res.put(Constant.RESPONSE_CODE_MSG, "验证码错误");
+			}
 			session.setAttribute("SysUser", sysUser);
 			
 			List<SysUserRole> list = sysUserRoleService.getSysUserRoleList(sysUser.getId());
@@ -232,6 +244,15 @@ public class SysLoginController extends BaseController {
 		String type = request.getParameter("type");
 		long countDown = 0;
 		Map<String,Object> resultMap = new HashMap<String,Object>();
+
+		if ("dev".equals(Global.getValue("app_environment"))) {
+			resultMap.put("countDown", countDown);
+			resultMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			resultMap.put(Constant.RESPONSE_CODE_MSG, "已发送，请注意查收");
+			ServletUtils.writeToResponse(response,resultMap);
+			return;
+		}
+
 		String result = null;
 
 		SysUser sysUser = null;
