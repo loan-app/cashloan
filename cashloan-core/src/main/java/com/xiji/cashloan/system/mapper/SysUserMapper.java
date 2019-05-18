@@ -77,4 +77,6 @@ public interface SysUserMapper extends BaseMapper<SysUser, Long>{
 	void updateState(Map<String, Object> result);
 
 	List<SysUser> queryByUserIdAndRole(Map<String, Object> params);
+
+	SysUser getSysUserByUserName(String userName);
 }
