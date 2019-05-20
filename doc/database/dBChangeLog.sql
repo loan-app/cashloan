@@ -986,3 +986,6 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 -- 指迷待人工复审分数
 INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分人审阈值', 'zm_model_review_score', '530', 1, '模型分通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分小于通过阈值是否人审', 'zm_review_loan', '10', 1, '模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
+
+-- 新建索引
+alter table `cl_zm_model`  ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
