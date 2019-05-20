@@ -982,3 +982,6 @@ ALTER TABLE cl_decision add column `company_name` varchar(128) DEFAULT '' COMMEN
 
 -- 处理卡在待机审的订单(暂时解决办法)
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');
+
+-- 新建索引
+alter table `cl_zm_model`  ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
