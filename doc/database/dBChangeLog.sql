@@ -982,3 +982,7 @@ ALTER TABLE cl_decision add column `company_name` varchar(128) DEFAULT '' COMMEN
 
 -- 处理卡在待机审的订单(暂时解决办法)
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');
+
+-- 指迷待人工复审分数
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分人审阈值', 'zm_model_review_score', '530', 1, '模型分通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分小于通过阈值是否人审', 'zm_review_loan', '10', 1, '模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
