@@ -930,3 +930,6 @@ insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`
 
 -- 添加登录验证码过期时间
 INSERT INTO `arc_sys_config` VALUES (null, '60', '登录短信验证码过期时间', 'login_sms_time_limit', '20', '1', '单位：分钟', '1');
+
+-- 插入后台登录短信模板
+INSERT INTO `cl_sms_tpl` VALUES ('8', 'sysLogin', '后台登录', '尊敬的用户，您的登录验证码为:', 'SMS0966640668', '10');
