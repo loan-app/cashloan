@@ -277,7 +277,8 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 	public OverdueStatisticData queryNowOverdueStatistic() {
 		Map<String,Object> params = new HashMap<>();
 		DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String startDateStr = dateFormat.format(DateUtil.getDayStartTime(new Date()));
+		DateFormat dateFormat2= new SimpleDateFormat("yyyy-MM-dd");
+		String startDateStr = dateFormat2.format(new Date());
 		params.put("startDate", startDateStr);
 		Date countTime = new Date();
 		String endDateStr = dateFormat.format(countTime);
