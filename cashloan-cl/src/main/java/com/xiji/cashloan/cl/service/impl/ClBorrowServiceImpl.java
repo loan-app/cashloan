@@ -57,6 +57,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -572,9 +573,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			list.add(progress);
 		}
 
-		// 审核不通过 （自动审核不通过，人工复审不通过）借款记录
+		// 审核不通过 （自动审核不通过，人工复审不通过,放款审核不通过）借款记录
 		if ("detail".equals(pageFlag)
-				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED.equals(borrow.getState()))) {
+				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED.equals(borrow.getState()) || BorrowModel.AUDIT_LOAN_FAIL.equals(borrow.getState()))) {
 			bpMap.put("state", borrow.getState());
 			pgList = borrowProgressMapper.listProgress(bpMap);
 			
@@ -594,15 +595,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			progress.setStr(progress.getState());
 			progress.setState(progress.getStr());
 			progress.setType("10");
-			
-			
+
 			list.add(progress);
 		}
 		
-		// 审核不通过 （自动审核不通过，人工复审不通过）首页
+		// 审核不通过 （自动审核不通过，人工复审不通过，放款审核不通过）首页
 		if ("index".equals(pageFlag) && day>0 
 				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED
-						.equals(borrow.getState()))) {
+						.equals(borrow.getState()) || BorrowModel.AUDIT_LOAN_FAIL.equals(borrow.getState()))) {
 			bpMap.put("state", borrow.getState());
 			pgList = borrowProgressMapper.listProgress(bpMap);
 			
@@ -726,7 +726,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 				if (BorrowProgressModel.PROGRESS_LOAN_SUCCESS.equals(progress.getState())) {
 					double repayAmount = borrow.getRealAmount() + borrow.getFee();
-
+                    DecimalFormat df = new DecimalFormat("0.00");
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(progress.getCreateTime());
 					cal.add(Calendar.SECOND, +1);
@@ -742,17 +742,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 						day = DateUtil.daysBetween(new Date(),
 								repay.getRepayTime());
 						repayAmount = BigDecimalUtil.add(repay.getAmount(), repay.getPenaltyAmout());
-//						repayAmount = repay.getAmount()+repay.getPenaltyAmout();
-						if (day > 0) {
-							progress.setRemark("您需要在" + day + "天后还款" + repayAmount + "元");
-						} else if (day == 0) {
 
-							progress.setRemark("您需要在今天还款" + repayAmount + "元");
+						if (day > 0) {
+							progress.setRemark("您需要在" + day + "天后还款" + df.format(repayAmount) + "元");
+						} else if (day == 0) {
+							progress.setRemark("您需要在今天还款" + df.format(repayAmount) + "元");
 						}
 					}
 					
 					if ("1".equals(borrow.getTimeLimit())) {
-						progress.setRemark("您需要在今天还款" + repayAmount+ "元");
+						progress.setRemark("您需要在今天还款" + df.format(repayAmount)+ "元");
 					}
 					progress.setState("待还款");
 					progress.setType("10");
