@@ -191,6 +191,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private ZmRiskService zmRiskService;
 	@Resource
 	private ZmModelMapper zmModelMapper;
+	@Resource
+	private DecisionMapper decisionMapper;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -2013,8 +2015,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public void rcBorrowRuleVerify(Long borrowId){
 		Borrow borrow = getById(borrowId);
-		//计算借款订单对应决策数据的值
-		decisionService.saveBorrowDecision(borrow);
+		Map<String,Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("borrowId", borrowId);
+		Decision decision = decisionMapper.findSelective(paramMap);
+		if(decision == null) {
+			//计算借款订单对应决策数据的值
+			decisionService.saveBorrowDecision(borrow);
+		}
 
 		Float modelScore = getModelScore(borrowId);
 		if(modelScore == 0.0f) {
@@ -2023,8 +2030,6 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		logger.info("借款订单" + borrowId + "模型分为:" + modelScore);
 		BorrowModelScore borrowModelScore = new BorrowModelScore(borrowId, modelScore);
 		borrowModelScoreMapper.save(borrowModelScore);
-
-		Map<String,Object> paramMap = new HashMap<String, Object>();
 
 		//如果是复借用户,判断最后一笔订单是否逾期超过N天,超过N天拒绝,不超过放款
 		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
