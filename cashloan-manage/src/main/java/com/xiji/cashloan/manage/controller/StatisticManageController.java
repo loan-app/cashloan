@@ -11,6 +11,7 @@ import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.StatisticManageService;
 import com.xiji.cashloan.cl.service.statistic.*;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import org.apache.log4j.Logger;
@@ -22,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -322,6 +326,34 @@ public class StatisticManageController extends ManageBaseController {
 		ServletUtils.writeToResponse(response, result);
 	}
 
+	/**
+	 * 最终逾期数据统计
+	 * @param response
+	 * @param search
+	 */
+	@RequestMapping(value = "/modules/manage/statistic/listNowOverdueStatistic.htm",method={RequestMethod.GET,RequestMethod.POST})
+	public void listNowOverdueStatistic(HttpServletResponse response,
+									 @RequestParam(value = "search",required = false)String search) {
+		Map<String, Object> params = JSONObject.parseObject(search);
+		DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateFormat dateFormat2= new SimpleDateFormat("yyyy-MM-dd");
+		if(null == params.get("startDate")) {
+			String startDateStr = dateFormat2.format(DateUtil.getDateBefore(-7, new Date()));
+			params.put("startDate", startDateStr);
+		}
+		if(null == params.get("endDate")) {
+			String endDateStr = dateFormat.format(new Date());
+			params.put("endDate", endDateStr);
+		}
+
+		Page<OverdueStatisticData> page = overdueStatisticDataService.queryNowOverdueStatistic(params);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
 
 	/**
 	 *

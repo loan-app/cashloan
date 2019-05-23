@@ -261,10 +261,6 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		PageHelper.startPage(current, pageSize);
 
 		Page<OverdueStatisticData> overdueStatisticData = (Page<OverdueStatisticData>) overdueStatisticDataMapper.listOverdueStatistic(params);
-		OverdueStatisticData nowOverdueStatisticData = this.queryNowOverdueStatistic();
-		if(null != nowOverdueStatisticData) {
-			overdueStatisticData.add(0, nowOverdueStatisticData);
-		}
 		if (CollectionUtil.isNotEmpty(overdueStatisticData)){
 			for(OverdueStatisticData statisticData :overdueStatisticData){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
@@ -274,23 +270,15 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 	}
 
 	@Override
-	public OverdueStatisticData queryNowOverdueStatistic() {
-		Map<String,Object> params = new HashMap<>();
-		DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		DateFormat dateFormat2= new SimpleDateFormat("yyyy-MM-dd");
-		String startDateStr = dateFormat2.format(new Date());
-		params.put("startDate", startDateStr);
-		Date countTime = new Date();
-		String endDateStr = dateFormat.format(countTime);
-		params.put("endDate", endDateStr);
-		List<OverdueStatisticData> list = this.listOverdueStatisticData(params);
+	public Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params) {
+		PageHelper.startPage(1, 365);
+		Page<OverdueStatisticData> list = (Page<OverdueStatisticData>)this.listOverdueStatisticData(params);
 		if(list != null && list.size() > 0) {
-			OverdueStatisticData nowOverdueStatisticData = list.get(0);
-			nowOverdueStatisticData.setCountTime(countTime);
-			nowOverdueStatisticData.setCountTimeStr(endDateStr);
-			return nowOverdueStatisticData;
+			for(OverdueStatisticData statisticData :list){
+				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
+			}
 		}
-		return null;
+		return list;
 	}
 }
 

@@ -107,7 +107,8 @@ export default Reflux.createStore({
                     'LoadStatistic',
                     'RepaymentStatistic',
 				    'OverdueStatistic',
-				    'AuditorPassStatistic'
+				    'AuditorPassStatistic',
+					'NowOverdueStatistic'
 			];
 
 			var routeNames3 = [
