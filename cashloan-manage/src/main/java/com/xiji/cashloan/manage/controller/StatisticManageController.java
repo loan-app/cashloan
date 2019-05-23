@@ -337,6 +337,9 @@ public class StatisticManageController extends ManageBaseController {
 		Map<String, Object> params = JSONObject.parseObject(search);
 		DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		DateFormat dateFormat2= new SimpleDateFormat("yyyy-MM-dd");
+		if(null == params) {
+			params = new HashMap<>();
+		}
 		if(null == params.get("startDate")) {
 			String startDateStr = dateFormat2.format(DateUtil.getDateBefore(-7, new Date()));
 			params.put("startDate", startDateStr);
