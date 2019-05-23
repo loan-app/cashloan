@@ -66,7 +66,7 @@
 
 
     <select id="sumOnlineLoadAmount" resultType="java.lang.Double">
-        select sum(amount) from cl_pay_log where scenes = '10' and state = '40' and remark !='线下放款审核'
+        select sum(amount) from cl_pay_log where scenes = '10' and state = '40'
     </select>
 
     <select id="sumUnlineLoadAmount" resultType="java.lang.Double">

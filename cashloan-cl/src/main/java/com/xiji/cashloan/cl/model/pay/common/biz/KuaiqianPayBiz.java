@@ -52,14 +52,16 @@ public class KuaiqianPayBiz implements PayCommon {
         if (KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(pay2bankOrderReturn.getErrorCode())){
             responseVo.setStatus(PayConstant.RESULT_SUCCESS);
             responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
+            responseVo.setMessage("成功");
         }else if(KuaiqianPayConstant.RESPONSE_CHECK_FAIL.equals(pay2bankOrderReturn.getErrorCode())){
             responseVo.setStatus(PayConstant.STATUS_NEED_CHECK);
             responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
+            responseVo.setMessage(pay2bankOrderReturn.getErrorMsg());
         }else {
             responseVo.setStatus(PayConstant.STATUS_FAIL);
             responseVo.setStatusCode(pay2bankOrderReturn.getErrorCode());
+            responseVo.setMessage(pay2bankOrderReturn.getErrorMsg());
         }
-        responseVo.setMessage(pay2bankOrderReturn.getErrorMsg());
         responseVo.setOrderNo(order.getOrderId());
         return responseVo;
     }
