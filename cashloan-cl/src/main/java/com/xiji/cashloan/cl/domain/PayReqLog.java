@@ -79,6 +79,11 @@ import java.util.Date;
 	private String ip;
 
 	/**
+	 * 获取验证码返回的令牌信息
+	 */
+	private String token;
+
+	/**
 	 * 获取主键Id
 	 *
 	 * @return id
@@ -303,4 +308,15 @@ import java.util.Date;
 		this.ip = ip;
 	}
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 }
