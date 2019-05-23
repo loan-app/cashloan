@@ -150,12 +150,15 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
 				double delayFee;
+				Double amount = borrow.getAmount();
+				//获取展期费用的占比,
+				Double delay_fee=Double.parseDouble(Global.getValue("delay_fee"));
 				// 如果当前时间大于应还款时间,或者当前有逾期
 				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyAmount() > 0.0d) {
-					delayFee = BigDecimalUtil.add(borrow.getFee() + clBorrowModel.getPenaltyAmount());
+					delayFee = BigDecimalUtil.add(amount * delay_fee + clBorrowModel.getPenaltyAmount());
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				} else {
-					delayFee = borrow.getFee();
+					delayFee = amount * delay_fee ;
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,delayDays),"yyyy-M-d");
 				}
 				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(delayFee));
