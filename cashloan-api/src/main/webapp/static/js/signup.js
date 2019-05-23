@@ -17,7 +17,7 @@ var isMobile = function () {
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
       rst = false;
     }
-    if (u.match(/(HTML)/i)) {
+    if (ua.match(/(iemobile|mqqbrowser|juc|fennec|wosbrowser|browserng|webos|ucbrowser|safari|chrome|opera|firefox|ucweb)/i)) {
       rst = false;
     }
   } else {
@@ -165,8 +165,9 @@ $(function() {
   //点击注册按钮
   $('#btn-reg').click(function(e) {
     var params = verify();
+    show(u);
     if(!isMobile()) {
-      show("您好，请通过正规途径申请!");
+      //show("您好，请通过正规途径申请111!");
       return false;
     }
     if (!params) {
