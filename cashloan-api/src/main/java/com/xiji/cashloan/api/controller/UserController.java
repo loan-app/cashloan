@@ -1,31 +1,29 @@
 package com.xiji.cashloan.api.controller;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.xiji.cashloan.api.user.bean.AppAbsActionWrapper;
 import com.xiji.cashloan.api.user.bean.AppDbSession;
 import com.xiji.cashloan.api.user.bean.AppLoginedActionWraper;
 import com.xiji.cashloan.api.user.service.DBService;
 import com.xiji.cashloan.api.user.service.MybatisService;
 import com.xiji.cashloan.api.user.service.SmsService;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import tool.util.BeanUtil;
-
 import com.xiji.cashloan.cl.model.SmsModel;
 import com.xiji.cashloan.cl.service.ClSmsService;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.MapUtil;
 import com.xiji.cashloan.core.common.util.SqlUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.service.CloanUserService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import tool.util.BeanUtil;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author wnb
@@ -300,7 +298,7 @@ public class UserController {
 				data.put("phone", rec.get("login_name"));
 				data.put("idState", rec.get("id_state"));
 				data.put("bankCardState", rec.get("bank_card_state"));
-
+				data.put("telephone", Global.getValue("telephone"));
 				ret.put("data", data);
 				return ret;
 			}
