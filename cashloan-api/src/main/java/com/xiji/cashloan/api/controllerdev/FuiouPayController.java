@@ -2,28 +2,10 @@ package com.xiji.cashloan.api.controllerdev;
 
 import com.alibaba.fastjson.JSON;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.UnbindCardVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.UnbindCardResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tool.util.StringUtil;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @Auther: king
@@ -291,6 +278,7 @@ public class FuiouPayController extends BaseController {
             vo.setBankCardNo(req.getParameter("accntno"));
             vo.setBorrowOrderNo("borrowid");
             vo.setMobile(req.getParameter("mobile"));
+            vo.setBankName("bank");
             PaymentResponseVo responseVo = PayCommonUtil.payment(vo);
 
             String result = "";
