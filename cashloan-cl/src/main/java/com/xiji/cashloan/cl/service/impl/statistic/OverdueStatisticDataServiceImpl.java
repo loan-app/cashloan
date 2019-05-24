@@ -272,10 +272,39 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 	@Override
 	public Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params) {
 		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 365);
-		List<OverdueStatisticData> list = this.listOverdueStatisticData(params);
-		if(list != null && list.size() > 0) {
-			for(int j=list.size() -1 ; j>=0 ; j--){
-				OverdueStatisticData statisticData = list.get(j);
+
+		List<OverdueStatisticData>  newOverdue = overdueStatisticDataMapper.newOverdueNow(params);
+		List<OverdueStatisticData>  againOverdue = overdueStatisticDataMapper.againOverdueNow(params);
+		List<OverdueStatisticData>  extendOverdue = overdueStatisticDataMapper.extendOverdueNow(params);
+		List<OverdueStatisticData>  newExpire = overdueStatisticDataMapper.newExpire(params);
+		List<OverdueStatisticData>  againExpire = overdueStatisticDataMapper.againExpire(params);
+		List<OverdueStatisticData>  extendExpire = overdueStatisticDataMapper.extendExpire(params);
+		List<OverdueStatisticData>  newRepayment = overdueStatisticDataMapper.newRepayment(params);
+		List<OverdueStatisticData>  againRepayment = overdueStatisticDataMapper.againRepayment(params);
+		List<OverdueStatisticData>  extendRepayment = overdueStatisticDataMapper.extendRepayment(params);
+
+		List<OverdueStatisticData> statisticDataList = new ArrayList<>();
+		setOverdueStatisticDataProperty(newOverdue,statisticDataList,"newOverdue");
+		setOverdueStatisticDataProperty(againOverdue,statisticDataList,"againOverdue");
+		setOverdueStatisticDataProperty(extendOverdue,statisticDataList,"extendOverdue");
+		setOverdueStatisticDataProperty(newExpire,statisticDataList,"newExpire");
+		setOverdueStatisticDataProperty(againExpire,statisticDataList,"againExpire");
+		setOverdueStatisticDataProperty(extendExpire,statisticDataList,"extendExpire");
+		setOverdueStatisticDataProperty(newRepayment,statisticDataList,"newRepayment");
+		setOverdueStatisticDataProperty(againRepayment,statisticDataList,"againRepayment");
+		setOverdueStatisticDataProperty(extendRepayment,statisticDataList,"extendRepayment");
+
+
+		if (CollectionUtil.isNotEmpty(statisticDataList)){
+			setDefaultValue(statisticDataList);
+		}
+		this.calculationRatio(statisticDataList);
+
+		this.overdueStatisticDataSort(statisticDataList);
+
+		if(statisticDataList != null && statisticDataList.size() > 0) {
+			for(int j=statisticDataList.size() -1 ; j>=0 ; j--){
+				OverdueStatisticData statisticData = statisticDataList.get(j);
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
 				overdueStatisticData.add(statisticData);
 			}

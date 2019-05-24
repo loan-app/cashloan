@@ -304,6 +304,18 @@
         GROUP BY countTime
     </select>
 
+    <select id="newOverdueNow" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(distinct t2.id) newOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM (SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay where repay.borrow_id = borrow.id and repay.state = '20' and repay.type ='1' and borrow.again ='10' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and regist_time &gt;= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and regist_time &lt;= #{endDate,jdbcType=VARCHAR}
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
 
     <select id="againOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
         SELECT COUNT(distinct t2.id) againOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay , cl_borrow_progress as progress  where repay.borrow_id = borrow.id and progress.borrow_id = borrow.id  and progress.state = '50' and repay.type ='1' and borrow.again ='20' AND DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
@@ -318,9 +330,36 @@
         GROUP BY countTime
     </select>
 
+    <select id="againOverdueNow" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(distinct t2.id) againOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay where repay.borrow_id = borrow.id and repay.state = '20' and repay.type ='1' and borrow.again ='20' ) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and regist_time &gt;= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and regist_time &lt;= #{endDate,jdbcType=VARCHAR}
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
 
     <select id="extendOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
         SELECT COUNT(distinct t2.id) extendOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay , cl_borrow_progress as progress  where repay.borrow_id = borrow.id and progress.borrow_id = borrow.id  and progress.state = '50' and repay.type ='2' and DATE_FORMAT(DATE_SUB(progress.create_time, INTERVAL 1 DAY), '%Y-%m-%d') = DATE_FORMAT(repay.repay_time, '%Y-%m-%d')) t2
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and regist_time &gt;= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and regist_time &lt;= #{endDate,jdbcType=VARCHAR}
+            </if>
+        </where>
+        GROUP BY countTime
+    </select>
+
+
+    <select id="extendOverdueNow" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
+        SELECT COUNT(distinct t2.id) extendOverdue,DATE_FORMAT(regist_time, '%Y-%m-%d') countTime FROM ( SELECT borrow.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') regist_time FROM cl_borrow as borrow , cl_borrow_repay as repay where repay.borrow_id = borrow.id and repay.state = '20' and repay.type ='2' ) t2
         <where>
             <if test="startDate!=null and startDate!=''">
                 and regist_time &gt;= #{startDate,jdbcType=VARCHAR}

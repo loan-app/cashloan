@@ -32,6 +32,13 @@ public interface OverdueStatisticDataMapper extends BaseMapper<OverdueStatisticD
     List<OverdueStatisticData> newOverdue(Map<String,Object> params);
 
     /**
+     * 最终新客逾期
+     * @param params
+     * @return
+     */
+    List<OverdueStatisticData> newOverdueNow(Map<String,Object> params);
+
+    /**
      * 复借逾期
      * @param params
      * @return
@@ -39,11 +46,25 @@ public interface OverdueStatisticDataMapper extends BaseMapper<OverdueStatisticD
     List<OverdueStatisticData> againOverdue(Map<String,Object> params);
 
     /**
+     * 最终复借逾期
+     * @param params
+     * @return
+     */
+    List<OverdueStatisticData> againOverdueNow(Map<String,Object> params);
+
+    /**
      * 展期逾期
      * @param params
      * @return
      */
     List<OverdueStatisticData> extendOverdue(Map<String,Object> params);
+
+    /**
+     * 最终展期逾期
+     * @param params
+     * @return
+     */
+    List<OverdueStatisticData> extendOverdueNow(Map<String,Object> params);
 
     /**
      * 新客首借到期
