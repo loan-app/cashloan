@@ -1074,13 +1074,22 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		Double sourceAmount = 0.0;
 		if ((StringUtil.equals("2", type))) {
             Double amount = borrow.getAmount();
+            Double delay_fee=0.0;
+            Double delayFee=0.0;
             //获取展期费用的占比,
-			Double delay_fee=Double.parseDouble(Global.getValue("delay_fee"));
+            if(StringUtil.isNotBlank(Global.getValue("delay_fee"))) {
+                delay_fee=Double.parseDouble(Global.getValue("delay_fee"));
+                //展期费用
+                delayFee=amount * delay_fee;
+            }else {
+                //展期费用为综合费用;
+                delayFee=borrow.getFee();
+            }
 			//展期扣除部费用
 			if(borrowRepay.getPenaltyAmout() > 0) {
-				sourceAmount = BigDecimalUtil.add(amount * delay_fee ,borrowRepay.getPenaltyAmout());
+				sourceAmount = BigDecimalUtil.add(delayFee,borrowRepay.getPenaltyAmout());
 			} else {
-				sourceAmount = amount * delay_fee;
+				sourceAmount = delayFee;
 			}
 		}else {
 			// 还款金额
