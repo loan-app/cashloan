@@ -43,6 +43,7 @@ var LoadStatistic = require('../../StatisticManage/LoadStatistic/index'); //统�
 var RepaymentStatistic = require('../../StatisticManage/RepaymentStatistic/index'); //统计管理 还款统计
 var OverdueStatistic = require('../../StatisticManage/OverdueStatistic/index'); //统计管理 逾期统计
 var AuditorPassStatistic = require('../../StatisticManage/AuditorPassStatistic/index'); //统计管理 逾期统计
+var NowOverdueStatistic = require('../../StatisticManage/NowOverdueStatistic/index'); //统计管理 逾期统计
 
 
 
@@ -92,5 +93,6 @@ module.exports = {
     LoadStatistic,
     RepaymentStatistic,
     OverdueStatistic,
-    AuditorPassStatistic
+    AuditorPassStatistic,
+    NowOverdueStatistic
 }
