@@ -271,14 +271,15 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 
 	@Override
 	public Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params) {
-		PageHelper.startPage(1, 365);
-		Page<OverdueStatisticData> list = (Page<OverdueStatisticData>)this.listOverdueStatisticData(params);
+		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 365);
+		List<OverdueStatisticData> list = this.listOverdueStatisticData(params);
 		if(list != null && list.size() > 0) {
 			for(OverdueStatisticData statisticData :list){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
+				overdueStatisticData.add(statisticData);
 			}
 		}
-		return list;
+		return overdueStatisticData;
 	}
 }
 
