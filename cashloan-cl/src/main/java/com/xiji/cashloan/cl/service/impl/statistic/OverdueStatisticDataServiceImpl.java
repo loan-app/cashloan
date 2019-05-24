@@ -274,7 +274,8 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 365);
 		List<OverdueStatisticData> list = this.listOverdueStatisticData(params);
 		if(list != null && list.size() > 0) {
-			for(OverdueStatisticData statisticData :list){
+			for(int j=list.size() -1 ; j>=0 ; j--){
+				OverdueStatisticData statisticData = list.get(j);
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
 				overdueStatisticData.add(statisticData);
 			}
