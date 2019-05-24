@@ -954,7 +954,7 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, '块钱网关证书文件名', 'k
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
 
 -- 展期费用
-INSERT INTO `arc_sys_config` VALUES (null, '20', '展期费用', 'delay_fee', '0.30', '1', '展期费用', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '展期费用占比', 'delay_fee', '0.30', '1', '占借款金额的比例(参数值为小数)', '1');
 
 
 
