@@ -300,11 +300,8 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		}
 		this.calculationRatio(statisticDataList);
 
-		this.overdueStatisticDataSort(statisticDataList);
-
 		if(statisticDataList != null && statisticDataList.size() > 0) {
-			for(int j=statisticDataList.size() -1 ; j>=0 ; j--){
-				OverdueStatisticData statisticData = statisticDataList.get(j);
+			for(OverdueStatisticData statisticData:statisticDataList){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
 				overdueStatisticData.add(statisticData);
 			}
