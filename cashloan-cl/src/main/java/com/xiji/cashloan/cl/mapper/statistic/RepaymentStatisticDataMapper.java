@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.mapper.statistic;
 
+import com.xiji.cashloan.cl.domain.statistic.RealTimeMaturityStatistic;
 import com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
@@ -38,4 +39,12 @@ public interface RepaymentStatisticDataMapper extends BaseMapper<RepaymentStatis
      * @return
      */
     List<RepaymentStatisticData> listRepaymentStatistic(Map<String,Object> params);
+
+
+    /**
+     * 实时还款统计
+     * @param params
+     * @return
+     */
+    List<RealTimeMaturityStatistic> realTimeRepayment(Map<String,Object> params);
 }

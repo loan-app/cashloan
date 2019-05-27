@@ -389,4 +389,56 @@
         </where>
         order by count_time desc
     </select>
+
+
+
+
+
+    <!-- 实时还款统计-->
+    <select id="realTimeRepayment" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.RealTimeMaturityStatistic">
+        select  distinct T.expireTime,
+        T.extendCount,
+        T.expireCount,
+        T.reimbursementCount,
+        T.totalRepayment,
+        T.extendAmount
+
+        from (
+        select DATE_FORMAT(p.expireTime,'%Y-%m-%d') expireTime,
+
+        IFNULL(p1.extendCount,0) extendCount,
+        IFNULL(p2.expireCount,0) expireCount,
+        IFNULL(p3.reimbursementCount,0) reimbursementCount,
+        IFNULL(p4.totalRepayment,0) totalRepayment,
+        IFNULL(p5.extendAmount,0) extendAmount
+        from (
+
+        (SELECT COUNT(id) extendCount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM (  SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY expireTime ) UNION
+        (SELECT COUNT(id) expireCount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay  ) t2 GROUP BY expireTime ) UNION
+        (SELECT COUNT(id) reimbursementCount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay  where state = '10') t2 GROUP BY expireTime ) UNION
+        (SELECT sum(amount) totalRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM ( SELECT log.amount,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and log.type ='10') t2 GROUP BY expireTime) UNION
+        (SELECT sum(amount) extendAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM (  SELECT log.amount,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY expireTime )
+
+        ) p
+        left join (SELECT COUNT(id) extendCount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM (  SELECT repay.id,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY expireTime )  p1 on p.expireTime = p1.expireTime
+        left join (SELECT COUNT(id) expireCount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay  ) t2 GROUP BY expireTime )  p2 on p.expireTime = p2.expireTime
+        left join (SELECT COUNT(id) reimbursementCount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM ( SELECT id,DATE_FORMAT(repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay  where state = '10') t2 GROUP BY expireTime ) p3 on p.expireTime = p3.expireTime
+        left join (SELECT sum(amount) totalRepayment,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM ( SELECT log.amount,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '10' and log.type ='10') t2 GROUP BY expireTime) p4 on p.expireTime = p4.expireTime
+        left join (SELECT sum(amount) extendAmount,DATE_FORMAT(repay_time, '%Y-%m-%d') expireTime FROM (  SELECT log.amount,DATE_FORMAT(repay.repay_time, '%Y-%m-%d') repay_time FROM cl_borrow_repay as repay , cl_borrow_repay_log as log where repay.id = log.repay_id and repay.state = '30' and log.type ='20') t2 GROUP BY expireTime ) p5 on p.expireTime = p5.expireTime
+
+        <where>
+            <if test="startDate!=null and startDate!=''">
+                and DATE_FORMAT(p.expireTime, '%Y-%m-%d') >= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(p.expireTime, '%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR} ]]>
+            </if>
+        </where>
+
+        ) T ORDER BY T.expireTime DESC
+
+    </select>
+
+
+
 </mapper>

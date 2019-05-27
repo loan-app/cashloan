@@ -27,7 +27,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -372,6 +371,24 @@ public class StatisticManageController extends ManageBaseController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_DATA, count);
 		result.put(Constant.RESPONSE_CODE_MSG, "更新成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+	/**
+	 * 实时还款统计
+	 */
+	@RequestMapping(value = "/modules/manage/statistic/realTimeRepayment.htm")
+	public void realTimeRepayment(@RequestParam(value = "search",required = false)String search,
+								  @RequestParam("current")Integer current,
+								  @RequestParam("pageSize")Integer pageSize){
+
+		Map<String, Object> params = JSONObject.parseObject(search);
+		Page<RealTimeMaturityStatistic> page = repaymentStatisticDataService.listRealTimeRepayment(params,current, pageSize);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
 	}
 

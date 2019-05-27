@@ -44,6 +44,7 @@ var RepaymentStatistic = require('../../StatisticManage/RepaymentStatistic/index
 var OverdueStatistic = require('../../StatisticManage/OverdueStatistic/index'); //统计管理 逾期统计
 var AuditorPassStatistic = require('../../StatisticManage/AuditorPassStatistic/index'); //统计管理 逾期统计
 var NowOverdueStatistic = require('../../StatisticManage/NowOverdueStatistic/index'); //统计管理 逾期统计
+var RealTimeMaturityStatistic = require('../../StatisticManage/RealTimeMaturityStatistic/index'); //统计管理 实时到期还款统计
 
 
 
@@ -94,5 +95,6 @@ module.exports = {
     RepaymentStatistic,
     OverdueStatistic,
     AuditorPassStatistic,
-    NowOverdueStatistic
+    NowOverdueStatistic,
+    RealTimeMaturityStatistic
 }

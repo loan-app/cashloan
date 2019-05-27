@@ -956,3 +956,6 @@ ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验�
 -- 最终逾期统计
 INSERT INTO `arc_sys_menu` VALUES ('1027', '0', '最终逾期统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '最终逾期统计', '0', 'NowOverdueStatistic', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1027');
+
+INSERT INTO `arc_sys_menu` VALUES ('1028', '0', '实时到期还款统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '实时到期还款统计', '0', 'RealTimeMaturityStatistic', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1028');
