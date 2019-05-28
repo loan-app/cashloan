@@ -953,8 +953,18 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, '块钱网关证书文件名', 'k
 -- 支付请求记录表
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
 
--- 展期费用
-INSERT INTO `arc_sys_config` VALUES (null, '20', '展期费用占比', 'delay_fee', '0.30', '1', '占借款金额的比例(参数值为小数)', '1');
+-- 展期费率
+INSERT INTO `arc_sys_config` VALUES (null, '20', '展期费率', 'delay_fee', '0.30', '1', '占借款金额的比例(参数值为小数)', '1');
+
+
+-- 添加渠道配置字段
+ALTER TABLE cl_channel add fee varchar(16) DEFAULT '0.00'   COMMENT '综合费用集合(0.098,0.12,0.15)';
+ALTER TABLE cl_channel add init_credit varchar(16) DEFAULT '0.00'   COMMENT '注册时给予额度';
+ALTER TABLE cl_channel add borrow_credit varchar(16) DEFAULT '0.00'  COMMENT '借款额度';
+ALTER TABLE cl_channel add is_improve_credit varchar(10) DEFAULT '10' COMMENT '还款提额开关(还款提额 10启用 20禁用)';
+ALTER TABLE cl_channel add one_repay_credit varchar(16) DEFAULT '0.00' COMMENT '还款成功单次增加的额度	';
+ALTER TABLE cl_channel add improve_credit_limit varchar(16) DEFAULT '0.00' COMMENT '还款成功累计提额上限';
+ALTER TABLE cl_channel add borrow_day varchar(4) DEFAULT '' COMMENT '借款天数';
 
 
 

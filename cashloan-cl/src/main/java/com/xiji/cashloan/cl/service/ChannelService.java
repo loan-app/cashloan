@@ -112,4 +112,10 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	 * 渠道用户统计-单一渠道链接
 	 */
 	List<Map<String,Object>> oneChannelUserCount(Map<String, Object> paramMap,int current, int pageSize);
+
+	/**
+	 * 查询渠道配置
+	 * @return
+	 */
+	Map<String, Object> queryChannelConfig();
 }

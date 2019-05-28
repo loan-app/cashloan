@@ -47,6 +47,17 @@ export default React.createClass({
         if(title == '编辑'){
             me.refs.AddWin.setFieldsValue(me.state.record);
         }
+        if (title == '新增'){
+
+            Utils.ajaxData({
+                url: '/modules/manage/promotion/channel/queryChannelConfig.htm',
+                method: 'get',
+                callback: (result) => {
+                    me.refs.AddWin.setFieldsValue(result.data);
+                }
+            });
+
+        }
         
         });
     },

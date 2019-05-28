@@ -57,11 +57,26 @@ public class ChannelController extends ManageBaseController {
 	public void save(@RequestParam(value="code") String code,
 			@RequestParam(value="name") String name,
 			@RequestParam(value="linker") String linker,
-			@RequestParam(value="phone") String phone) throws Exception {
+			@RequestParam(value="phone") String phone,
+		 	@RequestParam(value="fee") String fee,
+		 	@RequestParam(value="initCredit") String initCredit,
+		 	@RequestParam(value="borrowCredit") String borrowCredit,
+		 	@RequestParam(value="oneRepayCredit") String oneRepayCredit,
+		 	@RequestParam(value="improveCreditLimit") String improveCreditLimit,
+		 	@RequestParam(value="borrowDay") String borrowDay,
+		 	@RequestParam(value="isImproveCredit") String isImproveCredit
+					 ) throws Exception {
 		Channel channel=new Channel();
 		channel.setLinker(linker);
 		channel.setName(name);
 		channel.setPhone(phone);
+		channel.setFee(fee);
+		channel.setInitCredit(initCredit);
+		channel.setBorrowCredit(borrowCredit);
+		channel.setOneRepayCredit(oneRepayCredit);
+		channel.setImproveCreditLimit(improveCreditLimit);
+		channel.setBorrowDay(borrowDay);
+		channel.setIsImproveCredit(isImproveCredit);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (null != code2) {
@@ -140,12 +155,27 @@ public class ChannelController extends ManageBaseController {
 			@RequestParam(value="code") String code,
 			@RequestParam(value="name") String name,
 			@RequestParam(value="linker") String linker,
-			@RequestParam(value="phone") String phone) throws Exception {
+			@RequestParam(value="phone") String phone,
+			@RequestParam(value="fee") String fee,
+			@RequestParam(value="initCredit") String initCredit,
+			@RequestParam(value="borrowCredit") String borrowCredit,
+			@RequestParam(value="oneRepayCredit") String oneRepayCredit,
+			@RequestParam(value="improveCreditLimit") String improveCreditLimit,
+			@RequestParam(value="borrowDay") String borrowDay,
+			@RequestParam(value="isImproveCredit") String isImproveCredit
+			) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
 		paramMap.put("name", name);
 		paramMap.put("linker", linker);
 		paramMap.put("phone", phone);
+		paramMap.put("fee",fee);
+		paramMap.put("initCredit",initCredit);
+		paramMap.put("borrowCredit",borrowCredit);
+		paramMap.put("oneRepayCredit",oneRepayCredit);
+		paramMap.put("improveCreditLimit",improveCreditLimit);
+		paramMap.put("borrowDay",borrowDay);
+		paramMap.put("isImproveCredit",isImproveCredit);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -278,6 +308,22 @@ public class ChannelController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
+	}
+
+	/**
+	 * 查询渠道配置信息
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/queryChannelConfig.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	public void queryChannelConfig()throws Exception{
+		Map<String, Object> channelConfigMap = channelService.queryChannelConfig();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, channelConfigMap);
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+
 	}
 	
 }
