@@ -86,13 +86,13 @@
     <update id="addNum" parameterType="com.xiji.creditrank.cr.domain.Credit">
         update  arc_credit set
             num = 1 + num
-        where id = #{id,,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="subtractNum" parameterType="com.xiji.creditrank.cr.domain.Credit">
         update  arc_credit set
             num = 0
-        where id = #{id,,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
 	<update id="updateAmount" parameterType="java.util.HashMap">
