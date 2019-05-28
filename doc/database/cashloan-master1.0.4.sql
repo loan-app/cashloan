@@ -2095,13 +2095,13 @@ CREATE TABLE `cl_user_education_info` (
 DROP TABLE IF EXISTS `cl_user_emer_contacts`;
 CREATE TABLE `cl_user_emer_contacts` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(20) DEFAULT '' COMMENT '联系人',
+  `name` varchar(20) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '联系人',
   `phone` varchar(20) DEFAULT '' COMMENT '联系号码',
   `user_id` bigint(20) DEFAULT NULL COMMENT '客户表 外键',
   `relation` varchar(30) DEFAULT '' COMMENT '与本人关系',
   `type` varchar(20) DEFAULT '' COMMENT '是否直系',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='紧急联系人表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='紧急联系人表';
 
 -- ----------------------------
 -- Records of cl_user_emer_contacts

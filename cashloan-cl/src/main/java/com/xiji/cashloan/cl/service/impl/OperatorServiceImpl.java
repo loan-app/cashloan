@@ -1,28 +1,26 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.xiji.cashloan.core.common.util.StringUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.domain.operator.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.OperatorVoiceModel;
 import com.xiji.cashloan.cl.service.OperatorService;
+import com.xiji.cashloan.core.common.util.ShardTableUtil;
+import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xiji.cashloan.core.common.util.ShardTableUtil;
-import com.xiji.cashloan.core.domain.UserBaseInfo;
-import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 运营商回调信息处理
@@ -306,7 +304,6 @@ public class OperatorServiceImpl implements OperatorService {
             logger.error("保存用户userId：" + userId + "运营商数据时，res为空，处理失败");
         }
     }
-
     /**
      * 改写手机号网龄
      *

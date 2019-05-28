@@ -9,6 +9,23 @@ window.browser.width = window.innerWidth;
 window.browser.height = window.innerHeight;
 window.browser.wx = u.match(/MicroMessenger/);
 
+var isMobile = function () {
+  var rst = true;
+  if (u.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
+    var ua = u.toLowerCase();
+    //判断是否从微信打开
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+      rst = false;
+    }
+    if (ua.match(/(iemobile|mqqbrowser|juc|fennec|wosbrowser|browserng|webos|ucbrowser|safari|chrome|opera|firefox|ucweb)/i)) {
+      rst = false;
+    }
+  } else {
+    rst = false;
+  }
+  return rst;
+}
+
 $(function() {
   var close = function(e) {
     $(this).parents('.popup').hide();
@@ -60,9 +77,9 @@ $(function() {
   };
 
   var verify = function() {
-    // var pwd = $('input[name=password]').val();
+    var pwd = $('input[name=password]').val();
     //MD5加密
-    // var pwd_md5 = $.md5(pwd);
+    var pwd_md5 = $.md5(pwd);
     var re = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,16})$/;
     var code = $('input[name=vcode]').val();
     var inviteCode = $('input[name=invitationCode]').val();
@@ -72,10 +89,10 @@ $(function() {
       return false;
     }
 
-    /*if (!re.test(pwd)) {
+    if (!re.test(pwd)) {
       show('必须输入6到16位字母与数字组合的密码');
       return false;
-    }*/
+    }
     if (code === '') {
       show('验证码不能为空');
       return false;
@@ -88,7 +105,7 @@ $(function() {
 
     return {
       'loginName': tel,
-      // 'loginPwd': pwd_md5,
+      'loginPwd': pwd_md5,
       'type': 'register ',
       'invitationCode': inviteCode,
       'channelCode': channelCode,
@@ -148,6 +165,11 @@ $(function() {
   //点击注册按钮
   $('#btn-reg').click(function(e) {
     var params = verify();
+    show(u);
+    if(!isMobile()) {
+      //show("您好，请通过正规途径申请111!");
+      return false;
+    }
     if (!params) {
       return false;
     }else{

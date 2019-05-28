@@ -35,7 +35,7 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_YOUDUN_RISK = 13;
 
     //充值类型
-    public static int CALLS_TYPE_TopUp = 13;
+    public static int CALLS_TYPE_TopUp = 999;
     //魔蝎运营商费用
     public static double FEE_OPERATOR = -0.7;
     //魔杖反欺诈费用

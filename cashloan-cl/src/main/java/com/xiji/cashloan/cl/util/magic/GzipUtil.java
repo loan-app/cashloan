@@ -1,9 +1,12 @@
 package com.xiji.cashloan.cl.util.magic;
 
+import org.apache.commons.codec.binary.StringUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by szb on 18/11/23.
@@ -28,6 +31,18 @@ public class GzipUtil {
         return writer.toString();
     }
 
+    public static byte[] compress(String str, String encoding)  throws IOException {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip;
+        gzip = new GZIPOutputStream(out);
+        gzip.write(str.getBytes(encoding));
+        gzip.close();
+        return out.toByteArray();
+    }
+
     public static void main(String[] args) throws IOException {
         // {mobile} 申请人的手机号
         // {task_id} 用户授权认证，创建运营商采集任务的任务ID
@@ -44,7 +59,12 @@ public class GzipUtil {
         // 样例：connection.setRequestProperty("Authorization", "token 090b2fd02d034dbea409bbd5f9900bc2");
         connection.setRequestProperty("Authorization", "token " + "8ef655524dcf4a0c8bdb8d08bcb7ef41");
         connection.connect();
-        System.out.println(uncompress(connection.getInputStream()));
+        InputStream inputStream = connection.getInputStream();
+        String uncompress = uncompress(inputStream);
+        System.out.println(uncompress);
+        System.out.println("原长度：" + uncompress.length());
+        System.out.println("压缩后字符串：" + compress(uncompress, "UTF-8").toString().length());
+        System.out.println("解压缩后字符串：" + uncompress(new ByteArrayInputStream(compress(uncompress, "UTF-8"))));
         connection.disconnect();
 
     }

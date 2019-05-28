@@ -38,4 +38,9 @@ public interface SceneBusinessLogService extends BaseService<SceneBusinessLog, L
      * @return
      */
 	boolean haveNeedExcuteByNid(Long borrowId, String nid);
+
+	/**
+	 * 修改未执行完成的接口状态(用于临时解决订单卡住待机审)
+	 */
+	int updateBusinessLogByBorrowId(Long borrowId);
 }

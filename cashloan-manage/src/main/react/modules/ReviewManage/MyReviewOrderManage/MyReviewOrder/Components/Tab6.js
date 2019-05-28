@@ -92,6 +92,9 @@ var Tab6 = React.createClass({
             return <span style={{ color: "red" }}>是</span>;
         }
       }
+    },{
+        title: '逾期天数',
+        dataIndex: "penaltyDay",
     }, {
       title: '还款方式',
       dataIndex: "repayWay",

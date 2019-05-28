@@ -57,6 +57,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -572,9 +573,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			list.add(progress);
 		}
 
-		// 审核不通过 （自动审核不通过，人工复审不通过）借款记录
+		// 审核不通过 （自动审核不通过，人工复审不通过,放款审核不通过）借款记录
 		if ("detail".equals(pageFlag)
-				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED.equals(borrow.getState()))) {
+				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED.equals(borrow.getState()) || BorrowModel.AUDIT_LOAN_FAIL.equals(borrow.getState()))) {
 			bpMap.put("state", borrow.getState());
 			pgList = borrowProgressMapper.listProgress(bpMap);
 			
@@ -594,15 +595,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			progress.setStr(progress.getState());
 			progress.setState(progress.getStr());
 			progress.setType("10");
-			
-			
+
 			list.add(progress);
 		}
 		
-		// 审核不通过 （自动审核不通过，人工复审不通过）首页
+		// 审核不通过 （自动审核不通过，人工复审不通过，放款审核不通过）首页
 		if ("index".equals(pageFlag) && day>0 
 				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED
-						.equals(borrow.getState()))) {
+						.equals(borrow.getState()) || BorrowModel.AUDIT_LOAN_FAIL.equals(borrow.getState()))) {
 			bpMap.put("state", borrow.getState());
 			pgList = borrowProgressMapper.listProgress(bpMap);
 			
@@ -726,7 +726,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 				if (BorrowProgressModel.PROGRESS_LOAN_SUCCESS.equals(progress.getState())) {
 					double repayAmount = borrow.getRealAmount() + borrow.getFee();
-
+                    DecimalFormat df = new DecimalFormat("0.00");
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(progress.getCreateTime());
 					cal.add(Calendar.SECOND, +1);
@@ -741,15 +741,17 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					if (repay!=null) {
 						day = DateUtil.daysBetween(new Date(),
 								repay.getRepayTime());
+						repayAmount = BigDecimalUtil.add(repay.getAmount(), repay.getPenaltyAmout());
+
 						if (day > 0) {
-							progress.setRemark("您需要在" + day + "天后还款" + repay.getAmount()+repay.getPenaltyAmout() + "元");
+							progress.setRemark("您需要在" + day + "天后还款" + df.format(repayAmount) + "元");
 						} else if (day == 0) {
-							progress.setRemark("您需要在今天还款" + repay.getAmount()+repay.getPenaltyAmout() + "元");
+							progress.setRemark("您需要在今天还款" + df.format(repayAmount) + "元");
 						}
 					}
 					
 					if ("1".equals(borrow.getTimeLimit())) {
-						progress.setRemark("您需要在今天还款" + repayAmount+ "元");
+						progress.setRemark("您需要在今天还款" + df.format(repayAmount)+ "元");
 					}
 					progress.setState("待还款");
 					progress.setType("10");
@@ -1417,6 +1419,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				vo.setBorrowOrderNo(borrow.getOrderNo());
 				vo.setMobile(bankCard.getPhone());
 				vo.setShareKey(bankCard.getUserId());
+				vo.setBankName(bankCard.getBank());
 				PaymentResponseVo result = PayCommonUtil.payment(vo);
 				PayLog payLog = new PayLog();
 				payLog.setOrderNo(result.getOrderNo());
@@ -2486,7 +2489,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			map.put("state", state);
 			map.put("remark", remark);
 			code = clBorrowMapper.loanState(map);
-			if (code!=1) {
+			if (code != 1) {
 				throw new BussinessException("放款审核失败,当前状态不是待审核放款");
 			}
 			
@@ -2517,6 +2520,61 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		return code;
 	}
+
+
+
+	/**
+	 *
+	 * @description 批量放款
+	 * @param borrowIds
+	 * @author mcwang
+	 * @return void
+	 * @since  1.0.0
+	 */
+	@Override
+	public void batchBorrowLoan(List<Long> borrowIds,Long userId){
+
+		for (Long borrowId : borrowIds){
+			int code = 0;
+			Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
+			if (borrow != null) {
+				if(borrow.getState().equals(BorrowModel.STATE_REPAY_FAIL)){
+					borrowLoan(borrow, new Date());
+					break;
+				}
+				if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
+					logger.error("审核失败,当前状态不是待审核放款");
+					break;
+				}
+				Map<String,Object> map = new HashMap<>();
+				map.put("id", borrowId);
+				map.put("state", BorrowModel.AUDIT_LOAN_PASS);
+				code = clBorrowMapper.loanState(map);
+				if (code != 1) {
+					logger.info("放款审核失败,当前状态不是待审核放款");
+					break;
+				}
+				//添加借款进度
+				BorrowProgress borrowProgress = new BorrowProgress();
+				borrowProgress.setBorrowId(borrow.getId());
+				borrowProgress.setUserId(borrow.getUserId());
+				borrowProgress.setState(BorrowModel.AUDIT_LOAN_PASS);
+				borrowProgress.setRemark("人工放款审核");
+
+				borrowProgress.setAuditRemark("批量放款");
+				borrowProgress.setAuditUser(userId);
+				borrowProgress.setCreateTime(DateUtil.getNow());
+				borrowProgressMapper.save(borrowProgress);
+				// 审核放款通过 放款
+				borrowLoan(borrow, new Date());
+			} else {
+				logger.error("审核放款失败，当前标不存在");
+				break;
+			}
+		}
+	}
+
+
 
 	@Override
 	public List<YixinShareModel> queryDataForYixin(Long userId, String idNo, String name) {

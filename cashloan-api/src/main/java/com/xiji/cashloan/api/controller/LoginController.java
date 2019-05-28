@@ -193,8 +193,8 @@ public class LoginController {
 		new AppAbsActionWrapper(response) {
 			@Override
 			public Object doAction() {
-				Map result = userService.userRegister(request, loginName,
-						 vcode, invitationCode, registerCoordinate,
+				Map result = userService.registerUser(request, loginName,
+						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
 						registerAddr, "h5", signMsg,channelCode);
 				if ((Boolean) result.get("success")) {
 //					result = userService.login(request, loginName, loginPwd,

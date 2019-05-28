@@ -57,6 +57,11 @@ public class OperatorVoice extends OperatorBase implements Serializable {
      */
     private Integer fee;
 
+    /**
+     * 对方在通讯录中的名称
+     */
+    private String peerName;
+
     public String getBillMonth() {
         return billMonth;
     }
@@ -119,5 +124,13 @@ public class OperatorVoice extends OperatorBase implements Serializable {
 
     public void setFee(Integer fee) {
         this.fee = fee;
+    }
+
+    public String getPeerName() {
+        return peerName;
+    }
+
+    public void setPeerName(String peerName) {
+        this.peerName = peerName;
     }
 }

@@ -341,7 +341,7 @@
     
     <select id="findRepay" resultMap="repayModel" parameterType="java.util.HashMap">
         SELECT cbr.id, cbr.borrow_id AS borrowId,cbr.repay_time,cbr.penalty_amout AS penaltyAmout,cbr.penalty_day AS penaltyDay,
-        cb.amount,cb.real_amount,cb.fee,cb.state
+        (cbr.amount+cbr.penalty_day) amount,cb.real_amount,cb.fee,cb.state
 		FROM cl_borrow_repay AS cbr,cl_borrow AS cb
 		WHERE cbr.borrow_id = cb.id AND cbr.state = 20 AND cb.user_id = #{userId,jdbcType=BIGINT}
 		ORDER BY cb.id DESC

@@ -1,14 +1,12 @@
 package com.xiji.cashloan.cl.model;
 
-import java.io.File;
-import java.util.Date;
-
-import org.springframework.beans.BeanUtils;
-
-import tool.util.DateUtil;
-
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.model.BorrowModel;
+import org.springframework.beans.BeanUtils;
+import tool.util.DateUtil;
+
+import java.io.File;
+import java.util.Date;
 
 
 /**
@@ -64,7 +62,7 @@ public class ManageBorrowModel extends Borrow {
 	private Double penaltyAmout;
 
 	/**
-	 * 逾期罚金
+	 * 逾期天数
 	 */
 	private String penaltyDay;
 

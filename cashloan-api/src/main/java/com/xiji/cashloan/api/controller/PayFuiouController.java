@@ -15,14 +15,17 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyRequest;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.Pay2bankNotify;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.CCSUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.service.PayLogService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tool.util.DateUtil;
 import tool.util.StringUtil;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 实时付款(代付)异步通知
@@ -204,6 +211,88 @@ public class PayFuiouController extends BaseController{
 		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
 			writeResult(response, "success");
 		}
+	}
+
+	/**
+	 * 快钱异步通知接口：
+	 * 代付（支付）- 成功通知接口 - 异步通知处理
+	 * @param httpRequest
+	 * @param httpResponse
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/api/pay/kuaiqian/payforNotify.htm")
+	public void payforNotify(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
+
+		KuaiqianPayHelper kuaiqianPayHelper = new KuaiqianPayHelper();
+		long start = System.currentTimeMillis();
+		logger.info("---------------------快钱实时付款 - 异步通知开始----------------------" );
+		//获取客户端请求报文
+		String requestXml = kuaiqianPayHelper.genRequestXml(httpRequest);
+		if (StringUtil.isBlank(requestXml)){
+			logger.error("快钱回调请求参数为空，请正确传参");
+			return;
+		}
+		NotifyRequest request = CCSUtil.converyToJavaBean(requestXml, NotifyRequest.class);
+		String requestStr = kuaiqianPayHelper.unsealxml(request);//解密请求报文
+		if (requestStr == null){
+			logger.error("快钱异步请求参数异常  ==>"+requestXml);
+			return;
+		}
+		//调用单笔快到银api2.0服务
+		String responseXml = kuaiqianPayHelper.sealxml(request.getNotifyRequestBody().getSealDataType().getOriginalData());
+
+		if (responseXml == null){
+			logger.error("快钱异步通知响应参数异常  ==>"+request.getNotifyRequestBody().getSealDataType());
+			return;
+		}
+		Pay2bankNotify pay2bankNotify = KuaiqianPayUtil.converyToJavaBean(requestStr, Pay2bankNotify.class);
+
+		PayReqLog payReqLog = payReqLogService.findByOrderNo(pay2bankNotify.getMerchant_id());
+		String params = JSON.toJSONString(pay2bankNotify);
+		if (payReqLog != null) {
+			// 保存respLog
+			PayRespLog payRespLog = new PayRespLog(pay2bankNotify.getMerchant_id(),PayRespLogModel.RESP_LOG_TYPE_NOTIFY,params);
+			payRespLogService.save(payRespLog);
+
+			// 更新reqLog
+			modifyPayReqLog(payReqLog,params);
+		}
+
+		PayLog payLog = payLogService.findByOrderNo(pay2bankNotify.getMerchant_id());
+
+		if(null  == payLog ){
+			logger.warn("未查询到对应的支付订单");
+			return ;
+		}
+
+		RepaymentNotifyDto dto = new RepaymentNotifyDto();
+		dto.setPayPlatNo(pay2bankNotify.getOrder_seq_id());
+		if ("111".equals(pay2bankNotify.getStatus()) && KuaiqianPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(pay2bankNotify.getError_code())) {
+			dto.setStatus(PayConstant.RESULT_SUCCESS);
+		}else {
+			dto.setStatus(PayConstant.STATUS_FAIL);
+		}
+
+		String message = "";
+		if (PayLogModel.SCENES_LOANS.equals(payLog.getScenes())) {
+			message = paymentNotifyAssist.doScenesLoans(dto,payLog);
+		}else if (PayLogModel.SCENES_PROFIT.equals(payLog.getScenes())){
+			message = paymentNotifyAssist.doScenesProfit(dto,payLog);
+		}else if (PayLogModel.SCENES_REFUND.equals(payLog.getScenes())){
+			message = paymentNotifyAssist.doScenesRefund(dto,payLog);
+		}else {
+			logger.error("没有合适的场景，异步通知处理失败" + pay2bankNotify.getMerchant_id());
+		}
+
+		//返回响应报文
+		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
+			httpResponse.setCharacterEncoding("utf-8");
+			httpResponse.setContentType("utf-8");
+			httpResponse.getWriter().write(responseXml);
+			httpResponse.getWriter().flush();
+		}
+		long end = System.currentTimeMillis();
+		logger.info("cost "+(end-start));
 	}
 
 	private void writeResult(HttpServletResponse response,String result)throws Exception {

@@ -1,16 +1,11 @@
 import React from 'react'
-import {
-    Button,
-    Form,
-    Input,
-    Select,
-    Checkbox,
-    Modal
-} from 'antd';
+import {Button, Form, Input, Modal, Select} from 'antd';
 
 import './login.css';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
+var yes = true,timing = null;
 let Login = React.createClass({
     getInitialState() {
         return {
@@ -25,7 +20,6 @@ let Login = React.createClass({
                 //console.log('Errors in form!!!');
                 return;
             }
-            //console.log(values);
             var params = values;
             this.login(params);
         });
@@ -42,7 +36,7 @@ let Login = React.createClass({
                     localStorage.Token = result.Token;
                     location.reload();
                 } else {
-                    me.changeImg();
+                   // me.changeImg();
                     Modal.error({
                         title: result.msg,
                         onOk: () => {
@@ -79,14 +73,61 @@ let Login = React.createClass({
             $('ul').css({ 'transform': 'rotateX(' + mY + 'deg) rotateY(' + mX + 'deg)' });
         });
     },
-    changeImg() {
-        var imgSrc = document.getElementsByClassName("imgCode")[0];
-        var times = Date.now();
-        imgSrc.setAttribute("src", '/system/user/imgCode/generate.htm?timestamp=' + times);
-    },
+    // changeImg() {
+    //     var imgSrc = document.getElementsByClassName("imgCode")[0];
+    //     var times = Date.now();
+    //     imgSrc.setAttribute("src", '/system/user/imgCode/generate.htm?timestamp=' + times);
+    // },
     componentWillUnmount() {
         window.removeEventListener('resize', this.onWindowResize)
     },
+
+
+
+    verifyPhone() {
+
+        this.props.form.validateFields((errors, values) => {
+
+            var params={
+                username: values.username,
+                type: 'sysLogin',
+            };
+
+            console.log("values.username ==>"+values.username)
+            if(yes) {
+                Utils.ajaxData({
+                    url: '/system/user/login/sendSms.htm',
+                    data: params,
+                    callback: (result) => {
+                        if (result.code == "200") {
+                            var time = result.countDown == 0 ? 59 : result.countDown;
+                            timing = setInterval(function () {
+                                $('#btn').html(time + 's');
+                                if (time < 1) {
+                                    clearInterval(timing);
+                                    $('#btn').removeAttr('disabled').html('获取验证码');
+                                    yes = true;
+                                } else {
+                                    yes = false;
+                                }
+                                time--;
+                            }, 1000);
+                            Modal.success({
+                                title: result.msg,
+                            });
+                        } else {
+                            Modal.error({
+                                title: result.msg,
+                            });
+                        }
+                    }
+                });
+            }
+        })
+    },
+
+
+
     render() {
 
         const {
@@ -140,18 +181,18 @@ let Login = React.createClass({
                                                        placeholder="访问码"/>
                                             </FormItem>*/}
                                                 <FormItem >
-                                                    <Input type="text" className="ipt ipt-pwd1" name="code" autoComplete="off"
-                                                        {...getFieldProps('code', {
+                                                    <Input type="text" className="ipt ipt-pwd1" name="vCode" autoComplete="off"
+                                                        {...getFieldProps('vCode', {
                                                             rules: [{
-                                                                required: true,
                                                                 whitespace: false,
-                                                                message: '请输入图片验证码'
+                                                                message: '请输入短信验证码'
                                                             }],
                                                             trigger: 'onBlur'
                                                         })
                                                         }
                                                         placeholder="验证码" />
-                                                    <img onClick={this.changeImg} className='imgCode' src="/system/user/imgCode/generate.htm" alt="图片验证码" />
+                                                    <Button id="btn" className="ipt ipt-btn" type ="light" onClick={this.verifyPhone} >获取验证码</Button>
+                                                    {/*<img onClick={this.changeImg} className='imgCode' src="/system/user/imgCode/generate.htm" alt="图片验证码" />*/}
                                                 </FormItem>
                                                 <Button type="primary" size="large" className="ant-input u-loginbtn" htmlType="submit">登录</Button>
                                             </Form>

@@ -137,11 +137,13 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
                     JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
                     if ("reliability".equals(jsonObject.getString("key"))) {
                         String reliability = jsonObject.getString("value");
-                        if("实名认证".equals(reliability)) {
+                        if ("实名认证".equals(reliability)) {
                             basic.put("reliability", Boolean.TRUE);
                         } else {
                             basic.put("reliability", Boolean.FALSE);
                         }
+                    } else if ("in_time".equals(jsonObject.getString("key"))) {
+                        basic.put("inTime", jsonObject.getInteger("value"));
                     }
                 }
                 //处理basic_check_items

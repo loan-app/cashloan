@@ -1,12 +1,12 @@
 package com.xiji.cashloan.system.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.xiji.cashloan.core.common.exception.PersistentDataException;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import com.xiji.cashloan.system.domain.SysUser;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -75,4 +75,8 @@ public interface SysUserMapper extends BaseMapper<SysUser, Long>{
 	List<SysUser> listByRole(Map<String, Object> params);
 
 	void updateState(Map<String, Object> result);
+
+	List<SysUser> queryByUserIdAndRole(Map<String, Object> params);
+
+	SysUser getSysUserByUserName(String userName);
 }

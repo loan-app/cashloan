@@ -900,6 +900,66 @@ INSERT INTO `arc_sys_config` VALUES (null, 70, '到期短信发送host', 'sms_ap
 -- 修改到期提醒短信模板
 update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请及时处理增加个人信誉以便提额，最晚时间下午6点！请登录APP或者联系后台客服{$telephone}处理',number='SMS0509829445' where type='repayBefore';
 
+insert into `arc_sys_config` ( `status`, `remark`,  `code`, `value`, `type`, `creator`, `name`) values ( '1', '信审拥有待审核订单最大值，默认20单', 'manual_audit_max', '20', '20', '1', '信审拥有待审核订单最大值');
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'automaticDistributionOrder', '0', 'com.xiji.cashloan.manage.job.QuartzDistributionOrder', now(), '待审核订单自动分配', '0 0/5 * * * ?');
+
+-- 公信宝对接sql
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝appId', 'gxb_appid', 'gxb51864c27832a59be', '1', '公信宝appId', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝appSecret', 'gxb_appsecret', 'a22a93d48cdd4ca29b653e6970108b01', '1', '公信宝appSecret', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝获取token的接口地址', 'gxb_get_token_url', 'https://prod.gxb.io/crawler/auth/v2/get_auth_token', '1', '公信宝获取token的接口地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '运营商公司选择', 'operator_select', 'moxie', '1', '运营商公司选择，moxie,gxb', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝H5接入地址', 'gxb_h5_url', 'https://prod.gxb.io/v2/auth', '1', '公信宝H5接入地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '公信宝拉取全部运营商报告数据url', 'gxb_pull_all_report_url', 'https://prod.gxb.io/crawler/data/report/', '1', '公信宝拉取全部运营商报告数据url', '1');
+ALTER table cl_operator_req_log add req_token varchar(64) DEFAULT '' COMMENT '授权token';
+
+-- 富友支付选择
+INSERT INTO `arc_sys_config` VALUES (null, 20, '富友支付选择', 'fuiou_payment_select', '1', 1, '富友支付选择：1-协议支付,2-笔笔验证', 1);
+
+-- 修改字段长度
+alter table cl_operator_basic change city `city` varchar(100) DEFAULT  '' COMMENT '城市';
+
+-- 修改紧急联系人姓名字段编码格式
+alter table `cl_user_emer_contacts`  change name name varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '联系人';
+
+-- 修改表字段长度
+ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `fee` decimal(9,2)  NOT NULL COMMENT '收取费用' AFTER `type`;
+ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别' AFTER `task_id`;
+
+-- 处理卡在待机审的订单(暂时解决办法)
+insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');
+
+-- 添加登录验证码过期时间
+INSERT INTO `arc_sys_config` VALUES (null, '60', '登录短信验证码过期时间', 'login_sms_time_limit', '20', '1', '单位：分钟', '1');
+
+-- 插入后台登录短信模板
+INSERT INTO `cl_sms_tpl` VALUES ('8', 'sysLogin', '后台登录', '尊敬的用户，您的登录验证码为:', 'SMS0966640668', '10');
+
+
+-- 快钱自动付款相关配置测试环境
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱付款url', 'kuaiqian_payfor_pay_url', 'https://sandbox.99bill.com/fo-pay/pay2bank/pay', 1, '快钱付款url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱付款订单查询url', 'kuaiqian_payfor_query_url', 'https://sandbox.99bill.com/fo-pay-query/pay2bank/query', 1, '快钱付款订单查询url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱付款商户唯一标识', 'kuaiqian_payfor_membercode', '10012138842', 1, '快钱付款商户唯一标识', 1);
+-- 块钱协议支付相关配置
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送短信验证码地址', 'kq_Captcha_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth', '1', '块钱发送短信验证码地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱发送绑卡地址', 'kq_bindCard_url', 'https://sandbox.99bill.com:9445/cnp/ind_auth_verify', '1', '块钱发送绑卡地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱协议支付接口地址', 'kq_protocol_pay_url', 'https://sandbox.99bill.com:9445/cnp/purchase', '1', '块钱协议支付接口地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '块钱查询交易状态接口地址', 'kq_query_status_url', 'https://sandbox.99bill.com:9445/cnp/query_txn', '1', '块钱查询交易状态接口地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付卡bin查询url', 'kuaiqian_agreement_query_txn', 'https://sandbox.99bill.com:9445/cnp/query_txn', 1, '快钱协议支付卡bin查询url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付查询绑卡信息', 'kuaiqian_agreement_pci_query', 'https://sandbox.99bill.com:9445/cnp/pci_query', 1, '快钱协议支付查询绑卡信息', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付商户号', 'kuaiqian_agreement_merchantId', '104110045112012', 1, '快钱协议支付商户号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱协议支付终端号', 'kuaiqian_agreement_terminalId', '00002012', 1, '快钱协议支付终端号', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '快钱银行卡解绑url', 'kuaiqian_agreement_pci_del', 'https://sandbox.99bill.com/cnp/pci_del', 1, '快钱银行卡解绑url', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 80, '块钱网关证书文件名', 'kuaiqian_certificate_name', '10411004511201290', 1, '块钱网关证书文件名', 1);
+-- 支付请求记录表
+ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
+
+-- 最终逾期统计
+INSERT INTO `arc_sys_menu` VALUES ('1027', '0', '最终逾期统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '最终逾期统计', '0', 'NowOverdueStatistic', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1027');
+
+INSERT INTO `arc_sys_menu` VALUES ('1028', '0', '实时到期还款统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '实时到期还款统计', '0', 'RealTimeMaturityStatistic', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1028');
+
 -- 添加用户管理列表 未借款用户信息
 INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
 

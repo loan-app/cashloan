@@ -14,6 +14,7 @@ public class BindCardMsgVo extends PayReq {
 
     private String orderNo;//绑卡需要用发短信的流水号
     private String msgCode;//验证码
+    private String token;//绑卡需要的令牌信息
 
     public String getUserId() {
         return userId;
@@ -69,5 +70,13 @@ public class BindCardMsgVo extends PayReq {
 
     public void setMsgCode(String msgCode) {
         this.msgCode = msgCode;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

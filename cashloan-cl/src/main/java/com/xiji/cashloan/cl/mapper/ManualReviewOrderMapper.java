@@ -42,10 +42,39 @@ public interface ManualReviewOrderMapper extends BaseMapper<ManualReviewOrder, L
     int reviewState(Map<String, Object> map);
 
     /**
+     * 查询待分配订单
+     * @return
+     */
+    List<ManualReviewOrder> listAllocated();
+
+
+    /**
+     *
+     * 查询审核人手中拥有待审核订单数
+     * @return
+     */
+    List<Map<String,Object>> listToBeAssignedCount();
+
+
+    /**
      *
      *根据borrowId修改状态
      * @param map
      *            更新条件
      */
     int updateByBorrowId(Map<String, Object> map);
+
+    /**
+     * 批量更新审核订单
+     * @param manualReviewOrders
+     * @return
+     */
+    int batchUpdate(List<ManualReviewOrder> manualReviewOrders);
+
+
+    /**
+     * 复借人工审核订单
+     * @return
+     */
+    List<ManualReviewOrder> listAgainBorrowOrder(Map<String, Object> map);
 }

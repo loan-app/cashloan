@@ -1,15 +1,6 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Modal,
-  Select,
-  Tree,
-  TreeSelect,
-  Row,
-  Col
-} from 'antd';
+import {Col, Form, Input, Modal, Row, Select} from 'antd';
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -168,7 +159,7 @@ var AddUserWin = React.createClass({
             <Row>
               <Col span="12">
 	            <FormItem  {...formItemLayout}  label="手机号码:">
-	              <Input disabled={!props.canEdit} {...getFieldProps('mobile')} type="text"/>
+                    <Input disabled={!props.canEdit} {...getFieldProps('mobile', { rules: [{required:true,message:'必填'}]})} type="text" autoComplete="off" />
 	            </FormItem>
 	          </Col>
               <Col span="12">
