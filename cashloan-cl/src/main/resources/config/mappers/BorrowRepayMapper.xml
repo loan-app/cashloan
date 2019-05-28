@@ -213,10 +213,10 @@
     </sql>
      <select id="listModel" resultMap="userBorrowRayMap" parameterType="java.util.HashMap">
         select  u.real_name,u.phone,b.order_no,b.amount as borrow_amount,b.create_time as borrow_time,r.id,r.user_id,r.borrow_id,r.state,r.amount  as repay_amount,r.repay_time,r.penalty_amout,r.penalty_day,
-         b.fee ,b.real_amount,channel.name as channel_name
+        b.fee ,b.real_amount,channel.name as channel_name
         from  cl_borrow b  left join  cl_user_base_info u on  u.user_id=b.user_id  join cl_borrow_repay r on r.borrow_id=b.id
-         left join cl_user user2 on user2.id = u.user_id
-         left join cl_channel channel on user2.channel_id = channel.id
+        left join cl_user user2 on user2.id = u.user_id
+        left join cl_channel channel on user2.channel_id = channel.id
         <include refid="searchModelBy"/>
         ORDER BY r.id DESC
     </select>

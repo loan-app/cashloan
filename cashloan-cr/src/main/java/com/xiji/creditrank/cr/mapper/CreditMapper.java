@@ -29,6 +29,9 @@ public interface CreditMapper extends BaseMapper<Credit,Long> {
 	 */
 	int updateAmount(Map<String, Object> map);
 
+	int addNum(Map<String, Object> map);
+
+	int subtractNum(Map<String, Object> map);
     /**
      * 更新总额度
      * @param map

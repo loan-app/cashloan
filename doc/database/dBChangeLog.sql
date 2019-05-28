@@ -904,3 +904,10 @@ update cl_sms_tpl set tpl = '{$name}先生/女士，您的账单今天到期请�
 INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
 
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
+
+-- 根据完成次数提额
+INSERT INTO `arc_sys_config` VALUES (null, '20', '还款提额次数', 'count_improve_credit', '1,2,3', '1', '还款提额次数(1,2,3)', '1');
+--  添加成功还款次数字段
+ALTER TABLE arc_credit add column 'num' int(11) DEFAULT '0' COMMENT '完成还款次数' after count;
+-- 修改arc_credit中num的值
+update arc_credit set num = count

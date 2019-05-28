@@ -14,6 +14,7 @@
         <result column="state" property="state" jdbcType="VARCHAR" />
         <result column="req_ext" property="reqExt" jdbcType="VARCHAR" />
         <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="num" property="num" jdbcType="INTEGER" />
     </resultMap>
     
     <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.CreditModel">
@@ -80,6 +81,18 @@
             state = #{state,jdbcType=VARCHAR},
             req_ext = #{reqExt,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+    <update id="addNum" parameterType="com.xiji.creditrank.cr.domain.Credit">
+        update  arc_credit set
+            num = 1 + num
+        where id = #{id,,jdbcType=INTEGER}
+    </update>
+
+    <update id="subtractNum" parameterType="com.xiji.creditrank.cr.domain.Credit">
+        update  arc_credit set
+            num = 0
+        where id = #{id,,jdbcType=INTEGER}
     </update>
 
 	<update id="updateAmount" parameterType="java.util.HashMap">
@@ -232,7 +245,7 @@
     
        <select id="findByConsumerNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
-        id,consumer_no,total,credit_type,grade,used,unuse,state,req_ext,count 
+        id,consumer_no,total,credit_type,grade,used,unuse,state,req_ext,count,num
         from arc_credit
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </select>
