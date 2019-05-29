@@ -582,10 +582,10 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     decision.setYxLoaningAm3m(1);
                 }
 
-                //新颜无数据,阿福无下款数据,有盾借贷多头半年未下款且有盾1个月申请平台大于30
+                //新颜无数据,阿福无下款数据,有盾借贷多头半年未下款
                 int ydLoanPlatformCount1m = decision.getYdLoanPlatformCount1m() == null ? 0 : decision.getYdLoanPlatformCount1m();
                 int ydActualLoanPlatformCount6m = decision.getYdActualLoanPlatformCount6m() == null ? 0 : decision.getYdActualLoanPlatformCount6m();
-                if((xinyanXwld == null || StringUtil.isBlank(xinyanXwld.getData())) && countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0 && ydLoanPlatformCount1m > 30) {
+                if((xinyanXwld == null || StringUtil.isBlank(xinyanXwld.getData())) && countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0) {
                     decision.setYxYdNoLoan(1);
                 }
             }
