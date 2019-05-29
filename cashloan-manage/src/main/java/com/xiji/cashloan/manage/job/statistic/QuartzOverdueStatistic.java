@@ -49,13 +49,14 @@ public class QuartzOverdueStatistic implements Job {
 
         Date dateBefore = DateUtil.getDateBefore(-1,new Date());
 
-        DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
-        String endDateStr = dateFormat.format(dateBefore);
+        DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String endDateStr = dateFormat.format(DateUtil.getDayEndTime(dateBefore));
         List<OverdueStatisticData> overdueStatisticDataList;
-        params.put("endDate",endDateStr);
+        params.put("endDate", endDateStr);
         if (lateDate != null) {
-            String startDateStr = dateFormat.format(lateDate);
+            String startDateStr = dateFormat.format(DateUtil.getDayStartTime(lateDate));
             params.put("startDate", startDateStr);
+
         }
         overdueStatisticDataList = overdueStatisticDataService.listOverdueStatisticData(params);
         for(OverdueStatisticData overdueStatisticData:overdueStatisticDataList){

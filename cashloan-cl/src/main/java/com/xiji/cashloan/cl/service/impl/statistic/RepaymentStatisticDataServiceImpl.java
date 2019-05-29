@@ -2,6 +2,7 @@ package com.xiji.cashloan.cl.service.impl.statistic;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xiji.cashloan.cl.domain.statistic.RealTimeMaturityStatistic;
 import com.xiji.cashloan.cl.domain.statistic.RepaymentStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.RepaymentStatisticDataMapper;
 import com.xiji.cashloan.cl.service.statistic.RepaymentStatisticDataService;
@@ -12,6 +13,7 @@ import com.xiji.cashloan.core.common.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -78,5 +80,40 @@ public class RepaymentStatisticDataServiceImpl extends BaseServiceImpl<Repayment
 			}
 		}
 		return repaymentStatisticData;
+	}
+
+
+	/**
+	 * 分页获取实时还款统计
+	 * @param params
+	 * @param current
+	 * @param pageSize
+	 * @return
+	 */
+	@Override
+	public Page<RealTimeMaturityStatistic> listRealTimeRepayment(Map<String,Object> params,Integer current,Integer pageSize){
+		PageHelper.startPage(current, pageSize);
+		Page<RealTimeMaturityStatistic>  realTimeMaturityStatistics = (Page<RealTimeMaturityStatistic>)repaymentStatisticDataMapper.realTimeRepayment(params);
+
+		if (CollectionUtil.isEmpty(realTimeMaturityStatistics)){
+			return realTimeMaturityStatistics;
+		}
+
+		for (RealTimeMaturityStatistic maturityStatistic :realTimeMaturityStatistics){
+			if (maturityStatistic.getExtendCount() == null){
+				maturityStatistic.setExtendCount(0);
+			}
+			if (maturityStatistic.getReimbursementCount() == null){
+                maturityStatistic.setReimbursementCount(0);
+			}
+			if (maturityStatistic.getExpireCount() == null || maturityStatistic.getExpireCount() == 0){
+				maturityStatistic.setExpireCount(0);
+				maturityStatistic.setRepaymentRate(0.00);
+			}else {
+				maturityStatistic.setRepaymentRate(BigDecimalUtil.decimal(((double)maturityStatistic.getReimbursementCount()+maturityStatistic.getExtendCount())/(double)maturityStatistic.getExpireCount()*100,2));
+			}
+			maturityStatistic.setExpireTimeStr(DateUtil.dateStr(maturityStatistic.getExpireTime(),DateUtil.DATEFORMAT_STR_002));
+		}
+		return realTimeMaturityStatistics;
 	}
 }
