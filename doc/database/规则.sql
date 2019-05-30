@@ -93,6 +93,16 @@ insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_commen
 values(47,1,'cl_decision','决策数据','mx_voice_has_sensitive_phone','通话详情包含敏感号码,0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-16 11:10:52','int',null,null,'10',null);
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
 values(48,1,'cl_decision','决策数据','company_name','公司名称','include','房产中介','10',null,'115.192.184.73','2019-05-16 11:10:52','string',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(49,1,'cl_decision','决策数据','yd_no_loan_6m','多头近6月未下款且申请平台大于15 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(50,1,'cl_decision','决策数据','yd_loan_1m','多头近1月申请平台数大于等于30家 且下款平台数小于3 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(51,1,'cl_decision','决策数据','mx_message_num','近一月短信和被叫是上一个月的2倍及以上 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(52,1,'cl_decision','决策数据','xy_suc_minus_fail_num','还款行为历史和一月失败均大于成功 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(53,1,'cl_decision','决策数据','yd_platform_loan_num','多头实际借款平台数1 还款平台1 还款笔数1 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
 
 insert into `arc_rule_engine`(`id`,`name`,`state`,`config_count`,`req_ext`,`add_ip`,`add_time`,`integral`,`type`,`type_result_status`,`sort`)
 values(1,'决策','10',37,null,'0:0:0:0:0:0:0:1','2019-01-23 11:02:17',null,'20','10',null);
@@ -181,8 +191,12 @@ insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`
 values(83,1,1,0,47,0);
 insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
 values(84,1,1,0,48,0);
-delete from arc_rule_engine_config where id in (4,5,6,7,8,9,11,12,13,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,40,41,42);
-delete from arc_borrow_rule_config where id in (5,6,8,34,35,36);
+-- 删除信德相关规则配置
+delete from arc_borrow_rule_config where config_id in (40,41,42);
+-- 删除运营商用户未实名认证条件
+delete from arc_borrow_rule_config where config_id in (12);
+-- 部分系统使用公信宝运营商时，删除魔杖黑灰名单规则配置
 delete from arc_borrow_rule_config where config_id in (4,5,6,7,8,9,11,12,13,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32);
+-- 删除菜单栏
 delete from arc_sys_menu where id in (3,4,30,31,32,33,34,35,36,37,38,5,6,39,41,42,43,44,45,50,29,56,57,18,83,84,85,90,91,93,94,95,97,1001,1002,1003,1006,1014,1015,23,98);
 delete from arc_sys_role_menu where menu_id in (3,4,30,31,32,33,34,35,36,37,38,5,6,39,41,42,43,44,45,50,29,56,57,18,83,84,85,90,91,93,94,95,97,1001,1002,1003,1006,1014,1015,23,98);
