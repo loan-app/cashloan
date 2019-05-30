@@ -382,20 +382,28 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             decision.setXyLatestOneMonthFail(dataJson.getString("latest_one_month_fail"));
             decision.setXyLoansLongTime(dataJson.getString("loans_long_time"));
             decision.setXyLoansLatestTime(dataJson.getString("loans_latest_time"));
+            int historyNum = 0;
+            int latestMonthNum = 0;
             if(StringUtil.isNumber(dataJson.getString("history_suc_fee")) &&
                     StringUtil.isNumber(dataJson.getString("history_fail_fee"))) {
                 //历史扣款成功笔数-失败笔数
-                int historyNum = Integer.valueOf(dataJson.getString("history_suc_fee")) -
+                historyNum = Integer.valueOf(dataJson.getString("history_suc_fee")) -
                         Integer.valueOf(dataJson.getString("history_fail_fee"));
                 decision.setXyHistorySucMinusFailNum(historyNum);
             }
-            if(StringUtil.isNumber(dataJson.getString("history_suc_fee")) &&
-                    StringUtil.isNumber(dataJson.getString("history_fail_fee"))) {
+            if(StringUtil.isNumber(dataJson.getString("latest_one_month_suc")) &&
+                    StringUtil.isNumber(dataJson.getString("latest_one_month_fail"))) {
                 //近一个月扣款成功笔数-失败笔数
-                int latestMonthNum = Integer.valueOf(dataJson.getString("latest_one_month_suc")) -
+                latestMonthNum = Integer.valueOf(dataJson.getString("latest_one_month_suc")) -
                         Integer.valueOf(dataJson.getString("latest_one_month_fail"));
                 decision.setXyLatestOneMonthSucMinusFailNum(latestMonthNum);
             }
+            //还款行为历史和一月失败均大于成功
+            int xySucMinusFailNum = 0;
+            if(historyNum < 0 && latestMonthNum < 0) {
+                xySucMinusFailNum = 1;
+            }
+            decision.setXySucMinusFailNum(xySucMinusFailNum);
         }
     }
 
