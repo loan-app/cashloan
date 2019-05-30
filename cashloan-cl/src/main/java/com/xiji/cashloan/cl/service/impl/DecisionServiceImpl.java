@@ -609,14 +609,14 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 }
             }
 
-            //是否命中有盾拒绝风险项--关联过多
+            //是否命中有盾拒绝风险项--关联过多,羊毛党,法院失信
             int ydRefusedFeature = 0;
             if(dataJson.getJSONArray("user_features") != null) {
                 JSONArray userFeatures = dataJson.getJSONArray("user_features");
                 for (Object userFeature : userFeatures) {
                     JSONObject featureJson = JSON.parseObject(userFeature.toString());
                     String userFeatureType = featureJson.getString("user_feature_type");
-                    if("8".equals(userFeatureType)) {
+                    if("8".equals(userFeatureType) || "2".equals(userFeatureType) || "6".equals(userFeatureType)) {
                         ydRefusedFeature = 1;
                         break;
                     }
