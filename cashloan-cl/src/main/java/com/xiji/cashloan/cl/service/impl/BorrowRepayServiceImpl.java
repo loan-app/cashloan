@@ -124,6 +124,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	private CloanUserService cloanUserService;
 	@Resource
 	private UserBaseInfoService userBaseInfoService;
+	@Resource
+	private ChannelMapper channelMapper;
 
 	@Override
 	public BaseMapper<BorrowRepay, Long> getMapper() {
@@ -137,7 +139,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 	@Override
 	public boolean genRepayPlan(Borrow borrow){
-		String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+        User user = cloanUserService.getById(borrow.getUserId());
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
+        String beheadFee = channel.getBeheadFee();// 是否启用砍头息
 		//放款成功,保存还款计划
 		BorrowRepay br = new BorrowRepay();
 		if ("10".equals(beheadFee)) {//启用
@@ -316,12 +320,13 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
 		result.put("Msg", "还款成功");
-
-		String isImproveCredit = Global.getValue("is_improve_credit");//提额开关 -- 10开，20关
+        User user = cloanUserService.getById(borrow.getUserId());
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
+        String isImproveCredit = channel.getIsImproveCredit();//提额开关 -- 10开，20关
 
 		if(!BorrowModel.STATE_DELAY.equals(state) && "10".equals(isImproveCredit) && Integer.parseInt(br.getPenaltyDay()) <= 0){//未逾期且提额开关为10 ---提额
-			String oneRepayCredit = Global.getValue("one_repay_credit");//还款成功题额  --固定额度
-			String improveCreditLimit = Global.getValue("imporove_credit_limit");//提额上限
+			String oneRepayCredit = channel.getOneRepayCredit();//还款成功题额  --固定额度
+			String improveCreditLimit = channel.getImproveCreditLimit();//提额上限
 
 
 			Credit c = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
@@ -1044,9 +1049,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		User user = cloanUserService.getById(userId);
 //		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
 		Borrow borrow = clBorrowService.getById(borrowId);
-		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+        BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
 
-		if (PayCommonHelper.isEmpty(bankCard)) {
+        if (PayCommonHelper.isEmpty(bankCard)) {
 			result.put("code", "12");
 			result.put("msg", "绑定的银行卡信息失效，请重新绑卡！");
 			return result;
@@ -1077,8 +1083,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
             Double delay_fee=0.0;
             Double delayFee=0.0;
             //获取展期费用的占比,
-            if(StringUtil.isNotBlank(Global.getValue("delay_fee"))) {
-                delay_fee=Double.parseDouble(Global.getValue("delay_fee"));
+            if(StringUtil.isNotBlank(channel.getDelayFee())) {
+                delay_fee=Double.parseDouble(channel.getDelayFee());
                 //展期费用
                 delayFee=amount * delay_fee;
             }else {

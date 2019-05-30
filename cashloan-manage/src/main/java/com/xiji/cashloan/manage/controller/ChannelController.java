@@ -64,7 +64,9 @@ public class ChannelController extends ManageBaseController {
 		 	@RequestParam(value="oneRepayCredit") String oneRepayCredit,
 		 	@RequestParam(value="improveCreditLimit") String improveCreditLimit,
 		 	@RequestParam(value="borrowDay") String borrowDay,
-		 	@RequestParam(value="isImproveCredit") String isImproveCredit
+		 	@RequestParam(value="isImproveCredit") String isImproveCredit,
+		 	@RequestParam(value="delayFee") String delayFee,
+		 	@RequestParam(value="beheadFee") String beheadFee
 					 ) throws Exception {
 		Channel channel=new Channel();
 		channel.setLinker(linker);
@@ -77,6 +79,8 @@ public class ChannelController extends ManageBaseController {
 		channel.setImproveCreditLimit(improveCreditLimit);
 		channel.setBorrowDay(borrowDay);
 		channel.setIsImproveCredit(isImproveCredit);
+		channel.setDelayFee(delayFee);
+		channel.setBeheadFee(beheadFee);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (null != code2) {
@@ -162,7 +166,9 @@ public class ChannelController extends ManageBaseController {
 			@RequestParam(value="oneRepayCredit") String oneRepayCredit,
 			@RequestParam(value="improveCreditLimit") String improveCreditLimit,
 			@RequestParam(value="borrowDay") String borrowDay,
-			@RequestParam(value="isImproveCredit") String isImproveCredit
+			@RequestParam(value="isImproveCredit") String isImproveCredit,
+            @RequestParam(value="delayFee") String delayFee,
+            @RequestParam(value="beheadFee") String beheadFee
 			) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
@@ -176,6 +182,8 @@ public class ChannelController extends ManageBaseController {
 		paramMap.put("improveCreditLimit",improveCreditLimit);
 		paramMap.put("borrowDay",borrowDay);
 		paramMap.put("isImproveCredit",isImproveCredit);
+        paramMap.put("delayFee",delayFee);
+        paramMap.put("beheadFee",beheadFee);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();

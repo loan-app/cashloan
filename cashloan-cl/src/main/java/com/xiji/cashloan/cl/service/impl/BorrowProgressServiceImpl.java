@@ -5,11 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
+import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.manage.BankCardManage;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.ClBorrowModel;
@@ -20,6 +18,7 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.Borrow;
+import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import java.text.SimpleDateFormat;
@@ -29,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.xiji.cashloan.core.mapper.UserMapper;
+import com.xiji.cashloan.core.service.CloanUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -70,6 +72,10 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
     private BankCardManage bankCardManage;
     @Resource
 	private UserBaseInfoMapper userBaseInfoMapper;
+    @Resource
+    private ChannelMapper channelMapper;
+    @Resource
+    private CloanUserService cloanUserService;
     
 	@Override
 	public BaseMapper<BorrowProgress, Long> getMapper() {
@@ -153,9 +159,11 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				Double amount = borrow.getAmount();
 				Double delay_fee=0.0;
 				Double fee=0.0;
-				//获取展期费用的占比,
-                if(StringUtil.isNotBlank(Global.getValue("delay_fee"))) {
-                    delay_fee=Double.parseDouble(Global.getValue("delay_fee"));
+                User user = cloanUserService.getById(borrow.getUserId());
+                Channel channel = channelMapper.getChannelById(user.getChannelId());
+                //获取展期费用的占比,
+                if(StringUtil.isNotBlank(channel.getDelayFee())) {
+                    delay_fee=Double.parseDouble(channel.getDelayFee());
                     //展期费用
                     fee=amount * delay_fee;
                 }else {

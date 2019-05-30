@@ -371,6 +371,13 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
             if ("borrow_day".equals(map.get("code"))){
                 channelConfigMap.put("borrowDay",map.get("value"));
             }
+            if ("delay_fee".equals(map.get("code"))){
+                channelConfigMap.put("delayFee",map.get("value"));
+            }
+            if ("behead_fee".equals(map.get("code"))){
+                channelConfigMap.put("beheadFee",map.get("value"));
+            }
+
         }
 		return channelConfigMap;
 	}

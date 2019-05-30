@@ -959,13 +959,14 @@ INSERT INTO `arc_sys_config` VALUES (null, '20', '展期费率', 'delay_fee', '0
 
 -- 添加渠道配置字段
 ALTER TABLE cl_channel add fee varchar(16) DEFAULT '0.00'   COMMENT '综合费用集合(0.098,0.12,0.15)';
-ALTER TABLE cl_channel add init_credit varchar(16) DEFAULT '0.00'   COMMENT '注册时给予额度';
-ALTER TABLE cl_channel add borrow_credit varchar(16) DEFAULT '0.00'  COMMENT '借款额度';
+ALTER TABLE cl_channel add init_credit varchar(64) DEFAULT '0.00'   COMMENT '注册时给予额度';
+ALTER TABLE cl_channel add borrow_credit varchar(64) DEFAULT '0.00'  COMMENT '借款额度';
 ALTER TABLE cl_channel add is_improve_credit varchar(10) DEFAULT '10' COMMENT '还款提额开关(还款提额 10启用 20禁用)';
-ALTER TABLE cl_channel add one_repay_credit varchar(16) DEFAULT '0.00' COMMENT '还款成功单次增加的额度	';
-ALTER TABLE cl_channel add improve_credit_limit varchar(16) DEFAULT '0.00' COMMENT '还款成功累计提额上限';
+ALTER TABLE cl_channel add one_repay_credit varchar(64) DEFAULT '0.00' COMMENT '还款成功单次增加的额度	';
+ALTER TABLE cl_channel add improve_credit_limit varchar(64) DEFAULT '0.00' COMMENT '还款成功累计提额上限';
 ALTER TABLE cl_channel add borrow_day varchar(4) DEFAULT '' COMMENT '借款天数';
-
+ALTER TABLE cl_channel add delay_fee varchar (16) DEFAULT '0.00' COMMENT '展期费率';
+ALTER TABLE cl_channel add behead_fee varchar(10) DEFAULT '10' COMMENT '是否启用砍头息10启用，20-不启用';
 
 
 
@@ -975,3 +976,14 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1027');
 
 INSERT INTO `arc_sys_menu` VALUES ('1028', '0', '实时到期还款统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '实时到期还款统计', '0', 'RealTimeMaturityStatistic', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1028');
+
+-- 渠道配置更新
+UPDATE cl_channel set fee = (select value from arc_sys_config where code = 'fee'),
+borrow_credit =(select value from arc_sys_config where code = 'borrow_credit'),
+init_credit = (select value from arc_sys_config where code = 'init_credit'),
+is_improve_credit =(select value from arc_sys_config where code = 'is_improve_credit'),
+one_repay_credit =(select value from arc_sys_config where code = 'one_repay_credit'),
+improve_credit_limit =(select value from arc_sys_config where code = 'imporove_credit_limit'),
+borrow_day =(select value from arc_sys_config where code = 'borrow_day'),
+delay_fee =(select value from arc_sys_config where code = 'delay_fee'),
+behead_fee =(select value from arc_sys_config where code = 'behead_fee');

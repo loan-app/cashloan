@@ -62,7 +62,9 @@ var AddWin = React.createClass({
                 isImproveCredit: values.isImproveCredit,
                 oneRepayCredit: values.oneRepayCredit,
                 improveCreditLimit: values.improveCreditLimit,
-                borrowDay:values.borrowDay
+                borrowDay:values.borrowDay,
+                delayFee:values.delayFee,
+                beheadFee:values.beheadFee
             };
           }   
          if(this.props.title=="编辑"){
@@ -79,7 +81,9 @@ var AddWin = React.createClass({
                 isImproveCredit: values.isImproveCredit,
                 oneRepayCredit: values.oneRepayCredit,
                 improveCreditLimit: values.improveCreditLimit,
-                borrowDay:values.borrowDay
+                borrowDay:values.borrowDay,
+                delayFee:values.delayFee,
+                beheadFee:values.beheadFee
             };
          }  
             Utils.ajaxData({
@@ -206,6 +210,23 @@ var AddWin = React.createClass({
                         <Col span="24">
                             <FormItem  {...formItemLayout} label="还款成功累计提额上限:">
                                 <Input type="text" placeholder="请输入还款成功累计提额上限" disabled={false} {...getFieldProps('improveCreditLimit',{rules:[{ required: true, message: '未填或长度过长', max: '16' }]})} />
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="24">
+                            <FormItem  {...formItemLayout} label="展期费率:">
+                                <Input type="text" placeholder="请输入展期费率" disabled={false} {...getFieldProps('delayFee',{rules:[{ required: true, message: '未填或长度过长', max: '16' }]})} />
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="24">
+                            <FormItem  {...formItemLayout} label="是否启用砍头息:">
+                                <Select disabled={!props.canEdit}   {...getFieldProps('beheadFee', { rules: [{ required: true, message: '必填', }] } ) } style={{ width: 80 }} >
+                                    <Option value="10"> 启用</Option>
+                                    <Option value="20"> 禁用</Option>
+                                </Select>
                             </FormItem>
                         </Col>
                     </Row>

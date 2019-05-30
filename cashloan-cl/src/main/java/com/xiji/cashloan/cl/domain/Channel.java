@@ -92,6 +92,16 @@ import java.util.Date;
      */
     private String borrowDay;
 
+   /**
+    * 展期费率
+    */
+   private String delayFee;
+
+   /**
+    * 是否启用砍头息
+    */
+   private String beheadFee;
+
 
     /**
     * 获取主键Id
@@ -263,4 +273,20 @@ import java.util.Date;
     public void setBorrowDay(String borrowDay) {
         this.borrowDay = borrowDay;
     }
+
+   public String getDelayFee() {
+      return delayFee;
+   }
+
+   public void setDelayFee(String delayFee) {
+      this.delayFee = delayFee;
+   }
+
+   public String getBeheadFee() {
+      return beheadFee;
+   }
+
+   public void setBeheadFee(String beheadFee) {
+      this.beheadFee = beheadFee;
+   }
 }
