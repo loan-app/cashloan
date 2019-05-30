@@ -2053,7 +2053,20 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			return;
 		}
 
-		//先过策略
+		//先过模型分
+		float defaultScore = 0.678719f;
+		String defaultModelScore = Global.getValue("model_score");
+		logger.info("系统配置模型分值为:" + defaultModelScore);
+		if(StringUtil.isNotBlank(defaultModelScore)) {
+			defaultScore = Float.valueOf(defaultModelScore);
+		}
+		if(modelScore > defaultScore) {
+			logger.info("借款订单" + borrowId + "模型分大于临界值,机审拒绝");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "模型分大于临界值,机审拒绝");
+			return;
+		}
+
+		//再过策略
 		paramMap.clear();
 		paramMap.put("state", 10);
 		List<RuleEngine> ruleEngieList = ruleEngineMapper.listSelective(paramMap);
@@ -2151,51 +2164,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 			// 直到规则执行到最后一项，如果没有命中人工复审或者审核不通过  ，则借款申请为审核通过
 			if (i == (configCollection.size() - 1)) {
-				//再过自己的模型
-				float defaultScore = 0.528719f;
-				String defaultModelScore = Global.getValue("model_score");
-				logger.info("系统配置模型分值为:" + defaultModelScore);
-				if(StringUtil.isNotBlank(defaultModelScore)) {
-					defaultScore = Float.valueOf(defaultModelScore);
-				}
-				if(modelScore > defaultScore) {
-					logger.info("借款订单" + borrowId + "模型分大于临界值,机审拒绝");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "模型分大于临界值,机审拒绝");
-					return;
-				}
-
-				//对于无法决策以及机审决策通过的订单,查询指迷
-				double zmScore = zmRiskService.getScore(borrow, finishCount > 0 ? true : false);
-				double defaultZmPassScore = 560d;
-				double defaultZmReviewScore = 530d;
-				String zmModelPassScore = Global.getValue("zm_model_pass_score");
-				String zmModelReviewScore = Global.getValue("zm_model_review_score");
-				String zmReviewLoan = Global.getValue("zm_review_loan");
-				if(StringUtil.isNotBlank(zmModelPassScore)) {
-					defaultZmPassScore = Double.valueOf(zmModelPassScore);
-				}
-				if(StringUtil.isNotBlank(zmModelReviewScore)) {
-					defaultZmReviewScore = Double.valueOf(zmModelReviewScore);
-				}
-				if (zmScore < 0) {
-					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分失败,待人工复审");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
-				} else if (zmScore >= defaultZmPassScore) {
-					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分大于放款阈值,机审通过");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"机审通过");
-				} else if (defaultZmReviewScore < zmScore && zmScore < defaultZmPassScore) {
-					if("10".equals(zmReviewLoan)) {
-						logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值大于人审阈值,待人工复审");
-						handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
-					} else {
-						logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值大于人审阈值,机审拒绝");
-						handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
-					}
-				} else {
-					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值,机审拒绝");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
-				}
-
+				handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"");
 			}
 		}	
 	}

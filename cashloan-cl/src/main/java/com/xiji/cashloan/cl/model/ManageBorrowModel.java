@@ -91,9 +91,14 @@ public class ManageBorrowModel extends Borrow {
 	private Double repayYesTotal;
 
 	/**
-	 * 模型分数
+	 * 指迷模型分数
 	 */
 	private Double zmScore;
+
+	/**
+	 * 模型分数
+	 */
+	private Double modelScore;
 
 
 	public Double getRepayTotal() {
@@ -221,5 +226,13 @@ public class ManageBorrowModel extends Borrow {
 
 	public void setZmScore(Double zmScore) {
 		this.zmScore = zmScore;
+	}
+
+	public Double getModelScore() {
+		return modelScore;
+	}
+
+	public void setModelScore(Double modelScore) {
+		this.modelScore = modelScore;
 	}
 }

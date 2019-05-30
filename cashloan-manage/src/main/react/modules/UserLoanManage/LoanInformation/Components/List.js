@@ -358,7 +358,7 @@ export default React.createClass({
             dataIndex: 'channelName',
         }, {
             title: '模型分数',
-            dataIndex: 'zmScore',
+            dataIndex: 'modelScore',
         }, {
             title: '订单状态',
             dataIndex: "stateStr",
