@@ -382,20 +382,28 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             decision.setXyLatestOneMonthFail(dataJson.getString("latest_one_month_fail"));
             decision.setXyLoansLongTime(dataJson.getString("loans_long_time"));
             decision.setXyLoansLatestTime(dataJson.getString("loans_latest_time"));
+            int historyNum = 0;
+            int latestMonthNum = 0;
             if(StringUtil.isNumber(dataJson.getString("history_suc_fee")) &&
                     StringUtil.isNumber(dataJson.getString("history_fail_fee"))) {
                 //历史扣款成功笔数-失败笔数
-                int historyNum = Integer.valueOf(dataJson.getString("history_suc_fee")) -
+                historyNum = Integer.valueOf(dataJson.getString("history_suc_fee")) -
                         Integer.valueOf(dataJson.getString("history_fail_fee"));
                 decision.setXyHistorySucMinusFailNum(historyNum);
             }
-            if(StringUtil.isNumber(dataJson.getString("history_suc_fee")) &&
-                    StringUtil.isNumber(dataJson.getString("history_fail_fee"))) {
+            if(StringUtil.isNumber(dataJson.getString("latest_one_month_suc")) &&
+                    StringUtil.isNumber(dataJson.getString("latest_one_month_fail"))) {
                 //近一个月扣款成功笔数-失败笔数
-                int latestMonthNum = Integer.valueOf(dataJson.getString("latest_one_month_suc")) -
+                latestMonthNum = Integer.valueOf(dataJson.getString("latest_one_month_suc")) -
                         Integer.valueOf(dataJson.getString("latest_one_month_fail"));
                 decision.setXyLatestOneMonthSucMinusFailNum(latestMonthNum);
             }
+            //还款行为历史和一月失败均大于成功
+            int xySucMinusFailNum = 0;
+            if(historyNum < 0 && latestMonthNum < 0) {
+                xySucMinusFailNum = 1;
+            }
+            decision.setXySucMinusFailNum(xySucMinusFailNum);
         }
     }
 
@@ -552,6 +560,20 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 decision.setYdScore(scoreDetail.getInteger("score"));
             }
 
+            //近1月申请和下款平台数
+            int ydLoanPlatformCount1m = decision.getYdLoanPlatformCount1m() == null ? 0 : decision.getYdLoanPlatformCount1m();
+            int ydActualLoanPlatformCount1m = decision.getYdActualLoanPlatformCount1m() == null ? 0 : decision.getYdActualLoanPlatformCount1m();
+            //近6月申请和下款平台数
+            int ydLoanPlatformCount6m = decision.getYdLoanPlatformCount6m() == null ? 0 : decision.getYdLoanPlatformCount6m();
+            int ydActualLoanPlatformCount6m = decision.getYdActualLoanPlatformCount6m() == null ? 0 : decision.getYdActualLoanPlatformCount6m();
+            //近3月申请和下款平台数
+            int ydLoanPlatformCount3m = decision.getYdLoanPlatformCount3m() == null ? 0 : decision.getYdLoanPlatformCount3m();
+            int ydActualLoanPlatformCount3m = decision.getYdActualLoanPlatformCount3m() == null ? 0 : decision.getYdActualLoanPlatformCount3m();
+            //实际借款平台数,还款平台数和还款笔数
+            int ydActualLoanPlatformCount = decision.getYdActualLoanPlatformCount() == null ? 0 : decision.getYdActualLoanPlatformCount();
+            int ydRepaymentPlatformCount = decision.getYdRepaymentPlatformCount() == null ? 0 : decision.getYdRepaymentPlatformCount();
+            int ydRepaymentTimesCount = decision.getYdRepaymentTimesCount() == null ? 0 : decision.getYdRepaymentTimesCount();
+
             // 借贷正常订单数量
             int countApprovalAccept = 0;
 
@@ -577,33 +599,51 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     }
                 }
                 //借贷正常N笔以上 且借贷多头近3月申请平台大于M家
-                int ydLoanPlatformCount3m = decision.getYdLoanPlatformCount3m() == null ? 0 : decision.getYdLoanPlatformCount3m();
-                if (countNormal > 8 && ydLoanPlatformCount3m > 50) {
+                if (countNormal >= 7 && ydLoanPlatformCount3m > 50) {
                     decision.setYxLoaningAm3m(1);
                 }
 
-                //新颜无数据,阿福无下款数据,有盾借贷多头半年未下款
-                int ydLoanPlatformCount1m = decision.getYdLoanPlatformCount1m() == null ? 0 : decision.getYdLoanPlatformCount1m();
-                int ydActualLoanPlatformCount6m = decision.getYdActualLoanPlatformCount6m() == null ? 0 : decision.getYdActualLoanPlatformCount6m();
-                if((xinyanXwld == null || StringUtil.isBlank(xinyanXwld.getData())) && countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0) {
+                //新颜无数据,阿福无下款数据,有盾借贷多头半年未下款且有盾1个月申请平台大于30
+                if((xinyanXwld == null || xinyanXwld.getData() == null) && countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0 && ydLoanPlatformCount1m > 30) {
                     decision.setYxYdNoLoan(1);
                 }
             }
 
-            //是否命中有盾拒绝风险项--关联过多
+            //是否命中有盾拒绝风险项--关联过多,羊毛党,法院失信
             int ydRefusedFeature = 0;
             if(dataJson.getJSONArray("user_features") != null) {
                 JSONArray userFeatures = dataJson.getJSONArray("user_features");
                 for (Object userFeature : userFeatures) {
                     JSONObject featureJson = JSON.parseObject(userFeature.toString());
                     String userFeatureType = featureJson.getString("user_feature_type");
-                    if("8".equals(userFeatureType)) {
+                    if("8".equals(userFeatureType) || "2".equals(userFeatureType) || "6".equals(userFeatureType)) {
                         ydRefusedFeature = 1;
                         break;
                     }
                 }
             }
             decision.setYdRefusedFeature(ydRefusedFeature);
+
+            //多头近6月未下款且申请平台大于15
+            int ydNoLoan6m = 0;
+            if(ydLoanPlatformCount6m > 15 && ydActualLoanPlatformCount6m == 0) {
+                ydNoLoan6m = 1;
+            }
+            decision.setYdNoLoan6m(ydNoLoan6m);
+
+            //多头近1月申请平台数大于等于30家 且下款平台数小于3
+            int ydLoan1m = 0;
+            if(ydLoanPlatformCount1m > 30 && ydActualLoanPlatformCount1m < 3) {
+                ydLoan1m = 1;
+            }
+            decision.setYdLoan1m(ydLoan1m);
+
+            //多头实际借款平台数1 还款平台1 还款笔数1
+            int ydPlatformLoanNum = 0;
+            if(ydActualLoanPlatformCount == 1 && ydRepaymentPlatformCount == 1 && ydRepaymentTimesCount == 1) {
+                ydPlatformLoanNum = 1;
+            }
+            decision.setYdPlatformLoanNum(ydPlatformLoanNum);
 
         }
     }
@@ -751,6 +791,10 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 //运营商消费数据
                 decision.setMxFiveMonthVoiceSituation(0);
                 JSONArray cellBehaviorArray = reportJson.getJSONArray("cell_behavior");
+                //本月短信数量
+                int thisMonthSmsNum = 0;
+                //上个月短信数量
+                int lastMonthSmsNum = 0;
                 for (Object obj : cellBehaviorArray) {
                     JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
                     JSONArray beArray = jsonObject.getJSONArray("behavior");
@@ -758,6 +802,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                         int countDialNum = 0;
                         int countCellTime = 0;
                         int lessThan20Num = 0;
+                        JSONObject thisMonthJson = JSONObject.parseObject(JSON.toJSONString(beArray.get(0)));
+                        thisMonthSmsNum = thisMonthJson.getInteger("sms_cnt");
                         for (int i = 1; i < beArray.size(); i++) {
                             JSONObject beJson = JSONObject.parseObject(JSON.toJSONString(beArray.get(i)));
                             //主叫次数
@@ -769,6 +815,9 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                             if(totalAmount < 2000) {
                                 lessThan20Num++;
                             }
+                            if(i == 1){
+                                lastMonthSmsNum = beJson.getInteger("sms_cnt");
+                            }
                         }
                         decision.setMxFiveMonthBillLessThan20Num(lessThan20Num);
                         Double avgDialNum = Double.valueOf(df.format((double) countDialNum / 5));
@@ -776,6 +825,13 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                         if(avgDialNum < 20 && avgCellTime < 70) {
                             decision.setMxFiveMonthVoiceSituation(1);
                         }
+
+                        //近一月短信和被叫是上一个月的2倍及以上
+                        int mxMessageNum = 0;
+                        if(lastMonthSmsNum > 0 && thisMonthSmsNum / lastMonthSmsNum >= 2) {
+                            mxMessageNum = 1;
+                        }
+                        decision.setMxMessageNum(mxMessageNum);
                     }
                 }
 
