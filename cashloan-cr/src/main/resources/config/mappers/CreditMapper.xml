@@ -83,13 +83,13 @@
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
-    <update id="addNum" parameterType="com.xiji.creditrank.cr.domain.Credit">
+    <update id="addNum" parameterType="java.util.HashMap">
         update  arc_credit set
             num = 1 + num
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="subtractNum" parameterType="com.xiji.creditrank.cr.domain.Credit">
+    <update id="subtractNum" parameterType="java.util.HashMap">
         update  arc_credit set
             num = 0
         where id = #{id,jdbcType=INTEGER}
@@ -235,15 +235,15 @@
     </select>
     
     <!--根据userId修改额度，提额/逾期恢复到原额度 -->
-     <update id="updateByUserId"  parameterType="java.util.HashMap">
+    <update id="updateByUserId"  parameterType="java.util.HashMap">
         update arc_credit set
                 total = total + #{total,jdbcType=DECIMAL},                
                 unuse = unuse + #{unuse,jdbcType=DECIMAL},                
-                count = 1 + count                
+                count = 1 + count
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </update>
     
-       <select id="findByConsumerNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="findByConsumerNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         id,consumer_no,total,credit_type,grade,used,unuse,state,req_ext,count,num
         from arc_credit
