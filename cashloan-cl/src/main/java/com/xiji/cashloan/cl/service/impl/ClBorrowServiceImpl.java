@@ -590,9 +590,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			list.add(progress);
 		}
 
-		// 审核不通过 （自动审核不通过，人工复审不通过）借款记录
+		// 审核不通过 （自动审核不通过，人工复审不通过,放款审核不通过）借款记录
 		if ("detail".equals(pageFlag)
-				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED.equals(borrow.getState()))) {
+				&& (BorrowModel.STATE_AUTO_REFUSED.equals(borrow.getState()) || BorrowModel.STATE_REFUSED.equals(borrow.getState()) || BorrowModel.AUDIT_LOAN_FAIL.equals(borrow.getState()))) {
 			bpMap.put("state", borrow.getState());
 			pgList = borrowProgressMapper.listProgress(bpMap);
 			
