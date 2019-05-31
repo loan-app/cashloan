@@ -103,6 +103,10 @@ insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_commen
 values(52,1,'cl_decision','决策数据','xy_suc_minus_fail_num','还款行为历史和一月失败均大于成功 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
 values(53,1,'cl_decision','决策数据','yd_platform_loan_num','多头实际借款平台数1 还款平台1 还款笔数1 0-否 1-是','=','1','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(54,1,'cl_decision','决策数据','xy_history_suc_minus_fail_num','历史贷款机构成功扣款数-失败数','<','-5','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(55,1,'cl_decision','决策数据','xy_latest_one_month_suc_minus_fail_num','近1个月贷款机构成功扣款数-失败数','<','-5','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
 
 insert into `arc_rule_engine`(`id`,`name`,`state`,`config_count`,`req_ext`,`add_ip`,`add_time`,`integral`,`type`,`type_result_status`,`sort`)
 values(1,'决策','10',37,null,'0:0:0:0:0:0:0:1','2019-01-23 11:02:17',null,'20','10',null);
@@ -201,6 +205,10 @@ insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`
 values(88,1,1,0,52,0);
 insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
 values(89,1,1,0,53,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(90,1,1,0,54,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(91,1,1,0,55,0);
 -- 删除信德相关规则配置
 delete from arc_borrow_rule_config where config_id in (40,41,42);
 -- 删除运营商用户未实名认证条件
