@@ -191,6 +191,16 @@ insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`
 values(83,1,1,0,47,0);
 insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
 values(84,1,1,0,48,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(85,1,1,0,49,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(86,1,1,0,50,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(87,1,1,0,51,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(88,1,1,0,52,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(89,1,1,0,53,0);
 -- 删除信德相关规则配置
 delete from arc_borrow_rule_config where config_id in (40,41,42);
 -- 删除运营商用户未实名认证条件
