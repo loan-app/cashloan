@@ -997,3 +997,6 @@ ALTER TABLE cl_decision add column `mx_message_num` TINYINT(1) NOT NULL DEFAULT 
 ALTER TABLE cl_decision add column `xy_suc_minus_fail_num` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '还款行为历史和一月失败均大于成功 0-否 1-是' after mx_message_num;
 ALTER TABLE cl_decision add column `yd_platform_loan_num` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '多头实际借款平台数1 还款平台1 还款笔数1 0-否 1-是' after xy_suc_minus_fail_num;
 ALTER TABLE cl_decision add column `yd_platform_num_3m` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '多头近3月申请平台数大于等于50家 0-否 1-是' after yd_platform_loan_num;
+
+-- 添加索引
+alter table `cl_borrow_model_score`   ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
