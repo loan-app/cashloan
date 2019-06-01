@@ -348,36 +348,37 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	public Map<String, Object> queryChannelConfig() {
         Map<String, Object> channelConfigMap = new HashMap<>();
         List<Map<String, Object>> list=channelMapper.queryChannelConfig();
+        if (list.size()>0 && list!=null){
+            for (Map<String, Object> map : list) {
+                if ("fee".equals(map.get("code"))){
+                    channelConfigMap.put("fee",map.get("value"));
+                }
+                if ("init_credit".equals(map.get("code"))){
+                    channelConfigMap.put("initCredit",map.get("value"));
+                }
+                if ("borrow_credit".equals(map.get("code"))){
+                    channelConfigMap.put("borrowCredit",map.get("value"));
+                }
+                if ("is_improve_credit".equals(map.get("code"))){
+                    channelConfigMap.put("isImproveCredit",map.get("value"));
+                }
+                if ("one_repay_credit".equals(map.get("code"))){
+                    channelConfigMap.put("oneRepayCredit",map.get("value"));
+                }
+                if ("imporove_credit_limit".equals(map.get("code"))){
+                    channelConfigMap.put("improveCreditLimit",map.get("value"));
+                }
+                if ("borrow_day".equals(map.get("code"))){
+                    channelConfigMap.put("borrowDay",map.get("value"));
+                }
+                if ("delay_fee".equals(map.get("code"))){
+                    channelConfigMap.put("delayFee",map.get("value"));
+                }
+                if ("behead_fee".equals(map.get("code"))){
+                    channelConfigMap.put("beheadFee",map.get("value"));
+                }
 
-        for (Map<String, Object> map : list) {
-            if ("fee".equals(map.get("code"))){
-                channelConfigMap.put("fee",map.get("value"));
             }
-            if ("init_credit".equals(map.get("code"))){
-                channelConfigMap.put("initCredit",map.get("value"));
-            }
-            if ("borrow_credit".equals(map.get("code"))){
-                channelConfigMap.put("borrowCredit",map.get("value"));
-            }
-            if ("is_improve_credit".equals(map.get("code"))){
-                channelConfigMap.put("isImproveCredit",map.get("value"));
-            }
-            if ("one_repay_credit".equals(map.get("code"))){
-                channelConfigMap.put("oneRepayCredit",map.get("value"));
-            }
-            if ("imporove_credit_limit".equals(map.get("code"))){
-                channelConfigMap.put("improveCreditLimit",map.get("value"));
-            }
-            if ("borrow_day".equals(map.get("code"))){
-                channelConfigMap.put("borrowDay",map.get("value"));
-            }
-            if ("delay_fee".equals(map.get("code"))){
-                channelConfigMap.put("delayFee",map.get("value"));
-            }
-            if ("behead_fee".equals(map.get("code"))){
-                channelConfigMap.put("beheadFee",map.get("value"));
-            }
-
         }
 		return channelConfigMap;
 	}

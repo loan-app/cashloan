@@ -941,12 +941,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public Map<String, Object> choice(double amount, String timeLimit, String userId) {
 		double fee = 0;
-        User user = cloanUserService.getById(Long.parseLong(userId));
-        Channel channel = channelMapper.getChannelById(user.getChannelId());
+        Channel channel=null;
 		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
-			fee = CreditConstant.FEE;
+            fee = CreditConstant.FEE;
         } else {
-			String fee_ = channel.getFee();// 综合费用
+            User user = cloanUserService.getById(Long.parseLong(userId));
+            channel = channelMapper.getChannelById(user.getChannelId());
+            String fee_ = channel.getFee();// 综合费用
 			String[] fees = fee_.split(",");
 			String borrowDay = channel.getBorrowDay();// 借款天数
 			String[] days = borrowDay.split(",");
@@ -958,12 +959,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		Map<String,Object> map = new HashMap<>();
 		map.put("fee", BigDecimalUtil.decimal(fee, 2));
-		String beheadFee = channel.getBeheadFee();// 是否启用砍头息
-		if ("10".equals(beheadFee)) {// 启用
-			map.put("realAmount", amount - fee);
-		} else {
-			map.put("realAmount", amount);
-		}
+		if (channel!=null){
+            String beheadFee = channel.getBeheadFee();// 是否启用砍头息
+            if ("10".equals(beheadFee)) {// 启用
+                map.put("realAmount", amount - fee);
+            } else {
+                map.put("realAmount", amount);
+            }
+        }
 		Map<String, Object> feeMap = getFeeMap(fee);
 		map.put("feeDetail", feeMap);
 
@@ -972,20 +975,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	
 	@Override
 	public List<Map<String, Object>> choices(String userId) {
-        User user = cloanUserService.getById(Long.parseLong(userId));
-        Channel channel = channelMapper.getChannelById(user.getChannelId());
-        String fee_ = channel.getFee();// 综合费用
 		String feeName = sysConfigService.findByCode("fee").getName();// 综合费用
-		String[] fees = fee_.split(",");
-		String borrowDay = channel.getBorrowDay();// 借款天数
-		String[] days = borrowDay.split(",");
-		String borrowCredit = channel.getBorrowCredit();//借款金额
-		String[] borrowCredits = borrowCredit.split(",");
-
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
 			list = getNoUserChoices(feeName);
 		} else {
+            User user = cloanUserService.getById(Long.parseLong(userId));
+            Channel channel = channelMapper.getChannelById(user.getChannelId());
+            String fee_ = channel.getFee();// 综合费用
+            String[] fees = fee_.split(",");
+            String borrowDay = channel.getBorrowDay();// 借款天数
+            String[] days = borrowDay.split(",");
+            String borrowCredit = channel.getBorrowCredit();//借款金额
+            String[] borrowCredits = borrowCredit.split(",");
 			for (int i = 0; i < days.length; i++) {
 				for (int j = 0; j < borrowCredits.length; j++) {
 					Map<String,Object> map = new HashMap<>();
@@ -1558,15 +1560,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
-        User user = cloanUserService.getById(userId);
-        Channel channel = channelMapper.getChannelById(user.getChannelId());
         if (borrow != null) {
-			if(!borrow.getState().equals(BorrowModel.STATE_NEED_REVIEW)){
+            User user = cloanUserService.getById(borrow.getUserId());
+            Channel channel = channelMapper.getChannelById(user.getChannelId());
+            if(!borrow.getState().equals(BorrowModel.STATE_NEED_REVIEW)){
 				logger.error("人工复审失败，当前状态不是待人工复审");
 				throw new BussinessException("复审失败，当前状态不是待人工复审");
 			}
 			Map<String,Object> map = new HashMap<String, Object>();
-            Double fee = Double.parseDouble(Global.getValue("fee"));
+            Double fee = Double.parseDouble(channel.getFee());
 			map.put("id", borrowId);
 			map.put("state", state);   
 			map.put("remark", remark);
