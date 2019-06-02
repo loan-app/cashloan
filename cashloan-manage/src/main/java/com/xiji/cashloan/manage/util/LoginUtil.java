@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class LoginUtil {
     private static final Logger logger = LoggerFactory.getLogger(LoginUtil.class);
     private static ReentrantLock lock = new ReentrantLock();
-    private static final int MAX_TIMES = 5;
+    private static final int MAX_TIMES = 10;
     private static Map<String, Integer> CACHE = new HashMap<>();
 
     public static long getCurrentTime() {
