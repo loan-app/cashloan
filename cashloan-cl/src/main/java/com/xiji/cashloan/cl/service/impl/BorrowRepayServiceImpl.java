@@ -319,7 +319,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		String isImproveCredit = Global.getValue("is_improve_credit");//提额开关 -- 10开，20关
 		String[] counts;
 		String repayCounts = Global.getValue("count_improve_credit");//达到当次提额的还款次数
-		counts =repayCounts.split(",[|]，");
+		counts =repayCounts.split(",");
 		Credit c = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
 		CreditLog creditLog = creditLogMapper.findByConsumerno(creditMap);// 查询是否提过额度
 		// 初始额度
