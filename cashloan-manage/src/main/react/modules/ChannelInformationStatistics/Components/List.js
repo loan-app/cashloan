@@ -49,7 +49,7 @@ export default React.createClass({
         });
     },
     rowKey(record) {
-        return record.id;
+        return record.channelId;
     },
     //分页
     handleTableChange(pagination, filters, sorter) {

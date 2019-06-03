@@ -134,6 +134,15 @@
         from arc_credit_log
         <include refid="searchBy"/>
     </select>
+
+    <select id="findByConsumerno" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select pre
+        from arc_credit_log y
+        where id = (select min(id) from arc_credit_log x where x.consumer_no = y.consumer_no)
+        <if test="consumerNo != null and consumerNo != '' ">
+           and consumer_no = #{consumerNo,jdbcType=VARCHAR}
+        </if>
+    </select>
                
     <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select

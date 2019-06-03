@@ -14,6 +14,7 @@
         <result column="state" property="state" jdbcType="VARCHAR" />
         <result column="req_ext" property="reqExt" jdbcType="VARCHAR" />
         <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="num" property="num" jdbcType="INTEGER" />
     </resultMap>
     
     <resultMap id="resultModel" extends="BaseResultMap" type="com.xiji.creditrank.cr.model.CreditModel">
@@ -80,6 +81,18 @@
             state = #{state,jdbcType=VARCHAR},
             req_ext = #{reqExt,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+    <update id="addNum" parameterType="java.util.HashMap">
+        update  arc_credit set
+            num = 1 + num
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="subtractNum" parameterType="java.util.HashMap">
+        update  arc_credit set
+            num = 0
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
 	<update id="updateAmount" parameterType="java.util.HashMap">
@@ -222,17 +235,17 @@
     </select>
     
     <!--根据userId修改额度，提额/逾期恢复到原额度 -->
-     <update id="updateByUserId"  parameterType="java.util.HashMap">
+    <update id="updateByUserId"  parameterType="java.util.HashMap">
         update arc_credit set
                 total = total + #{total,jdbcType=DECIMAL},                
                 unuse = unuse + #{unuse,jdbcType=DECIMAL},                
-                count = 1 + count                
+                count = 1 + count
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </update>
     
-       <select id="findByConsumerNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="findByConsumerNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
-        id,consumer_no,total,credit_type,grade,used,unuse,state,req_ext,count 
+        id,consumer_no,total,credit_type,grade,used,unuse,state,req_ext,count,num
         from arc_credit
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </select>

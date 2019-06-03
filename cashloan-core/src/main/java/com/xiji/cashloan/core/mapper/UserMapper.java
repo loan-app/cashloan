@@ -33,6 +33,8 @@ public interface UserMapper extends BaseMapper<User,Long> {
 	
 	List<CloanUserModel> listModel(Map<String, Object> params);
 
+	List<CloanUserModel> listNotBorrowAgain(Map<String, Object> params);
+
 	CloanUserModel getModel(Long id);
 
 	List<Map<String, Object>> queryAllDic();

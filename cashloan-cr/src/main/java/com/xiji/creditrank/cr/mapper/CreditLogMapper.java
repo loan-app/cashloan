@@ -29,4 +29,6 @@ public interface CreditLogMapper extends BaseMapper<CreditLog,Long> {
 	 */
 	List<CreditLogModel> findLog(Map<String, Object> searchMap);
 
+	CreditLog findByConsumerno(Map<String, Object> paramMap);
+
 }

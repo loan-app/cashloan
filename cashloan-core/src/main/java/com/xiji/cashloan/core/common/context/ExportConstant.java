@@ -89,8 +89,8 @@ public final class ExportConstant {
 	/**
 	 * 用户认证导出 表头
 	 */
-	public static final String[] EXPORT_USERAUTH_LIST_HEARDERS = {"真实姓名","手机号码","银行卡状态","紧急联系人状态","身份认证状态","手机运营商认证状态","注册时间"};
+	public static final String[] EXPORT_USERAUTH_LIST_HEARDERS = {"真实姓名","手机号码","银行卡状态","紧急联系人状态","身份认证状态","手机运营商认证状态","注册渠道","是否借款","注册时间"};
 
 	/** 用户认证导出 属性*/
-	public static final String[] EXPORT_USERAUTH_LIST_FIELDS = {"realName","phone","bankCardStateStr","contactStateStr","idStateStr","phoneStateStr","registTime"};
+	public static final String[] EXPORT_USERAUTH_LIST_FIELDS = {"realName","phone","bankCardStateStr","contactStateStr","idStateStr","phoneStateStr","channelName","userFlag","registTime"};
 }

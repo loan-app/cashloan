@@ -475,7 +475,7 @@
 		<include refid="searchModelBy" />
 		ORDER BY b.create_time DESC
 	</select>
-    
+
 	<select id="seleteUser" resultMap="ManageBorrowTestModel" parameterType="java.util.HashMap">
         SELECT cu.id AS userId,cu.login_name AS phone,cbc.id AS cardId,cbc.card_no AS cardNo FROM cl_bank_card AS cbc 
 		LEFT JOIN `cl_user` AS cu ON cbc.user_id = cu.id WHERE cu.id IN (SELECT cua.user_id FROM cl_user_auth AS cua
