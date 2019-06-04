@@ -82,8 +82,6 @@ public class ClBorrowController extends BaseController {
 	private PinganRiskService pinganRiskService;
 	@Resource
 	private YouDunRiskService youDunRiskService;
-	@Resource
-	private PxRiskService pxRiskService;
 
 	/**
 	 * 查询借款列表
@@ -530,21 +528,6 @@ public class ClBorrowController extends BaseController {
 		borrow.setUserId(3L);
 		borrow.setId(7L);
 		int point = youDunRiskService.multiPoint(borrow);
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
-		ServletUtils.writeToResponse(response, result);
-	}
-
-	/**
-	 * 测试排序数据
-	 */
-	@RequestMapping(value = "/api/act/borrow/testPaixu.htm")
-	public void testPaixu() {
-		Borrow borrow = new Borrow();
-		borrow.setUserId(16L);
-		borrow.setId(330L);
-		double point = pxRiskService.getScore(borrow);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");

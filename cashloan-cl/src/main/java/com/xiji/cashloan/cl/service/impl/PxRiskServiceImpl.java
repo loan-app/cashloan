@@ -185,7 +185,7 @@ public class PxRiskServiceImpl implements PxRiskService {
                     PxModel pxModel = new PxModel();
                     pxModel.setCreateTime(new Date());
                     pxModel.setRequestId(requestId);
-                    pxModel.setScore(returnJson.getDouble("score"));
+                    pxModel.setScore(returnJson.getJSONObject("body").getDouble("score"));
                     pxModel.setUserId(borrow.getUserId());
                     pxModel.setBorrowId(borrow.getId());
                     pxModelMapper.save(pxModel);
