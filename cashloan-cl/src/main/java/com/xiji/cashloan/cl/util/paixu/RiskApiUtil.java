@@ -2,8 +2,14 @@ package com.xiji.cashloan.cl.util.paixu;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.util.HttpUtils;
 import com.xiji.cashloan.core.common.context.Global;
 import okhttp3.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -12,6 +18,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -36,59 +43,12 @@ public class RiskApiUtil {
 
     private static final Logger log = LoggerFactory.getLogger(RiskApiUtil.class);
 
+    private static ContentType CONTENT_TYPE = ContentType.create("application/json", "utf-8");
+
     public RiskApiUtil() {
         apiClientUtil = new ApiClientUtil();
     }
 
-
-    /**
-     * 模型1
-     * @param type
-     * @param name
-     * @param idcard
-     * @param phone
-     * @param dataObj
-     * @return
-     */
-    public  JSONObject testMode1(String type, String name, String idcard, String phone, String dataObj) {
-        JSONObject json = new JSONObject();
-        json.put("type", type);
-        json.put("name", name);
-        json.put("idcard", idcard);
-        json.put("phone", phone);
-        json.put("dataObj", dataObj);
-        JSONObject ret = apiClientUtil.submit("mode1", json);
-        log.info(String.format("【mode1风控结果】:mode1Result=%s",ret.toString()));
-        return ret;
-    }
-
-    /**
-     * 模型3
-     * @param type
-     * @param name
-     * @param idCard
-     * @param phone
-     * @param orderNo
-     * @param dataObj
-     * @return
-     */
-    public  JSONObject testMode2(String type, String name, String idCard, String phone,String orderNo, String dataObj) {
-        JSONObject json = new JSONObject();
-        //type :jxl/mohe/gxb
-        json.put("type", type);
-        //用户姓名
-        json.put("name", name);
-        //用户身份证号
-        json.put("idCard", idCard);
-        //用户手机号
-        json.put("phone", phone);
-        json.put("dataObj", dataObj);
-        //用户申请时间
-        json.put("orderNo",orderNo);
-        JSONObject ret = apiClientUtil.submit("mode2", json);
-        log.info(String.format("【mode2风控结果】:mode2Result=%s",ret.toString()));
-        return ret;
-    }
 
     /**
      * 模型3
@@ -108,16 +68,16 @@ public class RiskApiUtil {
         json.put("phone", phone);
         json.put("dataObj", dataObj);
         json.put("orderNo",orderNo);
-        JSONObject ret = apiClientUtil.submit("mode3", json);
+        JSONObject ret = apiClientUtil.submit2("mode3", json);
         log.info(String.format("【mode3风控结果】:mode2Result=%s",ret.toString()));
         return ret;
     }
 
     class ApiClientUtil {
-        private OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .build();
+//        private OkHttpClient client = new OkHttpClient.Builder()
+//                .connectTimeout(60, TimeUnit.SECONDS)
+//                .readTimeout(60, TimeUnit.SECONDS)
+//                .build();
 
         /**
          * Http Post Json
@@ -125,19 +85,29 @@ public class RiskApiUtil {
          * @param bizObj	业务对象
          * @return
          */
-        public   JSONObject submit(String call, Object bizObj) {
+        public   JSONObject submit2(String call, Object bizObj) {
             String jsonStr = genJsonStr(call, JSONObject.parseObject(JSONObject.toJSONString(bizObj)), appId, signKey, secret);
 
-            Request.Builder request = new Request.Builder();
             long start = System.currentTimeMillis();
             try {
-                Response response = client.newCall(request.url(URL)
-                        .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonStr))
-                        .build()).execute();
+                CloseableHttpClient httpclient = HttpUtils.createClient(URL);
+                HttpPost postRequest = new HttpPost(URL);
+                postRequest.setConfig(HttpUtils.getRequestConfig());
+                if (!org.apache.commons.lang3.StringUtils.isBlank(jsonStr)) {
+                    StringEntity entity = new StringEntity(jsonStr, CONTENT_TYPE);
+                    postRequest.setEntity(entity);
+                }
+                HttpResponse httpResponse = httpclient.execute(postRequest);
                 log.info(String.format("【调用第三方耗时】：use=%s", System.currentTimeMillis() - start));
 
-                JSONObject ret = JSONObject.parseObject(response.body().string());
-                JSONObject body = JSONObject.parseObject(aesDecrypt((String)ret.getString("body"), secret));
+                InputStream respIs = httpResponse.getEntity().getContent();
+                String result = HttpUtils.convertStreamToString(respIs);
+                log.info("【调用第三方】返回结果:" + result);
+                JSONObject ret = JSONObject.parseObject(result);
+                log.info("secret=" + secret);
+                String de = aesDecrypt(ret.getString("body"), secret);
+                log.info("body解密后数据:" + de);
+                JSONObject body = JSONObject.parseObject(aesDecrypt(ret.getString("body"), secret));
                 ret.put("body", body);
                 return ret;
             } catch (Exception e) {
