@@ -154,7 +154,7 @@ public class PxRiskServiceImpl implements PxRiskService {
         paramMap.put("userId", borrow.getUserId());
         UserEquipmentInfo userEquipmentInfo = userEquipmentInfoMapper.findSelective(paramMap);
         if(userEquipmentInfo != null) {
-            if ("phone".equalsIgnoreCase(userEquipmentInfo.getPhoneType())) {
+            if (userEquipmentInfo.getPhoneType().toLowerCase().contains("phone")) {
                 deviceType = "ios";
             }
         }
