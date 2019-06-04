@@ -35,6 +35,8 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_YOUDUN_RISK = 13;
     //指迷模型分
     public static int CALLS_TYPE_ZHIMI_MODEL = 14;
+    //排序模型分
+    public static int CALLS_TYPE_PAIXU_MODEL = 15;
 
     //充值类型
     public static int CALLS_TYPE_TopUp = 999;
@@ -68,6 +70,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_YOUDUN_RISK = -0.2;
     //指迷模型分费用
     public static double FEE_ZHIMI_MODEL = -1.5;
+    //排序模型分费用
+    public static double FEE_PAIXU_MODEL = -3.5;
 
     /**
      * 消费

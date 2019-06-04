@@ -1000,3 +1000,36 @@ ALTER TABLE cl_decision add column `yd_platform_num_3m` TINYINT(1) NOT NULL DEFA
 
 -- 添加索引
 alter table `cl_borrow_model_score`   ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
+
+-- 排序
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型url', 'px_model_url', 'http://riskapi.yichunruirun.com/api/riskCenter/v1', '1', '排序模型url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型appId', 'px_model_app_id', 'hjqb0001', '1', '排序模型appId', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型sign', 'px_model_sign', '1nSOdMUBfW25LGAo83aWJsnLDZ7Rah', '1', '排序模型sign', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型secret', 'px_model_secret', 'wpJrjHkz7n', '1', '排序模型secret', '1');
+
+DROP TABLE IF EXISTS `cl_px_req_log`;
+CREATE TABLE `cl_px_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `return_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `return_info` text COMMENT '同步响应message',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT 0 COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT 1 COMMENT '类型 1-模型',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='排序请求记录';
+
+DROP TABLE IF EXISTS `cl_px_model`;
+CREATE TABLE `cl_px_model` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,2) DEFAULT '0.00' COMMENT '模型分',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='排序模型分';
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '排序模型分通过阈值', 'px_model_pass_score', '560', 1, '排序模型分通过阈值,大于该值,机审通过', 1);
