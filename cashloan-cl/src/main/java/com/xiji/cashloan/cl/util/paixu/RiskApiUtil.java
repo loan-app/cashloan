@@ -3,12 +3,9 @@ package com.xiji.cashloan.cl.util.paixu;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.core.common.context.Global;
-import groovy.util.logging.Slf4j;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.Cipher;
@@ -27,15 +24,13 @@ import java.util.concurrent.TimeUnit;
  * 工具类
  *
  */
-@Slf4j
-@Component
 public class RiskApiUtil {
     //测试机构appId
-    private static String appId = Global.getValue("");
+    private static String appId = Global.getValue("px_model_app_id");
     //测试签名密钥
-    private static String signKey = Global.getValue("");
-    private static String secret = Global.getValue("");
-    private static String URL = Global.getValue("");
+    private static String signKey = Global.getValue("px_model_sign");
+    private static String secret = Global.getValue("px_model_secret");
+    private static String URL = Global.getValue("px_model_url");
 
     ApiClientUtil apiClientUtil;
 
