@@ -169,7 +169,7 @@ public class PxRiskServiceImpl implements PxRiskService {
         //性别
         dataObj.put("gender", userBaseinfo.getSex());
         //申请时间
-        dataObj.put("applyTime", borrow.getClass());
+        dataObj.put("applyTime", DateUtil.dateStr4(borrow.getCreateTime()));
 
 
         JSONObject returnJson = riskApiUtil.mode3("gxb", userBaseinfo.getRealName(), userBaseinfo.getIdNo(), userBaseinfo.getPhone(), requestId, dataObj.toJSONString());
