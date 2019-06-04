@@ -450,7 +450,7 @@
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,b.time_limit,b.state,b.remark,
 			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue,card.card_no,
-            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name,l.repay_way,zm.score zm_score,ms.score model_score
+            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name,l.repay_way,zm.score zm_score,px.score model_score
 		from cl_borrow b 
 		left join cl_user_base_info u on u.user_id=b.user_id 
 		left join
@@ -475,7 +475,7 @@
         </choose>
         on u.user_id = card.user_id
         left join cl_zm_model zm on b.id = zm.borrow_id
-        left join cl_borrow_model_score ms on b.id = ms.borrow_id
+        left join cl_px_model px on b.id = px.borrow_id
 		<include refid="searchModelBy" />
 		ORDER BY b.create_time DESC
 	</select>
