@@ -193,6 +193,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private ZmModelMapper zmModelMapper;
 	@Resource
 	private DecisionMapper decisionMapper;
+	@Resource
+	private PxRiskService pxRiskService;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -2151,35 +2153,41 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 			// 直到规则执行到最后一项，查询排序
 			if (i == (configCollection.size() - 1)) {
-				//对于无法决策以及机审决策通过,查询排序
-				double zmScore = zmRiskService.getScore(borrow, finishCount > 0 ? true : false);
-				double defaultZmPassScore = 560d;
-				double defaultZmReviewScore = 530d;
-				String zmModelPassScore = Global.getValue("zm_model_pass_score");
-				String zmModelReviewScore = Global.getValue("zm_model_review_score");
-				String zmReviewLoan = Global.getValue("zm_review_loan");
-				if(StringUtil.isNotBlank(zmModelPassScore)) {
-					defaultZmPassScore = Double.valueOf(zmModelPassScore);
-				}
-				if(StringUtil.isNotBlank(zmModelReviewScore)) {
-					defaultZmReviewScore = Double.valueOf(zmModelReviewScore);
-				}
-				if (zmScore < 0) {
-					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分失败,待人工复审");
+				String pxSwitch = Global.getValue("px_switch");
+				if("20".equals(pxSwitch)) {
+					logger.info("借款订单" + borrow.getId() + "不调用排序获取模型分,待人工复审");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
-				} else if (zmScore >= defaultZmPassScore) {
-					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分大于放款阈值,机审通过");
+					return;
+				}
+				//对于无法决策以及机审决策通过,查询排序
+				double pxScore = pxRiskService.getScore(borrow);
+				double defaultPxPassScore = 560d;
+				double defaultPxReviewScore = 530d;
+				String pxModelPassScore = Global.getValue("px_model_pass_score");
+				String pxModelReviewScore = Global.getValue("px_model_review_score");
+				String zmReviewLoan = Global.getValue("px_review_loan");
+				if(StringUtil.isNotBlank(pxModelPassScore)) {
+					defaultPxPassScore = Double.valueOf(pxModelPassScore);
+				}
+				if(StringUtil.isNotBlank(pxModelReviewScore)) {
+					defaultPxReviewScore = Double.valueOf(pxModelReviewScore);
+				}
+				if (pxScore < 0) {
+					logger.info("借款订单" + borrow.getId() + "调用排序获取模型分失败,待人工复审");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
+				} else if (pxScore >= defaultPxPassScore) {
+					logger.info("借款订单" + borrow.getId() + "调用排序获取模型分大于放款阈值,机审通过");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"机审通过");
-				} else if (defaultZmReviewScore < zmScore && zmScore < defaultZmPassScore) {
+				} else if (defaultPxReviewScore < pxScore && pxScore < defaultPxPassScore) {
 					if("10".equals(zmReviewLoan)) {
-						logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值大于人审阈值,待人工复审");
+						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值大于人审阈值,待人工复审");
 						handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
 					} else {
-						logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值大于人审阈值,机审拒绝");
+						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值大于人审阈值,机审拒绝");
 						handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
 					}
 				} else {
-					logger.info("借款订单" + borrow.getId() + "调用指迷获取模型分小于放款阈值,机审拒绝");
+					logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值,机审拒绝");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
 				}
 			}

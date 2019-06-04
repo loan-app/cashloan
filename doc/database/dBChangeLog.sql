@@ -1028,8 +1028,14 @@ CREATE TABLE `cl_px_model` (
   `user_id` bigint(20) NOT NULL COMMENT '用户标识',
   `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
   `score` decimal(10,2) DEFAULT '0.00' COMMENT '模型分',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='排序模型分';
 
 INSERT INTO `arc_sys_config` VALUES (null, 20, '排序模型分通过阈值', 'px_model_pass_score', '560', 1, '排序模型分通过阈值,大于该值,机审通过', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分人审阈值', 'px_model_review_score', '530', 1, '模型分通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分小于通过阈值是否人审', 'px_review_loan', '20', 1, '模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '是否启用PX模型分', 'px_switch', '10', 1, '是否启用PX模型分 10-启用 20-拒绝', 1);
+alter table `cl_px_model`  ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
