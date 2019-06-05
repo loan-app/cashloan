@@ -322,8 +322,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		counts =repayCounts.split(",");
 		Credit c = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
 		CreditLog creditLog = creditLogMapper.findByConsumerno(creditMap);// 查询是否提过额度
-		// 初始额度
-		Double cre = null==creditLog ? c.getTotal() : creditLog.getPre();
+		Double cre = null==creditLog ? c.getTotal() : creditLog.getPre();// 初始额度
 			if (!BorrowModel.STATE_DELAY.equals(state) && Integer.parseInt(br.getPenaltyDay()) <= 0 && "10".equals(isImproveCredit)) {//未逾期且提额开关为10 ---提额
 				// 单次提额额度
 				String repayCredit =Global.getValue("one_repay_credit");//还款成功题额  --固定额度
@@ -341,7 +340,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 				numMap.put("id",credit.getId());
 
 				int x = 1;
-				if((c.getCount() + 1) * Double.parseDouble(oneRepayCredit) <= Double.parseDouble(improveCreditLimit)){
+				if((c.getCount() + 1) * Double.parseDouble(oneRepayCredit) <= Double.parseDouble(improveCreditLimit)&&c.getCount()<counts.length){
 					creditMapper.addNum(numMap);// 提额度未达上限时，有效还款加1
 					Credit b = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
 					if (counts[b.getCount()].equals(b.getNum().toString())) {// 提额上线为500
