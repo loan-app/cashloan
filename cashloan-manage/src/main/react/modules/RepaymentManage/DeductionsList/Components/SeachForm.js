@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button, Form, Input, Select,Message,DatePicker } from 'antd';
+import {Button, DatePicker, Form, Input, Message, Select} from 'antd';
+
 const RangePicker = DatePicker.RangePicker;
 const createForm = Form.create;
 const FormItem = Form.Item;

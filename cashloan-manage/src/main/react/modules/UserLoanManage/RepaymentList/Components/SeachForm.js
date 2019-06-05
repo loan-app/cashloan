@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button, Form, Input, Select,Message } from 'antd';
+import {Button, Form, Input, Message, Select} from 'antd';
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -27,7 +28,7 @@ let SeachForm = React.createClass({
         });
     },handleOut() {
         var params = this.props.form.getFieldsValue();
-        if(params.orderTime){
+        if(params.orderTime && params.orderTime !=','){
             params.startTime2 = (DateFormat.formatDate(params.orderTime[0])).substring(0,10);
             params.endTime2 = (DateFormat.formatDate(params.orderTime[1])).substring(0,10);
         }

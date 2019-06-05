@@ -10,6 +10,7 @@ import com.xiji.cashloan.core.common.exception.SysAccessCodeException;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
+import com.xiji.cashloan.manage.util.LoginUtil;
 import com.xiji.cashloan.system.domain.SysRole;
 import com.xiji.cashloan.system.domain.SysUser;
 import com.xiji.cashloan.system.domain.SysUserRole;
@@ -37,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,12 +114,15 @@ public class SysLoginController extends BaseController {
 			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
 			if (result == 1) {
 				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+				LoginUtil.removeFailTimes(sysUser.getId());
 			} else if (result == -1) {
 				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 				res.put(Constant.RESPONSE_CODE_MSG, "验证码已过期");
+				failLoginHandle(username);
 			} else {
 				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 				res.put(Constant.RESPONSE_CODE_MSG, "验证码错误");
+				failLoginHandle(username);
 			}
 			session.setAttribute("SysUser", sysUser);
 			
@@ -139,12 +144,13 @@ public class SysLoginController extends BaseController {
 			res.put(Constant.RESPONSE_CODE_MSG, "密码错误请重新输入");
 		} catch (LockedAccountException ex) {
 			logger.error("该用户已锁定", ex);
-			res.put(Constant.RESPONSE_CODE, Constant.OTHER_CODE_VALUE);
-			res.put(Constant.RESPONSE_CODE_MSG, "该用户已锁定，请联系管理员！");
+			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			res.put(Constant.RESPONSE_CODE_MSG, "登录失败");
 		} catch (AuthenticationException ex) {
 			logger.error("登录失败", ex);
 			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			res.put(Constant.RESPONSE_CODE_MSG, "登录失败");
+			failLoginHandle(username);
 		} catch (ExpiredCredentialsException ex) {
 			logger.error(ex.getMessage(), ex);
 			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
@@ -298,5 +304,19 @@ public class SysLoginController extends BaseController {
 	}
 
 
+	private void failLoginHandle(String username) {
+		try {
+			SysUser sysUserByUserName = sysUserService.getSysUserByUserName(username);
+			boolean lock = LoginUtil.LoginFailLock(sysUserByUserName.getId());
+			if(lock && sysUserByUserName.getStatus() == 0) {
+				logger.info("用户" + sysUserByUserName.getId() +  "登录失败次数过多,锁定该用户");
+				sysUserByUserName.setStatus((byte)1);
+				sysUserByUserName.setUpdateTime(new Date());
+				sysUserService.userUpdate(sysUserByUserName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
