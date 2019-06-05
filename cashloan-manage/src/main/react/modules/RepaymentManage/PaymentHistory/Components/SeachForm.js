@@ -15,7 +15,7 @@ let SeachForm = React.createClass({
     handleQuery() {
         var params = this.props.form.getFieldsValue();
         var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,serialNumber:params.serialNumber,repayAccount:params.repayAccount,type:params.type,repayType:params.repayType};
-        if(params.repayTime){
+        if(params.repayTime[0]){
             json.startTime = (DateFormat.formatDate(params.repayTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.repayTime[1])).substring(0,10);
         }

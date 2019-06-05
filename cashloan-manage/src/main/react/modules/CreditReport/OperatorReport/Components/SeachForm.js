@@ -23,7 +23,7 @@ let SeachForm = React.createClass({
     if(params.realName){
         json.realName = json.realName.replace(/\s+/g, "");
     }
-      if(params.time){
+      if(params.time[0]){
           json.endTime=(DateFormat.formatDate(params.time[1])).substring(0,10);
           json.startTime=(DateFormat.formatDate(params.time[0])).substring(0,10);
       }

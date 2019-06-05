@@ -20,11 +20,11 @@ let SeachForm = React.createClass({
   handleQuery() {
     var params = this.props.form.getFieldsValue();
       var json = {endTime:'',startTime:'',endDate:'',startDate:'',borrowName:params.borrowName,orderNo:params.orderNo,phone:params.phone,penaltyDay:params.penaltyDay,borrowState:params.borrowState,isDestribute:params.isDestribute,channelID:params.channelID,again:params.again};
-      if(params.borrowTime){
+      if(params.borrowTime[0]){
           json.startTime = (DateFormat.formatDate(params.borrowTime[0])).substring(0,10);
           json.endTime = (DateFormat.formatDate(params.borrowTime[1])).substring(0,10);
       }
-      if(params.reviewTime){
+      if(params.reviewTime[0]){
           json.startDate = (DateFormat.formatDate(params.reviewTime[0])).substring(0,10);
           json.endDate = (DateFormat.formatDate(params.reviewTime[1])).substring(0,10);
       }
