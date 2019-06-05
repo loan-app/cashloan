@@ -66,8 +66,10 @@ public class ChannelController extends ManageBaseController {
 		 	@RequestParam(value="borrowDay") String borrowDay,
 		 	@RequestParam(value="isImproveCredit") String isImproveCredit,
 		 	@RequestParam(value="delayFee") String delayFee,
-		 	@RequestParam(value="beheadFee") String beheadFee
-					 ) throws Exception {
+		 	@RequestParam(value="beheadFee") String beheadFee,
+		    @RequestParam(value="countImproveCredit") String countImproveCredit
+
+			) throws Exception {
 		Channel channel=new Channel();
 		channel.setLinker(linker);
 		channel.setName(name);
@@ -81,6 +83,7 @@ public class ChannelController extends ManageBaseController {
 		channel.setIsImproveCredit(isImproveCredit);
 		channel.setDelayFee(delayFee);
 		channel.setBeheadFee(beheadFee);
+		channel.setCountImproveCredit(countImproveCredit);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (null != code2) {
@@ -168,7 +171,8 @@ public class ChannelController extends ManageBaseController {
 			@RequestParam(value="borrowDay") String borrowDay,
 			@RequestParam(value="isImproveCredit") String isImproveCredit,
             @RequestParam(value="delayFee") String delayFee,
-            @RequestParam(value="beheadFee") String beheadFee
+            @RequestParam(value="beheadFee") String beheadFee,
+			@RequestParam(value="countImproveCredit") String countImproveCredit
 			) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
@@ -184,6 +188,7 @@ public class ChannelController extends ManageBaseController {
 		paramMap.put("isImproveCredit",isImproveCredit);
         paramMap.put("delayFee",delayFee);
         paramMap.put("beheadFee",beheadFee);
+        paramMap.put("countImproveCredit",countImproveCredit);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();

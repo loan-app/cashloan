@@ -377,6 +377,9 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
                 if ("behead_fee".equals(map.get("code"))){
                     channelConfigMap.put("beheadFee",map.get("value"));
                 }
+                if ("count_improve_credit".equals(map.get("code"))){
+                    channelConfigMap.put("countImproveCredit",map.get("value"));
+                }
 
             }
         }

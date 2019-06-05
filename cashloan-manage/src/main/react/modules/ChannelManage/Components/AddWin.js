@@ -64,7 +64,8 @@ var AddWin = React.createClass({
                 improveCreditLimit: values.improveCreditLimit,
                 borrowDay:values.borrowDay,
                 delayFee:values.delayFee,
-                beheadFee:values.beheadFee
+                beheadFee:values.beheadFee,
+                countImproveCredit:values.countImproveCredit
             };
           }   
          if(this.props.title=="编辑"){
@@ -83,7 +84,8 @@ var AddWin = React.createClass({
                 improveCreditLimit: values.improveCreditLimit,
                 borrowDay:values.borrowDay,
                 delayFee:values.delayFee,
-                beheadFee:values.beheadFee
+                beheadFee:values.beheadFee,
+                countImproveCredit:values.countImproveCredit
             };
          }  
             Utils.ajaxData({
@@ -201,8 +203,8 @@ var AddWin = React.createClass({
                     </Row>
                     <Row>
                         <Col span="24">
-                            <FormItem  {...formItemLayout} label="还款成功单次增加的额度:">
-                                <Input type="text" placeholder="请输入还款成功单次增加的额度" disabled={false} {...getFieldProps('oneRepayCredit',{rules:[{ required: true, message: '未填或长度过长', max: '16' }]})} />
+                            <FormItem  {...formItemLayout} label="还款成功单次增加额度:">
+                                <Input type="text" placeholder="请输入还款成功单次增加额度" disabled={false} {...getFieldProps('oneRepayCredit',{rules:[{ required: true, message: '未填或长度过长', max: '16' }]})} />
                             </FormItem>
                         </Col>
                     </Row>
@@ -210,6 +212,13 @@ var AddWin = React.createClass({
                         <Col span="24">
                             <FormItem  {...formItemLayout} label="还款成功累计提额上限:">
                                 <Input type="text" placeholder="请输入还款成功累计提额上限" disabled={false} {...getFieldProps('improveCreditLimit',{rules:[{ required: true, message: '未填或长度过长', max: '16' }]})} />
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span="24">
+                            <FormItem  {...formItemLayout} label="还款提额次数:">
+                                <Input type="text" placeholder="请输入还款提额次数	" disabled={false} {...getFieldProps('countImproveCredit',{rules:[{ required: true, message: '未填或长度过长', max: '16' }]})} />
                             </FormItem>
                         </Col>
                     </Row>

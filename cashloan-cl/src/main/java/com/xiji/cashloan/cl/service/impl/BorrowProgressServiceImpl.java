@@ -21,6 +21,8 @@ import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,6 +161,7 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				Double amount = borrow.getAmount();
 				Double delay_fee=0.0;
 				Double fee=0.0;
+				String serviceFee;
                 User user = cloanUserService.getById(borrow.getUserId());
                 Channel channel = channelMapper.getChannelById(user.getChannelId());
                 //获取展期费用的占比,
@@ -173,12 +176,16 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 				// 如果当前时间大于应还款时间,或者当前有逾期
 				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyAmount() > 0.0d) {
 					delayFee = BigDecimalUtil.add(fee + clBorrowModel.getPenaltyAmount());
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    serviceFee = df.format(delayFee);
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				} else {
 					delayFee = fee ;
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    serviceFee = df.format(delayFee);
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,delayDays),"yyyy-M-d");
 				}
-				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(delayFee));
+				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+serviceFee);
 				delayItem.put("delayRepayTimeStr",dateStr);
 				result.put("delayItem", delayItem);
 			}

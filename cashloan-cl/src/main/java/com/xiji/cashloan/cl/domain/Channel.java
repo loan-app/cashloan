@@ -102,6 +102,11 @@ import java.util.Date;
     */
    private String beheadFee;
 
+    /**
+     * 还款提额次数
+     */
+   private String countImproveCredit;
+
 
     /**
     * 获取主键Id
@@ -289,4 +294,12 @@ import java.util.Date;
    public void setBeheadFee(String beheadFee) {
       this.beheadFee = beheadFee;
    }
+
+    public String getCountImproveCredit() {
+        return countImproveCredit;
+    }
+
+    public void setCountImproveCredit(String countImproveCredit) {
+        this.countImproveCredit = countImproveCredit;
+    }
 }
