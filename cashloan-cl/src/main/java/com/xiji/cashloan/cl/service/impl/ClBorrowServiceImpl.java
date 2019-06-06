@@ -2156,7 +2156,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				String pxSwitch = Global.getValue("px_switch");
 				if("20".equals(pxSwitch)) {
 					logger.info("借款订单" + borrow.getId() + "不调用排序获取模型分,待人工复审");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"自动审核未决待人工复审");
 					return;
 				}
 				//对于无法决策以及机审决策通过,查询排序
