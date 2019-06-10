@@ -239,7 +239,8 @@
         update arc_credit set
                 total = total + #{total,jdbcType=DECIMAL},                
                 unuse = unuse + #{unuse,jdbcType=DECIMAL},                
-                count = 1 + count
+                count = 1 + count,
+                num = 0
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </update>
     
