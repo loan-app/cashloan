@@ -969,3 +969,12 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '还款提额次数', 'count_improve_credit', '1,1,1', '1', '参照还款提额次数(1,2,3)格式每个数字代表当次提额要还款的次数,数字的个数参照提额上限除以单次增加的额度', '1');
 --  添加成功还款次数字段
 ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '有效还款次数' after count;
+
+-- 云桥运营商 配置
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥运营商认证URL', 'yq_operator_url', 'https://api.wochikj.com/h5/importV3/index.html#/carrier', '1', '云桥运营商认证页面url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥回调验签', 'yq_secret', '27c7e4bc518c48d095d9caf544771876', '1', '云桥回调验签', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥token', 'yq_token', '44385810102345ff9721849f63b0cba9', '1', '云桥token', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥apikey', 'yq_apikey', 'a2beb98990824733aa48b2f456bb2115', '1', '云桥apikey', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥获取运营商加强数据URL', 'yq_operator_mxdata', 'https://api.wochikj.com/carrier/v3/mobiles/{mobile}/mxdata-ex', '1', '云桥运营商数据加强版请求url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥运营商报告URL', 'yq_operator_report', 'https://api.wochikj.com/carrier/v3/mobiles/{mobile}/mxreport', '1', '云桥运营商报告URL', '1');
+
