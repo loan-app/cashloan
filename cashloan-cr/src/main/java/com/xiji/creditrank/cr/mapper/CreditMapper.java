@@ -93,4 +93,11 @@ public interface CreditMapper extends BaseMapper<Credit,Long> {
 	 * 平衡额度
 	 */
 	void balance();
+
+	/**
+	 * 修改最大额度
+	 * @param map
+	 * @return
+	 */
+	int updateByConsumerNo(Map<String, Object> map);
 }
