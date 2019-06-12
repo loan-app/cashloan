@@ -19,7 +19,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        if(params.sendTime){	
+        if(params.sendTime[0]){
         var year = params.sendTime.getFullYear();
         var month = params.sendTime.getMonth() + 1 ;
         var newMonth = month > 9 ? (month + "") : ("0" + month);

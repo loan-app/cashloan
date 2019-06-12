@@ -990,14 +990,14 @@ behead_fee =(select value from arc_sys_config where code = 'behead_fee');
 
 
 -- 添加用户管理列表 未借款用户信息
-INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未复借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
 
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
 
 -- 根据完成次数提额
 INSERT INTO `arc_sys_config` VALUES (null, '20', '还款提额次数', 'count_improve_credit', '1,1,1', '1', '参照还款提额次数(1,2,3)格式每个数字代表当次提额要还款的次数,数字的个数参照提额上限除以单次增加的额度', '1');
 --  添加成功还款次数字段
-ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '有效还款次数' after count;
+ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '当次有效还款次数' after count;
 
 -- 还款提额次数
 ALTER TABLE cl_channel add count_improve_credit varchar(64) DEFAULT '1,1,1' COMMENT '还款提额次数:参照(1,2,3)格式，每个数字代表当次提额要还款的次数，数字的个数参照提额上限除以单次增加的额度';

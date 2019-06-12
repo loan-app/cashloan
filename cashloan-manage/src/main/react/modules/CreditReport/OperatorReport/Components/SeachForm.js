@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  DatePicker
-} from 'antd';
+import {Button, DatePicker, Form, Input, Select} from 'antd';
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -23,7 +18,7 @@ let SeachForm = React.createClass({
     if(params.realName){
         json.realName = json.realName.replace(/\s+/g, "");
     }
-      if(params.time){
+      if(params.time[0]){
           json.endTime=(DateFormat.formatDate(params.time[1])).substring(0,10);
           json.startTime=(DateFormat.formatDate(params.time[0])).substring(0,10);
       }

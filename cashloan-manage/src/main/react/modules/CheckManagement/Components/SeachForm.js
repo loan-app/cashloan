@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-    Button,
-    Form,
-    Input,
-    Select,
-    DatePicker,
-    Radio
-} from 'antd';
+import {Button, DatePicker, Form, Input, Select} from 'antd';
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -19,7 +13,7 @@ let SeachForm = React.createClass({
     handleQuery() {
         var params = this.props.form.getFieldsValue();
         var json = { endTime: '', startTime: '', orderNo: params.orderNo, processResult: params.processResult};
-        if (params.registTime) {
+        if (params.registTime[0]) {
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
         }
