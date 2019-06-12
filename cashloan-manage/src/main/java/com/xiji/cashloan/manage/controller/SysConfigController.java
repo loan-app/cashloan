@@ -209,8 +209,8 @@ public class SysConfigController extends BaseController {
     	//修改可用注册时可用额度
     	SysConfig config = sysConfigService.findByCode("init_credit");
     	clBorrowService.changeCreditTotal(Double.valueOf(config.getValue()));
-        // 调用缓存辅助类 重加载系统配置数据
-        CacheUtil.initSysConfig();
+		// 调用缓存辅助类 重加载系统配置数据
+		CacheUtil.initSysConfig();
 
 
         //前台缓存清理

@@ -50,7 +50,7 @@ public interface SysConfigMapper extends BaseMapper<SysConfig,Long> {
 	 * @return
 	 */
 	SysConfig selectByCode(@Param("code") String code);
-    
+
     /**
      * 根据code模糊查询系统配置
      * @return list
