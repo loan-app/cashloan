@@ -101,13 +101,6 @@ public class ManualRepayOrderModel extends ManualRepayOrder{
      */
     private String timeLimit;
 
-    private String frontImg;
-
-    private String backImg;
-
-
-    private String livingImg;
-
     /**
      * 借款中文描述
      */
@@ -263,30 +256,6 @@ public class ManualRepayOrderModel extends ManualRepayOrder{
 
     public void setStateStr(String stateStr) {
         this.stateStr = stateStr;
-    }
-
-    public String getFrontImg() {
-        return frontImg;
-    }
-
-    public void setFrontImg(String frontImg) {
-        this.frontImg = frontImg;
-    }
-
-    public String getBackImg() {
-        return backImg;
-    }
-
-    public void setBackImg(String backImg) {
-        this.backImg = backImg;
-    }
-
-    public String getLivingImg() {
-        return livingImg;
-    }
-
-    public void setLivingImg(String livingImg) {
-        this.livingImg = livingImg;
     }
 
     public Double getRepayTotal() {

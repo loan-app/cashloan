@@ -30,4 +30,6 @@ public interface ManualRepayOrderMapper extends BaseMapper<ManualRepayOrder, Lon
      *
      */
     List<ManualRepayOrderModel> listModel(Map<String, Object> params);
+
+
 }

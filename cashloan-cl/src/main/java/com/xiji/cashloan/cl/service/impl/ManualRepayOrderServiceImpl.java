@@ -45,13 +45,14 @@ public class ManualRepayOrderServiceImpl extends BaseServiceImpl<ManualRepayOrde
     }
 
     @Override
+    public Page<ManualRepayOrderModel> listModel(Map<String, Object> params, int currentPage, int pageSize) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<ManualRepayOrderModel> list = manualRepayOrderMapper.listModel(params);
+        return (Page<ManualRepayOrderModel>) list;
+    }
+
+    @Override
     public int orderAllotUser(Map<String, Object> params) {
-        List<BorrowRepay> borrowRepays = borrowRepayMapper.selectByIds(params);
-        List<Long> borrowIds = new ArrayList<>();
-        for (BorrowRepay borrowRepay : borrowRepays) {
-            borrowIds.add(borrowRepay.getBorrowId());
-        }
-        params.put("ids", borrowIds);
         return manualRepayOrderMapper.orderAllotUser(params);
     }
 
@@ -59,13 +60,6 @@ public class ManualRepayOrderServiceImpl extends BaseServiceImpl<ManualRepayOrde
     public Page<ManualRepayOrderModel> list(Map<String, Object> params, int current, int pageSize) {
         PageHelper.startPage(current, pageSize);
         List<ManualRepayOrderModel> list = manualRepayOrderMapper.listModel(params);
-        String serverHost = Global.getValue("manage_host");
-
-        for(ManualRepayOrderModel urgeRepayOrder:list){
-            urgeRepayOrder.setLivingImg(urgeRepayOrder.getLivingImg()!=null?serverHost +"/readFile.htm?path="+ urgeRepayOrder.getLivingImg():"");
-            urgeRepayOrder.setFrontImg(urgeRepayOrder.getFrontImg()!=null?serverHost +"/readFile.htm?path="+ urgeRepayOrder.getFrontImg():"") ;
-            urgeRepayOrder.setBackImg(urgeRepayOrder.getBackImg()!=null?serverHost +"/readFile.htm?path="+ urgeRepayOrder.getBackImg():"");
-        }
         return (Page<ManualRepayOrderModel>)list;
     }
 }

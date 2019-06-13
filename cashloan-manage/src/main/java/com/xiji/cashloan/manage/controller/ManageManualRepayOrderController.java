@@ -38,6 +38,30 @@ public class ManageManualRepayOrderController extends ManageBaseController {
 
 
     /**
+     * 即将到期信息列表
+     *
+     * @param search
+     * @param currentPage
+     * @param pageSize
+     */
+    @RequestMapping(value = "/modules/manage/manual/repay/list.htm")
+    @RequiresPermission(code = "modules:manage:manual:repay:list", name = "即将到期信息列表")
+    public void list(
+            @RequestParam(value = "searchParams", required = false) String searchParams,
+            @RequestParam(value = "current") int currentPage,
+            @RequestParam(value = "pageSize") int pageSize) {
+        Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+        Page<ManualRepayOrderModel> page = manualRepayOrderService.listModel(params,
+                currentPage, pageSize);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put(Constant.RESPONSE_DATA, page);
+        result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
+        ServletUtils.writeToResponse(response, result);
+    }
+
+    /**
      * 到期员信息列表
      * @param roleName
      */
