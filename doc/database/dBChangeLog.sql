@@ -969,3 +969,6 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '还款提额次数', 'count_improve_credit', '1,1,1', '1', '参照还款提额次数(1,2,3)格式每个数字代表当次提额要还款的次数,数字的个数参照提额上限除以单次增加的额度', '1');
 --  添加成功还款次数字段
 ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '有效还款次数' after count;
+
+-- 决策数据添加字段长度
+alter table cl_decision change mx_native_place mx_native_place varchar(64) NOT NULL DEFAULT '' COMMENT '籍贯',
