@@ -1,6 +1,5 @@
 package com.xiji.cashloan.cl.mapper;
 
-
 import com.xiji.cashloan.cl.model.ManualRepayOrderModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
@@ -11,7 +10,7 @@ import java.util.Map;
 
 /**
  * 到期订单Dao
- * 
+ *
  * @author szb
  * @version 1.0.0
  * @date 2019-03-07 16:20:42
@@ -31,4 +30,6 @@ public interface ManualRepayOrderMapper extends BaseMapper<ManualRepayOrder, Lon
      *
      */
     List<ManualRepayOrderModel> listModel(Map<String, Object> params);
+
+
 }

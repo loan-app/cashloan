@@ -1002,3 +1002,42 @@ ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '当次有�
 -- 还款提额次数
 ALTER TABLE cl_channel add count_improve_credit varchar(64) DEFAULT '1,1,1' COMMENT '还款提额次数:参照(1,2,3)格式，每个数字代表当次提额要还款的次数，数字的个数参照提额上限除以单次增加的额度';
 update cl_channel set count_improve_credit =(select value from arc_sys_config where code = 'count_improve_credit');
+
+INSERT INTO `arc_sys_menu` VALUES ('1029', '0', '即将到期信息', '10', '', null, '00000000006', null, '', null, '', '即将到期信息', '0', 'UserWillRepay', null, null, null, null);
+
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1029');
+
+-- 新建角色到期人员和我的还款订单菜单
+INSERT INTO `arc_sys_role` VALUES (null, '到期人员', 'repayPerson',  '2019-03-07 00:00:00', 'system', '2019-03-07 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
+
+INSERT INTO `arc_sys_menu` VALUES ('1030', '0', '我的到期订单', '10', '', null, '00000000006', null, '', null, '', '我的到期订单', '0', 'MyRepayOrder', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1030');
+
+-- 创建到期订单表
+DROP TABLE IF EXISTS `cl_manual_repay_order`;
+CREATE TABLE `cl_manual_repay_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '到期人id',
+  `borrow_user_id` bigint(20) NOT NULL COMMENT '借款人id',
+  `borrow_name` varchar(20) DEFAULT '' COMMENT '借款人姓名',
+  `phone` varchar(20) DEFAULT '' COMMENT '借款人手机号',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款id',
+  `borrow_repay_id` bigint(20) DEFAULT NULL COMMENT '还款计划id',
+  `state` varchar(2) DEFAULT '10' COMMENT '分配状态   10未分配，20已分配',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注说明',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `review_time` datetime DEFAULT NULL COMMENT '分配时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`) USING BTREE,
+  KEY `borrow_id` (`borrow_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='到期订单表';
+
+-- 插入到期数据
+insert into `cl_manual_repay_order`(`borrow_repay_id`,`borrow_name`, `phone`, `borrow_id`, `borrow_user_id`)
+select br.id,u.real_name borrow_name,u.phone phone, br.borrow_id borrow_id,u.user_id user_id
+from cl_borrow_repay br left join cl_user_base_info u
+                                  on br.user_id = u.user_id
+where br.state = 20;
+-- 修改到期插入时间
+update cl_manual_repay_order set create_time = now();
+update cl_manual_repay_order set review_time = now();

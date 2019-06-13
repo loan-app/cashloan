@@ -1,4 +1,6 @@
 var RepaymentPlanList = require('../../RepaymentManage/RepaymentPlanList/index');//还款管理-还款计划
+var UserWillRepay = require('../../RepaymentManage/UserWillRepay/index');//即将到期订单
+var MyRepayOrder = require('../../RepaymentManage/MyRepayOrder/index');//我的到期订单
 var PaymentHistory = require('../../RepaymentManage/PaymentHistory/index');//还款管理-还款记录
 var AlipayPaymentList = require('../../RepaymentManage/AlipayPaymentList/index');//还款管理-支付宝还款列表
 var BankCardPaymentList = require('../../RepaymentManage/BankCardPaymentList/index');//还款管理-银行卡还款列表
@@ -98,5 +100,7 @@ module.exports = {
     AuditorPassStatistic,
     UserNotBorrowAgain,
     NowOverdueStatistic,
-    RealTimeMaturityStatistic
+    RealTimeMaturityStatistic,
+    UserWillRepay,
+    MyRepayOrder
 }

@@ -1,10 +1,8 @@
 package com.xiji.cashloan.cl.domain;
-
 import java.io.Serializable;
 import java.util.Date;
 
 public class ManualRepayOrder implements Serializable {
-
 
     private static final long serialVersionUID = 1L;
 
@@ -62,83 +60,184 @@ public class ManualRepayOrder implements Serializable {
      */
     private Long borrowRepayId;
 
-    public Long getId() {
+
+    /**
+     * 获取主键Id
+     *
+     * @return id
+     */
+    public Long getId(){
         return id;
     }
 
-    public void setId(Long id) {
+    /**
+     * 设置主键Id
+     *
+     * @param 要设置的主键Id
+     */
+    public void setId(Long id){
         this.id = id;
     }
 
-    public Long getUserId() {
+    /**
+     * 获取到期人id
+     *
+     * @return 到期人id
+     */
+    public Long getUserId(){
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    /**
+     * 设置到期人id
+     *
+     * @param userId 要设置的到期人id
+     */
+    public void setUserId(Long userId){
         this.userId = userId;
     }
 
-    public Long getBorrowUserId() {
+    /**
+     * 获取借款人id
+     *
+     * @return 借款人id
+     */
+    public Long getBorrowUserId(){
         return borrowUserId;
     }
 
-    public void setBorrowUserId(Long borrowUserId) {
+    /**
+     * 设置借款人id
+     *
+     * @param borrowUserId 要设置的借款人id
+     */
+    public void setBorrowUserId(Long borrowUserId){
         this.borrowUserId = borrowUserId;
     }
 
-    public String getBorrowName() {
+    /**
+     * 获取借款人姓名
+     *
+     * @return 借款人姓名
+     */
+    public String getBorrowName(){
         return borrowName;
     }
 
-    public void setBorrowName(String borrowName) {
+    /**
+     * 设置借款人姓名
+     *
+     * @param borrowName 要设置的借款人姓名
+     */
+    public void setBorrowName(String borrowName){
         this.borrowName = borrowName;
     }
 
-    public String getPhone() {
+    /**
+     * 获取借款人手机号
+     *
+     * @return 借款人手机号
+     */
+    public String getPhone(){
         return phone;
     }
 
-    public void setPhone(String phone) {
+    /**
+     * 设置借款人手机号
+     *
+     * @param phone 要设置的借款人手机号
+     */
+    public void setPhone(String phone){
         this.phone = phone;
     }
 
-    public Long getBorrowId() {
+    /**
+     * 获取借款id
+     *
+     * @return 借款id
+     */
+    public Long getBorrowId(){
         return borrowId;
     }
 
-    public void setBorrowId(Long borrowId) {
+    /**
+     * 设置借款id
+     *
+     * @param borrowId 要设置的借款id
+     */
+    public void setBorrowId(Long borrowId){
         this.borrowId = borrowId;
     }
 
-    public String getState() {
+    /**
+     * 获取分配状态   10未分配，20已分配
+     *
+     * @return 分配状态   10未分配，20已分配
+     */
+    public String getState(){
         return state;
     }
 
-    public void setState(String state) {
+    /**
+     * 设置分配状态   10未分配，20已分配
+     *
+     * @param state 要设置的分配状态   10未分配，20已分配
+     */
+    public void setState(String state){
         this.state = state;
     }
 
-    public String getRemark() {
+    /**
+     * 获取备注说明
+     *
+     * @return 备注说明
+     */
+    public String getRemark(){
         return remark;
     }
 
-    public void setRemark(String remark) {
+    /**
+     * 设置备注说明
+     *
+     * @param remark 要设置的备注说明
+     */
+    public void setRemark(String remark){
         this.remark = remark;
     }
 
-    public Date getCreateTime() {
+    /**
+     * 获取创建时间
+     *
+     * @return 创建时间
+     */
+    public Date getCreateTime(){
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 要设置的创建时间
+     */
+    public void setCreateTime(Date createTime){
         this.createTime = createTime;
     }
 
-    public Date getReviewTime() {
+    /**
+     * 获取分配时间
+     *
+     * @return 分配时间
+     */
+    public Date getReviewTime(){
         return reviewTime;
     }
 
-    public void setReviewTime(Date reviewTime) {
+    /**
+     * 设置分配时间
+     *
+     * @param reviewTime 要设置的分配时间
+     */
+    public void setReviewTime(Date reviewTime){
         this.reviewTime = reviewTime;
     }
 
@@ -149,4 +248,5 @@ public class ManualRepayOrder implements Serializable {
     public void setBorrowRepayId(Long borrowRepayId) {
         this.borrowRepayId = borrowRepayId;
     }
+
 }

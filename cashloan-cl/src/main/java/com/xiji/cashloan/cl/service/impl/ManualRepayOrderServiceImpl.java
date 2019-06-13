@@ -23,43 +23,43 @@ import java.util.Map;
 
 /**
  * 到期订单ServiceImpl
- * 
+ *
  * @author szb
  * @version 1.0.0
  * @date 2019-03-07 16:20:42
  */
- 
+
 @Service("manualRepayOrderService")
 public class ManualRepayOrderServiceImpl extends BaseServiceImpl<ManualRepayOrder, Long> implements ManualRepayOrderService {
-	
+
     private static final Logger logger = LoggerFactory.getLogger(ManualRepayOrderServiceImpl.class);
-   
+
     @Resource
     private ManualRepayOrderMapper manualRepayOrderMapper;
-	@Resource
-	private BorrowRepayMapper borrowRepayMapper;
+    @Resource
+    private BorrowRepayMapper borrowRepayMapper;
 
-	@Override
-	public BaseMapper<ManualRepayOrder, Long> getMapper() {
-		return manualRepayOrderMapper;
-	}
+    @Override
+    public BaseMapper<ManualRepayOrder, Long> getMapper() {
+        return manualRepayOrderMapper;
+    }
 
-	@Override
-	public int orderAllotUser(Map<String, Object> params) {
-		List<BorrowRepay> borrowRepays = borrowRepayMapper.selectByIds(params);
-		List<Long> borrowIds = new ArrayList<>();
-		for (BorrowRepay borrowRepay : borrowRepays) {
-			borrowIds.add(borrowRepay.getBorrowId());
-		}
-		params.put("ids", borrowIds);
-		return manualRepayOrderMapper.orderAllotUser(params);
-	}
+    @Override
+    public Page<ManualRepayOrderModel> listModel(Map<String, Object> params, int currentPage, int pageSize) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<ManualRepayOrderModel> list = manualRepayOrderMapper.listModel(params);
+        return (Page<ManualRepayOrderModel>) list;
+    }
 
-	@Override
-	public Page<ManualRepayOrderModel> list(Map<String, Object> params, int current, int pageSize) {
-		PageHelper.startPage(current, pageSize);
-		List<ManualRepayOrderModel> list = manualRepayOrderMapper.listModel(params);
+    @Override
+    public int orderAllotUser(Map<String, Object> params) {
+        return manualRepayOrderMapper.orderAllotUser(params);
+    }
 
-		return (Page<ManualRepayOrderModel>)list;
-	}
+    @Override
+    public Page<ManualRepayOrderModel> list(Map<String, Object> params, int current, int pageSize) {
+        PageHelper.startPage(current, pageSize);
+        List<ManualRepayOrderModel> list = manualRepayOrderMapper.listModel(params);
+        return (Page<ManualRepayOrderModel>)list;
+    }
 }

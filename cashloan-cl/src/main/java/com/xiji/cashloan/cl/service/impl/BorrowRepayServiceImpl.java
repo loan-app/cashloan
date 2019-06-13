@@ -126,6 +126,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	private UserBaseInfoService userBaseInfoService;
 	@Resource
 	private ChannelMapper channelMapper;
+	@Resource
+	private ManualRepayOrderMapper manualRepayOrderMapper;
 
 	@Override
 	public BaseMapper<BorrowRepay, Long> getMapper() {
@@ -163,6 +165,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		//  默认还款计划类型为1
 		br.setType("1");
 		int result = borrowRepayMapper.save(br);
+
+		//插入人工到期订单表
+		UserBaseInfo userInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+		manualRepayOrderMapper.save(getManualRepayOrder(borrow.getId(), userInfo, br.getId(), null));
 
 		if (result > 0) {
 			// 调用连连支付接口进行授权
@@ -1629,5 +1635,23 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			count = borrowRepayMapper.updateBatchTypeByRepayId(repayIds);
 		}
 		return count;
+	}
+
+	private ManualRepayOrder getManualRepayOrder(Long borrowId, UserBaseInfo userInfo, Long borrowRepayId, Long operatorUserId) {
+		ManualRepayOrder manualRepayOrder = new ManualRepayOrder();
+		manualRepayOrder.setCreateTime(DateUtil.getNow());
+		manualRepayOrder.setReviewTime(DateUtil.getNow());
+		manualRepayOrder.setBorrowUserId(userInfo.getUserId());
+		manualRepayOrder.setBorrowId(borrowId);
+		manualRepayOrder.setBorrowName(userInfo.getRealName());
+		manualRepayOrder.setPhone(userInfo.getPhone());
+		manualRepayOrder.setBorrowRepayId(borrowRepayId);
+		manualRepayOrder.setUserId(operatorUserId);
+		if(operatorUserId != null) {
+			manualRepayOrder.setState(ManualRepayOrderModel.STATE_ORDER_ALLOT);
+		} else {
+			manualRepayOrder.setState(ManualRepayOrderModel.STATE_ORDER_NO_ALLOT);
+		}
+		return manualRepayOrder;
 	}
 }

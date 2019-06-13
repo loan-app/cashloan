@@ -396,5 +396,14 @@
         </foreach>
     </select>
 
+    <select id="selectByIds"  resultType="com.xiji.cashloan.cl.domain.BorrowRepay">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_repay
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
 
 </mapper>
