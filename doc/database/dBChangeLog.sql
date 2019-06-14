@@ -973,4 +973,4 @@ ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '有效还�
 -- 决策数据添加字段长度
 alter table cl_decision change mx_native_place mx_native_place varchar(64) NOT NULL DEFAULT '' COMMENT '籍贯';
 
-ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
+ALTER TABLE cl_decision add column yd_device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
