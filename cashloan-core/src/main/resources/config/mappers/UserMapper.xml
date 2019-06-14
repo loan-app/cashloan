@@ -215,7 +215,7 @@
                 and register_client = #{registerClient,jdbcType=VARCHAR}              
             </if>
             <if test="channelId != null and channelId != ''">
-                and f = #{channelId,jdbcType=BIGINT}
+                and u.channel_id = #{channelId,jdbcType=BIGINT}
             </if>
         </trim>
     </sql>
