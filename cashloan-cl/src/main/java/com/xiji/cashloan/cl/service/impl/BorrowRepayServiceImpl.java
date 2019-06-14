@@ -168,7 +168,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		//插入人工到期订单表
 		UserBaseInfo userInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
-		manualRepayOrderMapper.save(getManualRepayOrder(borrow.getId(), userInfo, br.getId(), null));
+        ManualRepayOrder mr = getManualRepayOrder(borrow.getId(), userInfo, br.getId(), null);
+        manualRepayOrderMapper.save(mr);
 
 		if (result > 0) {
 			// 调用连连支付接口进行授权

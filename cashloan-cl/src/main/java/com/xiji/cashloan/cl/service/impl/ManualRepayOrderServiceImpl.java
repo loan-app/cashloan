@@ -44,15 +44,15 @@ public class ManualRepayOrderServiceImpl extends BaseServiceImpl<ManualRepayOrde
         return manualRepayOrderMapper;
     }
 
-    @Override
-    public Page<ManualRepayOrderModel> listModel(Map<String, Object> params, int currentPage, int pageSize) {
-        PageHelper.startPage(currentPage, pageSize);
-        List<ManualRepayOrderModel> list = manualRepayOrderMapper.listModel(params);
-        return (Page<ManualRepayOrderModel>) list;
-    }
 
     @Override
     public int orderAllotUser(Map<String, Object> params) {
+        List<BorrowRepay> borrowRepays = borrowRepayMapper.selectByIds(params);
+        List<Long> borrowIds = new ArrayList<>();
+        for (BorrowRepay borrowRepay : borrowRepays) {
+            borrowIds.add(borrowRepay.getBorrowId());
+        }
+        params.put("ids", borrowIds);
         return manualRepayOrderMapper.orderAllotUser(params);
     }
 

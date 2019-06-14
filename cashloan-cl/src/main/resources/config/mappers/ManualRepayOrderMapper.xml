@@ -220,7 +220,7 @@
                 state = #{state,jdbcType=VARCHAR}
             </if>
         </set>
-        where id in
+        where borrow_id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
@@ -254,7 +254,7 @@
             <if test="userId  != null">
                 and o.user_id = #{userId,jdbcType=BIGINT}
             </if>
-                and TO_DAYS(br.repay_time) - TO_DAYS(NOW()) = 1
+
         </trim>
     </select>
 </mapper>

@@ -1,12 +1,8 @@
 package com.xiji.cashloan.manage.controller;
 
 import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.domain.ManualRepayOrder;
 import com.xiji.cashloan.cl.model.ManualRepayOrderModel;
-import com.xiji.cashloan.cl.model.ManualReviewCountModel;
-import com.xiji.cashloan.cl.model.ManualReviewOrderModel;
 import com.xiji.cashloan.cl.service.ManualRepayOrderService;
-import com.xiji.cashloan.cl.service.ManualReviewOrderService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
@@ -37,29 +33,6 @@ public class ManageManualRepayOrderController extends ManageBaseController {
     private ManualRepayOrderService manualRepayOrderService;
 
 
-    /**
-     * 即将到期信息列表
-     *
-     * @param search
-     * @param currentPage
-     * @param pageSize
-     */
-    @RequestMapping(value = "/modules/manage/manual/repay/list.htm")
-    @RequiresPermission(code = "modules:manage:manual:repay:list", name = "即将到期信息列表")
-    public void list(
-            @RequestParam(value = "searchParams", required = false) String searchParams,
-            @RequestParam(value = "current") int currentPage,
-            @RequestParam(value = "pageSize") int pageSize) {
-        Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
-        Page<ManualRepayOrderModel> page = manualRepayOrderService.listModel(params,
-                currentPage, pageSize);
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put(Constant.RESPONSE_DATA, page);
-        result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
-        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-        result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
-        ServletUtils.writeToResponse(response, result);
-    }
 
     /**
      * 到期员信息列表

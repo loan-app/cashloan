@@ -1,15 +1,16 @@
 import React from 'react'
 import {Table} from 'antd';
 import Lookdetails from "./Lookdetails";
-import Updatedetails from "./Updatedetails";
 import AddWin from "./AddWin";
-import UserRemarkList from "../../../common/UserRemark/UserRemarkList";
+import AdjustCreditDetial from "./AdjustCreditDetial";
+
 
 var repaymentTypeText={'10':'待审核', '20': '审核中' ,'30': '通过','40' :'已拒绝' ,'50': '还款中', '60' :'还款完成', '70': '逾期'}
 const objectAssign = require('object-assign');
 export default React.createClass({
     getInitialState() {
         return {
+            selectedRows: [],
             selectedRowKeys: [], // 这里配置默认勾选列
             loading: false,
             data: [],
@@ -32,6 +33,9 @@ export default React.createClass({
             record:"",
             visibleAdd:false,
             visibleRemark:false,
+            visibleAc:false,
+            visibleShow:false,
+            visibleDetails:false,
 
         };
     },
@@ -109,6 +113,7 @@ export default React.createClass({
     },
     //隐藏弹窗
     hideModal() {
+        this.clearSelectedList();
         this.setState({
             visible: false,
             visible1: false,
@@ -118,9 +123,53 @@ export default React.createClass({
             selectedRowKeys: [],
             visibleAdd:false,
             visibleRemark:false,
+            visibleAc:false,
+            visibleDetails:false,
 
         });
         this.refreshList();
+    },
+
+    clearSelectedList() {
+        this.setState({
+            selectedRowKeys: [],
+        });
+    },
+
+
+    showModalAc(title, record) {
+        if(record.id) {
+            var state = record.state;
+            var id = record.id;
+            var selectedRows = this.state.selectedRows;
+            var selectedRowKeys = [];
+
+            if (state == 10 || state == 30){
+                this.setState({
+                    visibleAc: false,})
+            } else  {
+                selectedRowKeys.push(id);
+                selectedRows.push(record);
+            }
+            this.setState({
+                selectedRows: selectedRows,
+                selectedRowKeys: selectedRowKeys,
+            });
+        }
+        if(title=='分配到期'){
+            Utils.ajaxData({
+                url: '/modules/manage/borrow/manual/repay/sysUserlist.htm',
+                method: 'get',
+                callback: (result) => {
+                    this.setState({
+                        visibleAc: true,
+                        title: title,
+                        selectedRowKeys: this.state.selectedRowKeys,
+                        dataRecord:result.data,
+                    });
+                }
+            });
+        }
     },
     rowKey(record) {
         return record.id;
@@ -153,14 +202,26 @@ export default React.createClass({
     },
 
     //行点击事件
-    onRowClick(record) {
-        //console.log(record)
+    onRowClick(record, index, event) {
+        var record = record;
+        var state = record.state;
+        var id = record.id;
+        var selectedRows = this.state.selectedRows;
+        var selectedRowKeys = this.state.selectedRowKeys;
+
+        if (state == 10 || state == 30){
+            this.setState({
+                visibleAc: false,})
+        } else if (selectedRowKeys.indexOf(id) < 0) {
+            selectedRowKeys.push(id);
+            selectedRows.push(record);
+        } else {
+            selectedRowKeys.remove(id);
+            selectedRows.remove(record);
+        }
         this.setState({
-            selectedRowKeys: [record.id],
-            selectedRow: record,
-            rowRecord:record
-        },()=>{
-            this
+            selectedRows: selectedRows,
+            selectedRowKeys: selectedRowKeys,
         });
     },
 
@@ -173,16 +234,19 @@ export default React.createClass({
     },
 
     //选择
-    onSelectAll(selected, selectedRowKeys, selectedRows, changeRows) {
+    onSelectAll(selected, selectedRows, changeRows) {
+        var selectedRowKeys = this.state.selectedRowKeys;
         if (selected) {
-            this.setState({
-                selectedRowKeys
-            })
+            for (var i = 0; i < selectedRows.length; i++) {
+                selectedRowKeys.push(selectedRows[i].id);
+            }
         } else {
-            this.setState({
-                selectedRowKeys: []
-            })
+            selectedRowKeys = [];
         }
+        this.setState({
+            selectedRows: selectedRows,
+            selectedRowKeys: selectedRowKeys,
+        })
     },
     download(){
         window.open('/modules/manage/borrow/repay/downRepayByFile.htm');
@@ -226,9 +290,9 @@ export default React.createClass({
             selectedRowKeys
             } = this.state;
         const rowSelection = {
-            //type: 'checkbox',
+            type: 'checkbox',
             selectedRowKeys,
-            //onSelectAll: this.onSelectAll,
+            onSelectAll: this.onSelectAll,
         };
         let me=this;
         const hasSelected = selectedRowKeys.length > 0;
@@ -307,6 +371,29 @@ export default React.createClass({
                     )
                 }
             } 
+        },{
+            title: '分配',
+            dataIndex: "",
+            onCellClick: (record, event) => event.stopPropagation(),
+            render(text, record) {
+                if(record.state == 10 || record.state == 30){
+                    return "-"
+                }else{
+                    if(record.allotState == "10"){
+                        return(
+                            <div style={{ textAlign: "left" }}>
+                                <a href="#" onClick={me.showModalAc.bind(me, '分配到期',record, false)}>分配 </a>
+                            </div>
+                        )
+                    } else {
+                        return(
+                            <div style={{ textAlign: "left" }}>
+                                <a href="#" onClick={me.showModalAc.bind(me, '分配到期',record, false)}>重新分配 </a>
+                            </div>
+                        )
+                    }
+                }
+            }
         }]
 
         var state = this.state;
@@ -319,8 +406,12 @@ export default React.createClass({
                     <button onClick={me.download.bind(me,'下载')} className="ant-btn"> 
                         下载模板
                     </button>
+                    <button disabled={!hasSelected} onClick={me.showModalAc.bind(me,'分配到期')} className="ant-btn">
+                        批量分配
+                    </button>
                 </div>
-                <Table columns={columns} rowKey={this.rowKey} ref="table" 
+                <Table columns={columns} rowKey={this.rowKey} ref="table"
+                       rowSelection={rowSelection}
                        onRowClick={this.onRowClick}
                        dataSource={this.state.data}
                        rowClassName={this.rowClassName}
@@ -328,14 +419,10 @@ export default React.createClass({
                        onChange={this.handleTableChange}
                 />
                 <Lookdetails ref="Lookdetails" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record}
-                canEdit={state.canEdit} />
-                <Updatedetails ref="Updatedetails" visible={state.visibleRepay} title={state.title} hideModal={me.hideModal} record={state.record}
-                canEdit={state.canEdit} />
+                             canEdit={state.canEdit} />
                 <AddWin ref="AddWin"  visible={state.visibleAdd} hideModal={me.hideModal} title={state.title}/>
-
-
-                <UserRemarkList ref="UserRemarkList" visible={state.visibleRemark}    title={state.title} hideModal={me.hideModal}
-                                dataRecord={state.dataRecord}  record={state.record} canEdit={state.canEdit} pagination={state.pagination1}/>
+                <AdjustCreditDetial ref="AdjustCreditDetial"  visible={state.visibleAc}    title={state.title} hideModal={me.hideModal}
+                                    record={state.selectedrecord} dataRecord={state.dataRecord}  canEdit={state.canEdit} selectedRowKeys={state.selectedRowKeys} />
 
             </div>
         );

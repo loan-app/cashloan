@@ -20,6 +20,4 @@ public interface ManualRepayOrderService extends BaseService<ManualRepayOrder, L
 
     Page<ManualRepayOrderModel> list(Map<String, Object> params, int current, int pageSize);
 
-    Page<ManualRepayOrderModel> listModel(Map<String, Object> params, int currentPage,
-                                      int pageSize);
 }

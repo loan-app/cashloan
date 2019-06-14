@@ -256,12 +256,4 @@
         from arc_credit
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </select>
-
-    <update id="updateByConsumerNo"  parameterType="java.util.HashMap">
-        update arc_credit set
-                total = #{total,jdbcType=DECIMAL},
-                unuse = #{unuse,jdbcType=DECIMAL}
-        where consumer_no = #{consumerNo,jdbcType=VARCHAR}
-    </update>
-    
 </mapper>
