@@ -364,8 +364,6 @@ public class ChannelController extends ManageBaseController {
 			String name = loginUser.getName();
 			searchMap.put("name", name);
 			page = (Page<Map<String, Object>>) channelService.oneChannelUserCount(searchMap,current,pageSize);
-		} else {
-			page = (Page<Map<String, Object>>) channelService.channelUserCount(searchMap,current,pageSize);
 		}
 
 		Map<String, Object> result = new HashMap<String, Object>();

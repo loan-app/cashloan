@@ -77,7 +77,7 @@ export default React.createClass({
             params.searchParams= JSON.stringify({beforeTime:date.substring(0,10),afterTime:date.substring(0,10)})
         }
         Utils.ajaxData({
-            url: '/modules/manage/promotion/channel/channelUserCount.htm',
+            url: '/modules/manage/promotion/channel/myChannelList.htm',
             data:params,
             method: 'post',
             callback: (result) => {
