@@ -109,7 +109,6 @@ public class ManualRepayOrderModel extends ManualRepayOrder{
      */
     private String stateStr;
 
-    private Double repayTotal;
 
     public Double getRepayAmount() {
         return repayAmount;
@@ -261,13 +260,5 @@ public class ManualRepayOrderModel extends ManualRepayOrder{
         this.stateStr = stateStr;
     }
 
-    public Double getRepayTotal() {
-        this.repayTotal =  BigDecimalUtil.add(this.getRepayAmount(),this.getPenaltyAmount());
-        return repayTotal;
-    }
-
-    public void setRepayTotal(Double repayTotal) {
-        this.repayTotal = repayTotal;
-    }
 
 }

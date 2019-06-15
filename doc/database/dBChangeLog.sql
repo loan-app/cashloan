@@ -1003,9 +1003,7 @@ ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '当次有�
 ALTER TABLE cl_channel add count_improve_credit varchar(64) DEFAULT '1,1,1' COMMENT '还款提额次数:参照(1,2,3)格式，每个数字代表当次提额要还款的次数，数字的个数参照提额上限除以单次增加的额度';
 update cl_channel set count_improve_credit =(select value from arc_sys_config where code = 'count_improve_credit');
 
-INSERT INTO `arc_sys_menu` VALUES ('1029', '0', '即将到期信息', '10', '', null, '00000000006', null, '', null, '', '即将到期信息', '0', 'UserWillRepay', null, null, null, null);
 
-INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1029');
 
 -- 新建角色到期人员和我的还款订单菜单
 INSERT INTO `arc_sys_role` VALUES (null, '到期人员', 'repayPerson',  '2019-03-07 00:00:00', 'system', '2019-03-07 00:00:00', 'system', '请勿改动该角色唯一标识', '0');

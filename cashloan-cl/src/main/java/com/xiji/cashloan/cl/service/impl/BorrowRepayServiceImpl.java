@@ -164,7 +164,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		br.setCreateTime(DateUtil.getNow());
 		//  默认还款计划类型为1
 		br.setType("1");
-		int result = borrowRepayMapper.save(br);
+		int result = borrowRepayMapper.saveReturnId(br);
 
 		//插入人工到期订单表
 		UserBaseInfo userInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());

@@ -227,11 +227,11 @@
     </update>
 
     <select id="listModel" resultType="com.xiji.cashloan.cl.model.ManualRepayOrderModel">
-      select o.id,br.amount repayAmount,br.repay_time,br.penalty_amout penaltyAmount,br.penalty_day,br.id as borrow_repay_id,
+      select o.id,br.amount repayAmount,br.repay_time repayTime,br.penalty_amout penaltyAmount,br.penalty_day,br.id as borrow_repay_id,
         b.real_amount,b.fee,b.amount borrowAmount,b.id borrowId,o.borrow_name realName,b.order_no orderNo,o.phone phone,o.borrow_user_id borrowUserId,o.state
         from cl_manual_repay_order o
         left join cl_borrow_repay br on o.borrow_repay_id = br.id
-        left join cl_borrow b on br.borrow_id = b.id
+        left join cl_borrow b on o.borrow_id=b.id
         <trim prefix="where" prefixOverrides="and|or">
             <if test="realName !='' and realName !=null">
                 o.borrow_name   like  concat("%",#{realName,jdbcType=VARCHAR},"%")
