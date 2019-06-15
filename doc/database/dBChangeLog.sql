@@ -1039,3 +1039,7 @@ where br.state = 20;
 -- 修改到期插入时间
 update cl_manual_repay_order set create_time = now();
 update cl_manual_repay_order set review_time = now();
+
+
+INSERT INTO `arc_sys_menu` VALUES ('1032', '0', '我的渠道统计', '24', '', null, '00000000006', null, '', null, '', '我的到期订单', '0', 'MyChannelList', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1032');

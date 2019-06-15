@@ -338,5 +338,45 @@ public class ChannelController extends ManageBaseController {
 		ServletUtils.writeToResponse(response, result);
 
 	}
-	
+
+
+	/**
+	 * 我的渠道信息
+	 * @param searchParams
+	 * @param current
+	 * @param pageSize
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/myChannelList.htm", method = {RequestMethod.POST,RequestMethod.GET})
+	public void myChannelList(
+			@RequestParam(value="searchParams",required=false) String searchParams,
+			@RequestParam(value = "current") int current,
+			@RequestParam(value = "pageSize") int pageSize) throws Exception {
+		Map<String, Object> searchMap = new HashMap<>();
+		if (!StringUtils.isEmpty(searchParams)) {
+			searchMap = JsonUtil.parse(searchParams, Map.class);
+		}
+		Page<Map<String,Object>> page = new Page<>();
+		SysRole sysRole = getRoleForLoginUser(request);
+		SysUser loginUser = getLoginUser(request);
+		//临时解决方案,如果用户角色为QuDao,根据登录用户名,去查询渠道的统计信息
+		if(ROLE_QUDAO.equals(sysRole.getNid())) {
+			String name = loginUser.getName();
+			searchMap.put("name", name);
+			page = (Page<Map<String, Object>>) channelService.oneChannelUserCount(searchMap,current,pageSize);
+		} else {
+			page = (Page<Map<String, Object>>) channelService.channelUserCount(searchMap,current,pageSize);
+		}
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+
+
+
 }

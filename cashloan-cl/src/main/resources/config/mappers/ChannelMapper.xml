@@ -392,7 +392,7 @@
 	            and user.channel_id=#{channelId}
 	         </if>
 		 </trim>
- 		GROUP BY user.channel_id
+			GROUP BY user.channel_id
  	</select>
  	
  	<!-- 借款金额 -->
@@ -538,6 +538,25 @@
 	<select id="queryChannelConfig" resultType="java.util.HashMap">
 		select code,value
 		from arc_sys_config where code = 'fee' or code='init_credit' or code='borrow_credit' or code='is_improve_credit'or code='one_repay_credit' or code='imporove_credit_limit' or code='borrow_day' or code='delay_fee' or code='behead_fee' or code='count_improve_credit'
+	</select>
+	<!-- 借款人数 -->
+	<select id="certificationCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT channel_id as channelId,COUNT(cu.id) as phoneCount from cl_user as cu
+		left join cl_user_auth  cua on cu.id = cua.user_id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="beforeTime != null ">
+				and date_format(regist_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="afterTime != null ">
+				and date_format(regist_time, '%Y-%m-%d')  &lt;= #{afterTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="channelId != null and channelId != ''">
+				and channel_id=#{channelId}
+			</if>
+				and  cua.phone_state = '30'
+		</trim>
+
+		GROUP BY cu.channel_id
 	</select>
 
 </mapper>

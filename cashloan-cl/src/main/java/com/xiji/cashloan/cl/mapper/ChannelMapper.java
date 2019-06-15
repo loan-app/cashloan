@@ -139,4 +139,11 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * @return
 	 */
 	List<Map<String, Object>> queryChannelConfig();
+
+	/**
+	 * 认证人数
+	 * @param paramMap
+	 * @return
+	 */
+	List<Map<String, Object>> certificationCount(Map<String,Object> paramMap);
 }

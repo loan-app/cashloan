@@ -60,7 +60,8 @@ export default Reflux.createStore({
 					'ShildCreditAuditRecords',
 					'LoanApplicationManage',
 					'MachineRequestRecord',
-					'AdverManageList'
+					'AdverManageList',
+					'MyChannelList'
 				];
 
 			var routeNames2 = [
