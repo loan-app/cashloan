@@ -58,6 +58,10 @@ import java.util.Date;
     */
     private Date createTime;
 
+    /**
+     * 渠道限流 1:QQ 2:微信 3:微博 4:其他
+     * */
+    private String condition;
 
     /**
     * 获取主键Id
@@ -173,7 +177,16 @@ import java.util.Date;
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
- 
-
+    /**
+     * 获得要限流的渠道1qq 2微信 3微博 4其他
+     * */
+    public String getCondition() {
+        return condition;
+    }
+    /**
+     * 设置限流的渠道1qq 2微信 3微博 4其他
+     * */
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 }

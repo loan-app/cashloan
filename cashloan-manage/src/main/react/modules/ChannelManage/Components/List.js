@@ -167,6 +167,50 @@ export default React.createClass({
             },
             onCancel: function() { }
         });
+    },changeCondition(record,title) {
+        var record=record;
+        var me = this;
+        var msg = "";
+        var tips = "";
+        var state = "";
+        var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+        if (title == '启用') {
+            msg = '启用成功';
+            tips = '您是否启用';
+            state = 10;
+        } else if (title == '禁用') {
+            msg = '禁用成功';
+            tips = '您是否禁用';
+            state = 20;
+        }
+
+        confirm({
+            title: tips,
+            onOk: function() {
+                Utils.ajaxData({
+                    url: trueurl,
+                    data: {
+                        id:record.id,
+                        state:state,
+                    },
+                    method: 'post',
+                    callback: (result) => {
+                    if (result.code == 200) {
+                    Modal.success({
+                        title: result.msg,
+                    });
+                    me.refreshList();
+                } else {
+                    Modal.error({
+                        title: result.msg,
+                    });
+                }
+
+            }
+            });
+            },
+            onCancel: function() { }
+        });
     },
    
     render() {

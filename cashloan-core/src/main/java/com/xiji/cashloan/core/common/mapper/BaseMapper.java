@@ -49,6 +49,15 @@ public interface BaseMapper<T, ID extends Serializable> {
 	int updateSelective(Map<String, Object> paramMap);
 
 	/**
+	 * 更新限流数据
+	 * */
+     int updatecondition(T e);
+
+     /**
+	  * 更新限流数据
+	  * */
+	 int updateconditionSelective(Map<String, Object> paramMap);
+	/**
 	 * 获取一条记录
 	 * 
 	 * @param paramMap 查询条件

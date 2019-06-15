@@ -37,7 +37,15 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	 * @param paramMap
 	 * @return
 	 */
-	boolean update(Map<String, Object> paramMap);
+	boolean update(Map<String, Object> paramMap);/**
+	 * 更新渠道限流信息
+	 *
+	 * @param paramMap
+	 * @return
+	 */
+	boolean updatecondition(Map<String, Object> paramMap);
+
+
 	
 	/**
 	 * 根据code查询主键
