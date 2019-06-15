@@ -210,6 +210,9 @@
             <if test="endTime  != null">
                 and DATE_FORMAT(r.repay_time,'%Y-%m-%d')  &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="allotState  != null and allotState != '' ">
+                and cmro.state = #{allotState,jdbcType=VARCHAR}
+            </if>
         </trim>
     </sql>
      <select id="listModel" resultMap="userBorrowRayMap" parameterType="java.util.HashMap">
