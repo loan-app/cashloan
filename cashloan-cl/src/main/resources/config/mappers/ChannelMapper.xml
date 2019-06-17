@@ -156,7 +156,7 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 	<select id="findConditionById" resultType="java.lang.String" parameterType="java.lang.String">
-		select condition from cl_channel where code=#{code,jdbcType=VARCHAR}
+		select `condition` from cl_channel where code=#{code,jdbcType=VARCHAR}
 	</select>
 
 	<select id="findIdSelective" resultType="java.lang.Long" parameterType="java.util.HashMap">

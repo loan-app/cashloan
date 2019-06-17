@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	/**
 	 *查询是否被二级限流
 	 **/
-	String	findConditionById(String code );
+	String	findConditionById(@Param("code") String code );
 	/**
 	 * 根据条件查询主键
 	 */
