@@ -3,7 +3,7 @@ import {Table} from 'antd';
 import Lookdetails from "./Lookdetails";
 import AddWin from "./AddWin";
 import AdjustCreditDetial from "./AdjustCreditDetial";
-
+import Updatedetails from "./Updatedetails";
 
 var repaymentTypeText={'10':'待审核', '20': '审核中' ,'30': '通过','40' :'已拒绝' ,'50': '还款中', '60' :'还款完成', '70': '逾期'}
 const objectAssign = require('object-assign');
@@ -423,7 +423,8 @@ export default React.createClass({
                 <AddWin ref="AddWin"  visible={state.visibleAdd} hideModal={me.hideModal} title={state.title}/>
                 <AdjustCreditDetial ref="AdjustCreditDetial"  visible={state.visibleAc}    title={state.title} hideModal={me.hideModal}
                                     record={state.selectedrecord} dataRecord={state.dataRecord}  canEdit={state.canEdit} selectedRowKeys={state.selectedRowKeys} />
-
+                <Updatedetails ref="Updatedetails" visible={state.visibleRepay} title={state.title} hideModal={me.hideModal} record={state.record}
+                             canEdit={state.canEdit} />
             </div>
         );
     }
