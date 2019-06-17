@@ -34,6 +34,7 @@ public class BankCardManage implements BankCardMapper {
         bankCardMapper.saveRecord(e);
     }
 
+
     @Override
     public int update(BankCard e) {
         if (e != null) {

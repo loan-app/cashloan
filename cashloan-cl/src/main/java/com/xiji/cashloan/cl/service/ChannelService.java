@@ -22,6 +22,10 @@ import com.xiji.cashloan.core.common.service.BaseService;
  * 未经授权不得进行修改、复制、出售及商业使用
  */
 public interface ChannelService extends BaseService<Channel, Long>{
+	/**
+	 *查询是否被二级限流
+	 **/
+	String	findConditionById(long id );
 
 	/**
 	 * 保存渠道信息

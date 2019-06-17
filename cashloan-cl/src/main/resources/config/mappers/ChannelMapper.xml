@@ -155,6 +155,9 @@
         from cl_channel
         where id = #{id,jdbcType=INTEGER}
     </select>
+	<select id="findConditionById" resultType="java.lang.String" parameterType="java.lang.Long">
+		select condition from cl_channel where id=#{id,jdbcType=INTEGER}
+	</select>
 
 	<select id="findIdSelective" resultType="java.lang.Long" parameterType="java.util.HashMap">
         select
