@@ -53,6 +53,7 @@ public interface BaseMapper<T, ID extends Serializable> {
 	 * */
      int updatecondition(T e);
 
+
      /**
 	  * 更新限流数据
 	  * */

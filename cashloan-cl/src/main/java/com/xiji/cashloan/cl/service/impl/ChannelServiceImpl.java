@@ -39,8 +39,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	private ClBorrowMapper clBorrowMapper;
 
 	@Override
-    public 	String	findConditionById(long id ){
-		return channelMapper.findConditionById(id);
+    public 	String	findConditionById(String code ){
+		return channelMapper.findConditionById(code);
 	}
     
     @Override

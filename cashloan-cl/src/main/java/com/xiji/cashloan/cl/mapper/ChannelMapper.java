@@ -26,7 +26,7 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	/**
 	 *查询是否被二级限流
 	 **/
-	String	findConditionById(Long id );
+	String	findConditionById(String code );
 	/**
 	 * 根据条件查询主键
 	 */

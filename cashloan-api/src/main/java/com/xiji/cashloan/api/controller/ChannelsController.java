@@ -24,12 +24,12 @@ public class ChannelsController extends BaseController{
      * 二级限流
      * @author wangqi
      * @date 2019/6/17
-     * @param id （channel渠道主键）
+     * @param code
      * @return contidion (Type:String code:1限流qq 2限流微信 3限流微博 4限流其他 0不做二级限流)
      * */
     @RequestMapping(value="/api/channels/condition.htm")
-    public void findConditionById(@RequestParam(value = "id") long id){
-        String byId = channelService.findConditionById(id);
+    public void findConditionById(@RequestParam(value = "code") String code){
+        String byId = channelService.findConditionById(code);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put(Constant.RESPONSE_DATA, byId);
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);

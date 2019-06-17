@@ -25,7 +25,7 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	/**
 	 *查询是否被二级限流
 	 **/
-	String	findConditionById(long id );
+	String	findConditionById(String code );
 
 	/**
 	 * 保存渠道信息
