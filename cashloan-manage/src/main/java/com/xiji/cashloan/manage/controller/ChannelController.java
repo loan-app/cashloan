@@ -200,19 +200,39 @@ public class ChannelController extends ManageBaseController {
 		ServletUtils.writeToResponse(response, result);
 	}
 	/**
+	 * 渠道信息修改状态
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/updateStates.htm", method = RequestMethod.POST)
+	public void updateStates(@RequestParam(value="id") Long id,
+							@RequestParam(value="conditions") String conditions) throws Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("id", id);
+		paramMap.put("conditions", conditions);
+		boolean flag = channelService.update(paramMap);
+		Map<String, Object> result = new HashMap<String, Object>();
+		if (flag) {
+			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+		} else {
+			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+		}
+		ServletUtils.writeToResponse(response, result);
+	}
+	/**
 	 * 渠道限流信息状态
 	 * todo 1：qq 2：微信 3：微博 4：其他
 	 * @author wangqi
 	 * @date 2019/6/14 16:22
-	 * @param id 渠道id
-	 * @param condition 限流具体的渠道 1QQ 2微信 3微博 4其他 限流多个渠道string类型参数用','逗号分隔
+	 * @param code
+	 * @param conditions 限流具体的渠道 1QQ 2微信 3微博 4其他 限流多个渠道string类型参数用','逗号分隔
 	 * */
 	@RequestMapping(value = "/modules/manage/promotion/channel/updataCondition.htm", method = RequestMethod.POST)
-	public void updataCondition(@RequestParam(value = "id")Long id,
-								@RequestParam(value = "condition")String condition){
-		HashMap<String, Object> paramMap = new HashMap<>();
-		paramMap.put("id",id);
-		paramMap.put("condition",condition);
+	public void updataCondition(@RequestParam(value ="code")String code,
+								@RequestParam(value ="conditions")String conditions){
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("code",code);
+		paramMap.put("conditions",conditions);
 		boolean flag =channelService.updatecondition(paramMap);
 		HashMap<String, Object> result = new HashMap<>();
 		if (flag) {

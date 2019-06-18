@@ -53,7 +53,7 @@
 				<version>9.2.9.v20150224</version>
 				<configuration>
 					<httpConnector>
-						<port>8081</port>
+						<port>8082</port>
 					</httpConnector>
 					<scanIntervalSeconds>0</scanIntervalSeconds>
 					<systemProperties>
