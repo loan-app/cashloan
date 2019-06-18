@@ -69,6 +69,10 @@ public class ManageBRepayModel extends BorrowRepay {
 	 * 还款状态
 	 */
 	private String stateStr;
+	/**
+	 * 分配状态 10-未分配 20-已分配
+	 */
+	private String allotState;
 
 
 	public String getRealName() {
@@ -159,5 +163,13 @@ public class ManageBRepayModel extends BorrowRepay {
 
 	public void setStateStr(String stateStr) {
 		this.stateStr = stateStr;
+	}
+
+	public String getAllotState() {
+		return allotState;
+	}
+
+	public void setAllotState(String allotState) {
+		this.allotState = allotState;
 	}
 }

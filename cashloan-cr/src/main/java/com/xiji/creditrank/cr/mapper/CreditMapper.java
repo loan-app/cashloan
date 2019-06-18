@@ -76,6 +76,13 @@ public interface CreditMapper extends BaseMapper<Credit,Long> {
 	int updateByUserId(Map<String, Object> map);
 
 	/**
+	 * 根据userId修改额度
+	 * @param map
+	 * @return
+	 */
+	int updateByConsumerNo(Map<String, Object> map);
+
+	/**
 	 * 减少总额度与可用额度
 	 * @param change
 	 * @param d 

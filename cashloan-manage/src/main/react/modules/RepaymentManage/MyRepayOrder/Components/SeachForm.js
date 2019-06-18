@@ -14,7 +14,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone};
         if(params.registTime[0]){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -34,7 +34,7 @@ let SeachForm = React.createClass({
     },
     handleOut() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state};
         if(params.registTime){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -58,30 +58,11 @@ let SeachForm = React.createClass({
                 <FormItem label="手机号码:">
                     <Input  {...getFieldProps('phone') } />
                 </FormItem>
-                <FormItem label="订单号:">
-                    <Input  {...getFieldProps('orderNo') } />
-                </FormItem>
-                <FormItem label="还款状态:">
-                    <Select style={{ width: 100 }} {...getFieldProps('state', { initialValue: '' }) }>
-                        <Option value="">全部</Option>
-                        <Option value="10">已还款</Option>
-                        <Option value="20">未还款</Option>
-                        <Option value="30">展期还款</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="分配状态:">
-                    <Select style={{ width: 100 }} {...getFieldProps('allotState', { initialValue: '' }) }>
-                        <Option value="">全部</Option>
-                        <Option value="10">未分配</Option>
-                        <Option value="20">已分配</Option>
-                    </Select>
-                </FormItem>
                 <FormItem label="应还日期：">
                     <RangePicker style={{width:"310"}} {...getFieldProps('registTime', { initialValue: '' }) } />
                 </FormItem>
                 <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
                 <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
-                <FormItem><Button onClick={this.handleOut}>导出</Button></FormItem>
             </Form>
         );
     }

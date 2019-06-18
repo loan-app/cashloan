@@ -9,6 +9,8 @@ window.browser.width = window.innerWidth;
 window.browser.height = window.innerHeight;
 window.browser.wx = u.match(/MicroMessenger/);
 
+
+
 $(function() {
   var close = function(e) {
     $(this).parents('.popup').hide();

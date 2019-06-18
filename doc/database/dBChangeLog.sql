@@ -953,6 +953,23 @@ INSERT INTO `arc_sys_config` VALUES (null, 80, '块钱网关证书文件名', 'k
 -- 支付请求记录表
 ALTER TABLE cl_pay_req_log add token varchar(64) DEFAULT '' COMMENT '获取验证码返回的令牌信息token';
 
+-- 展期费率
+INSERT INTO `arc_sys_config` VALUES (null, '20', '展期费率', 'delay_fee', '0.30', '1', '占借款金额的比例(参数值为小数)', '1');
+
+
+-- 添加渠道配置字段
+ALTER TABLE cl_channel add fee varchar(16) DEFAULT '0.00'   COMMENT '综合费用集合(0.098,0.12,0.15)';
+ALTER TABLE cl_channel add init_credit varchar(64) DEFAULT '0.00'   COMMENT '注册时给予额度';
+ALTER TABLE cl_channel add borrow_credit varchar(64) DEFAULT '0.00'  COMMENT '借款额度';
+ALTER TABLE cl_channel add is_improve_credit varchar(10) DEFAULT '10' COMMENT '还款提额开关(还款提额 10启用 20禁用)';
+ALTER TABLE cl_channel add one_repay_credit varchar(64) DEFAULT '0.00' COMMENT '还款成功单次增加的额度	';
+ALTER TABLE cl_channel add improve_credit_limit varchar(64) DEFAULT '0.00' COMMENT '还款成功累计提额上限';
+ALTER TABLE cl_channel add borrow_day varchar(4) DEFAULT '' COMMENT '借款天数';
+ALTER TABLE cl_channel add delay_fee varchar (16) DEFAULT '0.00' COMMENT '展期费率';
+ALTER TABLE cl_channel add behead_fee varchar(10) DEFAULT '10' COMMENT '是否启用砍头息10启用，20-不启用';
+
+
+
 -- 最终逾期统计
 INSERT INTO `arc_sys_menu` VALUES ('1027', '0', '最终逾期统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '最终逾期统计', '0', 'NowOverdueStatistic', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1027');
@@ -960,17 +977,73 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1027');
 INSERT INTO `arc_sys_menu` VALUES ('1028', '0', '实时到期还款统计', '1016', '', 'icon-qian', '00000000009', null, '', '2017-01-01 00:00:00', '', '实时到期还款统计', '0', 'RealTimeMaturityStatistic', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1028');
 
+-- 渠道配置更新
+UPDATE cl_channel set fee = (select value from arc_sys_config where code = 'fee'),
+borrow_credit =(select value from arc_sys_config where code = 'borrow_credit'),
+init_credit = (select value from arc_sys_config where code = 'init_credit'),
+is_improve_credit =(select value from arc_sys_config where code = 'is_improve_credit'),
+one_repay_credit =(select value from arc_sys_config where code = 'one_repay_credit'),
+improve_credit_limit =(select value from arc_sys_config where code = 'imporove_credit_limit'),
+borrow_day =(select value from arc_sys_config where code = 'borrow_day'),
+delay_fee =(select value from arc_sys_config where code = 'delay_fee'),
+behead_fee =(select value from arc_sys_config where code = 'behead_fee');
+
+
 -- 添加用户管理列表 未借款用户信息
-INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未复借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
 
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
 
 -- 根据完成次数提额
 INSERT INTO `arc_sys_config` VALUES (null, '20', '还款提额次数', 'count_improve_credit', '1,1,1', '1', '参照还款提额次数(1,2,3)格式每个数字代表当次提额要还款的次数,数字的个数参照提额上限除以单次增加的额度', '1');
 --  添加成功还款次数字段
-ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '有效还款次数' after count;
+ALTER TABLE arc_credit add column `num` int(11) DEFAULT '0' COMMENT '当次有效还款次数' after count;
+
+-- 还款提额次数
+ALTER TABLE cl_channel add count_improve_credit varchar(64) DEFAULT '1,1,1' COMMENT '还款提额次数:参照(1,2,3)格式，每个数字代表当次提额要还款的次数，数字的个数参照提额上限除以单次增加的额度';
+update cl_channel set count_improve_credit =(select value from arc_sys_config where code = 'count_improve_credit');
+
+
+
+-- 新建角色到期人员和我的还款订单菜单
+INSERT INTO `arc_sys_role` VALUES (null, '到期人员', 'repayPerson',  '2019-03-07 00:00:00', 'system', '2019-03-07 00:00:00', 'system', '请勿改动该角色唯一标识', '0');
+
+INSERT INTO `arc_sys_menu` VALUES ('1030', '0', '我的到期订单', '10', '', null, '00000000006', null, '', null, '', '我的到期订单', '0', 'MyRepayOrder', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1030');
+
+-- 创建到期订单表
+DROP TABLE IF EXISTS `cl_manual_repay_order`;
+CREATE TABLE `cl_manual_repay_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '到期人id',
+  `borrow_user_id` bigint(20) NOT NULL COMMENT '借款人id',
+  `borrow_name` varchar(20) DEFAULT '' COMMENT '借款人姓名',
+  `phone` varchar(20) DEFAULT '' COMMENT '借款人手机号',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款id',
+  `borrow_repay_id` bigint(20) DEFAULT NULL COMMENT '还款计划id',
+  `state` varchar(2) DEFAULT '10' COMMENT '分配状态   10未分配，20已分配',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注说明',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `review_time` datetime DEFAULT NULL COMMENT '分配时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`) USING BTREE,
+  KEY `borrow_id` (`borrow_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='到期订单表';
+
+-- 插入到期数据
+insert into `cl_manual_repay_order`(`borrow_repay_id`,`borrow_name`, `phone`, `borrow_id`, `borrow_user_id`)
+select br.id,u.real_name borrow_name,u.phone phone, br.borrow_id borrow_id,u.user_id user_id
+from cl_borrow_repay br left join cl_user_base_info u
+                                  on br.user_id = u.user_id
+where br.state = 20;
+-- 修改到期插入时间
+update cl_manual_repay_order set create_time = now();
+update cl_manual_repay_order set review_time = now();
 
 -- 决策数据添加字段长度
 alter table cl_decision change mx_native_place mx_native_place varchar(64) NOT NULL DEFAULT '' COMMENT '籍贯';
 
 ALTER TABLE cl_decision add column yd_device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
+
+INSERT INTO `arc_sys_menu` VALUES ('1032', '0', '我的渠道统计', '24', '', null, '00000000006', null, '', null, '', '我的到期订单', '0', 'MyChannelList', null, null, null, null);
+INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1032');

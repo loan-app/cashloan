@@ -31,6 +31,7 @@ var ShildCreditAuditRecords = require('../../RiskControlManage/ShildCreditAuditR
 var LoanApplicationManage = require('../../RiskControlManage/LoanApplicationManage/index'); //人工复审
 var MachineRequestRecord = require('../../RiskControlManage/MachineRequestRecord/index'); //机审请求列表
 var AdverManageList = require('../../AdverManageList/index'); //广告
+var MyChannelList = require('../../MyChannelList/index');//渠道信息统计
 
 
 module.exports = {
@@ -66,5 +67,6 @@ module.exports = {
   ShildCreditAuditRecords,
   LoanApplicationManage,
   MachineRequestRecord,
-  AdverManageList
+  AdverManageList,
+  MyChannelList
 }

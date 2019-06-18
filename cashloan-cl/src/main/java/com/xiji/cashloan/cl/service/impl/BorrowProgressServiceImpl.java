@@ -5,11 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.BorrowProgress;
 import com.xiji.cashloan.cl.domain.BorrowRepayLog;
+import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.manage.BankCardManage;
-import com.xiji.cashloan.cl.mapper.BorrowProgressMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayLogMapper;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.ClBorrowModel;
@@ -20,8 +18,11 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.domain.Borrow;
+import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
+
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.xiji.cashloan.core.mapper.UserMapper;
+import com.xiji.cashloan.core.service.CloanUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -70,6 +74,10 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
     private BankCardManage bankCardManage;
     @Resource
 	private UserBaseInfoMapper userBaseInfoMapper;
+    @Resource
+    private ChannelMapper channelMapper;
+    @Resource
+    private CloanUserService cloanUserService;
     
 	@Override
 	public BaseMapper<BorrowProgress, Long> getMapper() {
@@ -150,15 +158,34 @@ public class BorrowProgressServiceImpl extends BaseServiceImpl<BorrowProgress, L
 					delayDays = NumberUtil.getInt(Global.getValue("delay_days"));
 				}
 				double delayFee;
+				Double amount = borrow.getAmount();
+				Double delay_fee=0.0;
+				Double fee=0.0;
+				String serviceFee;
+                User user = cloanUserService.getById(borrow.getUserId());
+                Channel channel = channelMapper.getChannelById(user.getChannelId());
+                //获取展期费用的占比,
+                if(StringUtil.isNotBlank(channel.getDelayFee())) {
+                    delay_fee=Double.parseDouble(channel.getDelayFee());
+                    //展期费用
+                    fee=amount * delay_fee;
+                }else {
+                    //展期费用为综合费用;
+                    fee=borrow.getFee();
+                }
 				// 如果当前时间大于应还款时间,或者当前有逾期
 				if(nowDate.after(repayPlanTime) || clBorrowModel.getPenaltyAmount() > 0.0d) {
-					delayFee = BigDecimalUtil.add(borrow.getFee() + clBorrowModel.getPenaltyAmount());
+					delayFee = BigDecimalUtil.add(fee + clBorrowModel.getPenaltyAmount());
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    serviceFee = df.format(delayFee);
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(new Date(),delayDays),"yyyy-M-d");
 				} else {
-					delayFee = borrow.getFee();
+					delayFee = fee ;
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    serviceFee = df.format(delayFee);
 					dateStr = DateUtil.dateStr(DateUtil.rollDay(repayDate,delayDays),"yyyy-M-d");
 				}
-				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+String.valueOf(delayFee));
+				delayItem.put("delayItemTips","顺延一个还款周期至"+dateStr+"日，需要支付展期服务费￥"+serviceFee);
 				delayItem.put("delayRepayTimeStr",dateStr);
 				result.put("delayItem", delayItem);
 			}

@@ -60,7 +60,8 @@ export default Reflux.createStore({
 					'ShildCreditAuditRecords',
 					'LoanApplicationManage',
 					'MachineRequestRecord',
-					'AdverManageList'
+					'AdverManageList',
+					'MyChannelList'
 				];
 
 			var routeNames2 = [
@@ -110,7 +111,9 @@ export default Reflux.createStore({
 				    'OverdueStatistic',
 				    'AuditorPassStatistic',
 					'NowOverdueStatistic',
-				    'RealTimeMaturityStatistic'
+				    'RealTimeMaturityStatistic',
+					'UserWillRepay',
+					'MyRepayOrder'
 			];
 
 			var routeNames3 = [

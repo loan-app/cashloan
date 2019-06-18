@@ -57,11 +57,33 @@ public class ChannelController extends ManageBaseController {
 	public void save(@RequestParam(value="code") String code,
 			@RequestParam(value="name") String name,
 			@RequestParam(value="linker") String linker,
-			@RequestParam(value="phone") String phone) throws Exception {
+			@RequestParam(value="phone") String phone,
+		 	@RequestParam(value="fee") String fee,
+		 	@RequestParam(value="initCredit") String initCredit,
+		 	@RequestParam(value="borrowCredit") String borrowCredit,
+		 	@RequestParam(value="oneRepayCredit") String oneRepayCredit,
+		 	@RequestParam(value="improveCreditLimit") String improveCreditLimit,
+		 	@RequestParam(value="borrowDay") String borrowDay,
+		 	@RequestParam(value="isImproveCredit") String isImproveCredit,
+		 	@RequestParam(value="delayFee") String delayFee,
+		 	@RequestParam(value="beheadFee") String beheadFee,
+		    @RequestParam(value="countImproveCredit") String countImproveCredit
+
+			) throws Exception {
 		Channel channel=new Channel();
 		channel.setLinker(linker);
 		channel.setName(name);
 		channel.setPhone(phone);
+		channel.setFee(fee);
+		channel.setInitCredit(initCredit);
+		channel.setBorrowCredit(borrowCredit);
+		channel.setOneRepayCredit(oneRepayCredit);
+		channel.setImproveCreditLimit(improveCreditLimit);
+		channel.setBorrowDay(borrowDay);
+		channel.setIsImproveCredit(isImproveCredit);
+		channel.setDelayFee(delayFee);
+		channel.setBeheadFee(beheadFee);
+		channel.setCountImproveCredit(countImproveCredit);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (null != code2) {
@@ -140,12 +162,33 @@ public class ChannelController extends ManageBaseController {
 			@RequestParam(value="code") String code,
 			@RequestParam(value="name") String name,
 			@RequestParam(value="linker") String linker,
-			@RequestParam(value="phone") String phone) throws Exception {
+			@RequestParam(value="phone") String phone,
+			@RequestParam(value="fee") String fee,
+			@RequestParam(value="initCredit") String initCredit,
+			@RequestParam(value="borrowCredit") String borrowCredit,
+			@RequestParam(value="oneRepayCredit") String oneRepayCredit,
+			@RequestParam(value="improveCreditLimit") String improveCreditLimit,
+			@RequestParam(value="borrowDay") String borrowDay,
+			@RequestParam(value="isImproveCredit") String isImproveCredit,
+            @RequestParam(value="delayFee") String delayFee,
+            @RequestParam(value="beheadFee") String beheadFee,
+			@RequestParam(value="countImproveCredit") String countImproveCredit
+			) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
 		paramMap.put("name", name);
 		paramMap.put("linker", linker);
 		paramMap.put("phone", phone);
+		paramMap.put("fee",fee);
+		paramMap.put("initCredit",initCredit);
+		paramMap.put("borrowCredit",borrowCredit);
+		paramMap.put("oneRepayCredit",oneRepayCredit);
+		paramMap.put("improveCreditLimit",improveCreditLimit);
+		paramMap.put("borrowDay",borrowDay);
+		paramMap.put("isImproveCredit",isImproveCredit);
+        paramMap.put("delayFee",delayFee);
+        paramMap.put("beheadFee",beheadFee);
+        paramMap.put("countImproveCredit",countImproveCredit);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -279,5 +322,59 @@ public class ChannelController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
 	}
-	
+
+	/**
+	 * 查询渠道配置信息
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/queryChannelConfig.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	public void queryChannelConfig()throws Exception{
+		Map<String, Object> channelConfigMap = channelService.queryChannelConfig();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, channelConfigMap);
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+
+	}
+
+
+	/**
+	 * 我的渠道信息
+	 * @param searchParams
+	 * @param current
+	 * @param pageSize
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/myChannelList.htm", method = {RequestMethod.POST,RequestMethod.GET})
+	public void myChannelList(
+			@RequestParam(value="searchParams",required=false) String searchParams,
+			@RequestParam(value = "current") int current,
+			@RequestParam(value = "pageSize") int pageSize) throws Exception {
+		Map<String, Object> searchMap = new HashMap<>();
+		if (!StringUtils.isEmpty(searchParams)) {
+			searchMap = JsonUtil.parse(searchParams, Map.class);
+		}
+		Page<Map<String,Object>> page = new Page<>();
+		SysRole sysRole = getRoleForLoginUser(request);
+		SysUser loginUser = getLoginUser(request);
+		//临时解决方案,如果用户角色为QuDao,根据登录用户名,去查询渠道的统计信息
+		if(ROLE_QUDAO.equals(sysRole.getNid())) {
+			String name = loginUser.getName();
+			searchMap.put("name", name);
+			page = (Page<Map<String, Object>>) channelService.oneChannelUserCount(searchMap,current,pageSize);
+		}
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+
+
+
 }

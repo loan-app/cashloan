@@ -242,6 +242,13 @@
                 count = 1 + count
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </update>
+
+    <update id="updateByConsumerNo"  parameterType="java.util.HashMap">
+        update arc_credit set
+                total = #{total,jdbcType=DECIMAL},
+                unuse = #{unuse,jdbcType=DECIMAL}
+        where consumer_no = #{consumerNo,jdbcType=VARCHAR}
+    </update>
     
     <select id="findByConsumerNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
@@ -249,5 +256,4 @@
         from arc_credit
         where consumer_no = #{consumerNo,jdbcType=VARCHAR}
     </select>
-    
 </mapper>

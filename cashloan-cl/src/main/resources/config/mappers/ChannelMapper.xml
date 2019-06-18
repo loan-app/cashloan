@@ -12,11 +12,21 @@
         <result column="type" property="type" jdbcType="VARCHAR" />
         <result column="state" property="state" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="fee" property="fee" jdbcType="VARCHAR"/>
+		<result column="init_credit" property="initCredit" jdbcType="VARCHAR"/>
+		<result column="borrow_credit" property="borrowCredit" jdbcType="VARCHAR"/>
+		<result column="one_repay_credit" property="oneRepayCredit" jdbcType="VARCHAR"/>
+		<result column="improve_credit_limit" property="improveCreditLimit" jdbcType="VARCHAR"/>
+		<result column="is_improve_credit" property="isImproveCredit" jdbcType="VARCHAR"/>
+		<result column="borrow_day" property="borrowDay" jdbcType="VARCHAR"/>
+		<result column="delay_fee" property="delayFee" jdbcType="VARCHAR"/>
+		<result column="behead_fee" property="beheadFee" jdbcType="VARCHAR"/>
+		<result column="count_improve_credit" property="countImproveCredit" jdbcType="VARCHAR"/>
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,code,name,linker,phone,type,state,create_time
+        id,code,name,linker,phone,type,state,create_time,fee,init_credit,borrow_credit,one_repay_credit,improve_credit_limit,is_improve_credit,borrow_day,delay_fee,behead_fee,count_improve_credit
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -46,6 +56,36 @@
             <if test="createTime !=null">
                 and create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
+			<if test="fee != null and fee != '' ">
+				and fee= #{fee,jdbcType=VARCHAR}
+			</if>
+			<if test="initCredit != null and initCredit != '' ">
+				and init_credit=#{initCredit,jdbcType=VARCHAR}
+			</if>
+			<if test="borrowCredit != null and borrowCredit != '' ">
+				and borrow_credit=#{borrowCredit,jdbcType=VARCHAR}
+			</if>
+			<if test="oneRepayCredit != null and oneRepayCredit != '' ">
+				and one_repay_credit=#{oneRepayCredit,jdbcType=VARCHAR}
+			</if>
+			<if test="improveCreditLimit != null and improveCreditLimit != '' ">
+				and improve_credit_limit=#{improveCreditLimit,jdbcType=VARCHAR}
+			</if>
+			<if test="isImproveCredit != null and isImproveCredit != '' ">
+				and is_improve_credit=#{isImproveCredit,jdbcType=VARCHAR}
+			</if>
+			<if test="borrowDay != null and borrowDay != '' ">
+				and borrow_day=#{borrowDay,jdbcType=VARCHAR}
+			</if>
+			<if test="delayFee != null and delayFee != '' ">
+				and delay_fee=#{delayFee,jdbcType=VARCHAR}
+			</if>
+			<if test="beheadFee != null and beheadFee != '' ">
+				and behead_fee=#{beheadFee,jdbcType=VARCHAR}
+			</if>
+			<if test="countImproveCredit != null and countImproveCredit != '' ">
+				and count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR}
+			</if>
         </trim>
     </sql>
       <!-- 基本的模糊sql查询条件公共引用 -->
@@ -63,11 +103,46 @@
             <if test="phone !='' and phone !=null">
                 and phone like  concat("%",#{phone,jdbcType=VARCHAR},"%") 
             </if>
+			<if test="fee != null and fee != '' ">
+				and fee like  concat("%",#{fee,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="initCredit != null and initCredit != '' ">
+				and initCredit like  concat("%",#{initCredit,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="borrowCredit != null and borrowCredit != '' ">
+				and borrowCredit like  concat("%",#{borrowCredit,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="oneRepayCredit != null and oneRepayCredit != '' ">
+				and oneRepayCredit like  concat("%",#{oneRepayCredit,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="improveCreditLimit != null and improveCreditLimit != '' ">
+				and improveCreditLimit like  concat("%",#{improveCreditLimit,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="isImproveCredit != null and isImproveCredit != '' ">
+				and isImproveCredit like  concat("%",#{isImproveCredit,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="borrowDay != null and borrowDay != '' ">
+				and borrowDay like  concat("%",#{borrowDay,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="delayFee != null and delayFee != '' ">
+				and delayFee like  concat("%",#{delayFee,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="beheadFee != null and beheadFee != '' ">
+				and beheadFee like  concat("%",#{beheadFee,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="countImproveCredit != null and countImproveCredit != '' ">
+				and count_improve_credit like  concat("%",#{countImproveCredit,jdbcType=VARCHAR},"%")
+			</if>
         </trim>
     </sql>
     
     <insert id="save" parameterType="com.xiji.cashloan.cl.domain.Channel">
-        insert into cl_channel(code,name,linker,phone,type,state,create_time)values(#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{linker,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+        insert into cl_channel(code,name,linker,phone,type,state,create_time,fee,init_credit,borrow_credit,one_repay_credit,improve_credit_limit,
+        is_improve_credit,borrow_day,delay_fee,behead_fee,count_improve_credit) values(#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{linker,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+        #{fee,jdbcType=VARCHAR},#{initCredit,jdbcType=VARCHAR},#{borrowCredit,jdbcType=VARCHAR},#{oneRepayCredit,jdbcType=VARCHAR},
+        #{improveCreditLimit,jdbcType=VARCHAR},#{isImproveCredit,jdbcType=VARCHAR},#{borrowDay,jdbcType=VARCHAR},
+        #{delayFee,jdbcType=VARCHAR},#{beheadFee,jdbcType=VARCHAR},#{countImproveCredit,jdbcType=VARCHAR})
     </insert>
     
     <update id="update" parameterType="com.xiji.cashloan.cl.domain.Channel">
@@ -78,7 +153,17 @@
             phone = #{phone,jdbcType=VARCHAR},
             type = #{type,jdbcType=VARCHAR},
             state = #{state,jdbcType=VARCHAR},
-            create_time = #{createTime,jdbcType=TIMESTAMP}
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            fee=#{fee,jdbcType=VARCHAR},
+            init_credit=#{initCredit,jdbcType=VARCHAR},
+            borrow_credit=#{borrowCredit,jdbcType=VARCHAR},
+            one_repay_credit=#{oneRepayCredit,jdbcType=VARCHAR},
+            improve_credit_limit=#{improveCreditLimit,jdbcType=VARCHAR},
+            is_improve_credit=#{isImproveCredit,jdbcType=VARCHAR},
+            borrow_day=#{borrowDay,jdbcType=VARCHAR},
+            delay_fee=#{delayFee,jdbcType=VARCHAR},
+            behead_fee=#{beheadFee,jdbcType=VARCHAR},
+            count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -104,8 +189,38 @@
                 state = #{state,jdbcType=VARCHAR},                
             </if>
             <if test="createTime != null ">        
-                create_time = #{createTime,jdbcType=TIMESTAMP}                
+                create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+		    <if test="fee != null and fee != '' ">
+			  	fee=#{fee,jdbcType=VARCHAR},
+		  	</if>
+		    <if test="initCredit != null and initCredit != '' ">
+			  	init_credit=#{initCredit,jdbcType=VARCHAR},
+		  	</if>
+		  	<if test="borrowCredit != null and borrowCredit != '' ">
+			  	borrow_credit=#{borrowCredit,jdbcType=VARCHAR},
+		  	</if>
+		    <if test="oneRepayCredit != null and oneRepayCredit != '' ">
+			  	one_repay_credit=#{oneRepayCredit,jdbcType=VARCHAR},
+		    </if>
+		    <if test="improveCreditLimit != null and improveCreditLimit != '' ">
+			 	 improve_credit_limit=#{improveCreditLimit,jdbcType=VARCHAR},
+		    </if>
+		    <if test="isImproveCredit != null and isImproveCredit != '' ">
+			 	 is_improve_credit=#{isImproveCredit,jdbcType=VARCHAR},
+		    </if>
+		    <if test="borrowDay != null and borrowDay != '' ">
+			  	 borrow_day=#{borrowDay,jdbcType=VARCHAR},
+		    </if>
+		  	<if test="delayFee != null and delayFee != '' ">
+			 	delay_fee=#{delayFee,jdbcType=VARCHAR},
+		  	</if>
+		  	<if test="beheadFee != null and beheadFee != '' ">
+				behead_fee=#{beheadFee,jdbcType=VARCHAR},
+		  	</if>
+		    <if test="countImproveCredit != null and countImproveCredit != '' ">
+			    count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR}
+			</if>
         </set>    
         where id = #{id ,jdbcType=INTEGER}
     </update>
@@ -277,7 +392,7 @@
 	            and user.channel_id=#{channelId}
 	         </if>
 		 </trim>
- 		GROUP BY user.channel_id
+			GROUP BY user.channel_id
  	</select>
  	
  	<!-- 借款金额 -->
@@ -419,4 +534,29 @@
 		</trim>
 		GROUP BY user.channel_id
 	</select>
+
+	<select id="queryChannelConfig" resultType="java.util.HashMap">
+		select code,value
+		from arc_sys_config where code = 'fee' or code='init_credit' or code='borrow_credit' or code='is_improve_credit'or code='one_repay_credit' or code='imporove_credit_limit' or code='borrow_day' or code='delay_fee' or code='behead_fee' or code='count_improve_credit'
+	</select>
+	<!-- 借款人数 -->
+	<select id="certificationCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT channel_id as channelId,COUNT(cu.id) as phoneCount from cl_user as cu
+		left join cl_user_auth  cua on cu.id = cua.user_id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="beforeTime != null ">
+				and date_format(regist_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="afterTime != null ">
+				and date_format(regist_time, '%Y-%m-%d')  &lt;= #{afterTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="channelId != null and channelId != ''">
+				and channel_id=#{channelId}
+			</if>
+				and  cua.phone_state = '30'
+		</trim>
+
+		GROUP BY cu.channel_id
+	</select>
+
 </mapper>

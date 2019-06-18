@@ -134,4 +134,16 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	List<Map<String, Object>> countLending(Map<String,Object> paramMap);
 
 
+	/**
+	 * 查询渠道配置
+	 * @return
+	 */
+	List<Map<String, Object>> queryChannelConfig();
+
+	/**
+	 * 认证人数
+	 * @param paramMap
+	 * @return
+	 */
+	List<Map<String, Object>> certificationCount(Map<String,Object> paramMap);
 }

@@ -58,6 +58,55 @@ import java.util.Date;
     */
     private Date createTime;
 
+    /**
+     * 综合费用
+     */
+    private String fee;
+
+    /**
+     * 注册时给予额度
+     */
+    private String initCredit;
+
+    /**
+     * 借款额度
+     */
+    private String borrowCredit;
+    /**
+     * 还款成功累计提额上限
+     */
+    private String improveCreditLimit;
+
+    /**
+     * 还款成功单次增加的额度
+     */
+    private String oneRepayCredit;
+
+    /**
+     * 还款提额开关 10：启用20：禁用
+     */
+    private String isImproveCredit;
+
+    /**
+     * 借款天数
+     */
+    private String borrowDay;
+
+   /**
+    * 展期费率
+    */
+   private String delayFee;
+
+   /**
+    * 是否启用砍头息
+    */
+   private String beheadFee;
+
+    /**
+     * 还款提额次数
+     */
+   private String countImproveCredit;
+
 
     /**
     * 获取主键Id
@@ -174,6 +223,83 @@ import java.util.Date;
 		this.createTime = createTime;
 	}
 
- 
+    public String getFee() {
+        return fee;
+    }
 
+    public void setFee(String fee) {
+        this.fee = fee;
+    }
+
+    public String getInitCredit() {
+        return initCredit;
+    }
+
+    public void setInitCredit(String initCredit) {
+        this.initCredit = initCredit;
+    }
+
+    public String getBorrowCredit() {
+        return borrowCredit;
+    }
+
+    public void setBorrowCredit(String borrowCredit) {
+        this.borrowCredit = borrowCredit;
+    }
+
+    public String getImproveCreditLimit() {
+        return improveCreditLimit;
+    }
+
+    public void setImproveCreditLimit(String improveCreditLimit) {
+        this.improveCreditLimit = improveCreditLimit;
+    }
+
+    public String getOneRepayCredit() {
+        return oneRepayCredit;
+    }
+
+    public void setOneRepayCredit(String oneRepayCredit) {
+        this.oneRepayCredit = oneRepayCredit;
+    }
+
+    public String getIsImproveCredit() {
+        return isImproveCredit;
+    }
+
+    public void setIsImproveCredit(String isImproveCredit) {
+        this.isImproveCredit = isImproveCredit;
+    }
+
+    public String getBorrowDay() {
+        return borrowDay;
+    }
+
+    public void setBorrowDay(String borrowDay) {
+        this.borrowDay = borrowDay;
+    }
+
+   public String getDelayFee() {
+      return delayFee;
+   }
+
+   public void setDelayFee(String delayFee) {
+      this.delayFee = delayFee;
+   }
+
+   public String getBeheadFee() {
+      return beheadFee;
+   }
+
+   public void setBeheadFee(String beheadFee) {
+      this.beheadFee = beheadFee;
+   }
+
+    public String getCountImproveCredit() {
+        return countImproveCredit;
+    }
+
+    public void setCountImproveCredit(String countImproveCredit) {
+        this.countImproveCredit = countImproveCredit;
+    }
 }
