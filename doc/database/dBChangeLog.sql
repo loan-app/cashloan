@@ -1032,10 +1032,7 @@ CREATE TABLE `cl_manual_repay_order` (
 
 -- 插入到期数据
 insert into `cl_manual_repay_order`(`borrow_repay_id`,`borrow_name`, `phone`, `borrow_id`, `borrow_user_id`)
-select br.id,u.real_name borrow_name,u.phone phone, br.borrow_id borrow_id,u.user_id user_id
-from cl_borrow_repay br left join cl_user_base_info u
-                                  on br.user_id = u.user_id
-where br.state = 20;
+select br.id,u.real_name borrow_name,u.phone phone, br.borrow_id borrow_id,u.user_id user_id from cl_borrow_repay br left join cl_user_base_info u on br.user_id = u.user_id where br.state = 20;
 -- 修改到期插入时间
 update cl_manual_repay_order set create_time = now();
 update cl_manual_repay_order set review_time = now();
