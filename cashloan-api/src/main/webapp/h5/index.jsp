@@ -179,7 +179,7 @@
           <img src="/static/images/nobtnLeft.png" alt="" />
         </div>
         <div class="noBtn">
-          <a href="/h5/invite.jsp?invitationCode=<%=invitationCode%>&channelCode=<%=channelCode%>">
+          <a href="/h5_vue/index.html?invitationCode=<%=invitationCode%>&channelCode=<%=channelCode%>">
             <img src="/static/images/noBtn.png"/>
           </a>
         </div>
