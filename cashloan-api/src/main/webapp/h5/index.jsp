@@ -241,7 +241,7 @@
             </li>
           </ul>
         </div>
-        <a href="/h5/invite.jsp?invitationCode=<%=invitationCode%>&channelCode=<%=channelCode%>" class="regBtn-a">立即注册</a>
+        <a href="/h5_vue/index.html?invitationCode=<%=invitationCode%>&channelCode=<%=channelCode%>" class="regBtn-a">立即注册</a>
       </div>
   </div>
   <script src="/static/js/jquery.min.js"></script>
