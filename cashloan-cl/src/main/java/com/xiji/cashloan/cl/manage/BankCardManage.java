@@ -60,15 +60,15 @@ public class BankCardManage implements BankCardMapper {
         return bankCardMapper.updatecondition(e);
     }
 
-    @Override
-    public int updateconditionSelective(Map<String, Object> paramMap) {
-        long userId = 0;
-        if (paramMap.get("userId") != null){
-            userId = Long.valueOf(paramMap.get("userId").toString());
-        }
-        paramMap.put("agreeCompany",PayCommonUtil.payCompany(userId));
-        return bankCardMapper.updateconditionSelective(paramMap);
-    }
+//    @Override
+//    public int updateconditionSelective(Map<String, Object> paramMap) {
+//        long userId = 0;
+//        if (paramMap.get("userId") != null){
+//            userId = Long.valueOf(paramMap.get("userId").toString());
+//        }
+//        paramMap.put("agreeCompany",PayCommonUtil.payCompany(userId));
+//        return bankCardMapper.updateconditionSelective(paramMap);
+//    }
 
     @Override
     public BankCard findSelective(Map<String, Object> paramMap) {

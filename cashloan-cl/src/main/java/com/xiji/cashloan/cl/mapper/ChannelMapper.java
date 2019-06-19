@@ -24,6 +24,11 @@ import java.util.Map;
  */
 @RDBatisDao
 public interface ChannelMapper extends BaseMapper<Channel,Long> {
+	int updateconditionSelective(Map<String, Object> paramMap);
+	/**
+	 * 二级限流更新
+	 * */
+	int updateconditions(Channel channel);
 	/**
 	 *查询是否被二级限流
 	 **/

@@ -135,7 +135,7 @@
 	<update id="updateconditionSelective"  parameterType="java.util.HashMap">
 		 update cl_channel set
             conditions = #{conditions,jdbcType=VARCHAR}
-                    where code=#{code,jdbcType=VARCHAR}
+                    where id=#{id,jdbcType=INTEGER}
 	</update>
     <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select

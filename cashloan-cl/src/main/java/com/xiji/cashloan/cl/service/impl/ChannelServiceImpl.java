@@ -76,6 +76,14 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		}
 		return false;
 	}
+    @Override
+	public boolean updateconditions(Channel channel){
+		int i=channelMapper.updateconditions(channel);
+		if (i>0){
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public long findIdByCode(String code) {

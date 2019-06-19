@@ -48,6 +48,11 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	 * @return
 	 */
 	boolean updatecondition(Map<String, Object> paramMap);
+	/**
+	 * 更新二级限流信息
+	 * */
+
+	boolean updateconditions(Channel channel);
 
 
 	

@@ -168,186 +168,188 @@ export default React.createClass({
             onCancel: function() { }
         });
     },
-    changeCondition1(record,title) {
-        var record=record;
-        var me = this;
-        var msg = "";
-        var tips = "";
-        var state = "";
-        var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
-        if (title == '限流QQ') {
-            msg = '禁用成功';
-            tips = '您是否启用';
-            state = 1;
-        } else if (title == '开放QQ') {
-            msg = '开放成功';
-            tips = '您是否启用';
-            state = -1;
-        }
 
-        confirm({
-            title: tips,
-            onOk: function() {
-                Utils.ajaxData({
-                    url: trueurl,
-                    data: {
-                        id:record.id,
-                        state:state,
-                    },
-                    method: 'post',
-                    callback: (result) => {
-                    if (result.code == 200) {
-                    Modal.success({
-                        title: result.msg,
-                    });
-                    me.refreshList();
-                } else {
-                    Modal.error({
-                        title: result.msg,
-                    });
-                }
+    changeStatus1(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = -1;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 1;
+    }
 
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
             }
-            });
-            },
-            onCancel: function() { }
+
+        }
         });
-    },
-    // changeCondition2(record,title) {
-    //     var record=record;
-    //     var me = this;
-    //     var msg = "";
-    //     var tips = "";
-    //     var condition = "";
-    //     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
-    //     if (title == '限流微信') {
-    //         msg = '限流成功';
-    //         tips = '您是否限流微信';
-    //         condition = 2;
-    //     } else if (title == '开放微信') {
-    //         msg = '开放成功';
-    //         tips = '您是否开放微信渠道';
-    //         condition = -2;
-    //     }
-    //
-    //     confirm({
-    //         title: tips,
-    //         onOk: function() {
-    //             Utils.ajaxData({
-    //                 url: trueurl,
-    //                 data: {
-    //                     id:record.id,
-    //                     condition:condition,
-    //                 },
-    //                 method: 'post',
-    //                 callback: (result) => {
-    //                 if (result.code == 200) {
-    //                 Modal.success({
-    //                     title: result.msg,
-    //                 });
-    //                 me.refreshList();
-    //             } else {
-    //                 Modal.error({
-    //                     title: result.msg,
-    //                 });
-    //             }
-    //
-    //         }
-    //         });
-    //         },
-    //         onCancel: function() { }
-    //     });
-    // },
-    // changeCondition3(record,title) {
-    //     var record=record;
-    //     var me = this;
-    //     var msg = "";
-    //     var tips = "";
-    //     var condition = "";
-    //     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
-    //     if (title == '限流微博') {
-    //         msg = '限流成功';
-    //         tips = '您是否限流微博';
-    //         condition = 3;
-    //     } else if (title == '开放微博') {
-    //         msg = '开放成功';
-    //         tips = '您是否开放微博渠道';
-    //         condition = -3;
-    //     }
-    //
-    //     confirm({
-    //         title: tips,
-    //         onOk: function() {
-    //             Utils.ajaxData({
-    //                 url: trueurl,
-    //                 data: {
-    //                     id:record.id,
-    //                     condition:condition,
-    //                 },
-    //                 method: 'post',
-    //                 callback: (result) => {
-    //                 if (result.code == 200) {
-    //                 Modal.success({
-    //                     title: result.msg,
-    //                 });
-    //                 me.refreshList();
-    //             } else {
-    //                 Modal.error({
-    //                     title: result.msg,
-    //                 });
-    //             }
-    //
-    //         }
-    //         });
-    //         },
-    //         onCancel: function() { }
-    //     });
-    // },
-    // changeCondition4(record,title) {
-    //     var record=record;
-    //     var me = this;
-    //     var msg = "";
-    //     var tips = "";
-    //     var condition = "";
-    //     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
-    //     if (title == '限流其他') {
-    //         msg = '限流成功';
-    //         tips = '您是否限流其他';
-    //         condition = 4;
-    //     } else if (title == '开放其他') {
-    //         msg = '开放成功';
-    //         tips = '您是否开放其他渠道';
-    //         condition = -4;
-    //     }
-    //
-    //     confirm({
-    //         title: tips,
-    //         onOk: function() {
-    //             Utils.ajaxData({
-    //                 url: trueurl,
-    //                 data: {
-    //                     id:record.id,
-    //                     condition:condition,
-    //                 },
-    //                 method: 'post',
-    //                 callback: (result) => {
-    //                 if (result.code == 200) {
-    //                 Modal.success({
-    //                     title: result.msg,
-    //                 });
-    //                 me.refreshList();
-    //             } else {
-    //                 Modal.error({
-    //                     title: result.msg,
-    //                 });
-    //             }
-    //
-    //         }
-    //         });
-    //         },
-    //         onCancel: function() { }
-    //     });
-    // },
+        },
+        onCancel: function() { }
+    });
+},
+changeStatus2(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = -2;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 2;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+changeStatus3(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = -3;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 3;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+changeStatus4(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = -4;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 4;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+
    
     render() {
         var me = this;
@@ -400,7 +402,7 @@ export default React.createClass({
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="1"?(<a href="#" onClick={me.changeCondition1.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.state=="1"?(<a href="#" onClick={me.changeStatus1.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus1.bind(me,record,'禁用')}>禁用</a>)}
                 </div>
                 )
                 }
@@ -410,7 +412,7 @@ export default React.createClass({
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="2"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.state=="2"?(<a href="#" onClick={me.changeStatus2.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus2.bind(me,record,'禁用')}>禁用</a>)}
                 </div>
                 )
                 }
@@ -420,7 +422,7 @@ export default React.createClass({
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="3"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.state=="3"?(<a href="#" onClick={me.changeStatus3.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus3.bind(me,record,'禁用')}>禁用</a>)}
                 </div>
                 )
                 }
@@ -430,7 +432,7 @@ export default React.createClass({
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="4"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.state=="4"?(<a href="#" onClick={me.changeStatus4.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus4.bind(me,record,'禁用')}>禁用</a>)}
                 </div>
                 )
                 }
