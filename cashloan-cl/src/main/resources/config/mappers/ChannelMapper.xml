@@ -17,7 +17,7 @@
 
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,code,name,linker,phone,type,state,create_time
+        id,code,name,linker,phone,type,state,create_time,conditions
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -145,6 +145,9 @@
     </select>
 	<select id="findConditionById" resultType="java.lang.String" parameterType="java.lang.String">
 		select `conditions` from cl_channel where code=#{code,jdbcType=VARCHAR}
+	</select>
+	<select id="findConditionByIds" resultType="java.lang.String" parameterType="java.lang.Long">
+		select `conditions` from cl_channel where id = #{id,jdbcType=INTEGER}
 	</select>
 
 	<select id="findIdSelective" resultType="java.lang.Long" parameterType="java.util.HashMap">

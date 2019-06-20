@@ -61,7 +61,7 @@ import java.util.Date;
     /**
      * 渠道限流 1:QQ 2:微信 3:微博 4:其他
      * */
-    private String condition;
+    private String conditions;
 
     /**
     * 获取主键Id
@@ -180,13 +180,13 @@ import java.util.Date;
     /**
      * 获得要限流的渠道1qq 2微信 3微博 4其他
      * */
-    public String getCondition() {
-        return condition;
+    public String getConditions() {
+        return conditions;
     }
     /**
      * 设置限流的渠道1qq 2微信 3微博 4其他
      * */
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setConditions(String conditions) {
+        this.conditions = conditions;
     }
 }

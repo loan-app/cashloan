@@ -211,20 +211,130 @@ public class ChannelController extends ManageBaseController {
 	@RequestMapping(value = "/modules/manage/promotion/channel/updataCondition.htm", method = RequestMethod.POST)
 	public void updataCondition(@RequestParam(value ="id")Long id,
 								@RequestParam(value ="state")String state){
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-
-		paramMap.put("id",id);
-		paramMap.put("conditions",state);
-		boolean flag =channelService.updatecondition(paramMap);
-		HashMap<String, Object> result = new HashMap<>();
-		if (flag) {
-			result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-		} else {
-			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+		String conditions = channelService.getConditionsById(id);
+		//判断cl_channel表字段conditions是否包含新传入的参数值
+		if(conditions.contains(state)){
+			if(conditions.indexOf(state)==0&&conditions.length()==1) {
+				String replace = conditions.replace(state, "");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id", id);
+				paramMap.put("conditions", replace);
+				boolean flag = channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}else if(conditions.indexOf(state)==0&&conditions.length()!=1){
+				String concat = state.concat(",");
+				String replace = conditions.replace(concat, "");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id", id);
+				paramMap.put("conditions", replace);
+				boolean flag = channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}else if(conditions.indexOf(state)!=0&&conditions.length()!=1){
+				String s =",";
+				String concat = s.concat(state);
+				String replace = conditions.replace(concat, "");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id", id);
+				paramMap.put("conditions", replace);
+				boolean flag = channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}
+        }
+		else {
+			if (conditions.isEmpty()){
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id",id);
+				paramMap.put("conditions",state);
+				boolean flag =channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}else {
+				int parseInt = Integer.parseInt(state);
+				int bigint= parseInt+10;
+				int smartint=parseInt-10;
+				String big = String.valueOf(bigint);
+				String smart = String.valueOf(smartint);
+				if (conditions.contains(big)){
+					String replace = conditions.replace(big, state);
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("id",id);
+					paramMap.put("conditions",replace);
+					boolean flag =channelService.updatecondition(paramMap);
+					HashMap<String, Object> result = new HashMap<>();
+					if (flag) {
+						result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					} else {
+						result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+					}
+					ServletUtils.writeToResponse(response, result);
+				}
+				if (conditions.contains(smart)){
+					String replace = conditions.replace(smart, state);
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("id",id);
+					paramMap.put("conditions",replace);
+					boolean flag =channelService.updatecondition(paramMap);
+					HashMap<String, Object> result = new HashMap<>();
+					if (flag) {
+						result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					} else {
+						result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+					}
+					ServletUtils.writeToResponse(response, result);
+				}else {
+					String concat = conditions.concat(",");
+					String concat1 = concat.concat(state);
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("id",id);
+					paramMap.put("conditions",concat1);
+					boolean flag =channelService.updatecondition(paramMap);
+					HashMap<String, Object> result = new HashMap<>();
+					if (flag) {
+						result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					} else {
+						result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+					}
+					ServletUtils.writeToResponse(response, result);
+				}
+			}
 		}
-		ServletUtils.writeToResponse(response, result);
 	}
 
 	/**

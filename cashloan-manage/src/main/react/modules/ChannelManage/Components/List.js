@@ -179,7 +179,7 @@ export default React.createClass({
     if (title == '启用') {
         msg = '启用成功';
         tips = '您是否启用';
-        state = -1;
+        state = 1;
     } else if (title == '禁用') {
         msg = '禁用成功';
         tips = '您是否禁用';
@@ -224,7 +224,7 @@ changeStatus2(record,title) {
     if (title == '启用') {
         msg = '启用成功';
         tips = '您是否启用';
-        state = -2;
+        state = 2;
     } else if (title == '禁用') {
         msg = '禁用成功';
         tips = '您是否禁用';
@@ -269,7 +269,7 @@ changeStatus3(record,title) {
     if (title == '启用') {
         msg = '启用成功';
         tips = '您是否启用';
-        state = -3;
+        state = 3;
     } else if (title == '禁用') {
         msg = '禁用成功';
         tips = '您是否禁用';
@@ -314,7 +314,7 @@ changeStatus4(record,title) {
     if (title == '启用') {
         msg = '启用成功';
         tips = '您是否启用';
-        state = -4;
+        state = 4;
     } else if (title == '禁用') {
         msg = '禁用成功';
         tips = '您是否禁用';
@@ -390,103 +390,54 @@ changeStatus4(record,title) {
                 return  (
                     <div style={{ textAlign: "left" }}>
                         <a href="#" onClick={me.showModal.bind(me, '编辑',record, true)}>编辑</a>
-                          <span className="ant-divider"></span>       
-                         {record.state=="20"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
+                          <span className="ant-divider"></span>
+                         {record.state=="20"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'禁用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'启用')}>禁用</a>)}
                    </div>
                 )
             }
-        }
-            ,{
-                title:"限流QQ",
+        },
+            {
+                title:"限流QQ状态",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="1"?(<a href="#" onClick={me.changeStatus1.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus1.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.conditions.indexOf("1")!=-1?(<a href="#" onClick={me.changeStatus1.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus1.bind(me,record,'禁用')}>启用</a>)}
                 </div>
                 )
                 }
             },{
-                title:"限流微信",
+                title:"限流微信状态",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="2"?(<a href="#" onClick={me.changeStatus2.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus2.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.conditions.indexOf("2")!=-1?(<a href="#" onClick={me.changeStatus2.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus2.bind(me,record,'禁用')}>启用</a>)}
                 </div>
                 )
                 }
             },{
-                title:"限流微博",
+                title:"限流微博状态",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="3"?(<a href="#" onClick={me.changeStatus3.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus3.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.conditions.indexOf("3")!=-1?(<a href="#" onClick={me.changeStatus3.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus3.bind(me,record,'禁用')}>启用</a>)}
                 </div>
                 )
                 }
             },{
-                title:"限流其他",
+                title:"限流其他状态",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.state=="4"?(<a href="#" onClick={me.changeStatus4.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus4.bind(me,record,'禁用')}>禁用</a>)}
+                    {record.conditions.indexOf("4")!=-1?(<a href="#" onClick={me.changeStatus4.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus4.bind(me,record,'禁用')}>启用</a>)}
                 </div>
                 )
                 }
             }
-        // ,{
-        //     title:"限流QQ",
-        //     dataIndex:"",
-        //     render(text,record){
-        //         return(
-        //             <div style={{textAlign:"left"}}>
-        //     <span className="ant-divider"></span>
-        //         {record.condition=="1"?(a href="#" onclick={me.changeCondition1.bind(me ,record,'限流')}>限流</a>):(<a href="#" onClick={me.changeCondition1.bind(me,record,'开放')}>开放</a>)}
-        //             </div>
-        //         )
-        //     }
-        // }
-        // ,{
-        //     title:"限流QQ",
-        //     dataIndex:"",
-        //     render(text,record){
-        //         return  (
-        //         {record.condition=="1"?(<a href="#" onClick={me.changeCondition1.bind(me ,record,'限流')}>限流</a>):(<a href="#" onClick={me.changeCondition1.bind(me,record,'开放')}>开放</a>)}
-        //     </div>
-        //     )
-        //     }
-        // }
-        // ,{
-        //     title:"限流微信",
-        //     dataIndex:"",
-        //     render(text,record){
-        //         return  (
-        //             {record.condition=="2"?(<a href="#" onClick={me.changeCondition2.bind(me ,record,'限流')}>限流</a>):(<a href="#" onClick={me.changeCondition2.bind(me,record,'开放')}>开放</a>)}
-        //     </div>
-        //     )
-        //     }
-        // },{
-        //     title:"限流微博",
-        //     dataIndex:"",
-        //     render(text,record){
-        //         return  (
-        //             {record.condition=="3"?(<a href="#" onClick={me.changeCondition3.bind(me ,record,'限流')}>限流</a>):(<a href="#" onClick={me.changeCondition3.bind(me,record,'开放')}>开放</a>)}
-        //     </div>
-        //     )
-        //     }
-        // },{
-        //     title:"限流其他",
-        //     dataIndex:"",
-        //     render(text,record){
-        //         return  (
-        //             {record.condition=="4"?(<a href="#" onClick={me.changeCondition4.bind(me ,record,'限流')}>限流</a>):(<a href="#" onClick={me.changeCondition4.bind(me,record,'开放')}>开放</a>)}
-        //     </div>
-        //     )
-        //     }
-        // }
+
         ];
        
         var state = this.state;
@@ -504,7 +455,7 @@ changeStatus4(record,title) {
                     pagination={this.state.pagination}
                     loading={this.state.loading}
                     onChange={this.handleTableChange} />
-             <AddWin ref="AddWin" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record} canEdit={state.canEdit} dataRecord={state.dataRecord} />
+             <AddWin ref="AddWin" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record} canEdit={state.canEdit}dataRecord={state.dataRecord} />
             </div>
         );
     }

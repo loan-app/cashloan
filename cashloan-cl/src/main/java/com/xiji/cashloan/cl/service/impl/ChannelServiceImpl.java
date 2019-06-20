@@ -42,7 +42,10 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
     public 	String	findConditionById(String code ){
 		return channelMapper.findConditionById(code);
 	}
-    
+	@Override
+	public String getConditionsById(long id){
+		return channelMapper.findConditionByIds(id);
+	}
     @Override
 	public BaseMapper<Channel, Long> getMapper() {
 		return channelMapper;
