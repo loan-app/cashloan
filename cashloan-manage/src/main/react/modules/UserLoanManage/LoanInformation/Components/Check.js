@@ -125,11 +125,26 @@ var Check = React.createClass({
       <Modal title={props.title} visible={props.visible} onCancel={this.handleCancel} width="1200" footer={props.title == "查看详情" ? [modalBtnstwo] : [modalBtns]} maskClosable={false} >
 
         <Tabs onTabClick={this.handleTabClick}  activekey={this.state.activekey}  >
-          <TabPane tab="信用报告" key="8">
-            <Tab8 userId={props.record.userId} borrowId={props.record.id} ref="Tab8" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+          <TabPane tab="基本信息" key="3">
+              <Tab1 record={props.record} dataForm={props.dataForm} ref="Tab1" canEdit={props.canEdit} visible={props.visible} recordSoure={props.recordSoure} activeKey1={this.state.activekey}/>
           </TabPane>
           <TabPane tab="运营商信息" key='Operator'>
-            <Operator record={props.record} visible={props.visible} activekey={this.state.activekey}/>
+              <Operator record={props.record} visible={props.visible} activekey={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="通话详情统计" key="9">
+              <Tab9 record={props.record} ref="Tab9" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="通讯录" key="4">
+              <Tab2 record={props.record} ref="Tab2" canEdit={props.canEdit} visible={props.visible} activeKey1={this.state.activekey} tabClick={this.state.tabClick} tabClickChange={this.tabClickChange}/>
+          </TabPane>
+          <TabPane tab="通话记录" key="5">
+              <Tab3 record={props.record} ref="Tab3" canEdit={props.canEdit} visible={props.visible} activeKey1={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="借款记录" key="6">
+              <Tab6 record={props.record} ref="Tab6" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="信用报告" key="8">
+            <Tab8 userId={props.record.userId} borrowId={props.record.id} ref="Tab8" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
           <TabPane tab="规则报告" key='1'>
             <RuleReport ref='RuleReport' record={this.props.record} visible={props.visible} activeKey1={this.state.activekey}/>
@@ -137,24 +152,9 @@ var Check = React.createClass({
           <TabPane tab="详细信息" key='2'>
             <Lookdetails dataRecord={props.dataRecord} canEdit={props.canEdit} record={this.props.record} visible={props.visible} activeKey1={this.state.activekey}/>
           </TabPane>
-          <TabPane tab="基本信息" key="3">
-            <Tab1 record={props.record} dataForm={props.dataForm} ref="Tab1" canEdit={props.canEdit} visible={props.visible} recordSoure={props.recordSoure} activeKey1={this.state.activekey}/>
-          </TabPane>
-          <TabPane tab="通讯录" key="4">
-            <Tab2 record={props.record} ref="Tab2" canEdit={props.canEdit} visible={props.visible} activeKey1={this.state.activekey} tabClick={this.state.tabClick} tabClickChange={this.tabClickChange}/>
-          </TabPane>
-          <TabPane tab="通话记录" key="5">
-            <Tab3 record={props.record} ref="Tab3" canEdit={props.canEdit} visible={props.visible} activeKey1={this.state.activekey}/>
-          </TabPane>
-          <TabPane tab="借款记录" key="6">
-            <Tab6 record={props.record} ref="Tab6" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
-          </TabPane>
           {/*<TabPane tab="邀请记录" key="7">*/}
             {/*<Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>*/}
           {/*</TabPane>*/}
-          <TabPane tab="通话详情统计" key="9">
-            <Tab9 record={props.record} ref="Tab9" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
-          </TabPane>
         </Tabs>
       </Modal>
     );

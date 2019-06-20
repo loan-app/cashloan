@@ -191,6 +191,7 @@ export default React.createClass({
                             dataForm:dataForm
                         })
                     }
+                    this.refs.Check.setFieldsValue(record);
                 }
             });
         })
@@ -536,7 +537,7 @@ export default React.createClass({
                     case '待放款审核':
                         return (
                             <div style={{ textAlign: "left" }}>
-                                <a href="#" onClick={me.check.bind(me, '审核', record, false)}>放款审核</a>
+                                <a href="#" onClick={me.check.bind(me, '审核', record, true)}>放款审核</a>
                             </div>
                         );
                     default:
