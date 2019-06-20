@@ -1,8 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
- <%
+<%@ page import="com.xiji.cashloan.core.common.util.StringUtil" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
+<%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
 	String invitationCode = request.getParameter("invitationCode");
+	if(null == invitationCode) {
+      invitationCode = "";
+    }
 	String channelCode = request.getParameter("channelCode");
 	String inviteUserId = request.getParameter("userId");
 %>
