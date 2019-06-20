@@ -146,11 +146,11 @@ var Check = React.createClass({
           <TabPane tab="信用报告" key="8">
             <Tab8 userId={props.record.userId} borrowId={props.record.id} ref="Tab8" canEdit={props.canEdit} activeKey1={this.state.activekey}/>
           </TabPane>
-          <TabPane tab="规则报告" key='1'>
-            <RuleReport ref='RuleReport' record={this.props.record} visible={props.visible} activeKey1={this.state.activekey}/>
-          </TabPane>
           <TabPane tab="详细信息" key='2'>
             <Lookdetails dataRecord={props.dataRecord} canEdit={props.canEdit} record={this.props.record} visible={props.visible} activeKey1={this.state.activekey}/>
+          </TabPane>
+          <TabPane tab="规则报告" key='1'>
+              <RuleReport ref='RuleReport' record={this.props.record} visible={props.visible} activeKey1={this.state.activekey}/>
           </TabPane>
           {/*<TabPane tab="邀请记录" key="7">*/}
             {/*<Tab7 record={props.record} ref="Tab7" canEdit={props.canEdit} activeKey1={this.state.activekey}/>*/}
