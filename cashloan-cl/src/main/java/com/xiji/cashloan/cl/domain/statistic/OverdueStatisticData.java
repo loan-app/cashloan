@@ -10,7 +10,7 @@ import java.util.Date;
  * @version 1.0.0
  * @date 2019-03-04 18:07:35
  */
- public class OverdueStatisticData implements Serializable {
+ public class OverdueStatisticData implements Comparable<OverdueStatisticData>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -406,5 +406,15 @@ import java.util.Date;
 
     public void setCountTimeStr(String countTimeStr) {
         this.countTimeStr = countTimeStr;
+    }
+
+    /**
+     * 根据统计时间降序排列，升序修改相减顺序即可
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(OverdueStatisticData o) {
+        return o.countTime.compareTo(this.getCountTime());
     }
 }
