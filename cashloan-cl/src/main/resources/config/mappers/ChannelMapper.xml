@@ -22,11 +22,12 @@
 		<result column="delay_fee" property="delayFee" jdbcType="VARCHAR"/>
 		<result column="behead_fee" property="beheadFee" jdbcType="VARCHAR"/>
 		<result column="count_improve_credit" property="countImproveCredit" jdbcType="VARCHAR"/>
-    </resultMap>
-    
+		<result column="conditions" property="conditions" jdbcType="VARCHAR" />
+	</resultMap>
+
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,code,name,linker,phone,type,state,create_time,fee,init_credit,borrow_credit,one_repay_credit,improve_credit_limit,is_improve_credit,borrow_day,delay_fee,behead_fee,count_improve_credit
+        id,code,name,linker,phone,type,state,create_time,fee,init_credit,borrow_credit,one_repay_credit,improve_credit_limit,is_improve_credit,borrow_day,delay_fee,behead_fee,count_improve_credit,conditions
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -163,30 +164,48 @@
             borrow_day=#{borrowDay,jdbcType=VARCHAR},
             delay_fee=#{delayFee,jdbcType=VARCHAR},
             behead_fee=#{beheadFee,jdbcType=VARCHAR},
-            count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR}
+            count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR},
+            conditions = #{conditions,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+	<update id="updatecondition" parameterType="com.xiji.cashloan.cl.domain.Channel">
+        update cl_channel set
+            conditions = #{conditions,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+	<update id="updateconditions" parameterType="com.xiji.cashloan.cl.domain.Channel">
+        update cl_channel set
+            code = #{code,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            linker = #{linker,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            type = #{type,jdbcType=VARCHAR},
+             state = #{state,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            conditions = #{conditions,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
     <update id="updateSelective"  parameterType="java.util.HashMap">
         update cl_channel
           <set>
-            <if test="code != null and code != '' ">        
-                code = #{code,jdbcType=VARCHAR},                
+            <if test="code != null and code != '' ">
+                code = #{code,jdbcType=VARCHAR},
             </if>
-            <if test="name != null and name != '' ">        
-                name = #{name,jdbcType=VARCHAR},                
+            <if test="name != null and name != '' ">
+                name = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="linker != null and linker != '' ">        
-                linker = #{linker,jdbcType=VARCHAR},                
+            <if test="linker != null and linker != '' ">
+                linker = #{linker,jdbcType=VARCHAR},
             </if>
-            <if test="phone != null and phone != '' ">        
-                phone = #{phone,jdbcType=VARCHAR},                
+            <if test="phone != null and phone != '' ">
+                phone = #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="type != null and type != '' ">        
-                type = #{type,jdbcType=VARCHAR},                
+            <if test="type != null and type != '' ">
+                type = #{type,jdbcType=VARCHAR},
             </if>
-            <if test="state != null and state != '' ">        
-                state = #{state,jdbcType=VARCHAR},                
+            <if test="state != null and state != '' ">
+                state = #{state,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null ">        
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -221,16 +240,30 @@
 		    <if test="countImproveCredit != null and countImproveCredit != '' ">
 			    count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR}
 			</if>
-        </set>    
+			  <if test="conditions != null and conditions != '' ">
+				  conditions = #{conditions,jdbcType=VARCHAR}
+			  </if>
+        </set>
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
+	<update id="updateconditionSelective"  parameterType="java.util.HashMap">
+		 update cl_channel set
+            conditions = #{conditions,jdbcType=VARCHAR}
+                    where id=#{id,jdbcType=INTEGER}
+	</update>
     <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List" />
         from cl_channel
         where id = #{id,jdbcType=INTEGER}
     </select>
+	<select id="findConditionById" resultType="java.lang.String" parameterType="java.lang.String">
+		select `conditions` from cl_channel where code=#{code,jdbcType=VARCHAR}
+	</select>
+	<select id="findConditionByIds" resultType="java.lang.String" parameterType="java.lang.Long">
+		select `conditions` from cl_channel where id = #{id,jdbcType=INTEGER}
+	</select>
 
 	<select id="findIdSelective" resultType="java.lang.Long" parameterType="java.util.HashMap">
         select
