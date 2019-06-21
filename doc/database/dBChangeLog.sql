@@ -1044,3 +1044,6 @@ ALTER TABLE cl_decision add column yd_device_link_id_count int(11) DEFAULT 0 COM
 
 INSERT INTO `arc_sys_menu` VALUES ('1032', '0', '我的渠道统计', '24', '', null, '00000000006', null, '', null, '', '我的到期订单', '0', 'MyChannelList', null, null, null, null);
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1032');
+ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
+
+ALTER TABLE cl_channel add column conditions varchar(50) DEFAULT '' COMMENT '限流1QQ，2微信，3微博，4其他';

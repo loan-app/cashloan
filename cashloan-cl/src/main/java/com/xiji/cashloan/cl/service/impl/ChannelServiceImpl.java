@@ -40,6 +40,15 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	private ClBorrowMapper clBorrowMapper;
 
 	protected final Logger logger = Logger.getLogger(this.getClass());
+
+	@Override
+    public 	String	findConditionById(String code ){
+		return channelMapper.findConditionById(code);
+	}
+	@Override
+	public String getConditionsById(long id){
+		return channelMapper.findConditionByIds(id);
+	}
     @Override
 	public BaseMapper<Channel, Long> getMapper() {
 		return channelMapper;
@@ -69,7 +78,24 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		}
 		return false;
 	}
-	
+
+	@Override
+	public boolean updatecondition(Map<String, Object> paramMap) {
+		int result = channelMapper.updateconditionSelective(paramMap);
+		if (result > 0) {
+			return true;
+		}
+		return false;
+	}
+    @Override
+	public boolean updateconditions(Channel channel){
+		int i=channelMapper.updateconditions(channel);
+		if (i>0){
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public long findIdByCode(String code) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();

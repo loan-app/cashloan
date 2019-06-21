@@ -107,6 +107,10 @@ import java.util.Date;
      */
    private String countImproveCredit;
 
+    /**
+     * 渠道限流 1:QQ 2:微信 3:微博 4:其他
+     * */
+    private String conditions;
 
     /**
     * 获取主键Id
@@ -301,5 +305,17 @@ import java.util.Date;
 
     public void setCountImproveCredit(String countImproveCredit) {
         this.countImproveCredit = countImproveCredit;
+    }
+    /**
+     * 获得要限流的渠道1qq 2微信 3微博 4其他
+     * */
+    public String getConditions() {
+        return conditions;
+    }
+    /**
+     * 设置限流的渠道1qq 2微信 3微博 4其他
+     * */
+    public void setConditions(String conditions) {
+        this.conditions = conditions;
     }
 }

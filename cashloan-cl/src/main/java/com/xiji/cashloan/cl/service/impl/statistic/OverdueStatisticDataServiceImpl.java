@@ -309,6 +309,8 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 				overdueStatisticData.add(statisticData);
 			}
 		}
+
+		Collections.sort(overdueStatisticData);
 		return overdueStatisticData;
 	}
 }

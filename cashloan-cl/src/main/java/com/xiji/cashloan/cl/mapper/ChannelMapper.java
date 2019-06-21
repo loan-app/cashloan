@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,16 @@ import java.util.Map;
  */
 @RDBatisDao
 public interface ChannelMapper extends BaseMapper<Channel,Long> {
-	
+	int updateconditionSelective(Map<String, Object> paramMap);
+	/**
+	 * 二级限流更新
+	 * */
+	int updateconditions(Channel channel);
+	/**
+	 *查询是否被二级限流
+	 **/
+	String	findConditionById(@Param("code") String code );
+	String  findConditionByIds(@Param("id")long id);
 	/**
 	 * 根据条件查询主键
 	 */
@@ -132,6 +142,10 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * @return
 	 */
 	List<Map<String, Object>> countLending(Map<String,Object> paramMap);
+
+	/**
+	 *
+	 * */
 
 
 	/**
