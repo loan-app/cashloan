@@ -190,7 +190,9 @@ export default React.createClass({
                             recordSoure: result.data,
                             dataForm:dataForm
                         })
+                        record.isBlack2 = result.data.userbase.state == '10' ? true : false;
                     }
+                    record.state1 = title == "审核" ? "303" : record.state;
                     this.refs.Check.setFieldsValue(record);
                 }
             });

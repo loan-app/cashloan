@@ -15,6 +15,7 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import tool.util.BigDecimalUtil;
 
@@ -37,8 +38,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
     private UserAuthMapper userAuthMapper;
     @Resource
 	private ClBorrowMapper clBorrowMapper;
-    
-    
+
+	protected final Logger logger = Logger.getLogger(this.getClass());
     @Override
 	public BaseMapper<Channel, Long> getMapper() {
 		return channelMapper;
@@ -58,7 +59,12 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	@Override
 	public boolean update(Map<String, Object> paramMap) {
 		int result = channelMapper.updateSelective(paramMap);
+		StringBuilder paramStr = new StringBuilder();
 		if (result > 0) {
+			for(String key : paramMap.keySet()){
+				paramStr.append( key+" = "+paramMap.get(key)+",");
+			}
+			logger.info("渠道更新数据为 :"+paramStr.toString());
 			return true;
 		}
 		return false;

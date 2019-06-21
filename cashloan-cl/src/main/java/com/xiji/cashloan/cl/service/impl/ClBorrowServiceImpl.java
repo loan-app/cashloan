@@ -2591,7 +2591,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}
 			// 审核放款通过 放款
 			if (BorrowModel.AUDIT_LOAN_PASS.equals(state)) {
-				borrowLoan(borrow, new Date());
+				Borrow newBorrow = clBorrowMapper.findByPrimary(borrowId);
+				borrowLoan(newBorrow, new Date());
 			}
 		} else {
 			logger.error("审核放款失败，当前标不存在");
