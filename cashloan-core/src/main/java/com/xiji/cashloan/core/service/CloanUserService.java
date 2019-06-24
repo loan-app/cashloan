@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.model.CloanUserModel;
+import com.xiji.cashloan.core.model.ChannelWarnModel;
 
 /**
  * 用户Service
@@ -80,5 +81,7 @@ public interface CloanUserService extends BaseService<User, Long> {
 	 * @param loginName
 	 */
 	void modify(String loginName);
-	
+
+
+	List<ChannelWarnModel> registerCountByChannel();
 }

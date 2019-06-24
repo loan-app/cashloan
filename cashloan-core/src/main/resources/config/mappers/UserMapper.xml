@@ -346,5 +346,20 @@
     		AND TO_DAYS(regist_time) <![CDATA[ <= ]]> TO_DAYS(#{endTime,jdbcType=BIGINT}) 
     		AND channel_id = #{channelId,jdbcType=BIGINT}
     </select>
-    
+
+    <select id="registerCountByChannel" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select channel_id,register_client, count(1) num from `cl_user`
+        <where>
+            <if test="startTime != null">
+                and regist_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime  != null">
+                and regist_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        GROUP BY channel_id, register_client ORDER BY channel_id, register_client;
+
+
+    </select>
+
 </mapper>

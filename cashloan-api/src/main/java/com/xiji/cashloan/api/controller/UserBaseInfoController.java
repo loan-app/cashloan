@@ -3,10 +3,8 @@ package com.xiji.cashloan.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.api.util.OcrUtil;
-import com.xiji.cashloan.cl.domain.CallsOutSideFee;
-import com.xiji.cashloan.cl.domain.UserAuth;
-import com.xiji.cashloan.cl.domain.UserCardCreditLog;
-import com.xiji.cashloan.cl.domain.UserMessages;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.NameBlacklistMapper;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckBiz;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckIdCardResult;
@@ -23,10 +21,13 @@ import com.xiji.cashloan.cl.service.UserBlackInfoService;
 import com.xiji.cashloan.cl.service.UserCardCreditLogService;
 import com.xiji.cashloan.cl.service.UserContactsService;
 import com.xiji.cashloan.cl.service.UserMessagesService;
+import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.LvMengApiClientUtil;
 import com.xiji.cashloan.cl.util.OcrConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.exception.BussinessException;
 import com.xiji.cashloan.core.common.util.Base64;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
@@ -117,6 +118,9 @@ public class UserBaseInfoController extends BaseController {
     private UserBlackInfoService userBlackInfoService;
     @Resource
     private CallsOutSideFeeService callsOutSideFeeService;
+
+    @Resource
+    private NameBlacklistMapper nameBlacklistMapper;
 
     /**
      * @param userId
@@ -339,6 +343,38 @@ public class UserBaseInfoController extends BaseController {
             throws Exception {
         long userId = NumberUtil.getLong(request.getSession().getAttribute("userId").toString());
         Map<String, Object> returnMap = new HashMap<String, Object>();
+        Map<String, Object> infoMap = new HashMap<String, Object>();
+
+        UserBaseInfo info = userBaseInfoService.findSelective(infoMap);
+        if (info == null) {
+            infoMap.clear();
+            infoMap.put("userId", userId);
+            info = userBaseInfoService.findSelective(infoMap);
+        }
+
+        boolean flag = LvMengApiClientUtil.userDetail(idNo, info.getPhone(), realName);
+        if(flag) {
+            // 将用户手机号加入黑名单库中
+            Map<String,Object> paramMap = new HashMap();
+            paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+            paramMap.put("dimensionvalue",info.getPhone());
+            paramMap.put("source", BlacklistConstant.source_lvmeng);
+            NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
+            if (nameBlack == null){
+                nameBlack = new NameBlacklist();
+                nameBlack.setCreatetime(new Date());
+                nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
+                nameBlack.setDimensionvalue(info.getPhone());
+                nameBlack.setLastmodifytime(new Date());
+                nameBlack.setSource(BlacklistConstant.source_lvmeng);
+                nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+                int countNameBlackPhone = nameBlacklistMapper.save(nameBlack);
+                if (countNameBlackPhone != 1){
+                    throw new BussinessException("用户添加手机号黑名单失败 nameBlack ==>"+nameBlack);
+                }
+            }
+        }
+
         JSONObject ocrResultJson = null;
         logger.info("youdun_ocrResult:" + ocrResult);
         if (OcrUtil.ifYoudun(ocrType)) {
@@ -355,15 +391,8 @@ public class UserBaseInfoController extends BaseController {
                 return;
             }
         }
-        Map<String, Object> infoMap = new HashMap<String, Object>();
-        infoMap.put("idNo", idNo);
 
-        UserBaseInfo info = userBaseInfoService.findSelective(infoMap);
-        if (info == null) {
-            infoMap.clear();
-            infoMap.put("userId", userId);
-            info = userBaseInfoService.findSelective(infoMap);
-        }
+        infoMap.put("idNo", idNo);
 
         if (info != null
                 && info.getUserId().toString().equals(StringUtil.isNull(userId))
