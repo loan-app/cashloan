@@ -402,7 +402,7 @@ changeStatus4(record,title) {
                     <div style={{ textAlign: "left" }}>
                         <a href="#" onClick={me.showModal.bind(me, '编辑',record, true)}>编辑</a>
                           <span className="ant-divider"></span>
-                         {record.state=="20"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'禁用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'启用')}>禁用</a>)}
+                         {record.state=="20"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
                    </div>
                 )
             }
