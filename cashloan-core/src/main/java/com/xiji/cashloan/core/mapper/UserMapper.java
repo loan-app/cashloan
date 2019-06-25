@@ -91,5 +91,5 @@ public interface UserMapper extends BaseMapper<User,Long> {
 	 * @param search
 	 * @return
 	 */
-	List<Map> registerCountByChannel(Map<String, Object> search);
+	Map registerCountByChannel(Map<String, Object> search);
 }

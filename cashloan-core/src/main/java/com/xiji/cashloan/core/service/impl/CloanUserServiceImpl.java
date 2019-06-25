@@ -5,7 +5,6 @@ import java.util.*;
 import javax.annotation.Resource;
 
 import com.xiji.cashloan.core.domain.User;
-import com.xiji.cashloan.core.model.ChannelWarnModel;
 import com.xiji.cashloan.core.service.CloanUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,45 +145,4 @@ public class CloanUserServiceImpl extends BaseServiceImpl<User, Long> implements
 			userMapper.updateSelective(paramMap);
 		}
 	}
-
-	@Override
-	public List<ChannelWarnModel> registerCountByChannel() {
-		Map<String, Object> search = new HashMap<>();
-		search.put("startTime", com.xiji.cashloan.core.common.util.DateUtil.getDayStartTime(new Date()));
-		List<Map> result = userMapper.registerCountByChannel(search);
-		List<ChannelWarnModel> reponse = new ArrayList<>();
-		ChannelWarnModel model = null;
-		for(int i =0 ; i < result.size(); i++) {
-			if(null == model) {
-				model = new ChannelWarnModel();
-			}
-			Map map= result.get(i);
-			Long channel_id =  new Long(map.get("channel_id").toString());
-			model.setChannelId(channel_id);
-			if(map.get("register_client").toString().contains("wechat")) {
-				model.setWechatCount(new Integer(map.get("num").toString()));
-			} else if(map.get("register_client").toString().contains("qq")) {
-				model.setQqCount(new Integer(map.get("num").toString()));
-			} else if(map.get("register_client").toString().contains("weibo")) {
-				model.setWeiboCount(new Integer(map.get("num").toString()));
-			} else {
-				model.setOtherCount(new Integer(map.get("num").toString()));
-			}
-
-			if(i == result.size() -1) {
-				reponse.add(model);
-			}else {
-				Map map_next= result.get(i+1);
-				Long next_channel_id =  new Long(map_next.get("channel_id").toString());
-				if(null != next_channel_id
-						&&  channel_id.longValue() != next_channel_id.longValue()) {
-					reponse.add(model);
-				}
-			}
-
-		}
-
-		return reponse;
-	}
-
 }
