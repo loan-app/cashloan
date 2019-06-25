@@ -695,8 +695,8 @@
     <select id="queryDataForYixin" resultMap="YixinShareModelMap" parameterType="java.lang.Long">
         select date_format(b.create_time, '%Y%m%d') loan_date,
         '(1000,5000]' loan_amount,
-        (case when b.state &gt;= 30 and b.state &lt; 100 then 'ACCEPT' when b.state = 21 or b.state = 27 or b.state = 303 then 'REJECT' when b.state &lt; 27 or b.state = 301 or b.state = 302 then 'IN_PROGRESS' end) approval_status,
-        (case when b.state = 50 or b.state = 90 then 'OVERDUE' when b.state = 40 or b.state = 41 then 'COMPLETED' when b.state &gt;= 30 and b.state &lt; 100 then 'NORMAL' else null end) loan_status,
+        (case when b.state &gt;= 30 and b.state &lt; 100 and b.state != 31 then 'ACCEPT' when b.state = 21 or b.state = 27 or b.state = 303 then 'REJECT' when b.state &lt; 27 or b.state = 301 or b.state = 302 or b.state = 31 then 'IN_PROGRESS' end) approval_status,
+        (case when b.state = 50 or b.state = 90 then 'OVERDUE' when b.state = 40 or b.state = 41 then 'COMPLETED' when b.state &gt;= 30 and b.state &lt; 100 and b.state != 31 then 'NORMAL' else null end) loan_status,
         (case when b.state = 50 or b.state = 90 then '(1000,5000]' else null end) overdue_amount,
         (case when b.state = 50 or b.state = 90 then r.penalty_day else null end) overdue_status,
         (case when b.state = 50 or b.state = 90 then 1 else null end) overdue_total,
