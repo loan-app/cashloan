@@ -96,23 +96,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.9.v20150224</version>
-				<configuration>
-					<httpConnector>
-						<port>8080</port>
-					</httpConnector>
-					<scanIntervalSeconds>0</scanIntervalSeconds>
-					<systemProperties>
-						<systemProperty>
-							<name>org.eclipse.jetty.LEVEL</name>
-							<value>DEBUG</value>
-						</systemProperty>
-					</systemProperties>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>

@@ -24,7 +24,7 @@ import com.xiji.cashloan.cl.service.UserContactsService;
 import com.xiji.cashloan.cl.service.UserMessagesService;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
-import com.xiji.cashloan.cl.util.LvMengApiClientUtil;
+import com.xiji.cashloan.cl.util.LmApiUtil;
 import com.xiji.cashloan.cl.util.OcrConstant;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -358,7 +358,7 @@ public class UserBaseInfoController extends BaseController {
         logger.info("绿盟黑名单请求参数idNo,phone,name:{}.",idNo + "," + info.getPhone() + "," + realName);
         try {
 
-            boolean flag = LvMengApiClientUtil.userDetail(idNo, info.getPhone(), realName);
+            boolean flag = LmApiUtil.userDetail(idNo, info.getPhone(), realName);
             if(flag) {
                 // 将用户手机号加入黑名单库中
                 Map<String,Object> paramMap = new HashMap();
@@ -380,7 +380,7 @@ public class UserBaseInfoController extends BaseController {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             logger.info("绿盟黑名单请求参数idNo,phone,name:{},失败{}.",idNo + "," + info.getPhone() + "," + realName, e);
             returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             returnMap.put(Constant.RESPONSE_CODE_MSG, "系统错误，保存失败");
