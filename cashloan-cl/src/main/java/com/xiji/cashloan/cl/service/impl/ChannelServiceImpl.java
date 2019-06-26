@@ -117,18 +117,20 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			search.put("channelId", channel.getId());
 			search.put("startTime", com.xiji.cashloan.core.common.util.DateUtil.getDayStartTime(new Date()));
 
-			Map map = userMapper.registerCountByChannel(search);
+			List<Map> maps = userMapper.registerCountByChannel(search);
 
-			if(null != map ) {
+			if(null != maps && maps.size() > 0 ) {
 
-				if(map.get("register_client").toString().contains("wechat")) {
-					channel.setWechatCount(new Integer(map.get("num").toString()));
-				} else if(map.get("register_client").toString().contains("qq")) {
-					channel.setQqCount(new Integer(map.get("num").toString()));
-				} else if(map.get("register_client").toString().contains("weibo")) {
-					channel.setWeiboCount(new Integer(map.get("num").toString()));
-				} else {
-					channel.setOtherCount(new Integer(map.get("num").toString()));
+				for(Map map:maps) {
+					if(map.get("register_client").toString().contains("wechat")) {
+						channel.setWechatCount(new Integer(map.get("num").toString()));
+					} else if(map.get("register_client").toString().contains("qq")) {
+						channel.setQqCount(new Integer(map.get("num").toString()));
+					} else if(map.get("register_client").toString().contains("weibo")) {
+						channel.setWeiboCount(new Integer(map.get("num").toString()));
+					} else {
+						channel.setOtherCount(new Integer(map.get("num").toString()));
+					}
 				}
 
 				channel.setWechatPercent(channel.getWechatCount().doubleValue()

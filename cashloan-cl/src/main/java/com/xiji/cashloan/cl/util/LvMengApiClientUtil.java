@@ -12,22 +12,21 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@Slf4j
 public class LvMengApiClientUtil {
-
+    private static final Logger log = Logger.getLogger(LvMengApiClientUtil.class);
     private static String appId = "T006";									//机构appId
     private static String signKey = "HiXRSfHguyRlkgDHzgfvjcXkpL3106";		//签名密钥
     private static String secert = "QlJyJO9QZ3";							//加密密钥
@@ -53,8 +52,9 @@ public class LvMengApiClientUtil {
         json.put("idcard", idcard);
         json.put("phone", phone);
         json.put("name", name);
+        log.info("绿盟黑名单参数:" + json.toJSONString());
         JSONObject ret = submit("userDetail", json);
-        log.info("userDetail:{}",ret.toJSONString());
+        log.info("绿盟黑名单返回值:" + ret.toJSONString());
         if("2".equals(ret.getString("body"))) {
             return true;
         }

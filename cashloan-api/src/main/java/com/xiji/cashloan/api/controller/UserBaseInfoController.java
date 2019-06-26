@@ -1,5 +1,6 @@
 package com.xiji.cashloan.api.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.api.util.OcrUtil;
@@ -341,10 +342,11 @@ public class UserBaseInfoController extends BaseController {
             @RequestParam(value = "orderNo", required = false) String orderNo,
             @RequestParam(value = "liveCoordinate", required = false) String liveCoordinate)
             throws Exception {
+        logger.info("个人认证信息保存");
         long userId = NumberUtil.getLong(request.getSession().getAttribute("userId").toString());
         Map<String, Object> returnMap = new HashMap<String, Object>();
         Map<String, Object> infoMap = new HashMap<String, Object>();
-
+        infoMap.put("idNo", idNo);
         UserBaseInfo info = userBaseInfoService.findSelective(infoMap);
         if (info == null) {
             infoMap.clear();
@@ -352,27 +354,38 @@ public class UserBaseInfoController extends BaseController {
             info = userBaseInfoService.findSelective(infoMap);
         }
 
-        boolean flag = LvMengApiClientUtil.userDetail(idNo, info.getPhone(), realName);
-        if(flag) {
-            // 将用户手机号加入黑名单库中
-            Map<String,Object> paramMap = new HashMap();
-            paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
-            paramMap.put("dimensionvalue",info.getPhone());
-            paramMap.put("source", BlacklistConstant.source_lvmeng);
-            NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
-            if (nameBlack == null){
-                nameBlack = new NameBlacklist();
-                nameBlack.setCreatetime(new Date());
-                nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
-                nameBlack.setDimensionvalue(info.getPhone());
-                nameBlack.setLastmodifytime(new Date());
-                nameBlack.setSource(BlacklistConstant.source_lvmeng);
-                nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
-                int countNameBlackPhone = nameBlacklistMapper.save(nameBlack);
-                if (countNameBlackPhone != 1){
-                    throw new BussinessException("用户添加手机号黑名单失败 nameBlack ==>"+nameBlack);
+        logger.info("个人认证信息保存,用户：{}", JSON.toJSONString(info));
+        logger.info("绿盟黑名单请求参数idNo,phone,name:{}.",idNo + "," + info.getPhone() + "," + realName);
+        try {
+
+            boolean flag = LvMengApiClientUtil.userDetail(idNo, info.getPhone(), realName);
+            if(flag) {
+                // 将用户手机号加入黑名单库中
+                Map<String,Object> paramMap = new HashMap();
+                paramMap.put("dimensionkey", BlacklistConstant.DIMENSION_KEY_PHONE);
+                paramMap.put("dimensionvalue",info.getPhone());
+                paramMap.put("source", BlacklistConstant.source_lvmeng);
+                NameBlacklist nameBlack = nameBlacklistMapper.findSelective(paramMap);
+                if (nameBlack == null){
+                    nameBlack = new NameBlacklist();
+                    nameBlack.setCreatetime(new Date());
+                    nameBlack.setDimensionkey(BlacklistConstant.DIMENSION_KEY_PHONE);
+                    nameBlack.setDimensionvalue(info.getPhone());
+                    nameBlack.setLastmodifytime(new Date());
+                    nameBlack.setSource(BlacklistConstant.source_lvmeng);
+                    nameBlack.setStatus(BlacklistConstant.BLACK_LIST_STATUS_NORMAL);
+                    int countNameBlackPhone = nameBlacklistMapper.save(nameBlack);
+                    if (countNameBlackPhone != 1){
+                        throw new BussinessException("用户添加手机号黑名单失败 nameBlack ==>"+nameBlack);
+                    }
                 }
             }
+        } catch (Exception e) {
+            logger.info("绿盟黑名单请求参数idNo,phone,name:{},失败{}.",idNo + "," + info.getPhone() + "," + realName, e);
+            returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            returnMap.put(Constant.RESPONSE_CODE_MSG, "系统错误，保存失败");
+            ServletUtils.writeToResponse(response, returnMap);
+            return;
         }
 
         JSONObject ocrResultJson = null;
@@ -391,8 +404,6 @@ public class UserBaseInfoController extends BaseController {
                 return;
             }
         }
-
-        infoMap.put("idNo", idNo);
 
         if (info != null
                 && info.getUserId().toString().equals(StringUtil.isNull(userId))
