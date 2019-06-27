@@ -1047,3 +1047,10 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1032');
 ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
 
 ALTER TABLE cl_channel add column conditions varchar(50) DEFAULT '' COMMENT '限流1QQ，2微信，3微博，4其他';
+
+--#dev-feature-1.0.5
+INSERT INTO `arc_sys_config` VALUES (null, '10', '绿盟黑名单接口开关', 'lv_meng_on_off', 'on', '1', '个人信息认证保存校验绿盟黑名单', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单机构appId', 'lv_meng_appId', 'T006', '1', '绿盟黑名单机构appId', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单签名密钥', 'lv_meng_signKey', 'HiXRSfHguyRlkgDHzgfvjcXkpL3106', '1', '签名密钥', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单加密密钥', 'lv_meng_secert', 'QlJyJO9QZ3', '1', '加密密钥', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单接口地址', 'lv_meng_url', 'http://list.yichunruirun.com/api/v1', '1', '接口地址', '1');

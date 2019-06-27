@@ -36,7 +36,16 @@ public class ChannelModel extends Channel {
 	 * 渠道状态中文描述
 	 */
 	private String stateStr;
-	
+
+	private Integer wechatCount = 0;
+	private Integer qqCount = 0;
+	private Integer weiboCount = 0;
+	private Integer otherCount = 0;
+	private Double wechatPercent;
+	private Double qqPercent;
+	private Double weiboPercent;
+	private Double otherPercent;
+
     /**
      * 状态中文转换
      * 
@@ -93,5 +102,68 @@ public class ChannelModel extends Channel {
 	public String getLink() {
 		return Global.getValue("server_host")+Global.getValue("h5_invite")+"?channelCode=" + getCode();
 	}
-	
+
+	public Integer getWechatCount() {
+		return wechatCount;
+	}
+
+	public void setWechatCount(Integer wechatCount) {
+		this.wechatCount = wechatCount;
+	}
+
+	public Integer getQqCount() {
+		return qqCount;
+	}
+
+	public void setQqCount(Integer qqCount) {
+		this.qqCount = qqCount;
+	}
+
+	public Integer getWeiboCount() {
+		return weiboCount;
+	}
+
+	public void setWeiboCount(Integer weiboCount) {
+		this.weiboCount = weiboCount;
+	}
+
+	public Integer getOtherCount() {
+		return otherCount;
+	}
+
+	public void setOtherCount(Integer otherCount) {
+		this.otherCount = otherCount;
+	}
+
+	public Double getWechatPercent() {
+		return wechatPercent;
+	}
+
+	public void setWechatPercent(Double wechatPercent) {
+		this.wechatPercent = wechatPercent;
+	}
+
+	public Double getQqPercent() {
+		return qqPercent;
+	}
+
+	public void setQqPercent(Double qqPercent) {
+		this.qqPercent = qqPercent;
+	}
+
+	public Double getWeiboPercent() {
+		return weiboPercent;
+	}
+
+	public void setWeiboPercent(Double weiboPercent) {
+		this.weiboPercent = weiboPercent;
+	}
+
+	public Double getOtherPercent() {
+		return otherPercent;
+	}
+
+	public void setOtherPercent(Double otherPercent) {
+		this.otherPercent = otherPercent;
+	}
 }
