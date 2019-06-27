@@ -15,6 +15,7 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tool.util.BigDecimalUtil;
 
@@ -27,6 +28,7 @@ import java.util.*;
  * @version 1.0.0
  */
 @Service("channelService")
+@Slf4j
 public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implements ChannelService {
 	
     @Resource
@@ -109,6 +111,39 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		PageHelper.startPage(current, pageSize);
 		Page<ChannelModel> page = (Page<ChannelModel>) channelMapper
 				.page(searchMap);
+
+		for(ChannelModel channel:page) {
+			Map<String, Object> search = new HashMap<>();
+			search.put("channelId", channel.getId());
+			search.put("startTime", com.xiji.cashloan.core.common.util.DateUtil.getDayStartTime(new Date()));
+
+			List<Map> maps = userMapper.registerCountByChannel(search);
+
+			if(null != maps && maps.size() > 0 ) {
+
+				for(Map map:maps) {
+					if(map.get("register_client").toString().contains("wechat")) {
+						channel.setWechatCount(new Integer(map.get("num").toString()));
+					} else if(map.get("register_client").toString().contains("qq")) {
+						channel.setQqCount(new Integer(map.get("num").toString()));
+					} else if(map.get("register_client").toString().contains("weibo")) {
+						channel.setWeiboCount(new Integer(map.get("num").toString()));
+					} else {
+						channel.setOtherCount(new Integer(map.get("num").toString()));
+					}
+				}
+
+				channel.setWechatPercent(channel.getWechatCount().doubleValue()
+						/(channel.getWechatCount() + channel.getQqCount() + channel.getWeiboCount() + channel.getOtherCount()));
+				channel.setQqPercent(channel.getQqCount().doubleValue()
+						/(channel.getWechatCount() + channel.getQqCount() + channel.getWeiboCount() + channel.getOtherCount()));
+				channel.setWeiboPercent(channel.getWeiboCount().doubleValue()
+						/(channel.getWechatCount() + channel.getQqCount() + channel.getWeiboCount() + channel.getOtherCount()));
+				channel.setOtherPercent(channel.getOtherCount().doubleValue()
+						/(channel.getWechatCount() + channel.getQqCount() + channel.getWeiboCount() + channel.getOtherCount()));
+			}
+		}
+
 		return page;
 	}
 
@@ -140,7 +175,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 
 	@Override
 	public List<Channel> listChannel() {
-		return channelMapper.listChannel();
+		List<Channel> list = channelMapper.listChannel();
+		return list;
 	}
 
 	@Override

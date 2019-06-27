@@ -235,6 +235,12 @@ export default React.createClass({
             render(text, record) {
                 return record.overdueRate + "%"
             }
+        },{
+            title:"放款率",
+            dataIndex:"loanRate",
+            render(text, record) {
+                return record.loanRate + "%"
+            }
         }];
        
         var state = this.state;
