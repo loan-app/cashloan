@@ -8,6 +8,10 @@ import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.domain.PayRespLog;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.PayRespLogModel;
+import com.xiji.cashloan.cl.model.pay.chanpay.ChanPayHelper;
+import com.xiji.cashloan.cl.model.pay.chanpay.agreement.vo.ChanPaymentNotifyModel;
+import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
+import com.xiji.cashloan.cl.model.pay.chanpay.util.RSA;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.dto.RepaymentNotifyDto;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforNotifyModel;
@@ -29,6 +33,7 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +43,7 @@ import tool.util.StringUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * 实时付款(代付)异步通知
@@ -294,6 +300,116 @@ public class PayFuiouController extends BaseController{
 		long end = System.currentTimeMillis();
 		logger.info("cost "+(end-start));
 	}
+
+	/**
+	 * 畅捷 代付异步通知接口，
+	 */
+	@RequestMapping(value = "/api/pay/chanjie/paymentNotify.htm")
+	public void chanPayRepaymentNotify(HttpServletRequest httpRequest, HttpServletResponse httpResponse)throws Exception{
+		logger.info("----------------畅捷付款支付 - 异步通知开始------------------------");
+        long start = System.currentTimeMillis();
+        Map<String, String[]> map = httpRequest.getParameterMap();
+        Set<String> keySet = map.keySet();
+        for (String key : keySet) {
+            System.out.println( key +"--->"+ map.get(key));
+        }
+
+        ChanPaymentNotifyModel model = parseParam(httpRequest);
+
+
+        if (StringUtil.isBlank(model)){
+            logger.error("畅捷回调请求参数为空，请正确传参");
+            return;
+        }
+        Map<String, String> paramMap = new HashMap<String, String>();
+        if (model != null) {
+            BeanMap beanMap = BeanMap.create(model);
+            for (Object key : beanMap.keySet()) {
+                paramMap.put(key.toString(), beanMap.get(key).toString());
+            }
+        }
+        ChanPayHelper chanPayHelper = new ChanPayHelper();
+        String text = chanPayHelper.createLinkString(paramMap, false);
+        try {
+            //验签
+            boolean verify = RSA.verify(text, ChanPayConstant.SIGN_KEY, ChanPayConstant.MERCHANT_PUBLIC_KEY,
+                    ChanPayConstant.ENCODEING);
+            if (!verify){
+                logger.error("验签失败" + model.getOuterTradeNo());
+                return;
+            }
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("进入订单" + model.getOuterTradeNo() + "处理中.....");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        PayReqLog payReqLog = payReqLogService.findByOrderNo(model.getOuterTradeNo());
+        String params = JSON.toJSONString(model);
+        if (payReqLog != null) {
+            // 保存respLog
+            PayRespLog payRespLog = new PayRespLog(model.getOuterTradeNo(),PayRespLogModel.RESP_LOG_TYPE_NOTIFY,params);
+            payRespLogService.save(payRespLog);
+
+            // 更新reqLog
+            modifyPayReqLog(payReqLog,params);
+        }
+
+        PayLog payLog = payLogService.findByOrderNo(model.getOuterTradeNo());
+
+        if(null  == payLog ){
+            logger.warn("未查询到对应的支付订单");
+            return ;
+        }
+
+        RepaymentNotifyDto dto = new RepaymentNotifyDto();
+        dto.setPayPlatNo(model.getOuterTradeNo());
+        if (ChanPayConstant.WITHDRAWAL_STATUS.equals(model.getWithdrawalStatus()) && ChanPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(model.getReturnCode())) {
+            dto.setStatus(PayConstant.RESULT_SUCCESS);
+        }else {
+            dto.setStatus(PayConstant.STATUS_FAIL);
+        }
+
+        String message = "";
+        if (PayLogModel.SCENES_LOANS.equals(payLog.getScenes())) {
+            message = paymentNotifyAssist.doScenesLoans(dto,payLog);
+        }else if (PayLogModel.SCENES_PROFIT.equals(payLog.getScenes())){
+            message = paymentNotifyAssist.doScenesProfit(dto,payLog);
+        }else if (PayLogModel.SCENES_REFUND.equals(payLog.getScenes())){
+            message = paymentNotifyAssist.doScenesRefund(dto,payLog);
+        }else {
+            logger.error("没有合适的场景，异步通知处理失败" + model.getOuterTradeNo());
+        }
+
+        //返回响应报文
+        if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
+            writeResult(httpResponse, "success");
+        }
+        long end = System.currentTimeMillis();
+        logger.info("cost "+(end-start));
+
+	}
+
+    public ChanPaymentNotifyModel parseParam(HttpServletRequest request) {
+        ChanPaymentNotifyModel model = new ChanPaymentNotifyModel();
+        model.setUid(request.getParameter("uid"));
+        model.setNotifyTime(request.getParameter("notify_time"));
+        model.setNotifyId(request.getParameter("notify_id"));
+        model.setNotifyType(request.getParameter("notify_type"));
+        model.setInputCharset(request.getParameter("_input_charset"));
+        model.setVersion(request.getParameter("VERSION"));
+        model.setInputCharset(request.getParameter("_input_charset"));
+        model.setOuterTradeNo(request.getParameter("outer_trade_no"));
+        model.setInnerTradeNo(request.getParameter("inner_trade_no"));
+        model.setWithdrawalStatus(request.getParameter("withdrawal_status"));
+        model.setWithdrawalAmount(request.getParameter("withdrawal_amount"));
+        model.setGmtWithdrawal(request.getParameter("gmt_withdrawal"));
+        model.setReturnCode(request.getParameter("return_code"));
+        model.setFailReason(request.getParameter("fail_reason"));
+        return model;
+    }
 
 	private void writeResult(HttpServletResponse response,String result)throws Exception {
 		response.setContentType("application/json");
