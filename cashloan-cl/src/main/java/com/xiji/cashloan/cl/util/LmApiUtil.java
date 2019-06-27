@@ -12,6 +12,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.xiji.cashloan.core.common.context.Global;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -31,10 +32,10 @@ import okhttp3.Response;
  */
 @Slf4j
 public class LmApiUtil {
-    private static String appId = "T006";									//机构appId
-    private static String signKey = "HiXRSfHguyRlkgDHzgfvjcXkpL3106";								//签名密钥
-    private static String secert = "QlJyJO9QZ3";							//加密密钥
-    private static String URL = "http://list.yichunruirun.com/api/v1";		//接口地址
+    private static String appId = Global.getValue("lv_meng_appId");//"T006";									//机构appId
+    private static String signKey = Global.getValue("lv_meng_signKey");//"HiXRSfHguyRlkgDHzgfvjcXkpL3106";		//签名密钥
+    private static String secert = Global.getValue("lv_meng_secert");//"QlJyJO9QZ3";							//加密密钥
+    private static String URL =  Global.getValue("lv_meng_url"); //"http://list.yichunruirun.com/api/v1";		//接口地址
 
     /**
      * 	提交黑名单
