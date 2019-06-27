@@ -13,13 +13,14 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.xiji.cashloan.core.common.context.Global;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,8 +31,8 @@ import okhttp3.Response;
  * 	联盟API工具类
  *
  */
-@Slf4j
 public class LmApiUtil {
+    private static final Logger log = LoggerFactory.getLogger(LmApiUtil.class);
     private static String appId = Global.getValue("lv_meng_appId");//"T006";									//机构appId
     private static String signKey = Global.getValue("lv_meng_signKey");//"HiXRSfHguyRlkgDHzgfvjcXkpL3106";		//签名密钥
     private static String secert = Global.getValue("lv_meng_secert");//"QlJyJO9QZ3";							//加密密钥
