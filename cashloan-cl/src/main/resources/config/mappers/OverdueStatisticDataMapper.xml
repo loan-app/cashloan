@@ -315,6 +315,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
     <select id="againOverdue" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
@@ -341,6 +342,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
@@ -369,6 +371,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
@@ -383,6 +386,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
     <select id="againExpire" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData">
@@ -396,6 +400,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
@@ -410,6 +415,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
@@ -424,6 +430,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
@@ -438,6 +445,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
@@ -452,6 +460,7 @@
             </if>
         </where>
         GROUP BY countTime
+        ORDER BY countTime DESC
     </select>
 
 
