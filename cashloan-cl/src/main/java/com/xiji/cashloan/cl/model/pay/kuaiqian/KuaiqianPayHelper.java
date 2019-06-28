@@ -81,10 +81,15 @@ public class KuaiqianPayHelper extends BasePay {
             pay2bankOrderReturn = this.unsealMsg(msg);
         }catch (SocketTimeoutException se){
             // 支付申请超时，默认请求成功，需等待支付回调
-            pay2bankOrderReturn.setErrorCode("0000");
+            if (StringUtil.isBlank(pay2bankOrderReturn.getErrorCode()) && StringUtil.isBlank(pay2bankOrderReturn.getErrorMsg())) {
+                pay2bankOrderReturn.setErrorCode("0000");
+            }
             logger.error("payment is error, se ==>{}"+se+"order ==>"+order);
         } catch (Exception e) {
             logger.error("payment is error, e ==>"+e);
+            if (StringUtil.isBlank(pay2bankOrderReturn.getErrorCode()) && StringUtil.isBlank(pay2bankOrderReturn.getErrorMsg())){
+                pay2bankOrderReturn.setErrorCode("0000");
+            }
         }
         logger.info("--------------------------快钱放款支付核心逻辑结束-------------------------");
         return pay2bankOrderReturn;
