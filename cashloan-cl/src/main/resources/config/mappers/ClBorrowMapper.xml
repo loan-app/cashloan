@@ -548,7 +548,25 @@
             <if test="remark != null and remark != '' ">        
                 remark = #{remark,jdbcType=VARCHAR}
             </if>
-        </set>    
+            <if test="amount != null ">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="realAmount != null ">
+                real_amount = #{realAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null ">
+                fee = #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee != null ">
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="infoAuthFee != null ">
+                info_auth_fee = #{infoAuthFee,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null ">
+                interest = #{interest,jdbcType=DECIMAL}
+            </if>
+          </set>
         where id = #{id ,jdbcType=BIGINT} AND (state = 301 or state = 31)
     </update>
     

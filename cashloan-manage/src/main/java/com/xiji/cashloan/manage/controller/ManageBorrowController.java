@@ -435,13 +435,15 @@ public class ManageBorrowController extends ManageBaseController {
 	@RequestMapping(value="/modules/manage/borrow/auditBorrowLoan.htm")
 	public void auditBorrowLoan(@RequestParam(value = "borrowId") Long borrowId,
 			@RequestParam(value = "state") String state,
+			@RequestParam(value = "isBlack")Boolean isBlack,
+			@RequestParam(value = "amount")Double amount,
 			@RequestParam(value = "remark") String remark) throws Exception {
 		Map<String,Object> result = new HashMap<String,Object>(); 
 		try{
 			SysUser loginUser = getLoginUser(request);
 			Long userId=loginUser.getId();
 
-		    int msg = clBorrowService.auditBorrowLoan(borrowId, state, remark,userId);
+		    int msg = clBorrowService.auditBorrowLoan(borrowId, state, remark,userId,isBlack,amount);
 			if(msg==1){
 				result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				result.put(Constant.RESPONSE_CODE_MSG, "操作完成");

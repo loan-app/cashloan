@@ -2492,10 +2492,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 审核放款
 	 */
 	@Override
-	public int auditBorrowLoan(Long borrowId, String state, String remark,Long userId) {
+	public int auditBorrowLoan(Long borrowId, String state, String remark,Long userId,Boolean isBlack,Double amount) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 		if (borrow != null) {
+			User user = cloanUserService.getById(borrow.getUserId());
+			Channel channel = channelMapper.getChannelById(user.getChannelId());
+			Double fee = Double.parseDouble(channel.getFee());
 			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
 				logger.error("审核失败,当前状态不是待审核放款");
 				throw new BussinessException("审核失败,当前状态不是待审核放款");
@@ -2504,9 +2507,55 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			map.put("id", borrowId);
 			map.put("state", state);
 			map.put("remark", remark);
-			code = clBorrowMapper.loanState(map);
-			if (code != 1) {
-				throw new BussinessException("放款审核失败,当前状态不是待审核放款");
+			map.put("amount",amount);
+			if(BorrowModel.AUDIT_LOAN_FAIL.equals(state)&&!borrow.getAmount().equals(amount)){
+				throw new BussinessException("当前状态为放款审核不通过，订单无法修改金额");
+			}else {
+				String beheadFee = channel.getBeheadFee();// 是否启用砍头息
+				if ("10".equals(beheadFee)) {//启用
+					map.put("realAmount", amount * (1 - fee));
+				}else {
+					map.put("realAmount", amount);
+				}
+				map.put("fee", amount * fee);
+				map.put("serviceFee", amount * fee * 0.5);
+				map.put("infoAuthFee", amount * fee * 0.4);
+				map.put("interest", amount * fee * 0.1);
+				Map<String, Object> creditMap = new HashMap<String, Object>();
+				creditMap.put("consumerNo", borrow.getUserId());
+				Credit credit = creditMapper.findSelective(creditMap);
+				if (credit != null) {
+					if (amount >= 0 && amount <= credit.getTotal()) {
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("consumerNo", borrow.getUserId());
+						params.put("used", amount);
+						params.put("unuse", credit.getTotal() - amount);
+						int result = creditMapper.updateTotal(params);
+						if (result != 1) {
+							throw new BussinessException("修改借款额度失败");
+						}
+						code = clBorrowMapper.loanState(map);
+						if (code != 1) {
+							throw new BussinessException("放款审核失败,当前状态不是待审核放款");
+						}
+					} else if (amount > credit.getTotal()) {
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("consumerNo", borrow.getUserId());
+						params.put("total", credit.getTotal() + (amount - credit.getTotal()));
+						params.put("used", amount);
+						params.put("unuse", credit.getTotal() + (amount - credit.getTotal()) - amount);
+						int result = creditMapper.updateTotal(params);
+						if (result != 1) {
+							throw new BussinessException("修改借款额度失败");
+						}
+						code = clBorrowMapper.loanState(map);
+						if (code != 1) {
+							throw new BussinessException("放款审核失败,当前状态不是待审核放款");
+						}
+					} else {
+						throw new BussinessException("借款金额不能为负数");
+					}
+				}
 			}
 			
 			// savePressState(borrow, state);
@@ -2521,14 +2570,29 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			borrowProgress.setAuditUser(userId);
 			borrowProgress.setCreateTime(DateUtil.getNow());
 			borrowProgressMapper.save(borrowProgress);
+
+			if(StringUtil.isNotBlank(remark)) {
+				UserRemark userRemark = new UserRemark();
+				userRemark.setCreateTime(new Date());
+				userRemark.setOperateTime(new Date());
+				userRemark.setRemark(remark);
+				userRemark.setOperateId(userId);
+				userRemark.setUserId(borrow.getUserId());
+				userRemarkService.insert(userRemark);
+			}
 			
 			if (BorrowModel.AUDIT_LOAN_FAIL.equals(state)) {
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
+				// 将用户加入黑名单
+				if (isBlack){
+					this.joinBlackList(borrow.getUserId());
+				}
 			}
 			// 审核放款通过 放款
 			if (BorrowModel.AUDIT_LOAN_PASS.equals(state)) {
-				borrowLoan(borrow, new Date());
+				Borrow newBorrow = clBorrowMapper.findByPrimary(borrowId);
+				borrowLoan(newBorrow, new Date());
 			}
 		} else {
 			logger.error("审核放款失败，当前标不存在");

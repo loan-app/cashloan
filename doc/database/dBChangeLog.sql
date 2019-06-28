@@ -985,7 +985,7 @@ is_improve_credit =(select value from arc_sys_config where code = 'is_improve_cr
 one_repay_credit =(select value from arc_sys_config where code = 'one_repay_credit'),
 improve_credit_limit =(select value from arc_sys_config where code = 'imporove_credit_limit'),
 borrow_day =(select value from arc_sys_config where code = 'borrow_day'),
-delay_fee =(select value from arc_sys_config where code = 'delay_fee'),
+delay_fee =(select value from arc_sys_config where code = 'fee'),
 behead_fee =(select value from arc_sys_config where code = 'behead_fee');
 
 
