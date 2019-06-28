@@ -38,7 +38,7 @@ values(15,1,'cl_decision','决策数据','yx_overdue_history_m3_count','历史�
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
 values(16,1,'cl_decision','决策数据','yx_overdue_history_m6_count','历史逾期M6+(大于180天)数量','>=','1','10',null,'0:0:0:0:0:0:0:1','2019-01-23 11:27:23','int',null,null,'10',null);
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
-values(17,1,'cl_decision','决策数据','yx_AM20_no_accept','申请借款数量大于20且放款数量为0,0-否','=','1','10',null,'0:0:0:0:0:0:0:1','2019-01-23 11:27:23','int',null,null,'10',null);
+values(17,1,'cl_decision','决策数据','yx_AM20_no_accept','申请借款数量大于40且放款数量为0,0-否','=','1','10',null,'0:0:0:0:0:0:0:1','2019-01-23 11:27:23','int',null,null,'10',null);
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
 values(18,1,'cl_decision','决策数据','mx_courtcase_cnt','法院执行人次数','>=','1','10',null,'0:0:0:0:0:0:0:1','2019-01-23 11:27:23','int',null,null,'10',null);
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
@@ -109,6 +109,8 @@ insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_commen
 values(55,1,'cl_decision','决策数据','xy_latest_one_month_suc_minus_fail_num','近1个月贷款机构成功扣款数-失败数','<','-5','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
 insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
 values(56,1,'cl_decision','决策数据','yd_device_link_id_count','同设备使用用户总数: 大于等于3','>=','3','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
+insert into `arc_rule_engine_config`(`id`,`rule_engin_id`,`ctable`,`table_comment`,`ccolumn`,`column_comment`,`formula`,`cvalue`,`state`,`req_ext`,`add_ip`,`add_time`,`type`,`integral`,`result_type`,`result`,`sort`)
+values(57,1,'cl_decision','决策数据','yd_score','评估模型得分大于等于80（极高风险）','>=','80','10',null,'115.192.184.73','2019-05-30 15:10:52','int',null,null,'10',null);
 
 insert into `arc_rule_engine`(`id`,`name`,`state`,`config_count`,`req_ext`,`add_ip`,`add_time`,`integral`,`type`,`type_result_status`,`sort`)
 values(1,'决策','10',37,null,'0:0:0:0:0:0:0:1','2019-01-23 11:02:17',null,'20','10',null);
@@ -213,6 +215,8 @@ insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`
 values(91,1,1,0,55,0);
 insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
 values(92,1,1,0,56,0);
+insert into `arc_borrow_rule_config`(`id`,`borrow_rule_id`,`rule_id`,`rule_sort`,`config_id`,`config_sort`)
+values(93,1,1,0,57,0);
 -- 删除信德相关规则配置
 delete from arc_borrow_rule_config where config_id in (40,41,42);
 -- 删除运营商用户未实名认证条件

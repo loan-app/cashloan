@@ -247,8 +247,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             decision.setYxOverdueHistoryCount(countOverdueHistory);
             decision.setYxOverdueHistoryM3Count(countOverdueHistoryM3);
             decision.setYxOverdueHistoryM6Count(countOverdueHistoryM6);
-            //申请借款数量大于20且放款数量为0
-            if(countBorrowApply > 20 && countApprovalAccept == 0) {
+            //申请借款数量大于40且放款数量为0
+            if(countBorrowApply > 40 && countApprovalAccept == 0) {
                 decision.setYxAm20NoAccept(1);
             }
         }
