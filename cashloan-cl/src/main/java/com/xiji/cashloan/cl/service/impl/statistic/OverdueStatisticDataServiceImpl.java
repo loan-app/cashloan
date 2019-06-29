@@ -176,7 +176,9 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 				}
 			}
 			if (!flag) {
-				target.add(auditorStatisticData);
+				if(null != auditorStatisticData && !target.contains(auditorStatisticData)) {
+					target.add(auditorStatisticData);
+				}
 			}
 		}
 
