@@ -111,11 +111,21 @@ public class ChanPayConstant {
     public static final String PROTOCOL_UNBIND = "nmg_api_auth_unbind";
     /** 协议支付-接口标记 - 绑卡查询 */
     public static final String PROTOCOL_BINDQUERY = "nmg_api_auth_info_qry";
-    /** 协议支付-接口标记 - 商户支持卡 Bin 查询接口 */
-    public static final String PROTOCOL_CARDBINQUERY = "cjt_dsf";
+
     /** 协议支付-接口标记 - 查询订单 */
     public static final String PROTOCOL_QUERYORDER = "nmg_api_query_trade";
     /** 协议支付-接口标记 - 还款支付 */
     public static final String PROTOCOL_REPAYMENT = "nmg_biz_api_quick_payment";
+
+
+
+    /** 代支付-接口标记 - 商户支持卡 Bin 查询接口 */
+    public static final String PROTOCOL_CARDBINQUERY = "cjt_dsf";
+    /** 代支付-接口标记 - 同步代付接口 */
+    public static final String PAID_PAYMENT = "cjt_dsf";
+    /** 代支付-接口标记 - 同步代付查询接口 */
+    public static final String PAID_PAYMENT_QUERY = "cjt_dsf";
+
+
 
 }

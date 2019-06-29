@@ -51,6 +51,16 @@ public class ChanPaymentRespVo {
      */
     private String appRetMsg;
 
+    /**
+     *
+     */
+    private String retCode;
+
+    /**
+     *
+     */
+    private String retMsg;
+
 
     //公共字段
     private String partnerId; //商户号
@@ -225,6 +235,23 @@ public class ChanPaymentRespVo {
         this.memo = memo;
     }
 
+
+    public String getRetCode() {
+        return retCode;
+    }
+
+    public void setRetCode(String retCode) {
+        this.retCode = retCode;
+    }
+
+    public String getRetMsg() {
+        return retMsg;
+    }
+
+    public void setRetMsg(String retMsg) {
+        this.retMsg = retMsg;
+    }
+
     @Override
     public String toString() {
         return "ChanPaymentRespVo{" +
@@ -240,6 +267,8 @@ public class ChanPaymentRespVo {
                 ", originalErrorMessage='" + originalErrorMessage + '\'' +
                 ", appRetcode='" + appRetcode + '\'' +
                 ", appRetMsg='" + appRetMsg + '\'' +
+                ", retCode='" + retCode + '\'' +
+                ", retMsg='" + retMsg + '\'' +
                 ", partnerId='" + partnerId + '\'' +
                 ", inputCharset='" + inputCharset + '\'' +
                 ", acceptStatus='" + acceptStatus + '\'' +

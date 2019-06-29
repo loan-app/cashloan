@@ -29,6 +29,7 @@ public class ChanPayBiz implements PayCommon {
         PaymentResponseVo responseVo = new PaymentResponseVo();
         Map<String, String> origMap = new HashMap<String, String>();
         origMap = setCommonMap(origMap);
+        origMap.put(ChanPayConstant.SERVICE, ChanPayConstant.PAID_PAYMENT);// 鉴权绑卡的接口名(商户采集方式)
         origMap.put(ChanPayConstant.PARTNER_ID,ChanPayUtil.paidMerchantNumber());//商户号
         origMap.put("TransCode", ChanPayConstant.PAYMENT_TRANS_CODE); // 交易码
         String orderId = ChanPayConstant.getOrderId();
@@ -68,6 +69,7 @@ public class ChanPayBiz implements PayCommon {
 
         Map<String, String> origMap = new HashMap<String, String>();
         origMap = setCommonMap(origMap);
+        origMap.put(ChanPayConstant.SERVICE, ChanPayConstant.PAID_PAYMENT_QUERY);// 鉴权绑卡的接口名(商户采集方式)
         origMap.put(ChanPayConstant.PARTNER_ID, ChanPayUtil.paidMerchantNumber());//商户号
         origMap.put("TransCode", ChanPayConstant.PAYMENT_QUERY_TRANS_CODE);
         String trxId = ChanPayConstant.getOrderId();
@@ -92,7 +94,7 @@ public class ChanPayBiz implements PayCommon {
         Map<String, String> origMap = new HashMap<String, String>();
         origMap = setCommonMap(origMap);
         // 2.1 鉴权绑卡 api 业务参数
-        origMap.put("Service", ChanPayConstant.PROTOCOL_BINDMSG);// 鉴权绑卡的接口名(商户采集方式)
+        origMap.put(ChanPayConstant.SERVICE, ChanPayConstant.PROTOCOL_BINDMSG);// 鉴权绑卡的接口名(商户采集方式)
         origMap.put(ChanPayConstant.PARTNER_ID, ChanPayUtil.agreementMerchantNumber());//商户号
 
         String trxId = ChanPayConstant.getOrderId();
