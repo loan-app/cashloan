@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,8 +79,17 @@ public class KuaiqianPayHelper extends BasePay {
         try {
             msg = this.invokeCSSCollection(requestXml, KuaiqianPayUtil.getPayforPayUrl());
             pay2bankOrderReturn = this.unsealMsg(msg);
+        }catch (SocketTimeoutException se){
+            // 支付申请超时，默认请求成功，需等待支付回调
+            if (StringUtil.isBlank(pay2bankOrderReturn.getErrorCode()) && StringUtil.isBlank(pay2bankOrderReturn.getErrorMsg())) {
+                pay2bankOrderReturn.setErrorCode("0000");
+            }
+            logger.error("payment is error, se ==>{}"+se+"order ==>"+order);
         } catch (Exception e) {
             logger.error("payment is error, e ==>"+e);
+            if (StringUtil.isBlank(pay2bankOrderReturn.getErrorCode()) && StringUtil.isBlank(pay2bankOrderReturn.getErrorMsg())){
+                pay2bankOrderReturn.setErrorCode("0000");
+            }
         }
         logger.info("--------------------------快钱放款支付核心逻辑结束-------------------------");
         return pay2bankOrderReturn;
