@@ -1054,3 +1054,12 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单机构appId', '
 INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单签名密钥', 'lv_meng_signKey', 'HiXRSfHguyRlkgDHzgfvjcXkpL3106', '1', '签名密钥', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单加密密钥', 'lv_meng_secert', 'QlJyJO9QZ3', '1', '加密密钥', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单接口地址', 'lv_meng_url', 'http://list.yichunruirun.com/api/v1', '1', '接口地址', '1');
+
+
+-- 畅捷支付
+INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷服务地址', 'chanpay_transfer_url', 'https://pay.chanpay.com/mag-unify/gateway/receiveOrder.do?', '1', '合利支付代付地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷商户号私钥', 'chanpay_merchant_private_key', 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANB5cQ5pf+QHF9Z2+DjrAXstdxQHJDHyrni1PHijKVn5VHy/+ONiEUwSd5nx1d/W+mtYKxyc6HiN+5lgWSB5DFimyYCiOInh3tGQtN+pN/AtE0dhMh4J9NXad0XEetLPRgmZ795O/sZZTnA3yo54NBquT19ijYfrvi0JVf3BY9glAgMBAAECgYBFdSCox5eXlpFnn+2lsQ6mRoiVAKgbiBp/FwsVum7NjleK1L8MqyDOMpzsinlSgaKfXxnGB7UgbVW1TTeErS/iQ06zx3r4CNMDeIG1lYwiUUuguIDMedIJxzSNXfk65Bhps37lm129AE/VnIecpKxzelaUuzyGEoFWYGevwc/lQQJBAPO0mGUxOR/0eDzqsf7ehE+Iq9tEr+aztPVacrLsEBAwqOjUEYABvEasJiBVj4tECnbgGxXeZAwyQAJ5YmgseLUCQQDa/dgviW/4UMrY+cQnzXVSZewISKg/bv+nW1rsbnk+NNwdVBxR09j7ifxg9DnQNk1Edardpu3z7ipHDTC+z7exAkAM5llOue1JKLqYlt+3GvYr85MNNzSMZKTGe/QoTmCHStwV/uuyN+VMZF5cRcskVwSqyDAG10+6aYqD1wMDep8lAkBQBoVS0cmOF5AY/CTXWrht1PsNB+gbzic0dCjkz3YU6mIpgYwbxuu69/C3SWg7EyznQIyhFRhNlJH0hvhyMhvxAkEAuf7DNrgmOJjRPcmAXfkbaZUf+F4iK+szpggOZ9XvKAhJ+JGd+3894Y/05uYYRhECmSlPv55CBAPwd8VUsSb/1w==', '1', '畅捷商户号私钥', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付-协议商户号', 'chanpay_agreement_merchant_no', '200001160097', '1', '畅捷支付-协议商户号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付-代付商户号', 'chanpay_paid_merchant_no', '200001160096', '1', '畅捷支付-协议商户号', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付signkey', 'chanpay_sign_key', 'kkqC/K3COMiQpugQj1Dtqw7568Y7UDsDTY9aihmurROXSpy+BaFyfz5o8PHyUM1opW3rMXCTIH21spjnsadH1Qsl5IrymJnG1M79nQ4cGgVsOsqoAe714RNHqXIDrGw49vpXuFbxFi7Ey4Yhd2gQDmuBYWaj0hecLWlWtd93slM=', '1', '畅捷支付signkey', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付平台公钥', 'chanpay_merchant_public_key', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDPq3oXX5aFeBQGf3Ag/86zNu0VICXmkof85r+DDL46w3vHcTnkEWVbp9DaDurcF7DMctzJngO0u9OG1cb4mn+Pn/uNC1fp7S4JH4xtwST6jFgHtXcTG9uewWFYWKw/8b3zf4fXyRuI/2ekeLSstftqnMQdenVP7XCxMuEnnmM1RwIDAQAB', '1', '畅捷支付平台公钥', '1');

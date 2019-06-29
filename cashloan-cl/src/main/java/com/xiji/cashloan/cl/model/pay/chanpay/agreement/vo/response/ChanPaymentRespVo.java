@@ -51,6 +51,19 @@ public class ChanPaymentRespVo {
      */
     private String appRetMsg;
 
+
+    //公共字段
+    private String partnerId; //商户号
+    private String inputCharset; //参数编码字符集
+    private String acceptStatus; //网关返回码(S：受理成功F：受理失败 表示接口调用是否成功，并不表明业务处理结果)
+    private String tradeDate; //请求的日期
+    private String tradeTime; //请求的时间
+    private String sign; //签名
+    private String signType; //签名方式
+    private String memo; //备注
+
+
+
     public String getCorpAcctNo() {
         return corpAcctNo;
     }
@@ -147,6 +160,71 @@ public class ChanPaymentRespVo {
         this.appRetMsg = appRetMsg;
     }
 
+
+    public String getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(String partnerId) {
+        this.partnerId = partnerId;
+    }
+
+    public String getInputCharset() {
+        return inputCharset;
+    }
+
+    public void setInputCharset(String inputCharset) {
+        this.inputCharset = inputCharset;
+    }
+
+    public String getAcceptStatus() {
+        return acceptStatus;
+    }
+
+    public void setAcceptStatus(String acceptStatus) {
+        this.acceptStatus = acceptStatus;
+    }
+
+    public String getTradeDate() {
+        return tradeDate;
+    }
+
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate;
+    }
+
+    public String getTradeTime() {
+        return tradeTime;
+    }
+
+    public void setTradeTime(String tradeTime) {
+        this.tradeTime = tradeTime;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getSignType() {
+        return signType;
+    }
+
+    public void setSignType(String signType) {
+        this.signType = signType;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     @Override
     public String toString() {
         return "ChanPaymentRespVo{" +
@@ -162,6 +240,14 @@ public class ChanPaymentRespVo {
                 ", originalErrorMessage='" + originalErrorMessage + '\'' +
                 ", appRetcode='" + appRetcode + '\'' +
                 ", appRetMsg='" + appRetMsg + '\'' +
+                ", partnerId='" + partnerId + '\'' +
+                ", inputCharset='" + inputCharset + '\'' +
+                ", acceptStatus='" + acceptStatus + '\'' +
+                ", tradeDate='" + tradeDate + '\'' +
+                ", tradeTime='" + tradeTime + '\'' +
+                ", sign='" + sign + '\'' +
+                ", signType='" + signType + '\'' +
+                ", memo='" + memo + '\'' +
                 '}';
     }
 }

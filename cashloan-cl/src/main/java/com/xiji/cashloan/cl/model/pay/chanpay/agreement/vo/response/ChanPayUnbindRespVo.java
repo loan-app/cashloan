@@ -1,14 +1,13 @@
 package com.xiji.cashloan.cl.model.pay.chanpay.agreement.vo.response;
 
-import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
 import org.nuxeo.common.xmap.annotation.XNode;
-import tool.util.StringUtil;
 
-public class BindCardVerifyRespVo {
+public class ChanPayUnbindRespVo {
+
     @XNode("TRXID")
     private String trxId;//订单号
-    @XNode("ORDERTRXID")
-    private String orderTrxid;//畅捷流水号
+    @XNode("MERUSERID")
+    private String merUserId;//畅捷流水号
     @XNode("STATUS")
     private String status;//鉴权状态
     @XNode("RETCODE")
@@ -32,6 +31,8 @@ public class BindCardVerifyRespVo {
     private String signType; //签名方式
     private String memo; //备注
 
+
+
     public String getTrxId() {
         return trxId;
     }
@@ -40,12 +41,12 @@ public class BindCardVerifyRespVo {
         this.trxId = trxId;
     }
 
-    public String getOrderTrxid() {
-        return orderTrxid;
+    public String getMerUserId() {
+        return merUserId;
     }
 
-    public void setOrderTrxid(String orderTrxid) {
-        this.orderTrxid = orderTrxid;
+    public void setMerUserId(String merUserId) {
+        this.merUserId = merUserId;
     }
 
     public String getStatus() {
@@ -94,10 +95,6 @@ public class BindCardVerifyRespVo {
 
     public void setExtension(String extension) {
         this.extension = extension;
-    }
-
-    public boolean checkReturn() {
-        return StringUtil.equals(retCode, ChanPayConstant.RESPONSE_SUCCESS_CODE);
     }
 
     public String getPartnerId() {
@@ -166,9 +163,9 @@ public class BindCardVerifyRespVo {
 
     @Override
     public String toString() {
-        return "BindCardVerifyRespVo{" +
+        return "ChanPayUnbindRespVo{" +
                 "trxId='" + trxId + '\'' +
-                ", orderTrxid='" + orderTrxid + '\'' +
+                ", merUserId='" + merUserId + '\'' +
                 ", status='" + status + '\'' +
                 ", retCode='" + retCode + '\'' +
                 ", retMsg='" + retMsg + '\'' +

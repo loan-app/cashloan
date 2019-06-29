@@ -12,6 +12,7 @@ import com.xiji.cashloan.cl.model.PayRespLogModel;
 import com.xiji.cashloan.cl.model.pay.chanpay.ChanPayHelper;
 import com.xiji.cashloan.cl.model.pay.chanpay.agreement.vo.ChanRepaymentNotifyModel;
 import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
+import com.xiji.cashloan.cl.model.pay.chanpay.util.ChanPayUtil;
 import com.xiji.cashloan.cl.model.pay.chanpay.util.RSA;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.dto.RepaymentNotifyDto;
@@ -318,7 +319,7 @@ public class ChargeController extends BaseController {
         String orderNo = model.getOuterTradeNo();
         try {
             //验签
-            boolean verify = RSA.verify(text, ChanPayConstant.SIGN_KEY, ChanPayConstant.MERCHANT_PUBLIC_KEY,
+            boolean verify = RSA.verify(text, ChanPayUtil.signKey(),ChanPayUtil.chanpayPublicKey(),
                     ChanPayConstant.ENCODEING);
             if (!verify){
                 logger.error("验签失败" + orderNo);

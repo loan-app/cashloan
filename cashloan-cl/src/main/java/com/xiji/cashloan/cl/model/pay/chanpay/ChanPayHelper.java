@@ -123,6 +123,28 @@ public class ChanPayHelper extends BasePay {
         return bindCardResult;
     }
 
+
+    /**
+     * 解绑
+     * @param origMap
+     * @param charset
+     * @param MERCHANT_PRIVATE_KEY
+     * @return
+     */
+    public ChanPayUnbindRespVo unbind(Map<String, String> origMap, String charset, String MERCHANT_PRIVATE_KEY) {
+        //保存请求log
+        saveReqLog(ChanPayConstant.PROTOCOL_UNBIND, origMap.get("TrxId"),"", JSON.toJSONString(origMap));
+        Object obj = this.gatewayPosts(origMap, charset, MERCHANT_PRIVATE_KEY);
+        ChanPayUnbindRespVo unBindResult = JSONObject.parseObject(obj.toString(), ChanPayUnbindRespVo.class);
+        logger.info("unBindResult------->"+unBindResult);
+        //如果获取的应答码RetCode的值为S0001时，成功
+        if("S0001".equals((String)unBindResult.getRetCode())) {
+            //更新返回数据
+            modifyReqLog(origMap.get("TrxId"),unBindResult.toString());
+            logger.info("解绑成功");
+        }
+        return unBindResult;
+    }
     /**
      * 还款支付
      * @param origMap
@@ -140,7 +162,7 @@ public class ChanPayHelper extends BasePay {
         if("S0001".equals((String)repaymentResult.getRetCode())) {
             //更新返回数据
             modifyReqLog(origMap.get("TrxId"),repaymentResult.toString());
-            logger.info("放款支付成功");
+            logger.info("还款成功");
         }
 
         return repaymentResult;
@@ -229,12 +251,14 @@ public class ChanPayHelper extends BasePay {
                                String MERCHANT_PRIVATE_KEY) {
 
         try {
+            //生成要请求参数数组
             Map<String, String> sPara = buildRequestPara(origMap, "RSA",
                     MERCHANT_PRIVATE_KEY, charset);
-            System.out.println(ChanPayConstant.urlStr + createLinkString(sPara, true));
+            //请求路径+请求参数   createLinkString(sPara, true)把数组所有元素排序
+            logger.info(ChanPayUtil.transferUrl() + createLinkString(sPara, true));
             Object obj = buildRequests(origMap, "RSA", MERCHANT_PRIVATE_KEY,
-                    charset, ChanPayConstant.urlStr);
-            System.out.println("obj----->"+obj);
+                    charset, ChanPayUtil.transferUrl() );
+            logger.info("obj----->"+obj);
             return obj;
         } catch (Exception e) {
             e.printStackTrace();
@@ -369,12 +393,13 @@ public class ChanPayHelper extends BasePay {
         HttpResponse response = httpProtocolHandler
                 .execute(request, null, null);
         if (response == null) {
+           // System.out.println("收到返回信息为null");
             return null;
         }
 
         byte[] byteResult = response.getByteResult();
         if (byteResult.length > 1024) {
-            return byteResult;
+                return byteResult;
         } else {
             return response.getStringResult();
         }
