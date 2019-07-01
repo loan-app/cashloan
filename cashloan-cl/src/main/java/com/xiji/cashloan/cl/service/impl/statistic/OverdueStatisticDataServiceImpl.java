@@ -299,7 +299,6 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		if(statisticDataList != null && statisticDataList.size() > 0) {
 			for(OverdueStatisticData statisticData:statisticDataList){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
-				overdueStatisticData.add(statisticData);
 			}
 		}
 
