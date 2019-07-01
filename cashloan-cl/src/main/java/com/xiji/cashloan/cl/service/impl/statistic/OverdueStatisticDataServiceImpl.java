@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.OverdueStatisticDataMapper;
+import com.xiji.cashloan.cl.model.UserOverdueModel;
 import com.xiji.cashloan.cl.service.statistic.OverdueStatisticDataService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -304,6 +305,11 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 
 		Collections.sort(overdueStatisticData);
 		return overdueStatisticData;
+	}
+
+	@Override
+	public List<UserOverdueModel> queryOverdueData(Map<String, Object> params) {
+		return overdueStatisticDataMapper.queryOverdueData(params);
 	}
 }
 

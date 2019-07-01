@@ -477,5 +477,19 @@
         order by count_time desc
     </select>
 
-
+    <select id="queryOverdueData" parameterType="java.util.HashMap" resultType="com.xiji.cashloan.cl.model.UserOverdueModel">
+        SELECT u.phone phone,u.real_name name,u.id_no idcard
+        FROM cl_user_base_info as u , cl_borrow_repay as repay
+        <where>
+            and u.id = repay.user_id
+            and repay.state = '20'
+            AND repay.penalty_day > 3
+            <if test="startDate!=null and startDate!=''">
+                and repay.repay_time &gt;= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and repay.repay_time &lt;= #{endDate,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>
