@@ -1,15 +1,12 @@
 package com.xiji.cashloan.cl.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.PxRiskService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.cl.util.paixu.RiskApiUtil;
-import com.xiji.cashloan.cl.util.token.HttpRestUtils;
 import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
@@ -154,7 +151,7 @@ public class PxRiskServiceImpl implements PxRiskService {
         paramMap.put("userId", borrow.getUserId());
         UserEquipmentInfo userEquipmentInfo = userEquipmentInfoMapper.findSelective(paramMap);
         if(userEquipmentInfo != null) {
-            if (userEquipmentInfo.getPhoneType().toLowerCase().contains("phone")) {
+            if (StringUtil.isNotBlank(userEquipmentInfo.getPhoneType()) && userEquipmentInfo.getPhoneType().toLowerCase().contains("phone")) {
                 deviceType = "ios";
             }
         }
