@@ -61,6 +61,7 @@ public class ChanPaymentRespVo {
     private String retCode;//返回码
     private String retMsg;//受理状态返回信息
     private String platformRetCode;//平台受理返回代码
+    private String platformErrorMessage;//平台受理返回日志
     private String partnerId; //商户号
     private String inputCharset; //参数编码字符集
     private String acceptStatus; //网关返回码(S：受理成功F：受理失败 表示接口调用是否成功，并不表明业务处理结果)
@@ -267,6 +268,14 @@ public class ChanPaymentRespVo {
         this.platformRetCode = platformRetCode;
     }
 
+    public String getPlatformErrorMessage() {
+        return platformErrorMessage;
+    }
+
+    public void setPlatformErrorMessage(String platformErrorMessage) {
+        this.platformErrorMessage = platformErrorMessage;
+    }
+
     @Override
     public String toString() {
         return "ChanPaymentRespVo{" +
@@ -282,8 +291,11 @@ public class ChanPaymentRespVo {
                 ", originalErrorMessage='" + originalErrorMessage + '\'' +
                 ", appRetcode='" + appRetcode + '\'' +
                 ", appRetMsg='" + appRetMsg + '\'' +
+                ", flowNo='" + flowNo + '\'' +
                 ", retCode='" + retCode + '\'' +
                 ", retMsg='" + retMsg + '\'' +
+                ", platformRetCode='" + platformRetCode + '\'' +
+                ", platformErrorMessage='" + platformErrorMessage + '\'' +
                 ", partnerId='" + partnerId + '\'' +
                 ", inputCharset='" + inputCharset + '\'' +
                 ", acceptStatus='" + acceptStatus + '\'' +

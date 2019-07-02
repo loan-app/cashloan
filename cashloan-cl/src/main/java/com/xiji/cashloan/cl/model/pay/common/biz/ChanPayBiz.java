@@ -15,8 +15,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,14 +33,14 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("TransCode", ChanPayConstant.PAYMENT_TRANS_CODE); // 交易码
         String orderId = ChanPayConstant.getOrderId();
         origMap.put("OutTradeNo", orderId); // 商户网站唯一订单号
-        origMap.put("CorpAcctNo", "");  //企业在代收系统注册备案的企业账户(可空)
+        //origMap.put("CorpAcctNo", "");  //企业在代收系统注册备案的企业账户(可空)
         origMap.put("BusinessType", "0"); // 业务类型：0对私 1对公
         origMap.put("BankCommonName", vo.getBankName()); // 通用银行名称
        // origMap.put("BankCode", "CCB");//收款方银行编码(对公必填)
         origMap.put("AccountType", "00"); // 账户类型(00：借记卡 01：贷记卡)
         origMap.put("AcctNo", this.encrypt(vo.getBankCardNo(), ChanPayUtil.chanpayPublicKey(),  ChanPayConstant.ENCODEING)); // 对手人账号(此处需要用真实的账号信息)
         origMap.put("AcctName", this.encrypt(vo.getBankCardName(),ChanPayUtil.chanpayPublicKey(),  ChanPayConstant.ENCODEING)); // 对手人账户名称
-        origMap.put("TransAmt", "0.01");//借款金额 Double.toString(vo.getAmount())
+        origMap.put("TransAmt", Double.toString(vo.getAmount()));//借款金额
         origMap.put("CorpPushUrl", ChanPayUtil.paymentNotifyAddress());//用户在商户平台下单时候的ip地址(可空)
         origMap.put("PostScript", "用途:代付");
         ChanPayHelper payHelper = new ChanPayHelper();
@@ -55,11 +54,11 @@ public class ChanPayBiz implements PayCommon {
         }else if(ChanPayConstant.RESPONSE_CHECK_FAIL.equals(paymentResult.getOriginalRetCode())){
             responseVo.setStatus(PayConstant.STATUS_NEED_CHECK);
             responseVo.setStatusCode(paymentResult.getOriginalRetCode());
-            responseVo.setMessage(paymentResult.getOriginalErrorMessage());
+            responseVo.setMessage(paymentResult.getPlatformErrorMessage());
         }else {
             responseVo.setStatus(PayConstant.STATUS_FAIL);
             responseVo.setStatusCode(paymentResult.getOriginalRetCode());
-            responseVo.setMessage(paymentResult.getOriginalErrorMessage());
+            responseVo.setMessage(paymentResult.getPlatformErrorMessage());
         }
         responseVo.setOrderNo(orderId);
         return responseVo;
@@ -212,7 +211,6 @@ public class ChanPayBiz implements PayCommon {
         origMap.put(ChanPayConstant.SERVICE, ChanPayConstant.PROTOCOL_REPAYMENT);// 支付的接口名
         origMap.put(ChanPayConstant.PARTNER_ID,ChanPayUtil.agreementMerchantNumber());//商户号
         // 2.2 业务参数
-       // String trxId = Long.toString(System.currentTimeMillis());
         String trxId = ChanPayConstant.getOrderId();
         origMap.put("TrxId", trxId);// 订单号
         origMap.put("OrdrName", "畅捷支付");// 商户网站商品名称
@@ -224,13 +222,14 @@ public class ChanPayBiz implements PayCommon {
         String cardNo = vo.getCardNo();
         String CardBegin="";
         String CardEnd="";
+        //获取银行卡的前6位,和后4位
         if (StringUtil.isNotEmpty(cardNo)){
            CardBegin = cardNo.substring(0, 6);
            CardEnd = cardNo.substring(cardNo.length()-4);
         }
         origMap.put("CardBegin", CardBegin);// 卡号前6位
         origMap.put("CardEnd", CardEnd);// 卡号后4位
-        origMap.put("TrxAmt", "0.01");// 交易金额 Double.toString(vo.getAmount())
+        origMap.put("TrxAmt", Double.toString(vo.getAmount()));// 交易金额
         origMap.put("TradeType", "11");// 交易类型（即时 11 担保 12）
         origMap.put("SmsFlag", "0"); //  0：不发送短信 1：发送短信
         origMap.put("NotifyUrl", ChanPayUtil.rePaymentNotifyAddress());//异步通知地址
@@ -321,7 +320,7 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("MerUserId", vo.getUserId()); // 用户标识（测试时需要替换一个新的meruserid）
         //origMap.put("CardBegin", "430000");// 卡号前6位
         //origMap.put("CardEnd", "4700");// 卡号后4位
-        origMap.put("BkAcctTp", "01");// 卡类型（00 – 银行贷记卡;01 – 银行借记卡）
+        origMap.put("BkAcctTp", ChanPayConstant.BKACCTTP);// 卡类型（00 – 银行贷记卡;01 – 银行借记卡）
         ChanPayHelper payHelper = new ChanPayHelper();
         BindCardQueryRespVo result =payHelper.bindCardQuery(origMap, ChanPayConstant.ENCODEING, ChanPayUtil.chanpayPrivateKey());
 
@@ -400,11 +399,5 @@ public class ChanPayBiz implements PayCommon {
         return null;
     }
 
-
-    public static String generateOutTradeNo() {
-        return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
-                + String.valueOf(new Double(
-                Math.round(Math.random() * 1000000000)).longValue());
-    }
 
 }

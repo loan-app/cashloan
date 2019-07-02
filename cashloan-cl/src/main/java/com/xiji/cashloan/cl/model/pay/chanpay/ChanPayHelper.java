@@ -58,7 +58,7 @@ public class ChanPayHelper extends BasePay {
         Object obj = this.gatewayPosts(origMap, charset, MERCHANT_PRIVATE_KEY);
         QueryPaymentRespVo queryPaymentResult = JSONObject.parseObject(obj.toString(), QueryPaymentRespVo.class);
         logger.info("queryPaymentResult------->"+queryPaymentResult);
-        //如果获取的应答码RetCode的值为S0001时，成功
+        //如果获取的应答码OriginalRetCode的值为000000时，成功
         if("000000".equals((String)queryPaymentResult.getOriginalRetCode())) {
             logger.info("单笔交易查询成功");
         }

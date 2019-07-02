@@ -25,8 +25,7 @@ public class ChanPayConstant {
     public final static String BATCH_FILE_GATEWAY_URL = "https:/pay.chanpay.com/mag-unify/gateway/batchOrder.do";
     public static String DATE = new SimpleDateFormat("yyyyMMdd").format(new Date());
     public static String TIME = new SimpleDateFormat("HHmmss").format(new Date());
-    /** 代收付-接口标记 - 代付 */
-    public static final String DAIFU_INTERFACE_REQ = "payforreq";
+
 
 
     /**
@@ -83,11 +82,14 @@ public class ChanPayConstant {
      */
     public static String QUERYORDERID_PAYSUCCESS ="S";
 
+    /**
+     * 查询订单状态--处理中
+     */
     public static String QUERYORDERID_PAYING ="P";
 
     /**
      *
-     * 提现成功状态
+     * 回调提现成功状态
      */
     public static String WITHDRAWAL_STATUS="WITHDRAWAL_SUCCESS";
 
@@ -97,10 +99,6 @@ public class ChanPayConstant {
 
     /** 协议支付-常量- 版本号 */
     public static final String PROTOCOL_VERSION = "1.0";
-    /** 协议支付-常量- 交易类型 */
-    public static final String PROTOCOL_TXNTYPE = "PUR";//PUR:消费交易
-    /** 协议支付-常量- 消息交互状态 */
-    public static final String PROTOCOL_INTERACTIVESTATUS = "TR1";
     /** 协议支付-常量- 特殊交易 标志 QPay02=协议支付 */
     public static final String PROTOCOL_SPFLAG = "QPay02";
     /** 协议支付-接口标记 - 发送验证码   鉴权绑卡 api 业务参数 */
@@ -111,7 +109,6 @@ public class ChanPayConstant {
     public static final String PROTOCOL_UNBIND = "nmg_api_auth_unbind";
     /** 协议支付-接口标记 - 绑卡查询 */
     public static final String PROTOCOL_BINDQUERY = "nmg_api_auth_info_qry";
-
     /** 协议支付-接口标记 - 查询订单 */
     public static final String PROTOCOL_QUERYORDER = "nmg_api_query_trade";
     /** 协议支付-接口标记 - 还款支付 */
@@ -119,6 +116,8 @@ public class ChanPayConstant {
 
 
 
+    /** 代收付-接口标记 - 代付 */
+    public static final String DAIFU_INTERFACE_REQ = "payforreq";
     /** 代支付-接口标记 - 商户支持卡 Bin 查询接口 */
     public static final String PROTOCOL_CARDBINQUERY = "cjt_dsf";
     /** 代支付-接口标记 - 同步代付接口 */
