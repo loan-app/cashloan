@@ -56,7 +56,7 @@ public class ChanPayConstant {
     /**
      * 代付交易失败
      */
-    public static String RESPONSE_CHECK_FAIL="111111";
+    public static String RESPONSE_CHECK_FAIL="000001";
     /**
      * 同步单笔代付 交易码
      */

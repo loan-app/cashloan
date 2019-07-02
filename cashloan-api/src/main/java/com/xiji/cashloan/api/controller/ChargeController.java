@@ -10,7 +10,6 @@ import com.xiji.cashloan.cl.manage.BankCardManage;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.PayRespLogModel;
 import com.xiji.cashloan.cl.model.pay.chanpay.ChanPayHelper;
-import com.xiji.cashloan.cl.model.pay.chanpay.agreement.vo.ChanRepaymentNotifyModel;
 import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
 import com.xiji.cashloan.cl.model.pay.chanpay.util.ChanPayUtil;
 import com.xiji.cashloan.cl.model.pay.chanpay.util.RSA;
@@ -33,7 +32,7 @@ import com.xiji.cashloan.core.common.web.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.beans.BeanMap;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -298,28 +297,27 @@ public class ChargeController extends BaseController {
 	/**
 	 * 畅捷 用户扣款异步通知接口，主动还款等异步通知接口
 	 */
-	@RequestMapping(value = "api/pay/chanJie/repaymentNotify.htm")
+	@RequestMapping(value = "/api/pay/chanjie/repaymentNotify.htm")
 	public void chanPayRepaymentNotify(HttpServletRequest request) throws Exception{
         logger.info("----------------畅捷协议支付 - 异步通知开始------------------------");
         //将参数转换对象
-        ChanRepaymentNotifyModel model = getParseParam(request);
+        //ChanRepaymentNotifyModel model = getParseParam(request);
+        Map<String,String> paramMap = getParseParam(request);
 
-        //将对象转换成map集合
-        Map<String, String> paramMap = new HashMap<String, String>();
-        if (model != null) {
-            BeanMap beanMap = BeanMap.create(model);
-            for (Object key : beanMap.keySet()) {
-                paramMap.put(key.toString(), beanMap.get(key).toString());
-            }
+        logger.info("回调参数------->>"+paramMap);
+        if (tool.util.StringUtil.isBlank(paramMap.get("outer_trade_no"))){
+            logger.error("商户订单号为空，请正确传参");
+            return;
         }
+
+        String orderNo =paramMap.get("outer_trade_no");
         ChanPayHelper chanPayHelper = new ChanPayHelper();
         //将集合元素排序
         String text = chanPayHelper.createLinkString(paramMap, false);
 
-        String orderNo = model.getOuterTradeNo();
         try {
             //验签
-            boolean verify = RSA.verify(text, ChanPayUtil.signKey(),ChanPayUtil.chanpayPublicKey(),
+            boolean verify = RSA.verify(text, paramMap.get("sign"),ChanPayUtil.chanpayPublicKey(),
                     ChanPayConstant.ENCODEING);
             if (!verify){
                 logger.error("验签失败" + orderNo);
@@ -354,7 +352,7 @@ public class ChargeController extends BaseController {
         params.put("userId",payLog.getUserId());
         BankCard bankCard = bankCardManage.findByUserId(params);
 
-        if ("TRADE_SUCCESS".equals(model.getTradeStatus())) {
+        if ("TRADE_SUCCESS".equals(paramMap.get("trade_status"))) {
             dto.setStatus(PayConstant.RESULT_SUCCESS);
             dto.setCardNo(bankCard.getCardNo());
         }
@@ -379,22 +377,24 @@ public class ChargeController extends BaseController {
 	}
 
 	//转换参数
-	public ChanRepaymentNotifyModel getParseParam(HttpServletRequest request) {
-		ChanRepaymentNotifyModel model = new ChanRepaymentNotifyModel();
-		model.setNotifyTime(request.getParameter("notify_time"));
-		model.setNotifyId(request.getParameter("notify_id"));
-		model.setNotifyType(request.getParameter("notify_type"));
-		model.setInputCharset(request.getParameter("_input_charset"));
-		model.setVersion(request.getParameter("VERSION"));
-		model.setInputCharset(request.getParameter("_input_charset"));
-		model.setOuterTradeNo(request.getParameter("outer_trade_no"));
-		model.setInnerTradeNo(request.getParameter("inner_trade_no"));
-		model.setTradeStatus(request.getParameter("trade_status"));
-		model.setTradeAmount(request.getParameter("trade_amount"));
-		model.setGmtCreate(request.getParameter("gmt_create"));
-		model.setGmtPayment(request.getParameter("gmt_payment"));
-		model.setExtension(request.getParameter("extension"));
-		return model;
+	public Map<String, String>  getParseParam(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+        map.put("uid",request.getParameter("uid"));
+        map.put("notify_time",request.getParameter("notify_time"));
+        map.put("notify_id",request.getParameter("notify_id"));
+        map.put("notify_type",request.getParameter("notify_type"));
+        map.put("_input_charset",request.getParameter("_input_charset"));
+        map.put("sign",request.getParameter("sign"));
+        map.put("sign_type",request.getParameter("sign_type"));
+        map.put("version",request.getParameter("version"));
+        map.put("outer_trade_no",request.getParameter("outer_trade_no"));
+        map.put("inner_trade_no",request.getParameter("inner_trade_no"));
+        map.put("trade_status",request.getParameter("trade_status"));
+        map.put("trade_amount",request.getParameter("trade_amount"));
+        map.put("gmt_create",request.getParameter("gmt_create"));
+        map.put("gmt_payment",request.getParameter("gmt_payment"));
+        map.put("extension",request.getParameter("extension"));
+		return map;
 	}
 
 	private void modifyPayReqLog (PayReqLog payReqLog,String params){

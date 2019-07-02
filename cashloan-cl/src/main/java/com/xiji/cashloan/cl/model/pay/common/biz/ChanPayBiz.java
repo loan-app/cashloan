@@ -10,9 +10,9 @@ import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
-import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 
 
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class ChanPayBiz implements PayCommon {
 
-
+    private Logger logger = Logger.getLogger(ChanPayHelper.class);
 
     @Override
     public PaymentResponseVo payment(PaymentReqVo vo) {
@@ -37,14 +37,15 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("CorpAcctNo", "");  //企业在代收系统注册备案的企业账户(可空)
         origMap.put("BusinessType", "0"); // 业务类型：0对私 1对公
         origMap.put("BankCommonName", vo.getBankName()); // 通用银行名称
-        origMap.put("BankCode", "CCB");//收款方银行编码(对公必填)
+       // origMap.put("BankCode", "CCB");//收款方银行编码(对公必填)
         origMap.put("AccountType", "00"); // 账户类型(00：借记卡 01：贷记卡)
         origMap.put("AcctNo", this.encrypt(vo.getBankCardNo(), ChanPayUtil.chanpayPublicKey(),  ChanPayConstant.ENCODEING)); // 对手人账号(此处需要用真实的账号信息)
         origMap.put("AcctName", this.encrypt(vo.getBankCardName(),ChanPayUtil.chanpayPublicKey(),  ChanPayConstant.ENCODEING)); // 对手人账户名称
         origMap.put("TransAmt", "0.01");//借款金额 Double.toString(vo.getAmount())
-        origMap.put("CorpPushUrl", "");//用户在商户平台下单时候的ip地址(可空)
+        origMap.put("CorpPushUrl", ChanPayUtil.paymentNotifyAddress());//用户在商户平台下单时候的ip地址(可空)
         origMap.put("PostScript", "用途:代付");
         ChanPayHelper payHelper = new ChanPayHelper();
+        logger.info("请求参数------>"+origMap.toString());
         ChanPaymentRespVo paymentResult=payHelper.payment(origMap,ChanPayUtil.chanpayPrivateKey(),  ChanPayConstant.ENCODEING);
 
         if (ChanPayConstant.PAYFOR_RESPONSE_SUCCESS_CODE.equals(paymentResult.getOriginalRetCode())){
@@ -75,6 +76,7 @@ public class ChanPayBiz implements PayCommon {
         String trxId = ChanPayConstant.getOrderId();
         origMap.put("OutTradeNo", trxId);
         origMap.put("OriOutTradeNo",vo.getOrderNo());
+        logger.info("请求参数--------->"+origMap.toString());
         ChanPayHelper payHelper = new ChanPayHelper();
         QueryPaymentRespVo result =payHelper.queryPayment(origMap,ChanPayConstant.ENCODEING,ChanPayUtil.chanpayPrivateKey());
         PaymentQueryResponseVo responseVo = new PaymentQueryResponseVo();
@@ -104,7 +106,10 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("IDNo", this.encrypt(vo.getIdCard(), ChanPayUtil.chanpayPublicKey(), ChanPayConstant.ENCODEING));// 证件号
         origMap.put("CstmrNm", this.encrypt(vo.getBankCardName(),ChanPayUtil.chanpayPublicKey(), ChanPayConstant.ENCODEING));// 持卡人姓名
         origMap.put("MobNo", this.encrypt(vo.getMobile(), ChanPayUtil.chanpayPublicKey(), ChanPayConstant.ENCODEING));// 银行预留手机号
-        System.out.println("MobNo=====>"+origMap.get("MobNo"));
+        origMap.put("NotifyUrl", ChanPayUtil.paymentNotifyAddress());// 异步通知url
+        origMap.put("SmsFlag", "1");//0：不发送短信 1：发送短信
+        origMap.put("Extension", "");
+        logger.info("请求参数--------->"+origMap.toString());
         ChanPayHelper payHelper = new ChanPayHelper();
         SendValidateCodeRespVo result= payHelper.bindMsg(origMap,ChanPayConstant.ENCODEING,ChanPayUtil.chanpayPrivateKey());
 
@@ -176,6 +181,8 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("TrxId", trxId);// 订单号
         origMap.put("OriAuthTrxId", vo.getOrderNo());// 原鉴权绑卡订单号
         origMap.put("SmsCode", vo.getMsgCode());// 鉴权短信验证码
+        origMap.put("NotifyUrl", ChanPayUtil.paymentNotifyAddress());// 异步通知地址
+        logger.info("请求参数--------->"+origMap.toString());
         ChanPayHelper payHelper = new ChanPayHelper();
         BindCardVerifyRespVo result=payHelper.bindCommit(origMap, ChanPayConstant.ENCODEING,ChanPayUtil.chanpayPrivateKey());
 
@@ -225,7 +232,7 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("CardEnd", CardEnd);// 卡号后4位
         origMap.put("TrxAmt", "0.01");// 交易金额 Double.toString(vo.getAmount())
         origMap.put("TradeType", "11");// 交易类型（即时 11 担保 12）
-        origMap.put("SmsFlag", "1"); //  0：不发送短信 1：发送短信
+        origMap.put("SmsFlag", "0"); //  0：不发送短信 1：发送短信
         origMap.put("NotifyUrl", ChanPayUtil.rePaymentNotifyAddress());//异步通知地址
         ChanPayHelper payHelper = new ChanPayHelper();
         RepaymentRespVo result=payHelper.repayment(origMap, ChanPayConstant.ENCODEING,ChanPayUtil.chanpayPrivateKey());

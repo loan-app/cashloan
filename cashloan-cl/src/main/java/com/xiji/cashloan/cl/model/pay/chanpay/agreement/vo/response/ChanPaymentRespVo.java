@@ -52,17 +52,15 @@ public class ChanPaymentRespVo {
     private String appRetMsg;
 
     /**
-     *
+     * 系统流水号
      */
-    private String retCode;
-
-    /**
-     *
-     */
-    private String retMsg;
+    private String flowNo;
 
 
     //公共字段
+    private String retCode;//返回码
+    private String retMsg;//受理状态返回信息
+    private String platformRetCode;//平台受理返回代码
     private String partnerId; //商户号
     private String inputCharset; //参数编码字符集
     private String acceptStatus; //网关返回码(S：受理成功F：受理失败 表示接口调用是否成功，并不表明业务处理结果)
@@ -71,6 +69,7 @@ public class ChanPaymentRespVo {
     private String sign; //签名
     private String signType; //签名方式
     private String memo; //备注
+
 
 
 
@@ -250,6 +249,22 @@ public class ChanPaymentRespVo {
 
     public void setRetMsg(String retMsg) {
         this.retMsg = retMsg;
+    }
+
+    public String getFlowNo() {
+        return flowNo;
+    }
+
+    public void setFlowNo(String flowNo) {
+        this.flowNo = flowNo;
+    }
+
+    public String getPlatformRetCode() {
+        return platformRetCode;
+    }
+
+    public void setPlatformRetCode(String platformRetCode) {
+        this.platformRetCode = platformRetCode;
     }
 
     @Override

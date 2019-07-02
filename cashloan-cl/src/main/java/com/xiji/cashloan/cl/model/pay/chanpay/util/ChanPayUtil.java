@@ -33,17 +33,13 @@ public class ChanPayUtil {
 //        return "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDPq3oXX5aFeBQGf3Ag/86zNu0VICXmkof85r+DDL46w3vHcTnkEWVbp9DaDurcF7DMctzJngO0u9OG1cb4mn+Pn/uNC1fp7S4JH4xtwST6jFgHtXcTG9uewWFYWKw/8b3zf4fXyRuI/2ekeLSstftqnMQdenVP7XCxMuEnnmM1RwIDAQAB";
     }
 
-    public static String signKey() {
-        return Global.getValue("chanpay_sign_key");
-//        return "kkqC/K3COMiQpugQj1Dtqw7568Y7UDsDTY9aihmurROXSpy+BaFyfz5o8PHyUM1opW3rMXCTIH21spjnsadH1Qsl5IrymJnG1M79nQ4cGgVsOsqoAe714RNHqXIDrGw49vpXuFbxFi7Ey4Yhd2gQDmuBYWaj0hecLWlWtd93slM=";
-    }
 
     public static String paymentNotifyAddress() {
-        return Global.getValue("server_host")+ "/api/pay/chanJie/paymentNotify.htm";
+        return Global.getValue("server_host")+ "/api/pay/chanjie/paymentNotify.htm";
     }
 
     public static String rePaymentNotifyAddress() {
-        return Global.getValue("server_host")+ "/api/pay/chanJie/repaymentNotify.htm";
+        return Global.getValue("server_host")+ "/api/pay/chanjie/repaymentNotify.htm";
     }
 
 

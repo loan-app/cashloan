@@ -38,9 +38,9 @@ public class ChanPayHelper extends BasePay {
             logger.info("放款支付返回结果paymentRespVo----->"+paymentRespVo);
             //如果获取的应答码OriginalRetCode的值为000000时，成功
             if("000000".equals((String)paymentRespVo.getOriginalRetCode())) {
-                modifyReqLog(origMap.get("OutTradeNo"),paymentRespVo.toString());
                 logger.info("放款支付成功");
             }
+            modifyReqLog(origMap.get("OutTradeNo"),paymentRespVo.toString());
         }
         return paymentRespVo;
     }
@@ -60,10 +60,10 @@ public class ChanPayHelper extends BasePay {
         logger.info("queryPaymentResult------->"+queryPaymentResult);
         //如果获取的应答码RetCode的值为S0001时，成功
         if("000000".equals((String)queryPaymentResult.getOriginalRetCode())) {
-            //更新返回数据
-            modifyReqLog(origMap.get("OutTradeNo"),queryPaymentResult.toString());
             logger.info("单笔交易查询成功");
         }
+        //更新返回数据
+        modifyReqLog(origMap.get("OutTradeNo"),queryPaymentResult.toString());
 
         return queryPaymentResult;
     }
@@ -92,9 +92,9 @@ public class ChanPayHelper extends BasePay {
             logger.info("发送短信返回结果sendCodeResult----->"+sendCodeResult.toString());
             //如果获取的应答码RetCode的值为S0001时，成功
             if("S0001".equals((String)sendCodeResult.getRetCode())) {
-                modifyReqLog(origMap.get("TrxId"),sendCodeResult.toString());
                 logger.info("验证码发送成功");
             }
+            modifyReqLog(origMap.get("TrxId"),sendCodeResult.toString());
         }
 
         return sendCodeResult;
@@ -117,9 +117,9 @@ public class ChanPayHelper extends BasePay {
         //如果获取的应答码RetCode的值为S0001时，成功
         if("S0001".equals((String)bindCardResult.getRetCode())) {
             //更新返回数据
-            modifyReqLog(origMap.get("TrxId"),bindCardResult.toString());
             logger.info("绑卡信息验证交易成功");
         }
+        modifyReqLog(origMap.get("TrxId"),bindCardResult.toString());
         return bindCardResult;
     }
 
@@ -139,10 +139,10 @@ public class ChanPayHelper extends BasePay {
         logger.info("unBindResult------->"+unBindResult);
         //如果获取的应答码RetCode的值为S0001时，成功
         if("S0001".equals((String)unBindResult.getRetCode())) {
-            //更新返回数据
-            modifyReqLog(origMap.get("TrxId"),unBindResult.toString());
             logger.info("解绑成功");
         }
+        //更新返回数据
+        modifyReqLog(origMap.get("TrxId"),unBindResult.toString());
         return unBindResult;
     }
     /**
@@ -160,10 +160,10 @@ public class ChanPayHelper extends BasePay {
         logger.info("repaymentResult------->"+repaymentResult);
         //如果获取的应答码RetCode的值为S0001时，成功
         if("S0001".equals((String)repaymentResult.getRetCode())) {
-            //更新返回数据
-            modifyReqLog(origMap.get("TrxId"),repaymentResult.toString());
             logger.info("还款成功");
         }
+        //更新返回数据
+        modifyReqLog(origMap.get("TrxId"),repaymentResult.toString());
 
         return repaymentResult;
     }
@@ -184,10 +184,10 @@ public class ChanPayHelper extends BasePay {
         logger.info("queryOrderResult------->"+queryOrderResult);
         //如果获取的应答码RetCode的值为S0001时，成功
         if("S0001".equals((String)queryOrderResult.getRetCode())) {
-            //更新返回数据
-            modifyReqLog(origMap.get("TrxId"),queryOrderResult.toString());
             logger.info("查询交易成功");
         }
+        //更新返回数据
+        modifyReqLog(origMap.get("TrxId"),queryOrderResult.toString());
 
         return queryOrderResult;
     }
@@ -207,10 +207,10 @@ public class ChanPayHelper extends BasePay {
         logger.info("bindCardQueryResult------->"+bindCardQueryResult);
         //如果获取的应答码RetCode的值为S0001时，成功
         if("S0001".equals((String)bindCardQueryResult.getRetCode())) {
-            //更新返回数据
-            modifyReqLog(origMap.get("TrxId"),bindCardQueryResult.toString());
             logger.info("绑卡查询");
         }
+        //更新返回数据
+        modifyReqLog(origMap.get("TrxId"),bindCardQueryResult.toString());
 
         return bindCardQueryResult;
     }
