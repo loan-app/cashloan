@@ -33,7 +33,14 @@ public interface SmsMapper extends BaseMapper<Sms,Long> {
      * @return
      */
     int countDayTime(Map<String, Object> data);
-    
+
+	/**
+	 * 查询某种类型某时间段已发送次数
+	 * @param data
+	 * @return
+	 */
+    int countMinuteTime(Map<String, Object> data);
+
 
     /**
      * 根据订单号修改短信记录

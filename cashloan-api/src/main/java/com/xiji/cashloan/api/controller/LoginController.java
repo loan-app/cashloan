@@ -1,5 +1,6 @@
 package com.xiji.cashloan.api.controller;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -15,6 +16,7 @@ import com.xiji.cashloan.api.user.service.DBService;
 import com.xiji.cashloan.api.user.service.MybatisService;
 import com.xiji.cashloan.api.user.service.SmsService;
 import com.xiji.cashloan.api.user.service.UserService;
+import com.xiji.cashloan.core.common.context.Global;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -190,6 +192,11 @@ public class LoginController {
 			final String channelCode, final String registerCoordinate,
 			final String registerAddr, final String signMsg,
 			final String blackBox) {
+		String wxRegister = Global.getValue("wxRegister");
+		Map result = new HashMap();
+		if("10".equals(wxRegister)) {
+			result.put("msg", "注册成功!");
+		}
 		new AppAbsActionWrapper(response) {
 			@Override
 			public Object doAction() {

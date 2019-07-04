@@ -91,7 +91,8 @@ public class SmsController extends BaseController {
 		String message = this.check(phone, type);
 		if (StringUtil.isBlank(message)) {
 			long countDown = clSmsService.findTimeDifference(phone, type);
-			if (countDown != 0) {
+			int minuteTime = clSmsService.countMinuteTime(type);
+			if (countDown != 0 || minuteTime > 0) {
 				data.put("countDown", countDown);
 				data.put("state", "20");
 				message = "获取短信验证码过于频繁，请稍后再试";
@@ -182,7 +183,9 @@ public class SmsController extends BaseController {
 			if (result == null) {
 				if (type.equals("register")) {
 					countDown = clSmsService.findTimeDifference(phone, type);
-					if (countDown != 0) {
+					int minuteTime = clSmsService.countMinuteTime(type);
+					logger.info("时间段内注册短信防轰炸:" + minuteTime);
+					if (countDown != 0 || minuteTime > 0) {
 						result = "获取短信验证码过于频繁，请稍后再试";
 					} else {
 						String orderNo = clSmsService.sendSms(phone, type);
