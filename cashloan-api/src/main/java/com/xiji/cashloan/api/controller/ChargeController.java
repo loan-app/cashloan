@@ -372,7 +372,9 @@ public class ChargeController extends BaseController {
         }
 
         if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
-            writeResult(response, "success");
+			logger.info("代扣响应成功报文");
+			response.getWriter().write("success");
+           // writeResult(response, "success");1
         }
 	}
 

@@ -105,7 +105,7 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("IDNo", this.encrypt(vo.getIdCard(), ChanPayUtil.chanpayPublicKey(), ChanPayConstant.ENCODEING));// 证件号
         origMap.put("CstmrNm", this.encrypt(vo.getBankCardName(),ChanPayUtil.chanpayPublicKey(), ChanPayConstant.ENCODEING));// 持卡人姓名
         origMap.put("MobNo", this.encrypt(vo.getMobile(), ChanPayUtil.chanpayPublicKey(), ChanPayConstant.ENCODEING));// 银行预留手机号
-        origMap.put("NotifyUrl", ChanPayUtil.paymentNotifyAddress());// 异步通知url
+      //  origMap.put("NotifyUrl", "");// 异步通知url
         origMap.put("SmsFlag", "1");//0：不发送短信 1：发送短信
         origMap.put("Extension", "");
         logger.info("请求参数--------->"+origMap.toString());
@@ -180,7 +180,7 @@ public class ChanPayBiz implements PayCommon {
         origMap.put("TrxId", trxId);// 订单号
         origMap.put("OriAuthTrxId", vo.getOrderNo());// 原鉴权绑卡订单号
         origMap.put("SmsCode", vo.getMsgCode());// 鉴权短信验证码
-        origMap.put("NotifyUrl", ChanPayUtil.paymentNotifyAddress());// 异步通知地址
+        //origMap.put("NotifyUrl", "");// 异步通知地址
         logger.info("请求参数--------->"+origMap.toString());
         ChanPayHelper payHelper = new ChanPayHelper();
         BindCardVerifyRespVo result=payHelper.bindCommit(origMap, ChanPayConstant.ENCODEING,ChanPayUtil.chanpayPrivateKey());

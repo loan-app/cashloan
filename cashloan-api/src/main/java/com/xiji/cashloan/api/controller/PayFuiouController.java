@@ -374,8 +374,9 @@ public class PayFuiouController extends BaseController{
 
         //返回响应报文
         if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
-			httpResponse.getWriter().write("success");
-            //writeResult(httpResponse, "success");
+        	logger.info("代付响应成功报文");
+			response.getWriter().write("success");
+
         }
         long end = System.currentTimeMillis();
         logger.info("cost "+(end-start));
