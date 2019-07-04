@@ -2151,7 +2151,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			}
 
-			// 直到规则执行到最后一项，查询排序
+			// 直到规则执行到最后一项，查询微积分
 			if (i == (configCollection.size() - 1)) {
 				String pxSwitch = Global.getValue("px_switch");
 				if("20".equals(pxSwitch)) {
@@ -2159,10 +2159,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"自动审核未决待人工复审");
 					return;
 				}
-				//对于无法决策以及机审决策通过,查询排序
+				//对于无法决策以及机审决策通过,查询微积分
 				double pxScore = pxRiskService.getScore(borrow);
-				double defaultPxPassScore = 560d;
-				double defaultPxReviewScore = 530d;
+				double defaultPxPassScore = 600;
+				double defaultPxReviewScore = 560;
 				String pxModelPassScore = Global.getValue("px_model_pass_score");
 				String pxModelReviewScore = Global.getValue("px_model_review_score");
 				String zmReviewLoan = Global.getValue("px_review_loan");
@@ -2173,21 +2173,21 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					defaultPxReviewScore = Double.valueOf(pxModelReviewScore);
 				}
 				if (pxScore < 0) {
-					logger.info("借款订单" + borrow.getId() + "调用排序获取模型分失败,待人工复审");
+					logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分失败,待人工复审");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
 				} else if (pxScore >= defaultPxPassScore) {
-					logger.info("借款订单" + borrow.getId() + "调用排序获取模型分大于放款阈值,机审通过");
+					logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分大于放款阈值,机审通过");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"机审通过");
 				} else if (defaultPxReviewScore < pxScore && pxScore < defaultPxPassScore) {
 					if("10".equals(zmReviewLoan)) {
-						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值大于人审阈值,待人工复审");
+						logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分小于放款阈值大于人审阈值,待人工复审");
 						handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
 					} else {
-						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值大于人审阈值,机审拒绝");
+						logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分小于放款阈值大于人审阈值,机审拒绝");
 						handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
 					}
 				} else {
-					logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值,机审拒绝");
+					logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分小于放款阈值,机审拒绝");
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
 				}
 			}
