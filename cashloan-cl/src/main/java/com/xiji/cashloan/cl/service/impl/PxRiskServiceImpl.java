@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-@Service
+@Service("pxRiskService")
 public class PxRiskServiceImpl implements PxRiskService {
 
     public static final Logger logger = LoggerFactory.getLogger(PxRiskServiceImpl.class);
@@ -48,10 +48,6 @@ public class PxRiskServiceImpl implements PxRiskService {
     @Resource
     private UserMapper userMapper;
     @Resource
-    private UserContactsMapper userContactsMapper;
-    @Resource
-    private UserEmerContactsMapper userEmerContactsMapper;
-    @Resource
     private BorrowOperatorLogMapper borrowOperatorLogMapper;
     @Resource
     private OperatorReportMapper operatorReportMapper;
@@ -59,14 +55,6 @@ public class PxRiskServiceImpl implements PxRiskService {
     private OperatorRespDetailMapper operatorRespDetailMapper;
     @Resource
     private OperatorReqLogMapper operatorReqLogMapper;
-    @Resource
-    private UserEquipmentInfoMapper userEquipmentInfoMapper;
-    @Resource
-    private PxModelMapper pxModelMapper;
-    @Resource
-    private PxReqLogMapper pxReqLogMapper;
-    @Resource
-    private CallsOutSideFeeMapper callsOutSideFeeMapper;
 
 
     private static String weijifen_id="10022";

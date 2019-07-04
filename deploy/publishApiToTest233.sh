@@ -7,8 +7,8 @@ dest=cashloan-api/target/cashloan-api-1.0.4.war
 targetDist=/usr/local/apache-tomcat-8.0.53/api-war
 rootDist=/root/manage-war
 scp $dest root@$iphost:$targetDist
-scp deploy/start.sh root@$iphost:$rootDist
+scp deploy/start_api.sh root@$iphost:$rootDist
 ssh root@$iphost  << EOF
-    sh $rootDist/start.sh
+    sh $rootDist/start_api.sh
     exit;
 EOF
