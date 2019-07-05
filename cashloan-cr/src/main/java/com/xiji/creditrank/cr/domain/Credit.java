@@ -66,6 +66,11 @@ import java.io.Serializable;
     private Integer count;
 
     /**
+     * 有效的提额次数
+     */
+    private Integer num;
+
+    /**
 	 * 获取额度类型
 	 * @return 额度类型
 	 */
@@ -231,5 +236,11 @@ import java.io.Serializable;
 		this.count = count;
 	}
 
-	
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
 }

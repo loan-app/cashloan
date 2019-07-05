@@ -2,29 +2,17 @@ package com.xiji.cashloan.cl.model.pay.common;
 
 import com.xiji.cashloan.cl.model.pay.common.biz.FuiouPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.biz.HeliPayBiz;
+import com.xiji.cashloan.cl.model.pay.common.biz.KuaiqianPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayModelEnum;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.request.UnbindCardVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
-import com.xiji.cashloan.cl.model.pay.common.vo.response.UnbindCardResponseVo;
+import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
+import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
+import org.apache.commons.lang.math.NumberUtils;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * @Auther: king
@@ -38,6 +26,7 @@ public class PayCommonUtil{
     static {
         payMode.put(PayConstant.PAY_MODE_FUIOU, new FuiouPayBiz());
         payMode.put(PayConstant.PAY_MODE_HELIPAY, new HeliPayBiz());
+        payMode.put(PayConstant.PAY_MODE_KUAIQIAN, new KuaiqianPayBiz());
     }
 
     public static PaymentResponseVo payment(PaymentReqVo vo) {

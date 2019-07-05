@@ -1,22 +1,25 @@
 package com.xiji.cashloan.manage.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.xiji.cashloan.cl.model.SmsModel;
+import com.xiji.cashloan.cl.service.ClSmsService;
+import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.exception.ImgCodeException;
+import com.xiji.cashloan.core.common.exception.ServiceException;
+import com.xiji.cashloan.core.common.exception.SysAccessCodeException;
+import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.common.web.controller.BaseController;
+import com.xiji.cashloan.manage.util.LoginUtil;
+import com.xiji.cashloan.system.domain.SysRole;
+import com.xiji.cashloan.system.domain.SysUser;
+import com.xiji.cashloan.system.domain.SysUserRole;
+import com.xiji.cashloan.system.security.authentication.encoding.PasswordEncoder;
+import com.xiji.cashloan.system.service.SysRoleService;
 import com.xiji.cashloan.system.service.SysUserRoleService;
+import com.xiji.cashloan.system.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.ExpiredCredentialsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,19 +33,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.xiji.cashloan.core.common.context.Constant;
-import com.xiji.cashloan.core.common.exception.ImgCodeException;
-import com.xiji.cashloan.core.common.exception.ServiceException;
-import com.xiji.cashloan.core.common.exception.SysAccessCodeException;
-import com.xiji.cashloan.core.common.util.ServletUtils;
-import com.xiji.cashloan.core.common.util.StringUtil;
-import com.xiji.cashloan.core.common.web.controller.BaseController;
-import com.xiji.cashloan.system.domain.SysRole;
-import com.xiji.cashloan.system.domain.SysUser;
-import com.xiji.cashloan.system.domain.SysUserRole;
-import com.xiji.cashloan.system.security.authentication.encoding.PasswordEncoder;
-import com.xiji.cashloan.system.service.SysRoleService;
-import com.xiji.cashloan.system.service.SysUserService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -69,6 +68,9 @@ public class SysLoginController extends BaseController {
 	@Resource
 	private SysUserRoleService sysUserRoleService;
 
+	@Resource
+	private ClSmsService clSmsService;
+
 	/**
 	 * 登陆处理
 	 * 
@@ -87,8 +89,10 @@ public class SysLoginController extends BaseController {
 
 	@RequestMapping(value = "/system/user/login.htm")
 	public void loginAjax(@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "accessCode", required = false) String accessCode,
+						  @RequestParam(value = "password", required = true) String password,
+						  @RequestParam(value = "accessCode", required = false) String accessCode,
+						  @RequestParam(value = "vCode", required = false) String vCode,
+
 			HttpServletResponse response,
 			HttpServletRequest request, HttpSession session) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -106,8 +110,20 @@ public class SysLoginController extends BaseController {
 			SysUser sysUser = (SysUser) user.getSession().getAttribute("SysUser");
 			
 			//图片验证码校验
-			checkImgCode(request.getParameter("code"),session.getAttribute("code"));
-			
+			//checkImgCode(request.getParameter("code"),session.getAttribute("code"));
+			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
+			if (result == 1) {
+				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+				LoginUtil.removeFailTimes(sysUser.getId());
+			} else if (result == -1) {
+				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				res.put(Constant.RESPONSE_CODE_MSG, "验证码已过期");
+				failLoginHandle(username);
+			} else {
+				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				res.put(Constant.RESPONSE_CODE_MSG, "验证码错误");
+				failLoginHandle(username);
+			}
 			session.setAttribute("SysUser", sysUser);
 			
 			List<SysUserRole> list = sysUserRoleService.getSysUserRoleList(sysUser.getId());
@@ -117,7 +133,7 @@ public class SysLoginController extends BaseController {
 				throw new UnknownAccountException("未找到该账号对应的角色");
 			}
 			
-			res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			// res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		} catch (SysAccessCodeException ex){
 			logger.error("访问码无效", ex);
 			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
@@ -128,12 +144,13 @@ public class SysLoginController extends BaseController {
 			res.put(Constant.RESPONSE_CODE_MSG, "密码错误请重新输入");
 		} catch (LockedAccountException ex) {
 			logger.error("该用户已锁定", ex);
-			res.put(Constant.RESPONSE_CODE, Constant.OTHER_CODE_VALUE);
-			res.put(Constant.RESPONSE_CODE_MSG, "该用户已锁定，请联系管理员！");
+			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+			res.put(Constant.RESPONSE_CODE_MSG, "登录失败");
 		} catch (AuthenticationException ex) {
 			logger.error("登录失败", ex);
 			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			res.put(Constant.RESPONSE_CODE_MSG, "登录失败");
+			failLoginHandle(username);
 		} catch (ExpiredCredentialsException ex) {
 			logger.error(ex.getMessage(), ex);
 			res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
@@ -222,6 +239,84 @@ public class SysLoginController extends BaseController {
 		res.put(Constant.RESPONSE_CODE_MSG, "成功");
 		ServletUtils.writeToResponse(response, res);
 	}
-	
-	
+
+
+	/**
+	 * 发送登录验证码
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/system/user/login/sendSms.htm")
+	public void sendSms(){
+		String userName = request.getParameter("username");
+		String type = request.getParameter("type");
+		long countDown = 0;
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+
+		if ("dev".equals(Global.getValue("app_environment"))) {
+			resultMap.put("countDown", countDown);
+			resultMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+			resultMap.put(Constant.RESPONSE_CODE_MSG, "已发送，请注意查收");
+			ServletUtils.writeToResponse(response,resultMap);
+			return;
+		}
+
+		String result = null;
+
+		SysUser sysUser = null;
+		if (StringUtil.isBlank(userName)){
+			result ="用户名不能为空";
+		}else {
+			sysUser = sysUserService.getSysUserByUserName(userName);
+
+			if (sysUser == null){
+				result = "该用户不存在";
+			}else if (StringUtil.isBlank(sysUser.getMobile())){
+				result = "该用户未填手机号码";
+			}
+		}
+		if (result == null) {
+			if (type.equals("sysLogin")) {
+				countDown = clSmsService.findTimeDifference(sysUser.getMobile(), type);
+				if (countDown != 0) {
+					result = "获取短信验证码过于频繁，请稍后再试";
+				} else {
+					String orderNo = clSmsService.sendSms(sysUser.getMobile(), type);
+					if (StringUtil.isNotBlank(orderNo)) {
+						clSmsService.getReportByOrderNo(orderNo, sysUser.getMobile(), type);
+						resultMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						resultMap.put(Constant.RESPONSE_CODE_MSG, "已发送，请注意查收");
+						resultMap.put("countDown", countDown);
+						ServletUtils.writeToResponse(response,resultMap);
+						return;
+					} else {
+						result = "发送失败";
+					}
+				}
+			} else {
+				result = "短信类型错误";
+			}
+		}
+		resultMap.put("countDown", countDown);
+		resultMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+		resultMap.put(Constant.RESPONSE_CODE_MSG, result);
+
+		ServletUtils.writeToResponse(response,resultMap);
+	}
+
+
+	private void failLoginHandle(String username) {
+		try {
+			SysUser sysUserByUserName = sysUserService.getSysUserByUserName(username);
+			boolean lock = LoginUtil.LoginFailLock(sysUserByUserName.getId());
+			if(lock && sysUserByUserName.getStatus() == 0) {
+				logger.info("用户" + sysUserByUserName.getId() +  "登录失败次数过多,锁定该用户");
+				sysUserByUserName.setStatus((byte)1);
+				sysUserByUserName.setUpdateTime(new Date());
+				sysUserService.userUpdate(sysUserByUserName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -47,6 +47,17 @@ export default React.createClass({
         if(title == '编辑'){
             me.refs.AddWin.setFieldsValue(me.state.record);
         }
+        if (title == '新增'){
+
+            Utils.ajaxData({
+                url: '/modules/manage/promotion/channel/queryChannelConfig.htm',
+                method: 'get',
+                callback: (result) => {
+                    me.refs.AddWin.setFieldsValue(result.data);
+                }
+            });
+
+        }
         
         });
     },
@@ -168,6 +179,188 @@ export default React.createClass({
             onCancel: function() { }
         });
     },
+
+    changeStatus1(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = 1;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 1;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+changeStatus2(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = 2;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 2;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+changeStatus3(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = 3;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 3;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+changeStatus4(record,title) {
+    var record=record;
+    var me = this;
+    var msg = "";
+    var tips = "";
+    var state = "";
+    var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
+    if (title == '启用') {
+        msg = '启用成功';
+        tips = '您是否启用';
+        state = 4;
+    } else if (title == '禁用') {
+        msg = '禁用成功';
+        tips = '您是否禁用';
+        state = 4;
+    }
+
+    confirm({
+        title: tips,
+        onOk: function() {
+            Utils.ajaxData({
+                url: trueurl,
+                data: {
+                    id:record.id,
+                    state:state,
+                },
+                method: 'post',
+                callback: (result) => {
+                if (result.code == 200) {
+                Modal.success({
+                    title: result.msg,
+                });
+                me.refreshList();
+            } else {
+                Modal.error({
+                    title: result.msg,
+                });
+            }
+
+        }
+        });
+        },
+        onCancel: function() { }
+    });
+},
+
    
     render() {
         var me = this;
@@ -202,18 +395,61 @@ export default React.createClass({
             dataIndex:"stateStr",
         },{
             title:"操作",
-            width:100,
+            width:80,
             dataIndex:"",
             render(text,record){
                 return  (
                     <div style={{ textAlign: "left" }}>
                         <a href="#" onClick={me.showModal.bind(me, '编辑',record, true)}>编辑</a>
-                          <span className="ant-divider"></span>       
-                         {record.state=="20"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}            
+                          <span className="ant-divider"></span>
+                         {record.state=="20"?(<a href="#" onClick={me.changeStatus.bind(me ,record,'启用')}>启用</a>):(<a href="#" onClick={me.changeStatus.bind(me,record,'禁用')}>禁用</a>)}
                    </div>
                 )
             }
-        }];
+        },
+            {
+                title:"限流QQ状态",
+                dataIndex:"",
+                render(text,record){
+                    return  (
+                        <div style={{ textAlign: "left" }}>
+                    {record.conditions.indexOf("1")!=-1?(<a href="#" onClick={me.changeStatus1.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus1.bind(me,record,'禁用')}>启用</a>)}
+                </div>
+                )
+                }
+            },{
+                title:"限流微信状态",
+                dataIndex:"",
+                render(text,record){
+                    return  (
+                        <div style={{ textAlign: "left" }}>
+                    {record.conditions.indexOf("2")!=-1?(<a href="#" onClick={me.changeStatus2.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus2.bind(me,record,'禁用')}>启用</a>)}
+                </div>
+                )
+                }
+            },{
+                title:"限流微博状态",
+                dataIndex:"",
+                render(text,record){
+                    return  (
+                        <div style={{ textAlign: "left" }}>
+                    {record.conditions.indexOf("3")!=-1?(<a href="#" onClick={me.changeStatus3.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus3.bind(me,record,'禁用')}>启用</a>)}
+                </div>
+                )
+                }
+            },{
+                title:"限流其他状态",
+                dataIndex:"",
+                render(text,record){
+                    return  (
+                        <div style={{ textAlign: "left" }}>
+                    {record.conditions.indexOf("4")!=-1?(<a href="#" onClick={me.changeStatus4.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus4.bind(me,record,'禁用')}>启用</a>)}
+                </div>
+                )
+                }
+            }
+
+        ];
        
         var state = this.state;
         var record = state.record;
@@ -230,7 +466,7 @@ export default React.createClass({
                     pagination={this.state.pagination}
                     loading={this.state.loading}
                     onChange={this.handleTableChange} />
-             <AddWin ref="AddWin" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record} canEdit={state.canEdit} dataRecord={state.dataRecord} />
+             <AddWin ref="AddWin" visible={state.visible} title={state.title} hideModal={me.hideModal} record={state.record} canEdit={state.canEdit}dataRecord={state.dataRecord} />
             </div>
         );
     }

@@ -17,30 +17,16 @@ import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.BorrowRepayLogService;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.PayLogService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
-import com.xiji.cashloan.core.common.util.DateUtil;
-import com.xiji.cashloan.core.common.util.IpUtil;
-import com.xiji.cashloan.core.common.util.JsonUtil;
-import com.xiji.cashloan.core.common.util.RdPage;
-import com.xiji.cashloan.core.common.util.ServletUtils;
-import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.common.util.*;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
 import com.xiji.cashloan.system.permission.annotation.RequiresPermission;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import javax.annotation.Resource;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +36,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import tool.util.NumberUtil;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 还款记录后台管理Controller
@@ -149,6 +141,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setBorrowOrderNo(borrow.getOrderNo());
 		vo.setMobile(bankCard.getPhone());
 		vo.setShareKey(bankCard.getUserId());
+		vo.setBankName(bankCard.getBank());
 		PaymentResponseVo result = PayCommonUtil.payment(vo);
 
 		PayLog payLog = new PayLog();
@@ -273,8 +266,12 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
 		payLog.setType(PayLogModel.TYPE_COLLECT);
 		payLog.setScenes(PayLogModel.SCENES_DEDUCTION);
-		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-		payLog.setRemark(payMsg);
+		if (PayConstant.RESULT_SUCCESS.equals(responseVo.getStatus())){
+			payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+		} else {
+			payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
+		}
+		payLog.setRemark(responseVo.getMessage());
 		payLog.setPayReqTime(payReqTime);
 		payLog.setCreateTime(DateUtil.getNow());
 		payLogService.save(payLog);

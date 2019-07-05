@@ -220,5 +220,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Long> implement
 		return sysUserMapper.queryByUserIdAndRole(params);
 	}
 
-
+	@Override
+	public SysUser getSysUserByUserName(String userName){
+		return sysUserMapper.getSysUserByUserName(userName);
+	}
 }

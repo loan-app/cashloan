@@ -88,4 +88,7 @@ public interface SysUserService {
 	List<Map<String, Object>> getUserInfo(Map<String, Object> params) throws ServiceException;
 
 	List<SysUser> queryByUserIdAndRole(Map<String, Object> params);
+
+
+	SysUser getSysUserByUserName(String userName);
 }

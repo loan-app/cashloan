@@ -31,4 +31,7 @@ public class SmsModel {
 	 */
 	public static final String SMS_TYPE_FINDPAY = "findPay";
 
+    public static final String SMS_TYPE_SYS_LOGIN = "sysLogin";
+
+
 }

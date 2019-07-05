@@ -15,6 +15,7 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import tool.util.BigDecimalUtil;
 
@@ -37,8 +38,17 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
     private UserAuthMapper userAuthMapper;
     @Resource
 	private ClBorrowMapper clBorrowMapper;
-    
-    
+
+	protected final Logger logger = Logger.getLogger(this.getClass());
+
+	@Override
+    public 	String	findConditionById(String code ){
+		return channelMapper.findConditionById(code);
+	}
+	@Override
+	public String getConditionsById(long id){
+		return channelMapper.findConditionByIds(id);
+	}
     @Override
 	public BaseMapper<Channel, Long> getMapper() {
 		return channelMapper;
@@ -58,12 +68,34 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 	@Override
 	public boolean update(Map<String, Object> paramMap) {
 		int result = channelMapper.updateSelective(paramMap);
+		StringBuilder paramStr = new StringBuilder();
+		if (result > 0) {
+			for(String key : paramMap.keySet()){
+				paramStr.append( key+" = "+paramMap.get(key)+",");
+			}
+			logger.info("渠道更新数据为 :"+paramStr.toString());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updatecondition(Map<String, Object> paramMap) {
+		int result = channelMapper.updateconditionSelective(paramMap);
 		if (result > 0) {
 			return true;
 		}
 		return false;
 	}
-	
+    @Override
+	public boolean updateconditions(Channel channel){
+		int i=channelMapper.updateconditions(channel);
+		if (i>0){
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public long findIdByCode(String code) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -281,6 +313,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			List<Map<String,Object>> countFirstMortgageOverdue = channelMapper.countFirstMortgageOverdue(paramMap);
 			List<Map<String,Object>> countMortgageOverdue = channelMapper.countMortgageOverdue(paramMap);
 			List<Map<String,Object>> countLending = channelMapper.countLending(paramMap);
+			List<Map<String,Object>> certificationCount = channelMapper.certificationCount(paramMap);
+
 			// 首逾率
 			List<Map<String,Object>> countFirstPassRate = this.calculateOverdueRate(countFirstMortgageOverdue,six,"countFirstMortgageOverdue","countSix");
             // 逾期率
@@ -312,6 +346,9 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			count(map,loanRate,"loanRate","countLending");
 			//逾期数
 			count(map,countMortgageOverdue,"overdueCount","countMortgageOverdue");
+			//认证人数
+			count(map,certificationCount,"certificationCount","phoneCount");
+
 		}
 	}
 
@@ -339,4 +376,51 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 		}
 		return overdueRate;
 	}
+
+	/**
+	 * 查询渠道配置
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> queryChannelConfig() {
+        Map<String, Object> channelConfigMap = new HashMap<>();
+        List<Map<String, Object>> list=channelMapper.queryChannelConfig();
+        if (list.size()>0 && list!=null){
+            for (Map<String, Object> map : list) {
+                if ("fee".equals(map.get("code"))){
+                    channelConfigMap.put("fee",map.get("value"));
+                }
+                if ("init_credit".equals(map.get("code"))){
+                    channelConfigMap.put("initCredit",map.get("value"));
+                }
+                if ("borrow_credit".equals(map.get("code"))){
+                    channelConfigMap.put("borrowCredit",map.get("value"));
+                }
+                if ("is_improve_credit".equals(map.get("code"))){
+                    channelConfigMap.put("isImproveCredit",map.get("value"));
+                }
+                if ("one_repay_credit".equals(map.get("code"))){
+                    channelConfigMap.put("oneRepayCredit",map.get("value"));
+                }
+                if ("imporove_credit_limit".equals(map.get("code"))){
+                    channelConfigMap.put("improveCreditLimit",map.get("value"));
+                }
+                if ("borrow_day".equals(map.get("code"))){
+                    channelConfigMap.put("borrowDay",map.get("value"));
+                }
+                if ("delay_fee".equals(map.get("code"))){
+                    channelConfigMap.put("delayFee",map.get("value"));
+                }
+                if ("behead_fee".equals(map.get("code"))){
+                    channelConfigMap.put("beheadFee",map.get("value"));
+                }
+                if ("count_improve_credit".equals(map.get("code"))){
+                    channelConfigMap.put("countImproveCredit",map.get("value"));
+                }
+
+            }
+        }
+		return channelConfigMap;
+	}
+
 }

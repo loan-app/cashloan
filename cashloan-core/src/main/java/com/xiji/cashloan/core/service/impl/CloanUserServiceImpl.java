@@ -60,6 +60,14 @@ public class CloanUserServiceImpl extends BaseServiceImpl<User, Long> implements
 	}
 
 	@Override
+	public Page<CloanUserModel> listUserNotBorrowagain(Map<String, Object> params,
+										 int currentPage, int pageSize) {
+		PageHelper.startPage(currentPage, pageSize);
+		List<CloanUserModel> list = userMapper.listNotBorrowAgain(params);
+		return (Page<CloanUserModel>) list;
+	}
+
+	@Override
 	public CloanUserModel getModelById(Long id) {
 		CloanUserModel model = userMapper.getModel(id);
 		return model;

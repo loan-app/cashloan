@@ -187,6 +187,7 @@
          <result column="real_amount" property="realAmount" jdbcType="DECIMAL"/>
          <result column="fee" property="fee" jdbcType="DECIMAL"/>
         <result column="channel_name" property="channelName" jdbcType="VARCHAR"/>
+        <result column="allotState" property="allotState" jdbcType="VARCHAR"/>
     </resultMap>
     <!-- 用户借款sql查询条件公共引用 -->
     <sql id="searchModelBy">
@@ -209,15 +210,19 @@
             <if test="endTime  != null">
                 and DATE_FORMAT(r.repay_time,'%Y-%m-%d')  &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="allotState  != null and allotState != '' ">
+                and cmro.state = #{allotState,jdbcType=VARCHAR}
+            </if>
         </trim>
     </sql>
      <select id="listModel" resultMap="userBorrowRayMap" parameterType="java.util.HashMap">
         select  u.real_name,u.phone,b.order_no,b.amount as borrow_amount,b.create_time as borrow_time,r.id,r.user_id,r.borrow_id,r.state,r.amount  as repay_amount,r.repay_time,r.penalty_amout,r.penalty_day,
-         b.fee ,b.real_amount,channel.name as channel_name
+        b.fee ,b.real_amount,channel.name as channel_name,cmro.state as allotState
         from  cl_borrow b  left join  cl_user_base_info u on  u.user_id=b.user_id  join cl_borrow_repay r on r.borrow_id=b.id
-         left join cl_user user2 on user2.id = u.user_id
-         left join cl_channel channel on user2.channel_id = channel.id
-        <include refid="searchModelBy"/>
+        left join cl_user user2 on user2.id = u.user_id
+        left join cl_channel channel on user2.channel_id = channel.id
+        left join cl_manual_repay_order cmro on b.id = cmro.borrow_id
+         <include refid="searchModelBy"/>
         ORDER BY r.id DESC
     </select>
 
@@ -386,6 +391,15 @@
             #{item,jdbcType=BIGINT}
         </foreach>
     </update>
+    <select id="selectByIds"  resultType="com.xiji.cashloan.cl.domain.BorrowRepay">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_repay
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
 
 
     <select id="findLastRepay" resultType="com.xiji.cashloan.cl.domain.BorrowRepay"  parameterType="java.lang.Long">

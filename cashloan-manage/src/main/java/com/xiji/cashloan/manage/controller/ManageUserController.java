@@ -192,7 +192,28 @@ public class ManageUserController extends ManageBaseController{
 		result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
 		ServletUtils.writeToResponse(response,result);
 	}
-	
+
+	/**
+	 * 用户未借信息列表
+	 * @param currentPage
+	 * @param pageSize
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/modules/manage/cl/cluser/notborrowagain.htm",method={RequestMethod.GET,RequestMethod.POST})
+	@RequiresPermission(code = "modules:manage:cl:cluser:notborrowagain",name = "用户未借信息列表")
+	public void borrowagain(@RequestParam(value="searchParams",required=false) String searchParams,
+						 @RequestParam(value = "current") int currentPage,
+						 @RequestParam(value = "pageSize") int pageSize){
+		Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+		Page<CloanUserModel> page = cloanUserService.listUserNotBorrowagain(params, currentPage, pageSize);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
+		ServletUtils.writeToResponse(response,result);
+	}
+
 	/**
 	 * @description  查询黑名单用户列表   不用
 	 * @param currentPage

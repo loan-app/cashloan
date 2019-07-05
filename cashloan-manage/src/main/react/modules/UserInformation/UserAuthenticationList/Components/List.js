@@ -231,6 +231,20 @@ export default React.createClass({
           return "-"
         }
       }
+    }, {
+      title: '注册渠道',
+      dataIndex: "channelName",
+    },{
+      title: '是否借款',
+      dataIndex: 'userFlag',
+      render:(text,record) =>  {
+          switch(record.userFlag){
+          case "0":
+            return "否";
+          case "1":
+            return <span style={{ color: "red" }}>是</span>;
+        }
+      }
     },{
       title: '注册时间',
       dataIndex: 'registTime',

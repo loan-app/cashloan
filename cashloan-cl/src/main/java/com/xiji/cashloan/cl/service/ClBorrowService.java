@@ -308,7 +308,7 @@ public interface ClBorrowService extends BaseService<Borrow, Long>{
 	 * @return void
 	 * @since  1.0.0
 	 */
-	int auditBorrowLoan(Long borrowId, String state, String remark,Long userId);
+	int auditBorrowLoan(Long borrowId, String state, String remark,Long userId,Boolean isBlack,Double amount);
 
 	/**
 	 *

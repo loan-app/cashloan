@@ -126,4 +126,11 @@ public interface BorrowRepayMapper extends BaseMapper<BorrowRepay,Long> {
 	 * @return
      */
 	BorrowRepay findLastRepay(Long userId);
+
+	/**
+	 * 根据id集合查询
+	 * @param paramMap
+	 * @return
+	 */
+	List<BorrowRepay> selectByIds(Map<String, Object> paramMap);
 }

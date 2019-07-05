@@ -1,10 +1,12 @@
 var RepaymentPlanList = require('../../RepaymentManage/RepaymentPlanList/index');//还款管理-还款计划
+var MyRepayOrder = require('../../RepaymentManage/MyRepayOrder/index');//我的到期订单
 var PaymentHistory = require('../../RepaymentManage/PaymentHistory/index');//还款管理-还款记录
 var AlipayPaymentList = require('../../RepaymentManage/AlipayPaymentList/index');//还款管理-支付宝还款列表
 var BankCardPaymentList = require('../../RepaymentManage/BankCardPaymentList/index');//还款管理-银行卡还款列表
 var DeductionsList = require('../../RepaymentManage/DeductionsList/index');//扣款列表
 var StayDeductionsList = require('../../RepaymentManage/StayDeductionsList/index');//待扣款列表
 var UserBasicInformation = require('../../UserInformation/UserBasicInformation/index');//客户管理-用户基本信息
+var UserNotBorrowAgain = require('../../UserInformation/UserNotBorrowAgain/index');//客户管理-未借款用户信息
 var UserAuthenticationList = require('../../UserInformation/UserAuthenticationList/index');//客户管理-用户认证信息
 var UserFeedback = require('../../UserInformation/UserFeedback/index');//客户管理-用户反馈
 var UserEducationList = require('../../UserInformation/UserEducationList/index');//客户管理-用户教育信息列表
@@ -43,6 +45,8 @@ var LoadStatistic = require('../../StatisticManage/LoadStatistic/index'); //统�
 var RepaymentStatistic = require('../../StatisticManage/RepaymentStatistic/index'); //统计管理 还款统计
 var OverdueStatistic = require('../../StatisticManage/OverdueStatistic/index'); //统计管理 逾期统计
 var AuditorPassStatistic = require('../../StatisticManage/AuditorPassStatistic/index'); //统计管理 逾期统计
+var NowOverdueStatistic = require('../../StatisticManage/NowOverdueStatistic/index'); //统计管理 逾期统计
+var RealTimeMaturityStatistic = require('../../StatisticManage/RealTimeMaturityStatistic/index'); //统计管理 实时到期还款统计
 
 
 
@@ -92,5 +96,9 @@ module.exports = {
     LoadStatistic,
     RepaymentStatistic,
     OverdueStatistic,
-    AuditorPassStatistic
+    AuditorPassStatistic,
+    UserNotBorrowAgain,
+    NowOverdueStatistic,
+    RealTimeMaturityStatistic,
+    MyRepayOrder
 }

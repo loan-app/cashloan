@@ -57,11 +57,33 @@ public class ChannelController extends ManageBaseController {
 	public void save(@RequestParam(value="code") String code,
 			@RequestParam(value="name") String name,
 			@RequestParam(value="linker") String linker,
-			@RequestParam(value="phone") String phone) throws Exception {
+			@RequestParam(value="phone") String phone,
+		 	@RequestParam(value="fee") String fee,
+		 	@RequestParam(value="initCredit") String initCredit,
+		 	@RequestParam(value="borrowCredit") String borrowCredit,
+		 	@RequestParam(value="oneRepayCredit") String oneRepayCredit,
+		 	@RequestParam(value="improveCreditLimit") String improveCreditLimit,
+		 	@RequestParam(value="borrowDay") String borrowDay,
+		 	@RequestParam(value="isImproveCredit") String isImproveCredit,
+		 	@RequestParam(value="delayFee") String delayFee,
+		 	@RequestParam(value="beheadFee") String beheadFee,
+		    @RequestParam(value="countImproveCredit") String countImproveCredit
+
+			) throws Exception {
 		Channel channel=new Channel();
 		channel.setLinker(linker);
 		channel.setName(name);
 		channel.setPhone(phone);
+		channel.setFee(fee);
+		channel.setInitCredit(initCredit);
+		channel.setBorrowCredit(borrowCredit);
+		channel.setOneRepayCredit(oneRepayCredit);
+		channel.setImproveCreditLimit(improveCreditLimit);
+		channel.setBorrowDay(borrowDay);
+		channel.setIsImproveCredit(isImproveCredit);
+		channel.setDelayFee(delayFee);
+		channel.setBeheadFee(beheadFee);
+		channel.setCountImproveCredit(countImproveCredit);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (null != code2) {
@@ -140,12 +162,33 @@ public class ChannelController extends ManageBaseController {
 			@RequestParam(value="code") String code,
 			@RequestParam(value="name") String name,
 			@RequestParam(value="linker") String linker,
-			@RequestParam(value="phone") String phone) throws Exception {
+			@RequestParam(value="phone") String phone,
+			@RequestParam(value="fee") String fee,
+			@RequestParam(value="initCredit") String initCredit,
+			@RequestParam(value="borrowCredit") String borrowCredit,
+			@RequestParam(value="oneRepayCredit") String oneRepayCredit,
+			@RequestParam(value="improveCreditLimit") String improveCreditLimit,
+			@RequestParam(value="borrowDay") String borrowDay,
+			@RequestParam(value="isImproveCredit") String isImproveCredit,
+            @RequestParam(value="delayFee") String delayFee,
+            @RequestParam(value="beheadFee") String beheadFee,
+			@RequestParam(value="countImproveCredit") String countImproveCredit
+			) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
 		paramMap.put("name", name);
 		paramMap.put("linker", linker);
 		paramMap.put("phone", phone);
+		paramMap.put("fee",fee);
+		paramMap.put("initCredit",initCredit);
+		paramMap.put("borrowCredit",borrowCredit);
+		paramMap.put("oneRepayCredit",oneRepayCredit);
+		paramMap.put("improveCreditLimit",improveCreditLimit);
+		paramMap.put("borrowDay",borrowDay);
+		paramMap.put("isImproveCredit",isImproveCredit);
+        paramMap.put("delayFee",delayFee);
+        paramMap.put("beheadFee",beheadFee);
+        paramMap.put("countImproveCredit",countImproveCredit);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -199,7 +242,144 @@ public class ChannelController extends ManageBaseController {
 		}
 		ServletUtils.writeToResponse(response, result);
 	}
-	
+
+	/**
+	 * 渠道限流信息状态
+	 * todo 1：qq 2：微信 3：微博 4：其他
+	 * @author wangqi
+	 * @date 2019/6/14 16:22
+	 * @param id
+	 * @param conditions 限流具体的渠道 1QQ 2微信 3微博 4其他 限流多个渠道string类型参数用','逗号分隔
+	 * */
+	@RequestMapping(value = "/modules/manage/promotion/channel/updataCondition.htm", method = RequestMethod.POST)
+	public void updataCondition(@RequestParam(value ="id")Long id,
+								@RequestParam(value ="state")String state){
+		String conditions = channelService.getConditionsById(id);
+		//判断cl_channel表字段conditions是否包含新传入的参数值
+		if(conditions.contains(state)){
+			if(conditions.indexOf(state)==0&&conditions.length()==1) {
+				String replace = conditions.replace(state, "");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id", id);
+				paramMap.put("conditions", replace);
+				boolean flag = channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}else if(conditions.indexOf(state)==0&&conditions.length()!=1){
+				String concat = state.concat(",");
+				String replace = conditions.replace(concat, "");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id", id);
+				paramMap.put("conditions", replace);
+				boolean flag = channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}else if(conditions.indexOf(state)!=0&&conditions.length()!=1){
+				String s =",";
+				String concat = s.concat(state);
+				String replace = conditions.replace(concat, "");
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id", id);
+				paramMap.put("conditions", replace);
+				boolean flag = channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}
+        }
+		else {
+			if (conditions.isEmpty()){
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("id",id);
+				paramMap.put("conditions",state);
+				boolean flag =channelService.updatecondition(paramMap);
+				HashMap<String, Object> result = new HashMap<>();
+				if (flag) {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				} else {
+					result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+				}
+				ServletUtils.writeToResponse(response, result);
+			}else {
+				int parseInt = Integer.parseInt(state);
+				int bigint= parseInt+10;
+				int smartint=parseInt-10;
+				String big = String.valueOf(bigint);
+				String smart = String.valueOf(smartint);
+				if (conditions.contains(big)){
+					String replace = conditions.replace(big, state);
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("id",id);
+					paramMap.put("conditions",replace);
+					boolean flag =channelService.updatecondition(paramMap);
+					HashMap<String, Object> result = new HashMap<>();
+					if (flag) {
+						result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					} else {
+						result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+					}
+					ServletUtils.writeToResponse(response, result);
+				}
+				if (conditions.contains(smart)){
+					String replace = conditions.replace(smart, state);
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("id",id);
+					paramMap.put("conditions",replace);
+					boolean flag =channelService.updatecondition(paramMap);
+					HashMap<String, Object> result = new HashMap<>();
+					if (flag) {
+						result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					} else {
+						result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+					}
+					ServletUtils.writeToResponse(response, result);
+				}else {
+					String concat = conditions.concat(",");
+					String concat1 = concat.concat(state);
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("id",id);
+					paramMap.put("conditions",concat1);
+					boolean flag =channelService.updatecondition(paramMap);
+					HashMap<String, Object> result = new HashMap<>();
+					if (flag) {
+						result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+					} else {
+						result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+						result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+					}
+					ServletUtils.writeToResponse(response, result);
+				}
+			}
+		}
+	}
+
 	/**
 	 * 统计渠道用户信息
 	 * 
@@ -279,5 +459,59 @@ public class ChannelController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
 	}
-	
+
+	/**
+	 * 查询渠道配置信息
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/queryChannelConfig.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	public void queryChannelConfig()throws Exception{
+		Map<String, Object> channelConfigMap = channelService.queryChannelConfig();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, channelConfigMap);
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+
+	}
+
+
+	/**
+	 * 我的渠道信息
+	 * @param searchParams
+	 * @param current
+	 * @param pageSize
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/promotion/channel/myChannelList.htm", method = {RequestMethod.POST,RequestMethod.GET})
+	public void myChannelList(
+			@RequestParam(value="searchParams",required=false) String searchParams,
+			@RequestParam(value = "current") int current,
+			@RequestParam(value = "pageSize") int pageSize) throws Exception {
+		Map<String, Object> searchMap = new HashMap<>();
+		if (!StringUtils.isEmpty(searchParams)) {
+			searchMap = JsonUtil.parse(searchParams, Map.class);
+		}
+		Page<Map<String,Object>> page = new Page<>();
+		SysRole sysRole = getRoleForLoginUser(request);
+		SysUser loginUser = getLoginUser(request);
+		//临时解决方案,如果用户角色为QuDao,根据登录用户名,去查询渠道的统计信息
+		if(ROLE_QUDAO.equals(sysRole.getNid())) {
+			String name = loginUser.getName();
+			searchMap.put("name", name);
+			page = (Page<Map<String, Object>>) channelService.oneChannelUserCount(searchMap,current,pageSize);
+		}
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(Constant.RESPONSE_DATA, page);
+		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+		ServletUtils.writeToResponse(response, result);
+	}
+
+
+
+
 }

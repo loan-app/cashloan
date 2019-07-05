@@ -1,6 +1,7 @@
 package com.xiji.cashloan.api.controller;
 
 import com.xiji.cashloan.cl.domain.BankCard;
+import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.model.BankCardModel;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
@@ -10,13 +11,7 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.CardBinQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardMsgResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.BindCardQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.CardBinQueryResponseVo;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.BorrowRepayService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.FourElementsLogService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.UserBlackInfoService;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.exception.BussinessException;
@@ -86,6 +81,9 @@ public class BankCardController extends BaseController {
 
 	@Resource
  	private ClSmsService clSmsService;
+
+	@Resource
+	private PayReqLogService payReqLogService;
 	/**
 	 * @description 获取单个用户的所有绑定银行卡
 	 * @param userId
@@ -249,7 +247,8 @@ public class BankCardController extends BaseController {
 		}
 		ServletUtils.writeToResponse(response,result);
 	}
-	
+
+
 	/**
 	 * 请求签约
 	 * @param bank
@@ -295,11 +294,11 @@ public class BankCardController extends BaseController {
 
         User user = cloanUserService.getById(userid);
         UserBaseInfo baseInfo = userInfoService.findByUserId(userid);
-
+        PayReqLog payReqLog = payReqLogService.findByOrderNo(orderNo);
         //黑名单操作
         userBlackInfoService.validUserBlackInfo(baseInfo);
 
-		BindCardMsgVo vo = new BindCardMsgVo();
+        BindCardMsgVo vo = new BindCardMsgVo();
 		vo.setUserId(user.getUuid());
 		vo.setBankCardNo(cardNo);
 		vo.setBankCardName(baseInfo.getRealName());
@@ -308,6 +307,7 @@ public class BankCardController extends BaseController {
 		vo.setMsgCode(captcha);
 		vo.setOrderNo(orderNo);
 		vo.setShareKey(baseInfo.getUserId());
+		vo.setToken(payReqLog.getToken());
 		BindCardMsgResponseVo responseVo = PayCommonUtil.bindCommit(vo);
 
         if (PayCommonUtil.success(responseVo.getStatus())) {

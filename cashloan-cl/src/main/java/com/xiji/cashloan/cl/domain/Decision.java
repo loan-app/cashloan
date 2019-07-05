@@ -1430,6 +1430,11 @@ import java.util.Date;
     private Integer ydPlatformNum3m;
 
 
+
+   /**
+    * 同设备使用用户总数
+    */
+   private int ydDeviceLinkIdCount;
     /**
     * 获取主键Id
     *
@@ -6352,5 +6357,13 @@ import java.util.Date;
 
    public void setYdPlatformNum3m(Integer ydPlatformNum3m) {
       this.ydPlatformNum3m = ydPlatformNum3m;
+   }
+
+   public Integer getYdDeviceLinkIdCount() {
+      return ydDeviceLinkIdCount;
+   }
+
+   public void setYdDeviceLinkIdCount(Integer ydDeviceLinkIdCount) {
+      this.ydDeviceLinkIdCount = ydDeviceLinkIdCount;
    }
 }

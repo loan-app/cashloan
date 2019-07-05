@@ -1,11 +1,11 @@
 package com.xiji.cashloan.cl.service;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.Sms;
 import com.xiji.cashloan.core.common.service.BaseService;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 短信记录Service
@@ -55,6 +55,15 @@ public interface ClSmsService extends BaseService<Sms, Long>{
 	 * @return
 	 */
 	int verifySms(String phone, String type, String code);
+
+	/**
+	 *
+	 * @param phone
+	 * @param type
+	 * @param code
+	 * @return
+	 */
+	int verifyLoginSms(String phone, String type, String code);
 
 	/**
 	 * 查询用户

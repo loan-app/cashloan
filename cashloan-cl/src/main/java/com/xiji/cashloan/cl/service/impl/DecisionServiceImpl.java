@@ -645,6 +645,21 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             }
             decision.setYdPlatformLoanNum(ydPlatformLoanNum);
 
+
+            int maxCount = 0;
+            JSONArray devicesList = dataJson.getJSONArray("devices_list");
+            if (devicesList != null && devicesList.size() >= 1 ){
+                for(Object o :devicesList){
+                    JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(o));
+                    if (jsonObject.getString("device_link_id_count") != null){
+                        int num = Integer.parseInt(jsonObject.getString("device_link_id_count"));
+                        if (maxCount < num){
+                            maxCount = num;
+                        }
+                    }
+                }
+            }
+            decision.setYdDeviceLinkIdCount(maxCount);
         }
     }
 

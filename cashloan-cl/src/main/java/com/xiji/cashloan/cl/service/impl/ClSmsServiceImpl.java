@@ -5,17 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.CallsOutSideFee;
-import com.xiji.cashloan.cl.domain.Sms;
-import com.xiji.cashloan.cl.domain.SmsTpl;
-import com.xiji.cashloan.cl.domain.UrgeRepayOrder;
-import com.xiji.cashloan.cl.mapper.BorrowRepayMapper;
-import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
-import com.xiji.cashloan.cl.mapper.ClBorrowMapper;
-import com.xiji.cashloan.cl.mapper.SmsMapper;
-import com.xiji.cashloan.cl.mapper.SmsTplMapper;
-import com.xiji.cashloan.cl.mapper.UrgeRepayOrderMapper;
+import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.dsdata.SmsTkCreditRequest;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
@@ -31,12 +22,6 @@ import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import com.xiji.cashloan.core.mapper.UserMapper;
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -48,6 +33,13 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author wnb
@@ -220,7 +212,53 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		}
 		return 0;
 	}
-	
+
+	/**
+	 * 登录短信验证
+	 * @param phone
+	 * @param type
+	 * @param code
+	 * @return
+	 */
+	public int verifyLoginSms(String phone, String type, String code) {
+		if ("dev".equals(Global.getValue("app_environment")) && "0000".equals(code)) {
+			return 1;
+		}
+
+		if(StringUtil.isBlank(phone) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
+			return 0;
+		}
+
+		if (!StringUtil.isPhone(phone)) {
+			return 0;
+		}
+		Map<String,Object> data = new HashMap<String, Object>();
+		data.put("phone", phone);
+		data.put("smsType", type);
+		Sms sms = smsMapper.findTimeMsg(data);
+		if (sms != null) {
+			long timeLimit = Long.parseLong(Global.getValue("login_sms_time_limit"));
+
+			Date d1 = sms.getSendTime();
+			Date d2 = DateUtil.getNow();
+			long diff = d2.getTime() - d1.getTime();
+			if (diff > timeLimit * 60 * 1000) {
+				return -1;
+			}
+			if (sms.getCode().equals(code)) {
+				Map<String,Object> map = new HashMap<>();
+				map.put("id", sms.getId());
+				map.put("state", "20");
+				smsMapper.updateSelective(map);
+				return 1;
+			}
+		}
+		return 0;
+	}
+
+
+
+
 	protected String changeMessage(String smsType, Map<String,Object> map) {
 		String message = "";
 		if ("overdue".equals(smsType)) {
@@ -303,6 +341,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			message = ret("repayInform");
 		}else if ("repayBefore".equals(code)){
 			message = ret("repayBefore");
+		}else if ("sysLogin".equals(code)){
+			message = ret("sysLogin");
 		}
 		return message;
 	}
@@ -393,7 +433,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			sms.setOrderNo("");
 			sms.setState("40");
 			smsMapper.save(sms);
-			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_12, phone, msg);
+			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_13, phone, msg);
 		}
 	}
 
