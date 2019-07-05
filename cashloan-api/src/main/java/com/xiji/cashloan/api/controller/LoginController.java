@@ -190,7 +190,7 @@ public class LoginController {
 			final String loginPwd, final String vcode,
 			final String invitationCode,
 			final String channelCode, final String registerCoordinate,
-			final String registerAddr, final String signMsg,
+			final String registerAddr, final String signMsg, final String client,
 			final String blackBox) {
 		String wxRegister = Global.getValue("wxRegister");
 		Map result = new HashMap();
@@ -202,7 +202,7 @@ public class LoginController {
 			public Object doAction() {
 				Map result = userService.registerUser(request, loginName,
 						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
-						registerAddr, "h5", signMsg,channelCode);
+						registerAddr, client, signMsg,channelCode);
 				if ((Boolean) result.get("success")) {
 //					result = userService.login(request, loginName, loginPwd,
 //							signMsg,blackBox);
