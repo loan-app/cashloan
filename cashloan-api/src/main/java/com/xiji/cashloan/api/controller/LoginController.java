@@ -202,7 +202,7 @@ public class LoginController {
 			public Object doAction() {
 				Map result = userService.registerUser(request, loginName,
 						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
-						registerAddr, client, signMsg,channelCode);
+						registerAddr, "h5", signMsg,channelCode);
 				if ((Boolean) result.get("success")) {
 //					result = userService.login(request, loginName, loginPwd,
 //							signMsg,blackBox);
