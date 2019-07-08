@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.xiji.cashloan.cl.service.ChannelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -20,8 +21,10 @@ import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
 import com.xiji.cashloan.core.service.CloanUserService;
+import tool.util.BeanUtil;
+import com.xiji.cashloan.cl.domain.Channel;
 
- /**
+/**
  * 短信记录Controller
  * @author wnb
  * @version 1.0.0
@@ -91,7 +94,8 @@ public class SmsController extends BaseController {
 		String message = this.check(phone, type);
 		if (StringUtil.isBlank(message)) {
 			long countDown = clSmsService.findTimeDifference(phone, type);
-			if (countDown != 0) {
+			int minuteTime = clSmsService.countMinuteTime(type);
+			if (countDown != 0 || minuteTime > 0) {
 				data.put("countDown", countDown);
 				data.put("state", "20");
 				message = "获取短信验证码过于频繁，请稍后再试";
@@ -169,6 +173,8 @@ public class SmsController extends BaseController {
 		/*String code = request.getParameter("code");*/
 		String phone = request.getParameter("phone");
 		String type = request.getParameter("type");
+		String channelCode = request.getParameter("channelCode");
+
 		long countDown = 0;
 		HttpSession session = request.getSession();  
 		/*String sessionCode = (String) session.getAttribute("code"); */
@@ -178,11 +184,17 @@ public class SmsController extends BaseController {
 			session.removeAttribute("code");*/
 			
 			result = this.check(phone, type);
-			
+			String result2 = this.checkChannelCode(channelCode, type);
+			if(result2 != null) {
+				result = result2;
+			}
+			logger.info("网页注册发送短信校验数据结果：" + result);
 			if (result == null) {
 				if (type.equals("register")) {
 					countDown = clSmsService.findTimeDifference(phone, type);
-					if (countDown != 0) {
+					int minuteTime = clSmsService.countMinuteTime(type);
+					logger.info("时间段内注册短信防轰炸:" + minuteTime);
+					if (countDown != 0 || minuteTime > 0) {
 						result = "获取短信验证码过于频繁，请稍后再试";
 					} else {
 						String orderNo = clSmsService.sendSms(phone, type);
@@ -256,5 +268,32 @@ public class SmsController extends BaseController {
 			}
 		}	
 		return message;
-	}	
+	}
+
+	private String checkChannelCode(String channelCode,String type) {
+		String message = null;
+		if(StringUtil.isBlank(type) ){
+			message = "短信类型不能为空";
+			return message;
+		}
+		if (type.equals("register") && StringUtil.isBlank(channelCode) ) {
+			message = "注册渠道非法";
+			return message;
+		}
+
+		if(type.equals("register") && StringUtil.isNotBlank(channelCode) ) {
+			ChannelService channelService = (ChannelService) BeanUtil.getBean("channelService");
+			Channel channel = channelService.findByCode(channelCode);
+			if (channel == null) {
+				message = "注册渠道非法";
+				return message;
+			}
+			if (!"10".equals(channel.getState())) {
+				message = "渠道未启用";
+				return message;
+			}
+		}
+
+		return message;
+	}
 }

@@ -140,7 +140,14 @@
         from cl_sms WHERE phone = #{phone,jdbcType=VARCHAR} AND sms_type = #{smsType, jdbcType = VARCHAR} 
         AND DATE_FORMAT(send_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') 
     </select>
-    
+
+    <!-- 查询某种类型某时间段已发送次数 -->
+    <select id="countMinuteTime" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(1)
+        from cl_sms WHERE state = '10' AND sms_type = #{smsType, jdbcType = VARCHAR}
+        AND send_time &gt;= #{startDate,jdbcType=VARCHAR}
+    </select>
+
 	<update id="updateByOrderNo"  parameterType="java.util.HashMap">
         update cl_sms
           <set>
