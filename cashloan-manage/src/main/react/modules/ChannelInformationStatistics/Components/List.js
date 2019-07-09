@@ -187,7 +187,7 @@ export default React.createClass({
             title: '注册人数',
             dataIndex: "registerCount"
         },{
-            title: '独立访问(UV)',
+            title: 'UV点击量',
             dataIndex: "uvCounts"
         },{
             title: '借款人数',
