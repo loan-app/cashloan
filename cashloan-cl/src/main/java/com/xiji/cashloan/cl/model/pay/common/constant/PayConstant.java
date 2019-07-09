@@ -9,6 +9,7 @@ public class PayConstant {
     public static final String PAY_MODE_FUIOU = "fuiou";
     public static final String PAY_MODE_HELIPAY = "helipay";
     public static final String PAY_MODE_KUAIQIAN = "kuaiqian";
+    public static final String PAY_MODE_CHANPAY = "chanpay";
     /** 处理结果 - 成功 */
     public static final String RESULT_SUCCESS = "success";
     public static final String STATUS_NEED_CHECK = "needCheck";

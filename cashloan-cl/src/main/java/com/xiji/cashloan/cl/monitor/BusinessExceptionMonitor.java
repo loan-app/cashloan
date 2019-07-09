@@ -54,8 +54,10 @@ public class BusinessExceptionMonitor {
 
 	/** 富有支付 - 短信  */
 	public static String TYPE_12 = "FuiouPay-Sms";
-
+	/** 快钱支付 - 短信  */
 	public static  String TYPE_13 = "KuaiQian-Sms";
+	/** 畅捷支付 - 短信  */
+	public static  String TYPE_14 = "ChangJie-Sms";
 	
 	/**
 	 * 增加监控信息

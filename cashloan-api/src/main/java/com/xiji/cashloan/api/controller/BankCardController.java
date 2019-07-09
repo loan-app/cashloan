@@ -307,7 +307,9 @@ public class BankCardController extends BaseController {
 		vo.setMsgCode(captcha);
 		vo.setOrderNo(orderNo);
 		vo.setShareKey(baseInfo.getUserId());
-		vo.setToken(payReqLog.getToken());
+		if (payReqLog.getToken()!=null){
+			vo.setToken(payReqLog.getToken());
+		}
 		BindCardMsgResponseVo responseVo = PayCommonUtil.bindCommit(vo);
 
         if (PayCommonUtil.success(responseVo.getStatus())) {

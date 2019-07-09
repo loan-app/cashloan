@@ -109,21 +109,7 @@ public class BindCardRespVo {
         this.responseTextMessage = responseTextMessage;
     }
 
-    @Override
-    public String toString() {
-        return "BindCardRespVo{" +
-                "version='" + version + '\'' +
-                ", errorCode='" + errorCode + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
-                ", merchantId='" + merchantId + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", externalRefNumber='" + externalRefNumber + '\'' +
-                ", storablePan='" + storablePan + '\'' +
-                ", payToken='" + payToken + '\'' +
-                ", responseCode='" + responseCode + '\'' +
-                ", responseTextMessage='" + responseTextMessage + '\'' +
-                '}';
-    }
+
 
     public boolean checkReturn() {
         return StringUtil.equals(responseCode, KuaiqianPayConstant.RESPONSE_SUCCESS_CODE);

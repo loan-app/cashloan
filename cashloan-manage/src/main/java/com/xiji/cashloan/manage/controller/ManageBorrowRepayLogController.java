@@ -245,6 +245,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setTerminalId(UUID.randomUUID().toString());
 		vo.setTerminalType("OTHER");
 		vo.setShareKey(bankCard.getUserId());
+		vo.setCardNo(bankCard.getCardNo());
 		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
 		String payMsg = "";

@@ -1,9 +1,6 @@
 package com.xiji.cashloan.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -52,7 +49,7 @@ public class CloanUserServiceImpl extends BaseServiceImpl<User, Long> implements
 	}
 
 	@Override
-	public Page<CloanUserModel> listUser(Map<String, Object> params,
+	public Page<CloanUserModel>   listUser(Map<String, Object> params,
 			int currentPage, int pageSize) {
 		PageHelper.startPage(currentPage, pageSize);
 		List<CloanUserModel> list = userMapper.listModel(params);
@@ -148,5 +145,4 @@ public class CloanUserServiceImpl extends BaseServiceImpl<User, Long> implements
 			userMapper.updateSelective(paramMap);
 		}
 	}
-
 }
