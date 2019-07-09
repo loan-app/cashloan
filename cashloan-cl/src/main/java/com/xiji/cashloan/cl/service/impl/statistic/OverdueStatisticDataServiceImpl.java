@@ -140,49 +140,53 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		for (OverdueStatisticData auditorStatisticData : source) {
 			boolean flag = false;
 			for (OverdueStatisticData statisticData : target) {
-				if(auditorStatisticData.compareTo(statisticData) == 0) {
-					switch (type) {
-						case "newOverdue":
-							statisticData.setNewOverdue(auditorStatisticData.getNewOverdue());
-							break;
-						case "againOverdue":
-							statisticData.setAgainOverdue(auditorStatisticData.getAgainOverdue());
-							break;
-						case "extendOverdue":
-							statisticData.setExtendOverdue(auditorStatisticData.getExtendOverdue());
-							break;
-						case "newExpire":
-							statisticData.setNewExpire(auditorStatisticData.getNewExpire());
-							break;
-						case "againExpire":
-							statisticData.setAgainExpire(auditorStatisticData.getAgainExpire());
-							break;
-						case "extendExpire":
-							statisticData.setExtendExpire(auditorStatisticData.getExtendExpire());
-							break;
-						case "newRepayment":
-							statisticData.setNewRepayment(auditorStatisticData.getNewRepayment());
-							break;
-						case "againRepayment":
-							statisticData.setAgainRepayment(auditorStatisticData.getAgainRepayment());
-							break;
-						case "extendRepayment":
-							statisticData.setExtendRepayment(auditorStatisticData.getExtendRepayment());
-							break;
-						default:
-							break;
-					}
+				if (auditorStatisticData.getCountTime().equals(statisticData.getCountTime()) ) {
 					flag = true;
 					break;
 				}
 			}
 			if (!flag) {
-				if(null != auditorStatisticData && !target.contains(auditorStatisticData)) {
-					target.add(auditorStatisticData);
-				}
+				target.add(auditorStatisticData);
 			}
 		}
 
+		for (OverdueStatisticData overdueStatisticData : source) {
+			for (OverdueStatisticData statisticData : target) {
+				if (overdueStatisticData.getCountTime().equals(statisticData.getCountTime())) {
+					switch (type) {
+						case "newOverdue":
+							statisticData.setNewOverdue(overdueStatisticData.getNewOverdue());
+							break;
+						case "againOverdue":
+							statisticData.setAgainOverdue(overdueStatisticData.getAgainOverdue());
+							break;
+						case "extendOverdue":
+							statisticData.setExtendOverdue(overdueStatisticData.getExtendOverdue());
+							break;
+						case "newExpire":
+							statisticData.setNewExpire(overdueStatisticData.getNewExpire());
+							break;
+						case "againExpire":
+							statisticData.setAgainExpire(overdueStatisticData.getAgainExpire());
+							break;
+						case "extendExpire":
+							statisticData.setExtendExpire(overdueStatisticData.getExtendExpire());
+							break;
+						case "newRepayment":
+							statisticData.setNewRepayment(overdueStatisticData.getNewRepayment());
+							break;
+						case "againRepayment":
+							statisticData.setAgainRepayment(overdueStatisticData.getAgainRepayment());
+							break;
+						case "extendRepayment":
+							statisticData.setExtendRepayment(overdueStatisticData.getExtendRepayment());
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
 	}
 
 
