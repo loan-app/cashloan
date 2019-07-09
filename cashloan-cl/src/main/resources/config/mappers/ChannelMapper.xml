@@ -447,7 +447,7 @@
  	
  	<!-- 首贷放款笔数 -->
  	<select id="countSix" parameterType="java.util.HashMap" resultType="java.util.HashMap">
- 		select user.channel_id as channelId,count(distinct user.id) as countSix from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and b.again='10' and re.state != 30) temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
+ 		select user.channel_id as channelId,count(distinct user.id) as countSix from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and b.again='10' and re.state != 30) temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client in ('wechat','weibo','qq')
  		<trim prefix="where" prefixOverrides="and|or">
 			 <if test="beforeTime != null ">
 			    and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP} 
@@ -464,7 +464,7 @@
  	
  	<!-- 再贷放款笔数 -->
  	<select id="countSeven" parameterType="java.util.HashMap" resultType="java.util.HashMap">
- 		select user.channel_id as channelId,count(user.id) as countSeven from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and b.again='20' and re.state != 30) temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
+ 		select user.channel_id as channelId,count(user.id) as countSeven from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and b.again='20' and re.state != 30) temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client in ('wechat','weibo','qq')
  		<trim prefix="where" prefixOverrides="and|or">
 			 <if test="beforeTime != null ">
 			    and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP} 
@@ -553,7 +553,7 @@
 
     <!-- 单一渠道放贷总数-->
 	<select id="countLending" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		select user.channel_id as channelId,count(user.id) as countLending from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and re.state != 30 and b.again = '10') temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client='h5'
+		select user.channel_id as channelId,count(user.id) as countLending from (select b.user_id,re.create_time from cl_borrow b,cl_borrow_repay re where re.borrow_id =b.id and b.state in (30,40,41,44,50,90) and re.state != 30 and b.again = '10') temp LEFT JOIN cl_user user on temp.user_id=user.id and user.register_client in ('wechat','weibo','qq')
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="beforeTime != null ">
 				and date_format(temp.create_time, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
