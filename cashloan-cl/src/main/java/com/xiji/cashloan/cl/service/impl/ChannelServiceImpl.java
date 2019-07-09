@@ -29,7 +29,6 @@ import java.util.*;
  * @version 1.0.0
  */
 @Service("channelService")
-@Slf4j
 public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implements ChannelService {
 	
     @Resource
