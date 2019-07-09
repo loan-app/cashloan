@@ -415,6 +415,12 @@ import java.util.Date;
      */
     @Override
     public int compareTo(OverdueStatisticData o) {
-        return o.countTime.compareTo(this.getCountTime());
+        if(null == o
+                || o.getCountTime() == null
+                || this.getCountTime() == null) {
+            return -1;
+        }
+        return o.getCountTime().compareTo(this.getCountTime());
     }
+
 }

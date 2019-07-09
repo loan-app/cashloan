@@ -1,6 +1,7 @@
 package com.xiji.cashloan.cl.mapper.statistic;
 
 import com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData;
+import com.xiji.cashloan.cl.model.UserOverdueModel;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 
@@ -115,4 +116,11 @@ public interface OverdueStatisticDataMapper extends BaseMapper<OverdueStatisticD
      * @return
      */
     List<OverdueStatisticData> listOverdueStatistic(Map<String,Object> params);
+
+    /**
+     * 查询逾期用户信息
+     * @param params
+     * @return
+     */
+    List<UserOverdueModel> queryOverdueData(Map<String, Object> params);
 }
