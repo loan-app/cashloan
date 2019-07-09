@@ -1030,6 +1030,15 @@ CREATE TABLE `cl_manual_repay_order` (
   KEY `borrow_id` (`borrow_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='到期订单表';
 
+-- 云桥运营商 配置
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥运营商认证URL', 'yq_operator_url', 'https://api.wochikj.com/h5/importV3/index.html#/carrier', '1', '云桥运营商认证页面url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥回调验签', 'yq_secret', '27c7e4bc518c48d095d9caf544771876', '1', '云桥回调验签', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥token', 'yq_token', '44385810102345ff9721849f63b0cba9', '1', '云桥token', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥apikey', 'yq_apikey', 'a2beb98990824733aa48b2f456bb2115', '1', '云桥apikey', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥获取运营商加强数据URL', 'yq_operator_mxdata', 'https://api.wochikj.com/carrier/v3/mobiles/{mobile}/mxdata-ex', '1', '云桥运营商数据加强版请求url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '90', '云桥运营商报告URL', 'yq_operator_report', 'https://api.wochikj.com/carrier/v3/mobiles/{mobile}/mxreport', '1', '云桥运营商报告URL', '1');
+
+
 -- 插入到期数据
 insert into `cl_manual_repay_order`(`borrow_repay_id`,`borrow_name`, `phone`, `borrow_id`, `borrow_user_id`)
 select br.id,u.real_name borrow_name,u.phone phone, br.borrow_id borrow_id,u.user_id user_id from cl_borrow_repay br left join cl_user_base_info u on br.user_id = u.user_id where br.state = 20;
