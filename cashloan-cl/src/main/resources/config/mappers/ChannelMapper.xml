@@ -606,10 +606,10 @@
 	</select>
 	<!-- 借款人数 -->
 	<select id="getUvCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		SELECT uv_count as uvCount from cl_channel
+		SELECT id as channelId,uv_count as uvCount from cl_channel
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="channelId != null and channelId != ''">
-				and channel_id=#{channelId}
+				and id=#{channelId}
 			</if>
 		</trim>
 	</select>
