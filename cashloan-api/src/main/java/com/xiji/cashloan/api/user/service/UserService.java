@@ -288,9 +288,10 @@ public class UserService {
 
             // 渠道
             long channelId = 0;
+            Channel channel=null;
             if(StringUtil.isNotBlank(channelCode)){
                 ChannelService channelService = (ChannelService) BeanUtil.getBean("channelService");
-                Channel channel = channelService.findByCode(channelCode);
+                channel = channelService.findByCode(channelCode);
                 if (channel != null) {
                     channelId=channel.getId();
                 } else {
@@ -327,8 +328,8 @@ public class UserService {
 
             dbService.insert(SqlUtil.buildInsertSqlMap("arc_credit", new Object[][]{
                     {"consumer_no", userId},
-                    {"total", Global.getValue("init_credit")},
-                    {"unuse", Global.getValue("init_credit")},
+                    {"total", channel.getInitCredit()},
+                    {"unuse", channel.getInitCredit()},
                     {"state", 10}
             }));
 

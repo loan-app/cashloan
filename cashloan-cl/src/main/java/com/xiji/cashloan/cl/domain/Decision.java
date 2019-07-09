@@ -1384,6 +1384,11 @@ import java.util.Date;
     * 评估模型得分，分数越高风险越高，0标识缺乏足够信息判断
     */
     private Integer ydScore;
+
+   /**
+    * 同设备使用用户总数
+    */
+   private int ydDeviceLinkIdCount;
     /**
     * 获取主键Id
     *
@@ -6218,5 +6223,13 @@ import java.util.Date;
 
    public void setYdScore(Integer ydScore) {
       this.ydScore = ydScore;
+   }
+
+   public Integer getYdDeviceLinkIdCount() {
+      return ydDeviceLinkIdCount;
+   }
+
+   public void setYdDeviceLinkIdCount(Integer ydDeviceLinkIdCount) {
+      this.ydDeviceLinkIdCount = ydDeviceLinkIdCount;
    }
 }

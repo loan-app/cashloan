@@ -124,6 +124,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	private CloanUserService cloanUserService;
 	@Resource
 	private UserBaseInfoService userBaseInfoService;
+	@Resource
+	private ChannelMapper channelMapper;
+	@Resource
+	private ManualRepayOrderMapper manualRepayOrderMapper;
 
 	@Override
 	public BaseMapper<BorrowRepay, Long> getMapper() {
@@ -137,7 +141,9 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 	@Override
 	public boolean genRepayPlan(Borrow borrow){
-		String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+        User user = cloanUserService.getById(borrow.getUserId());
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
+        String beheadFee = channel.getBeheadFee();// 是否启用砍头息
 		//放款成功,保存还款计划
 		BorrowRepay br = new BorrowRepay();
 		if ("10".equals(beheadFee)) {//启用
@@ -158,7 +164,12 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		br.setCreateTime(DateUtil.getNow());
 		//  默认还款计划类型为1
 		br.setType("1");
-		int result = borrowRepayMapper.save(br);
+		int result = borrowRepayMapper.saveReturnId(br);
+
+		//插入人工到期订单表
+		UserBaseInfo userInfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        ManualRepayOrder mr = getManualRepayOrder(borrow.getId(), userInfo, br.getId(), null);
+        manualRepayOrderMapper.save(mr);
 
 		if (result > 0) {
 			// 调用连连支付接口进行授权
@@ -316,54 +327,81 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
 		result.put("Msg", "还款成功");
-		String isImproveCredit = Global.getValue("is_improve_credit");//提额开关 -- 10开，20关
+        User user = cloanUserService.getById(borrow.getUserId());
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
 		String[] counts;
-		String repayCounts = Global.getValue("count_improve_credit");//达到当次提额的还款次数
+		String repayCounts = channel.getCountImproveCredit();//达到当次提额的还款次数
 		counts =repayCounts.split(",");
 		Credit c = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
-		CreditLog creditLog = creditLogMapper.findByConsumerno(creditMap);// 查询是否提过额度
-		// 初始额度
-		Double cre = null==creditLog ? c.getTotal() : creditLog.getPre();
-			if (!BorrowModel.STATE_DELAY.equals(state) && Integer.parseInt(br.getPenaltyDay()) <= 0 && "10".equals(isImproveCredit)) {//未逾期且提额开关为10 ---提额
-				// 单次提额额度
-				String repayCredit =Global.getValue("one_repay_credit");//还款成功题额  --固定额度
-				String initialCredit = c.getTotal()>cre ? String.valueOf((c.getTotal()-cre)/c.getCount()) : repayCredit;
-				String oneRepayCredit = !repayCredit.equals(initialCredit) ? initialCredit : repayCredit;
+		//单次提额额度
+		String oneRepayCredit=channel.getOneRepayCredit();
 
-				String improveCreditLimit = Global.getValue("imporove_credit_limit");//提额上限
+        String isImproveCredit = channel.getIsImproveCredit();//提额开关 -- 10开，20关
+        String improveCreditLimit = channel.getImproveCreditLimit();//提额上限
 
-				Map<String, Object> map = new HashMap<String, Object>();// 封装提额参数
-				map.put("consumerNo", br.getUserId());
-				map.put("total", oneRepayCredit);// 总额度
-				map.put("unuse", oneRepayCredit);// 未使用额度
+        if (!BorrowModel.STATE_DELAY.equals(state) && Integer.parseInt(br.getPenaltyDay()) <= 0 && "10".equals(isImproveCredit)) {//未逾期且提额开关为10 ---提额
 
-				Map<String, Object> numMap = new HashMap<>();
-				numMap.put("id",credit.getId());
+			String initCredit = channel.getInitCredit();//初始额度
+			Double maxCredit = Double.valueOf(improveCreditLimit) + Double.valueOf(initCredit);//可使用额度的最大上线
+			Map<String, Object> map = new HashMap<String, Object>();// 封装提额参数
+			map.put("consumerNo", br.getUserId());
+			map.put("total", oneRepayCredit);// 总额度
+			map.put("unuse", oneRepayCredit);// 未使用额度
 
-				int x = 1;
-				if((c.getCount() + 1) * Double.parseDouble(oneRepayCredit) <= Double.parseDouble(improveCreditLimit)){
-					creditMapper.addNum(numMap);// 提额度未达上限时，有效还款加1
-					Credit b = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
-					if (counts[b.getCount()].equals(b.getNum().toString())) {// 提额上线为500
-						x = creditMapper.updateByUserId(map);
-						creditMapper.subtractNum(numMap);// 提额成功时有效还款次数清零
-						if (x >= 1) {//添加额度修改日志
-							CreditLog log = new CreditLog();
-							log.setConsumerNo(c.getConsumerNo());
-							log.setCreditType(c.getCreditType());
-							log.setModifyTotal(Double.parseDouble(oneRepayCredit));
-							log.setModifyUser("system");
-							log.setNow(c.getTotal() + Double.parseDouble(oneRepayCredit));
-							log.setPre(c.getTotal());
-							log.setRemark("还款成功，自动提额" + oneRepayCredit + "（元）");
-							log.setType("70");// 70 --自动提额
-							log.setModifyTime(new Date());
-							creditLogMapper.save(log);
-						}
-					}
+			Map<String, Object> mapMax = new HashMap<String, Object>();//封装最大额度参数
+			mapMax.put("consumerNo", br.getUserId());
+			mapMax.put("total", maxCredit);// 总额度
+			mapMax.put("unuse", maxCredit);// 未使用额度
+
+			Map<String, Object> numMap = new HashMap<>();
+			numMap.put("id", credit.getId());
+
+
+			if((maxCredit-c.getTotal()) < Double.parseDouble(oneRepayCredit) && maxCredit>c.getTotal()){
+				logger.info("用户提额次数已达上限，进入修改用户额度");
+				int y = 1;
+				y = creditMapper.updateByConsumerNo(mapMax);
+				if (y >= 1) {//添加额度修改日志
+					CreditLog log = new CreditLog();
+					log.setConsumerNo(c.getConsumerNo());
+					log.setCreditType(c.getCreditType());
+					log.setModifyTotal(maxCredit-c.getTotal());
+					log.setModifyUser("system");
+					log.setNow(maxCredit);
+					log.setPre(c.getTotal());
+					log.setRemark("还款成功，用户最大额度修改成功" + (maxCredit-c.getTotal()) + "（元）");
+					log.setType("80");// 80 --提额到上限
+					log.setModifyTime(new Date());
+					creditLogMapper.save(log);
+					logger.info("恭喜！！！用户最大额度修改成功");
+				}else{
+					logger.error("用户最大额度修改成功失败");
 				}
-				if (x < 1) {
-					logger.error("自动提额失败");
+			} else if(c.getCount()<counts.length) {
+					int x = 1;
+					if ((c.getCount() + 1) * Double.parseDouble(oneRepayCredit) <= Double.parseDouble(improveCreditLimit)) {
+						creditMapper.addNum(numMap);// 提额度未达上限时，有效还款加1
+						Credit b = creditMapper.findByConsumerNo(StringUtil.isNull(br.getUserId()));
+						if (counts[b.getCount()].equals(b.getNum().toString())) {// 提额上线为500
+							x = creditMapper.updateByUserId(map);
+							creditMapper.subtractNum(numMap);// 提额成功时有效还款次数清零
+							if (x >= 1) {//添加额度修改日志
+								CreditLog log = new CreditLog();
+								log.setConsumerNo(c.getConsumerNo());
+								log.setCreditType(c.getCreditType());
+								log.setModifyTotal(Double.parseDouble(oneRepayCredit));
+								log.setModifyUser("system");
+								log.setNow(c.getTotal() + Double.parseDouble(oneRepayCredit));
+								log.setPre(c.getTotal());
+								log.setRemark("还款成功，自动提额" + oneRepayCredit + "（元）");
+								log.setType("70");// 70 --自动提额
+								log.setModifyTime(new Date());
+								creditLogMapper.save(log);
+							}
+						}
+					}else {
+						logger.error("自动提额失败");
+					}
 				}
 			}
 		return result;
@@ -1056,9 +1094,10 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		User user = cloanUserService.getById(userId);
 //		UserBaseInfo baseInfo = userBaseInfoService.findByUserId(userId);
 		Borrow borrow = clBorrowService.getById(borrowId);
-		BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+        BankCard bankCard = bankCardService.getBankCardByUserId(userId);
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
 
-		if (PayCommonHelper.isEmpty(bankCard)) {
+        if (PayCommonHelper.isEmpty(bankCard)) {
 			result.put("code", "12");
 			result.put("msg", "绑定的银行卡信息失效，请重新绑卡！");
 			return result;
@@ -1085,11 +1124,23 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		//2、走支付逻辑
 		Double sourceAmount = 0.0;
 		if ((StringUtil.equals("2", type))) {
+            Double amount = borrow.getAmount();
+            Double delay_fee=0.0;
+            Double delayFee=0.0;
+            //获取展期费用的占比,
+            if(StringUtil.isNotBlank(channel.getDelayFee())) {
+                delay_fee=Double.parseDouble(channel.getDelayFee());
+                //展期费用
+                delayFee=amount * delay_fee;
+            }else {
+                //展期费用为综合费用;
+                delayFee=borrow.getFee();
+            }
 			//展期扣除部费用
 			if(borrowRepay.getPenaltyAmout() > 0) {
-				sourceAmount = BigDecimalUtil.add(borrow.getFee() ,borrowRepay.getPenaltyAmout());
+				sourceAmount = BigDecimalUtil.add(delayFee,borrowRepay.getPenaltyAmout());
 			} else {
-				sourceAmount = borrow.getFee();
+				sourceAmount = delayFee;
 			}
 		}else {
 			// 还款金额
@@ -1585,5 +1636,23 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			count = borrowRepayMapper.updateBatchTypeByRepayId(repayIds);
 		}
 		return count;
+	}
+
+	private ManualRepayOrder getManualRepayOrder(Long borrowId, UserBaseInfo userInfo, Long borrowRepayId, Long operatorUserId) {
+		ManualRepayOrder manualRepayOrder = new ManualRepayOrder();
+		manualRepayOrder.setCreateTime(DateUtil.getNow());
+		manualRepayOrder.setReviewTime(DateUtil.getNow());
+		manualRepayOrder.setBorrowUserId(userInfo.getUserId());
+		manualRepayOrder.setBorrowId(borrowId);
+		manualRepayOrder.setBorrowName(userInfo.getRealName());
+		manualRepayOrder.setPhone(userInfo.getPhone());
+		manualRepayOrder.setBorrowRepayId(borrowRepayId);
+		manualRepayOrder.setUserId(operatorUserId);
+		if(operatorUserId != null) {
+			manualRepayOrder.setState(ManualRepayOrderModel.STATE_ORDER_ALLOT);
+		} else {
+			manualRepayOrder.setState(ManualRepayOrderModel.STATE_ORDER_NO_ALLOT);
+		}
+		return manualRepayOrder;
 	}
 }

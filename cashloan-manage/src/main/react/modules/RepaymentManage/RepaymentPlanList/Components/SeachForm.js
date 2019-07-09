@@ -14,7 +14,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState};
         if(params.registTime[0]){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -34,7 +34,7 @@ let SeachForm = React.createClass({
     },
     handleOut() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState};
         if(params.registTime){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -67,6 +67,13 @@ let SeachForm = React.createClass({
                         <Option value="10">已还款</Option>
                         <Option value="20">未还款</Option>
                         <Option value="30">展期还款</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="分配状态:">
+                    <Select style={{ width: 100 }} {...getFieldProps('allotState', { initialValue: '' }) }>
+                        <Option value="">全部</Option>
+                        <Option value="10">未分配</Option>
+                        <Option value="20">已分配</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="应还日期：">

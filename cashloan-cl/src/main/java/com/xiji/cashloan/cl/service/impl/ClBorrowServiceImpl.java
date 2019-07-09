@@ -32,6 +32,7 @@ import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import com.xiji.cashloan.core.mapper.UserMapper;
 import com.xiji.cashloan.core.model.BorrowModel;
 import com.xiji.cashloan.core.model.UserBaseInfoModel;
+import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.core.service.UserBaseInfoService;
 import com.xiji.cashloan.rc.domain.SceneBusinessLog;
 import com.xiji.cashloan.rc.mapper.SceneBusinessLogMapper;
@@ -176,6 +177,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	private UserRemarkService userRemarkService;
 	@Resource
 	private YouDunRiskService youDunRiskService;
+    @Resource
+    private CloanUserService cloanUserService;
+    @Resource
+	private ChannelMapper channelMapper;
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -187,8 +192,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public boolean isCanBorrow(Borrow borrow,String tradePwd) {
     	
     	Long userId = borrow.getUserId();
-    	User user = userMapper.findByPrimary(userId);
-    	//1、校验用户是否符合借款条件
+        User user = cloanUserService.getById(userId);
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
+        //1、校验用户是否符合借款条件
     	//1.1 校验是否有对应的用户信息
     	if(user==null || user.getId()<1){
     		throw new SimpleMessageException("找不到对应的用户信息");
@@ -223,11 +229,11 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 //		}
 		
 	    //1.9 借款金额格式是否正确
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
+		String borrowDay = channel.getBorrowDay();// 借款天数
 		String[] days = borrowDay.split(",");
 		int maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
 		int minDays = Integer.parseInt(days[0]);			// 最大借款期限
-		String borrowCredit = Global.getValue("borrow_credit");// 借款额度
+		String borrowCredit = channel.getBorrowCredit();// 借款额度
 		String[] credits = borrowCredit.split(",");
 		double maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
 		double minCredit = Double.parseDouble(credits[0]);		
@@ -384,19 +390,20 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			maxCredit = CreditConstant.MAX_CREDIT;
 			minCredit = CreditConstant.MIN_CREDIT;
 		} else {
-			String fee = Global.getValue("fee");// 综合费用
+            Channel channel= channelMapper.getChannelById(user.getChannelId());
+            String fee = channel.getFee();// 综合费用
 			fees = fee.split(",");
-			borrowDay = Global.getValue("borrow_day");// 借款天数
+			borrowDay = channel.getBorrowDay();// 借款天数
 			days = borrowDay.split(",");
 			maxDays = Integer.parseInt(days[days.length-1]);// 最大借款期限
 			minDays = Integer.parseInt(days[0]);			// 最小借款期限
-			borrowCredit = Global.getValue("borrow_credit");// 借款额度
+			borrowCredit = channel.getBorrowCredit();// 借款额度
 			credits = borrowCredit.split(",");
 			maxCredit = Double.parseDouble(credits[credits.length-1]);// 最大借款额度
 			borrowCredit = getCredit(borrowCredit, credit.getUnuse());
 			credits = borrowCredit.split(",");
 			if(StringUtil.isBlank(credits[0])) {
-				minCredit = (credit != null ? credit.getUnuse() : Double.parseDouble(Global.getValue("init_credit")));
+				minCredit = (credit != null ? credit.getUnuse() : Double.parseDouble(channel.getInitCredit()));
 			} else {
 				minCredit = Double.parseDouble(credits[0]);				// 最小借款额度
 			}
@@ -934,12 +941,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public Map<String, Object> choice(double amount, String timeLimit, String userId) {
 		double fee = 0;
+        Channel channel=null;
 		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
-			fee = CreditConstant.FEE;
-		} else {
-			String fee_ = Global.getValue("fee");// 综合费用
+            fee = CreditConstant.FEE;
+        } else {
+            User user = cloanUserService.getById(Long.parseLong(userId));
+            channel = channelMapper.getChannelById(user.getChannelId());
+            String fee_ = channel.getFee();// 综合费用
 			String[] fees = fee_.split(",");
-			String borrowDay = Global.getValue("borrow_day");// 借款天数
+			String borrowDay = channel.getBorrowDay();// 借款天数
 			String[] days = borrowDay.split(",");
 			for (int i = 0; i < days.length; i++) {
 				if (timeLimit.equals(days[i])) {
@@ -949,12 +959,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		}
 		Map<String,Object> map = new HashMap<>();
 		map.put("fee", BigDecimalUtil.decimal(fee, 2));
-		String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
-		if ("10".equals(beheadFee)) {// 启用
-			map.put("realAmount", amount - fee);
-		} else {
-			map.put("realAmount", amount);
-		}
+		if (channel!=null){
+            String beheadFee = channel.getBeheadFee();// 是否启用砍头息
+            if ("10".equals(beheadFee)) {// 启用
+                map.put("realAmount", amount - fee);
+            } else {
+                map.put("realAmount", amount);
+            }
+        }
 		Map<String, Object> feeMap = getFeeMap(fee);
 		map.put("feeDetail", feeMap);
 
@@ -963,18 +975,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	
 	@Override
 	public List<Map<String, Object>> choices(String userId) {
-		String fee_ = Global.getValue("fee");// 综合费用
 		String feeName = sysConfigService.findByCode("fee").getName();// 综合费用
-		String[] fees = fee_.split(",");
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
-		String[] days = borrowDay.split(",");
-		String borrowCredit = Global.getValue("borrow_credit");//借款金额
-		String[] borrowCredits = borrowCredit.split(",");
-
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		if(StringUtil.isBlank(userId) || StringUtil.equals(userId, "0")) {
 			list = getNoUserChoices(feeName);
 		} else {
+            User user = cloanUserService.getById(Long.parseLong(userId));
+            Channel channel = channelMapper.getChannelById(user.getChannelId());
+            String fee_ = channel.getFee();// 综合费用
+            String[] fees = fee_.split(",");
+            String borrowDay = channel.getBorrowDay();// 借款天数
+            String[] days = borrowDay.split(",");
+            String borrowCredit = channel.getBorrowCredit();//借款金额
+            String[] borrowCredits = borrowCredit.split(",");
 			for (int i = 0; i < days.length; i++) {
 				for (int j = 0; j < borrowCredits.length; j++) {
 					Map<String,Object> map = new HashMap<>();
@@ -983,7 +996,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					map.put("feeName", feeName);
 
 					double amount = Double.parseDouble(borrowCredits[j]);
-					String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+					String beheadFee = channel.getBeheadFee();// 是否启用砍头息
 					if ("10".equals(beheadFee)) {// 启用
 						map.put("realAmount", amount - fee);
 					} else {
@@ -1022,12 +1035,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 	@Override
 	public Borrow saveBorrow(Borrow borrow) {
-		String fee_ = Global.getValue("fee");// 综合费用
+        User user = userMapper.findByPrimary(borrow.getUserId());
+        Channel channel = channelMapper.getChannelById(user.getChannelId());
+        String fee_ = channel.getFee();// 综合费用
 		String[] fees = fee_.split(",");
-		String borrowDay = Global.getValue("borrow_day");// 借款天数
+		String borrowDay = channel.getBorrowDay();// 借款天数
 		String[] days = borrowDay.split(",");
 		
-		String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+		String beheadFee = channel.getBeheadFee();// 是否启用砍头息
 		double fee = 0;
 		for (int i = 0; i < days.length; i++) {
 			if (borrow.getTimeLimit().equals(days[i])) {
@@ -1545,14 +1560,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public int manualVerifyBorrow(Long borrowId, String state, String remark, Long userId,Boolean isBlack,Double amount) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
-
-		if (borrow != null) {
-			if(!borrow.getState().equals(BorrowModel.STATE_NEED_REVIEW)){
+        if (borrow != null) {
+            User user = cloanUserService.getById(borrow.getUserId());
+            Channel channel = channelMapper.getChannelById(user.getChannelId());
+            if(!borrow.getState().equals(BorrowModel.STATE_NEED_REVIEW)){
 				logger.error("人工复审失败，当前状态不是待人工复审");
 				throw new BussinessException("复审失败，当前状态不是待人工复审");
 			}
 			Map<String,Object> map = new HashMap<String, Object>();
-            Double fee = Double.parseDouble(Global.getValue("fee"));
+            Double fee = Double.parseDouble(channel.getFee());
 			map.put("id", borrowId);
 			map.put("state", state);   
 			map.put("remark", remark);
@@ -1560,7 +1576,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if(BorrowModel.STATE_REFUSED.equals(state)&&!borrow.getAmount().equals(amount)){
 				throw new BussinessException("当前状态为人工复审拒绝，订单无法修改金额");
 			}else {
-				String beheadFee = Global.getValue("behead_fee");// 是否启用砍头息
+				String beheadFee = channel.getBeheadFee();// 是否启用砍头息
 				if ("10".equals(beheadFee)) {//启用
 					map.put("realAmount", amount * (1 - fee));
 				}else {
@@ -2476,10 +2492,13 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	 * 审核放款
 	 */
 	@Override
-	public int auditBorrowLoan(Long borrowId, String state, String remark,Long userId) {
+	public int auditBorrowLoan(Long borrowId, String state, String remark,Long userId,Boolean isBlack,Double amount) {
 		int code = 0;
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
 		if (borrow != null) {
+			User user = cloanUserService.getById(borrow.getUserId());
+			Channel channel = channelMapper.getChannelById(user.getChannelId());
+			Double fee = Double.parseDouble(channel.getFee());
 			if(!borrow.getState().equals(BorrowModel.WAIT_AUDIT_LOAN)){
 				logger.error("审核失败,当前状态不是待审核放款");
 				throw new BussinessException("审核失败,当前状态不是待审核放款");
@@ -2488,9 +2507,55 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			map.put("id", borrowId);
 			map.put("state", state);
 			map.put("remark", remark);
-			code = clBorrowMapper.loanState(map);
-			if (code != 1) {
-				throw new BussinessException("放款审核失败,当前状态不是待审核放款");
+			map.put("amount",amount);
+			if(BorrowModel.AUDIT_LOAN_FAIL.equals(state)&&!borrow.getAmount().equals(amount)){
+				throw new BussinessException("当前状态为放款审核不通过，订单无法修改金额");
+			}else {
+				String beheadFee = channel.getBeheadFee();// 是否启用砍头息
+				if ("10".equals(beheadFee)) {//启用
+					map.put("realAmount", amount * (1 - fee));
+				}else {
+					map.put("realAmount", amount);
+				}
+				map.put("fee", amount * fee);
+				map.put("serviceFee", amount * fee * 0.5);
+				map.put("infoAuthFee", amount * fee * 0.4);
+				map.put("interest", amount * fee * 0.1);
+				Map<String, Object> creditMap = new HashMap<String, Object>();
+				creditMap.put("consumerNo", borrow.getUserId());
+				Credit credit = creditMapper.findSelective(creditMap);
+				if (credit != null) {
+					if (amount >= 0 && amount <= credit.getTotal()) {
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("consumerNo", borrow.getUserId());
+						params.put("used", amount);
+						params.put("unuse", credit.getTotal() - amount);
+						int result = creditMapper.updateTotal(params);
+						if (result != 1) {
+							throw new BussinessException("修改借款额度失败");
+						}
+						code = clBorrowMapper.loanState(map);
+						if (code != 1) {
+							throw new BussinessException("放款审核失败,当前状态不是待审核放款");
+						}
+					} else if (amount > credit.getTotal()) {
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("consumerNo", borrow.getUserId());
+						params.put("total", credit.getTotal() + (amount - credit.getTotal()));
+						params.put("used", amount);
+						params.put("unuse", credit.getTotal() + (amount - credit.getTotal()) - amount);
+						int result = creditMapper.updateTotal(params);
+						if (result != 1) {
+							throw new BussinessException("修改借款额度失败");
+						}
+						code = clBorrowMapper.loanState(map);
+						if (code != 1) {
+							throw new BussinessException("放款审核失败,当前状态不是待审核放款");
+						}
+					} else {
+						throw new BussinessException("借款金额不能为负数");
+					}
+				}
 			}
 			
 			// savePressState(borrow, state);
@@ -2505,14 +2570,29 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			borrowProgress.setAuditUser(userId);
 			borrowProgress.setCreateTime(DateUtil.getNow());
 			borrowProgressMapper.save(borrowProgress);
+
+			if(StringUtil.isNotBlank(remark)) {
+				UserRemark userRemark = new UserRemark();
+				userRemark.setCreateTime(new Date());
+				userRemark.setOperateTime(new Date());
+				userRemark.setRemark(remark);
+				userRemark.setOperateId(userId);
+				userRemark.setUserId(borrow.getUserId());
+				userRemarkService.insert(userRemark);
+			}
 			
 			if (BorrowModel.AUDIT_LOAN_FAIL.equals(state)) {
 				// 审核不通过返回信用额度
 				modifyCredit(borrow.getUserId(), borrow.getAmount(), "unuse");
+				// 将用户加入黑名单
+				if (isBlack){
+					this.joinBlackList(borrow.getUserId());
+				}
 			}
 			// 审核放款通过 放款
 			if (BorrowModel.AUDIT_LOAN_PASS.equals(state)) {
-				borrowLoan(borrow, new Date());
+				Borrow newBorrow = clBorrowMapper.findByPrimary(borrowId);
+				borrowLoan(newBorrow, new Date());
 			}
 		} else {
 			logger.error("审核放款失败，当前标不存在");

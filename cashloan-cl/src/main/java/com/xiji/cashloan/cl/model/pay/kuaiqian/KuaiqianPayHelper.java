@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,8 +79,17 @@ public class KuaiqianPayHelper extends BasePay {
         try {
             msg = this.invokeCSSCollection(requestXml, KuaiqianPayUtil.getPayforPayUrl());
             pay2bankOrderReturn = this.unsealMsg(msg);
+        }catch (SocketTimeoutException se){
+            // 支付申请超时，默认请求成功，需等待支付回调
+            if (StringUtil.isBlank(pay2bankOrderReturn.getErrorCode()) && StringUtil.isBlank(pay2bankOrderReturn.getErrorMsg())) {
+                pay2bankOrderReturn.setErrorCode("0000");
+            }
+            logger.error("payment is error, se ==>{}"+se+"order ==>"+order);
         } catch (Exception e) {
             logger.error("payment is error, e ==>"+e);
+            if (StringUtil.isBlank(pay2bankOrderReturn.getErrorCode()) && StringUtil.isBlank(pay2bankOrderReturn.getErrorMsg())){
+                pay2bankOrderReturn.setErrorCode("0000");
+            }
         }
         logger.info("--------------------------快钱放款支付核心逻辑结束-------------------------");
         return pay2bankOrderReturn;
@@ -638,9 +648,10 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(reqVo.getExternalRefNumber(), respXml.toString());
+                    //modifyReqLog(reqVo.getExternalRefNumber(), respXml.toString());
                     logger.info("交易成功");
                 }
+                modifyReqLog(reqVo.getExternalRefNumber(), respXml.toString());
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -709,12 +720,13 @@ public class KuaiqianPayHelper extends BasePay {
                 bindResult=map2Bean(respXml, AgreementSendValidateCodeRespVo.class);
 
                 logger.info("返回结果bindResult ="+bindResult);
+                String token = respXml.get("token").toString();
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
-                    String token = respXml.get("token").toString();
-                    updateReqLog(reqVo.getExternalRefNumber(), respXml.toString(),token);
+                   // updateReqLog(reqVo.getExternalRefNumber(), respXml.toString(),token);
                     logger.info("验证码发送成功");
                 }
+                updateReqLog(reqVo.getExternalRefNumber(), respXml.toString(),token);
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -778,9 +790,10 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(orderNo, respXml.toString());
+                   // modifyReqLog(orderNo, respXml.toString());
                     logger.info("绑卡信息验证交易成功");
                 }
+                modifyReqLog(orderNo, respXml.toString());
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -837,9 +850,10 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(orderNo, respXml.toString());
+                   // modifyReqLog(orderNo, respXml.toString());
                     logger.info("查询交易成功");
                 }
+                modifyReqLog(orderNo, respXml.toString());
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);

@@ -190,7 +190,10 @@ export default React.createClass({
                             recordSoure: result.data,
                             dataForm:dataForm
                         })
+                        record.isBlack2 = result.data.userbase.state == '10' ? true : false;
                     }
+                    record.state1 = title == "审核" ? "303" : record.state;
+                    this.refs.Check.setFieldsValue(record);
                 }
             });
         })
@@ -536,7 +539,7 @@ export default React.createClass({
                     case '待放款审核':
                         return (
                             <div style={{ textAlign: "left" }}>
-                                <a href="#" onClick={me.check.bind(me, '审核', record, false)}>放款审核</a>
+                                <a href="#" onClick={me.check.bind(me, '审核', record, true)}>放款审核</a>
                             </div>
                         );
                     default:
