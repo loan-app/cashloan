@@ -271,7 +271,6 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 
 	@Override
 	public Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params) {
-		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 20);
 
 		List<OverdueStatisticData>  newOverdue = overdueStatisticDataMapper.newOverdueNow(params);
 		List<OverdueStatisticData>  againOverdue = overdueStatisticDataMapper.againOverdueNow(params);
@@ -307,8 +306,12 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 			}
 		}
 
-		Collections.sort(overdueStatisticData);
-		return overdueStatisticData;
+		Page<OverdueStatisticData> overdueStatisticData = new Page(1,10);
+		Collections.sort(statisticDataList);
+		for(OverdueStatisticData statisticData:statisticDataList){
+			overdueStatisticData.add(statisticData);
+		}
+		return  overdueStatisticData;
 	}
 
 	@Override

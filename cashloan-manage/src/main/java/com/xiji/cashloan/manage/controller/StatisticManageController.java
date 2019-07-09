@@ -341,7 +341,7 @@ public class StatisticManageController extends ManageBaseController {
 			params = new HashMap<>();
 		}
 		if(null == params.get("startDate") || StringUtils.isBlank(params.get("startDate").toString())) {
-			String startDateStr = dateFormat2.format(DateUtil.getDateBefore(-7, new Date()));
+			String startDateStr = dateFormat2.format(DateUtil.getDateBefore(-30, new Date()));
 			params.put("startDate", startDateStr);
 		}
 		if(null == params.get("endDate") || StringUtils.isBlank(params.get("endDate").toString())) {
