@@ -349,6 +349,7 @@ public class StatisticManageController extends ManageBaseController {
 		}
 
 		Page<OverdueStatisticData> page = overdueStatisticDataService.queryNowOverdueStatistic(params);
+		logger.info("最终逾期查询统计条数:" + page.size());
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_DATA, page);
 		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));

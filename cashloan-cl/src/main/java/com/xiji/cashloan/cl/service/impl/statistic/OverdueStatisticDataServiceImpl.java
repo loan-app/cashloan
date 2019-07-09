@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.OverdueStatisticDataMapper;
+import com.xiji.cashloan.cl.model.UserOverdueModel;
 import com.xiji.cashloan.cl.service.statistic.OverdueStatisticDataService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -139,50 +140,45 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		for (OverdueStatisticData auditorStatisticData : source) {
 			boolean flag = false;
 			for (OverdueStatisticData statisticData : target) {
-				if (auditorStatisticData.getCountTime().equals(statisticData.getCountTime()) ) {
+				if(auditorStatisticData.compareTo(statisticData) == 0) {
+					switch (type) {
+						case "newOverdue":
+							statisticData.setNewOverdue(auditorStatisticData.getNewOverdue());
+							break;
+						case "againOverdue":
+							statisticData.setAgainOverdue(auditorStatisticData.getAgainOverdue());
+							break;
+						case "extendOverdue":
+							statisticData.setExtendOverdue(auditorStatisticData.getExtendOverdue());
+							break;
+						case "newExpire":
+							statisticData.setNewExpire(auditorStatisticData.getNewExpire());
+							break;
+						case "againExpire":
+							statisticData.setAgainExpire(auditorStatisticData.getAgainExpire());
+							break;
+						case "extendExpire":
+							statisticData.setExtendExpire(auditorStatisticData.getExtendExpire());
+							break;
+						case "newRepayment":
+							statisticData.setNewRepayment(auditorStatisticData.getNewRepayment());
+							break;
+						case "againRepayment":
+							statisticData.setAgainRepayment(auditorStatisticData.getAgainRepayment());
+							break;
+						case "extendRepayment":
+							statisticData.setExtendRepayment(auditorStatisticData.getExtendRepayment());
+							break;
+						default:
+							break;
+					}
 					flag = true;
 					break;
 				}
 			}
 			if (!flag) {
-				target.add(auditorStatisticData);
-			}
-		}
-
-		for (OverdueStatisticData overdueStatisticData : source) {
-			for (OverdueStatisticData statisticData : target) {
-				if (overdueStatisticData.getCountTime().equals(statisticData.getCountTime())) {
-					switch (type) {
-						case "newOverdue":
-							statisticData.setNewOverdue(overdueStatisticData.getNewOverdue());
-							break;
-						case "againOverdue":
-							statisticData.setAgainOverdue(overdueStatisticData.getAgainOverdue());
-							break;
-						case "extendOverdue":
-							statisticData.setExtendOverdue(overdueStatisticData.getExtendOverdue());
-							break;
-						case "newExpire":
-							statisticData.setNewExpire(overdueStatisticData.getNewExpire());
-							break;
-						case "againExpire":
-							statisticData.setAgainExpire(overdueStatisticData.getAgainExpire());
-							break;
-						case "extendExpire":
-							statisticData.setExtendExpire(overdueStatisticData.getExtendExpire());
-							break;
-						case "newRepayment":
-							statisticData.setNewRepayment(overdueStatisticData.getNewRepayment());
-							break;
-						case "againRepayment":
-							statisticData.setAgainRepayment(overdueStatisticData.getAgainRepayment());
-							break;
-						case "extendRepayment":
-							statisticData.setExtendRepayment(overdueStatisticData.getExtendRepayment());
-							break;
-						default:
-							break;
-					}
+				if(null != auditorStatisticData && !target.contains(auditorStatisticData)) {
+					target.add(auditorStatisticData);
 				}
 			}
 		}
@@ -271,7 +267,7 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 
 	@Override
 	public Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params) {
-		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 365);
+		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 20);
 
 		List<OverdueStatisticData>  newOverdue = overdueStatisticDataMapper.newOverdueNow(params);
 		List<OverdueStatisticData>  againOverdue = overdueStatisticDataMapper.againOverdueNow(params);
@@ -284,6 +280,7 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		List<OverdueStatisticData>  extendRepayment = overdueStatisticDataMapper.extendRepayment(params);
 
 		List<OverdueStatisticData> statisticDataList = new ArrayList<>();
+
 		setOverdueStatisticDataProperty(newOverdue,statisticDataList,"newOverdue");
 		setOverdueStatisticDataProperty(againOverdue,statisticDataList,"againOverdue");
 		setOverdueStatisticDataProperty(extendOverdue,statisticDataList,"extendOverdue");
@@ -300,18 +297,19 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		}
 		this.calculationRatio(statisticDataList);
 
-		this.overdueStatisticDataSort(statisticDataList);
-
 		if(statisticDataList != null && statisticDataList.size() > 0) {
-			for(int j=statisticDataList.size() -1 ; j>=0 ; j--){
-				OverdueStatisticData statisticData = statisticDataList.get(j);
+			for(OverdueStatisticData statisticData:statisticDataList){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
-				overdueStatisticData.add(statisticData);
 			}
 		}
 
 		Collections.sort(overdueStatisticData);
 		return overdueStatisticData;
+	}
+
+	@Override
+	public List<UserOverdueModel> queryOverdueData(Map<String, Object> params) {
+		return overdueStatisticDataMapper.queryOverdueData(params);
 	}
 }
 

@@ -110,7 +110,7 @@ public class ChannelController extends ManageBaseController {
 	@RequestMapping(value = "/modules/manage/promotion/channel/listChannel.htm")
 	public void listChannel() throws Exception {
 		List<Channel> list = channelService.listChannel();
-		
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_DATA, list);
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);

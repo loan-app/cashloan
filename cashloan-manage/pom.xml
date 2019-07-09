@@ -53,7 +53,7 @@
 				<version>9.2.9.v20150224</version>
 				<configuration>
 					<httpConnector>
-						<port>8082</port>
+						<port>8081</port>
 					</httpConnector>
 					<scanIntervalSeconds>0</scanIntervalSeconds>
 					<systemProperties>
@@ -63,19 +63,6 @@
 						</systemProperty>
 					</systemProperties>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>war</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 
