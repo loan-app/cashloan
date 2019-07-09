@@ -56,6 +56,7 @@ public class ChannelsController extends BaseController{
             uvCount += 1;
         }
         Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id",code2.getId());
         paramMap.put("uvCount", uvCount);
         paramMap.put("code", code);
         boolean flag = channelService.update(paramMap);
