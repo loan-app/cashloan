@@ -190,7 +190,7 @@ public class LoginController {
 			final String loginPwd, final String vcode,
 			final String invitationCode, final String client,
 			final String channelCode, final String registerCoordinate,
-			final String registerAddr, final String signMsg, final String client,
+			final String registerAddr, final String signMsg,
 			final String blackBox) {
 		String wxRegister = Global.getValue("wxRegister");
 		Map result = new HashMap();
