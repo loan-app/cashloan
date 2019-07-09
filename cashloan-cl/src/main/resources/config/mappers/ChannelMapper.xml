@@ -313,6 +313,7 @@
 		from cl_channel
 		where
 		code = #{code}
+		for update
 	</select>
 
 	<select id="listChannelWithoutApp" resultMap="BaseResultMap">
@@ -590,6 +591,15 @@
 		</trim>
 
 		GROUP BY cu.channel_id
+	</select>
+	<!-- 借款人数 -->
+	<select id="getUvCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT uv_count as uvCount from cl_channel
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="channelId != null and channelId != ''">
+				and channel_id=#{channelId}
+			</if>
+		</trim>
 	</select>
 
 </mapper>

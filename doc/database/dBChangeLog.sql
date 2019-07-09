@@ -1047,3 +1047,7 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1032');
 ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
 
 ALTER TABLE cl_channel add column conditions varchar(50) DEFAULT '' COMMENT '限流1QQ，2微信，3微博，4其他';
+
+
+-- 添加渠道配置字段
+ALTER TABLE cl_channel add uv_count bigint(20) DEFAULT '0'   COMMENT '渠道uv点击量';

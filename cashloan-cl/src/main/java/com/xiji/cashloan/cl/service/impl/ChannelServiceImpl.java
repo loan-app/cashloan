@@ -314,6 +314,7 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			List<Map<String,Object>> countMortgageOverdue = channelMapper.countMortgageOverdue(paramMap);
 			List<Map<String,Object>> countLending = channelMapper.countLending(paramMap);
 			List<Map<String,Object>> certificationCount = channelMapper.certificationCount(paramMap);
+			List<Map<String,Object>> getUvCount = channelMapper.getUvCount(paramMap);
 
 			// 首逾率
 			List<Map<String,Object>> countFirstPassRate = this.calculateOverdueRate(countFirstMortgageOverdue,six,"countFirstMortgageOverdue","countSix");
@@ -348,6 +349,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			count(map,countMortgageOverdue,"overdueCount","countMortgageOverdue");
 			//认证人数
 			count(map,certificationCount,"certificationCount","phoneCount");
+			//uv点击量
+			count(map,getUvCount,"getUvCount","uvCount");
 
 		}
 	}

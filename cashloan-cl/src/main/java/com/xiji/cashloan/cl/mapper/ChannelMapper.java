@@ -160,4 +160,11 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * @return
 	 */
 	List<Map<String, Object>> certificationCount(Map<String,Object> paramMap);
+
+	/**
+	 * uv点击量
+	 * @param paramMap
+	 * @return
+	 */
+	List<Map<String, Object>> getUvCount(Map<String,Object> paramMap);
 }
