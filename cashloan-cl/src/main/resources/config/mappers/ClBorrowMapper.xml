@@ -546,7 +546,7 @@
                 state = #{state,jdbcType=VARCHAR},
             </if>
             <if test="remark != null and remark != '' ">        
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="amount != null ">
                 amount = #{amount,jdbcType=DECIMAL},

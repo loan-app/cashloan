@@ -648,9 +648,10 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(reqVo.getExternalRefNumber(), respXml.toString());
+                    //modifyReqLog(reqVo.getExternalRefNumber(), respXml.toString());
                     logger.info("交易成功");
                 }
+                modifyReqLog(reqVo.getExternalRefNumber(), respXml.toString());
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -719,12 +720,13 @@ public class KuaiqianPayHelper extends BasePay {
                 bindResult=map2Bean(respXml, AgreementSendValidateCodeRespVo.class);
 
                 logger.info("返回结果bindResult ="+bindResult);
+                String token = respXml.get("token").toString();
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
-                    String token = respXml.get("token").toString();
-                    updateReqLog(reqVo.getExternalRefNumber(), respXml.toString(),token);
+                   // updateReqLog(reqVo.getExternalRefNumber(), respXml.toString(),token);
                     logger.info("验证码发送成功");
                 }
+                updateReqLog(reqVo.getExternalRefNumber(), respXml.toString(),token);
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -788,9 +790,10 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(orderNo, respXml.toString());
+                   // modifyReqLog(orderNo, respXml.toString());
                     logger.info("绑卡信息验证交易成功");
                 }
+                modifyReqLog(orderNo, respXml.toString());
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);
@@ -847,9 +850,10 @@ public class KuaiqianPayHelper extends BasePay {
                 //如果TR2获取的应答码responseCode的值为00时，成功
                 if("00".equals((String)respXml.get("responseCode"))) {
                     //更新返回数据
-                    modifyReqLog(orderNo, respXml.toString());
+                   // modifyReqLog(orderNo, respXml.toString());
                     logger.info("查询交易成功");
                 }
+                modifyReqLog(orderNo, respXml.toString());
             }
         }catch (Exception e){
             logger.error(e.getMessage(), e);

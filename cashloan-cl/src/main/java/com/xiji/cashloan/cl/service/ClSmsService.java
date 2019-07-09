@@ -37,6 +37,13 @@ public interface ClSmsService extends BaseService<Sms, Long>{
 	 * @return
 	 */
 	int countDayTime(String phone, String type);
+
+	/**
+	 * 根据短信验证码类型查询多少时间内可获取次数，防短信轰炸
+	 * @param type
+	 * @return 返回0 不拦截 ，1拦截
+	 */
+	int countMinuteTime(String type);
 	
 	/**
 	 * 发送短信

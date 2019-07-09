@@ -266,8 +266,12 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
 		payLog.setType(PayLogModel.TYPE_COLLECT);
 		payLog.setScenes(PayLogModel.SCENES_DEDUCTION);
-		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-		payLog.setRemark(payMsg);
+		if (PayConstant.RESULT_SUCCESS.equals(responseVo.getStatus())){
+			payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+		} else {
+			payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
+		}
+		payLog.setRemark(responseVo.getMessage());
 		payLog.setPayReqTime(payReqTime);
 		payLog.setCreateTime(DateUtil.getNow());
 		payLogService.save(payLog);
