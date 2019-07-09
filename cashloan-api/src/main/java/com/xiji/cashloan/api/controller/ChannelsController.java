@@ -1,5 +1,6 @@
 package com.xiji.cashloan.api.controller;
 
+import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.service.ChannelService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.ServletUtils;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -35,6 +37,38 @@ public class ChannelsController extends BaseController{
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "获取成功");
          ServletUtils.writeToResponse(response,result);
+    }
+
+    /**
+     * 渠道uv统计
+     */
+    @RequestMapping(value = "/api/channels/getUvCount.htm", method = {RequestMethod.POST,RequestMethod.GET})
+    public void getUvCount(
+            @RequestParam(value="code") String code)throws Exception {
+        //根据渠道编码查询渠道信息
+        Channel code2 = channelService.getChannelByCode(code);
+        int uvCount = code2.getUvCount();
+
+        if( uvCount == 0 ){
+            /* 第一次访问 */
+            uvCount = 1;
+        }else{
+            uvCount += 1;
+        }
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("uvCount", uvCount);
+        paramMap.put("code", code);
+        boolean flag = channelService.update(paramMap);
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (flag) {
+            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+        } else {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+        }
+        ServletUtils.writeToResponse(response, result);
+
     }
 
 }

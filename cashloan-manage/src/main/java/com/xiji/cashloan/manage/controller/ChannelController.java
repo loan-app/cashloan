@@ -511,39 +511,4 @@ public class ChannelController extends ManageBaseController {
 		ServletUtils.writeToResponse(response, result);
 	}
 
-	/**
-	 * 渠道uv统计
-	 */
-	@RequestMapping(value = "/api/modules/manage/promotion/channel/getUvCount.htm", method = {RequestMethod.POST,RequestMethod.GET})
-	public void getUvCount(
-			@RequestParam(value="code") String code)throws Exception {
-		//根据渠道编码查询渠道信息
-		Channel code2 = channelService.getChannelByCode(code);
-        int uvCount = code2.getUvCount();
-
-        if( uvCount == 0 ){
-            /* 第一次访问 */
-            uvCount = 1;
-        }else{
-            uvCount += 1;
-        }
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("uvCount", uvCount);
-        paramMap.put("code", code);
-        boolean flag = channelService.update(paramMap);
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (flag) {
-            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-            result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
-        } else {
-            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-            result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
-        }
-        ServletUtils.writeToResponse(response, result);
-
-    }
-
-
-
-
 }
