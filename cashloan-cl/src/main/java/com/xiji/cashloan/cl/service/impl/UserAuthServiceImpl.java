@@ -204,7 +204,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 		//定义需要的变量
 		String resultSql="";//result返回值中的语句
 		String qualifiedSql="";//qualified返回值中的语句
-		int qualifiedCount=5;//基础必填项数量
+		int qualifiedCount=4;//基础必填项数量
 		//芝麻信用sql语句拼接，需要sys_config表里设置的zhima_auth属性，10-去除 20-选填 30-必填
 //		String zhima_auth=Global.getValue("zhima_auth");
 //		if("30".equals(zhima_auth)){
@@ -220,9 +220,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				+ "IF (id_state = 30, 1, 0) +"
 				+ "IF (phone_state = 30, 1, 0) +"
 				+ "IF (contact_state = 30, 1, 0) +"
-				+ "IF (bank_card_state = 30, 1, 0) +"
-				+ "IF (work_info_state = 30, 1, 0) +"
-				+ "IF (other_info_state = 30, 1, 0)"
+				+ "IF (bank_card_state = 30, 1, 0)"
 				+ resultSql
 				+ ") AS result,"
 				+ Global.getValue("auth_total")+" AS total,"
@@ -230,8 +228,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				+ "(IF (id_state = 30, 1, 0) +"
 				+ "IF (phone_state = 30, 1, 0) +"
 				+ "IF (contact_state = 30, 1, 0) +"
-				+ "IF (bank_card_state = 30, 1, 0) +"
-				+ "IF (work_info_state = 30, 1, 0) "
+				+ "IF (bank_card_state = 30, 1, 0)"
 				+ qualifiedSql
 				+ ") = "
 				+ qualifiedCount
