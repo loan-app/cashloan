@@ -144,7 +144,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			payload.put("mobile", phone);
 			payload.put("message", change(type)+vcode);
 			String result = sendCode(payload, tpl.getNumber());
-			logger.debug("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
+			logger.info("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
 			return result(result, phone, type, vcode);
 		}
 		logger.error("发送短信，phone：" + phone + "， type：" + type + "，没有获取到smsTpl");

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.api.util.CollectionUtil;
 import com.xiji.cashloan.api.util.OcrUtil;
 import com.xiji.cashloan.cl.domain.*;
+import com.xiji.cashloan.cl.mapper.CallsOutSideFeeMapper;
 import com.xiji.cashloan.cl.mapper.NameBlacklistMapper;
 import com.xiji.cashloan.cl.model.UserAuthModel;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckBiz;
@@ -56,6 +57,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -122,6 +124,9 @@ public class UserBaseInfoController extends BaseController {
 
     @Resource
     private NameBlacklistMapper nameBlacklistMapper;
+
+    @Resource
+    private CallsOutSideFeeMapper callsOutSideFeeMapper;
 
     /**
      * @param userId
@@ -342,12 +347,18 @@ public class UserBaseInfoController extends BaseController {
             @RequestParam(value = "orderNo", required = false) String orderNo,
             @RequestParam(value = "liveCoordinate", required = false) String liveCoordinate)
             throws Exception {
-        logger.info("个人认证信息保存");
+        logger.info("个人认证信息保存realName:" + realName +",idNo: " + idNo +",education:" + education +
+                ",liveAddr:" + liveAddr + ",detailAddr:" + detailAddr + ",orderNo:" + orderNo);
         long userId = NumberUtil.getLong(request.getSession().getAttribute("userId").toString());
         Map<String, Object> returnMap = new HashMap<String, Object>();
+
+        UserBaseInfo info = null;
         Map<String, Object> infoMap = new HashMap<String, Object>();
-        infoMap.put("idNo", idNo);
-        UserBaseInfo info = userBaseInfoService.findSelective(infoMap);
+        if(StringUtils.isNotBlank(idNo)) {
+            infoMap.put("idNo", idNo);
+            info = userBaseInfoService.findSelective(infoMap);
+        }
+
         if (info == null) {
             infoMap.clear();
             infoMap.put("userId", userId);
@@ -383,6 +394,10 @@ public class UserBaseInfoController extends BaseController {
                         }
                     }
                 }
+
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userId,"lm_" + orderNo, CallsOutSideFeeConstant.CALLS_TYPE_LVMENG_BLACK,CallsOutSideFeeConstant.FEE_LVMENG,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,info.getPhone());
+                callsOutSideFeeMapper.save(callsOutSideFee);
+
             } catch (Throwable e) {
                 logger.info("绿盟黑名单请求参数idNo,phone,name:{},失败{}.",idNo + "," + info.getPhone() + "," + realName, e);
                 returnMap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
