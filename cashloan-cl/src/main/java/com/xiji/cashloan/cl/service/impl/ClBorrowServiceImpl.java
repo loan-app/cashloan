@@ -55,17 +55,14 @@ import ml.dmlc.xgboost4j.java.Booster;
 import ml.dmlc.xgboost4j.java.DMatrix;
 import ml.dmlc.xgboost4j.java.XGBoost;
 import org.apache.commons.lang.StringUtils;
-import org.mybatis.spring.SqlSessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -2179,7 +2176,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					return;
 				}
 				//对于无法决策以及机审决策通过,查询微积分
-				double pxScore = pxRiskService.getScore(borrow);
+				double pxScore = pxRiskService.getWjfScore(borrow);
 				double defaultPxPassScore = 600;
 				double defaultPxReviewScore = 560;
 				String pxModelPassScore = Global.getValue("px_model_pass_score");
