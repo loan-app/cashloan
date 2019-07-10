@@ -7,9 +7,16 @@ import com.xiji.cashloan.core.domain.Borrow;
  */
 public interface PxRiskService {
     /**
-     *
+     * 微积分
      * @param borrow
      * @return
      */
-    double getScore(Borrow borrow);
+    double getWjfScore(Borrow borrow);
+
+    /**
+     * 排序
+     * @param borrow
+     * @return
+     */
+    double getPxScore(Borrow borrow);
 }
