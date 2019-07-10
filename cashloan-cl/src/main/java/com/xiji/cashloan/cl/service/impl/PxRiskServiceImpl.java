@@ -105,11 +105,16 @@ public class PxRiskServiceImpl implements PxRiskService {
 
         //运营商报告
         OperatorReport operatorReport = operatorReportMapper.getOperatorReport(borrow.getId());
-        dataObj.put("yys_raw", operatorRespDetail.getOperatorData());
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("rawdata",operatorRespDetail.getOperatorData());
+        jsonObject2.put("report",operatorReport.getReport());
+
+
+      //  dataObj.put("rawdata", operatorRespDetail.getOperatorData());
         //获取用户的运营商报告数据
-        dataObj.put("moxie", operatorReport.getReport());
+      //  dataObj.put("moxie", operatorReport.getReport());
 
-
+        dataObj.put("moxie",jsonObject2);
         requestDto.setData(dataObj.toJSONString());
         try {
             requestDto = RSASign.sign(requestDto, TestConstants.PRIVATE_KEY);
