@@ -1049,5 +1049,12 @@ ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMEN
 ALTER TABLE cl_channel add column conditions varchar(50) DEFAULT '' COMMENT '限流1QQ，2微信，3微博，4其他';
 
 
--- 添加渠道配置字段
-ALTER TABLE cl_channel add uv_count bigint(20) DEFAULT '0'   COMMENT '渠道uv点击量';
+-- 渠道uv点击统计
+CREATE TABLE `cl_channel_uv` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道id',
+  `name` varchar(16) DEFAULT '' COMMENT '渠道名称',
+  `count_date` date NOT NULL COMMENT '统计日期',
+  `uv_count` bigint(30) DEFAULT '0' COMMENT 'uv点击量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击统计'

@@ -228,6 +228,10 @@ public class SysConfigController extends BaseController {
         String count_improve_credit = sysConfigService.selectByCode("count_improve_credit");
         //借款天数
         String borrow_day = sysConfigService.selectByCode("borrow_day");
+        //是否启用砍头期
+        String behead_fee = sysConfigService.selectByCode("behead_fee");
+        //还款提额开关
+        String is_improve_credit = sysConfigService.selectByCode("is_improve_credit");
 
         Map<String, Object> map = new HashMap<String, Object>();
         if (!StringUtil.equalsIgnoreCase(init_credit,Global.getValue("init_credit"))){
@@ -254,6 +258,12 @@ public class SysConfigController extends BaseController {
         }
         if (!StringUtil.equalsIgnoreCase(borrow_day,Global.getValue("borrow_day"))){
             map.put("borrowDay",borrow_day);
+        }
+        if (!StringUtil.equalsIgnoreCase(behead_fee,Global.getValue("behead_fee"))){
+            map.put("beheadFee",behead_fee);
+        }
+        if (!StringUtil.equalsIgnoreCase(is_improve_credit,Global.getValue("is_improve_credit"))){
+            map.put("isImproveCredit",is_improve_credit);
         }
         //批量修改渠道信息
         if (map !=null && map.size()>0){

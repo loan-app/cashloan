@@ -5,10 +5,12 @@ import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
 import com.xiji.cashloan.cl.service.ChannelService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.system.domain.SysRole;
 import com.xiji.cashloan.system.domain.SysUser;
 import org.springframework.context.annotation.Scope;
@@ -42,6 +44,9 @@ public class ChannelController extends ManageBaseController {
 
 	@Resource
 	private ChannelService channelService;
+
+	@Resource
+	private ClBorrowService clBorrowService;
 
 	private static final String ROLE_QUDAO = "QuDao";
 
@@ -191,6 +196,10 @@ public class ChannelController extends ManageBaseController {
         paramMap.put("countImproveCredit",countImproveCredit);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
+		if (StringUtil.equalsIgnoreCase(initCredit,channelID.getInitCredit())){
+            clBorrowService.changeCreditTotal(Double.valueOf(initCredit));
+        }
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		if(channelID.getCode().equals(code)){
             paramMap.put("code", code);
