@@ -152,6 +152,10 @@ public class PxRiskServiceImpl implements PxRiskService {
                 JSONObject jsonObject1 = JSONObject.parseObject(data1);
                 String score = jsonObject1.getString("score");
                i =Double.parseDouble(score);
+                //插入收费记录表
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userBaseinfo.getUserId(),operatorReqLog.getTaskId(), CallsOutSideFeeConstant.CALLS_TYPE_WEIJIFEN_MODEL,
+                        CallsOutSideFeeConstant.FEE_WEIJIFEN_MODEL, CallsOutSideFeeConstant.CAST_TYPE_CONSUME, userBaseinfo.getPhone());
+                callsOutSideFeeMapper.save(callsOutSideFee);
             }else {
              return i;
             }

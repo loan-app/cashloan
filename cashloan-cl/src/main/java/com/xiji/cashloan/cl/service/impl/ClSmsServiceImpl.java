@@ -22,6 +22,7 @@ import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -104,6 +106,30 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		int times = smsMapper.countDayTime(data);
 		
 		return mostTime - times;
+	}
+
+	@Override
+	public int countMinuteTime(String type) {
+		//{"minute": 10,"register": 5}
+		String mostTimes = Global.getValue("sms_minute_most_times");
+		if(StringUtils.isBlank(mostTimes)
+				|| JSONObject.parseObject(mostTimes) == null) {
+			return 0;
+		}
+		int mostTime = JSONObject.parseObject(mostTimes).getIntValue(type);
+		int minute = JSONObject.parseObject(mostTimes).getIntValue("minute");
+		Map<String,Object> data = new HashMap<>();
+		data.put("smsType", type);
+		SimpleDateFormat format = new SimpleDateFormat("mm");
+		int nowMin = Integer.parseInt(format.format(new Date()));
+		int n = nowMin/minute;
+		String startMin = (n * minute) <10?"0" + (n * minute):(n * minute) + "";
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:");
+		String startDate = format1.format(new Date()) + startMin + ":00";
+		data.put("startDate", startDate);
+		int times = smsMapper.countMinuteTime(data);
+
+		return (times - mostTime) <0 ?0:1;
 	}
 
 	@Override
