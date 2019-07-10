@@ -159,7 +159,9 @@ export default React.createClass({
               return "还款行为"
           } else if (record.type == 13) {
               return "借贷多头"
-          } else {
+          } else if (record.type == 17) {
+              return "绿盟黑名单"
+          }else {
               return "-"
           }
       }
