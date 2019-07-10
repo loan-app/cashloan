@@ -89,8 +89,8 @@ public class PxRiskServiceImpl implements PxRiskService {
         log.setUserId(borrow.getUserId());
         log.setBorrowId(borrow.getId());
         log.setCreateTime(createDate);
-        // type-1 模型
-        log.setType(1);
+        // type-2  weijifen
+        log.setType(2);
         log.setIsFee(0);
         String requestId = UUIDGenerator.getUUID();
         log.setRequestId(requestId);
@@ -154,7 +154,21 @@ public class PxRiskServiceImpl implements PxRiskService {
             Request request = new Request.Builder().url(url).post(body).build();
             Response response = client.newCall(request).execute();
             JSONObject jsonObject = JSONObject.parseObject(response.body().string());
+            if(jsonObject!=null){
+                log.setReturnCode(jsonObject.getString("code"));
+                log.setReturnInfo(jsonObject.toJSONString());
+                log.setRespTime(new Date());
+            }
             if(jsonObject.getString("data")!=null){
+                log.setIsFee(1);
+                //保存模型分
+                PxModel pxModel = new PxModel();
+                pxModel.setCreateTime(new Date());
+                pxModel.setRequestId(requestId);
+                pxModel.setScore(jsonObject.getJSONObject("data").getDouble("score"));
+                pxModel.setUserId(borrow.getUserId());
+                pxModel.setBorrowId(borrow.getId());
+                pxModelMapper.save(pxModel);
                 String data1 = jsonObject.getString("data");
                 JSONObject jsonObject1 = JSONObject.parseObject(data1);
                 String score = jsonObject1.getString("score");
