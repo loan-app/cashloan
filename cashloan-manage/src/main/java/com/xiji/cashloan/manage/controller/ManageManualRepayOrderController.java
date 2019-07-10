@@ -117,6 +117,7 @@ public class ManageManualRepayOrderController extends ManageBaseController {
                 params = new HashMap<>();
             }
             params.put("userId", sysUser.getId());
+            params.put("state","20");// 只查询 到期且未还款订单
             page = manualRepayOrderService.list(params, current, pageSize);
             result.put(Constant.RESPONSE_DATA, page);
             result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));

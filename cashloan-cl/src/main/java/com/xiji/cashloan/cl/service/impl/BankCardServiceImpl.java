@@ -86,6 +86,7 @@ public class BankCardServiceImpl extends BaseServiceImpl<BankCard, Long> impleme
 			vo.setProtocolNo(card.getAgreeNo());
 			vo.setUserId(user.getUuid());
 			vo.setShareKey(card.getUserId());
+			vo.setCardNo(card.getCardNo());
 			responseVo = PayCommonUtil.unbind(vo);
 		}
 		// 解约成功 修改银行卡

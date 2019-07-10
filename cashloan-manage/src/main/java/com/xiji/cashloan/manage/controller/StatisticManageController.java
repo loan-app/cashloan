@@ -14,6 +14,7 @@ import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -339,16 +340,17 @@ public class StatisticManageController extends ManageBaseController {
 		if(null == params) {
 			params = new HashMap<>();
 		}
-		if(null == params.get("startDate")) {
-			String startDateStr = dateFormat2.format(DateUtil.getDateBefore(-7, new Date()));
+		if(null == params.get("startDate") || StringUtils.isBlank(params.get("startDate").toString())) {
+			String startDateStr = dateFormat2.format(DateUtil.getDateBefore(-30, new Date()));
 			params.put("startDate", startDateStr);
 		}
-		if(null == params.get("endDate")) {
+		if(null == params.get("endDate") || StringUtils.isBlank(params.get("endDate").toString())) {
 			String endDateStr = dateFormat.format(new Date());
 			params.put("endDate", endDateStr);
 		}
 
 		Page<OverdueStatisticData> page = overdueStatisticDataService.queryNowOverdueStatistic(params);
+		logger.info("最终逾期查询统计条数:" + page.size());
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_DATA, page);
 		result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));

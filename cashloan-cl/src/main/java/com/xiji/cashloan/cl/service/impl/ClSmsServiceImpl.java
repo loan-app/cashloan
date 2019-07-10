@@ -144,7 +144,7 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			payload.put("mobile", phone);
 			payload.put("message", change(type)+vcode);
 			String result = sendCode(payload, tpl.getNumber());
-			logger.debug("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
+			logger.info("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
 			return result(result, phone, type, vcode);
 		}
 		logger.error("发送短信，phone：" + phone + "， type：" + type + "，没有获取到smsTpl");
@@ -459,7 +459,16 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			sms.setOrderNo("");
 			sms.setState("40");
 			smsMapper.save(sms);
-			BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_13, phone, msg);
+			String value = Global.getValue("pay_model_select");
+			String smsType="";
+			if ("chanpay".equals(value)){
+				smsType=BusinessExceptionMonitor.TYPE_14;
+			}else if ("kuaiqian".equals(value)){
+				smsType=BusinessExceptionMonitor.TYPE_13;
+			}else {
+				smsType=BusinessExceptionMonitor.TYPE_12;
+			}
+			BusinessExceptionMonitor.add(smsType, phone, msg);
 		}
 	}
 

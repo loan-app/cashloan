@@ -107,7 +107,14 @@ public class OperatorController extends BaseController {
                         + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8") + backUrl;
 
                 data.put("url", url);
-            }else if ("gxb".equals(operatorSelect)){
+            }else if ("yunqiao".equals(operatorSelect)){
+                String url = Global.getValue("yq_operator_url");
+                backUrl = "&backUrl=" + URLEncoder.encode(backUrl, "UTF-8");
+                url += "?apiKey=" + Global.getValue("yq_apikey") + "&userId=" + userId + "&phone=" + userBaseInfo.getPhone()
+                        + "&idcard=" + userBaseInfo.getIdNo() + "&name=" + URLEncoder.encode(userBaseInfo.getRealName(), "UTF-8") + backUrl;
+
+                data.put("url", url);
+            } else if ("gxb".equals(operatorSelect)){
                 long timestamp = System.currentTimeMillis();
                 String appId = Global.getValue("gxb_appid");
                 String appSecret = Global.getValue("gxb_appsecret");
@@ -568,5 +575,227 @@ public class OperatorController extends BaseController {
         respMap.put("retCode",1);
         respMap.put("retMsg","成功");
         ServletUtils.writeToResponse(response, respMap);
+    }
+
+
+
+
+    @RequestMapping(value = "/api/yunqiao/yqCallback.htm")
+    public void yqCallback(@RequestBody String body, HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+        logger.info("---------------------云桥运营商回调开始-----------------------");
+        //事件类型：task or bill
+        String eventName = request.getHeader(MxConstant.HEADER_MOXIE_EVENT);
+        //业务类型：email、bank、carrier 等
+        String eventType = request.getHeader(MxConstant.HEADER_MOXIE_TYPE);
+        //body签名
+        String signature = request.getHeader(MxConstant.HEADER_MOXIE_SIGNATURE);
+        logger.debug("云桥运营商回调,request body:" + body);
+        if (StringUtil.isBlank(eventName)) {
+            writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "header not found:" + MxConstant.HEADER_MOXIE_EVENT);
+            return;
+        }
+        if (StringUtil.isBlank(eventType)) {
+            writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "header not found:" + MxConstant.HEADER_MOXIE_TYPE);
+            return;
+        }
+        if (StringUtil.isBlank(signature)) {
+            writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "header not found:" + MxConstant.HEADER_MOXIE_SIGNATURE);
+            return;
+        }
+        if (StringUtil.isBlank(body)) {
+            writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "request body is empty");
+            return;
+        }
+        //验签，判断body是否被篡改
+        if (!SignatureUtils.base64Hmac256(Global.getValue("yq_secret"), body).equals(signature)) {
+            writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "signature mismatch");
+            return;
+        }
+
+        logger.debug("event name:" + eventName.toLowerCase());
+
+        JSONObject requestJson = JSON.parseObject(body);
+        final String taskId = requestJson.getString("task_id");
+        final long userId = requestJson.getLongValue("user_id");
+        long timestamp = requestJson.getLongValue("timestamp");
+        final String mobile = requestJson.getString("mobile");
+
+        //任务创建成功,判断task是否存在,不存在,创建
+        Map<String, Object> temp = new HashMap<>();
+        temp.put("taskId", taskId);
+        OperatorReqLog operatorReqLog = operatorReqLogService.findSelective(temp);
+        if (operatorReqLog == null) {
+            if (StringUtil.equals(eventName.toLowerCase(), "task.submit")) {
+                //运营商认证记录不存在,新建
+                UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
+                if (userBaseInfo == null) {
+                    writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "user does not exist");
+                    return;
+                }
+                operatorReqLog = new OperatorReqLog(userId, taskId, OperatorReqLog.STATE_CREATE_SUCCESS);
+                operatorReqLogService.insert(operatorReqLog);
+
+                temp.clear();
+                temp.put("userId", operatorReqLog.getUserId());
+                temp.put("phoneState", UserAuthModel.STATE_ERTIFICATION);
+                updateUserAuthState(operatorReqLog.getUserId(), UserAuthModel.STATE_ERTIFICATION);
+
+                writeMessage(response, HttpServletResponse.SC_CREATED, "success");
+                return;
+            } else {
+                writeMessage(response, HttpServletResponse.SC_BAD_REQUEST, "task does not exist");
+                return;
+            }
+        }
+        final Long reqLogId = operatorReqLog.getId();
+        //登录结果
+        //{"mobile":"15368098198","timestamp":1476084445670,"result":false,"message":"[CALO-22001-10]-服务密码错误，请确认正确后输入。","user_id":"374791","task_id":"fdda6b30-8eba-11e6-b7e9-00163e10b2cd"}
+        if (StringUtil.equals(eventName.toLowerCase(), "task")) {
+            if (requestJson.containsKey("result")) {
+                String result = requestJson.get("result").toString();
+                if (StringUtil.equals(result, "false")) {
+                    if (requestJson.containsKey("message")) {
+                        String message = requestJson.get("message") == null ? "未知异常" : requestJson.get("message").toString();
+                        //认证记录状态修改为登录失败
+                        updateOperatorLogState(operatorReqLog.getId(), "task.false", message, timestamp);
+                        //用户运营商认证状态修改为未认证
+                        updateUserAuthState(userId, UserAuthModel.STATE_NOT_CERTIFIED);
+                        logger.debug("task event. result={}, message={}", result, message);
+                    }
+                } else {
+                    //状态修改为 登录成功
+                    updateOperatorLogState(operatorReqLog.getId(), "task.true", StringUtil.EMPTY, timestamp);
+                }
+            }
+        }
+
+        //采集状态
+        //运营商的格式{"mobile":"13429801680","timestamp":1474641874728,"result":false,"message":"系统繁忙，请稍后再试","user_id":"1111","task_id":"3e9ff350-819c-11e6-b7fe-00163e004a23"}
+        if (StringUtil.equals(eventName.toLowerCase(), "task.fail")) {
+            if (requestJson.containsKey("result") && requestJson.containsKey("message")) {
+                String result = requestJson.get("result").toString();
+                String message = requestJson.get("message") == null ? "未知异常" : requestJson.get("message").toString();
+                if (StringUtil.equals(result, "false")) {
+                    //认证记录状态修改为采集失败
+                    updateOperatorLogState(operatorReqLog.getId(), "task.fail", message, timestamp);
+                    //用户运营商认证状态修改为未认证
+                    updateUserAuthState(userId, UserAuthModel.STATE_NOT_CERTIFIED);
+                    logger.debug("task fail event. result={}, message={}", result, message);
+                }
+            }
+        }
+        //任务完成的通知处理bill
+        if (StringUtil.equals(eventName.toLowerCase(), "bill")) {
+            final Date updateTime = new Date();
+            //通知状态变更为 '采集成功'
+            updateOperatorLogState(reqLogId, "bill", StringUtil.EMPTY, timestamp);
+            //运营商数据生成成功,调用接口获取数据
+            fixedThreadPool.execute(new Runnable() {
+                public void run() {
+                    try {
+                        String host = Global.getValue("yq_operator_mxdata");
+                        final String token = Global.getValue("yq_token");
+                        Map<String, String> headMap = new HashMap<>();
+
+                        headMap.put("Authorization", "token" + " " + token);
+                        host = host.replace("{mobile}", mobile);
+                        host += "?task_id=" + taskId;
+                        String result = MxCreditRequest.get(host, headMap);
+//                        String result = MxCreditRequest.getCompress(host, headMap);
+                        OperatorRespDetail oldDetail = operatorRespDetailService.getByTaskId(taskId);
+                        if (oldDetail == null) {
+                            OperatorRespDetail operatorRespDetail = new OperatorRespDetail(reqLogId, taskId, result);
+                            operatorRespDetailService.insert(operatorRespDetail);
+                        } else {
+                            Map<String, Object> updateMap = new HashMap<>();
+                            updateMap.put("id", oldDetail.getId());
+                            updateMap.put("operatorData", result);
+                            operatorRespDetailService.updateSelective(updateMap);
+                        }
+
+                        int start = DateUtil.getNowTime();
+                        operatorService.saveOperatorInfos(result, userId, updateTime, mobile, reqLogId);
+                        int end = DateUtil.getNowTime();
+                        logger.info("保存userId" + userId + "运营商数据，耗时" + (end - start) + "秒");
+                    } catch (Exception e) {
+                        logger.error("严重问题，userId:" + userId + "运营商数据保存异常", e);
+                        return;
+                    }
+                    //插入调用外部数据接口费用表
+                    CallsOutSideFee callsOutSideFee = callsOutSideFeeService.getByTaskId(taskId);
+                    if(callsOutSideFee == null) {
+                        callsOutSideFee = new CallsOutSideFee(userId, taskId, CallsOutSideFeeConstant.CALLS_TYPE_OPERATOR, CallsOutSideFeeConstant.FEE_OPERATOR,CallsOutSideFeeConstant.CAST_TYPE_CONSUME,mobile);
+                        callsOutSideFeeService.insert(callsOutSideFee);
+                    }
+                }
+            });
+        }
+
+        if (StringUtil.equals(eventName.toLowerCase(), "report")) {
+            logger.info("开始保存userId" + userId + "运营商报告");
+            if (requestJson.containsKey("result")) {
+                String result = requestJson.get("result").toString();
+                if (StringUtil.equals(result, "false")) {
+                    if (requestJson.containsKey("message")) {
+                        String message = requestJson.get("message") == null ? "未知异常" : requestJson.get("message").toString();
+                        //认证记录状态修改为报告生成失败,不处理用户运营商认证状态
+                        updateOperatorLogState(operatorReqLog.getId(), "report.false", message, timestamp);
+                        logger.debug("report event. result={}, message={}", result, message);
+                    }
+                } else {
+                    final Date updateTime = new Date();
+                    //状态修改为 报告生成成功
+                    updateOperatorLogState(operatorReqLog.getId(), "report.true", StringUtil.EMPTY, timestamp);
+                    //保存运营商报告链接
+                    String message = requestJson.getString("message");
+                    OperatorReportLink operatorReportLink = new OperatorReportLink(userId, taskId, message);
+                    operatorReportLinkService.insert(operatorReportLink);
+                    //获取运营商报告
+                    fixedThreadPool.execute(new Runnable() {
+                        public void run() {
+                            Map<String, Object> userAuth = new HashMap<String, Object>();
+                            userAuth.put("userId", userId);
+                            userAuth.put("phoneTime", DateUtil.getNow());
+                            try {
+                                String host = Global.getValue("yq_operator_report");
+                                final String token = Global.getValue("yq_token");
+                                Map<String, String> headMap = new HashMap<>();
+                                headMap.put("Authorization", "token" + " " + token);
+                                host = host.replace("{mobile}", mobile);
+                                String result = MxCreditRequest.get(host, headMap);
+                                OperatorReport oldReport = operatorReportService.getByTaskId(taskId);
+                                if (oldReport == null) {
+                                    OperatorReport operatorReport = new OperatorReport(userId, reqLogId, taskId, result);
+                                    operatorReportService.insert(operatorReport);
+                                } else {
+                                    Map<String, Object> updateMap = new HashMap<>();
+                                    updateMap.put("id", oldReport.getId());
+                                    updateMap.put("report", result);
+                                    updateMap.put("gmtModified", DateUtil.getNow());
+                                    operatorReportService.updateSelective(updateMap);
+                                }
+
+                                int start = DateUtil.getNowTime();
+                                operatorVoiceCntService.paserReportDetail(result, userId, updateTime, reqLogId);
+                                operatorVoiceCntService.lastContactTime(userId, reqLogId);
+                                int end = DateUtil.getNowTime();
+                                logger.info("保存userId" + userId + "运营商报告，详情统计，耗时" + (end - start) + "秒");
+                                //修改认证状态为认证完成
+                                userAuth.put("phoneState", UserAuthModel.STATE_VERIFIED);
+                                userAuthService.updateByUserId(userAuth);
+                            } catch (Exception e) {
+                                // 运营商报告保存失败，将认证状态改回未认证
+                                userAuth.put("phoneState", UserAuthModel.STATE_NOT_CERTIFIED);
+                                userAuthService.updateByUserId(userAuth);
+                                logger.error("严重问题，userId:" + userId + "运营商数据报告保存失败", e);
+                                return;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        writeMessage(response, HttpServletResponse.SC_CREATED, "success");
     }
 }

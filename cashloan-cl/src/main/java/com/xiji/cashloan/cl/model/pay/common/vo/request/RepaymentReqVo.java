@@ -16,6 +16,7 @@ public class RepaymentReqVo  extends PayReq {
     private String terminalType;
     private String borrowOrderNo;
     private Long borrowId;
+    private String cardNo;
 
     public String getUserId() {
         return userId;
@@ -95,5 +96,13 @@ public class RepaymentReqVo  extends PayReq {
 
     public void setBorrowId(Long borrowId) {
         this.borrowId = borrowId;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData;
 import com.xiji.cashloan.cl.mapper.statistic.OverdueStatisticDataMapper;
+import com.xiji.cashloan.cl.model.UserOverdueModel;
 import com.xiji.cashloan.cl.service.statistic.OverdueStatisticDataService;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -186,7 +187,6 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 				}
 			}
 		}
-
 	}
 
 
@@ -271,7 +271,6 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 
 	@Override
 	public Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params) {
-		Page<OverdueStatisticData> overdueStatisticData = PageHelper.startPage(1, 365);
 
 		List<OverdueStatisticData>  newOverdue = overdueStatisticDataMapper.newOverdueNow(params);
 		List<OverdueStatisticData>  againOverdue = overdueStatisticDataMapper.againOverdueNow(params);
@@ -284,6 +283,7 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		List<OverdueStatisticData>  extendRepayment = overdueStatisticDataMapper.extendRepayment(params);
 
 		List<OverdueStatisticData> statisticDataList = new ArrayList<>();
+
 		setOverdueStatisticDataProperty(newOverdue,statisticDataList,"newOverdue");
 		setOverdueStatisticDataProperty(againOverdue,statisticDataList,"againOverdue");
 		setOverdueStatisticDataProperty(extendOverdue,statisticDataList,"extendOverdue");
@@ -300,18 +300,23 @@ public class OverdueStatisticDataServiceImpl extends BaseServiceImpl<OverdueStat
 		}
 		this.calculationRatio(statisticDataList);
 
-		this.overdueStatisticDataSort(statisticDataList);
-
 		if(statisticDataList != null && statisticDataList.size() > 0) {
-			for(int j=statisticDataList.size() -1 ; j>=0 ; j--){
-				OverdueStatisticData statisticData = statisticDataList.get(j);
+			for(OverdueStatisticData statisticData:statisticDataList){
 				statisticData.setCountTimeStr(DateUtil.dateStr(statisticData.getCountTime(),DateUtil.DATEFORMAT_STR_002));
-				overdueStatisticData.add(statisticData);
 			}
 		}
 
-		Collections.sort(overdueStatisticData);
-		return overdueStatisticData;
+		Page<OverdueStatisticData> overdueStatisticData = new Page(1,10);
+		Collections.sort(statisticDataList);
+		for(OverdueStatisticData statisticData:statisticDataList){
+			overdueStatisticData.add(statisticData);
+		}
+		return  overdueStatisticData;
+	}
+
+	@Override
+	public List<UserOverdueModel> queryOverdueData(Map<String, Object> params) {
+		return overdueStatisticDataMapper.queryOverdueData(params);
 	}
 }
 
