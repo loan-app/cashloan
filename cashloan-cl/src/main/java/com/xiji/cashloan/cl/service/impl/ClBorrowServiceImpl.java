@@ -2090,15 +2090,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			Long engineId =config.getRuleEnginId();
 			result = new BorrowRuleResult(borrowId,config.getRuleEnginId(),config.getCtable(),config.getTableComment(),config.getCcolumn(),config.getColumnComment(),config.getFormula(),new Date());
 			String tableName = config.getCtable();
-			
+
 			//使用分表的数据表，需要获取当前使用的表名称
 			tableName = ShardTableUtil.generateTableNameById(config.getCtable(), borrow.getUserId(), 30000);
-			
+
 			//取数据库字段的值
 			String statement = "select " + config.getCcolumn() + " from " + tableName + " where user_id = " + borrow.getUserId()+" order by id desc limit 1";
 			String value = ruleEngineMapper.findValidValue(statement);
 			result.setValue(config.getCvalue());
-			
+
 			//进行值的比对，返回是否匹配,数据库没有值，进入人工复审
 			boolean hasValue = StringUtil.isNotBlank(value);
 			String coparResult = hasValue?comparRule(config,value):SimpleRule.COMPAR_FAIL;
@@ -2107,9 +2107,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if(!hasValue){
 				review = true;
 			}
-			
+
 			String type = config.getEnginType();
-			
+
 			//如果是结果模式，则设置结果类型
 			if(RuleEngineConfig.ENGINE_RESULT.equals(type)){
 				String resultType = hasValue?config.getResult():BorrowRuleResult.RESULT_TYPE_REVIEW;
@@ -2138,10 +2138,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			}else{
 				throw new BussinessException("规则模式设置错误");
 			}
-			
+
 			//(评分模式) 本条规则执行完成，之后统计总分
 			if(i== (configCollection.size() - 1) && RuleEngineConfig.ENGINE_SCORE.equals(type)){
-				
+
 				//统计规则总得分
 				Integer score = borrowRuleResultMapper.sumScoreByRuleId(engineId,borrow.getId());
 				paramMap.clear();
@@ -2167,46 +2167,83 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			}
 
-			// 直到规则执行到最后一项，查询微积分
+			// 直到规则执行到最后一项，查询微积分或排序
 			if (i == (configCollection.size() - 1)) {
 				String pxSwitch = Global.getValue("px_switch");
-				if("20".equals(pxSwitch)) {
-					logger.info("借款订单" + borrow.getId() + "不调用排序获取模型分,待人工复审");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"自动审核未决待人工复审");
+				String wjfSwitch = Global.getValue("wjf_switch");
+				if ("20".equals(pxSwitch) && "20".equals(wjfSwitch)) {
+					logger.info("借款订单" + borrow.getId() + "不调用排序或微积分获取模型分,待人工复审");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "自动审核未决待人工复审");
 					return;
 				}
+				String wjforpx = Global.getValue("wjf_or_px");
+				if ("10".equals(wjforpx)) {
+
+
 				//对于无法决策以及机审决策通过,查询微积分
 				double pxScore = pxRiskService.getWjfScore(borrow);
 				double defaultPxPassScore = 600;
 				double defaultPxReviewScore = 560;
-				String pxModelPassScore = Global.getValue("px_model_pass_score");
-				String pxModelReviewScore = Global.getValue("px_model_review_score");
-				String zmReviewLoan = Global.getValue("px_review_loan");
-				if(StringUtil.isNotBlank(pxModelPassScore)) {
+				String pxModelPassScore = Global.getValue("wjf_model_pass_score");
+				String pxModelReviewScore = Global.getValue("wjf_model_review_score");
+				String zmReviewLoan = Global.getValue("wjf_review_loan");
+				if (StringUtil.isNotBlank(pxModelPassScore)) {
 					defaultPxPassScore = Double.valueOf(pxModelPassScore);
 				}
-				if(StringUtil.isNotBlank(pxModelReviewScore)) {
+				if (StringUtil.isNotBlank(pxModelReviewScore)) {
 					defaultPxReviewScore = Double.valueOf(pxModelReviewScore);
 				}
 				if (pxScore < 0) {
 					logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分失败,待人工复审");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "自动审核未决待人工复审");
 				} else if (pxScore >= defaultPxPassScore) {
 					logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分大于放款阈值,机审通过");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow,"机审通过");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "机审通过");
 				} else if (defaultPxReviewScore < pxScore && pxScore < defaultPxPassScore) {
-					if("10".equals(zmReviewLoan)) {
+					if ("10".equals(zmReviewLoan)) {
 						logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分小于放款阈值大于人审阈值,待人工复审");
-						handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"自动审核未决待人工复审");
+						handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "自动审核未决待人工复审");
 					} else {
 						logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分小于放款阈值大于人审阈值,机审拒绝");
-						handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
+						handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "机审拒绝");
 					}
 				} else {
 					logger.info("借款订单" + borrow.getId() + "调用微积分获取模型分小于放款阈值,机审拒绝");
-					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow,"机审拒绝");
+					handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "机审拒绝");
 				}
+			}else {//对于无法决策以及机审决策通过,查询排序
+					double pxScore = pxRiskService.getPxScore(borrow);
+					double defaultPxPassScore = 560;
+					double defaultPxReviewScore = 530;
+					String pxModelPassScore = Global.getValue("px_model_pass_score");
+					String pxModelReviewScore = Global.getValue("px_model_review_score");
+					String zmReviewLoan = Global.getValue("px_review_loan");
+					if (StringUtil.isNotBlank(pxModelPassScore)) {
+						defaultPxPassScore = Double.valueOf(pxModelPassScore);
+					}
+					if (StringUtil.isNotBlank(pxModelReviewScore)) {
+						defaultPxReviewScore = Double.valueOf(pxModelReviewScore);
+					}
+					if (pxScore < 0) {
+						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分失败,待人工复审");
+						handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "自动审核未决待人工复审");
+					} else if (pxScore >= defaultPxPassScore) {
+						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分大于放款阈值,机审通过");
+						handleBorrow(BorrowRuleResult.RESULT_TYPE_PASS, borrow, "机审通过");
+					} else if (defaultPxReviewScore < pxScore && pxScore < defaultPxPassScore) {
+						if ("10".equals(zmReviewLoan)) {
+							logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值大于人审阈值,待人工复审");
+							handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "自动审核未决待人工复审");
+						} else {
+							logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值大于人审阈值,机审拒绝");
+							handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "机审拒绝");
+						}
+					} else {
+						logger.info("借款订单" + borrow.getId() + "调用排序获取模型分小于放款阈值,机审拒绝");
+						handleBorrow(BorrowRuleResult.RESULT_TYPE_REFUSED, borrow, "机审拒绝");
+					}}
 			}
+
 		}	
 	}
 	/**

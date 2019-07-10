@@ -1158,4 +1158,11 @@ INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分人审阈值', 'px_mode
 INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分小于通过阈值是否人审', 'px_review_loan', '20', 1, '模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
 
 INSERT INTO `arc_sys_config` VALUES (null, 20, '是否启用PX模型分', 'px_switch', '10', 1, '是否启用PX模型分 10-启用 20-拒绝', 1);
+
 alter table `cl_px_model`  ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
+INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分通过阈值', 'wjf_model_pass_score', '600', 1, '风控1模型分通过阈值,大于该值,机审通过', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分人审阈值', 'wjf_model_review_score', '560', 1, '风控1通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分小于通过阈值是否人审', 'wjf_review_loan', '20', 1, '风控1模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '是否启用WJF模型分', 'wjf_switch', '10', 1, '是否启用WJF模型分 10-启用 20-拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '选择风控类型', 'wjf_or_px', '10', 1, '是否启用模型分 10-启用风控1 20-启用风控2', 1);
