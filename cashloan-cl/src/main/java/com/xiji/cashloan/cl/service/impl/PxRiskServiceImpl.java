@@ -1,25 +1,19 @@
 package com.xiji.cashloan.cl.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.PxRiskService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
-import com.xiji.cashloan.cl.util.paixu.RiskApiUtil;
-import com.xiji.cashloan.cl.util.token.HttpRestUtils;
 import com.xiji.cashloan.cl.util.weijifen.Gzip;
 import com.xiji.cashloan.cl.util.weijifen.RSASign;
 import com.xiji.cashloan.cl.util.weijifen.RiskRequestDto;
 import com.xiji.cashloan.cl.util.weijifen.TestConstants;
 import com.xiji.cashloan.cl.util.xinyan.UUIDGenerator;
 import com.xiji.cashloan.core.common.util.DateUtil;
-import com.xiji.cashloan.core.common.util.ShardTableUtil;
-import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.Borrow;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
@@ -32,9 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -55,7 +46,8 @@ public class PxRiskServiceImpl implements PxRiskService {
     private OperatorRespDetailMapper operatorRespDetailMapper;
     @Resource
     private OperatorReqLogMapper operatorReqLogMapper;
-
+    @Resource
+    private CallsOutSideFeeMapper callsOutSideFeeMapper;
 
     private static String weijifen_id="10022";
     @Override
@@ -137,6 +129,10 @@ public class PxRiskServiceImpl implements PxRiskService {
                 JSONObject jsonObject1 = JSONObject.parseObject(data1);
                 String score = jsonObject1.getString("score");
                i =Double.parseDouble(score);
+                //插入收费记录表
+                CallsOutSideFee callsOutSideFee = new CallsOutSideFee(userBaseinfo.getUserId(),operatorReqLog.getTaskId(), CallsOutSideFeeConstant.CALLS_TYPE_WEIJIFEN_MODEL,
+                        CallsOutSideFeeConstant.FEE_WEIJIFEN_MODEL, CallsOutSideFeeConstant.CAST_TYPE_CONSUME, userBaseinfo.getPhone());
+                callsOutSideFeeMapper.save(callsOutSideFee);
             }else {
              return i;
             }
