@@ -2480,7 +2480,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
         map.put("total", total);
         map.put("change", Math.abs(change));
         if (change<0) {
-        	creditMapper.reduceUpdate(map);
+  //      	creditMapper.reduceUpdate(map);
 		}else {
 			creditMapper.addUpdate(map);
 		}

@@ -1,6 +1,7 @@
 package com.xiji.cashloan.manage.controller;
 
 import com.github.pagehelper.Page;
+import com.xiji.cashloan.cl.service.ChannelService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.context.Global;
@@ -48,6 +49,8 @@ public class SysConfigController extends BaseController {
 	private TppBusinessService tppBusinessService;
 	@Resource
 	private ClBorrowService clBorrowService;
+	@Resource
+	private ChannelService channelService;
     /**
      * 系统参数表表,插入数据
      * @param response      页面的response
@@ -209,7 +212,56 @@ public class SysConfigController extends BaseController {
     	//修改可用注册时可用额度
 //    	SysConfig config = sysConfigService.findByCode("init_credit");
 //    	clBorrowService.changeCreditTotal(Double.valueOf(config.getValue()));
-		// 调用缓存辅助类 重加载系统配置数据
+        //注册额度
+        String init_credit = sysConfigService.selectByCode("init_credit");
+    	//展期天数
+        String delay_fee = sysConfigService.selectByCode("delay_fee");
+        //综合费率
+        String fee = sysConfigService.selectByCode("fee");
+        //借款额度
+        String borrow_credit = sysConfigService.selectByCode("borrow_credit");
+        //还款成功单次增加的额度
+        String one_repay_credit = sysConfigService.selectByCode("one_repay_credit");
+        //还款成功累计提额上限
+        String imporove_credit_limit = sysConfigService.selectByCode("imporove_credit_limit");
+        //还款提额次数
+        String count_improve_credit = sysConfigService.selectByCode("count_improve_credit");
+        //借款天数
+        String borrow_day = sysConfigService.selectByCode("borrow_day");
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (!StringUtil.equalsIgnoreCase(init_credit,Global.getValue("init_credit"))){
+            clBorrowService.changeCreditTotal(Double.valueOf(init_credit));
+            map.put("initCredit",init_credit);
+        }
+        if (!StringUtil.equalsIgnoreCase(delay_fee,Global.getValue("delay_fee"))){
+            map.put("delayFee",delay_fee);
+        }
+        if (!StringUtil.equalsIgnoreCase(fee,Global.getValue("fee"))){
+            map.put("fee",fee);
+        }
+        if (!StringUtil.equalsIgnoreCase(borrow_credit,Global.getValue("borrow_credit"))){
+            map.put("borrowCredit",borrow_credit);
+        }
+        if (!StringUtil.equalsIgnoreCase(one_repay_credit,Global.getValue("one_repay_credit"))){
+            map.put("oneRepayCredit",one_repay_credit);
+        }
+        if (!StringUtil.equalsIgnoreCase(imporove_credit_limit,Global.getValue("imporove_credit_limit"))){
+            map.put("improveCreditLimit",imporove_credit_limit);
+        }
+        if (!StringUtil.equalsIgnoreCase(count_improve_credit,Global.getValue("count_improve_credit"))){
+            map.put("countImproveCredit",count_improve_credit);
+        }
+        if (!StringUtil.equalsIgnoreCase(borrow_day,Global.getValue("borrow_day"))){
+            map.put("borrowDay",borrow_day);
+        }
+        //批量修改渠道信息
+        if (map !=null && map.size()>0){
+
+            boolean flag = channelService.batchUpdateChannel(map);
+        }
+
+        // 调用缓存辅助类 重加载系统配置数据
 		CacheUtil.initSysConfig();
 
 

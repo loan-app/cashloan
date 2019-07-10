@@ -167,4 +167,11 @@ public interface ChannelMapper extends BaseMapper<Channel,Long> {
 	 * @return
 	 */
 	List<Map<String, Object>> getUvCount(Map<String,Object> paramMap);
+
+	/**
+	 * 批量修改渠道额度
+	 * @param map
+	 * @return
+	 */
+	int batchUpdateChannel(Map<String, Object> map);
 }

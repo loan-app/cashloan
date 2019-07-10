@@ -113,19 +113,6 @@ import java.util.Date;
     private String conditions;
 
     /**
-     * 渠道uv点击量
-     */
-    private int uvCount;
-
-    public int getUvCount() {
-        return uvCount;
-    }
-
-    public void setUvCount(int uvCount) {
-        this.uvCount = uvCount;
-    }
-
-    /**
     * 获取主键Id
     *
     * @return id
