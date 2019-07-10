@@ -12,7 +12,7 @@ rootDist=/root/manage-war
 scp $dest root@$iphost:$targetDist
 scp deploy/start.sh root@$iphost:$rootDist
 ssh root@$iphost  << EOF
-    sh $rootDist/start.sh
+    sh $rootDist/start_manage.sh
     exit;
 EOF
 
