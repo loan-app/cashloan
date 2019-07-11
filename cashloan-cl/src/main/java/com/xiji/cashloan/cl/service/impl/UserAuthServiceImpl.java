@@ -79,11 +79,32 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				params.put("userId", userAuth.getUserId());
 				UserBaseInfo baseInfo = userBaseInfoMapper.findSelective(params);
 
-				String host = Global.getValue("mx_operator_mxdata");
+				String operatorSelect = Global.getValue("operator_select");
+
+				if (!"moxie".equals(operatorSelect) && !"yunqiao".equals(operatorSelect)){
+					logger.error("运营商选择异常,请选择 魔蝎或云桥");
+					return userAuth;
+				}
+				String reportHost = null;
+				String host = null;
+				if ("moxie".equals(operatorSelect)){
+					host = Global.getValue("mx_operator_mxdata");
+					reportHost = Global.getValue("mx_operator_report");
+				} else {
+					host = Global.getValue("yq_operator_mxdata");
+					reportHost = Global.getValue("yq_operator_report");
+				}
+
 				final String token = Global.getValue("mx_token");
+				final String yq_token = Global.getValue("yq_token");
 				Map<String, String> headMap = new HashMap<>();
 
-				headMap.put("Authorization", "token" + " " + token);
+				if ("moxie".equals(operatorSelect)){
+					headMap.put("Authorization", "token" + " " + token);
+				} else {
+					headMap.put("Authorization", "token" + " " + yq_token);
+				}
+
 				host = host.replace("{mobile}", String.valueOf(baseInfo.getPhone()));
 				host += "?task_id=" + operatorReqLog.getTaskId();
 				String result = null;
@@ -93,10 +114,13 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 					logger.error(e.getMessage(),e);
 				}
 
-
-				String reportHost = Global.getValue("mx_operator_report");
 				Map<String, String> reportHeadMap = new HashMap<>();
-				reportHeadMap.put("Authorization", "token" + " " + token);
+				if ("moxie".equals(operatorSelect)){
+					reportHeadMap.put("Authorization", "token" + " " + token);
+				}else {
+					reportHeadMap.put("Authorization", "token" + " " + yq_token);
+				}
+
 				reportHost = reportHost.replace("{mobile}", String.valueOf(baseInfo.getPhone()));
 				String reportResult = null;
 				try {
@@ -180,7 +204,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 		//定义需要的变量
 		String resultSql="";//result返回值中的语句
 		String qualifiedSql="";//qualified返回值中的语句
-		int qualifiedCount=5;//基础必填项数量
+		int qualifiedCount=4;//基础必填项数量
 		//芝麻信用sql语句拼接，需要sys_config表里设置的zhima_auth属性，10-去除 20-选填 30-必填
 //		String zhima_auth=Global.getValue("zhima_auth");
 //		if("30".equals(zhima_auth)){
@@ -196,9 +220,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				+ "IF (id_state = 30, 1, 0) +"
 				+ "IF (phone_state = 30, 1, 0) +"
 				+ "IF (contact_state = 30, 1, 0) +"
-				+ "IF (bank_card_state = 30, 1, 0) +"
-				+ "IF (work_info_state = 30, 1, 0) +"
-				+ "IF (other_info_state = 30, 1, 0)"
+				+ "IF (bank_card_state = 30, 1, 0)"
 				+ resultSql
 				+ ") AS result,"
 				+ Global.getValue("auth_total")+" AS total,"
@@ -206,8 +228,7 @@ public class UserAuthServiceImpl extends BaseServiceImpl<UserAuth, Long> impleme
 				+ "(IF (id_state = 30, 1, 0) +"
 				+ "IF (phone_state = 30, 1, 0) +"
 				+ "IF (contact_state = 30, 1, 0) +"
-				+ "IF (bank_card_state = 30, 1, 0) +"
-				+ "IF (work_info_state = 30, 1, 0) "
+				+ "IF (bank_card_state = 30, 1, 0)"
 				+ qualifiedSql
 				+ ") = "
 				+ qualifiedCount

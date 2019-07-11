@@ -189,11 +189,11 @@ export default React.createClass({
     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
     if (title == '启用') {
         msg = '启用成功';
-        tips = '您是否启用';
+        tips = '您确定不限流QQ？';
         state = 1;
     } else if (title == '禁用') {
         msg = '禁用成功';
-        tips = '您是否禁用';
+        tips = '您确定限流QQ？';
         state = 1;
     }
 
@@ -234,11 +234,11 @@ changeStatus2(record,title) {
     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
     if (title == '启用') {
         msg = '启用成功';
-        tips = '您是否启用';
+        tips = '您确定不限流微信？';
         state = 2;
     } else if (title == '禁用') {
         msg = '禁用成功';
-        tips = '您是否禁用';
+        tips = '您确定限流微信？';
         state = 2;
     }
 
@@ -279,11 +279,11 @@ changeStatus3(record,title) {
     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
     if (title == '启用') {
         msg = '启用成功';
-        tips = '您是否启用';
+        tips = '您确定不限流微博？';
         state = 3;
     } else if (title == '禁用') {
         msg = '禁用成功';
-        tips = '您是否禁用';
+        tips = '您确定限流微博？';
         state = 3;
     }
 
@@ -324,11 +324,11 @@ changeStatus4(record,title) {
     var trueurl = "/modules/manage/promotion/channel/updataCondition.htm";
     if (title == '启用') {
         msg = '启用成功';
-        tips = '您是否启用';
+        tips = "您确定不限流其他？";
         state = 4;
     } else if (title == '禁用') {
         msg = '禁用成功';
-        tips = '您是否禁用';
+        tips = '您确定限流其他？';
         state = 4;
     }
 
@@ -408,43 +408,47 @@ changeStatus4(record,title) {
             }
         },
             {
-                title:"限流QQ状态",
+                title:"是否限流QQ",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.conditions.indexOf("1")!=-1?(<a href="#" onClick={me.changeStatus1.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus1.bind(me,record,'禁用')}>启用</a>)}
-                </div>
+                    {record.conditions.indexOf("1")!=-1?(<a href="#" onClick={me.changeStatus1.bind(me ,record,'启用')}>是</a>):(<a href="#" onClick={me.changeStatus1.bind(me,record,'禁用')}>否</a>)}
+                    <span style={{marginLeft:10}}>(注册{record.qqCount})</span>
+                    </div>
                 )
                 }
             },{
-                title:"限流微信状态",
+                title:"是否限流微信",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.conditions.indexOf("2")!=-1?(<a href="#" onClick={me.changeStatus2.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus2.bind(me,record,'禁用')}>启用</a>)}
-                </div>
+                    {record.conditions.indexOf("2")!=-1?(<a href="#" onClick={me.changeStatus2.bind(me ,record,'启用')}>是</a>):(<a href="#" onClick={me.changeStatus2.bind(me,record,'禁用')}>否</a>)}
+                    <span style={{marginLeft:10}}>(注册{record.wechatCount})</span>
+                    </div>
                 )
                 }
             },{
-                title:"限流微博状态",
+                title:"是否限流微博",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.conditions.indexOf("3")!=-1?(<a href="#" onClick={me.changeStatus3.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus3.bind(me,record,'禁用')}>启用</a>)}
-                </div>
+                    {record.conditions.indexOf("3")!=-1?(<a href="#" onClick={me.changeStatus3.bind(me ,record,'启用')}>是</a>):(<a href="#" onClick={me.changeStatus3.bind(me,record,'禁用')}>否</a>)}
+                    <span style={{marginLeft:10}}>(注册{record.weiboCount})</span>
+                    </div>
                 )
                 }
             },{
-                title:"限流其他状态",
+                title:"是否限流其他",
                 dataIndex:"",
                 render(text,record){
                     return  (
                         <div style={{ textAlign: "left" }}>
-                    {record.conditions.indexOf("4")!=-1?(<a href="#" onClick={me.changeStatus4.bind(me ,record,'启用')}>禁用</a>):(<a href="#" onClick={me.changeStatus4.bind(me,record,'禁用')}>启用</a>)}
-                </div>
+                    {record.conditions.indexOf("4")!=-1?(<a href="#" onClick={me.changeStatus4.bind(me ,record,'启用')}>是</a>):(<a href="#" onClick={me.changeStatus4.bind(me,record,'禁用')}>否</a>)}
+                    <span style={{marginLeft:10}} >(注册{record.otherCount})</span>
+                    </div>
                 )
                 }
             }
