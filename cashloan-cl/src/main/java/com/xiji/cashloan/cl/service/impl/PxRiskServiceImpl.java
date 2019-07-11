@@ -160,7 +160,7 @@ public class PxRiskServiceImpl implements PxRiskService {
                 log.setRespTime(new Date());
             }
             if(jsonObject.getString("data")!=null){
-                log.setIsFee(1);
+                log.setIsFee(2);
                 //保存模型分
                 PxModel pxModel = new PxModel();
                 pxModel.setCreateTime(new Date());
@@ -180,6 +180,7 @@ public class PxRiskServiceImpl implements PxRiskService {
             }else {
              return i;
             }
+            pxReqLogMapper.save(log);
         } catch (Exception e) {
             e.printStackTrace();
         }
