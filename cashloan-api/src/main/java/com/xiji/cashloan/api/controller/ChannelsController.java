@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +63,9 @@ public class ChannelsController extends BaseController {
      */
     @RequestMapping(value = "/api/channels/getUvCount.htm", method = {RequestMethod.POST, RequestMethod.GET})
     public void getUvCount(
-            @RequestParam(value = "code") String code) throws Exception {
+            @RequestParam(value = "code") String code,
+            @RequestParam(value = "ip") String ip
+    ) throws Exception {
         //根据渠道编码查询渠道信息
         Channel code2 = channelService.getChannelByCode(code);
 
@@ -73,13 +74,14 @@ public class ChannelsController extends BaseController {
             return;
         }
 
-        String ip = IpUtil.getRemortIP(request);
-        logger.info("请求ip:" + ip);
+        String ip2 = IpUtil.getRemortIP(request);
+        logger.info("前端请求ip:" + ip);
+        logger.info("后端请求ip2:" + ip2);
         Long channelId = code2.getId();
         Date date = new Date();
         Map<String, Object> ipParamsMap = new HashMap<>();
         ipParamsMap.put("createDate", DateUtil.dateStr(date, "yyyy-MM-dd"));
-        ipParamsMap.put("ip", ip);
+        ipParamsMap.put("ip", ip2);
         ChannelIp channelIp = channelIpService.findSelective(ipParamsMap);
         if (channelIp != null && StringUtil.isNotEmpty(channelIp.getIp())) {//当天该请求ip存在
             logger.info("该请求ip已存在.");
@@ -88,7 +90,7 @@ public class ChannelsController extends BaseController {
         ChannelIp channelIp2 = new ChannelIp();
         channelIp2.setChannelId(channelId);
         channelIp2.setCreateDate(date);
-        channelIp2.setIp(ip);
+        channelIp2.setIp(ip2);
         channelIpService.save(channelIp2);
         logger.info("添加一条点击ip记录.");
 
