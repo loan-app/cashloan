@@ -63,19 +63,21 @@ public class ChannelsController extends BaseController {
      */
     @RequestMapping(value = "/api/channels/getUvCount.htm", method = {RequestMethod.POST, RequestMethod.GET})
     public void getUvCount(
-            @RequestParam(value = "code") String code,
-            @RequestParam(value = "ip") String ip
-    ) throws Exception {
+            @RequestParam(value = "code") String code) throws Exception {
         //根据渠道编码查询渠道信息
-        Channel code2 = channelService.getChannelByCode(code);
+        Channel code2=null;
 
-        if (code2 == null) {
+        if (code!=null){
+
+            code2 = channelService.getChannelByCode(code);
+        }
+
+        if (StringUtil.isBlank(code2)) {
             logger.info("该渠道信息不存在.");
             return;
         }
 
         String ip2 = IpUtil.getRemortIP(request);
-        logger.info("前端请求ip:" + ip);
         logger.info("后端请求ip2:" + ip2);
         Long channelId = code2.getId();
         Date date = new Date();
