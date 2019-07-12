@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * app渠道版本表Dao
+ * 渠道uv表Dao
  *
  * @author wnb
  * @version 1.0.0

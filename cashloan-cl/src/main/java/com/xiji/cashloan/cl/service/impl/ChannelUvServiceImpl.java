@@ -14,7 +14,7 @@ import java.util.Map;
 
 
 /**
- * app渠道版本表ServiceImpl
+ * 渠道uv表ServiceImpl
  *
  * @author wnb
  * @date 2018/11/27

@@ -1058,3 +1058,18 @@ CREATE TABLE `cl_channel_uv` (
   `uv_count` bigint(30) DEFAULT '0' COMMENT 'uv点击量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击统计'
+
+
+-- 渠道uv点击ip记录表
+CREATE TABLE `cl_channel_ip` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道id',
+  `create_date` date NOT NULL COMMENT '生成日期',
+   `ip` varchar(64) DEFAULT '' COMMENT '请求IP',
+  PRIMARY KEY (`id`),
+  KEY `index_channel_id_create_date_ip` (`channel_id`,`create_date`,`ip` )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击ip记录表'
+
+
+-- 添加定时任务
+INSERT INTO `cl_quartz_info` VALUES (null, '清除渠道ip统计', 'deleteChannelIp', '0 1 0 * * ?', 'com.xiji.cashloan.manage.job.statistic.QuartzUvIpStatistic', '0', '0', '10', now());

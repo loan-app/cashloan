@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 渠道uv表实体
+ * 渠道ip记录表实体
  * 
  * @author wnb
  * @version 1.0.0
@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * 未经授权不得进行修改、复制、出售及商业使用
  */
- public class ChannelUv implements Serializable {
+ public class ChannelIp implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,20 +28,16 @@ import java.util.Date;
     */
     private Long channelId;
 
-    /**
-    * 渠道名称
-    */
-    private String name;
 
     /**
     * 统计日期
     */
-    private Date countDate;
+    private Date createDate;
 
     /**
-    * uv点击量
+    * 请求ip
     */
-    private Long uvCount;
+    private String ip;
 
 
     
@@ -87,27 +83,19 @@ import java.util.Date;
       return serialVersionUID;
    }
 
-   public String getName() {
-      return name;
-   }
-
-   public void setName(String name) {
-      this.name = name;
-   }
-
-   public Date getCountDate() {
-      return countDate;
-   }
-
-   public void setCountDate(Date countDate) {
-      this.countDate = countDate;
-   }
-
-    public Long getUvCount() {
-        return uvCount;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setUvCount(Long uvCount) {
-        this.uvCount = uvCount;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

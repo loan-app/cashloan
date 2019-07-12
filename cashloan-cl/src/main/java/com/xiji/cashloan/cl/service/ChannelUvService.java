@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * app渠道版本表Service
+ * 渠道uv表Service
  *
  * @author wnb
  * @date 2018/11/27
