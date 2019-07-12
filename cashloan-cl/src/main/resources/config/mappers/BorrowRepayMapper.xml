@@ -188,6 +188,8 @@
          <result column="fee" property="fee" jdbcType="DECIMAL"/>
         <result column="channel_name" property="channelName" jdbcType="VARCHAR"/>
         <result column="allotState" property="allotState" jdbcType="VARCHAR"/>
+        <result column="score" property="modelScore" jdbcType="DECIMAL"/>
+
     </resultMap>
     <!-- 用户借款sql查询条件公共引用 -->
     <sql id="searchModelBy">
@@ -213,15 +215,22 @@
             <if test="allotState  != null and allotState != '' ">
                 and cmro.state = #{allotState,jdbcType=VARCHAR}
             </if>
+            <if test="minScore  != null ">
+                and model.score >= #{minScore,jdbcType=DECIMAL}
+            </if>
+            <if test="maxScore  != null ">
+                and model.score &lt;= #{maxScore,jdbcType=DECIMAL}
+            </if>
         </trim>
     </sql>
      <select id="listModel" resultMap="userBorrowRayMap" parameterType="java.util.HashMap">
         select  u.real_name,u.phone,b.order_no,b.amount as borrow_amount,b.create_time as borrow_time,r.id,r.user_id,r.borrow_id,r.state,r.amount  as repay_amount,r.repay_time,r.penalty_amout,r.penalty_day,
-        b.fee ,b.real_amount,channel.name as channel_name,cmro.state as allotState
+        b.fee ,b.real_amount,channel.name as channel_name,cmro.state as allotState,model.score
         from  cl_borrow b  left join  cl_user_base_info u on  u.user_id=b.user_id  join cl_borrow_repay r on r.borrow_id=b.id
         left join cl_user user2 on user2.id = u.user_id
         left join cl_channel channel on user2.channel_id = channel.id
         left join cl_manual_repay_order cmro on b.id = cmro.borrow_id
+         left join cl_px_model model  on model.borrow_id = b.id
          <include refid="searchModelBy"/>
         ORDER BY r.id DESC
     </select>

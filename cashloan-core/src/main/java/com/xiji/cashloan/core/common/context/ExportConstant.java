@@ -93,4 +93,13 @@ public final class ExportConstant {
 
 	/** 用户认证导出 属性*/
 	public static final String[] EXPORT_USERAUTH_LIST_FIELDS = {"realName","phone","bankCardStateStr","contactStateStr","idStateStr","phoneStateStr","channelName","userFlag","registTime"};
+
+	/**
+	 * 未复借用户信息导出 表头
+	 */
+	public static final String[] EXPORT_NOTBORROWAGAIN_LIST_HEARDERS = {"真实姓名","手机号码","身份证号码","最新订单号","最新订单生成时间"};
+
+	/** 未复借用户信息导出 属性*/
+	public static final String[] EXPORT_NOTBORROWAGAIN_LIST_FIELDS = {"realName","phone","idNo","orderNO","createTime"};
+
 }

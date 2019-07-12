@@ -990,7 +990,7 @@ behead_fee =(select value from arc_sys_config where code = 'behead_fee');
 
 
 -- 添加用户管理列表 未借款用户信息
-INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未复借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未复借用户信息', '2', '', null, '00000000006', null, '', null, '', '未复借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
 
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
 

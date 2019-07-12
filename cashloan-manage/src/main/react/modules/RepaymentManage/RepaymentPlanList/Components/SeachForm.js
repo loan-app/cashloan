@@ -14,7 +14,7 @@ let SeachForm = React.createClass({
     },
     handleQuery() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState,minScore:params.minScore,maxScore:params.maxScore};
         if(params.registTime[0]){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -34,7 +34,7 @@ let SeachForm = React.createClass({
     },
     handleOut() {
         var params = this.props.form.getFieldsValue();
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state:params.state,allotState:params.allotState,minScore:params.minScore,maxScore:params.maxScore};
         if(params.registTime){
             json.startTime = (DateFormat.formatDate(params.registTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.registTime[1])).substring(0,10);
@@ -60,6 +60,9 @@ let SeachForm = React.createClass({
                 </FormItem>
                 <FormItem label="订单号:">
                     <Input  {...getFieldProps('orderNo') } />
+                </FormItem>
+                <FormItem label="模型评分:">
+                    <Input  {...getFieldProps('minScore') } style={{ width: 80 }} /> -- <Input  {...getFieldProps('maxScore') } style={{ width: 80 }} />
                 </FormItem>
                 <FormItem label="还款状态:">
                     <Select style={{ width: 100 }} {...getFieldProps('state', { initialValue: '' }) }>

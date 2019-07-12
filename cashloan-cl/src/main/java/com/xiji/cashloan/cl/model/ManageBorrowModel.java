@@ -90,6 +90,11 @@ public class ManageBorrowModel extends Borrow {
 	 */
 	private Double repayYesTotal;
 
+	/**
+	 * 模型分
+	 */
+	private Double modelScore;
+
 	public Double getRepayTotal() {
 		return repayTotal;
 	}
@@ -196,7 +201,14 @@ public class ManageBorrowModel extends Borrow {
 		this.level = level;
 	}
 
-	
+	public Double getModelScore() {
+		return modelScore;
+	}
+
+	public void setModelScore(Double modelScore) {
+		this.modelScore = modelScore;
+	}
+
 	public String getProtocolPath() {
 		String s = File.separator;
 		String rootFile = "/" + "readFile.htm?path=";
