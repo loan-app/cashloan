@@ -8,7 +8,6 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +52,7 @@ public interface OperatorVoiceMapper extends BaseMapper<OperatorVoice, Long> {
             @Param("tableName") String tableName,
             @Param("params") Map<String, Object> params);
 
-    OperatorVoiceModel operatorVoicesCount(@Param("tableName") String tableName, @Param("userId") Long userId, @Param("phone") String phone);
+    OperatorVoiceModel operatorVoicesCount(@Param("tableName") String tableName, @Param("userId") Long userId, @Param("phone") String phone,@Param("reqLogId") Long reqLogId);
 
     OperatorVoiceModel operatorVoicesCount1(@Param("tableName1") String tableName1, @Param("userId") Long userId, @Param("phone") String phone);
 

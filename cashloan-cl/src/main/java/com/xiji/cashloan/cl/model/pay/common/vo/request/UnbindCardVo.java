@@ -8,6 +8,7 @@ package com.xiji.cashloan.cl.model.pay.common.vo.request;
 public class UnbindCardVo  extends PayReq {
     private String userId;
     private String protocolNo;//协议号
+    private String cardNo;//卡号
 
     public String getUserId() {
         return userId;
@@ -23,5 +24,13 @@ public class UnbindCardVo  extends PayReq {
 
     public void setProtocolNo(String protocolNo) {
         this.protocolNo = protocolNo;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

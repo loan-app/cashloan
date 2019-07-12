@@ -2,7 +2,9 @@ package com.xiji.cashloan.cl.service.statistic;
 
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.statistic.OverdueStatisticData;
+import com.xiji.cashloan.cl.model.UserOverdueModel;
 import com.xiji.cashloan.core.common.service.BaseService;
+import com.xiji.cashloan.core.model.UserBaseInfoModel;
 
 import java.util.Date;
 import java.util.List;
@@ -43,4 +45,11 @@ public interface OverdueStatisticDataService extends BaseService<OverdueStatisti
      * @return
      */
     Page<OverdueStatisticData> queryNowOverdueStatistic(Map<String,Object> params);
+
+    /**
+     * 查询逾期用户信息
+     * @param params
+     * @return
+     */
+    List<UserOverdueModel> queryOverdueData(Map<String,Object> params);
 }

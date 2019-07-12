@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.domain.operator.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.OperatorVoiceModel;
 import com.xiji.cashloan.cl.service.OperatorService;
+import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
@@ -75,6 +76,8 @@ public class OperatorServiceImpl implements OperatorService {
     public void saveOperatorInfos(String res, Long userId, Date createTime, String mobile, Long reqLogId) {
         if (StringUtil.isNotBlank(res)) {
             JSONObject resJson = JSONObject.parseObject(res);
+            int start = DateUtil.getNowTime();
+            int end = start;
 
             if ("0".equals(resJson.get("code").toString())) {
                 UserBaseInfo baseInfo = null;
@@ -98,7 +101,6 @@ public class OperatorServiceImpl implements OperatorService {
                 operatorBasic.setMobile(mobile);
                 operatorBasic.setReqLogId(reqLogId);
                 operatorBasicMapper.save(operatorBasic);
-
                 String packages = String.valueOf(resJson.get("packages"));
                 if (StringUtil.isNotBlank(packages)) {
                     List<OperatorPackageMeta> packageMetaList = JSONObject.parseArray(packages, OperatorPackageMeta.class);
@@ -121,7 +123,6 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
-
                 String families = String.valueOf(resJson.get("families"));
                 if (StringUtil.isNotBlank(families)) {
                     List<OperatorFamilyMeta> familyMetaList = JSONObject.parseArray(families, OperatorFamilyMeta.class);
@@ -143,7 +144,6 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
-
                 String recharges = String.valueOf(resJson.get("recharges"));
                 if (StringUtil.isNotBlank(recharges)) {
                     List<OperatorRecharge> rechargeList = JSONObject.parseArray(recharges, OperatorRecharge.class);
@@ -158,7 +158,6 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
-
                 String bills = String.valueOf(resJson.get("bills"));
                 if (StringUtil.isNotBlank(bills)) {
                     List<OperatorBill> billList = JSONObject.parseArray(bills, OperatorBill.class);
@@ -173,7 +172,6 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
-
                 String monthInfos = String.valueOf(resJson.get("monthInfo"));
                 if (StringUtil.isNotBlank(monthInfos)) {
                     List<OperatorMonthInfo> monthInfoList = JSONObject.parseArray(monthInfos, OperatorMonthInfo.class);
@@ -188,7 +186,6 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
-
                 String operatorVoices = String.valueOf(resJson.get("calls"));
                 if (StringUtil.isNotBlank(operatorVoices)) {
                     List<OperatorVoiceMeta> operatorVoiceMetaList = JSONObject.parseArray(operatorVoices, OperatorVoiceMeta.class);
@@ -215,16 +212,19 @@ public class OperatorServiceImpl implements OperatorService {
                                 }
                             }
                         }
-
+                        end = DateUtil.getNowTime();
+                        logger.info("operatorVoiceMapper.saveShard ==> 运营商数据，耗时" + (end - start) + "秒");
                         UserAuth auth = userAuthMapper.findByUserId(userId);
                         if (auth.getContactState().equals("30")) {
                             String tableName1 = ShardTableUtil.generateTableNameById("cl_user_contacts", userId, 30000);
                             Map<String, Object> params = new HashMap<>();
                             params.put("userId", userId);
                             List<UserContacts> contacts = userContactsMapper.listShardSelective1(tableName1, params);
+                            end = DateUtil.getNowTime();
+                            logger.info("userContactsMapper.listShardSelective1 ==>" + (end - start) + "秒");
                             for (UserContacts userContacts : contacts) {
                                 String phone = userContacts.getPhone();
-                                OperatorVoiceModel operatorVoicesModel = operatorVoiceMapper.operatorVoicesCount(tableName, userId, phone);
+                                OperatorVoiceModel operatorVoicesModel = operatorVoiceMapper.operatorVoicesCount(tableName, userId, phone,reqLogId);
                                 Integer totalCount = operatorVoicesModel.getTotalCount();
                                 Integer sumDuration = operatorVoicesModel.getSumDuration();
                                 Map<String, Object> param = new HashMap<String, Object>();
@@ -238,7 +238,8 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
-
+                end = DateUtil.getNowTime();
+                logger.info("userContactsMapper.updateCount ==> 运营商数据，耗时" + (end - start) + "秒");
                 String operatorSmses = String.valueOf(resJson.get("smses"));
                 if (StringUtil.isNotBlank(operatorSmses)) {
                     List<OperatorSmsMeta> operatorSmsMetaList = JSONObject.parseArray(operatorSmses, OperatorSmsMeta.class);
@@ -249,7 +250,8 @@ public class OperatorServiceImpl implements OperatorService {
                         if (countTable == 0) {
                             operatorSmsMapper.createTable(tableName);
                         }
-
+                        end = DateUtil.getNowTime();
+                        logger.info("operatorSmsMapper.countTable ==>" + (end - start) + "秒");
                         for (OperatorSmsMeta operatorSmsMeta : operatorSmsMetaList) {
                             if (operatorSmsMeta.getItems() != null && operatorSmsMeta.getItems().size() > 0) {
                                 for (OperatorSmsItem operatorSmsItem : operatorSmsMeta.getItems()) {
@@ -267,6 +269,8 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
+                end = DateUtil.getNowTime();
+                logger.info("operatorSmsMapper.saveShard ==> 运营商数据，耗时" + (end - start) + "秒");
 
                 String operatorNets = String.valueOf(resJson.get("nets"));
                 if (StringUtil.isNotBlank(operatorNets)) {
@@ -296,6 +300,9 @@ public class OperatorServiceImpl implements OperatorService {
                         }
                     }
                 }
+
+                end = DateUtil.getNowTime();
+                logger.info("operatorSmsMapper.saveShard ==> 运营商数据，耗时" + (end - start) + "秒");
             } else {
                 logger.error("保存用户userId：" + userId + "运营商数据时，获取运营商数据失败");
             }

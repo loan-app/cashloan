@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.model.pay.common;
 
+import com.xiji.cashloan.cl.model.pay.common.biz.ChanPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.biz.FuiouPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.biz.HeliPayBiz;
 import com.xiji.cashloan.cl.model.pay.common.biz.KuaiqianPayBiz;
@@ -27,6 +28,7 @@ public class PayCommonUtil{
         payMode.put(PayConstant.PAY_MODE_FUIOU, new FuiouPayBiz());
         payMode.put(PayConstant.PAY_MODE_HELIPAY, new HeliPayBiz());
         payMode.put(PayConstant.PAY_MODE_KUAIQIAN, new KuaiqianPayBiz());
+        payMode.put(PayConstant.PAY_MODE_CHANPAY, new ChanPayBiz());
     }
 
     public static PaymentResponseVo payment(PaymentReqVo vo) {

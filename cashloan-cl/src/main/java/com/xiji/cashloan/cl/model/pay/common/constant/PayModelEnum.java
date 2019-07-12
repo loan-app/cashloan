@@ -6,7 +6,7 @@ package com.xiji.cashloan.cl.model.pay.common.constant;
  * @Description:
  */
 public enum PayModelEnum {
-    helipay,fuiou,kuaiqian;
+    helipay,fuiou,kuaiqian,chanpay;
 
     public static String match(String ac) {
         for (PayModelEnum item : values()) {
@@ -18,6 +18,6 @@ public enum PayModelEnum {
     }
 
     public static void main(String[] args) {
-        System.out.println(match("helipay"));
+        System.out.println(match("chanpay"));
     }
 }

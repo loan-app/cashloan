@@ -86,4 +86,10 @@ public interface UserMapper extends BaseMapper<User,Long> {
 	 */
 	String registerCount(Map<String, Object> search);
 
+	/**
+	 * 渠道分组统计
+	 * @param search
+	 * @return
+	 */
+	List<Map> registerCountByChannel(Map<String, Object> search);
 }

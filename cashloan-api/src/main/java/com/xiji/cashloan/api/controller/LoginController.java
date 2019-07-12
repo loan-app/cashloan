@@ -1,14 +1,5 @@
 package com.xiji.cashloan.api.controller;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.xiji.cashloan.api.user.bean.AppAbsActionWrapper;
 import com.xiji.cashloan.api.user.bean.AppDbSession;
 import com.xiji.cashloan.api.user.bean.AppSessionBean;
@@ -17,11 +8,18 @@ import com.xiji.cashloan.api.user.service.MybatisService;
 import com.xiji.cashloan.api.user.service.SmsService;
 import com.xiji.cashloan.api.user.service.UserService;
 import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.xiji.cashloan.core.common.util.StringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author wnb
@@ -188,9 +186,9 @@ public class LoginController {
 	public void wxRegister(final HttpServletRequest request,
 			final HttpServletResponse response, final String loginName,
 			final String loginPwd, final String vcode,
-			final String invitationCode,
+			final String invitationCode, final String client,
 			final String channelCode, final String registerCoordinate,
-			final String registerAddr, final String signMsg, final String client,
+			final String registerAddr, final String signMsg,
 			final String blackBox) {
 		String wxRegister = Global.getValue("wxRegister");
 		Map result = new HashMap();
@@ -202,7 +200,7 @@ public class LoginController {
 			public Object doAction() {
 				Map result = userService.registerUser(request, loginName,
 						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
-						registerAddr, "h5", signMsg,channelCode);
+						registerAddr, client, signMsg,channelCode);
 				if ((Boolean) result.get("success")) {
 //					result = userService.login(request, loginName, loginPwd,
 //							signMsg,blackBox);

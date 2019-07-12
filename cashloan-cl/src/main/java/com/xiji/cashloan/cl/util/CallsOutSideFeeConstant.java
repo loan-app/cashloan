@@ -34,6 +34,9 @@ public class CallsOutSideFeeConstant {
     //有盾用户画像
     public static int CALLS_TYPE_YOUDUN_RISK = 13;
 
+    //绿盟黑名单
+    public static int CALLS_TYPE_LVMENG_BLACK = 17;
+
     //充值类型
     public static int CALLS_TYPE_TopUp = 999;
     //魔蝎运营商费用
@@ -64,6 +67,8 @@ public class CallsOutSideFeeConstant {
     public static double FEE_XINYAN_XWLD = -1;
     //有盾用户画像费用
     public static double FEE_YOUDUN_RISK = -0.2;
+    //请求绿盟
+    public static double FEE_LVMENG = -0.2;
 
     /**
      * 消费

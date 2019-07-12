@@ -80,5 +80,4 @@ public interface CloanUserService extends BaseService<User, Long> {
 	 * @param loginName
 	 */
 	void modify(String loginName);
-	
 }
