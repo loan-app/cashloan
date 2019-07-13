@@ -1066,7 +1066,7 @@ CREATE TABLE `cl_channel_uv` (
   `count_date` date NOT NULL COMMENT '统计日期',
   `uv_count` bigint(30) DEFAULT '0' COMMENT 'uv点击量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击统计'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击统计';
 
 
 -- 渠道uv点击ip记录表
@@ -1077,7 +1077,7 @@ CREATE TABLE `cl_channel_ip` (
    `ip` varchar(64) DEFAULT '' COMMENT '请求IP',
   PRIMARY KEY (`id`),
   KEY `index_channel_id_create_date_ip` (`channel_id`,`create_date`,`ip` )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击ip记录表'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击ip记录表';
 
 
 -- 添加定时任务
