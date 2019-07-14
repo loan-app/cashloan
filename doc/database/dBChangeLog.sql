@@ -1057,6 +1057,33 @@ ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMEN
 
 ALTER TABLE cl_channel add column conditions varchar(50) DEFAULT '' COMMENT '限流1QQ，2微信，3微博，4其他';
 
+
+-- 渠道uv点击统计
+CREATE TABLE `cl_channel_uv` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道id',
+  `name` varchar(16) DEFAULT '' COMMENT '渠道名称',
+  `count_date` date NOT NULL COMMENT '统计日期',
+  `uv_count` bigint(30) DEFAULT '0' COMMENT 'uv点击量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击统计';
+
+
+-- 渠道uv点击ip记录表
+CREATE TABLE `cl_channel_ip` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道id',
+  `create_date` date NOT NULL COMMENT '生成日期',
+   `ip` varchar(64) DEFAULT '' COMMENT '请求IP',
+  PRIMARY KEY (`id`),
+  KEY `index_channel_id_create_date_ip` (`channel_id`,`create_date`,`ip` )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击ip记录表';
+
+
+-- 添加定时任务
+INSERT INTO `cl_quartz_info` VALUES (null, '清除渠道ip统计', 'deleteChannelIp', '0 1 0 * * ?', 'com.xiji.cashloan.manage.job.statistic.QuartzUvIpStatistic', '0', '0', '10', now());
+
+
 --#dev-feature-1.0.5
 INSERT INTO `arc_sys_config` VALUES (null, '10', '绿盟黑名单接口开关', 'lv_meng_on_off', 'on', '1', '个人信息认证保存校验绿盟黑名单', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单机构appId', 'lv_meng_appId', 'T006', '1', '绿盟黑名单机构appId', '1');
