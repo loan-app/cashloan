@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_channel_ip表:渠道ip记录表-->
+<mapper namespace="com.xiji.cashloan.cl.mapper.ChannelIpMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.ChannelIp">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="channel_id" property="channelId" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="ip" property="ip" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,channel_id,create_date,ip
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="channelId != null and channelId != '' ">
+                and channel_id = #{channelId,jdbcType=BIGINT}
+            </if>
+            <if test="createDate != null and createDate != '' ">
+                and date_format(create_date, '%Y-%m-%d')  = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="ip != null and ip != '' ">
+                and ip = #{ip,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.ChannelIp">
+        insert into cl_channel_ip(channel_id,create_date,ip)values(#{channelId,jdbcType=BIGINT},#{createDate,jdbcType=TIMESTAMP},#{ip,jdbcType=BIGINT})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.ChannelIp">
+        update cl_channel_ip set
+            channel_id = #{channelId,jdbcType=BIGINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            ip = #{ip,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_channel_ip
+          <set>
+            <if test="channelId != null and channelId != '' ">        
+                channel_id = #{channelId,jdbcType=BIGINT},                
+            </if>
+            <if test="createDate != null and createDate != '' ">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ip != null and ip != '' ">
+                ip = #{ip,jdbcType=VARCHAR}
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel_ip
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel_ip
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel_ip
+        <include refid="searchBy"/>
+    </select>
+    <select id="findByChannelId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel_ip
+        where channel_id = #{channelId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByCreateDate" parameterType="java.util.HashMap">
+    	delete from cl_channel_ip where date_format(create_date, '%Y-%m-%d') = #{createDate,jdbcType=TIMESTAMP}
+    </delete>
+    
+</mapper>

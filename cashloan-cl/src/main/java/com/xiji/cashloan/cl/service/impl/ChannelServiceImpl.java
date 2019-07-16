@@ -349,6 +349,7 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			List<Map<String,Object>> countMortgageOverdue = channelMapper.countMortgageOverdue(paramMap);
 			List<Map<String,Object>> countLending = channelMapper.countLending(paramMap);
 			List<Map<String,Object>> certificationCount = channelMapper.certificationCount(paramMap);
+			List<Map<String,Object>> uvCounts = channelMapper.getUvCount(paramMap);
 
 			// 首逾率
 			List<Map<String,Object>> countFirstPassRate = this.calculateOverdueRate(countFirstMortgageOverdue,six,"countFirstMortgageOverdue","countSix");
@@ -383,6 +384,8 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
 			count(map,countMortgageOverdue,"overdueCount","countMortgageOverdue");
 			//认证人数
 			count(map,certificationCount,"certificationCount","phoneCount");
+			//uv点击量
+			count(map,uvCounts,"uvCounts","uvCount");
 
 		}
 	}
@@ -456,6 +459,28 @@ public class ChannelServiceImpl extends BaseServiceImpl<Channel, Long> implement
             }
         }
 		return channelConfigMap;
+	}
+
+	/**
+	 * 批量修改渠道额度
+	 * @param map
+	 * @return
+	 */
+	@Override
+	public boolean batchUpdateChannel(Map<String, Object> map) {
+
+		int result=channelMapper.batchUpdateChannel(map);
+		StringBuilder paramStr = new StringBuilder();
+		if (result > 0) {
+			for(String key : map.keySet()){
+				paramStr.append( key+" = "+map.get(key)+",");
+			}
+			logger.info("批量修改渠道数据为 :"+paramStr.toString());
+			return true;
+		}else {
+			return false;
+		}
+
 	}
 
 }

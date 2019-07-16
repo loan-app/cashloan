@@ -238,7 +238,7 @@
 				behead_fee=#{beheadFee,jdbcType=VARCHAR},
 		  	</if>
 		    <if test="countImproveCredit != null and countImproveCredit != '' ">
-			    count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR}
+			    count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR},
 			</if>
 			  <if test="conditions != null and conditions != '' ">
 				  conditions = #{conditions,jdbcType=VARCHAR}
@@ -313,6 +313,7 @@
 		from cl_channel
 		where
 		code = #{code}
+		for update
 	</select>
 
 	<select id="listChannelWithoutApp" resultMap="BaseResultMap">
@@ -591,5 +592,82 @@
 
 		GROUP BY cu.channel_id
 	</select>
+	<!-- uv统计 -->
+	<select id="getUvCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT channel_id as channelId,sum(uv_count) as uvCount from cl_channel_uv
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="beforeTime != null ">
+				and date_format(count_date, '%Y-%m-%d')  &gt;=  #{beforeTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="afterTime != null ">
+				and date_format(count_date, '%Y-%m-%d')  &lt;= #{afterTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="channelId != null and channelId != ''">
+				and channel_id=#{channelId}
+			</if>
+		</trim>
+
+		GROUP BY channel_id
+	</select>
+
+	<update id="batchUpdateChannel"  parameterType="java.util.HashMap">
+		update cl_channel
+		<set>
+			<if test="code != null and code != '' ">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != '' ">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="linker != null and linker != '' ">
+				linker = #{linker,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null and phone != '' ">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null and type != '' ">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null and state != '' ">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null ">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fee != null and fee != '' ">
+				fee=#{fee,jdbcType=VARCHAR},
+			</if>
+			<if test="initCredit != null and initCredit != '' ">
+				init_credit=#{initCredit,jdbcType=VARCHAR},
+			</if>
+			<if test="borrowCredit != null and borrowCredit != '' ">
+				borrow_credit=#{borrowCredit,jdbcType=VARCHAR},
+			</if>
+			<if test="oneRepayCredit != null and oneRepayCredit != '' ">
+				one_repay_credit=#{oneRepayCredit,jdbcType=VARCHAR},
+			</if>
+			<if test="improveCreditLimit != null and improveCreditLimit != '' ">
+				improve_credit_limit=#{improveCreditLimit,jdbcType=VARCHAR},
+			</if>
+			<if test="isImproveCredit != null and isImproveCredit != '' ">
+				is_improve_credit=#{isImproveCredit,jdbcType=VARCHAR},
+			</if>
+			<if test="borrowDay != null and borrowDay != '' ">
+				borrow_day=#{borrowDay,jdbcType=VARCHAR},
+			</if>
+			<if test="delayFee != null and delayFee != '' ">
+				delay_fee=#{delayFee,jdbcType=VARCHAR},
+			</if>
+			<if test="beheadFee != null and beheadFee != '' ">
+				behead_fee=#{beheadFee,jdbcType=VARCHAR},
+			</if>
+			<if test="countImproveCredit != null and countImproveCredit != '' ">
+				count_improve_credit=#{countImproveCredit,jdbcType=VARCHAR},
+			</if>
+			<if test="conditions != null and conditions != '' ">
+				conditions = #{conditions,jdbcType=VARCHAR},
+			</if>
+		</set>
+	</update>
 
 </mapper>

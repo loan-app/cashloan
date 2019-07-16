@@ -139,4 +139,11 @@ public interface ChannelService extends BaseService<Channel, Long>{
 	 * @return
 	 */
 	Map<String, Object> queryChannelConfig();
+
+	/**
+	 * 批量修改渠道额度
+	 * @param map
+	 * @return
+	 */
+	boolean batchUpdateChannel(Map<String, Object> map);
 }

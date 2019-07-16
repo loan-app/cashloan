@@ -115,7 +115,7 @@ var AddWin = React.createClass({
 
     //手机验证
     checkMobile(rule, value, callback) {
-        var re = /^(13[0-9]|147|15[012356789]|17[678]|18[0-9])[0-9]{8}$/;
+        var re = /^(13[0-9]|147|15[012356789]|17[0-9]|18[0-9])[0-9]{8}$/;
         if (!value || re.test(value)) {
             callback();
         } else {
