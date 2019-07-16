@@ -1,8 +1,6 @@
 import React from 'react'
-import {
-  Table,
-  Modal
-} from 'antd';
+import {Modal, Table} from 'antd';
+
 var confirm = Modal.confirm;
 const objectAssign = require('object-assign');
 export default React.createClass({
@@ -160,8 +158,12 @@ export default React.createClass({
           } else if (record.type == 13) {
               return "借贷多头"
           } else if (record.type == 14) {
-              return "模型评分"
-          } else {
+              return "模型评分3"
+          }  else if(record.type == 15) {
+              return "模型评分2"
+          } else if (record.type == 16) {
+              return "模型评分1"
+          } else{
               return "-"
           }
       }

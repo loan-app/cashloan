@@ -59,7 +59,9 @@ let SeachForm = React.createClass({
           <Option value="11">染黑统计</Option>
           <Option value="12">还款行为</Option>
           <Option value="13">借贷多头</Option>
-          <Option value="14">模型评分</Option>
+          <Option value="14">模型评分3</Option>
+          <Option value="15">模型评分2</Option>
+          <Option value="16">模型评分1</Option>
           </Select>
           </FormItem>
 
