@@ -82,7 +82,7 @@ public final class ExportConstant {
 
 	/** 还款计划*/
 	public static final String[] EXPORT_REPAYMENT_PLAN_LIST_HEARDERS = {"真实姓名","手机号码","订单号","借款金额(元)","逾期罚金(元)","逾期天数","应还款金额(元)","应还款总额(元)","应还款日期","利息",
-			"放款本金","渠道","还款状态","模型评分"};
+			"放款本金","渠道","还款状态","模型分数"};
 
 	/** 还款计划*/
 	public static final String[] EXPORT_REPAYMENT_PLAN_LIST_FIELDS = {"realName","phone","orderNo","borrowAmount","penaltyAmout","penaltyDay","repayAmount","repayTotal","repayTime","fee",

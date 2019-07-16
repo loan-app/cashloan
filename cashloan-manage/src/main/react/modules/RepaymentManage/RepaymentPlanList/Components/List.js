@@ -337,7 +337,7 @@ export default React.createClass({
             title: '渠道',
             dataIndex: 'channelName'
         },{
-            title: '模型分',
+            title: '模型分数',
             dataIndex: 'modelScore'
         }, {
             title: '还款状态',

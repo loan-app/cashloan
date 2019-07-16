@@ -489,7 +489,7 @@ export default React.createClass({
             title: '实际还款金额(元)',
             dataIndex: 'repayAmount'
         }, {
-            title: '模型评分',
+            title: '模型分数',
             dataIndex: 'modelScore'
         },{
             title: '是否复借',
