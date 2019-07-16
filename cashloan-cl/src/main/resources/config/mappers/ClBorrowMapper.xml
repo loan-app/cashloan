@@ -394,6 +394,13 @@
             <if test="again != null and again != ''">
                 and b.again = #{again,jdbcType=BIGINT}
             </if>
+
+            <if test="minScore != null and minScore != ''">
+                and px.score >= #{minScore,jdbcType=DECIMAL}
+            </if>
+            <if test="maxScore != null and maxScore != ''">
+                and px.score  <![CDATA[ <= ]]> #{maxScore,jdbcType=DECIMAL}
+            </if>
         </trim>
     </sql>
     
@@ -404,7 +411,9 @@
          <result column="repay_time" property="repayTime" jdbcType="VARCHAR" />
          <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
          <result column="repay_way" property="repayWay" jdbcType="VARCHAR" />
-    </resultMap>
+         <result column="model_score" property="modelScore" jdbcType="DECIMAL" />
+
+     </resultMap>
     
     <select id="listReview" resultMap="userBorrowMap" parameterType="java.util.HashMap">
 		select
@@ -447,8 +456,8 @@
 		select
 			u.real_name,u.phone,b.id,b.user_id,b.order_no,b.amount,b.real_amount,b.fee,b.create_time,b.time_limit,b.state,b.remark,
 			l.amount+l.penalty_amout as repay_amount,l.repay_time,l.penalty_amout,l.penalty_day,b.again,b.is_overdue,card.card_no,
-            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name,l.repay_way
-		from cl_borrow b 
+            (SELECT c.name FROM cl_channel c where c.id = r.channel_id) as channel_name,l.repay_way,zm.score zm_score,px.score model_score
+		from cl_borrow b
 		left join cl_user_base_info u on u.user_id=b.user_id 
 		left join
         <choose>
@@ -471,7 +480,9 @@
             </otherwise>
         </choose>
         on u.user_id = card.user_id
-		<include refid="searchModelBy" />
+        left join cl_zm_model zm on b.id = zm.borrow_id
+        left join cl_px_model px on b.id = px.borrow_id
+        <include refid="searchModelBy" />
 		ORDER BY b.create_time DESC
 	</select>
 

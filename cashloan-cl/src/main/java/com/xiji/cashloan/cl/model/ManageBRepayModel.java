@@ -74,6 +74,11 @@ public class ManageBRepayModel extends BorrowRepay {
 	 */
 	private String allotState;
 
+	/**
+	 * 模型分
+	 */
+	private Double modelScore;
+
 
 	public String getRealName() {
 		return realName;
@@ -171,5 +176,13 @@ public class ManageBRepayModel extends BorrowRepay {
 
 	public void setAllotState(String allotState) {
 		this.allotState = allotState;
+	}
+
+	public Double getModelScore() {
+		return modelScore;
+	}
+
+	public void setModelScore(Double modelScore) {
+		this.modelScore = modelScore;
 	}
 }

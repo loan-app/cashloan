@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  DatePicker
-} from 'antd';
+import {Button, DatePicker, Form, Input, Select} from 'antd';
+
 const createForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -37,7 +32,12 @@ let SeachForm = React.createClass({
       current: 1,
     });
   },
+    handleOut() {
+        var params = this.props.form.getFieldsValue();
+        var json = encodeURI(JSON.stringify(params));
+        window.open("/modules/manage/notBorrowAgain/export.htm?searchParams="+json);
 
+    },
   render() {
     const {
       getFieldProps
@@ -52,6 +52,7 @@ let SeachForm = React.createClass({
         </FormItem>
         <FormItem><Button type="primary" onClick={this.handleQuery}>查询</Button></FormItem>
         <FormItem><Button type="reset" onClick={this.handleReset}>重置</Button></FormItem>
+          <FormItem><Button onClick={this.handleOut}>导出</Button></FormItem>
       </Form>
     );
   }
