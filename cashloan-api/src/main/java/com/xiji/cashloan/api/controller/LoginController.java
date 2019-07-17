@@ -211,6 +211,35 @@ public class LoginController {
 		};
 	}
 
+	@RequestMapping("apiRegister")
+	public void apiRegister(final HttpServletRequest request,
+						   final HttpServletResponse response, final String loginName,
+						   final String loginPwd, final String vcode,
+						   final String invitationCode, final String client,
+						   final String channelCode, final String registerCoordinate,
+						   final String registerAddr, final String signMsg,
+						   final String blackBox) {
+		String wxRegister = Global.getValue("wxRegister");
+		Map result = new HashMap();
+		if("10".equals(wxRegister)) {
+			result.put("msg", "注册成功!");
+		}
+		new AppAbsActionWrapper(response) {
+			@Override
+			public Object doAction() {
+				Map result = userService.registerUser(request, loginName,
+						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
+						registerAddr, client, signMsg,channelCode);
+				if ((Boolean) result.get("success")) {
+//					result = userService.login(request, loginName, loginPwd,
+//							signMsg,blackBox);
+					result.put("msg", "注册成功!");
+				}
+				return result;
+			}
+		};
+	}
+
 	//设置登录密码
 	@RequestMapping("login/setPwd.htm")
 	public void setPwd(final HttpServletRequest request,
