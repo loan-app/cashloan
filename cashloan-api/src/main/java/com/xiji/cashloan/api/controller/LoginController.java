@@ -213,12 +213,9 @@ public class LoginController {
 
 	@RequestMapping("apiRegister")
 	public void apiRegister(final HttpServletRequest request,
-						   final HttpServletResponse response, final String loginName,
-						   final String loginPwd, final String vcode,
-						   final String invitationCode, final String client,
-						   final String channelCode, final String registerCoordinate,
-						   final String registerAddr, final String signMsg,
-						   final String blackBox) {
+						   final HttpServletResponse response,final String cid,
+							final int request_time,
+							final String phone,final String sign) {
 		String wxRegister = Global.getValue("wxRegister");
 		Map result = new HashMap();
 		if("10".equals(wxRegister)) {
@@ -227,14 +224,7 @@ public class LoginController {
 		new AppAbsActionWrapper(response) {
 			@Override
 			public Object doAction() {
-				Map result = userService.registerUser(request, loginName,
-						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
-						registerAddr, client, signMsg,channelCode);
-				if ((Boolean) result.get("success")) {
-//					result = userService.login(request, loginName, loginPwd,
-//							signMsg,blackBox);
-					result.put("msg", "注册成功!");
-				}
+				Map result = userService.apiRegister(cid, request_time,phone,sign);
 				return result;
 			}
 		};

@@ -1,5 +1,6 @@
 package com.xiji.cashloan.api.user.service;
 
+import java.security.MessageDigest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -234,6 +235,11 @@ public class UserService {
         try {
             Map ret = new LinkedHashMap();
             // TODO 请求超时。根据request_time参数的值，校验服务器接收到参数时的间隔时间。
+
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update((cid + request_time + phone).getBytes());
+
+            md5.digest();
 
             String xlhb_api_cid = Global.getValue("xlhb_api_cid").trim();
             if (StringUtil.isEmpty(cid) || !cid.equals(xlhb_api_cid) ) {
