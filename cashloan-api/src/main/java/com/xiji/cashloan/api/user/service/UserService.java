@@ -228,6 +228,46 @@ public class UserService {
     }
 
     @Transactional
+    public Map apiRegister(final String cid,
+                           final int request_time,
+                           final String phone,final String sign) {
+        try {
+            Map ret = new LinkedHashMap();
+            // TODO 请求超时。根据request_time参数的值，校验服务器接收到参数时的间隔时间。
+
+            String xlhb_api_cid = Global.getValue("xlhb_api_cid").trim();
+            if (StringUtil.isEmpty(cid) || !cid.equals(xlhb_api_cid) ) {
+                ret.put("error", true);
+                ret.put("info", "渠道标识错误");
+                ret.put("code", 10);
+                ret.put("data", null);
+                return ret;
+            }
+
+            if (StringUtil.isEmpty(phone) || !StringUtil.isPhone(phone) ) {
+                ret.put("error", true);
+                ret.put("info", "手机号格式有误!");
+                ret.put("code", 200);
+                ret.put("data", null);
+                return ret;
+            }
+
+            //TODO 签名错误
+
+
+            return ret;
+        } catch (Exception e) {
+            logger.error("注册失败", e);
+            Map ret = new LinkedHashMap();
+            ret.put("error", true);
+            ret.put("info", "系统异常，请稍后再试!");
+            ret.put("code", 400);
+            ret.put("data", null);
+            return ret;
+        }
+    }
+
+    @Transactional
     public Map registerUser(HttpServletRequest request, String phone, String pwd, String vcode, String invitationCode,
                             String registerCoordinate,String registerAddr,String regClient, String signMsg, String channelCode) {
         try {
