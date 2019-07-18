@@ -1650,6 +1650,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			// 人工复审成功 放款
 			if (BorrowModel.STATE_PASS.equals(state)) {
 				if (!"10".equals(Global.getValue("manual_loan")))  { //系统配置的是否放款审核
+				    borrow = clBorrowMapper.findByPrimary(borrowId);
 					borrowLoan(borrow, new Date());
 				}else {
 					//到待放款审核状态	
