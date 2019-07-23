@@ -22,6 +22,7 @@ import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import com.xiji.cashloan.system.domain.SysUser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -246,20 +247,20 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 	 * @param code
 	 * @return
 	 */
-	public int verifyLoginSms(String phone, String type, String code) {
+	public int verifyLoginSms(SysUser sysUser, String type, String code) {
 		if ("dev".equals(Global.getValue("app_environment")) && "0000".equals(code)) {
 			return 1;
 		}
 
-		if(StringUtil.isBlank(phone) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
+		if(StringUtil.isBlank(sysUser.getMobile()) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
 			return 0;
 		}
 
-		if (!StringUtil.isPhone(phone)) {
+		if (!StringUtil.isPhone(sysUser.getMobile())) {
 			return 0;
 		}
 		Map<String,Object> data = new HashMap<String, Object>();
-		data.put("phone", phone);
+		data.put("phone", sysUser.getMobile());
 		data.put("smsType", type);
 		Sms sms = smsMapper.findTimeMsg(data);
 		if (sms != null) {
