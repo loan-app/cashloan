@@ -35,4 +35,6 @@ public interface SysRoleMapper extends BaseMapper<SysRole,Long> {
 
 	long insertByMap(Map<String, Object> data);
 
+	SysRole getBySysUserId(long id);
+
 }

@@ -111,7 +111,7 @@ public class SysLoginController extends BaseController {
 			
 			//图片验证码校验
 			//checkImgCode(request.getParameter("code"),session.getAttribute("code"));
-			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
+			int result = clSmsService.verifyLoginSms(sysUser, SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
 			if (result == 1) {
 				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				LoginUtil.removeFailTimes(sysUser.getId());
