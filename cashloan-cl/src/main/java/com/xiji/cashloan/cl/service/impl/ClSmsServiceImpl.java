@@ -150,7 +150,25 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		logger.error("发送短信，phone：" + phone + "， type：" + type + "，没有获取到smsTpl");
 		return null;
 	}
-	
+
+	@Override
+	public String sendSms(String phone, String type, String param) {
+		Map<String, Object> search = new HashMap<>();
+		search.put("type", type);
+		search.put("state", "10");
+		SmsTpl tpl = smsTplMapper.findSelective(search);
+		if (tpl != null) {
+			Map<String, Object> payload = new HashMap<>();
+			payload.put("mobile", phone);
+			payload.put("message", String.format(ret(type), param));
+			String result = sendCode(payload, tpl.getNumber());
+			logger.info("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
+			return result(result, phone, type, 0);
+		}
+		logger.error("发送短信，phone：" + phone + "， type：" + type + "，没有获取到smsTpl");
+		return null;
+	}
+
 	@Override
 	public int smsBatch(String id) {
 		final long[] ids = StringUtil.toLongs(id.split(","));
