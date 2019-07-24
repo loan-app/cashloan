@@ -2021,12 +2021,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		decisionService.saveBorrowDecision(borrow);
 
 		//如果是复借用户,直接机审通过
-		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
-		if (finishCount > 0) {
-			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
-			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
-			return;
-		}
+//		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
+//		if (finishCount > 0) {
+//			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
+//			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
+//			return;
+//		}
 
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);
@@ -2122,9 +2122,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					}
 				}
 			}
-				
-			
-			
+
+			// 综合决策报告小额评分 小于最低评分直接机审拒绝
+			double yixinScore = yixinRiskService.queryScore(borrow);
+			if (yixinScore < Global.getDouble("yixin_score_min_limit")){
+				handleBorrow(result.getResultType(), borrow,"");
+				logger.info("订单 borrowId :"+borrowId+"小于最低综合决策报告小额评分直接机审拒绝，yixinScore ==>"+yixinScore);
+				return;
+			}
+
 			// 直到规则执行到最后一项，如果没有命中人工复审或者审核不通过  ，则借款申请为审核通过
 			if (i == (configCollection.size() - 1)) {
 				//对借款申请进行审核处理
@@ -2311,7 +2317,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public void verifyBorrowData(long borrowId, String mobileType) {
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
-		submitTask(borrow);//提交异步任务
+		// submitTask(borrow);//提交异步任务
 		List<SceneBusinessLog> sceneLogList = sceneBusinessLogMapper.findSceneLogByBorrowId(borrowId);
 		
 		if(borrow != null){

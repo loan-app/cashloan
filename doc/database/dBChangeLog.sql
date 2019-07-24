@@ -1098,3 +1098,21 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷商户号私钥', 'chanp
 INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付-协议商户号', 'chanpay_agreement_merchant_no', '200001160097', '1', '畅捷支付-协议商户号', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付-代付商户号', 'chanpay_paid_merchant_no', '200001160096', '1', '畅捷支付-协议商户号', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付平台公钥', 'chanpay_merchant_public_key', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDPq3oXX5aFeBQGf3Ag/86zNu0VICXmkof85r+DDL46w3vHcTnkEWVbp9DaDurcF7DMctzJngO0u9OG1cb4mn+Pn/uNC1fp7S4JH4xtwST6jFgHtXcTG9uewWFYWKw/8b3zf4fXyRuI/2ekeLSstftqnMQdenVP7XCxMuEnnmM1RwIDAQAB', '1', '畅捷支付平台公钥', '1');
+
+-- 宜信阿福综合决策报告小额评分
+DROP TABLE IF EXISTS `cl_yixin_score`;
+CREATE TABLE `cl_yixin_score` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `composite_score` decimal(10,2) DEFAULT '0.00' COMMENT '综合评分',
+  `decision_suggest` varchar(4) DEFAULT '0' COMMENT '决策建议',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宜信阿福综合决策小额评分';
+
+--宜信阿福综合决策报告小额评分
+INSERT INTO `arc_sys_config` VALUES (null, '100', '宜信综合决策报告小额评分接口名称', 'yixin_score_api_name', 'decision.report.pro.bt.api', '1', '宜信综合决策报告小额评分接口名称', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信综合决策报告小额评分审核通过最低分数', 'yixin_score_min_limit', '500', '1', '宜信综合决策报告小额评分审核通过最低分数', '1');

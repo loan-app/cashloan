@@ -37,6 +37,9 @@ public class CallsOutSideFeeConstant {
     //绿盟黑名单
     public static int CALLS_TYPE_LVMENG_BLACK = 17;
 
+    //宜信阿福综合决策报告小额评分
+    public static int CALLS_TYPE_YIXIN_SCORE = 18;
+
     //充值类型
     public static int CALLS_TYPE_TopUp = 999;
     //魔蝎运营商费用
@@ -69,6 +72,10 @@ public class CallsOutSideFeeConstant {
     public static double FEE_YOUDUN_RISK = -0.2;
     //请求绿盟
     public static double FEE_LVMENG = -0.2;
+
+    // 宜信阿福综合决策报告小额评分费用
+    public static double FEE_YIXIN_SCORE = -0.8;
+
 
     /**
      * 消费
