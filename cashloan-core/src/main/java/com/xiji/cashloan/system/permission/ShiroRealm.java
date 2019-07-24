@@ -77,7 +77,7 @@ public class ShiroRealm extends AuthorizingRealm {
 			
 			if (user == null) {
 				throw new UnknownAccountException();// 没找到帐号
-			} else if (user.getStatus() != 0) {
+			} else if (user.getStatus() == 1) {
 				throw new LockedAccountException(); // 帐号锁定
 			} else {
 //				String password = String.valueOf((char[]) token.getCredentials());//得到密码  
