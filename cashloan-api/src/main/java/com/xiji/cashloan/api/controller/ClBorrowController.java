@@ -534,5 +534,4 @@ public class ClBorrowController extends BaseController {
 		ServletUtils.writeToResponse(response, result);
 	}
 
-
 }

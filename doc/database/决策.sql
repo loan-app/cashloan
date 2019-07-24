@@ -16,7 +16,7 @@ create table cl_decision
   `mx_contact_loan_situation` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '与贷款类号码联系次数5次及以上，且主动呼叫占比大于50% 0-否 1-是',
   `mx_five_month_voice_situation` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '连续近5个月(当月不算在内)平均主叫次数20次以下并且连续近5个月(当月不算在内)平均通话时长(主叫+被叫)70分钟以下 0-否 1-是',
   `mx_five_month_bill_less_than_20_num` int(4) NOT NULL DEFAULT 5 COMMENT '连续近5个月(当月不算在内)话费消费低于20元的次数',
-  `mx_contact_matching_voice_situation` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '通讯录与通话记录中匹配两个以下号码 0-否 1-是',
+  `mx_contact_matching_voice_situation` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '通讯录与通话记录中匹配四个以下号码 0-否 1-是',
   `mx_is_reliability` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '手机号未实名认证(或认证的用户姓名与当前用户不匹配) 0-未实名认证 1-实名认证',
   `mx_province` varchar(24) NOT NULL DEFAULT '' COMMENT '户口所在省份',
   `mx_city` varchar(24) NOT NULL DEFAULT '' COMMENT '户口所在城市',

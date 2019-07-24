@@ -3,6 +3,8 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.DecisionService;
@@ -67,6 +69,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private DecisionMapper decisionMapper;
     @Resource
     private YouDunRiskReportMapper youDunRiskReportMapper;
+    @Resource
+    private OperatorVoiceCntMapper operatorVoiceCntMapper;
 
     @Override
     public BaseMapper<Decision, Long> getMapper() {
@@ -87,6 +91,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         decision.setBorrowId(borrowId);
         UserBaseInfo userBaseInfo = userBaseInfoMapper.findByUserId(userId);
         decision.setAge(userBaseInfo.getAge());
+        decision.setCompanyName(userBaseInfo.getCompanyName());
 
         queryMap.put("userId", userId);
         String contactTableName = ShardTableUtil.generateTableNameById("cl_user_contacts", userId, 30000);
@@ -100,7 +105,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.put("userId", userId);
         queryMap.put("sumDuration", 0);
         int matchingCnt = userContactsMapper.countContacts(contactTableName, queryMap);
-        decision.setMxContactMatchingVoiceSituation(matchingCnt < 2 ? 1 : 0);
+        decision.setMxContactMatchingVoiceSituation(matchingCnt < 4 ? 1 : 0);
 
         //处理魔蝎运营商报告
         queryMap.clear();
@@ -112,6 +117,20 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.put("reqLogId", reqLogId);
         OperatorReport operatorReport = operatorReportMapper.findSelective(queryMap);
         setOperatorData(operatorReport, decision);
+
+        //处理通话记录详情 TOP10是否包含12599
+        queryMap.clear();
+        queryMap.put("userId", userId);
+        queryMap.put("reqLogId", reqLogId);
+        String tableName = ShardTableUtil.generateTableNameById("cl_operator_voice_cnt", borrow.getUserId(), 30000);
+        PageHelper.startPage(0, 10);
+        Page<OperatorVoiceCnt> operatorVoiceCntPage = (Page<OperatorVoiceCnt>) operatorVoiceCntMapper
+                .listShardSelective(tableName,queryMap);
+        for (OperatorVoiceCnt operatorVoiceCnt : operatorVoiceCntPage) {
+            if("12599".equals(operatorVoiceCnt.getPeerNum())) {
+                decision.setMxVoiceHasSensitivePhone(1);
+            }
+        }
 
         //处理至诚宜信阿福报告
         queryMap.clear();
@@ -180,7 +199,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.clear();
         queryMap.put("borrowId", borrowId);
         YouDunRiskReport youDunRiskReport = youDunRiskReportMapper.findSelective(queryMap);
-        setYoudunRisk(youDunRiskReport, decision);
+        setYoudunRisk(youDunRiskReport, decision, yixinRiskReport, xinyanXwld);
 
         i = decisionMapper.saveSelective(decision);
         return i;
@@ -198,6 +217,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             int countBorrowApply = 0;
             // 借款申请已同意数
             int countApprovalAccept = 0;
+            // 借贷正常订单数量
+            int countNormal = 0;
             JSONArray loanRecordsJsonArray = JSON.parseObject(yixinRiskReport.getData()).getJSONArray("loanRecords");
             if (loanRecordsJsonArray != null){
                 Iterator iterator = loanRecordsJsonArray.iterator();
@@ -220,13 +241,14 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                     if (StringUtil.isNotBlank(json.getString("overdueStatus"))) {
                         countOverdueHistory = countOverdueHistory + 1;
                     }
+
                 }
             }
             decision.setYxOverdueHistoryCount(countOverdueHistory);
             decision.setYxOverdueHistoryM3Count(countOverdueHistoryM3);
             decision.setYxOverdueHistoryM6Count(countOverdueHistoryM6);
-            //申请借款数量大于20且放款数量为0
-            if(countBorrowApply > 20 && countApprovalAccept == 0) {
+            //申请借款数量大于40且放款数量为0
+            if(countBorrowApply > 40 && countApprovalAccept == 0) {
                 decision.setYxAm20NoAccept(1);
             }
         }
@@ -360,20 +382,28 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
             decision.setXyLatestOneMonthFail(dataJson.getString("latest_one_month_fail"));
             decision.setXyLoansLongTime(dataJson.getString("loans_long_time"));
             decision.setXyLoansLatestTime(dataJson.getString("loans_latest_time"));
+            int historyNum = 0;
+            int latestMonthNum = 0;
             if(StringUtil.isNumber(dataJson.getString("history_suc_fee")) &&
                     StringUtil.isNumber(dataJson.getString("history_fail_fee"))) {
                 //历史扣款成功笔数-失败笔数
-                int historyNum = Integer.valueOf(dataJson.getString("history_suc_fee")) -
+                historyNum = Integer.valueOf(dataJson.getString("history_suc_fee")) -
                         Integer.valueOf(dataJson.getString("history_fail_fee"));
                 decision.setXyHistorySucMinusFailNum(historyNum);
             }
-            if(StringUtil.isNumber(dataJson.getString("history_suc_fee")) &&
-                    StringUtil.isNumber(dataJson.getString("history_fail_fee"))) {
+            if(StringUtil.isNumber(dataJson.getString("latest_one_month_suc")) &&
+                    StringUtil.isNumber(dataJson.getString("latest_one_month_fail"))) {
                 //近一个月扣款成功笔数-失败笔数
-                int latestMonthNum = Integer.valueOf(dataJson.getString("latest_one_month_suc")) -
+                latestMonthNum = Integer.valueOf(dataJson.getString("latest_one_month_suc")) -
                         Integer.valueOf(dataJson.getString("latest_one_month_fail"));
                 decision.setXyLatestOneMonthSucMinusFailNum(latestMonthNum);
             }
+            //还款行为历史和一月失败均大于成功
+            int xySucMinusFailNum = 0;
+            if(historyNum < 0 && latestMonthNum < 0) {
+                xySucMinusFailNum = 1;
+            }
+            decision.setXySucMinusFailNum(xySucMinusFailNum);
         }
     }
 
@@ -502,7 +532,7 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         }
     }
 
-    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision) {
+    private void setYoudunRisk(YouDunRiskReport youDunRiskReport, Decision decision, YixinRiskReport yixinRiskReport, XinyanXwld xinyanXwld) {
         if(youDunRiskReport != null && youDunRiskReport.getData() != null) {
             JSONObject dataJson = JSONObject.parseObject(youDunRiskReport.getData());
             if (dataJson == null) {
@@ -529,6 +559,92 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 decision.setYdRiskEvaluation(scoreDetail.getString("risk_evaluation"));
                 decision.setYdScore(scoreDetail.getInteger("score"));
             }
+
+            //近1月申请和下款平台数
+            int ydLoanPlatformCount1m = decision.getYdLoanPlatformCount1m() == null ? 0 : decision.getYdLoanPlatformCount1m();
+            int ydActualLoanPlatformCount1m = decision.getYdActualLoanPlatformCount1m() == null ? 0 : decision.getYdActualLoanPlatformCount1m();
+            //近6月申请和下款平台数
+            int ydLoanPlatformCount6m = decision.getYdLoanPlatformCount6m() == null ? 0 : decision.getYdLoanPlatformCount6m();
+            int ydActualLoanPlatformCount6m = decision.getYdActualLoanPlatformCount6m() == null ? 0 : decision.getYdActualLoanPlatformCount6m();
+            //近3月申请和下款平台数
+            int ydLoanPlatformCount3m = decision.getYdLoanPlatformCount3m() == null ? 0 : decision.getYdLoanPlatformCount3m();
+            int ydActualLoanPlatformCount3m = decision.getYdActualLoanPlatformCount3m() == null ? 0 : decision.getYdActualLoanPlatformCount3m();
+            //实际借款平台数,还款平台数和还款笔数
+            int ydActualLoanPlatformCount = decision.getYdActualLoanPlatformCount() == null ? 0 : decision.getYdActualLoanPlatformCount();
+            int ydRepaymentPlatformCount = decision.getYdRepaymentPlatformCount() == null ? 0 : decision.getYdRepaymentPlatformCount();
+            int ydRepaymentTimesCount = decision.getYdRepaymentTimesCount() == null ? 0 : decision.getYdRepaymentTimesCount();
+
+            // 借贷正常订单数量
+            int countApprovalAccept = 0;
+
+            if(yixinRiskReport != null) {
+                int countNormal = 0;
+                JSONArray loanRecordsJsonArray = JSON.parseObject(yixinRiskReport.getData()).getJSONArray("loanRecords");
+                if (loanRecordsJsonArray != null) {
+                    Iterator iterator = loanRecordsJsonArray.iterator();
+                    while (iterator.hasNext()) {
+                        String str = iterator.next().toString();
+                        JSONObject json = JSON.parseObject(str);
+                        if (json.get("approvalStatus") != null) {
+                            String result = json.get("approvalStatus").toString();
+                            if ("ACCEPT".equals(result)) {
+                                countApprovalAccept = countApprovalAccept++;
+                            }
+                        }
+                        if (json.get("loanStatus") != null) {
+                            if ("NORMAL".equals(json.get("loanStatus").toString())) {
+                                countNormal++;
+                            }
+                        }
+                    }
+                }
+                //借贷正常N笔以上 且借贷多头近3月申请平台大于M家
+                if (countNormal >= 7 && ydLoanPlatformCount3m > 50) {
+                    decision.setYxLoaningAm3m(1);
+                }
+
+                //新颜无数据,阿福无下款数据,有盾借贷多头半年未下款且有盾1个月申请平台大于30
+                if((xinyanXwld == null || StringUtil.isBlank(xinyanXwld.getData())) && countApprovalAccept == 0 && ydActualLoanPlatformCount6m == 0) {
+                    decision.setYxYdNoLoan(1);
+                }
+            }
+
+            //是否命中有盾拒绝风险项--关联过多,羊毛党,法院失信
+            int ydRefusedFeature = 0;
+            if(dataJson.getJSONArray("user_features") != null) {
+                JSONArray userFeatures = dataJson.getJSONArray("user_features");
+                for (Object userFeature : userFeatures) {
+                    JSONObject featureJson = JSON.parseObject(userFeature.toString());
+                    String userFeatureType = featureJson.getString("user_feature_type");
+                    if("8".equals(userFeatureType) || "2".equals(userFeatureType) || "6".equals(userFeatureType)) {
+                        ydRefusedFeature = 1;
+                        break;
+                    }
+                }
+            }
+            decision.setYdRefusedFeature(ydRefusedFeature);
+
+            //多头近6月未下款且申请平台大于15
+            int ydNoLoan6m = 0;
+            if(ydLoanPlatformCount6m > 15 && ydActualLoanPlatformCount6m == 0) {
+                ydNoLoan6m = 1;
+            }
+            decision.setYdNoLoan6m(ydNoLoan6m);
+
+            //多头近1月申请平台数大于等于30家 且下款平台数小于3
+            int ydLoan1m = 0;
+            if(ydLoanPlatformCount1m > 30 && ydActualLoanPlatformCount1m < 3) {
+                ydLoan1m = 1;
+            }
+            decision.setYdLoan1m(ydLoan1m);
+
+            //多头实际借款平台数1 还款平台1 还款笔数1
+            int ydPlatformLoanNum = 0;
+            if(ydActualLoanPlatformCount == 1 && ydRepaymentPlatformCount == 1 && ydRepaymentTimesCount == 1) {
+                ydPlatformLoanNum = 1;
+            }
+            decision.setYdPlatformLoanNum(ydPlatformLoanNum);
+
 
             int maxCount = 0;
             JSONArray devicesList = dataJson.getJSONArray("devices_list");
@@ -690,6 +806,10 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                 //运营商消费数据
                 decision.setMxFiveMonthVoiceSituation(0);
                 JSONArray cellBehaviorArray = reportJson.getJSONArray("cell_behavior");
+                //本月短信数量
+                int thisMonthSmsNum = 0;
+                //上个月短信数量
+                int lastMonthSmsNum = 0;
                 for (Object obj : cellBehaviorArray) {
                     JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
                     JSONArray beArray = jsonObject.getJSONArray("behavior");
@@ -697,6 +817,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                         int countDialNum = 0;
                         int countCellTime = 0;
                         int lessThan20Num = 0;
+                        JSONObject thisMonthJson = JSONObject.parseObject(JSON.toJSONString(beArray.get(0)));
+                        thisMonthSmsNum = thisMonthJson.getInteger("sms_cnt");
                         for (int i = 1; i < beArray.size(); i++) {
                             JSONObject beJson = JSONObject.parseObject(JSON.toJSONString(beArray.get(i)));
                             //主叫次数
@@ -708,6 +830,9 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                             if(totalAmount < 2000) {
                                 lessThan20Num++;
                             }
+                            if(i == 1){
+                                lastMonthSmsNum = beJson.getInteger("sms_cnt");
+                            }
                         }
                         decision.setMxFiveMonthBillLessThan20Num(lessThan20Num);
                         Double avgDialNum = Double.valueOf(df.format((double) countDialNum / 5));
@@ -715,77 +840,84 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
                         if(avgDialNum < 20 && avgCellTime < 70) {
                             decision.setMxFiveMonthVoiceSituation(1);
                         }
+
+                        //近一月短信和被叫是上一个月的2倍及以上
+                        int mxMessageNum = 0;
+                        if(lastMonthSmsNum > 0 && thisMonthSmsNum / lastMonthSmsNum >= 2) {
+                            mxMessageNum = 1;
+                        }
+                        decision.setMxMessageNum(mxMessageNum);
                     }
                 }
 
                 //处理用户行为检测
-                JSONArray behaviorCheckArray = reportJson.getJSONArray("behavior_check");
-                if (behaviorCheckArray != null && behaviorCheckArray.size() > 0) {
-
-                    for (Object obj : behaviorCheckArray) {
-                        JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
-                        String checkPoint = jsonObject.getString("check_point");
-                        String checkResult = jsonObject.getString("result");
-                        if (StringUtil.isBlank(checkPoint) || StringUtil.isBlank(checkResult)){
-                            continue;
-                        }
-                        switch (checkPoint) {
-                            case "phone_silent":
-                                if (checkResult.indexOf("天无通话记录") > -1) {
-                                    decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
-                                    break;
-                                }
-                            case "contact_loan":
-                                decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
-                                decision.setMxContactLoan(checkResult);
-                                break;
-                            case "regular_circle":
-                                decision.setMxRegularCircle(checkResult);
-                                break;
-                            case "phone_used_time":
-                                decision.setMxPhoneUsedTime(checkResult);
-                                break;
-                            case "phone_power_off":
-                                decision.setMxPhonePowerOff(checkResult);
-                                break;
-                            case "contact_each_other":
-                                decision.setMxContactEachOther(checkResult);
-                                break;
-                            case "contact_macao":
-                                decision.setMxContactMacao(checkResult);
-                                break;
-                            case "contact_110":
-                                decision.setMxContact110(checkResult);
-                                break;
-                            case "contact_120":
-                                decision.setMxContact120(checkResult);
-                                break;
-                            case "contact_lawyer":
-                                decision.setMxContactLawyer(checkResult);
-                                break;
-                            case "contact_court":
-                                decision.setMxContactCourt(checkResult);
-                                break;
-                            case "contact_bank":
-                                decision.setMxContactBank(checkResult);
-                                break;
-                            case "contact_credit_card":
-                                decision.setMxContactCreditCard(checkResult);
-                                break;
-                            case "contact_collection":
-                                decision.setMxContactCollection(checkResult);
-                                break;
-                            case "contact_night":
-                                decision.setMxContactNight(checkResult);
-                                break;
-                            case "phone_call":
-                                decision.setMxPhoneCall(checkResult);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
+//                JSONArray behaviorCheckArray = reportJson.getJSONArray("behavior_check");
+//                if (behaviorCheckArray != null && behaviorCheckArray.size() > 0) {
+//
+//                    for (Object obj : behaviorCheckArray) {
+//                        JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(obj));
+//                        String checkPoint = jsonObject.getString("check_point");
+//                        String checkResult = jsonObject.getString("result");
+//                        if (StringUtil.isBlank(checkPoint) || StringUtil.isBlank(checkResult)){
+//                            continue;
+//                        }
+//                        switch (checkPoint) {
+//                            case "phone_silent":
+//                                if (checkResult.indexOf("天无通话记录") > -1) {
+//                                    decision.setMxPhoneNoVoiceDays(Integer.valueOf(checkResult.substring(6, checkResult.indexOf("天无通话记录"))));
+//                                    break;
+//                                }
+//                            case "contact_loan":
+//                                decision.setMxContactLoanSituation(checkResult.indexOf("经常被联系") > -1 ? 1 : 0);
+//                                decision.setMxContactLoan(checkResult);
+//                                break;
+//                            case "regular_circle":
+//                                decision.setMxRegularCircle(checkResult);
+//                                break;
+//                            case "phone_used_time":
+//                                decision.setMxPhoneUsedTime(checkResult);
+//                                break;
+//                            case "phone_power_off":
+//                                decision.setMxPhonePowerOff(checkResult);
+//                                break;
+//                            case "contact_each_other":
+//                                decision.setMxContactEachOther(checkResult);
+//                                break;
+//                            case "contact_macao":
+//                                decision.setMxContactMacao(checkResult);
+//                                break;
+//                            case "contact_110":
+//                                decision.setMxContact110(checkResult);
+//                                break;
+//                            case "contact_120":
+//                                decision.setMxContact120(checkResult);
+//                                break;
+//                            case "contact_lawyer":
+//                                decision.setMxContactLawyer(checkResult);
+//                                break;
+//                            case "contact_court":
+//                                decision.setMxContactCourt(checkResult);
+//                                break;
+//                            case "contact_bank":
+//                                decision.setMxContactBank(checkResult);
+//                                break;
+//                            case "contact_credit_card":
+//                                decision.setMxContactCreditCard(checkResult);
+//                                break;
+//                            case "contact_collection":
+//                                decision.setMxContactCollection(checkResult);
+//                                break;
+//                            case "contact_night":
+//                                decision.setMxContactNight(checkResult);
+//                                break;
+//                            case "phone_call":
+//                                decision.setMxPhoneCall(checkResult);
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                }
                 //朋友圈信息
                 JSONObject friendJson = reportJson.getJSONObject("friend_circle");
                 if(friendJson != null) {

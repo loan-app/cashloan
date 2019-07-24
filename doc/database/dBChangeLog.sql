@@ -921,9 +921,64 @@ alter table cl_operator_basic change city `city` varchar(100) DEFAULT  '' COMMEN
 -- 修改紧急联系人姓名字段编码格式
 alter table `cl_user_emer_contacts`  change name name varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '联系人';
 
+-- 创建借款订单模型评分表
+DROP TABLE IF EXISTS `cl_borrow_model_score`;
+CREATE TABLE `cl_borrow_model_score` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,6) NOT NULL COMMENT '模型分数',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='借款订单模型评分表';
+
+-- 模型分拒绝阈值
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分拒绝阈值', 'model_score', '0.508719', 1, '模型分拒绝阈值', 1);
+
+-- 指迷
+INSERT INTO `arc_sys_config` VALUES (null, '80', '指迷模型url', 'zm_model_url', 'http://47.93.185.26/risk/gzip/', '1', '指迷模型url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '指迷模型名称-魔蝎', 'zm_model_name_mx', 'xiji_v1', '1', '指迷模型名称-魔蝎', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '指迷模型名称-公信宝', 'zm_model_name_gxb', 'xiji_v2', '1', '指迷模型名称-公信宝', '1');
+
+DROP TABLE IF EXISTS `cl_zm_req_log`;
+CREATE TABLE `cl_zm_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `return_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `return_info` text COMMENT '同步响应message',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT 0 COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT 1 COMMENT '类型 1-模型',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='指迷请求记录';
+
+DROP TABLE IF EXISTS `cl_zm_model`;
+CREATE TABLE `cl_zm_model` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,2) DEFAULT '0.00' COMMENT '模型分',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='指迷模型分';
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '复借客户拒绝逾期天数阈值', 'again_penalty_day', '5', 1, '复借客户拒绝逾期天数阈值,上笔订单逾期天数大于该值,直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分通过阈值', 'zm_model_pass_score', '560', 1, '模型分通过阈值,大于该值,机审通过', 1);
+
 -- 修改表字段长度
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `fee` decimal(9,2)  NOT NULL COMMENT '收取费用' AFTER `type`;
 ALTER TABLE `cl_calls_outside_fee` MODIFY COLUMN `type` smallint(4) NOT NULL COMMENT '调用类型 1-运营商 2-魔杖反欺诈 3-魔杖多头 4-魔杖黑灰名单 5-魔杖贷后行为,6-发送短信，7-人脸识别' AFTER `task_id`;
+
+-- 决策数据表新增规则
+ALTER TABLE cl_decision add column `yx_loaning_AM3m` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '借贷正常N笔以上 且借贷多头近3月申请平台大于M家,0-否 1-是' after yd_score;
+ALTER TABLE cl_decision add column `yd_refused_feature` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否命中有盾拒绝风险项,0-否 1-是' after yx_loaning_AM3m;
+ALTER TABLE cl_decision add column `yx_yd_no_loan` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '宜信有盾无下款,0-否 1-是' after yd_refused_feature;
+ALTER TABLE cl_decision add column `mx_voice_has_sensitive_phone` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '通话详情包含敏感号码,0-否 1-是' after yx_yd_no_loan;
+ALTER TABLE cl_decision add column `company_name` varchar(128) DEFAULT '' COMMENT '公司名称' after mx_voice_has_sensitive_phone;
 
 -- 处理卡在待机审的订单(暂时解决办法)
 insert into `cl_quartz_info` ( `state`, `fail`,  `code`, `succeed`, `class_name`, `create_time`, `name`, `cycle`) values ( '10', '0',  'preBorrowHandle', '0', 'com.xiji.cashloan.manage.job.QuartzPreBorrowHandle', now(), '待机审订单处理', '0 0/5 * * * ?');
@@ -1056,6 +1111,70 @@ INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1032');
 ALTER TABLE cl_decision add column device_link_id_count int(11) DEFAULT 0 COMMENT '同设备使用用户总数';
 
 ALTER TABLE cl_channel add column conditions varchar(50) DEFAULT '' COMMENT '限流1QQ，2微信，3微博，4其他';
+
+-- 指迷待人工复审分数
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分人审阈值', 'zm_model_review_score', '530', 1, '模型分通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分小于通过阈值是否人审', 'zm_review_loan', '10', 1, '模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
+
+-- 新建索引
+alter table `cl_zm_model`  ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
+
+-- 新增决策
+ALTER TABLE cl_decision add column `yd_no_loan_6m` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '多头近6月未下款且申请平台大于15 0-否 1-是' after company_name;
+ALTER TABLE cl_decision add column `yd_loan_1m` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '多头近1月申请平台数大于等于30家 且下款平台数小于3 0-否 1-是' after yd_no_loan_6m;
+ALTER TABLE cl_decision add column `mx_message_num` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '近一月短信和被叫是上一个月的2倍及以上 0-否 1-是' after yd_loan_1m;
+ALTER TABLE cl_decision add column `xy_suc_minus_fail_num` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '还款行为历史和一月失败均大于成功 0-否 1-是' after mx_message_num;
+ALTER TABLE cl_decision add column `yd_platform_loan_num` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '多头实际借款平台数1 还款平台1 还款笔数1 0-否 1-是' after xy_suc_minus_fail_num;
+ALTER TABLE cl_decision add column `yd_platform_num_3m` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '多头近3月申请平台数大于等于50家 0-否 1-是' after yd_platform_loan_num;
+
+-- 添加索引
+alter table `cl_borrow_model_score`   ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
+
+-- 排序
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型url', 'px_model_url', 'http://riskapi.yichunruirun.com/api/riskCenter/v1', '1', '排序模型url', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型appId', 'px_model_app_id', 'hjqb0001', '1', '排序模型appId', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型sign', 'px_model_sign', '1nSOdMUBfW25LGAo83aWJsnLDZ7Rah', '1', '排序模型sign', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '100', '排序模型secret', 'px_model_secret', 'wpJrjHkz7n', '1', '排序模型secret', '1');
+
+DROP TABLE IF EXISTS `cl_px_req_log`;
+CREATE TABLE `cl_px_req_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `return_code` varchar(10) DEFAULT '' COMMENT '回调返回码',
+  `return_info` text COMMENT '同步响应message',
+  `resp_time` datetime DEFAULT NULL COMMENT '同步响应时间',
+  `is_fee` tinyint(1) DEFAULT 0 COMMENT '是否收费 0-不收费 1-收费',
+  `type` tinyint(2) DEFAULT 1 COMMENT '类型 1-模型',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='排序请求记录';
+
+DROP TABLE IF EXISTS `cl_px_model`;
+CREATE TABLE `cl_px_model` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) NOT NULL COMMENT '借款订单id',
+  `score` decimal(10,2) DEFAULT '0.00' COMMENT '模型分',
+  `request_id` varchar(128) DEFAULT '' COMMENT '请求流水号',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='排序模型分';
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '排序模型分通过阈值', 'px_model_pass_score', '560', 1, '排序模型分通过阈值,大于该值,机审通过', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分人审阈值', 'px_model_review_score', '530', 1, '模型分通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '模型分小于通过阈值是否人审', 'px_review_loan', '20', 1, '模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '是否启用PX模型分', 'px_switch', '10', 1, '是否启用PX模型分 10-启用 20-拒绝', 1);
+
+alter table `cl_px_model`  ADD INDEX `borrow_id` (`borrow_id`) USING BTREE ;
+INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分通过阈值', 'wjf_model_pass_score', '600', 1, '风控1模型分通过阈值,大于该值,机审通过', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分人审阈值', 'wjf_model_review_score', '560', 1, '风控1通过阈值,大于该值小于通过阈值,待人工复审;小于该值直接拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分小于通过阈值是否人审', 'wjf_review_loan', '20', 1, '风控1模型分小于通过阈值是否人审 10-人审 20-拒绝', 1);
+
+INSERT INTO `arc_sys_config` VALUES (null, 20, '是否启用WJF模型分', 'wjf_switch', '10', 1, '是否启用WJF模型分 10-启用 20-拒绝', 1);
+INSERT INTO `arc_sys_config` VALUES (null, 20, '选择风控类型', 'wjf_or_px', '10', 1, '是否启用模型分 10-启用风控1 20-启用风控2', 1);
 
 
 -- 渠道uv点击统计

@@ -97,6 +97,18 @@
 			<artifactId>bcmail-jdk15</artifactId>
 			<version>1.46</version>
 		</dependency>
+
+		<dependency>
+			<groupId>ml.dmlc</groupId>
+			<artifactId>xgboost4j</artifactId>
+			<version>0.82</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>3.14.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.kuaiqian</groupId>
 			<artifactId>jdom</artifactId>
@@ -204,6 +216,7 @@
 					<include>**/*.pfx</include>
 					<include>**/*.xml</include>
 					<include>**/*.cer</include>
+					<include>**/*.model</include>
 					<include>**/*.jks</include>
 				</includes>
 				<filtering>false</filtering>

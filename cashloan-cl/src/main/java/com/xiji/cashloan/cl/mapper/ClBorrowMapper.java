@@ -259,4 +259,11 @@ public interface ClBorrowMapper extends BaseMapper<Borrow,Long> {
 	 * @return
      */
 	List<YixinShareModel> queryDataForYixin(Long userId);
+
+	/**
+	 * 获取模型数据
+	 * @param borrowId
+	 * @return
+     */
+	Map<String,Object> getModelData(Long borrowId);
 }

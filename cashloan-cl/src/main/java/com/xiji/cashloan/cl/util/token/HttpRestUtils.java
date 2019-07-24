@@ -1,12 +1,15 @@
 package com.xiji.cashloan.cl.util.token;
 
 import com.xiji.cashloan.cl.util.HttpUtils;
+import com.xiji.cashloan.cl.util.magic.GzipUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -15,8 +18,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -105,5 +110,15 @@ public class HttpRestUtils {
 
     public static String getRandomNumber(String prefix){
         return prefix+System.currentTimeMillis()+(int)((Math.random() * 9+1) * 10000);
+    }
+
+    public static String zmRequest(String url, String data) throws Exception {
+        CloseableHttpClient httpclient = HttpUtils.createClient(url);
+        HttpPost postRequest = new HttpPost(url);
+        postRequest.setEntity(new ByteArrayEntity(GzipUtil.gzip(data)));
+        HttpResponse httpResponse = httpclient.execute(postRequest);
+        InputStream respIs = httpResponse.getEntity().getContent();
+        String result = HttpUtils.convertStreamToString(respIs);
+        return result;
     }
 }

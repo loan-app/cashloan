@@ -68,4 +68,24 @@ public class GzipUtil {
         connection.disconnect();
 
     }
+
+    public static byte[] gzip(String str){
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = null;
+        try {
+            gzip = new GZIPOutputStream(out);
+            gzip.write(str.getBytes("UTF-8"));
+        } catch (IOException e){
+            e.printStackTrace();
+        } finally{
+            if(gzip != null){
+                try{
+                    gzip.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return out.toByteArray();
+    }
 }

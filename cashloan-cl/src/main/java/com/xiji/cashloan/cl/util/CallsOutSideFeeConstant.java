@@ -33,6 +33,12 @@ public class CallsOutSideFeeConstant {
     public static int CALLS_TYPE_XINYAN_XWLD = 12;
     //有盾用户画像
     public static int CALLS_TYPE_YOUDUN_RISK = 13;
+    //指迷模型分
+    public static int CALLS_TYPE_ZHIMI_MODEL = 14;
+    //排序模型分
+    public static int CALLS_TYPE_PAIXU_MODEL = 15;
+    //微积分模型分
+    public static int CALLS_TYPE_WEIJIFEN_MODEL=16;
 
     //绿盟黑名单
     public static int CALLS_TYPE_LVMENG_BLACK = 17;
@@ -70,6 +76,12 @@ public class CallsOutSideFeeConstant {
     public static double FEE_XINYAN_XWLD = -1;
     //有盾用户画像费用
     public static double FEE_YOUDUN_RISK = -0.2;
+    //指迷模型分费用
+    public static double FEE_ZHIMI_MODEL = -1.5;
+    //排序模型分费用
+    public static double FEE_PAIXU_MODEL = -3.5;
+    //微积分模型分费用
+    public static double FEE_WEIJIFEN_MODEL=-3.5;
     //请求绿盟
     public static double FEE_LVMENG = -0.2;
 
