@@ -95,6 +95,12 @@ public class ManageBorrowModel extends Borrow {
 	 */
 	private Double modelScore;
 
+	/**
+	 * 小额评分
+	 */
+	private Double compositeScore;
+
+
 	public Double getRepayTotal() {
 		return repayTotal;
 	}
@@ -207,6 +213,14 @@ public class ManageBorrowModel extends Borrow {
 
 	public void setModelScore(Double modelScore) {
 		this.modelScore = modelScore;
+	}
+
+	public Double getCompositeScore() {
+		return compositeScore;
+	}
+
+	public void setCompositeScore(Double compositeScore) {
+		this.compositeScore = compositeScore;
 	}
 
 	public String getProtocolPath() {

@@ -1828,6 +1828,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public Page<ManageBorrowModel> listBorrowModel(Map<String, Object> params, int currentPage, int pageSize) {
 		PageHelper.startPage(currentPage, pageSize);
 		List<ManageBorrowModel> list = clBorrowMapper.listBorrowModel(params);
+
+		for (ManageBorrowModel model:list){
+			if (model.getCompositeScore() != null && model.getCompositeScore() >= 0 && model.getModelScore() == null && "21".equals(model.getState()) ){
+				model.setModelScore(-1d);
+			}
+		}
 		return (Page<ManageBorrowModel>) list;
 	}
 
@@ -2021,12 +2027,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 		decisionService.saveBorrowDecision(borrow);
 
 		//如果是复借用户,直接机审通过
-//		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
-//		if (finishCount > 0) {
-//			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
-//			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
-//			return;
-//		}
+		int finishCount = clBorrowMapper.finishCount(borrow.getUserId()); // 借款完成次数
+		if (finishCount > 0) {
+			logger.info("用户userId" + borrow.getUserId() + "为复借用户,直接机审通过");
+			handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow, "复借用户机审直接通过,待人工复审");
+			return;
+		}
 
 		Map<String,Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("state", 10);
@@ -2123,16 +2129,17 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 			}
 
-			// 综合决策报告小额评分 小于最低评分直接机审拒绝
-			double yixinScore = yixinRiskService.queryScore(borrow);
-			if (yixinScore < Global.getDouble("yixin_score_min_limit")){
-				handleBorrow(result.getResultType(), borrow,"");
-				logger.info("订单 borrowId :"+borrowId+"小于最低综合决策报告小额评分直接机审拒绝，yixinScore ==>"+yixinScore);
-				return;
-			}
 
 			// 直到规则执行到最后一项，如果没有命中人工复审或者审核不通过  ，则借款申请为审核通过
 			if (i == (configCollection.size() - 1)) {
+
+				double yixinScore = yixinRiskService.queryScore(borrow);
+				if (yixinScore < Global.getDouble("yixin_score_min_limit") && yixinScore != 0){
+					handleBorrow(result.getResultType(), borrow,"");
+					logger.info("订单 borrowId :"+borrowId+"小于最低综合决策报告小额评分直接机审拒绝，yixinScore ==>"+yixinScore);
+					return;
+				}
+
 				//对借款申请进行审核处理
 				if(review){
 					handleBorrow(BorrowRuleResult.RESULT_TYPE_REVIEW, borrow,"");

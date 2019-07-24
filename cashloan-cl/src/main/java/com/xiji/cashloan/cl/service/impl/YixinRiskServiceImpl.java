@@ -244,8 +244,13 @@ public class YixinRiskServiceImpl implements YixinRiskService {
                             CallsOutSideFeeConstant.FEE_YIXIN_SCORE, CallsOutSideFeeConstant.CAST_TYPE_CONSUME, userBaseinfo.getPhone());
                     callsOutSideFeeMapper.save(callsOutSideFee);
                     JSONObject  jsonData = JSONObject.parseObject(resJson.getString("data")) ;
-                    score = jsonData.getDouble("compositeScore");
-                    saveScore(jsonData, borrow.getUserId(), resJson.getString("flowId"), borrow.getId());
+                    if (jsonData != null && jsonData.getDouble("compositeScore") != null){
+                        score = jsonData.getDouble("compositeScore");
+                        saveScore(jsonData, borrow.getUserId(), resJson.getString("flowId"), borrow.getId());
+                        logger.info("用户"+ userBaseinfo.getRealName() + ",综合决策报告小额评分为，result ==>"+score);
+                    } else {
+                        logger.info("用户"+ userBaseinfo.getRealName() + ",综合决策报告小额评分异常，result ==>"+resJson);
+                    }
                 } else {
                     logger.error("用户" + userBaseinfo.getRealName() + "，请求宜信综合决策报告小额评分响应错误, result:" + result);
                 }
