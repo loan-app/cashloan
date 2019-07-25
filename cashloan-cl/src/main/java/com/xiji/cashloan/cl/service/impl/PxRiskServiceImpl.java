@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ public class PxRiskServiceImpl implements PxRiskService {
     @Resource
     private OperatorReqLogMapper operatorReqLogMapper;
 
+    @Resource
+    private BorrowRepayMapper borrowRepayMapper;
     @Resource
     private PxModelMapper pxModelMapper;
 
@@ -188,7 +191,85 @@ public class PxRiskServiceImpl implements PxRiskService {
     }
 
 
+    /**
+     *
+     *贷后数据放回给微积分
+     * */
+    @Override
+    public void wjfhistory(Borrow borrow) {
+        UserBaseInfo userBaseinfo = userBaseInfoMapper.findByUserId(borrow.getUserId());
+        if (userBaseinfo == null) {
+            logger.error("查询用户userId：" + userBaseinfo.getUserId() + ",用户不存在");
+        }
+        User user = userMapper.findByPrimary(borrow.getUserId());
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectionPool(new ConnectionPool(20, 1, TimeUnit.HOURS));
+        builder.connectTimeout(60, TimeUnit.SECONDS);
+        builder.readTimeout(60, TimeUnit.SECONDS);
+        builder.writeTimeout(60, TimeUnit.SECONDS);
+        OkHttpClient client = builder.build();
+   //     String url = "http://risk.test.hancrosskeji.com/risk/post-loan";
+        String url=   "http://risk.hancrosskeji.com/risk/post-loan";
+        RiskRequestDto requestDto = new RiskRequestDto();
+        requestDto.setAppId(weijifen_id);
+        requestDto.setUserName(userBaseinfo.getRealName());
+        requestDto.setApplyId(borrow.getId().toString());
+        requestDto.setIdcard(userBaseinfo.getIdNo());
+        requestDto.setMobile(userBaseinfo.getPhone());
+        requestDto.setApplyTime(DateUtil.dateStr4(borrow.getCreateTime()));
+        requestDto.setTimestamp(System.currentTimeMillis());
+        requestDto.setCallback("<callback url>");
+        BorrowRepay lastRepay = borrowRepayMapper.findLastRepay(borrow.getUserId());
+        JSONObject dataObj = new JSONObject();
+        JSONObject jsonObject3 = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
+        JSONObject jsonObject2 = new JSONObject();
+        JSONArray objects = new JSONArray();
+        jsonObject1.put("bill_id",String.valueOf(borrow.getId()));
+        jsonObject1.put("order_id",String.valueOf(borrow.getOrderNo()));
+        jsonObject1.put("repay_per_num",1);
+        long time = borrow.getCreateTime().getTime();
+        String result1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time+86400*1000*6));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = simpleDateFormat.format(lastRepay.getRepayTime());
+        String formats = simpleDateFormat.format(borrow.getCreateTime());
+        jsonObject1.put("repay_dt",result1);
+        jsonObject1.put("succ_repayed_dt",format);
+        jsonObject1.put("repayed_amt",lastRepay.getAmount());
+        jsonObject1.put("succ_repay_amt",lastRepay.getAmount());
+        objects.add(jsonObject1);
+        jsonObject2.put("bill",objects);
+        jsonObject3.put("order_id",borrow.getOrderNo());
+        jsonObject3.put("user_id",borrow.getUserId());
+        jsonObject3.put("application_term",1);
+        jsonObject3.put("application_days",6);
+        jsonObject3.put("conf_loan_amt",borrow.getAmount());
+        jsonObject3.put("loan_dt",formats);
+        jsonObject3.put("end_dt",result1);
+        jsonObject2.put("order",jsonObject3);
+        JSONObject jsonObject4 = new JSONObject();
+        JSONArray objects1 = new JSONArray();
+        objects1.add(jsonObject2);
+        dataObj.put("history",objects1);
+        requestDto.setData(dataObj.toJSONString());
+        try {
+            requestDto = RSASign.sign(requestDto, TestConstants.PRIVATE_KEY);
+            SerializeConfig config = new SerializeConfig(); // 生产环境中，config要做singleton处理，要不然会存在性能问题
+            config.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
+            String json = JSON.toJSONString(requestDto, config);
 
+            //使用gzip压缩json数据
+            String compressJson = Gzip.compress(json);
+
+            RequestBody body = RequestBody.create(MediaType.get("application/json"), compressJson);
+            Request request = new Request.Builder().url(url).post(body).build();
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = JSONObject.parseObject(response.body().string());
+               }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public double getPxScore(Borrow borrow) {
         double i = -1d;

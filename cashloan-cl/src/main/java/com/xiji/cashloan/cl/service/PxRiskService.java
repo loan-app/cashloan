@@ -8,13 +8,21 @@ import com.xiji.cashloan.core.domain.Borrow;
 public interface PxRiskService {
     /**
      * 微积分
+     *
      * @param borrow
      * @return
      */
     double getWjfScore(Borrow borrow);
 
     /**
+     *
+     *贷后数据放回给微积分
+     * */
+    void wjfhistory(Borrow borrow);
+
+    /**
      * 排序
+     *
      * @param borrow
      * @return
      */

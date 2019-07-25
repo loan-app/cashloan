@@ -2,7 +2,6 @@ package com.xiji.cashloan.cl.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fuiou.mpay.encrypt.DESCoderFUIOU;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.*;
@@ -47,12 +46,6 @@ import com.xiji.creditrank.cr.domain.Credit;
 import com.xiji.creditrank.cr.domain.CreditLog;
 import com.xiji.creditrank.cr.mapper.CreditLogMapper;
 import com.xiji.creditrank.cr.mapper.CreditMapper;
-
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +55,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import tool.util.*;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -125,6 +122,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	@Resource
 	private UserBaseInfoService userBaseInfoService;
 	@Resource
+	private PxRiskService pxRiskService;
+	@Resource
 	private ChannelMapper channelMapper;
 	@Resource
 	private ManualRepayOrderMapper manualRepayOrderMapper;
@@ -176,6 +175,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			authApply(br);
 			return true;
 		}
+		pxRiskService.wjfhistory(borrow);
 		return false;
 	}
 
@@ -404,6 +404,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 					}
 				}
 			}
+		Borrow byPrimary = clBorrowService.findByPrimary(br.getBorrowId());
+        pxRiskService.wjfhistory(byPrimary);
 		return result;
 	}
 
@@ -431,7 +433,11 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			bp.setCreateTime(DateUtil.getNow());
 			return borrowProgressMapper.save(bp);
 		}
+		Borrow byPrimary = clBorrowService.findByPrimary(borrowId);
+		pxRiskService.wjfhistory(byPrimary);
 		return i;
+
+
 	}
 
 	/**
@@ -574,6 +580,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
 		result.put("Msg", "展期成功");
+		Borrow borrow = clBorrowService.findByPrimary(br.getBorrowId());
+		pxRiskService.wjfhistory(borrow);
 		return result;
 	}
 
@@ -927,7 +935,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		payReqLog.setReqDetailParams(JSONObject.toJSONString(sdkParam));
 		payReqLog.setIp(ip);
 		payReqLogMapper.save(payReqLog);
-
+        pxRiskService.wjfhistory(borrow);
 		return sdkParam;
 	}
 
