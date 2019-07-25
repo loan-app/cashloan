@@ -2176,12 +2176,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 			// 直到规则执行到最后一项，查询微积分或排序
 			if (i == (configCollection.size() - 1)) {
-
-				double yixinScore = yixinRiskService.queryScore(borrow);
-				if (yixinScore < Global.getDouble("yixin_score_min_limit") && yixinScore != 0){
-					handleBorrow(result.getResultType(), borrow,"");
-					logger.info("订单 borrowId :"+borrowId+"小于最低综合决策报告小额评分直接机审拒绝，yixinScore ==>"+yixinScore);
-					return;
+                // 宜信阿福综合决策报告小额评分 ，10 启用，20 禁用
+				if ("10".equals(Global.getValue("yixin_score_switch"))){
+					double yixinScore = yixinRiskService.queryScore(borrow);
+					if (yixinScore < Global.getDouble("yixin_score_min_limit") && yixinScore != 0){
+						handleBorrow(result.getResultType(), borrow,"");
+						logger.info("订单 borrowId :"+borrowId+"小于最低综合决策报告小额评分直接机审拒绝，yixinScore ==>"+yixinScore);
+						return;
+					}
 				}
 
 				String pxSwitch = Global.getValue("px_switch");

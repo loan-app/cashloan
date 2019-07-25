@@ -1234,4 +1234,5 @@ CREATE TABLE `cl_yixin_score` (
 
 --宜信阿福综合决策报告小额评分
 INSERT INTO `arc_sys_config` VALUES (null, '100', '宜信综合决策报告小额评分接口名称', 'yixin_score_api_name', 'decision.report.pro.bt.api', '1', '宜信综合决策报告小额评分接口名称', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信综合决策报告小额评分审核通过最低分数', 'yixin_score_min_limit', '500', '1', '宜信综合决策报告小额评分审核通过最低分数', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信综合决策报告小额评分审核通过最低分数', 'yixin_score_min_limit', '450', '1', '宜信综合决策报告小额评分审核通过最低分数', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '是否启用宜信综合决策报告小额评分', 'yixin_score_switch', '10', '1', '是否启用宜信综合决策报告小额评分，10-启用，20-禁用', '1');
