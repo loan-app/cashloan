@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -205,8 +206,13 @@ public class ChannelController extends ManageBaseController {
             paramMap.put("code", code);
             boolean flag = channelService.update(paramMap);
             if (flag) {
-                result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+            	if ((BigDecimalUtil.div(Double.parseDouble(fee),Double.parseDouble(borrowDay))*365) > 0.36 || (BigDecimalUtil.div(Double.parseDouble(delayFee),Double.parseDouble(borrowDay))*365)>0.36){
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, "根据我国相关法律条例规定，年利率不得高于36%");
+				}else {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				}
             } else {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
                 result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);

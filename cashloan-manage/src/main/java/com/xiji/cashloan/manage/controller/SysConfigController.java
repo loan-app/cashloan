@@ -100,7 +100,16 @@ public class SysConfigController extends BaseController {
 					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 					returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS + ",刷新缓存后生效");
 				}
-			}else{
+			} else if (sysConfig.getCode().equals("delay_fee")){
+				SysConfig config = sysConfigService.findByCode("borrow_day");
+				if((BigDecimalUtil.div(Double.parseDouble(sysConfig.getValue()),Double.parseDouble(config.getValue()))*365)>0.36){
+					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					returnMap.put(Constant.RESPONSE_CODE_MSG, "根据我国相关法律条例规定，年利率不得高于36%");
+				}else {
+					returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS + ",刷新缓存后生效");
+				}
+			} else {
 				returnMap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 				returnMap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS + ",刷新缓存后生效");
 			}
