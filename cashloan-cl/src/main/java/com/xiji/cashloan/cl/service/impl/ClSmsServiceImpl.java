@@ -387,6 +387,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			message = ret("repayBefore");
 		}else if ("sysLogin".equals(code)){
 			message = ret("sysLogin");
+		}else {
+			message = ret(code);
 		}
 		return message;
 	}
