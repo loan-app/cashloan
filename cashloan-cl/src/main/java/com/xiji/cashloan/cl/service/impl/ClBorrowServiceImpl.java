@@ -1667,6 +1667,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			// 人工复审成功 放款
 			if (BorrowModel.STATE_PASS.equals(state)) {
 				if (!"10".equals(Global.getValue("manual_loan")))  { //系统配置的是否放款审核
+				    borrow = clBorrowMapper.findByPrimary(borrowId);
 					borrowLoan(borrow, new Date());
 				}else {
 					//到待放款审核状态	
@@ -1844,6 +1845,12 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	public Page<ManageBorrowModel> listBorrowModel(Map<String, Object> params, int currentPage, int pageSize) {
 		PageHelper.startPage(currentPage, pageSize);
 		List<ManageBorrowModel> list = clBorrowMapper.listBorrowModel(params);
+
+		for (ManageBorrowModel model:list){
+			if (model.getCompositeScore() != null && model.getCompositeScore() >= 0 && model.getModelScore() == null && "21".equals(model.getState()) ){
+				model.setModelScore(-1d);
+			}
+		}
 		return (Page<ManageBorrowModel>) list;
 	}
 
@@ -2169,6 +2176,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 
 			// 直到规则执行到最后一项，查询微积分或排序
 			if (i == (configCollection.size() - 1)) {
+                // 宜信阿福综合决策报告小额评分 ，10 启用，20 禁用
+				if ("10".equals(Global.getValue("yixin_score_switch"))){
+					double yixinScore = yixinRiskService.queryScore(borrow);
+					if (yixinScore < Global.getDouble("yixin_score_min_limit") && yixinScore != 0){
+						handleBorrow(result.getResultType(), borrow,"");
+						logger.info("订单 borrowId :"+borrowId+"小于最低综合决策报告小额评分直接机审拒绝，yixinScore ==>"+yixinScore);
+						return;
+					}
+				}
+
 				String pxSwitch = Global.getValue("px_switch");
 				String wjfSwitch = Global.getValue("wjf_switch");
 				if ("20".equals(pxSwitch) && "20".equals(wjfSwitch)) {
@@ -2244,7 +2261,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 					}}
 			}
 
-		}	
+		}
 	}
 	/**
 	 * 获得规则比对结果
@@ -2420,7 +2437,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	@Override
 	public void verifyBorrowData(long borrowId, String mobileType) {
 		Borrow borrow = clBorrowMapper.findByPrimary(borrowId);
-		submitTask(borrow);//提交异步任务
+		// submitTask(borrow);//提交异步任务
 		List<SceneBusinessLog> sceneLogList = sceneBusinessLogMapper.findSceneLogByBorrowId(borrowId);
 		
 		if(borrow != null){
@@ -2590,7 +2607,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
         map.put("total", total);
         map.put("change", Math.abs(change));
         if (change<0) {
-        	creditMapper.reduceUpdate(map);
+  //      	creditMapper.reduceUpdate(map);
 		}else {
 			creditMapper.addUpdate(map);
 		}

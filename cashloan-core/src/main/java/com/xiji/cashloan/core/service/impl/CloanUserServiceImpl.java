@@ -1,24 +1,24 @@
 package com.xiji.cashloan.core.service.impl;
 
-import java.util.*;
-
-import javax.annotation.Resource;
-
-import com.xiji.cashloan.core.domain.User;
-import com.xiji.cashloan.core.service.CloanUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import tool.util.DateUtil;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
+import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.mapper.UserMapper;
 import com.xiji.cashloan.core.model.CloanUserModel;
+import com.xiji.cashloan.core.service.CloanUserService;
 import com.xiji.cashloan.system.mapper.SysDictDetailMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import tool.util.DateUtil;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户认证ServiceImpl
@@ -63,6 +63,19 @@ public class CloanUserServiceImpl extends BaseServiceImpl<User, Long> implements
 		List<CloanUserModel> list = userMapper.listNotBorrowAgain(params);
 		return (Page<CloanUserModel>) list;
 	}
+
+
+
+	/**
+	 * 查询未借用户信息列表
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public List<CloanUserModel> listNotBorrowAgain(Map<String, Object> params){
+		return userMapper.listNotBorrowAgain(params);
+	}
+
 
 	@Override
 	public CloanUserModel getModelById(Long id) {

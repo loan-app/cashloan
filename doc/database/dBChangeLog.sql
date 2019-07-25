@@ -1045,7 +1045,7 @@ behead_fee =(select value from arc_sys_config where code = 'behead_fee');
 
 
 -- 添加用户管理列表 未借款用户信息
-INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未复借用户信息', '2', '', null, '00000000006', null, '', null, '', '未借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
+INSERT INTO `arc_sys_menu` VALUES ('1025', '0', '未复借用户信息', '2', '', null, '00000000006', null, '', null, '', '未复借用户信息', '0', 'UserNotBorrowAgain', null, null, null, null);
 
 INSERT INTO `arc_sys_role_menu` VALUES (null, '1', '1025');
 
@@ -1176,6 +1176,33 @@ INSERT INTO `arc_sys_config` VALUES (null, 20, '风控1模型分小于通过阈�
 INSERT INTO `arc_sys_config` VALUES (null, 20, '是否启用WJF模型分', 'wjf_switch', '10', 1, '是否启用WJF模型分 10-启用 20-拒绝', 1);
 INSERT INTO `arc_sys_config` VALUES (null, 20, '选择风控类型', 'wjf_or_px', '10', 1, '是否启用模型分 10-启用风控1 20-启用风控2', 1);
 
+
+-- 渠道uv点击统计
+CREATE TABLE `cl_channel_uv` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道id',
+  `name` varchar(16) DEFAULT '' COMMENT '渠道名称',
+  `count_date` date NOT NULL COMMENT '统计日期',
+  `uv_count` bigint(30) DEFAULT '0' COMMENT 'uv点击量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击统计';
+
+
+-- 渠道uv点击ip记录表
+CREATE TABLE `cl_channel_ip` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `channel_id` bigint(20) NOT NULL COMMENT '渠道id',
+  `create_date` date NOT NULL COMMENT '生成日期',
+   `ip` varchar(64) DEFAULT '' COMMENT '请求IP',
+  PRIMARY KEY (`id`),
+  KEY `index_channel_id_create_date_ip` (`channel_id`,`create_date`,`ip` )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='渠道uv点击ip记录表';
+
+
+-- 添加定时任务
+INSERT INTO `cl_quartz_info` VALUES (null, '清除渠道ip统计', 'deleteChannelIp', '0 1 0 * * ?', 'com.xiji.cashloan.manage.job.statistic.QuartzUvIpStatistic', '0', '0', '10', now());
+
+
 --#dev-feature-1.0.5
 INSERT INTO `arc_sys_config` VALUES (null, '10', '绿盟黑名单接口开关', 'lv_meng_on_off', 'on', '1', '个人信息认证保存校验绿盟黑名单', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '绿盟黑名单机构appId', 'lv_meng_appId', 'T006', '1', '绿盟黑名单机构appId', '1');
@@ -1190,3 +1217,22 @@ INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷商户号私钥', 'chanp
 INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付-协议商户号', 'chanpay_agreement_merchant_no', '200001160097', '1', '畅捷支付-协议商户号', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付-代付商户号', 'chanpay_paid_merchant_no', '200001160096', '1', '畅捷支付-协议商户号', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '80', '畅捷支付平台公钥', 'chanpay_merchant_public_key', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDPq3oXX5aFeBQGf3Ag/86zNu0VICXmkof85r+DDL46w3vHcTnkEWVbp9DaDurcF7DMctzJngO0u9OG1cb4mn+Pn/uNC1fp7S4JH4xtwST6jFgHtXcTG9uewWFYWKw/8b3zf4fXyRuI/2ekeLSstftqnMQdenVP7XCxMuEnnmM1RwIDAQAB', '1', '畅捷支付平台公钥', '1');
+
+-- 宜信阿福综合决策报告小额评分
+DROP TABLE IF EXISTS `cl_yixin_score`;
+CREATE TABLE `cl_yixin_score` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `borrow_id` bigint(20) DEFAULT NULL COMMENT '借款订单id',
+  `flow_id` varchar(64) DEFAULT '' COMMENT '流水号',
+  `composite_score` decimal(10,2) DEFAULT '0.00' COMMENT '综合评分',
+  `decision_suggest` varchar(4) DEFAULT '0' COMMENT '决策建议',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宜信阿福综合决策小额评分';
+
+--宜信阿福综合决策报告小额评分
+INSERT INTO `arc_sys_config` VALUES (null, '100', '宜信综合决策报告小额评分接口名称', 'yixin_score_api_name', 'decision.report.pro.bt.api', '1', '宜信综合决策报告小额评分接口名称', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信综合决策报告小额评分审核通过最低分数', 'yixin_score_min_limit', '450', '1', '宜信综合决策报告小额评分审核通过最低分数', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '是否启用宜信综合决策报告小额评分', 'yixin_score_switch', '10', '1', '是否启用宜信综合决策报告小额评分，10-启用，20-禁用', '1');

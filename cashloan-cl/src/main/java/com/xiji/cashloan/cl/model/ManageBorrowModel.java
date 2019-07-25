@@ -100,6 +100,11 @@ public class ManageBorrowModel extends Borrow {
 	 */
 	private Double modelScore;
 
+	/**
+	 * 小额评分
+	 */
+	private Double compositeScore;
+
 
 	public Double getRepayTotal() {
 		return repayTotal;
@@ -207,7 +212,22 @@ public class ManageBorrowModel extends Borrow {
 		this.level = level;
 	}
 
-	
+	public Double getModelScore() {
+		return modelScore;
+	}
+
+	public void setModelScore(Double modelScore) {
+		this.modelScore = modelScore;
+	}
+
+	public Double getCompositeScore() {
+		return compositeScore;
+	}
+
+	public void setCompositeScore(Double compositeScore) {
+		this.compositeScore = compositeScore;
+	}
+
 	public String getProtocolPath() {
 		String s = File.separator;
 		String rootFile = "/" + "readFile.htm?path=";
@@ -226,13 +246,5 @@ public class ManageBorrowModel extends Borrow {
 
 	public void setZmScore(Double zmScore) {
 		this.zmScore = zmScore;
-	}
-
-	public Double getModelScore() {
-		return modelScore;
-	}
-
-	public void setModelScore(Double modelScore) {
-		this.modelScore = modelScore;
 	}
 }

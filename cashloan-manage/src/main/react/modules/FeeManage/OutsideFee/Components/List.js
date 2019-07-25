@@ -163,7 +163,11 @@ export default React.createClass({
               return "模型评分2"
           } else if (record.type == 16) {
               return "模型评分1"
-          } else{
+          } else if (record.type == 17) {
+              return "绿盟黑名单"
+          } else if (record.type == 18) {
+              return "小额评分"
+          } else {
               return "-"
           }
       }

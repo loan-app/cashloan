@@ -15,7 +15,7 @@ let SeachForm = React.createClass({
     handleQuery() {
         var params = this.props.form.getFieldsValue();
         params.type = "repay";
-        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state: params.state,type: params.type};
+        var json = {endTime:'',startTime:'',realName:params.realName,phone:params.phone,orderNo:params.orderNo,state: params.state,type: params.type,minScore:params.minScore,maxScore:params.maxScore};
         if(params.createTime[0]){
             json.startTime = (DateFormat.formatDate(params.createTime[0])).substring(0,10);
             json.endTime = (DateFormat.formatDate(params.createTime[1])).substring(0,10);
@@ -41,16 +41,16 @@ let SeachForm = React.createClass({
             <Form inline>
              <Input type="hidden" {...getFieldProps('state',{initialValue: '30'})} />
              <FormItem label="真实姓名:">
-                  <Input  {...getFieldProps('realName')} />
+                  <Input  {...getFieldProps('realName')} style={{ width: 80 }}/>
              </FormItem>
              <FormItem label="手机号码:">
-                  <Input  {...getFieldProps('phone')} />
+                  <Input  {...getFieldProps('phone')} style={{ width: 110 }}/>
              </FormItem>
              <FormItem label="订单号:">
-                  <Input  {...getFieldProps('orderNo')} />
+                  <Input  {...getFieldProps('orderNo')} style={{ width: 120 }}/>
              </FormItem>
              <FormItem label="订单状态:">
-             <Select style={{ width: 170 }} {...getFieldProps('state',{initialValue: ''})} placeholder='请选择...'>
+             <Select style={{ width: 120 }} {...getFieldProps('state',{initialValue: ''})} placeholder='请选择...'>
                         <Option value="">全部</Option>
                         <Option value="20">自动审核通过</Option>
                         <Option value="26">人工复审通过</Option>
@@ -66,6 +66,9 @@ let SeachForm = React.createClass({
                         <Option value="90">坏账</Option>
             </Select>
             </FormItem>
+                <FormItem label="模型评分:">
+                    <Input  {...getFieldProps('minScore')} style={{ width: 70 }}/> -- <Input  {...getFieldProps('maxScore')} style={{ width: 70 }}/>
+                </FormItem>
             <FormItem label="借款日期：">
             <RangePicker disabledDate={this.disabledDate} style={{width:"310"}} {...getFieldProps('createTime', { initialValue: '' }) } />
             </FormItem>

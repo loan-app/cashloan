@@ -467,7 +467,7 @@
 		arc_sys_user_role u2, arc_sys_role u4
 		where u.id = u2.user_id
 		and u2.role_id = u4.id
-		<!-- and u.`status` = 0 -->
+		and u.`status` != 2
 		<if test="id!=null and id!='' ">
 			u.id = #{id}
 		</if>

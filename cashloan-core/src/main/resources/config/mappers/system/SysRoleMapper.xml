@@ -241,4 +241,19 @@
         from arc_sys_role
         <include refid="searchByPo"/>
     </select>
+
+	<select id="getBySysUserId" resultMap="roleResult" parameterType="java.util.Map">
+        SELECT
+        b.*
+        FROM
+        arc_sys_user a,
+        arc_sys_role b,
+        arc_sys_user_role c
+        WHERE
+        a.id = c.user_id
+        AND b.id = c.role_id
+        AND b.nid in ('QuDaoAll','QuDao')
+        and a.id = #{id}
+        limit 1
+    </select>
 </mapper>   

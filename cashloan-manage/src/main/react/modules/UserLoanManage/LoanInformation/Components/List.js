@@ -1,6 +1,7 @@
 import React from 'react'
-import { Table, Modal, Icon } from 'antd';
+import {Modal, Table} from 'antd';
 import Check from "./Check";
+
 var repaymentTypeText = { '10': '待审核', '20': '审核中', '30': '通过', '40': '已拒绝', '50': '还款中', '60': '还款完成', '70': '逾期' }
 const objectAssign = require('object-assign');
 const confirm = Modal.confirm;

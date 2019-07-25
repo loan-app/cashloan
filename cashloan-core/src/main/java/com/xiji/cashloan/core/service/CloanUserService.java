@@ -1,12 +1,12 @@
 package com.xiji.cashloan.core.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.github.pagehelper.Page;
 import com.xiji.cashloan.core.common.service.BaseService;
 import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.model.CloanUserModel;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Service
@@ -39,6 +39,14 @@ public interface CloanUserService extends BaseService<User, Long> {
 	 */
 	Page<CloanUserModel> listUserNotBorrowagain(Map<String, Object> params, int currentPage,
 								  int pageSize);
+
+
+	/**
+	 * 查询未借用户信息列表
+	 * @param params
+	 * @return
+	 */
+	List<CloanUserModel> listNotBorrowAgain(Map<String, Object> params);
 
 	/**
 	 * 查询用户详细信息

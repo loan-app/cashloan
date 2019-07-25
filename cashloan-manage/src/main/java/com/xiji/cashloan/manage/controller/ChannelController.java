@@ -5,10 +5,12 @@ import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.model.ChannelCountModel;
 import com.xiji.cashloan.cl.model.ChannelModel;
 import com.xiji.cashloan.cl.service.ChannelService;
+import com.xiji.cashloan.cl.service.ClBorrowService;
 import com.xiji.cashloan.core.common.context.Constant;
 import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.RdPage;
 import com.xiji.cashloan.core.common.util.ServletUtils;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.system.domain.SysRole;
 import com.xiji.cashloan.system.domain.SysUser;
 import org.springframework.context.annotation.Scope;
@@ -17,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +45,9 @@ public class ChannelController extends ManageBaseController {
 
 	@Resource
 	private ChannelService channelService;
+
+	@Resource
+	private ClBorrowService clBorrowService;
 
 	private static final String ROLE_QUDAO = "QuDao";
 
@@ -191,13 +197,22 @@ public class ChannelController extends ManageBaseController {
         paramMap.put("countImproveCredit",countImproveCredit);
 		Channel channelID = channelService.getChannelById(id);
 		Channel code2 = channelService.getChannelByCode(code);
+		if (StringUtil.equalsIgnoreCase(initCredit,channelID.getInitCredit())){
+            clBorrowService.changeCreditTotal(Double.valueOf(initCredit));
+        }
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		if(channelID.getCode().equals(code)){
             paramMap.put("code", code);
             boolean flag = channelService.update(paramMap);
             if (flag) {
-                result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+            	if ((BigDecimalUtil.div(Double.parseDouble(fee),Double.parseDouble(borrowDay))*365) > 0.36 || (BigDecimalUtil.div(Double.parseDouble(delayFee),Double.parseDouble(borrowDay))*365)>0.36){
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, "根据我国相关法律条例规定，年利率不得高于36%");
+				}else {
+					result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+					result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
+				}
             } else {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
                 result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
@@ -510,8 +525,5 @@ public class ChannelController extends ManageBaseController {
 		result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
 		ServletUtils.writeToResponse(response, result);
 	}
-
-
-
 
 }

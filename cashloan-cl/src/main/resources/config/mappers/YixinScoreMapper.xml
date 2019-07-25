@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_yixin_score表:宜信综合决策报告评分模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.YixinScoreMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.YixinScore">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="flow_id" property="flowId" jdbcType="VARCHAR" />
+        <result column="composite_score" property="compositeScore" jdbcType="DECIMAL" />
+        <result column="decision_suggest" property="decisionSuggest" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,borrow_id,flow_id,composite_score,decision_suggest,gmt_create,gmt_modified
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="borrowId != null">
+                and borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="flowId != null and flowId != ''">
+                and flow_id = #{flowId,jdbcType=VARCHAR}
+            </if>
+            <if test="compositeScore != null">
+                and composite_score = #{compositeScore,jdbcType=DECIMAL}
+            </if>
+            <if test="decisionSuggest != null and decisionSuggest != ''">
+                and decision_suggest = #{decisionSuggest,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.YixinScore">
+        insert into cl_yixin_score(user_id,borrow_id,flow_id,composite_score,decision_suggest,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{flowId,jdbcType=VARCHAR},#{compositeScore,jdbcType=DECIMAL},#{decisionSuggest,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.YixinScore">
+        update cl_yixin_score set 
+            user_id = #{userId,jdbcType=BIGINT},
+            borrow_id = #{borrowId,jdbcType=BIGINT},
+            flow_id = #{flowId,jdbcType=VARCHAR},
+            composite_score = #{compositeScore,jdbcType=DECIMAL},
+            decision_suggest = #{decisionSuggest,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_yixin_score
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="borrowId != null">        
+                borrow_id = #{borrowId,jdbcType=BIGINT},                
+            </if>
+            <if test="flowId != null and flowId != '' ">
+                flow_id = #{flowId,jdbcType=VARCHAR},                
+            </if>
+            <if test="compositeScore != null">
+                composite_score = #{compositeScore,jdbcType=DECIMAL},
+            </if>
+            <if test="decisionSuggest != null and decisionSuggest != '' ">
+                decision_suggest = #{decisionSuggest,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_yixin_score
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_yixin_score
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_yixin_score
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.YixinScore">
+        insert into cl_yixin_score
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="borrowId != null">
+                borrow_id,
+            </if>
+            <if test="flowId != null and flowId != '' ">
+                flow_id,
+            </if>
+            <if test="compositeScore != null">
+                composite_score,
+            </if>
+            <if test="decisionSuggest != null and decisionSuggest != '' ">
+                decision_suggest,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="borrowId != null">
+                #{borrowId,jdbcType=BIGINT},
+            </if>
+            <if test="flowId != null and flowId != '' ">
+                #{flowId,jdbcType=VARCHAR},
+            </if>
+            <if test="compositeScore != null">
+                #{compositeScore,jdbcType=DECIMAL},
+            </if>
+            <if test="decisionSuggest != null and decisionSuggest != '' ">
+                #{decisionSuggest,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

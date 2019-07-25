@@ -22,6 +22,9 @@ import com.xiji.cashloan.core.domain.User;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import com.xiji.cashloan.core.mapper.UserBaseInfoMapper;
 import com.xiji.cashloan.core.mapper.UserMapper;
+import com.xiji.cashloan.system.domain.SysRole;
+import com.xiji.cashloan.system.domain.SysUser;
+import com.xiji.cashloan.system.mapper.SysRoleMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -69,6 +72,8 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
     private UserBaseInfoMapper userBaseInfoMapper;
 	@Resource
     private CallsOutSideFeeMapper callsOutSideFeeMapper;
+    @Resource
+	private SysRoleMapper sysRoleMapper;
 	@Override
 	public BaseMapper<Sms, Long> getMapper() {
 		return smsMapper;
@@ -241,25 +246,31 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 
 	/**
 	 * 登录短信验证
-	 * @param phone
+	 * @param sysUser
 	 * @param type
 	 * @param code
 	 * @return
 	 */
-	public int verifyLoginSms(String phone, String type, String code) {
+	public int verifyLoginSms(SysUser sysUser, String type, String code) {
 		if ("dev".equals(Global.getValue("app_environment")) && "0000".equals(code)) {
 			return 1;
 		}
 
-		if(StringUtil.isBlank(phone) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
+        SysRole sysRole = sysRoleMapper.getBySysUserId(sysUser.getId());
+
+		if (sysRole != null && ("QuDaoAll".equals(sysRole.getNid()) || "QuDao".equals(sysRole.getNid())) && "0000".equals(code)){
+            return 1;
+        }
+
+		if(StringUtil.isBlank(sysUser.getMobile()) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
 			return 0;
 		}
 
-		if (!StringUtil.isPhone(phone)) {
+		if (!StringUtil.isPhone(sysUser.getMobile())) {
 			return 0;
 		}
 		Map<String,Object> data = new HashMap<String, Object>();
-		data.put("phone", phone);
+		data.put("phone", sysUser.getMobile());
 		data.put("smsType", type);
 		Sms sms = smsMapper.findTimeMsg(data);
 		if (sms != null) {

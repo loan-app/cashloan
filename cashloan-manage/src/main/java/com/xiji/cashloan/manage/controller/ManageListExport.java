@@ -293,5 +293,28 @@ public class ManageListExport extends ManageBaseController{
 	}
 
 
+	/**
+	 * 未复借用户信息
+	 *
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/modules/manage/notBorrowAgain/export.htm")
+	public void notBorrowAgainExport(
+			@RequestParam(value="searchParams",required = false) String searchParams) throws Exception {
+		Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+		List list = userService.listNotBorrowAgain(params);
+
+		SysUser user = (SysUser) request.getSession().getAttribute("SysUser");
+		response.setContentType("application/msexcel;charset=UTF-8");
+		// 记录取得
+		String title = "未复借用户信息Excel表";
+		String[] hearders =  ExportConstant.EXPORT_NOTBORROWAGAIN_LIST_HEARDERS;
+		String[] fields = ExportConstant.EXPORT_NOTBORROWAGAIN_LIST_FIELDS;
+		JsGridReportBase report = new JsGridReportBase(request, response);
+		report.exportExcel(list,title,hearders,fields,user.getName());
+	}
+
+
+
 
 }
