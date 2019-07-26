@@ -186,7 +186,7 @@ public class LoginController {
 	@RequestMapping("wxRegister")
 	public void wxRegister(final HttpServletRequest request,
 			final HttpServletResponse response, final String loginName,
-			final String loginPwd, final String vcode,
+			final String vcode,
 			final String invitationCode, final String client,
 			final String channelCode, final String registerCoordinate,
 			final String registerAddr, final String signMsg,
@@ -200,7 +200,7 @@ public class LoginController {
 			@Override
 			public Object doAction() {
 				Map result = userService.registerUser(request, loginName,
-						loginPwd.toUpperCase(), vcode, invitationCode, registerCoordinate,
+						null, vcode, invitationCode, registerCoordinate,
 						registerAddr, client, signMsg,channelCode);
 				if ((Boolean) result.get("success")) {
 //					result = userService.login(request, loginName, loginPwd,
@@ -300,6 +300,10 @@ public class LoginController {
 
 				Map data = new LinkedHashMap();
 				data.put("isExists", exists ? "20" : "10");
+				if(!exists) {
+					String registerUrl = Global.getValue("server_host")+Global.getValue("h5_invite")+"?channelCode=APP_REG";
+					data.put("registerUrl", registerUrl);
+				}
 				ret.put("data", data);
 				ret.put("msg", exists ? "该手机号码已存在" : "该手机不存在，可注册");
 				return ret;
