@@ -1435,6 +1435,13 @@ import java.util.Date;
     * 同设备使用用户总数
     */
    private int ydDeviceLinkIdCount;
+
+   /**
+    * 欺诈甄别欺诈评分
+    * (分值范围 1-100， 未命中数据时不返 回分数)
+    */
+   private Integer yxFraudScore;
+
     /**
     * 获取主键Id
     *
@@ -6365,5 +6372,13 @@ import java.util.Date;
 
    public void setYdDeviceLinkIdCount(Integer ydDeviceLinkIdCount) {
       this.ydDeviceLinkIdCount = ydDeviceLinkIdCount;
+   }
+
+   public Integer getYxFraudScore() {
+      return yxFraudScore;
+   }
+
+   public void setYxFraudScore(Integer yxFraudScore) {
+      this.yxFraudScore = yxFraudScore;
    }
 }

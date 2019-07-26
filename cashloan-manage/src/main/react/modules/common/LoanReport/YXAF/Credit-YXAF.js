@@ -56,6 +56,46 @@ const loanType = {
     GUARANTEE: '担保'
 };
 
+// 风险明细
+const riskDetail ={
+    ARREARS:'长期拖欠',
+    FAKE_INFO:'申请信息虚假',
+    FAKE_DATA:'资料虚假',
+    PSEUDO:'伪冒',
+    LOSS_PAYMENT:'丧失还款能力',
+    RISK_USEAGE:'用途风险',
+    AGENCY:'同行中介',
+    COURT_PROMISE_BREAKING:'法院-失信',
+    COURT_EXECUTED:'法院-被执行',
+    RECENT_EXIST_MULTI_APPLY_RISK:'近期存在多头申请风险',
+    MODEL_EVALUATION_LOW_QUALIFICATION:'模型评估低资质',
+    SMALL_BUSINESS_ARREARS:'小额业务拖欠',
+    FIRST_OVER_SUSPECTED_FRAUD:'首逾 M3',
+    DIFFICULTIES_OBTAIN_SMALL_BUSINESS:'小额业务获批困难',
+}
+// 名单类型
+const dataType = {
+    CREDITEASE:'网贷',
+    COURT_LITIGATION:'法院诉讼',
+    OTHER:'其他',
+    NETWORK:'网络'
+}
+// 命中项
+const riskItemType ={
+    ID_NO:'本人身份证号',
+    CONTACT_ID_NO:'联系人身份证号',
+    MOBILE:'本人手机号码',
+    CONTACT_MOBILE_NO:'联系人手机号码',
+    FAMILY_TEL:'家庭固话',
+    FAMILY_ADDR:'家庭地址',
+    BANK_NO:'银行卡号',
+    QQ:'QQ 号',
+    EMAIL:'电子邮箱',
+    CORP_NAME:'单位名称',
+    CORP_TEL:'单位固话',
+    CORP_ADDR:'单位地址',
+
+}
 const objectAssign = require('object-assign');
 var Operator = React.createClass({
     getInitialState() {
@@ -63,6 +103,7 @@ var Operator = React.createClass({
             loading: false,
             data: {},
             pagination: {},
+            fraud:{},
         };
     },
     rowKey(record) {
@@ -82,11 +123,25 @@ var Operator = React.createClass({
             },
             callback: (result) => {
                 this.setState({
-                    loading: false,
+                    loading: true,
                     data: result.data
                 });
             }
         });
+
+        Utils.getData({
+            url: '/modules/manage/yixin/risk/report/queryFraud.htm',
+            data: {
+                borrowId: this.props.borrowId,
+            },
+            callback: (result) => {
+                this.setState({
+                    loading: false,
+                    fraud: result.data
+                });
+                // console.log("fraud ==》"+this.state.fraud.yixinFraud.fraudScore)
+            }
+    });
     },
 
     handleReset() {
@@ -98,6 +153,7 @@ var Operator = React.createClass({
     render() {
         const props = this.props;
         const data = this.state.data || {};
+        const yixinFraud = this.state.fraud.yixinFraud || {};
 
         //
         const yixinRiskReport = data.yixinRiskReport || {};
@@ -105,6 +161,8 @@ var Operator = React.createClass({
         const queriedHistory = yixinRiskReport.queriedHistory || {};
         const checkedRecords = queriedHistory.checkedRecords || [];
         const riskResults = yixinRiskReport.riskResults || [];
+        const fraudResults = yixinFraud.riskResult || [];
+
 
         // 借款记录
         const loanRecords_columns = [{
@@ -238,6 +296,61 @@ var Operator = React.createClass({
                    rowKey={(record, index) => `checkedRecords${index}`}/>
         );
 
+
+
+        const fraud_columns = [ {
+            title: '名单类型',
+            dataIndex: 'dataType',
+            key: 'dataType',
+            filters: Object.keys(dataType).map(value => ({
+                text: dataType[value],
+                value
+            })),
+            onFilter: (value, record) => record.dataType === value,
+            render: (text, record, index) => dataType[text]
+        }, {
+            title: '备注',
+            dataIndex: 'Remarks',
+            key: 'Remarks',
+
+        }, {
+            title: '风险明细',
+            dataIndex: 'riskDetail',
+            key: 'riskDetail',
+            filters: Object.keys(riskDetail).map(value => ({
+                text: riskDetail[value],
+                value
+            })),
+            onFilter: (value, record) => record.riskDetail === value,
+            render: (text, record, index) => riskDetail[text]
+        }, {
+            title: '风险命中项',
+            dataIndex: 'riskItemType',
+            key: 'riskItemType',
+            filters: Object.keys(riskItemType).map(value => ({
+                text: riskItemType[value],
+                value
+            })),
+            onFilter: (value, record) => record.riskItemType === value,
+            render: (text, record, index) => riskItemType[text]
+        }, {
+            title: '风险命中内容',
+            dataIndex: 'riskItemValue',
+            key: 'riskItemValue',
+        },{
+            title: '风险最近时间',
+            dataIndex: 'riskTime',
+            key: 'riskTime',
+            sorter: (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+        }];
+        const fraud_html = (
+            <Table size="middle" bordered
+                   dataSource={fraudResults}
+                   columns={fraud_columns}
+                   rowClassName={(record, index) => index % 2 ? '' : 'table-tr-gray'}
+                   rowKey={(record, index) => `fraudResults${index}`}/>
+        );
+
         // 共享风险名单
         const riskResults_columns = [ {
             title: '提供数据的机构代号',
@@ -286,6 +399,13 @@ var Operator = React.createClass({
                     <Col span={8}><div className={'loanRecord-blueBlock'}><span className={'fontTitle'}>本机构查询次数</span> <span className="font blue">{queriedHistory.timesByCurrentOrg}</span> 次</div></Col>
                 </Row>
                 {checkedRecords_html}
+
+                <h2 className={'loanRecord-h2'}>欺诈甄别</h2>
+                <Row gutter={16}>
+                    <Col span={12}><div className={'loanRecord-blueBlock'}><span className={'fontTitle'}>欺诈分</span> <span className="font red">{yixinFraud.fraudScore}</span> 分</div></Col>
+                    <Col span={12}><div className={'loanRecord-blueBlock'}><span className={'fontTitle'}>欺诈等级</span> <span className="font red">{yixinFraud.fraudLevel}</span> 级</div></Col>
+                </Row>
+                {fraud_html}
 
                 <h2 className={'loanRecord-h2'}>共享风险名单</h2>
                 {riskResults_html}

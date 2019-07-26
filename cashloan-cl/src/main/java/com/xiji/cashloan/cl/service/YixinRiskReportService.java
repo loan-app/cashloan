@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service;
 
+import com.xiji.cashloan.cl.domain.YixinFraud;
 import com.xiji.cashloan.cl.domain.YixinRiskReport;
 import com.xiji.cashloan.core.common.service.BaseService;
 
@@ -20,5 +21,12 @@ public interface YixinRiskReportService extends BaseService<YixinRiskReport, Lon
      * @return
      */
     Map<String,Object> getRecentlyYixinRiskReportMap(Long borrowId);
+
+    /**
+     * 根据用户id 获取欺诈甄别 数据
+     * @param borrowId
+     * @return
+     */
+    Map<String,Object> getYixinFraudMap(Long borrowId);
 
 }

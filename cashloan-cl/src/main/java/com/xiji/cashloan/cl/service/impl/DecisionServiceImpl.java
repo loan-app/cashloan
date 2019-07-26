@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.service.DecisionService;
+import com.xiji.cashloan.cl.service.YixinFraudService;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -71,6 +72,8 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
     private YouDunRiskReportMapper youDunRiskReportMapper;
     @Resource
     private OperatorVoiceCntMapper operatorVoiceCntMapper;
+    @Resource
+    private YixinFraudMapper yixinFraudMapper;
 
     @Override
     public BaseMapper<Decision, Long> getMapper() {
@@ -200,6 +203,11 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
         queryMap.put("borrowId", borrowId);
         YouDunRiskReport youDunRiskReport = youDunRiskReportMapper.findSelective(queryMap);
         setYoudunRisk(youDunRiskReport, decision, yixinRiskReport, xinyanXwld);
+
+        queryMap.clear();
+        queryMap.put("borrowId", borrowId);
+        YixinFraud yixinFraud = yixinFraudMapper.findSelective(queryMap);
+        setYixinFraud(yixinFraud,decision);
 
         i = decisionMapper.saveSelective(decision);
         return i;
@@ -966,5 +974,25 @@ public class DecisionServiceImpl extends BaseServiceImpl<Decision, Long> impleme
 
             }
         }
+    }
+
+    /**
+     * 欺诈甄别 欺诈评分
+     * @param yixinFraud
+     * @param decision
+     */
+    void setYixinFraud(YixinFraud yixinFraud, Decision decision){
+
+        Integer fraudScore = 0 ;
+        if (yixinFraud != null && yixinFraud.getData() != null){
+            JSONObject dataJson = JSONObject.parseObject(yixinFraud.getData());
+            if (dataJson == null) {
+                return;
+            }
+            if (StringUtil.isNotBlank(dataJson.getString("fraudScore"))){
+                fraudScore = Integer.parseInt(dataJson.getString("fraudScore"));
+            }
+        }
+        decision.setYxFraudScore(fraudScore);
     }
 }

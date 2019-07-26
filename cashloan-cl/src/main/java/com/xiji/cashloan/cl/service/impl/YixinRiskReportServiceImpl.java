@@ -3,7 +3,9 @@ package com.xiji.cashloan.cl.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.domain.YixinFraud;
 import com.xiji.cashloan.cl.domain.YixinRiskReport;
+import com.xiji.cashloan.cl.mapper.YixinFraudMapper;
 import com.xiji.cashloan.cl.mapper.YixinRiskReportMapper;
 import com.xiji.cashloan.cl.service.YixinRiskReportService;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
@@ -33,6 +35,8 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
    
     @Resource
     private YixinRiskReportMapper yixinRiskReportMapper;
+	@Resource
+    private YixinFraudMapper yixinFraudMapper;
 
 	@Override
 	public BaseMapper<YixinRiskReport, Long> getMapper() {
@@ -118,5 +122,22 @@ public class YixinRiskReportServiceImpl extends BaseServiceImpl<YixinRiskReport,
 		map.put("yixinRiskReport",JSON.parseObject(yixinRiskReport.getData()));
      return map;
 	}
+
+	/**
+	 * 根据用户id 获取欺诈甄别数据
+	 * @param borrowId
+	 * @return
+	 */
+	public Map<String,Object> getYixinFraudMap(Long borrowId){
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("borrowId", borrowId);
+		YixinFraud yixinFraud =  yixinFraudMapper.findSelective(queryMap);
+		Map<String,Object> map = new HashedMap();
+		if (yixinFraud != null && yixinFraud.getData() != null){
+			map.put("yixinFraud",JSON.parseObject(yixinFraud.getData()));
+		}
+		return map;
+	}
+
 
 }
