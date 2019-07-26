@@ -1243,3 +1243,7 @@ INSERT INTO `cl_sms_tpl` (`type`, `type_name`, `tpl`, `number`, `state`) VALUES 
 INSERT INTO `cl_sms_tpl` (`type`, `type_name`, `tpl`, `state`) VALUES ('userLogin', '用户登录验证码', '尊敬的用户，您的登录验证码为:' , '10');
 update `cl_sms_tpl` t1, `cl_sms_tpl` t2 set t1.number = t2.number WHERE t1.type='userLogin' and t2.type='sysLogin';
 UPDATE `arc_sys_config` t SET t.`value` = '{"verifyTime": 30,"register": 5,"findReg":5,"findPay": 5,"bindCard": 30,"userLogin": 30}' WHERE t.`code` = 'sms_day_most_times';
+
+
+-- 风控决策添加 欺诈甄别欺诈评分
+ALTER TABLE cl_decision add column yx_fraud_score int(11) DEFAULT 0 COMMENT '欺诈甄别欺诈评分';
