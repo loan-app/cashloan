@@ -12,6 +12,7 @@ import com.xiji.cashloan.core.common.util.StringUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ import java.util.Random;
 @Scope("prototype")
 @Controller
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@RequestMapping("/api/user")
+@RequestMapping("/api/user/")
 public class LoginController {
 
 	@Resource
@@ -61,11 +62,11 @@ public class LoginController {
 	//根据手机和验证码登录
 	@RequestMapping("loginPhone")
 	public void loginPhone(final HttpServletRequest request,
-					  HttpServletResponse response, final String loginName,final String vcode,final String blackBox) {
+						   final HttpServletResponse response, final String loginName,final String vcode) {
 		new AppAbsActionWrapper(response) {
 			@Override
 			public Object doAction() {
-				return userService.loginPhone(request, loginName, vcode,blackBox);
+				return userService.loginPhone(request, loginName, vcode);
 			}
 		};
 	}
@@ -206,6 +207,20 @@ public class LoginController {
 //							signMsg,blackBox);
 					result.put("msg", "注册成功!");
 				}
+				return result;
+			}
+		};
+	}
+
+	@RequestMapping(value = "hbRegister", method = RequestMethod.POST)
+	public void hbRegister(final HttpServletResponse response,final String cid,
+							final int request_time,
+							final String phone,final String sign) {
+
+		new AppAbsActionWrapper(response) {
+			@Override
+			public Object doAction() {
+				Map result = userService.apiRegister(cid, request_time,phone,sign);
 				return result;
 			}
 		};

@@ -33,5 +33,13 @@ public class SmsModel {
 
     public static final String SMS_TYPE_SYS_LOGIN = "sysLogin";
 
+	/**
+	 * 注册初始密码
+	 */
+	public static final String SMS_TYPE_INITREG = "initReg";
 
+	/**
+	 * 用户登录验证码
+	 */
+	public static final String SMS_TYPE_USER_LOGIN = "userLogin";
 }

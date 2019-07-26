@@ -55,14 +55,22 @@ public interface ClSmsService extends BaseService<Sms, Long>{
 	String sendSms(String phone, String type);
 
 	/**
+	 * 发送短信
+	 * @param phone
+	 * @param type
+	 * @return
+	 */
+	String sendSms(String phone, String type, String param);
+
+	/**
 	 * 验证短信
 	 * @param phone
 	 * @param type
 	 * @param code
-	 * @param signMsg
 	 * @return
 	 */
 	int verifySms(String phone, String type, String code);
+
 
 	/**
 	 *
