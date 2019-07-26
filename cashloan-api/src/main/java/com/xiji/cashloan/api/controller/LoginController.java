@@ -300,6 +300,10 @@ public class LoginController {
 
 				Map data = new LinkedHashMap();
 				data.put("isExists", exists ? "20" : "10");
+				if(!exists) {
+					String registerUrl = Global.getValue("server_host")+Global.getValue("h5_invite")+"?channelCode=APP_REG";
+					data.put("registerUrl", registerUrl);
+				}
 				ret.put("data", data);
 				ret.put("msg", exists ? "该手机号码已存在" : "该手机不存在，可注册");
 				return ret;
