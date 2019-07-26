@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -387,7 +388,7 @@ public class UserService {
     public Map registerUser(HttpServletRequest request, String phone, String pwd, String vcode, String invitationCode,
                             String registerCoordinate,String registerAddr,String regClient, String signMsg, String channelCode) {
         try {
-            if (StringUtil.isEmpty(phone) || !StringUtil.isPhone(phone) || StringUtil.isEmpty(pwd) || StringUtil.isEmpty(vcode) || pwd.length() < 32) {
+            if (StringUtil.isEmpty(phone) || !StringUtil.isPhone(phone) || StringUtil.isEmpty(vcode) ) {
                 Map ret = new LinkedHashMap();
                 ret.put("success", false);
                 ret.put("msg", "参数有误");
@@ -462,7 +463,14 @@ public class UserService {
                 ret.put("msg", "您的资质未达到我们平台的标准，请关注日用钱包获取更多贷款资讯");
                 return ret;
             }
-
+            String pwd_ming = null;
+            if(StringUtils.isBlank(pwd)) {
+                String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+                MessageDigest md5 = MessageDigest.getInstance("MD5");
+                pwd_ming = uuid.substring(0, 8);
+                md5.update(pwd_ming.getBytes());
+                pwd = new BigInteger(1, md5.digest()).toString(16).toUpperCase();
+            }
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             long userId = dbService.insert(SqlUtil.buildInsertSqlMap("cl_user", new Object[][]{
                     {"login_name", phone},
@@ -515,8 +523,14 @@ public class UserService {
                 }));
             }
 
-            //2017.5.6 仅用于demo演示环境
-            demoUser(userId);
+            if(StringUtils.isNotBlank(pwd_ming)) {
+                String type= SmsModel.SMS_TYPE_INITREG;
+                logger.info("发送短信，phone：" + phone + "， type：" + type + "，准备发送");
+                String orderNo = clSmsService.sendSms(phone, type, pwd_ming);
+                if (StringUtil.isNotBlank(orderNo)) {
+                    clSmsService.getReportByOrderNo(orderNo, phone, type);
+                }
+            }
 
             Map result = new LinkedHashMap();
             result.put("success", true);
