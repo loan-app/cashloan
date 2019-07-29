@@ -121,12 +121,14 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "付款金额超过综合服务费了，请调整支付金额！");
 			ServletUtils.writeToResponse(response, result);
+			return;
 		}
 		if (PayCommonHelper.isEmpty(bankCard)) {
 			Map<String,Object> result = new HashMap<String, Object>();
 			result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 			result.put(Constant.RESPONSE_CODE_MSG, "绑卡信息丢失，可能是切换了支付通道，请联系客户重新绑卡");
 			ServletUtils.writeToResponse(response, result);
+			return;
 		}
 
 		PaymentReqVo vo = new PaymentReqVo();
