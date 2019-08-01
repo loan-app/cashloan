@@ -1234,7 +1234,7 @@ CREATE TABLE `cl_yixin_score` (
 
 --宜信阿福综合决策报告小额评分
 INSERT INTO `arc_sys_config` VALUES (null, '100', '宜信综合决策报告小额评分接口名称', 'yixin_score_api_name', 'decision.report.pro.bt.api', '1', '宜信综合决策报告小额评分接口名称', '1');
-INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信综合决策报告小额评分审核通过最低分数', 'yixin_score_min_limit', '450', '1', '宜信综合决策报告小额评分审核通过最低分数', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '20', '宜信综合决策报告小额评分审核通过最低分数', 'yixin_score_min_limit', '450', '1', '宜信综合决策报告小额评分审核通过最低分数', '1');
 INSERT INTO `arc_sys_config` VALUES (null, '20', '是否启用宜信综合决策报告小额评分', 'yixin_score_switch', '10', '1', '是否启用宜信综合决策报告小额评分，10-启用，20-禁用', '1');
 
 
@@ -1247,3 +1247,28 @@ UPDATE `arc_sys_config` t SET t.`value` = '{"verifyTime": 30,"register": 5,"find
 
 -- 风控决策添加 欺诈甄别欺诈评分
 ALTER TABLE cl_decision add column yx_fraud_score int(11) DEFAULT 0 COMMENT '欺诈甄别欺诈评分';
+
+
+-- 合利宝委托代付sql
+INSERT INTO `arc_sys_config` VALUES (null, '80', '资质图片上传请求地址', 'helipay_qualification_upload_url', 'http://test.trx.helipay.com/trx/entrustedLoan/upload.action', '1', '资质图片上传请求地址', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '资方代付请求地址', 'helipay_delegation_url', 'http://test.trx.helipay.com/trx/entrustedLoan/upload.action', '1', '资方代付请求地址', '1');
+
+
+
+-- 合利宝用户注册信息
+DROP TABLE IF EXISTS `cl_helipay_user`;
+CREATE TABLE `cl_helipay_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '用户标识',
+  `helipay_user_id` varchar(20) DEFAULT NULL COMMENT '合利宝用户编号',
+  `user_status` varchar(20) DEFAULT 'INIT' COMMENT '用户状态： INIT-入网中,AUDITING-申请中,AVAILABLE-正常,REFUSED-拒绝,CANCELLED-注销',
+  `front_credential_status` varchar(20) DEFAULT 'NOT_UPLOADED' COMMENT '用户身份证正面上传状态：UPLOADED-已上传，NOT_UPLOADED-未上传',
+  `back_credential_status` varchar(20) DEFAULT 'NOT_UPLOADED' COMMENT '用户身份证反面上传状态：UPLOADED-已上传，NOT_UPLOADED-未上传',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='合利宝用户注册信息';
+
+
+
+ALTER TABLE cl_px_req_log add column helipay_user_id varchar(20) DEFAULT NULL COMMENT '合利宝用户编号';

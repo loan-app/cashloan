@@ -84,6 +84,11 @@ import java.util.Date;
 	private String token;
 
 	/**
+	 * 合利宝商户用户唯一ID
+	 */
+	private String helipayUserId;
+
+	/**
 	 * 获取主键Id
 	 *
 	 * @return id
@@ -318,5 +323,13 @@ import java.util.Date;
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getHelipayUserId() {
+		return helipayUserId;
+	}
+
+	public void setHelipayUserId(String helipayUserId) {
+		this.helipayUserId = helipayUserId;
 	}
 }

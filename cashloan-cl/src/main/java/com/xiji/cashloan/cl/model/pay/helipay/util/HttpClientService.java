@@ -2,12 +2,18 @@ package com.xiji.cashloan.cl.model.pay.helipay.util;
 
 import com.alibaba.fastjson.JSONObject;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.*;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -16,8 +22,63 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang.time.StopWatch;
 
 public class HttpClientService {
+
+
+
+    private static OkHttpClient client =new OkHttpClient.Builder()
+            .connectTimeout(3, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .build();
+
+    private static final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
+
+
+    public static Map<String, Object> getHttpResp(Map<String, String> reqMap, String httpUrl, File file) {
+        RequestBody requestBody = null;
+        if (null == file) {
+            FormBody.Builder builder = new FormBody.Builder();
+            for (Iterator<String> iterator = reqMap.keySet().iterator(); iterator.hasNext(); ) {
+                String key = (String) iterator.next();
+                builder.add(key, reqMap.get(key));
+            }
+            requestBody = builder.build();
+        } else {
+            MultipartBody.Builder builder = new MultipartBody.Builder();
+            for (Iterator<String> iterator = reqMap.keySet().iterator(); iterator.hasNext(); ) {
+                String key = (String) iterator.next();
+                builder.addFormDataPart(key, reqMap.get(key));
+            }
+            requestBody = builder.setType(MultipartBody.FORM)
+                    .addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_JPG, file))
+                    .build();
+        }
+
+        Request request = new Request.Builder() // okHttp post
+                .url(httpUrl)
+                .post(requestBody)
+                .build();
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+        try {
+            Response response = client.newCall(request).execute();
+            ResponseBody body = response.body();
+            if (body == null) {
+                throw new RuntimeException("响应 body 体为空");
+            }
+            String str = body.string();
+            Map<String, Object> mp = new HashedMap();
+            mp.put("statusCode", response.code());
+            mp.put("response", str);
+            return mp;
+        } catch (IOException e) {
+            throw new RuntimeException("请求出错", e);
+        }
+    }
+
 
     public static Map<String, Object> getHttpResp(Map<String, String> reqMap, String httpUrl) {
         HttpClient client = new HttpClient();

@@ -1,5 +1,7 @@
 package com.xiji.cashloan.cl.model.pay.common.biz;
 
+import com.alibaba.fastjson.JSONObject;
+
 import com.xiji.cashloan.cl.model.pay.common.PayCommon;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.BindCardMsgVo;
@@ -20,8 +22,8 @@ import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.UnbindCardResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.HelipayHelper;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
-import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
-import com.xiji.cashloan.cl.model.pay.helipay.util.MessageHandle;
+import com.xiji.cashloan.cl.model.pay.helipay.util.*;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.*;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.request.AgreementBindCardValidateCodeVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.request.BindCardPayVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.request.BindCardVo;
@@ -38,7 +40,23 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.response.UnBindCardResponseVo;
 import com.xiji.cashloan.core.common.context.BankCardBinUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.BankCardBin;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 /**
  * @Auther: king
@@ -47,26 +65,99 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class HeliPayBiz implements PayCommon {
 
+
+    /**
+     * 商户用户注册
+     * @param userBaseInfo
+     * @return
+     */
+   public Map<String,String> helipayRegister(UserBaseInfo userBaseInfo){
+
+       MerchantUserVo userVo = new MerchantUserVo();
+
+       String orderId = HelipayUtil.getOrderId();
+       userVo.setP1_bizType(HelipayConstant.BTYPE_MerchantUserRegister);
+       userVo.setP2_customerNumber(HelipayUtil.customerNumber());
+       userVo.setP3_orderId(orderId);
+       userVo.setP4_legalPerson(userBaseInfo.getRealName());
+       userVo.setP5_legalPersonID(userBaseInfo.getIdNo());
+       userVo.setP6_mobile(userVo.getP6_mobile());
+       userVo.setP7_business(HelipayConstant.BIZ_TYPE_B2C);
+       userVo.setP8_timestamp(HelipayUtil.getTimeStamp());
+
+       JSONObject jsonObject = new JSONObject();
+       jsonObject.put("P3_orderId",orderId);
+       jsonObject.put("registerNotifyUrl","需要补充 ~~~ ");
+       userVo.setP9_ext(jsonObject.toJSONString());
+       HelipayHelper helipayHelper = new HelipayHelper();
+       Map<String,String>  result = helipayHelper.heLiPayUserRegister(userVo,userBaseInfo.getUserId());
+       return result;
+   }
+
+
+    /**
+     * 商户用户注册信息查询
+     * @param idNo
+     * @return
+     */
+    public MerchantUserQueryResVo userQuery(String  idNo){
+
+        MerchantUserQueryVo userVo = new MerchantUserQueryVo();
+        userVo.setP1_bizType(HelipayConstant.BTYPE_MerchantUserQuery);
+        userVo.setP2_customerNumber(HelipayUtil.customerNumber());
+        userVo.setP3_orderId(HelipayUtil.getOrderId());
+        userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+        userVo.setP6_legalPersonID(idNo);
+        HelipayHelper helipayHelper = new HelipayHelper();
+        return helipayHelper.userQuery(userVo);
+    }
+
     @Override
     public PaymentResponseVo payment(PaymentReqVo vo) {
         HelipayHelper helipayHelper = new HelipayHelper();
-        PayForReqVo reqVo = new PayForReqVo();
-        reqVo.setOrderId(HelipayUtil.getOrderId());
-        reqVo.setAmount(Double.toString(vo.getAmount()));
-        reqVo.setBankCode(BankCardBinUtil.getBankCode(vo.getBankCardNo()));
-        reqVo.setBankAccountName(vo.getBankCardName());
-        reqVo.setBankAccountNo(vo.getBankCardNo());
-        reqVo.setBiz(HelipayConstant.BIZ_TYPE_B2C);
-        reqVo.setFeeType(HelipayConstant.PAYTYPE_PAYER);
-        reqVo.setUrgency(HelipayConstant.PAY_URGENCY);
-        reqVo.setSummary(vo.getRemark());
-        reqVo.setNotifyUrl(HelipayUtil.paymentNotifyAddress());
+//        PayForReqVo reqVo = new PayForReqVo();
+//        reqVo.setOrderId(HelipayUtil.getOrderId());
+//        reqVo.setAmount(Double.toString(vo.getAmount()));
+//        reqVo.setBankCode(BankCardBinUtil.getBankCode(vo.getBankCardNo()));
+//        reqVo.setBankAccountName(vo.getBankCardName());
+//        reqVo.setBankAccountNo(vo.getBankCardNo());
+//        reqVo.setBiz(HelipayConstant.BIZ_TYPE_B2C);
+//        reqVo.setFeeType(HelipayConstant.PAYTYPE_PAYER);
+//        reqVo.setUrgency(HelipayConstant.PAY_URGENCY);
+//        reqVo.setSummary(vo.getRemark());
+//        reqVo.setNotifyUrl(HelipayUtil.paymentNotifyAddress());
 
-        HeliPayForPaymentResultVo result = helipayHelper.payment(reqVo);
+        OrderVo orderVo = new OrderVo();
+        orderVo.setP1_bizType(HelipayConstant.BTYPE_EntrustedLoanTransfer);
+        orderVo.setP2_customerNumber(HelipayUtil.customerNumber());
+        orderVo.setP3_orderId(HelipayUtil.getOrderId());
+        orderVo.setP4_userId(vo.getHelipayUserId());
+        orderVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+        orderVo.setP6_currency(HelipayConstant.CURRENCY_CNY);
+        orderVo.setP7_amount(Double.toString(vo.getAmount()));
+        orderVo.setP8_business(HelipayConstant.BIZ_TYPE_B2C);
+        orderVo.setP9_bankAccountName(vo.getBankCardName());
+        orderVo.setP10_bankAccountNo(vo.getBankCardNo());
+        orderVo.setP11_legalPersonID(vo.getIdNo());
+        orderVo.setP13_onlineCardType(HelipayConstant.ONLINE_CARDTYPE);
+        orderVo.setP17_bankCode(BankCardBinUtil.getBankCode(vo.getBankCardNo()));
+        orderVo.setP19_callbackUrl(HelipayUtil.paymentNotifyAddress());
+        orderVo.setP20_purpose("生活");
+
+        // 借款信息
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("loanTime",vo.getHelipayLoanConInfo().getLoanTime());
+        jsonObject.put("loanTimeUnit",vo.getHelipayLoanConInfo().getLoanTimeUnit());
+        jsonObject.put("loanInterestRate",vo.getHelipayLoanConInfo().getLoanInterestRate());
+        jsonObject.put("periodization",vo.getHelipayLoanConInfo().getPeriodization());
+        jsonObject.put("periodizationDays",vo.getHelipayLoanConInfo().getPreExpirationOverdueDays());
+        jsonObject.put("periodizationFee",vo.getHelipayLoanConInfo().getPeriodizationFee());
+        orderVo.setP21_loanConInfo(jsonObject.toJSONString());
+        OrderResVo result = helipayHelper.createOrder(orderVo);
         PaymentResponseVo responseVo = new PaymentResponseVo();
         //受理成功
         if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
-            if (HelipayUtil.checkPaymentResultSign(result)) {
+            if ("success".equals(result.getSignResult())) {
                 responseVo.setStatus(PayConstant.RESULT_SUCCESS);
                 responseVo.setStatusCode(result.getRt2_retCode());
             }else {
@@ -80,7 +171,7 @@ public class HeliPayBiz implements PayCommon {
             responseVo.setStatusCode(result.getRt2_retCode());
             responseVo.setStatus(PayConstant.STATUS_FAIL);
         }
-        responseVo.setOrderNo(reqVo.getOrderId());
+        responseVo.setOrderNo(orderVo.getP3_orderId());
         responseVo.setMessage(result.getRt3_retMsg());
         return responseVo;
     }

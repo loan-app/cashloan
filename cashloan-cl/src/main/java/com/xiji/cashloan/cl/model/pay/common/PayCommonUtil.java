@@ -8,9 +8,12 @@ import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayModelEnum;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.*;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.*;
+import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
 import org.apache.commons.lang.math.NumberUtils;
+import tool.util.BeanUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +62,17 @@ public class PayCommonUtil{
         return payMode.get(payCompany(vo.getShareKey())).queryCardBin(vo);
     }
 
+    /**
+     * 商户用户注册
+     * @param userBaseInfo
+     * @return
+     */
+    public static Map<String,String> helipayRegister(UserBaseInfo userBaseInfo){
+
+        HeliPayBiz heliPayBiz = (HeliPayBiz) BeanUtil.getBean("heliPayBiz");
+
+        return heliPayBiz.helipayRegister(userBaseInfo);
+    }
 
     public static String payCompany(Long userId) {
         String value = Global.getValue("pay_model_select");

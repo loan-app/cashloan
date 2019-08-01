@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_helipay_user表:合利宝用户注册信息模块 -->
+<mapper namespace="com.xiji.cashloan.cl.mapper.HelipayUserMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.xiji.cashloan.cl.domain.HelipayUser">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="helipay_user_id" property="helipayUserId" jdbcType="VARCHAR" />
+        <result column="user_status" property="userStatus" jdbcType="VARCHAR" />
+        <result column="front_credential_status" property="frontCredentialStatus" jdbcType="VARCHAR" />
+        <result column="back_credential_status" property="backCredentialStatus" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,helipay_user_id,user_status,front_credential_status,back_credential_status,gmt_create,gmt_modified 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="helipayUserId != null and helipayUserId != ''">
+                and helipay_user_id = #{helipayUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="userStatus != null and userStatus != ''">
+                and user_status = #{userStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="frontCredentialStatus != null and frontCredentialStatus != ''">
+                and front_credential_status = #{frontCredentialStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="backCredentialStatus != null and backCredentialStatus != ''">
+                and back_credential_status = #{backCredentialStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null">
+                and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.xiji.cashloan.cl.domain.HelipayUser">
+        insert into cl_helipay_user(user_id,helipay_user_id,user_status,front_credential_status,back_credential_status,gmt_create,gmt_modified)values(#{userId,jdbcType=BIGINT},#{helipayUserId,jdbcType=VARCHAR},#{userStatus,jdbcType=VARCHAR},#{frontCredentialStatus,jdbcType=VARCHAR},#{backCredentialStatus,jdbcType=VARCHAR},#{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.xiji.cashloan.cl.domain.HelipayUser">
+        update cl_helipay_user set 
+            user_id = #{userId,jdbcType=BIGINT},
+            helipay_user_id = #{helipayUserId,jdbcType=VARCHAR},
+            user_status = #{userStatus,jdbcType=VARCHAR},
+            front_credential_status = #{frontCredentialStatus,jdbcType=VARCHAR},
+            back_credential_status = #{backCredentialStatus,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_helipay_user
+          <set>
+            <if test="userId != null">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="helipayUserId != null and helipayUserId != '' ">
+                helipay_user_id = #{helipayUserId,jdbcType=VARCHAR},                
+            </if>
+            <if test="userStatus != null and userStatus != '' ">
+                user_status = #{userStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="frontCredentialStatus != null and frontCredentialStatus != '' ">
+                front_credential_status = #{frontCredentialStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="backCredentialStatus != null and backCredentialStatus != '' ">
+                back_credential_status = #{backCredentialStatus,jdbcType=VARCHAR},                
+            </if>
+            <if test="gmtCreate != null">        
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="gmtModified != null">        
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_helipay_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_helipay_user
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_helipay_user
+        <include refid="searchBy"/>
+    </select>
+
+    <insert id="saveSelective" parameterType="com.xiji.cashloan.cl.domain.HelipayUser">
+        insert into cl_helipay_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="helipayUserId != null and helipayUserId != '' ">
+                helipay_user_id,
+            </if>
+            <if test="userStatus != null and userStatus != '' ">
+                user_status,
+            </if>
+            <if test="frontCredentialStatus != null and frontCredentialStatus != '' ">
+                front_credential_status,
+            </if>
+            <if test="backCredentialStatus != null and backCredentialStatus != '' ">
+                back_credential_status,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="helipayUserId != null and helipayUserId != '' ">
+                #{helipayUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="userStatus != null and userStatus != '' ">
+                #{userStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="frontCredentialStatus != null and frontCredentialStatus != '' ">
+                #{frontCredentialStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="backCredentialStatus != null and backCredentialStatus != '' ">
+                #{backCredentialStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

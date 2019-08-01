@@ -54,6 +54,21 @@ public class PayReqLogServiceImpl extends BaseServiceImpl<PayReqLog, Long> imple
 		return payReqLogMapper.findSelective(paramMap);
 	}
 
+	/**
+	 * 根据订单号查询请求记录
+	 *
+	 * @param
+	 * @return
+	 */
+	@Override
+	public PayReqLog findByHelipayUserId(String helipayUserId){
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("helipayUserId", helipayUserId);
+		return payReqLogMapper.findSelective(paramMap);
+	}
+
+
+
 	@Override
 	public Page<ManagePayReqLogModel> page(int current, int pageSize, Map<String, Object> searchMap) {
 		PageHelper.startPage(current,pageSize);

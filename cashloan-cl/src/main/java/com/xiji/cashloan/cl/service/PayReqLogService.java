@@ -36,6 +36,17 @@ public interface PayReqLogService extends BaseService<PayReqLog, Long>{
 	 */
 	PayReqLog findByOrderNo(String orderNo);
 
+
+	/**
+	 * 根据订单号查询请求记录
+	 *
+	 * @param
+	 * @return
+	 */
+	PayReqLog findByHelipayUserId(String helipayUserId);
+
+
+
 	/**
 	 * 分页查询
 	 * 

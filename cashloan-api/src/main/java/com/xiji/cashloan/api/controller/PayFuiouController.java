@@ -18,6 +18,7 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforNotifyModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.AgreementNotifyVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
@@ -157,15 +158,15 @@ public class PayFuiouController extends BaseController{
 	}
 
 	/**
-	 * 合利宝异步通知接口：
+	 * 合利宝委托代付异步通知接口：
 	 * 代付（支付）- 成功通知接口 - 异步通知处理
 	 * @param model
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/pay/helipay/paymentNotify.htm")
-	public void helipayPaymentNotify(HeliPayForPaymentNotifyVo model) throws Exception {
+	public void helipayPaymentNotify(AgreementNotifyVo model) throws Exception {
 		String params = JSON.toJSONString(model);
-		logger.info("实时付款 - 异步通知:" + params);
+		logger.info("实时付款 - 合利宝委托代付异步通知接口:" + params);
 
 		String orderNo = model.getRt5_orderId();
 		if (!HelipayUtil.checkNotifySign(model)) {
@@ -195,11 +196,12 @@ public class PayFuiouController extends BaseController{
 			return ;
 		}
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
-		dto.setPayPlatNo(model.getRt6_serialNumber());
-		if (StringUtil.equals(model.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS)) {
+		dto.setPayPlatNo(model.getRt7_serialNumber());
+		if (StringUtil.equals(model.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS) && "success".equals(model.getRt8_orderStatus())) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
 		}else {
 			dto.setStatus(PayConstant.STATUS_FAIL);
+			logger.info("委托代付订单失败原因："+model.getRt3_retMsg());
 		}
 
 		String message = "";

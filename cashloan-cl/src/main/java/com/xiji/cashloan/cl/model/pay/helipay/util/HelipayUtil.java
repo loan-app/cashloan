@@ -2,6 +2,8 @@ package com.xiji.cashloan.cl.model.pay.helipay.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.AgreementNotifyVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.UserRegisterNotifyVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
@@ -81,12 +83,41 @@ public class HelipayUtil {
         return true;
     }
 
+    // 资方代付请求地址
+    public static String DelegationUrl(){
+        return Global.getValue("helipay_delegation_url");
+    }
+    // 资质图片上传请求地址
+    public static String QualificationUploadUrl(){
+        return Global.getValue("helipay_qualification_upload_url");
+    }
+
     /**
      * 根据合利宝通知的参数生成用于签名的源串
      */
     public static boolean checkNotifySign(HeliPayForPaymentNotifyVo vo) {
+        //
         return StringUtil.equals(vo.getSign(),Disguiser.disguiseMD5(generateSignatureSource(vo)));
     }
+
+    /**
+     * 根据合利宝通知的参数生成用于签名的源串 委托代付
+     * @param vo
+     * @return
+     */
+    public static boolean checkNotifySign(AgreementNotifyVo vo) {
+        return StringUtil.equals(vo.getSign(),Disguiser.disguiseMD5(generateSignatureSource(vo)));
+    }
+
+    /**
+     * 商户用户注册回调回调参数签名验证
+     * @param vo
+     * @return
+     */
+    public static boolean checkUserRegisterNotifySign(UserRegisterNotifyVo vo) {
+        return StringUtil.equals(vo.getSign(),Disguiser.disguiseMD5(registerNotifySource(vo)));
+    }
+
     private static String generateSignatureSource(HeliPayForPaymentNotifyVo vo) {
         return "&" + (StringUtils.isEmpty(vo.getRt1_bizType()) ? "" : vo.getRt1_bizType()) + "&"
             + (StringUtils.isEmpty(vo.getRt2_retCode()) ? "" : vo.getRt2_retCode()) + "&"
@@ -100,6 +131,41 @@ public class HelipayUtil {
             + (StringUtils.isEmpty(vo.getRt10_createDate()) ? "" : vo.getRt10_createDate()) + "&"
             + (StringUtils.isEmpty(vo.getRt11_completeDate()) ? "" : vo.getRt11_completeDate()) + "&" + HelipayUtil.getMD5Key();
     }
+
+    /**
+     * 委托代付回调参数 用于签名拼接
+     * @param vo
+     * @return
+     */
+    private static String generateSignatureSource(AgreementNotifyVo vo) {
+        return "&" + (StringUtils.isEmpty(vo.getRt1_bizType()) ? "" : vo.getRt1_bizType()) + "&"
+                + (StringUtils.isEmpty(vo.getRt2_retCode()) ? "" : vo.getRt2_retCode()) + "&"
+                + (StringUtils.isEmpty(vo.getRt3_retMsg()) ? "" : vo.getRt3_retMsg()) + "&"
+                + (StringUtils.isEmpty(vo.getRt4_customerNumber()) ? "" : vo.getRt4_customerNumber()) + "&"
+                + (StringUtils.isEmpty(vo.getRt5_orderId()) ? "" : vo.getRt5_orderId()) + "&"
+                + (StringUtils.isEmpty(vo.getRt6_userId()) ? "" : vo.getRt6_userId()) + "&"
+                + (StringUtils.isEmpty(vo.getRt7_serialNumber()) ? "" : vo.getRt7_serialNumber()) + "&"
+                + (StringUtils.isEmpty(vo.getRt8_orderStatus()) ? "" : vo.getRt8_orderStatus()) + "&"
+                + (StringUtils.isEmpty(vo.getRt9_reason()) ? "" : vo.getRt9_reason()) + "&"
+                + (StringUtils.isEmpty(vo.getRt10_timestamp()) ? "" : vo.getRt10_timestamp()) + "&" + HelipayUtil.getMD5Key();
+    }
+
+
+    /**
+     * 商户用户注册回调回调参数 用于签名拼接
+     * @param vo
+     * @return
+     */
+    private static String registerNotifySource(UserRegisterNotifyVo vo) {
+        return "&" + (StringUtils.isEmpty(vo.getRt1_bizType()) ? "" : vo.getRt1_bizType()) + "&"
+                + (StringUtils.isEmpty(vo.getRt2_retCode()) ? "" : vo.getRt2_retCode()) + "&"
+                + (StringUtils.isEmpty(vo.getRt3_retMsg()) ? "" : vo.getRt3_retMsg()) + "&"
+                + (StringUtils.isEmpty(vo.getRt4_customerNumber()) ? "" : vo.getRt4_customerNumber()) + "&"
+                + (StringUtils.isEmpty(vo.getRt5_userId()) ? "" : vo.getRt5_userId()) + "&"
+                + (StringUtils.isEmpty(vo.getRt6_userStatus()) ? "" : vo.getRt6_userStatus()) + "&"
+                + (StringUtils.isEmpty(vo.getRt7_desc()) ? "" : vo.getRt7_desc()) + "&" + HelipayUtil.getMD5Key();
+    }
+
     public static boolean checkPaymentResultSign(HeliPayForPaymentResultVo vo) {
         return StringUtil.equals(vo.getSign(),Disguiser.disguiseMD5(genPaymentResultSource(vo)));
     }

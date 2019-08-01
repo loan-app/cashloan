@@ -30,6 +30,18 @@ public class HelipayConstant {
     /** 接口类型 - 解除绑卡 */
     public static final String BTYPE_BankCardUnbind = "BankCardUnbind";
 
+    /** 接口类型 - 商户用户注册 */
+    public static final String BTYPE_MerchantUserRegister = "MerchantUserRegister";
+
+    /** 接口类型 - 商户用户查询 */
+    public static final String BTYPE_MerchantUserQuery = "MerchantUserQuery";
+
+    /** 接口类型 - 委托代付下单 */
+    public static final String BTYPE_EntrustedLoanTransfer = "EntrustedLoanTransfer";
+
+    /** 接口类型 - 委托代付订单查询 */
+    public static final String BTYPE_EntrustedLoanTransferQuery = "EntrustedLoanTransferQuery";
+
     /** 业务类型 -  B2C-对私 */
     public static final String BIZ_TYPE_B2C = "B2C";
     /** 业务类型 -  B2B-对公 */
@@ -62,5 +74,20 @@ public class HelipayConstant {
     public static final String ORDER_RETCODE_NEED_ORDERSTATUS= "8000";
 
     public static final String DAIFU_RESPONSE_NO_ORDER = "0005";
+
+    /**
+     * 字符串"&"
+     */
+    public static final String SPLIT="&";
+
+    /**
+     * Des3秘钥, 是恒定值
+     */
+    public static final String DESKEY_KEY = "xglHJa0H1QKQi1Z9aaqnL0l2";
+
+    /**
+     * 借贷记类型 DEBIT-借记卡
+     */
+    public static final String ONLINE_CARDTYPE ="DEBIT" ;
 
 }
