@@ -23,7 +23,6 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.cl.domain.OperatorReport;
 import com.xiji.cashloan.cl.service.OperatorReportService;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
