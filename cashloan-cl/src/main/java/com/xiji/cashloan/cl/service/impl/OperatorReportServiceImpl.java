@@ -23,11 +23,14 @@ import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.cl.domain.OperatorReport;
 import com.xiji.cashloan.cl.service.OperatorReportService;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -143,7 +146,13 @@ public class OperatorReportServiceImpl extends BaseServiceImpl<OperatorReport, L
                             basic.put("reliability", Boolean.FALSE);
                         }
                     } else if ("in_time".equals(jsonObject.getString("key"))) {
-                        basic.put("inTime", jsonObject.getInteger("value"));
+                        String inTimeStr;
+                        Pattern NUMBER_PATTERN = Pattern.compile("-?[0-9]+(\\.[0-9]+)?");
+                        inTimeStr = jsonObject.getString("value");
+                        Matcher isNum = NUMBER_PATTERN.matcher(inTimeStr);
+                        if (isNum.matches()) {
+                            basic.put("inTime", jsonObject.getInteger("value"));
+                        }
                     }
                 }
                 //处理basic_check_items
