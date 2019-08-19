@@ -59,6 +59,10 @@ public class HelipayUtil {
     public static String rePaymentNotifyAddress() {
         return Global.getValue("server_host")+ "/pay/helipay/repaymentNotify.htm";
     }
+
+    public static String registerNotifyUrlAddress() {
+        return Global.getValue("server_host")+ "/api/heliPay/registerNotify.htm";
+    }
     public static String getMD5Key() {
 //        return "Vx977zHtKzoMkb3vZjxLzVvNHg1469cO";
         return Global.getValue("helipay_daifu_md5_key");

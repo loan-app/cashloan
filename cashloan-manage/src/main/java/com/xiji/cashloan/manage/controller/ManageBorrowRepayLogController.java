@@ -16,6 +16,7 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.HelipayLoanConInfo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import tool.util.BigDecimalUtil;
 import tool.util.NumberUtil;
 
 import javax.annotation.Resource;
@@ -144,6 +146,17 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setMobile(bankCard.getPhone());
 		vo.setShareKey(bankCard.getUserId());
 		vo.setBankName(bankCard.getBank());
+
+		HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
+		helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
+		helipayLoanConInfo.setLoanTimeUnit("D");// 借款时间单位:D-天;M-月;Y-年
+		helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
+		helipayLoanConInfo.setPeriodization("1");
+		helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
+		helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
+		helipayLoanConInfo.setBody("退还");
+		vo.setHelipayLoanConInfo(helipayLoanConInfo);
+
 		PaymentResponseVo result = PayCommonUtil.payment(vo);
 
 		PayLog payLog = new PayLog();

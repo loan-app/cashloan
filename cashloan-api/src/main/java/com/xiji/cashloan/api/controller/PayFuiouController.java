@@ -19,7 +19,6 @@ import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.AgreementNotifyVo;
-import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentNotifyVo;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyRequest;
@@ -190,14 +189,13 @@ public class PayFuiouController extends BaseController{
 		}
 
 		PayLog payLog = payLogService.findByOrderNo(orderNo);
-
 		if(null  == payLog ){
 			logger.warn("未查询到对应的支付订单");
 			return ;
 		}
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
 		dto.setPayPlatNo(model.getRt7_serialNumber());
-		if (StringUtil.equals(model.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS) && "success".equals(model.getRt8_orderStatus())) {
+		if (StringUtil.equals(model.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS) && "SUCCESS".equals(model.getRt8_orderStatus())) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
 		}else {
 			dto.setStatus(PayConstant.STATUS_FAIL);
