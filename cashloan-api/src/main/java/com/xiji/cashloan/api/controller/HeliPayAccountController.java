@@ -141,7 +141,7 @@ public class HeliPayAccountController extends BaseController {
     /**
      *
      * 商户用户注册状态
-     *
+     * @param userId 用户id
      */
     @RequestMapping(value = "/api/heliPay/helipayUserStatus.htm")
     public void helipayUserStatus(@RequestParam(value="userId") long userId){

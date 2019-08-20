@@ -10,6 +10,7 @@ import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.HelipayLoanConInfo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
@@ -1441,7 +1442,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				}
 				PaymentReqVo vo = new PaymentReqVo();
 				if ("dev".equals(Global.getValue("app_environment"))) {
-					vo.setAmount(3.0);
+					vo.setAmount(1.0);
 				} else {
 					vo.setAmount(borrow.getRealAmount());
 				}
@@ -1452,6 +1453,17 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				vo.setMobile(bankCard.getPhone());
 				vo.setShareKey(bankCard.getUserId());
 				vo.setBankName(bankCard.getBank());
+				HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
+
+
+				helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
+				helipayLoanConInfo.setLoanTimeUnit("D");// 借款时间单位:D-天;M-月;Y-年
+				helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
+				helipayLoanConInfo.setPeriodization("1");
+				helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
+				helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
+				vo.setHelipayLoanConInfo(helipayLoanConInfo);
+
 				PaymentResponseVo result = PayCommonUtil.payment(vo);
 				PayLog payLog = new PayLog();
 				payLog.setOrderNo(result.getOrderNo());
@@ -1463,12 +1475,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
 				payLog.setType(PayLogModel.TYPE_PAYMENT);
 				payLog.setScenes(PayLogModel.SCENES_LOANS);
-
 				if (PayCommonUtil.success(result.getStatus())) { //受理成功
 					payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
 				} else if (PayCommonUtil.needCheck(result.getStatus())) { // 疑似重复订单，待人工审核
 					payLog.setState(PayLogModel.STATE_PENDING_REVIEW);
-//					payLog.setConfirmCode(payment.getConfirm_code());
 					payLog.setUpdateTime(DateUtil.getNow());
 				} else {
 					BusinessExceptionMonitor.add(BusinessExceptionMonitor.TYPE_11, payLog.getOrderNo(), result.getMessage());

@@ -38,6 +38,7 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResul
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.QueryOrderResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.UnBindCardResponseVo;
 import com.xiji.cashloan.core.common.context.BankCardBinUtil;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.BankCardBin;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
@@ -87,7 +88,7 @@ public class HeliPayBiz implements PayCommon {
 
        JSONObject jsonObject = new JSONObject();
        jsonObject.put("P3_orderId",orderId);
-       jsonObject.put("registerNotifyUrl","需要补充 ~~~ ");
+       jsonObject.put("registerNotifyUrl", HelipayUtil.registerNotifyUrlAddress());
        userVo.setP9_ext(jsonObject.toJSONString());
        HelipayHelper helipayHelper = new HelipayHelper();
        Map<String,String>  result = helipayHelper.heLiPayUserRegister(userVo,userBaseInfo.getUserId());
@@ -171,7 +172,7 @@ public class HeliPayBiz implements PayCommon {
         orderVo.setP13_onlineCardType(HelipayConstant.ONLINE_CARDTYPE);
         orderVo.setP17_bankCode(BankCardBinUtil.getBankCode(vo.getBankCardNo()));
         orderVo.setP19_callbackUrl(HelipayUtil.paymentNotifyAddress());
-        orderVo.setP20_purpose("生活");
+        orderVo.setP20_purpose(vo.getHelipayLoanConInfo().getPurpose());
 
         // 借款信息
         JSONObject jsonObject = new JSONObject();

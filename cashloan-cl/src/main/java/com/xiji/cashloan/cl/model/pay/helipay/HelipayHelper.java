@@ -509,22 +509,17 @@ public class HelipayHelper extends BasePay {
                 String checkSign = Disguiser.disguiseMD5(assemblyRespOriSign.trim()+HelipayUtil.split+HelipayUtil.getMD5Key());
                 if (checkSign.equals(responseSign)) {
                     logger.info("用户资质查询验签成功");
-                    //mav.addObject("message", resVo.getRt3_retMsg());
-                    //mav.addObject("json", JSONObject.parseObject(resultMsg));
                 } else {
                     logger.error("用户资质查询验签失败,userVo ==>"+userVo);
-                   // mav.addObject("message", "验签失败");
                 }
             } else {
                 logger.error("用户资质查询请求失败,userVo ==>"+userVo);
-                // mav.addObject("message", "请求失败");
             }
             // 更新请求结果
             modifyReqLog(userVo.getP3_orderId(),resultMap.toString());
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("用户资质查询交易异常,userVo ==>"+userVo);
-            //mav.addObject("message", "交易异常：" + e.getMessage());
         }
         return mav;
     }
@@ -580,13 +575,9 @@ public class HelipayHelper extends BasePay {
                 if (checkSign.equals(responseSign)) {
                     logger.info("创建委托代付订单验签成功");
                     resVo.setSignResult("success");
-                    //mav.addObject("message", resVo.getRt3_retMsg());
-                    //mav.addObject("json", JSONObject.parseObject(resultMsg));
                 } else {
                     logger.error("创建委托代付订单验签失败,orderVo ==>"+orderVo);
                     resVo.setSignResult("fail");
-                   // mav.addObject("message", "验签失败");
-                   // mav.addObject("json", JSONObject.parseObject(resultMsg));
                 }
             } else {
                 logger.error("创建委托代付订单请求失败,orderVo ==>"+orderVo);
@@ -594,7 +585,6 @@ public class HelipayHelper extends BasePay {
             // 更新请求结果
             modifyReqLog(orderVo.getP3_orderId(),resultMap.toString());
         } catch (Exception e) {
-            // e.printStackTrace();
             logger.error("创建委托代付订单交易异常,orderVo ==>"+orderVo);
         }
         return resVo;

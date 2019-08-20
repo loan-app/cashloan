@@ -97,6 +97,11 @@ public class HelipayLoanConInfo {
      */
     private String preExpirationOverdueNo;
 
+    /**
+     *
+     */
+    private String purpose;
+
     public String getLoanTime() {
         return loanTime;
     }
@@ -239,5 +244,13 @@ public class HelipayLoanConInfo {
 
     public void setPreExpirationOverdueNo(String preExpirationOverdueNo) {
         this.preExpirationOverdueNo = preExpirationOverdueNo;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 }

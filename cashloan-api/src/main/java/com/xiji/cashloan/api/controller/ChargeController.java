@@ -174,7 +174,7 @@ public class ChargeController extends BaseController {
 		}
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
 		dto.setMessage(vo.getRt3_retMsg());
-		if (StringUtil.equals(vo.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS)) {
+		if (StringUtil.equals(vo.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS) && "SUCCESS".equals(vo.getRt9_orderStatus())) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
 			dto.setCardNo(vo.getRt11_bankId());
 		}
