@@ -160,54 +160,6 @@ public class HeliPayAccountController extends BaseController {
         ServletUtils.writeToResponse(response,result);
     }
 
-    /**
-     * 合利宝用户资质上传
-     * @param userId
-     * @param type
-     */
-    @RequestMapping(value = "/api/heliPay/upload.htm")
-    public void heliPayUpload(
-            @RequestParam(value="userId") long userId,
-            @RequestParam(value = "idCardImg", required = false) MultipartFile idCardImg,
-            @RequestParam("type") String type) {
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("userId",userId);
-        HelipayUser helipayUser = helipayUserMapper.findSelective(map);
-        Map<String,String> heliPayUpload=PayCommonUtil.helipayUpload(helipayUser.getHelipayUserId(),idCardImg,type);
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-        result.put(Constant.RESPONSE_CODE_MSG, "上传成功");
-        ServletUtils.writeToResponse(response,result);
-
-    }
-
-
-    /**
-     *  合利宝用户资质查询
-     * @param userId
-     */
-    @RequestMapping(value = "/api/heliPay/CredentialQuery.htm")
-    public void helipayCredentialQuery(@RequestParam(value="userId") long userId){
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("userId",userId);
-        HelipayUser helipayUser = helipayUserMapper.findSelective(map);
-        if (helipayUser == null){
-            helipayUser = new HelipayUser();
-            helipayUser.setUserStatus("NO_EXIST");
-        }
-        Map<String,Object> result = new HashMap<String,Object>();
-        if ("NOT_UPLOADED".equals(helipayUser.getFrontCredentialStatus()) ||
-                "NOT_UPLOADED".equals(helipayUser.getBackCredentialStatus())){
-            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-            result.put(Constant.RESPONSE_CODE_MSG, "上传失败");
-            ServletUtils.writeToResponse(response,result);
-        }
-        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-        result.put(Constant.RESPONSE_CODE_MSG, "上传成功");
-        ServletUtils.writeToResponse(response,result);
-    }
 
 
 

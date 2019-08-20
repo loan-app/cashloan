@@ -75,14 +75,6 @@ public class PayCommonUtil{
         return heliPayBiz.helipayRegister(userBaseInfo);
     }
 
-
-    public static Map<String,String> helipayUpload(String helipayUserId, MultipartFile idCardImg, String type){
-
-        HeliPayBiz heliPayBiz = (HeliPayBiz) BeanUtil.getBean("heliPayBiz");
-
-        return heliPayBiz.heliPayUpload(helipayUserId,idCardImg,type);
-    }
-
     public static String payCompany(Long userId) {
         String value = Global.getValue("pay_model_select");
         String test = Global.getValue("pay_model_test");

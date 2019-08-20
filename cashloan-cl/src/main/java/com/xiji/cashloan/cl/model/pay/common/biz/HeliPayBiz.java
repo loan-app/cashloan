@@ -112,36 +112,6 @@ public class HeliPayBiz implements PayCommon {
         return helipayHelper.userQuery(userVo);
     }
 
-    /**
-     * 商户用户资质上传
-     * @param helipayUserId
-     * @param idCardImg
-     * @param type
-     * @return
-     */
-    public Map<String,String> heliPayUpload(String helipayUserId, MultipartFile idCardImg, String type){
-        MerchantUserUploadVo uploadVo = new MerchantUserUploadVo();
-
-        String orderId = HelipayUtil.getOrderId();
-        uploadVo.setP1_bizType(HelipayConstant.BTYPE_UploadCredential);
-        uploadVo.setP2_customerNumber(HelipayUtil.customerNumber());
-        uploadVo.setP3_orderId(orderId);
-        uploadVo.setP4_userId(helipayUserId);
-        uploadVo.setP5_timestamp(HelipayUtil.getTimeStamp());
-        if ("FRONT".equals(type)){ //身份证正面
-            uploadVo.setP6_credentialType(HelipayConstant.FRONT_OF_ID_CARD);
-        }else {
-            uploadVo.setP6_credentialType(HelipayConstant.BACK_OF_ID_CARD);
-        }
-        uploadVo.setP7_fileSign("");
-
-        HelipayHelper helipayHelper = new HelipayHelper();
-        MerchantUserUploadResVo resVo = helipayHelper.userUpload(uploadVo, idCardImg, type, Long.parseLong(helipayUserId));
-
-
-        return null;
-    }
-
     @Override
     public PaymentResponseVo payment(PaymentReqVo vo) {
         HelipayHelper helipayHelper = new HelipayHelper();
