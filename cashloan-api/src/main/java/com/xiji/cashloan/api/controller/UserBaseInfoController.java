@@ -12,17 +12,12 @@ import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckBiz;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckIdCardResult;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckReq;
 import com.xiji.cashloan.cl.model.dsdata.facecheck.FaceCheckResult;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.CallsOutSideFeeService;
-import com.xiji.cashloan.cl.service.ClBorrowService;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
-import com.xiji.cashloan.cl.service.OperatorRespDetailService;
-import com.xiji.cashloan.cl.service.OperatorService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.UserBlackInfoService;
-import com.xiji.cashloan.cl.service.UserCardCreditLogService;
-import com.xiji.cashloan.cl.service.UserContactsService;
-import com.xiji.cashloan.cl.service.UserMessagesService;
+import com.xiji.cashloan.cl.model.pay.helipay.HelipayHelper;
+import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserQueryResVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserQueryVo;
+import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.BlacklistConstant;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
 import com.xiji.cashloan.cl.util.LmApiUtil;
@@ -128,6 +123,8 @@ public class UserBaseInfoController extends BaseController {
     @Resource
     private CallsOutSideFeeMapper callsOutSideFeeMapper;
 
+    @Resource
+    private HelipayUserService helipayUserService;
     /**
      * @param userId
      * @return void
@@ -516,6 +513,41 @@ public class UserBaseInfoController extends BaseController {
                 logger.info("用户" + user.getLoginName() + "完善个人信息，人证识别比对最终值为：" + match);
 
                 if (match >= Global.getDouble("idCard_credit_pass_rate") || matchYoudun) {
+
+                    String payModelSelect = Global.getValue("pay_model_select");
+                    // 如果是合利宝支付 需走下面 合利宝用户信息验证逻辑
+                    if ("helipay".equals(payModelSelect)){
+                        UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
+                        if (userBaseInfo != null && StringUtil.isNotBlank(userBaseInfo.getIdNo())){
+                            Map<String,Object> helipayMap = new HashMap<>();
+                            helipayMap.put("userId",userId);
+                            HelipayUser helipayUser = helipayUserService.getHelipayUser(helipayMap);
+                            if (helipayUser == null){
+                                helipayUserService.helipayRegister(userBaseInfo);
+                            } else if (!"AVAILABLE".equals(helipayUser.getUserStatus())){
+                                HelipayHelper helipayHelper = new HelipayHelper();
+                                MerchantUserQueryVo userVo = new MerchantUserQueryVo();
+                                userVo.setP1_bizType(HelipayConstant.BTYPE_MerchantUserQuery);
+                                userVo.setP2_customerNumber(HelipayUtil.customerNumber());
+                                userVo.setP3_orderId(HelipayUtil.getOrderId());
+                                userVo.setP4_userId(helipayUser.getHelipayUserId());
+                                userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+                                userVo.setP6_legalPersonID(userBaseInfo.getIdNo());
+                                MerchantUserQueryResVo resVo = helipayHelper.userQuery(userVo);
+                                Map<String,Object> param = new HashMap<>();
+                                if ("AVAILABLE".equals(resVo.getRt7_userStatus())){
+                                    param.put("id",helipayUser.getId());
+                                    param.put("backCredentialStatus","UPLOADED");
+                                    param.put("frontCredentialStatus","UPLOADED");
+                                    param.put("userStatus","AVAILABLE");
+                                    helipayUserService.updateSelective(param);
+                                } else {
+                                    helipayUserService.heliPayUpload(userId,helipayUser.getHelipayUserId());
+                                }
+                            }
+                        }
+                    }
+
                     int count = userBaseInfoService.updateById(info);
                     returnMap.put("idState", UserAuthModel.STATE_VERIFIED);
                     returnMap.put("idTime", DateUtil.getNow());

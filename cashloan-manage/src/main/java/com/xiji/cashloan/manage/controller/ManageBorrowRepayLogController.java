@@ -155,6 +155,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
 		helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
 		helipayLoanConInfo.setBody("退还");
+		helipayLoanConInfo.setPurpose("生活消费");
 		vo.setHelipayLoanConInfo(helipayLoanConInfo);
 
 		PaymentResponseVo result = PayCommonUtil.payment(vo);

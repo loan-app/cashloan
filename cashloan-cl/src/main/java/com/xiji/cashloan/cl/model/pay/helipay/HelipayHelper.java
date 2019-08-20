@@ -330,6 +330,7 @@ public class HelipayHelper extends BasePay {
                         helipayUser.setUserId(userId);
                         helipayUserMapper.save(helipayUser);
                         result.put("code","success");
+                        result.put("helipayUserId",merchantUserResVo.getRt6_userId());
                         result.put("message","开户成功");
                     } else {
                         result.put("message",merchantUserResVo.getRt3_retMsg());
@@ -361,9 +362,13 @@ public class HelipayHelper extends BasePay {
         MerchantUserQueryResVo resVo = null;
         // ModelAndView mav = new ModelAndView();
         // mav.setViewName("entrustedLoanApi/response");
+        String idNo = userVo.getP6_legalPersonID();
+        if (idNo != null && idNo.contains("x")){
+            idNo = idNo.replace("x","X");
+        }
         try {
             if (StringUtils.isNotBlank(userVo.getP6_legalPersonID())) {
-                userVo.setP6_legalPersonID(Des3Encryption.encode(HelipayConstant.DESKEY_KEY, userVo.getP6_legalPersonID()  ));
+                userVo.setP6_legalPersonID(Des3Encryption.encode(HelipayConstant.DESKEY_KEY, idNo));
             }
             Map<String, String> map = MyBeanUtils.convertBean(userVo, new LinkedHashMap());
             String[] excludes = {"P6_legalPersonID"};

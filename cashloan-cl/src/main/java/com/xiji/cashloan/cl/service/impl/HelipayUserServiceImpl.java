@@ -2,6 +2,7 @@ package com.xiji.cashloan.cl.service.impl;
 
 import javax.annotation.Resource;
 
+import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.HelipayHelper;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
@@ -27,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 
+import java.util.Map;
+
 
 /**
  * 合利宝用户注册信息ServiceImpl
@@ -44,6 +47,8 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
     @Resource
     private HelipayUserMapper helipayUserMapper;
 
+
+
     @Resource
     private UserBaseInfoService userBaseInfoService;
 
@@ -51,6 +56,49 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
 	public BaseMapper<HelipayUser, Long> getMapper() {
 		return helipayUserMapper;
 	}
+
+
+	/**
+	 * 查询合利宝用户注册信息
+	 * @param params
+	 * @return
+	 */
+	public HelipayUser getHelipayUser(Map<String,Object> params){
+		return helipayUserMapper.getHelipayUser(params);
+	}
+
+
+	/**
+	 * 更新合利宝用户注册信息
+	 *
+	 * @param paramMap
+	 *            更新条件
+	 */
+	public int updateSelective(Map<String, Object> paramMap){
+		return helipayUserMapper.updateSelective(paramMap);
+	}
+
+
+	/**
+	 * 合利宝用户注册
+	 *
+	 */
+	@Override
+	public void helipayRegister(final UserBaseInfo userBaseInfo){
+
+        new Thread() {
+            @Override
+            public void run() {
+                logger.info("用户进入合利宝注册------>");
+                Map<String,String> result = PayCommonUtil.helipayRegister(userBaseInfo);
+                if ("success".equals(result.get("code"))){
+                    logger.info("用户进入合利宝注册------>");
+                    heliPayUpload(userBaseInfo.getUserId(),result.get("helipayUserId"));
+                }
+            }
+        }.start();
+	}
+
 
 	@Override
 	public boolean heliPayUpload(Long userId, String helipayUserId) {

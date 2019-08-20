@@ -4,6 +4,8 @@ import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.mapper.RDBatisDao;
 import com.xiji.cashloan.cl.domain.HelipayUser;
 
+import java.util.Map;
+
 /**
  * 合利宝用户注册信息Dao
  * 
@@ -14,6 +16,11 @@ import com.xiji.cashloan.cl.domain.HelipayUser;
 @RDBatisDao
 public interface HelipayUserMapper extends BaseMapper<HelipayUser, Long> {
 
-    
 
+    /**
+     * 查询合利宝用户注册信息
+     * @param params
+     * @return
+     */
+    HelipayUser getHelipayUser(Map<String,Object> params);
 }

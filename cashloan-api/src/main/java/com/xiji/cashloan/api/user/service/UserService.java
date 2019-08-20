@@ -13,6 +13,18 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xiji.cashloan.cl.domain.HelipayUser;
+import com.xiji.cashloan.cl.model.pay.helipay.HelipayHelper;
+import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserQueryResVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserQueryVo;
+import com.xiji.cashloan.cl.service.*;
+import com.xiji.cashloan.core.common.exception.SimpleMessageException;
+import com.xiji.cashloan.core.domain.User;
+import com.xiji.cashloan.core.domain.UserBaseInfo;
+import com.xiji.cashloan.core.mapper.UserMapper;
+import com.xiji.cashloan.core.service.UserBaseInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +41,6 @@ import com.xiji.cashloan.cl.domain.BankCard;
 import com.xiji.cashloan.cl.domain.Channel;
 import com.xiji.cashloan.cl.domain.OperatorReqLog;
 import com.xiji.cashloan.cl.model.SmsModel;
-import com.xiji.cashloan.cl.service.BankCardService;
-import com.xiji.cashloan.cl.service.ChannelService;
-import com.xiji.cashloan.cl.service.ClSmsService;
-import com.xiji.cashloan.cl.service.OperatorReqLogService;
-import com.xiji.cashloan.cl.service.UserAuthService;
-import com.xiji.cashloan.cl.service.UserEquipmentInfoService;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.MapUtil;
 import com.xiji.cashloan.core.common.util.OrderNoUtil;
@@ -82,6 +88,12 @@ public class UserService {
 
     @Resource
     private ClSmsService clSmsService;
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private UserBaseInfoService userBaseInfoService;
+    @Resource
+    private HelipayUserService helipayUserService;
 
     public UserService() {
         super();
@@ -682,6 +694,45 @@ public class UserService {
                 AppSessionBean session = appDbSession.create(request, loginName);
                 cloanUserService.modify(loginName);//修改登陆时间
                 userEquipmentInfoService.save(loginName,blackBox);
+
+                String payModelSelect = Global.getValue("pay_model_select");
+                // 如果是合利宝支付 需走下面 合利宝用户信息验证逻辑
+                if ("helipay".equals(payModelSelect)){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("loginName", loginName);
+                    User user1 = userMapper.findSelective(map);
+                    UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(user1.getId());
+                    if (userBaseInfo != null && StringUtil.isNotBlank(userBaseInfo.getIdNo())){
+                        Map<String,Object> helipayMap = new HashMap<>();
+                        helipayMap.put("userId",user1.getId());
+                        HelipayUser helipayUser = helipayUserService.getHelipayUser(helipayMap);
+                        if (helipayUser == null){
+                            helipayUserService.helipayRegister(userBaseInfo);
+                        } else if (!"AVAILABLE".equals(helipayUser.getUserStatus())){
+                            HelipayHelper helipayHelper = new HelipayHelper();
+                            MerchantUserQueryVo userVo = new MerchantUserQueryVo();
+                            userVo.setP1_bizType(HelipayConstant.BTYPE_MerchantUserQuery);
+                            userVo.setP2_customerNumber(HelipayUtil.customerNumber());
+                            userVo.setP3_orderId(HelipayUtil.getOrderId());
+                            userVo.setP4_userId(helipayUser.getHelipayUserId());
+                            userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+                            userVo.setP6_legalPersonID(userBaseInfo.getIdNo());
+                            MerchantUserQueryResVo resVo = helipayHelper.userQuery(userVo);
+                            Map<String,Object> param = new HashMap<>();
+                            if ("AVAILABLE".equals(resVo.getRt7_userStatus())){
+                                param.put("id",helipayUser.getId());
+                                param.put("backCredentialStatus","UPLOADED");
+                                param.put("frontCredentialStatus","UPLOADED");
+                                param.put("userStatus","AVAILABLE");
+                                helipayUserService.updateSelective(param);
+                            } else {
+                                param.put("userId",userBaseInfo.getUserId());
+                                param.put("idState","10");
+                                userAuthService.updateByUserId(param);
+                            }
+                        }
+                    }
+                }
                 Map ret = new LinkedHashMap();
                 ret.put("success", true);
                 ret.put("msg", "登录成功");

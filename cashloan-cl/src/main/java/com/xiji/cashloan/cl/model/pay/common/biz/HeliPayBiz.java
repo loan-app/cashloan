@@ -81,7 +81,12 @@ public class HeliPayBiz implements PayCommon {
        userVo.setP2_customerNumber(HelipayUtil.customerNumber());
        userVo.setP3_orderId(orderId);
        userVo.setP4_legalPerson(userBaseInfo.getRealName());
-       userVo.setP5_legalPersonID(userBaseInfo.getIdNo());
+       //if (userBaseInfo.getIdNo().replace("x","X"))
+       String idNo = userBaseInfo.getIdNo();
+       if (userBaseInfo.getIdNo() != null && userBaseInfo.getIdNo().contains("x"))  {
+           idNo = idNo.replace("x","X");
+       }
+       userVo.setP5_legalPersonID(idNo);
        userVo.setP6_mobile(userVo.getP6_mobile());
        userVo.setP7_business(HelipayConstant.BIZ_TYPE_B2C);
        userVo.setP8_timestamp(HelipayUtil.getTimeStamp());
@@ -107,6 +112,9 @@ public class HeliPayBiz implements PayCommon {
         userVo.setP2_customerNumber(HelipayUtil.customerNumber());
         userVo.setP3_orderId(HelipayUtil.getOrderId());
         userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+        if (idNo.contains("x"))  {
+            idNo = idNo.replace("x","X");
+        }
         userVo.setP6_legalPersonID(idNo);
         HelipayHelper helipayHelper = new HelipayHelper();
         return helipayHelper.userQuery(userVo);
@@ -138,11 +146,15 @@ public class HeliPayBiz implements PayCommon {
         orderVo.setP8_business(HelipayConstant.BIZ_TYPE_B2C);
         orderVo.setP9_bankAccountName(vo.getBankCardName());
         orderVo.setP10_bankAccountNo(vo.getBankCardNo());
-        orderVo.setP11_legalPersonID(vo.getIdNo());
+        String idNo = vo.getIdNo();
+        if (idNo != null && idNo.contains("x")){
+            idNo = idNo.replace("x","X");
+        }
+        orderVo.setP11_legalPersonID(idNo);
         orderVo.setP13_onlineCardType(HelipayConstant.ONLINE_CARDTYPE);
         orderVo.setP17_bankCode(BankCardBinUtil.getBankCode(vo.getBankCardNo()));
         orderVo.setP19_callbackUrl(HelipayUtil.paymentNotifyAddress());
-        orderVo.setP20_purpose(vo.getHelipayLoanConInfo().getPurpose());
+
 
         // 借款信息
         JSONObject jsonObject = new JSONObject();
@@ -153,6 +165,7 @@ public class HeliPayBiz implements PayCommon {
         jsonObject.put("periodizationDays",vo.getHelipayLoanConInfo().getPreExpirationOverdueDays());
         jsonObject.put("periodizationFee",vo.getHelipayLoanConInfo().getPeriodizationFee());
         orderVo.setP21_loanConInfo(jsonObject.toJSONString());
+        orderVo.setP20_purpose(vo.getHelipayLoanConInfo().getPurpose());
         OrderResVo result = helipayHelper.createOrder(orderVo);
         PaymentResponseVo responseVo = new PaymentResponseVo();
         //受理成功

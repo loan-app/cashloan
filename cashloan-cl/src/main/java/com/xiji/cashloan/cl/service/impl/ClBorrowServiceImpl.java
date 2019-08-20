@@ -10,7 +10,13 @@ import com.xiji.cashloan.cl.model.*;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.PaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.HelipayHelper;
+import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.HelipayLoanConInfo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserQueryResVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserQueryVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.MerchantUserUploadVo;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.cl.service.impl.assist.blacklist.*;
@@ -199,6 +205,9 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
     private CloanUserService cloanUserService;
     @Resource
 	private ChannelMapper channelMapper;
+	@Resource
+    private HelipayUserService helipayUserService;
+
 
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
 
@@ -211,7 +220,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
     	
     	Long userId = borrow.getUserId();
         User user = cloanUserService.getById(userId);
-        Channel channel = channelMapper.getChannelById(user.getChannelId());
+
         //1、校验用户是否符合借款条件
     	//1.1 校验是否有对应的用户信息
     	if(user==null || user.getId()<1){
@@ -224,8 +233,8 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
     	if(!user.getTradePwd().equals(tradePwd)){
 	    	throw new SimpleMessageException(String.valueOf(Constant.FAIL_CODE_PWD),"交易密码不正确!");
 	    }
-    	//1.3 校验中户是否在黑名单   废弃
-	    
+		Channel channel = channelMapper.getChannelById(user.getChannelId());
+
 		//1.4 校验用户是否通过各项认证
 		Map<String, Object> authMap = new HashMap<String,Object>();
 		authMap.put("userId", userId);
@@ -233,13 +242,57 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 	    if (StringUtil.isBlank(auth)||Integer.parseInt(auth.get("qualified").toString())==0) {
 	    	throw new SimpleMessageException("工作信息可能未完善，无法借款，请完善资料");
 		}
-	    
+
+		String payModelSelect = Global.getValue("pay_model_select");
+	    // 支付方式为合利宝支付 先检查合利宝用户是否注册资质认证
+	    if ("helipay".equals(payModelSelect)){
+			Map<String,Object> params = new HashMap<>();
+			params.put("userId",userId);
+			UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
+			HelipayUser helipayUser = helipayUserService.getHelipayUser(params);
+			if (helipayUser == null){
+				helipayUserService.helipayRegister(userBaseInfo);
+				throw new SimpleMessageException("资质认证中请稍后重试");
+			} else if (!"AVAILABLE".equals(helipayUser.getUserStatus())){
+				HelipayHelper helipayHelper = new HelipayHelper();
+				MerchantUserQueryVo userVo = new MerchantUserQueryVo();
+				userVo.setP1_bizType(HelipayConstant.BTYPE_MerchantUserQuery);
+				userVo.setP2_customerNumber(HelipayUtil.customerNumber());
+				userVo.setP3_orderId(HelipayUtil.getOrderId());
+				userVo.setP4_userId(helipayUser.getHelipayUserId());
+				userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+				userVo.setP6_legalPersonID(userBaseInfo.getIdNo());
+				MerchantUserQueryResVo resVo = helipayHelper.userQuery(userVo);
+				Map<String,Object> param = new HashMap<>();
+				if ("AVAILABLE".equals(resVo.getRt7_userStatus())){
+					param.put("id",helipayUser.getId());
+					param.put("backCredentialStatus","UPLOADED");
+					param.put("frontCredentialStatus","UPLOADED");
+					param.put("userStatus","AVAILABLE");
+					helipayUserService.updateSelective(param);
+				} else {
+					UserAuth userAuth = userAuthService.findSelective(userBaseInfo.getUserId());
+					Date nowDate = new Date();
+					long c = nowDate.getTime()-1000*60*2;
+					if (userAuth.getIdTime().before(new Date(c))){
+						param.put("userId",userBaseInfo.getUserId());
+						param.put("idState","10");
+						userAuthService.updateByUserId(param);
+						throw new SimpleMessageException("信息未完善，请重新完善资料");
+					} else {
+						throw new SimpleMessageException("资质审核中，请两分钟后重试");
+					}
+				}
+			}
+		}
+
+
 	    //1.5 用户是否有未完成的借款
 	    List<Borrow> list = clBorrowMapper.findUserUnFinishedBorrow(userId);
 		if (list.size() > 0) {
 	    	throw new SimpleMessageException("有未完成借款，无法借款");
 		}
-	    
+
 	    //1.7 借款天数限制
 //	    int day = getAgainBorrowDays(userId);
 //		if (day > 0) {
@@ -1453,15 +1506,15 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				vo.setMobile(bankCard.getPhone());
 				vo.setShareKey(bankCard.getUserId());
 				vo.setBankName(bankCard.getBank());
+
 				HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
-
-
 				helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
 				helipayLoanConInfo.setLoanTimeUnit("D");// 借款时间单位:D-天;M-月;Y-年
 				helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
 				helipayLoanConInfo.setPeriodization("1");
 				helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
 				helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
+				helipayLoanConInfo.setPurpose("生活消费");
 				vo.setHelipayLoanConInfo(helipayLoanConInfo);
 
 				PaymentResponseVo result = PayCommonUtil.payment(vo);
