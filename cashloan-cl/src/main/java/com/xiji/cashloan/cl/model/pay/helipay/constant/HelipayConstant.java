@@ -42,6 +42,12 @@ public class HelipayConstant {
     /** 接口类型 - 委托代付订单查询 */
     public static final String BTYPE_EntrustedLoanTransferQuery = "EntrustedLoanTransferQuery";
 
+    /** 接口类型 - 用户资质上传 */
+    public static final String BTYPE_UploadCredential = "UploadCredential";
+
+    /** 接口类型 - 用户资质查询 */
+    public static final String BTYPE_UploadCredentialQuery = "UploadCredentialQuery";
+
     /** 业务类型 -  B2C-对私 */
     public static final String BIZ_TYPE_B2C = "B2C";
     /** 业务类型 -  B2B-对公 */
@@ -89,5 +95,21 @@ public class HelipayConstant {
      * 借贷记类型 DEBIT-借记卡
      */
     public static final String ONLINE_CARDTYPE ="DEBIT" ;
+
+
+    /** 证件类型 身份证正面*/
+    public static final String  FRONT_OF_ID_CARD="FRONT_OF_ID_CARD";
+    /** 证件类型 身份证反面*/
+    public static final String  BACK_OF_ID_CARD="BACK_OF_ID_CARD";
+    /** 证件类型 手持身份证照*/
+    public static final String  HANDHELD_OF_ID_CARD="HANDHELD_OF_ID_CARD";
+    /** 证件类型 税务登记证*/
+    public static final String  TAX_REG_CERTIFICATE="TAX_REG_CERTIFICATE";
+    /** 证件类型 营业执照*/
+    public static final String  BUSINESS_LICENSE="BUSINESS_LICENSE";
+    /** 证件类型 组织机构证*/
+    public static final String  ORG_CERTIFICATE="ORG_CERTIFICATE";
+
+
 
 }

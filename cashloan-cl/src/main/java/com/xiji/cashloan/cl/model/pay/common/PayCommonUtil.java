@@ -13,6 +13,7 @@ import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.domain.UserBaseInfo;
 import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.web.multipart.MultipartFile;
 import tool.util.BeanUtil;
 
 import java.util.HashMap;
@@ -72,6 +73,14 @@ public class PayCommonUtil{
         HeliPayBiz heliPayBiz = (HeliPayBiz) BeanUtil.getBean("heliPayBiz");
 
         return heliPayBiz.helipayRegister(userBaseInfo);
+    }
+
+
+    public static Map<String,String> helipayUpload(String helipayUserId, MultipartFile idCardImg, String type){
+
+        HeliPayBiz heliPayBiz = (HeliPayBiz) BeanUtil.getBean("heliPayBiz");
+
+        return heliPayBiz.heliPayUpload(helipayUserId,idCardImg,type);
     }
 
     public static String payCompany(Long userId) {
