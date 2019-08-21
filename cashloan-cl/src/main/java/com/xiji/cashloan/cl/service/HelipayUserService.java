@@ -38,7 +38,7 @@ public interface HelipayUserService extends BaseService<HelipayUser, Long>{
      * @param userId
      * @param helipayUserId
      */
-    boolean heliPayUpload(Long userId,String helipayUserId);
+    boolean heliPayUpload(Long userId, Long helipayId,String helipayUserId);
 
 
     /**

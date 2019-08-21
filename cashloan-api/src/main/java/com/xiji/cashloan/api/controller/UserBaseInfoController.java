@@ -531,7 +531,7 @@ public class UserBaseInfoController extends BaseController {
                                 userVo.setP2_customerNumber(HelipayUtil.customerNumber());
                                 userVo.setP3_orderId(HelipayUtil.getOrderId());
                                 userVo.setP4_userId(helipayUser.getHelipayUserId());
-                                userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+                                userVo.setP5_timestamp(HelipayUtil.getP8TimeStamp());
                                 userVo.setP6_legalPersonID(userBaseInfo.getIdNo());
                                 MerchantUserQueryResVo resVo = helipayHelper.userQuery(userVo);
                                 Map<String,Object> param = new HashMap<>();
@@ -542,7 +542,7 @@ public class UserBaseInfoController extends BaseController {
                                     param.put("userStatus","AVAILABLE");
                                     helipayUserService.updateSelective(param);
                                 } else {
-                                    helipayUserService.heliPayUpload(userId,helipayUser.getHelipayUserId());
+                                    helipayUserService.heliPayUpload(userId,helipayUser.getId(),helipayUser.getHelipayUserId());
                                 }
                             }
                         }

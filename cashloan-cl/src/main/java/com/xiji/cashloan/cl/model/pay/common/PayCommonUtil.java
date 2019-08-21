@@ -70,7 +70,8 @@ public class PayCommonUtil{
      */
     public static Map<String,String> helipayRegister(UserBaseInfo userBaseInfo){
 
-        HeliPayBiz heliPayBiz = (HeliPayBiz) BeanUtil.getBean("heliPayBiz");
+        //HeliPayBiz heliPayBiz = (HeliPayBiz) BeanUtil.getBean("heliPayBiz");
+        HeliPayBiz heliPayBiz= new HeliPayBiz();
 
         return heliPayBiz.helipayRegister(userBaseInfo);
     }

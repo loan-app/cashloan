@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -93,7 +94,12 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
                 Map<String,String> result = PayCommonUtil.helipayRegister(userBaseInfo);
                 if ("success".equals(result.get("code"))){
                     logger.info("用户进入合利宝注册------>");
-                    heliPayUpload(userBaseInfo.getUserId(),result.get("helipayUserId"));
+                    Map<String,Object> param = new HashMap<>();
+                    param.put("userId",userBaseInfo.getUserId());
+                    HelipayUser helipayUser = helipayUserMapper.getHelipayUser(param);
+                    if (helipayUser != null){
+                        heliPayUpload(userBaseInfo.getUserId(),helipayUser.getId(),result.get("helipayUserId"));
+                    }
                 }
             }
         }.start();
@@ -101,7 +107,7 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
 
 
 	@Override
-	public boolean heliPayUpload(Long userId, String helipayUserId) {
+	public boolean heliPayUpload(Long userId, Long helipayId,String helipayUserId) {
 
 		String serverHost = Global.getValue("server_host");
 		UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
@@ -116,7 +122,7 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
         MerchantUserUploadVo frontUploadVo = setRequestVo(helipayUserId, HelipayConstant.FRONT_OF_ID_CARD);
         HelipayHelper helipayHelper = new HelipayHelper();
         MerchantUserUploadResVo frontRespVo =
-                helipayHelper.userUpload(frontUploadVo, multipartFrontFile, "FRONT", Long.parseLong(helipayUserId));
+                helipayHelper.userUpload(frontUploadVo, multipartFrontFile, "FRONT", helipayId);
 
         //身份证返面
         File backFile = new File(userBaseInfo.getBackImg());
@@ -126,7 +132,7 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
         MerchantUserUploadVo BackUploadVo = setRequestVo(helipayUserId, HelipayConstant.BACK_OF_ID_CARD);
 
         MerchantUserUploadResVo backRespVo =
-                helipayHelper.userUpload(BackUploadVo, multipartBackFile, "BACK", Long.parseLong(helipayUserId));
+                helipayHelper.userUpload(BackUploadVo, multipartBackFile, "BACK", helipayId);
 
         if (StringUtil.isNotBlank(frontRespVo) && StringUtil.isNotBlank(backRespVo)){
 
@@ -170,7 +176,7 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
         uploadVo.setP2_customerNumber(HelipayUtil.customerNumber());
         uploadVo.setP3_orderId(orderId);
         uploadVo.setP4_userId(helipayUserId);
-        uploadVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+        uploadVo.setP5_timestamp(HelipayUtil.getP8TimeStamp());
         uploadVo.setP6_credentialType(credentialType);
         return uploadVo;
     }

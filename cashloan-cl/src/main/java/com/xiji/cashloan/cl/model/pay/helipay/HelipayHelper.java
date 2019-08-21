@@ -22,6 +22,7 @@ import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentQuery
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.HeliPayForPaymentResultVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.QueryOrderResponseVo;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.response.UnBindCardResponseVo;
+import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.util.black.JSONUtil;
 import com.xiji.cashloan.core.common.util.HttpsUtil;
 import com.xiji.cashloan.core.common.util.OrderNoUtil;
@@ -44,6 +45,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import tool.util.BeanUtil;
 
 import javax.annotation.Resource;
 
@@ -58,8 +60,8 @@ public class HelipayHelper extends BasePay {
 
     private static final String tempDir = System.getProperty("java.io.tmpdir");
 
-    @Resource
-    private HelipayUserMapper helipayUserMapper;
+//    @Resource
+//    private HelipayUserMapper helipayUserMapper;
 
     static {
         if (tempDir == null) {
@@ -328,6 +330,9 @@ public class HelipayHelper extends BasePay {
                         helipayUser.setHelipayUserId(merchantUserResVo.getRt6_userId());
                         helipayUser.setUserStatus(merchantUserResVo.getRt7_userStatus());
                         helipayUser.setUserId(userId);
+
+                        HelipayUserMapper helipayUserMapper = (HelipayUserMapper) BeanUtil.getBean("helipayUserMapper");
+
                         helipayUserMapper.save(helipayUser);
                         result.put("code","success");
                         result.put("helipayUserId",merchantUserResVo.getRt6_userId());
@@ -465,6 +470,9 @@ public class HelipayHelper extends BasePay {
                     }
                     logger.info("商户用户资质上传验签成功");
                     // 资质上传状态更新
+
+                    HelipayUserMapper helipayUserMapper = (HelipayUserMapper) BeanUtil.getBean("helipayUserMapper");
+
                     helipayUserMapper.updateSelective(params);
                     //mav.addObject("message", resVo.getRt3_retMsg());
                     //mav.addObject("json", JSONObject.parseObject(resultMsg));

@@ -87,9 +87,9 @@ public class HeliPayBiz implements PayCommon {
            idNo = idNo.replace("x","X");
        }
        userVo.setP5_legalPersonID(idNo);
-       userVo.setP6_mobile(userVo.getP6_mobile());
+       userVo.setP6_mobile(userBaseInfo.getPhone());
        userVo.setP7_business(HelipayConstant.BIZ_TYPE_B2C);
-       userVo.setP8_timestamp(HelipayUtil.getTimeStamp());
+       userVo.setP8_timestamp(HelipayUtil.getP8TimeStamp());
 
        JSONObject jsonObject = new JSONObject();
        jsonObject.put("P3_orderId",orderId);
@@ -111,7 +111,7 @@ public class HeliPayBiz implements PayCommon {
         userVo.setP1_bizType(HelipayConstant.BTYPE_MerchantUserQuery);
         userVo.setP2_customerNumber(HelipayUtil.customerNumber());
         userVo.setP3_orderId(HelipayUtil.getOrderId());
-        userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+        userVo.setP5_timestamp(HelipayUtil.getP8TimeStamp());
         if (idNo.contains("x"))  {
             idNo = idNo.replace("x","X");
         }
@@ -140,7 +140,7 @@ public class HeliPayBiz implements PayCommon {
         orderVo.setP2_customerNumber(HelipayUtil.customerNumber());
         orderVo.setP3_orderId(HelipayUtil.getOrderId());
         orderVo.setP4_userId(vo.getHelipayUserId());
-        orderVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+        orderVo.setP5_timestamp(HelipayUtil.getP8TimeStamp());
         orderVo.setP6_currency(HelipayConstant.CURRENCY_CNY);
         orderVo.setP7_amount(Double.toString(vo.getAmount()));
         orderVo.setP8_business(HelipayConstant.BIZ_TYPE_B2C);

@@ -81,6 +81,11 @@ public class HelipayUtil {
         return STRING_FORMAT_TIMESTAMP.format(new Date());
     }
 
+    public static String getP8TimeStamp() {
+        SimpleDateFormat STRING_FORMAT_TIMESTAMP = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
+        return STRING_FORMAT_TIMESTAMP.format(new Date());
+    }
+
     public static boolean isLogSign() {
 //        String value = Global.getValue("helibao_log_open");
 //        return StringUtil.equals("open",value);

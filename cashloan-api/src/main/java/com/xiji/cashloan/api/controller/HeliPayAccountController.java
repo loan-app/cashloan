@@ -9,6 +9,7 @@ import com.xiji.cashloan.cl.model.PayRespLogModel;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.UserRegisterNotifyVo;
+import com.xiji.cashloan.cl.service.HelipayUserService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -56,6 +57,9 @@ public class HeliPayAccountController extends BaseController {
     @Resource
     private PayRespLogService payRespLogService;
 
+    @Resource
+    private HelipayUserService helipayUserService;
+
     /**
      * 合利宝商户用户注册
      */
@@ -80,15 +84,17 @@ public class HeliPayAccountController extends BaseController {
             result.put(Constant.RESPONSE_CODE_MSG, "开户成功");
             return;
         }
-        Map<String,String> helipayRegister = PayCommonUtil.helipayRegister(userBaseInfo);
+        helipayUserService.helipayRegister(userBaseInfo);
+//        if ("success".equals(helipayRegister.get("code"))){
+//            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+//            result.put(Constant.RESPONSE_CODE_MSG, helipayRegister.get("message"));
+//        }else {
+//            result.put(Constant.RESPONSE_CODE, Constant.OPERATION_FAIL);
+//            result.put(Constant.RESPONSE_CODE_MSG, helipayRegister.get("message"));
+//        }
 
-        if ("success".equals(helipayRegister.get("code"))){
-            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-            result.put(Constant.RESPONSE_CODE_MSG, helipayRegister.get("message"));
-        }else {
-            result.put(Constant.RESPONSE_CODE, Constant.OPERATION_FAIL);
-            result.put(Constant.RESPONSE_CODE_MSG, helipayRegister.get("message"));
-        }
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "开户成功");
         ServletUtils.writeToResponse(response,result);
 
     }

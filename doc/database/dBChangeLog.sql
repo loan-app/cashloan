@@ -1271,4 +1271,4 @@ CREATE TABLE `cl_helipay_user` (
 
 
 
-ALTER TABLE cl_px_req_log add column helipay_user_id varchar(20) DEFAULT NULL COMMENT '合利宝用户编号';
+ALTER TABLE cl_pay_req_log add column helipay_user_id varchar(20) DEFAULT NULL COMMENT '合利宝用户编号';
