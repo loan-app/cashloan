@@ -330,6 +330,7 @@ public class HelipayHelper extends BasePay {
                         helipayUser.setHelipayUserId(merchantUserResVo.getRt6_userId());
                         helipayUser.setUserStatus(merchantUserResVo.getRt7_userStatus());
                         helipayUser.setUserId(userId);
+                        helipayUser.setGmtCreate(new Date());
 
                         HelipayUserMapper helipayUserMapper = (HelipayUserMapper) BeanUtil.getBean("helipayUserMapper");
 

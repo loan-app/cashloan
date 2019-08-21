@@ -260,7 +260,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				userVo.setP2_customerNumber(HelipayUtil.customerNumber());
 				userVo.setP3_orderId(HelipayUtil.getOrderId());
 				userVo.setP4_userId(helipayUser.getHelipayUserId());
-				userVo.setP5_timestamp(HelipayUtil.getTimeStamp());
+				userVo.setP5_timestamp(HelipayUtil.getP8TimeStamp());
 				userVo.setP6_legalPersonID(userBaseInfo.getIdNo());
 				MerchantUserQueryResVo resVo = helipayHelper.userQuery(userVo);
 				Map<String,Object> param = new HashMap<>();
@@ -1506,7 +1506,14 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				vo.setMobile(bankCard.getPhone());
 				vo.setShareKey(bankCard.getUserId());
 				vo.setBankName(bankCard.getBank());
-
+				vo.setIdNo(baseInfo.getIdNo());
+				String payModelSelect = Global.getValue("pay_model_select");
+				if ("helipay".equals(payModelSelect)){
+					Map<String,Object> params = new HashMap<>();
+					params.put("userId",borrow.getUserId());
+					HelipayUser helipayUser = helipayUserService.getHelipayUser(params);
+					vo.setHelipayUserId(helipayUser.getHelipayUserId());
+				}
 				HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
 				helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
 				helipayLoanConInfo.setLoanTimeUnit("D");// 借款时间单位:D-天;M-月;Y-年

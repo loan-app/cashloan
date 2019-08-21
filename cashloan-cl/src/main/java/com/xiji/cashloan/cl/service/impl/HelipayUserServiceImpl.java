@@ -28,6 +28,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,13 +114,18 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
 	@Override
 	public boolean heliPayUpload(Long userId, Long helipayId,String helipayUserId) {
 
-		String serverHost = Global.getValue("server_host");
+		//String serverHost = Global.getValue("server_host");
 		UserBaseInfo userBaseInfo = userBaseInfoService.findByUserId(userId);
-		userBaseInfo.setFrontImg(userBaseInfo.getFrontImg()!=null?serverHost +"/readFile.htm?path="+ userBaseInfo.getFrontImg():"");
-		userBaseInfo.setBackImg(userBaseInfo.getBackImg()!=null?serverHost +"/readFile.htm?path="+ userBaseInfo.getBackImg():"");
+        //userBaseInfo.setFrontImg(userBaseInfo.getFrontImg()!=null?serverHost +"/readFile.htm?path="+ userBaseInfo.getFrontImg():"");
+		//userBaseInfo.setBackImg(userBaseInfo.getBackImg()!=null?serverHost +"/readFile.htm?path="+ userBaseInfo.getBackImg():"");
 
 		//身份证正面
 		File frontFile = new File(userBaseInfo.getFrontImg());
+        if ( !frontFile.exists() ) {
+            logger.error("身份证正面图片地址不存在！！！");
+            return false;
+        }
+
 		//文件转换
         MultipartFile multipartFrontFile = fileToMultipartFile(frontFile);
         //参数封装
@@ -126,6 +136,10 @@ public class HelipayUserServiceImpl extends BaseServiceImpl<HelipayUser, Long> i
 
         //身份证返面
         File backFile = new File(userBaseInfo.getBackImg());
+        if ( !backFile.exists() ) {
+            logger.error("身份证返面图片地址不存在！！！");
+            return false;
+        }
         //文件转换
         MultipartFile multipartBackFile = fileToMultipartFile(backFile);
         //参数封装

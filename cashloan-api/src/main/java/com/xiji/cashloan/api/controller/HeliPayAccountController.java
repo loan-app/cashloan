@@ -1,18 +1,24 @@
 package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.cl.domain.HelipayUser;
 import com.xiji.cashloan.cl.domain.PayReqLog;
 import com.xiji.cashloan.cl.domain.PayRespLog;
 import com.xiji.cashloan.cl.mapper.HelipayUserMapper;
 import com.xiji.cashloan.cl.model.PayRespLogModel;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.util.Disguiser;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.util.MyBeanUtils;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.UserRegisterNotifyVo;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.service.HelipayUserService;
 import com.xiji.cashloan.cl.service.PayReqLogService;
 import com.xiji.cashloan.cl.service.PayRespLogService;
 import com.xiji.cashloan.core.common.context.Constant;
+import com.xiji.cashloan.core.common.context.Global;
+import com.xiji.cashloan.core.common.util.JsonUtil;
 import com.xiji.cashloan.core.common.util.ServletUtils;
 import com.xiji.cashloan.core.common.util.StringUtil;
 import com.xiji.cashloan.core.common.web.controller.BaseController;
@@ -80,8 +86,14 @@ public class HeliPayAccountController extends BaseController {
         params.put("userId",userId);
         HelipayUser helipayUser = helipayUserMapper.findSelective(params);
         if (helipayUser != null){
-            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-            result.put(Constant.RESPONSE_CODE_MSG, "开户成功");
+            Boolean flag = helipayUserService.heliPayUpload(userId,helipayUser.getId(),helipayUser.getHelipayUserId());
+            if (flag){
+                result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE_MSG, "开户成功");
+            }else {
+                result.put(Constant.RESPONSE_CODE, Constant.OPERATION_FAIL);
+                result.put(Constant.RESPONSE_CODE_MSG, "图片上传认证失败");
+            }
             return;
         }
         helipayUserService.helipayRegister(userBaseInfo);
@@ -102,16 +114,26 @@ public class HeliPayAccountController extends BaseController {
 
     /**
      * 合利宝商户用户注册回调
-     * @param notifyVo
+     * @param
      */
     @RequestMapping(value = "/api/heliPay/registerNotify.htm")
-    public void registerNotify(UserRegisterNotifyVo notifyVo) throws Exception {
+    public void registerNotify() throws Exception {
 
+        logger.info("----------------合利宝商户用户注册回调 - 异步通知开始------------------------");
+        long start = System.currentTimeMillis();
+
+        String encryData = KuaiqianPayUtil.streamToStr(request);
+        UserRegisterNotifyVo notifyVo = JSONObject.parseObject(encryData, UserRegisterNotifyVo.class);
         String params = JSON.toJSONString(notifyVo);
         logger.info("合利宝商户用户注册回调异步通知接口:" + params);
 
-        if (!HelipayUtil.checkUserRegisterNotifySign(notifyVo)) {
-            logger.error("验签失败" + notifyVo);
+
+        String assemblyRespOriSign = MyBeanUtils.getSigned(notifyVo, null);
+        String responseSign = notifyVo.getSign();
+        String checkSign = Disguiser.disguiseMD5(assemblyRespOriSign.trim()+HelipayUtil.split+HelipayUtil.getMD5Key());
+
+        if (!checkSign.equals(responseSign)) {
+            logger.error("验签失败" + JsonUtil.toString(notifyVo));
             return;
         }
 
@@ -134,14 +156,18 @@ public class HeliPayAccountController extends BaseController {
             return;
         }
 
+        map.clear();
         map.put("id",helipayUser.getId());
         map.put("gmtModified",new Date());
-        int count = helipayUserMapper.updateSelective(map);
+        map.put("userStatus",notifyVo.getRt6_userStatus());
+        int count = helipayUserService.updateSelective(map);
 
         Map<String,String> result = new HashMap<>();
         if (count == 1){
             writeResult(response,"success");
         }
+        long end = System.currentTimeMillis();
+        logger.info("cost "+(end-start));
     }
 
     /**

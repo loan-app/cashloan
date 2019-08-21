@@ -162,7 +162,7 @@ public class HeliPayBiz implements PayCommon {
         jsonObject.put("loanTimeUnit",vo.getHelipayLoanConInfo().getLoanTimeUnit());
         jsonObject.put("loanInterestRate",vo.getHelipayLoanConInfo().getLoanInterestRate());
         jsonObject.put("periodization",vo.getHelipayLoanConInfo().getPeriodization());
-        jsonObject.put("periodizationDays",vo.getHelipayLoanConInfo().getPreExpirationOverdueDays());
+        jsonObject.put("periodizationDays",vo.getHelipayLoanConInfo().getPeriodizationDays());
         jsonObject.put("periodizationFee",vo.getHelipayLoanConInfo().getPeriodizationFee());
         orderVo.setP21_loanConInfo(jsonObject.toJSONString());
         orderVo.setP20_purpose(vo.getHelipayLoanConInfo().getPurpose());

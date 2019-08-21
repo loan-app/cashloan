@@ -1,10 +1,7 @@
 package com.xiji.cashloan.manage.controller;
 
 import com.github.pagehelper.Page;
-import com.xiji.cashloan.cl.domain.BankCard;
-import com.xiji.cashloan.cl.domain.BorrowRepay;
-import com.xiji.cashloan.cl.domain.BorrowRepayLog;
-import com.xiji.cashloan.cl.domain.PayLog;
+import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.model.ManageBRepayLogModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
@@ -77,7 +74,8 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 	private BorrowRepayLogService borrowRepayLogService;
 	@Resource
 	private PayLogService payLogService;
-	
+	@Resource
+	private HelipayUserService helipayUserService;
 
 	/**
 	 * 还款记录列表
@@ -146,6 +144,14 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setMobile(bankCard.getPhone());
 		vo.setShareKey(bankCard.getUserId());
 		vo.setBankName(bankCard.getBank());
+		vo.setIdNo(baseInfo.getIdNo());
+		String payModelSelect = Global.getValue("pay_model_select");
+		if ("helipay".equals(payModelSelect)){
+			Map<String,Object> params = new HashMap<>();
+			params.put("userId",borrow.getUserId());
+			HelipayUser helipayUser = helipayUserService.getHelipayUser(params);
+			vo.setHelipayUserId(helipayUser.getHelipayUserId());
+		}
 
 		HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
 		helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
