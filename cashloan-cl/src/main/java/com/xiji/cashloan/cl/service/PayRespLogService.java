@@ -46,6 +46,12 @@ public interface PayRespLogService extends BaseService<PayRespLog, Long>{
 	 * @return
 	 */
 	ManagePayRespLogModel findDetail(Long id);
-	
-	
+
+	/**
+	 * 查询详情
+	 *
+	 * @param orderNo
+	 * @return
+	 */
+	int countByOrderNo(String orderNo, Integer type);
 }

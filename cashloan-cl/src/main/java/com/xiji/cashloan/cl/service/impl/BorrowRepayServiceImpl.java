@@ -7,6 +7,8 @@ import com.github.pagehelper.PageHelper;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.*;
+import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
+import com.xiji.cashloan.cl.model.pay.chanpay.util.ChanPayUtil;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
@@ -18,6 +20,9 @@ import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanReq;
 import com.xiji.cashloan.cl.model.pay.fuiou.agreement.OrderXmlBeanResp;
 import com.xiji.cashloan.cl.model.pay.fuiou.constant.FuiouConstant;
 import com.xiji.cashloan.cl.model.pay.fuiou.util.FuiouAgreementPayHelper;
+import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.model.pay.lianlian.CertifiedPayModel;
 import com.xiji.cashloan.cl.model.pay.lianlian.constant.LianLianConstant;
 import com.xiji.cashloan.cl.model.pay.lianlian.util.LianLianHelper;
@@ -477,20 +482,20 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 	 * @return
 	 */
 	@Override
-	public Map<String, Object> 	confirmDelayPay(Map<String, Object> param) {
+	public Map<String, Object> 	confirmDelayPay(Map<String, Object> param,BorrowRepay borrowRepay) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Long id = (Long) param.get("id");
 		logger.debug("进入确认展期...借款id="+id);
 		logger.info("进入确认展期...借款state="+ param.get("state"));
-		BorrowRepay br = borrowRepayMapper.findByPrimary(id);
+		//BorrowRepay br = borrowRepayMapper.findByPrimary(id);
 		String state = (String) param.get("state");
 
 		SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd");
 		Date now = new Date();
-		Date repayPlanTime = DateUtil.valueOf(time.format(br.getRepayTime()));
+		Date repayPlanTime = DateUtil.valueOf(time.format(borrowRepay.getRepayTime()));
 		Date nowDate = DateUtil.valueOf(time.format(now));
 		Date repayTime = null;
-		String type = br.getType();// 还款计划类型
+		String type = borrowRepay.getType();// 还款计划类型
 		int delayDays;
 		if(param.get("delayDays") != null) {
 			delayDays = NumberUtil.getInt(param.get("delayDays").toString());
@@ -500,40 +505,40 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		if (nowDate.after(repayPlanTime)){
 			repayTime = tool.util.DateUtil.rollDay(now, delayDays);
 		}else {
-			repayTime = tool.util.DateUtil.rollDay(br.getRepayTime(), delayDays);
+			repayTime = tool.util.DateUtil.rollDay(borrowRepay.getRepayTime(), delayDays);
 		}
 		result.put("repayTime", repayTime);
 		// 更新还款信息
-		int msg = updateBorrowReplayByDelayPay(br, repayTime);
+		int msg = updateBorrowReplayByDelayPay(borrowRepay, repayTime);
 		if (msg <= 0) {
-			throw new BussinessException("更新还款信息出错" + br.getBorrowId());
+			throw new BussinessException("更新还款信息出错" + borrowRepay.getBorrowId());
 		}
 		//展期金额
-		double repayAmount = NumberUtil.getDouble(param.get("amount") != null ? (String) param.get("amount") : "0.0") - br.getPenaltyAmout();
-		if (br.getAmount() < repayAmount) {
+		double repayAmount = NumberUtil.getDouble(param.get("amount") != null ? (String) param.get("amount") : "0.0") - borrowRepay.getPenaltyAmout();
+		if (borrowRepay.getAmount() < repayAmount) {
 			result.put("Code", Constant.FAIL_CODE_VALUE);
 			result.put("Msg", "展期金额不能大于还款金额");
 			return result;
 		}
 		//逾期罚金
-		double penaltyAmount = param.get("penaltyAmout") != null ? NumberUtil.getDouble((String) param.get("penaltyAmout")) : br.getPenaltyAmout();
-		if (br.getPenaltyAmout() < penaltyAmount) {
+		double penaltyAmount = param.get("penaltyAmout") != null ? NumberUtil.getDouble((String) param.get("penaltyAmout")) : borrowRepay.getPenaltyAmout();
+		if (borrowRepay.getPenaltyAmout() < penaltyAmount) {
 			result.put("Code", Constant.FAIL_CODE_VALUE);
 			result.put("Msg", "逾期罚金不能大于原逾期罚金");
 			return result;
 		}
 		//插入展期扣款的还款计划,状态为展期成功
 		BorrowRepay newBr = new BorrowRepay();
-		newBr.setBorrowAmount(br.getAmount());
+		newBr.setBorrowAmount(borrowRepay.getAmount());
 		newBr.setAmount(repayAmount);
-		newBr.setBorrowId(br.getBorrowId());
-		newBr.setUserId(br.getUserId());
-		String repay = DateUtil.dateStr2(DateUtil.rollDay(br.getRepayTime(), 0));
+		newBr.setBorrowId(borrowRepay.getBorrowId());
+		newBr.setUserId(borrowRepay.getUserId());
+		String repay = DateUtil.dateStr2(DateUtil.rollDay(borrowRepay.getRepayTime(), 0));
 		repay = repay + " 23:59:59";
 		newBr.setRepayTime(DateUtil.valueOf(repay, "yyyy-MM-dd HH:mm:ss"));
 		newBr.setState(BorrowRepayModel.STATE_REPAY_DELAY_YES);
 		newBr.setPenaltyAmout(penaltyAmount);
-		newBr.setPenaltyDay(br.getPenaltyDay());
+		newBr.setPenaltyDay(borrowRepay.getPenaltyDay());
 		newBr.setCreateTime(DateUtil.getNow());
 		newBr.setType(type);
 		msg = borrowRepayMapper.saveReturnId(newBr);
@@ -542,13 +547,13 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		//新增一条展期还款记录
 		BorrowRepayLog delayRepayLog = new BorrowRepayLog();
-		delayRepayLog.setBorrowId(br.getBorrowId());
+		delayRepayLog.setBorrowId(borrowRepay.getBorrowId());
 		delayRepayLog.setRepayId(newBr.getId());
-		delayRepayLog.setUserId(br.getUserId());
+		delayRepayLog.setUserId(borrowRepay.getUserId());
 		delayRepayLog.setAmount(repayAmount);// 实际还款金额
 		delayRepayLog.setRepayTime(DateUtil.getNow());// 实际还款时间
 		delayRepayLog.setPenaltyAmout(penaltyAmount);
-		delayRepayLog.setPenaltyDay(br.getPenaltyDay());
+		delayRepayLog.setPenaltyDay(borrowRepay.getPenaltyDay());
 		delayRepayLog.setSerialNumber((String) param.get("serialNumber"));
 		delayRepayLog.setRepayAccount((String) param.get("repayAccount"));
 		delayRepayLog.setRepayWay((String) param.get("repayWay"));
@@ -559,14 +564,14 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			throw new BussinessException("插入展期还款记录出错" + newBr.getBorrowId());
 		}
 		// 更新借款表和借款进度状态
-		msg = updateBorrow(br.getBorrowId(), br.getUserId(),state);
+		msg = updateBorrow(borrowRepay.getBorrowId(), borrowRepay.getUserId(),state);
 		if (msg <= 0) {
-			throw new BussinessException("更新借款表和借款进度状态出错" + br.getBorrowId());
+			throw new BussinessException("更新借款表和借款进度状态出错" + borrowRepay.getBorrowId());
 		}
 
 		// 更新催收订单中的状态
 		Map<String, Object> orderMap = new HashMap<>();
-		orderMap.put("borrowId", br.getBorrowId());
+		orderMap.put("borrowId", borrowRepay.getBorrowId());
 		UrgeRepayOrder order = urgeRepayOrderService.findOrderByMap(orderMap);
 		if (order != null) {
 			logger.debug("更新存在的催收订单中的状态");
@@ -580,7 +585,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
 		result.put("Msg", "展期成功");
-		Borrow borrow = clBorrowService.findByPrimary(br.getBorrowId());
+		Borrow borrow = clBorrowService.findByPrimary(borrowRepay.getBorrowId());
 		pxRiskService.wjfhistory(borrow);
 		return result;
 	}
@@ -1116,7 +1121,11 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		paramRepayMap.put("userId", userId);
 		paramRepayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
 		BorrowRepay borrowRepay = findSelective(paramRepayMap);
-
+		if (borrowRepay == null){
+			result.put("code", "12");
+			result.put("msg", "用户已经还款");
+			return result;
+		}
 		//1、查询是否存在待支付记录
 		//检查待还款记录
 		Map<String, String> checkResult = checkRepaymentLog(borrowRepay, bankCard);
@@ -1174,7 +1183,6 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 
 		vo.setUserId(user.getUuid());
 		vo.setProtocolNo(bankCard.getAgreeNo());
-		vo.setBorrowOrderNo(borrow.getOrderNo());
 		if ((StringUtil.equals("2", type))) {
 			vo.setRemark("展期还款" + borrow.getOrderNo());
 		} else {
@@ -1186,52 +1194,82 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		vo.setTerminalType("OTHER");
 		vo.setShareKey(bankCard.getUserId());
 		vo.setCardNo(bankCard.getCardNo());
-		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
-		String payOrderNo = "";
-		boolean paySuccess = false;
-		if (PayCommonUtil.success(responseVo.getStatus())) {
-			paySuccess = true;
-			payOrderNo = responseVo.getPayPlatNo();
-		}else {
-			result.put("code", "12");
-			result.put("msg", responseVo.getMessage());
-		}
 		PayLog payLog = new PayLog();
-		payLog.setOrderNo(responseVo.getOrderNo());
-		if (StringUtil.isNotEmpty(payOrderNo)) {
-			payLog.setPayOrderNo(payOrderNo);
+
+		String orderNo = "";
+		String payModelSelect = Global.getValue("pay_model_select");
+		if ("helipay".equals(payModelSelect)){
+			orderNo = HelipayUtil.getOrderId();
+		}else if ("kuaiqian".equals(payModelSelect)){
+			orderNo = KuaiqianPayUtil.getOrderId();
+		}else if ("chanpay".equals(payModelSelect)){
+			orderNo = ChanPayConstant.getOrderId();
 		}
+		vo.setOrderNo(orderNo);
+		payLog.setOrderNo(orderNo);
 		payLog.setUserId(userId);
 		payLog.setBorrowId(borrowId);
 		payLog.setAmount(sourceAmount);
 		payLog.setCardNo(bankCard.getCardNo());
 		payLog.setBank(bankCard.getBank());
 		payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
+		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+		payLog.setCode(HelipayConstant.RESULT_CODE_SUCCESS);
+		payLog.setPayReqTime(payReqTime);
+		payLog.setCreateTime(DateUtil.getNow());
+		payLogService.save(payLog);
+
+		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
+
+		Map<String,Object> params = new HashMap<>();
+		boolean paySuccess = false;
+		if (PayCommonUtil.success(responseVo.getStatus())) {
+			paySuccess = true;
+			params.put("payOrderNo",responseVo.getPayPlatNo());
+		}else {
+			result.put("code", "12");
+			result.put("msg", responseVo.getMessage());
+		}
+//
+//		if (StringUtil.isNotEmpty(payOrderNo)) {
+//			payLog.setPayOrderNo(payOrderNo);
+//		}
+
 
 		//只有2为展期
 		if (StringUtil.equals("2", type)) {
-			payLog.setType(PayLogModel.TYPE_AUTH_DELAY);
-			payLog.setScenes(PayLogModel.SCENES_ACTIVE_DELAYPAY);
+			params.put("type",PayLogModel.TYPE_AUTH_DELAY);
+			params.put("scenes",PayLogModel.SCENES_ACTIVE_DELAYPAY);
 			if (paySuccess) {
 				result.put("code", "10");
 				result.put("msg", "展期处理中,请耐心等候！");
 			}
 		} else {
-			payLog.setType(PayLogModel.TYPE_AUTH_PAY);
-			payLog.setScenes(PayLogModel.SCENES_ACTIVE_REPAYMENT);
+			params.put("type",PayLogModel.TYPE_AUTH_PAY);
+			params.put("scenes",PayLogModel.SCENES_ACTIVE_REPAYMENT);
 			if (paySuccess) {
 				result.put("code", "10");
 				result.put("msg", "还款处理中,请耐心等候！");
 			}
 		}
+		params.put("state",PayLogModel.STATE_PAYMENT_WAIT);
+		params.put("code",responseVo.getStatusCode());
+		params.put("remark",responseVo.getMessage());
+		params.put("updateTime",DateUtil.getNow());
+		params.put("payReqTime",payReqTime);
+//		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+//		payLog.setCode(responseVo.getStatusCode());
+//		payLog.setRemark(responseVo.getMessage());
+//		payLog.setPayReqTime(payReqTime);
+//		payLog.setCreateTime(DateUtil.getNow());
 
-		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-		payLog.setCode(responseVo.getStatusCode());
-		payLog.setRemark(responseVo.getMessage());
-		payLog.setPayReqTime(payReqTime);
-		payLog.setCreateTime(DateUtil.getNow());
-		payLogService.save(payLog);
+		payLog = payLogService.findByOrderNo(orderNo);
+
+		if ("10".equals(payLog.getState())){
+			params.put("id",payLog.getId());
+			payLogService.updateSelective(params);
+		}
 
 		return result;
 	}
@@ -1579,7 +1617,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 					param.put("delayDays", Global.getValue("delay_days"));
 				}
 				Date repayTime = null;
-				Map<String, Object> delayPayMap = confirmDelayPay(param);
+				Map<String, Object> delayPayMap = confirmDelayPay(param,borrowRepay);
 				if (delayPayMap != null) {
 					repayTime = (Date) delayPayMap.get("repayTime");
 				}

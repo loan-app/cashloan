@@ -71,7 +71,7 @@ public interface BorrowRepayService extends BaseService<BorrowRepay, Long>{
 	 * @param param
 	 * @return
 	 */
-	Map<String, Object> confirmDelayPay(Map<String, Object> param);
+	Map<String, Object> confirmDelayPay(Map<String, Object> param,BorrowRepay borrowRepay);
 
 	/**
 	 * 查询所有

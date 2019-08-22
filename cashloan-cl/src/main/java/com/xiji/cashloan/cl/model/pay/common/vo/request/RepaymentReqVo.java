@@ -18,6 +18,11 @@ public class RepaymentReqVo  extends PayReq {
     private Long borrowId;
     private String cardNo;
 
+    /**
+     * 商户订单号
+     */
+    private String orderNo;
+
     public String getUserId() {
         return userId;
     }
@@ -104,5 +109,13 @@ public class RepaymentReqVo  extends PayReq {
 
     public void setCardNo(String cardNo) {
         this.cardNo = cardNo;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 }

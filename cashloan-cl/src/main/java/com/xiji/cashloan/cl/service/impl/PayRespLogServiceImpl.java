@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -65,4 +66,15 @@ public class PayRespLogServiceImpl extends BaseServiceImpl<PayRespLog, Long> imp
 	public BaseMapper<PayRespLog, Long> getMapper() {
 		return payRespLogMapper;
 	}
+
+
+	@Override
+	public int countByOrderNo(String orderNo, Integer type) {
+		Map<String, Object> searchMap =new HashMap<>();
+		searchMap.put("orderNo", orderNo);
+		searchMap.put("type", type);
+		return payRespLogMapper.countByOrderNo(searchMap);
+	}
+
+
 }

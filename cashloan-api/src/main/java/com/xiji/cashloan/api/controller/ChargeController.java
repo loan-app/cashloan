@@ -158,6 +158,12 @@ public class ChargeController extends BaseController {
 
 		PayReqLog payReqLog = payReqLogService.findByOrderNo(orderNo);
 		if (payReqLog != null) {
+			int prl = payRespLogService.countByOrderNo(orderNo, PayRespLogModel.RESP_LOG_TYPE_NOTIFY);
+			if(prl > 0) {
+				logger.info("已存在支付响应记录实体orderNo:{},type:{}",orderNo,PayRespLogModel.RESP_LOG_TYPE_NOTIFY);
+				writeResult(response, "success");
+				return;
+			}
 			// 保存respLog
 			PayRespLog payRespLog = new PayRespLog(orderNo,PayRespLogModel.RESP_LOG_TYPE_NOTIFY,jsonMsg);
 			payRespLogService.save(payRespLog);

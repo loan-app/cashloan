@@ -211,7 +211,7 @@ public class ChanPayBiz implements PayCommon {
         origMap.put(ChanPayConstant.SERVICE, ChanPayConstant.PROTOCOL_REPAYMENT);// 支付的接口名
         origMap.put(ChanPayConstant.PARTNER_ID,ChanPayUtil.agreementMerchantNumber());//商户号
         // 2.2 业务参数
-        String trxId = ChanPayConstant.getOrderId();
+        String trxId = vo.getOrderNo();
         origMap.put("TrxId", trxId);// 订单号
         origMap.put("OrdrName", "畅捷支付");// 商户网站商品名称
         origMap.put("MerUserId", vo.getUserId());// 用户标识（测试时需要替换一个新的meruserid）

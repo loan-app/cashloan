@@ -324,7 +324,7 @@ public class ManageBorrowRepayController extends ManageBaseController {
 			BorrowRepay br = borrowRepayService.getById(id);
 			if (br != null) {
 				if (!br.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
-					resultMap = borrowRepayService.confirmDelayPay(param);
+					resultMap = borrowRepayService.confirmDelayPay(param,br);
 				} else {
 					resultMap.put("Code", Constant.FAIL_CODE_VALUE);
 					resultMap.put("Msg", "该还款计划已还款");

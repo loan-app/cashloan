@@ -68,9 +68,9 @@ public class YixinRiskServiceImpl implements YixinRiskService {
         log.setIsFee(0);
 
         /** 1、调用用户名 **/
-        String USER_NAME = Global.getValue("yixin_user_name");
+        String USER_NAME = Global.getValue("yixin_user_name_fraud_risk");
         /** 2、调用秘钥 **/
-        String SIGN = Global.getValue("yixin_sign");
+        String SIGN = Global.getValue("yixin_sign_fraud_risk");
         /** 3、请求地址 **/
         String API_HOST = Global.getValue("yixin_risk_url");
 
@@ -135,9 +135,9 @@ public class YixinRiskServiceImpl implements YixinRiskService {
         log.setIsFee(0);
 
         /** 1、调用用户名 **/
-        String USER_NAME = Global.getValue("yixin_user_name");
+        String USER_NAME = Global.getValue("yixin_user_name_fraud_risk");
         /** 2、调用秘钥 **/
-        String SIGN = Global.getValue("yixin_sign");
+        String SIGN = Global.getValue("yixin_sign_fraud_risk");
         /** 3、请求地址 **/
         String API_HOST = Global.getValue("yixin_risk_url");
 

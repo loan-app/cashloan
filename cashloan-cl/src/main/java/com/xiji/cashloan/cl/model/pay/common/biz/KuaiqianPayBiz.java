@@ -176,7 +176,7 @@ public class KuaiqianPayBiz implements PayCommon {
 
         reqVo.setCustomerId(vo.getUserId());
         reqVo.setSpFlag(KuaiqianPayConstant.PROTOCOL_SPFLAG);
-        reqVo.setExternalRefNumber(KuaiqianPayUtil.getOrderId());
+        reqVo.setExternalRefNumber(vo.getOrderNo());
         Date createDate = DateUtil.getNow();
         String entryTime = new SimpleDateFormat("yyyyMMddHHmmss").format(createDate);// 商户端交易时间
         reqVo.setEntryTime(entryTime);

@@ -217,7 +217,7 @@ public class RepaymentNotifyAssist {
                 repayMap.put("borrowId", payLog.getBorrowId());
                 repayMap.put("state", BorrowRepayModel.STATE_REPAY_NO);
                 BorrowRepay borrowRepay = borrowRepayService.findSelective(repayMap);
-                BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
+                //BankCard bankCard = bankCardService.getBankCardByUserId(payLog.getUserId());
                 Date repayTime = null;
                 if (borrowRepay != null) {
                     Map<String, Object> param = new HashMap<String, Object>();
@@ -231,7 +231,7 @@ public class RepaymentNotifyAssist {
                         param.put("delayDays", Global.getValue("delay_days"));
                     }
                     if (!borrowRepay.getState().equals(BorrowRepayModel.STATE_REPAY_YES)) {
-                        Map<String, Object> delayPayMap = borrowRepayService.confirmDelayPay(param);
+                        Map<String, Object> delayPayMap = borrowRepayService.confirmDelayPay(param,borrowRepay);
                         if (delayPayMap != null) {
                             repayTime = (Date) delayPayMap.get("repayTime");
                         }

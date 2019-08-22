@@ -37,4 +37,12 @@ public interface PayRespLogMapper extends BaseMapper<PayRespLog,Long> {
 	 * @return
 	 */
 	ManagePayRespLogModel findDetail(Long id);
+
+	/**
+	 * 查询详情
+	 *
+	 * @param searchMap
+	 * @return
+	 */
+	int countByOrderNo(Map<String, Object> searchMap);
 }

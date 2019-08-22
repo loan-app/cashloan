@@ -111,6 +111,11 @@
         from cl_pay_resp_log
 		where id = #{id ,jdbcType=INTEGER}
 	</select>
-	
+
+    <select id="countByOrderNo" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(1)
+        from cl_pay_resp_log
+        <include refid="searchBy"/>
+    </select>
 	
 </mapper>

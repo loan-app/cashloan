@@ -178,7 +178,7 @@ public class FuiouPayBiz implements PayCommon {
         beanReq.setUserId(vo.getUserId());
         beanReq.setUserIp(IpUtil.getLocalIp());
         beanReq.setType("03");
-        String orderNo = OrderNoUtil.getSerialNumber();
+        String orderNo = vo.getOrderNo();
         beanReq.setMchntOrderId(orderNo);
         if ("dev".equals(Global.getValue("app_environment"))) {
             beanReq.setAmt(AmtUtil.convertAmtToBranch("0.01"));

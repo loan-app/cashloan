@@ -311,7 +311,7 @@ public class HeliPayBiz implements PayCommon {
         HelipayHelper helipayHelper = new HelipayHelper();
         reqVo.setP3_bindId(vo.getProtocolNo());
         reqVo.setP4_userId(vo.getUserId());
-        reqVo.setP5_orderId(HelipayUtil.getOrderId());
+        reqVo.setP5_orderId(vo.getOrderNo());
         reqVo.setP6_timestamp(HelipayUtil.getTimeStamp());
         reqVo.setP7_currency(HelipayConstant.CURRENCY_CNY);
         reqVo.setP8_orderAmount(Double.toString(vo.getAmount()));

@@ -55,7 +55,7 @@ public class YixinController {
         String strParam = StringUtil.EMPTY;
         if (StringUtil.isNotBlank(params)) {
             logger.debug("接到加密的数据:" + params);
-            strParam = decrypt(params, Global.getValue("yixin_sign"));
+            strParam = decrypt(params, Global.getValue("yixin_sign_fraud_risk"));
             logger.debug("解密后的数据:" + strParam);
         }
         JSONObject returnJson = new JSONObject();
@@ -78,7 +78,7 @@ public class YixinController {
             }
             returnJson.put("success", Boolean.TRUE);
             logger.info("返回给宜信加密前数据:" + dataJson.toJSONString());
-            String strData = encrypt(dataJson.toJSONString(), Global.getValue("yixin_sign"));
+            String strData = encrypt(dataJson.toJSONString(), Global.getValue("yixin_sign_fraud_risk"));
             returnJson.put("data", strData);
         }
 

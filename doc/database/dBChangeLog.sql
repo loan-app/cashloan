@@ -1272,3 +1272,6 @@ CREATE TABLE `cl_helipay_user` (
 
 
 ALTER TABLE cl_pay_req_log add column helipay_user_id varchar(20) DEFAULT NULL COMMENT '合利宝用户编号';
+
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信风险评估和欺诈甄别用户名', 'yixin_user_name_fraud_risk', 'jiya_testusr', '1', '宜信风险评估和欺诈甄别用户名', '1');
+INSERT INTO `arc_sys_config` VALUES (null, '80', '宜信风险评估和欺诈甄别调用秘钥', 'yixin_sign_fraud_risk', '1aea54c5af220130', '1', '宜信风险评估和欺诈甄别调用秘钥', '1');
