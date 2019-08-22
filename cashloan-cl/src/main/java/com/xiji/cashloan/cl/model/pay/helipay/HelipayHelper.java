@@ -313,7 +313,7 @@ public class HelipayHelper extends BasePay {
             map.put("sign", sign);
             logger.info("发送参数：" + map);
             // 保存请求参数
-            request(map,userVo.getP1_bizType(),userVo.getP3_orderId());
+            saveReqLog(userVo.getP1_bizType(), userVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map<String, Object> resultMap = HttpClientService.getHttpResp(map, HelipayUtil.DelegationUrl(), null);
             logger.info("响应结果：" + resultMap);
             if ((Integer) resultMap.get("statusCode") == HttpStatus.SC_OK) {
@@ -385,7 +385,7 @@ public class HelipayHelper extends BasePay {
             map.put("sign", sign);
             logger.info("发送参数：" + map);
             // 保存请求参数
-            request(map,userVo.getP1_bizType(),userVo.getP3_orderId());
+            saveReqLog(userVo.getP1_bizType(), userVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map<String, Object> resultMap = HttpClientService.getHttpResp(map, HelipayUtil.DelegationUrl(), null);
             logger.info("响应结果：" + resultMap);
             System.out.println(resultMap);
@@ -444,7 +444,7 @@ public class HelipayHelper extends BasePay {
             map.put("sign", sign);
             logger.info("发送参数：" + map);
             // 保存请求参数
-            request(map,userVo.getP1_bizType(),userVo.getP3_orderId());
+            saveReqLog(userVo.getP1_bizType(), userVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map resultMap = HttpClientService.getHttpResp(map, HelipayUtil.QualificationUploadUrl(), tempFile);
             logger.info("响应结果：" + resultMap);
             if ((Integer) resultMap.get("statusCode") == HttpStatus.SC_OK) {
@@ -510,7 +510,7 @@ public class HelipayHelper extends BasePay {
             map.put("sign", sign);
             logger.info("发送参数：" + map);
             // 保存请求参数
-            request(map,userVo.getP1_bizType(),userVo.getP3_orderId());
+            saveReqLog(userVo.getP1_bizType(), userVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map<String, Object> resultMap = HttpClientService.getHttpResp(map, HelipayUtil.DelegationUrl(), null);
             logger.info("响应结果：" + resultMap);
             if ((Integer) resultMap.get("statusCode") == HttpStatus.SC_OK) {
@@ -574,7 +574,7 @@ public class HelipayHelper extends BasePay {
             map.put("sign", sign);
             logger.info("发送参数：" + map);
             // 保存请求参数
-            request(map,orderVo.getP1_bizType(),orderVo.getP3_orderId());
+            saveReqLog(orderVo.getP1_bizType(), orderVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map<String, Object> resultMap = HttpClientService.getHttpResp(map, HelipayUtil.DelegationUrl(), null);
             logger.info("响应结果：" + resultMap);
             System.out.println(resultMap);
@@ -622,7 +622,7 @@ public class HelipayHelper extends BasePay {
             map.put("sign", sign);
             logger.info("发送参数：" + map);
             // 保存请求参数
-            request(map,orderVo.getP1_bizType(),orderVo.getP3_orderId());
+            saveReqLog(orderVo.getP1_bizType(), orderVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map<String, Object> resultMap = HttpClientService.getHttpResp(map, HelipayUtil.DelegationUrl(), null);
             logger.info("响应结果：" + resultMap);
             if ((Integer) resultMap.get("statusCode") == HttpStatus.SC_OK) {
