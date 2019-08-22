@@ -30,6 +30,13 @@ public interface BorrowRepayLogMapper extends BaseMapper<BorrowRepayLog,Long> {
 	 */
 	BorrowRepayLog findByBorrowId(long borrowId);
 
+	/**
+	 * 根据借款id查询最近一条记录
+	 * @param borrowId
+	 * @return
+	 */
+	BorrowRepayLog findLastByBorrowId(long borrowId);
+
 	List<ManageBRepayLogModel> listModel(Map<String, Object> params);
 
 	/**

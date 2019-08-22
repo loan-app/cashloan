@@ -14,10 +14,10 @@ public class OrderResVo {
     private String rt8_orderStatus;
     private String rt9_timestamp;
     private String sign;
-    /**
-     * 验签结果
-     */
-    private String signResult;
+//    /**
+//     * 验签结果
+//     */
+//    private String signResult;
 
 
     public String getRt1_bizType() {
@@ -99,12 +99,12 @@ public class OrderResVo {
     public void setSign(String sign) {
         this.sign = sign;
     }
-
-    public String getSignResult() {
-        return signResult;
-    }
-
-    public void setSignResult(String signResult) {
-        this.signResult = signResult;
-    }
+//
+//    public String getSignResult() {
+//        return signResult;
+//    }
+//
+//    public void setSignResult(String signResult) {
+//        this.signResult = signResult;
+//    }
 }

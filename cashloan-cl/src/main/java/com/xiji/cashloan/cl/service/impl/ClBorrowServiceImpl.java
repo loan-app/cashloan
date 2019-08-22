@@ -1496,7 +1496,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				PaymentReqVo vo = new PaymentReqVo();
 				if ("dev".equals(Global.getValue("app_environment"))) {
 					vo.setAmount(1.0);
-					borrow.setInterest(borrow.getAmount()*borrow.getFee()*0.1);
+					borrow.setInterest(vo.getAmount()*(borrow.getFee()/borrow.getAmount()*0.1));
 				} else {
 					vo.setAmount(borrow.getRealAmount());
 				}

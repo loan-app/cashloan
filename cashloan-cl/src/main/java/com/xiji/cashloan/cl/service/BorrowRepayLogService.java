@@ -56,6 +56,13 @@ public interface BorrowRepayLogService extends BaseService<BorrowRepayLog, Long>
 	 * @return
 	 */
 	BorrowRepayLog findSelective(Map<String, Object> paramMap);
+
+	/**
+	 * 根据借款id查询最近一条记录
+	 * @param borrowId
+	 * @return
+	 */
+	BorrowRepayLog findLastByBorrowId(long borrowId);
 	
 	/**
 	 * 修改还款记录

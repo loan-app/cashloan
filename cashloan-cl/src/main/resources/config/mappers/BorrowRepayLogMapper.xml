@@ -169,6 +169,14 @@
         where borrow_id = #{borrowId,jdbcType=BIGINT}
     </select>
 
+    <select id="findLastByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_repay_log
+        where borrow_id = #{borrowId,jdbcType=BIGINT}
+        order by id desc limit 1
+    </select>
+
 	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
         <include refid="Base_Column_List" />

@@ -170,7 +170,7 @@ public class HeliPayBiz implements PayCommon {
         PaymentResponseVo responseVo = new PaymentResponseVo();
         //受理成功
         if (StringUtil.equals(result.getRt2_retCode(),HelipayConstant.RESULT_CODE_SUCCESS)) {
-            if ("success".equals(result.getSignResult())) {
+            if ("RECEIVE".equals(result.getRt8_orderStatus())) {
                 responseVo.setStatus(PayConstant.RESULT_SUCCESS);
                 responseVo.setStatusCode(result.getRt2_retCode());
             }else {

@@ -133,7 +133,8 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 
 		PaymentReqVo vo = new PaymentReqVo();
 		if ("dev".equals(Global.getValue("app_environment"))) {
-			vo.setAmount(3.0);
+			vo.setAmount(1.0);
+			borrow.setInterest(vo.getAmount()*(borrow.getFee()/borrow.getAmount()*0.1));
 		} else {
 			vo.setAmount(NumberUtils.toDouble(amount));
 		}
@@ -156,7 +157,7 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
 		helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
 		helipayLoanConInfo.setLoanTimeUnit("D");// 借款时间单位:D-天;M-月;Y-年
-		helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
+		helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest()/borrow.getAmount(),2)));
 		helipayLoanConInfo.setPeriodization("1");
 		helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
 		helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));

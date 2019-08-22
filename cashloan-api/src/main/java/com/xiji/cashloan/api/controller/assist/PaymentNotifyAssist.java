@@ -90,6 +90,7 @@ public class PaymentNotifyAssist {
                 paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
                 paramMap.put("updateTime",DateUtil.getNow());
                 paramMap.put("payOrderNo",model.getPayPlatNo());
+                paramMap.put("remark",model.getMessage());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
                 //发送放款成功短信
@@ -111,7 +112,7 @@ public class PaymentNotifyAssist {
                 Map<String,Object> paramMap = new HashMap<String, Object>();
                 paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
                 paramMap.put("updateTime",DateUtil.getNow());
-//				paramMap.put("remark",model.getInfo_order());
+				paramMap.put("remark",model.getMessage());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
 
@@ -144,6 +145,7 @@ public class PaymentNotifyAssist {
                 paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
                 paramMap.put("updateTime",DateUtil.getNow());
                 paramMap.put("payOrderNo",model.getPayPlatNo());
+                paramMap.put("remark",model.getMessage());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
 
@@ -151,6 +153,7 @@ public class PaymentNotifyAssist {
                 Map<String,Object> paramMap = new HashMap<String, Object>();
                 paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
                 paramMap.put("updateTime",DateUtil.getNow());
+                paramMap.put("remark",model.getMessage());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
             }
@@ -175,10 +178,10 @@ public class PaymentNotifyAssist {
             //代付成功 ，否则只更新订单状态
             if (ifPaySuccess){
                 // 查询还款记录
-                Map<String, Object> repayLogMap =  new HashMap<String, Object>();
-                repayLogMap.put("borrowId", payLog.getBorrowId());
-                repayLogMap.put("userId", payLog.getUserId());
-                BorrowRepayLog repayLog = borrowRepayLogService.findSelective(repayLogMap);
+//               Map<String, Object> repayLogMap =  new HashMap<String, Object>();
+//               repayLogMap.put("borrowId", payLog.getBorrowId());
+                //repayLogMap.put("userId", payLog.getUserId());
+                BorrowRepayLog repayLog = borrowRepayLogService.findLastByBorrowId(payLog.getBorrowId());
 
                 // 更新还款记录
                 Map<String, Object> refundDeductionMap = new HashMap<String, Object>();
@@ -192,12 +195,14 @@ public class PaymentNotifyAssist {
                 paramMap.put("state", PayLogModel.STATE_PAYMENT_SUCCESS);
                 paramMap.put("updateTime",DateUtil.getNow());
                 paramMap.put("payOrderNo",model.getPayPlatNo());
+                paramMap.put("remark",model.getMessage());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
             }else {
                 Map<String,Object> paramMap = new HashMap<String, Object>();
                 paramMap.put("state", PayLogModel.STATE_PAYMENT_FAILED);
                 paramMap.put("updateTime",DateUtil.getNow());
+                paramMap.put("remark",model.getMessage());
                 paramMap.put("id",payLog.getId());
                 payLogService.updateSelective(paramMap);
             }

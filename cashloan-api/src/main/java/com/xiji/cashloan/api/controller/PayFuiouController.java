@@ -1,6 +1,7 @@
 package com.xiji.cashloan.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xiji.cashloan.api.controller.assist.PaymentNotifyAssist;
 import com.xiji.cashloan.api.user.service.ContractService;
 import com.xiji.cashloan.cl.domain.PayLog;
@@ -17,8 +18,11 @@ import com.xiji.cashloan.cl.model.pay.common.dto.RepaymentNotifyDto;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforNotifyModel;
 import com.xiji.cashloan.cl.model.pay.fuiou.payfor.PayforRefundNotifyModel;
 import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
+import com.xiji.cashloan.cl.model.pay.helipay.util.Disguiser;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.helipay.util.MyBeanUtils;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.AgreementNotifyVo;
+import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.UserRegisterNotifyVo;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.KuaiqianPayHelper;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.constant.KuaiqianPayConstant;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.payfor.notifymock.NotifyRequest;
@@ -159,16 +163,24 @@ public class PayFuiouController extends BaseController{
 	/**
 	 * 合利宝委托代付异步通知接口：
 	 * 代付（支付）- 成功通知接口 - 异步通知处理
-	 * @param model
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/pay/helipay/paymentNotify.htm")
-	public void helipayPaymentNotify(AgreementNotifyVo model) throws Exception {
+	public void helipayPaymentNotify() throws Exception {
+
+		logger.info("----------------合利宝商户用户注册回调 - 异步通知开始------------------------");
+		long start = System.currentTimeMillis();
+
+		String encryData = KuaiqianPayUtil.streamToStr(request);
+		AgreementNotifyVo model = JSONObject.parseObject(encryData, AgreementNotifyVo.class);
 		String params = JSON.toJSONString(model);
 		logger.info("实时付款 - 合利宝委托代付异步通知接口:" + params);
 
+		String assemblyRespOriSign = MyBeanUtils.getSigned(model, null);
+		String responseSign = model.getSign();
+		String checkSign = Disguiser.disguiseMD5(assemblyRespOriSign.trim()+HelipayUtil.split+HelipayUtil.getMD5Key());
 		String orderNo = model.getRt5_orderId();
-		if (!HelipayUtil.checkNotifySign(model)) {
+		if (!checkSign.equals(responseSign)){
 			logger.error("验签失败" + orderNo);
 			return;
 		}
@@ -195,6 +207,7 @@ public class PayFuiouController extends BaseController{
 		}
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
 		dto.setPayPlatNo(model.getRt7_serialNumber());
+		dto.setMessage(model.getRt3_retMsg());
 		if (StringUtil.equals(model.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS) && "SUCCESS".equals(model.getRt8_orderStatus())) {
 			dto.setStatus(PayConstant.RESULT_SUCCESS);
 		}else {
@@ -216,6 +229,8 @@ public class PayFuiouController extends BaseController{
 		if (StringUtil.equals(message, PayConstant.RESULT_SUCCESS)) {
 			writeResult(response, "success");
 		}
+		long end = System.currentTimeMillis();
+		logger.info("cost "+(end-start));
 	}
 
 	/**

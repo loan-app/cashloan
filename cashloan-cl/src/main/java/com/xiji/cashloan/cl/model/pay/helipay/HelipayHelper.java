@@ -577,7 +577,6 @@ public class HelipayHelper extends BasePay {
             saveReqLog(orderVo.getP1_bizType(), orderVo.getP3_orderId(), "", JSON.toJSONString(map));
             Map<String, Object> resultMap = HttpClientService.getHttpResp(map, HelipayUtil.DelegationUrl(), null);
             logger.info("响应结果：" + resultMap);
-            System.out.println(resultMap);
             if ((Integer) resultMap.get("statusCode") == HttpStatus.SC_OK) {
                 String resultMsg = (String) resultMap.get("response");
                 resVo = JSONObject.parseObject(resultMsg, OrderResVo.class);
@@ -588,10 +587,8 @@ public class HelipayHelper extends BasePay {
                 String checkSign = Disguiser.disguiseMD5(assemblyRespOriSign.trim()+HelipayUtil.split+HelipayUtil.getMD5Key());
                 if (checkSign.equals(responseSign)) {
                     logger.info("创建委托代付订单验签成功");
-                    resVo.setSignResult("success");
                 } else {
                     logger.error("创建委托代付订单验签失败,orderVo ==>"+orderVo);
-                    resVo.setSignResult("fail");
                 }
             } else {
                 logger.error("创建委托代付订单请求失败,orderVo ==>"+orderVo);

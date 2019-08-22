@@ -77,6 +77,24 @@ public class BorrowRepayLogServiceImpl extends BaseServiceImpl<BorrowRepayLog, L
 		return borrowRepayLog;
 	}
 
+
+	/**
+	 * 根据借款id查询最近一条记录
+	 * @param borrowId
+	 * @return
+	 */
+	@Override
+	public BorrowRepayLog findLastByBorrowId(long borrowId){
+		BorrowRepayLog borrowRepayLog = null;
+		try {
+			borrowRepayLog = borrowRepayLogMapper.findLastByBorrowId(borrowId);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+		return borrowRepayLog;
+	}
+
+
 	@Override
 	public boolean updateSelective(Map<String, Object> paramMap) {
 		int result  =  borrowRepayLogMapper.updateSelective(paramMap);
