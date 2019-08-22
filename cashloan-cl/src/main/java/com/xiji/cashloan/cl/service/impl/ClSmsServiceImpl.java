@@ -264,31 +264,25 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 
 	/**
 	 * 登录短信验证
-	 * @param sysUser
+	 * @param phone
 	 * @param type
 	 * @param code
 	 * @return
 	 */
-	public int verifyLoginSms(SysUser sysUser, String type, String code) {
+	public int verifyLoginSms(String phone, String type, String code) {
 		if ("dev".equals(Global.getValue("app_environment")) && "0000".equals(code)) {
 			return 1;
 		}
 
-        SysRole sysRole = sysRoleMapper.getBySysUserId(sysUser.getId());
-
-		if (sysRole != null && ("QuDaoAll".equals(sysRole.getNid()) || "QuDao".equals(sysRole.getNid())) && "0000".equals(code)){
-            return 1;
-        }
-
-		if(StringUtil.isBlank(sysUser.getMobile()) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
+		if(StringUtil.isBlank(phone) || StringUtil.isBlank(type) || StringUtil.isBlank(code)){
 			return 0;
 		}
 
-		if (!StringUtil.isPhone(sysUser.getMobile())) {
+		if (!StringUtil.isPhone(phone)) {
 			return 0;
 		}
 		Map<String,Object> data = new HashMap<String, Object>();
-		data.put("phone", sysUser.getMobile());
+		data.put("phone", phone);
 		data.put("smsType", type);
 		Sms sms = smsMapper.findTimeMsg(data);
 		if (sms != null) {

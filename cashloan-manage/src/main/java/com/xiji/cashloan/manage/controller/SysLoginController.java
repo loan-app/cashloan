@@ -74,8 +74,6 @@ public class SysLoginController extends BaseController {
 	/**
 	 * 登陆处理
 	 * 
-	 * @param error
-	 * @param model
 	 */
 	@RequestMapping("/login.htm")
 	public void login(HttpServletResponse response, HttpServletRequest request) throws Exception {
@@ -97,24 +95,36 @@ public class SysLoginController extends BaseController {
 			HttpServletRequest request, HttpSession session) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>();
 		try {
-			Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-			Authentication authentication = authenticationManager.authenticate(authenticationToken);
-			//shiro
-			Subject user = SecurityUtils.getSubject();
-			password = passwordEncoder.encodePassword(String.valueOf(password));
-			UsernamePasswordToken token = new UsernamePasswordToken(username,password);
-			token.setRememberMe(true);
-			user.login(token);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			session.setAttribute("SPRING_SECURITY_CONTEXT",SecurityContextHolder.getContext());
-			SysUser sysUser = (SysUser) user.getSession().getAttribute("SysUser");
-			
-			//图片验证码校验
-			//checkImgCode(request.getParameter("code"),session.getAttribute("code"));
-			int result = clSmsService.verifyLoginSms(sysUser, SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
+			SysUser sysUser = sysUserService.getSysUserByUserName(username);
+			if (sysUser == null){
+				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+				res.put(Constant.RESPONSE_CODE_MSG, "用户名错误");
+				ServletUtils.writeToResponse(response, res);
+				return;
+			}
+			int result = clSmsService.verifyLoginSms(sysUser.getMobile(), SmsModel.SMS_TYPE_SYS_LOGIN, vCode);
 			if (result == 1) {
 				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+				Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+				Authentication authentication = authenticationManager.authenticate(authenticationToken);
+				//shiro
+				Subject user = SecurityUtils.getSubject();
+				password = passwordEncoder.encodePassword(String.valueOf(password));
+				UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+				token.setRememberMe(true);
+				user.login(token);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+				session.setAttribute("SPRING_SECURITY_CONTEXT",SecurityContextHolder.getContext());
+				sysUser = (SysUser) user.getSession().getAttribute("SysUser");
+
+				session.setAttribute("SysUser", sysUser);
 				LoginUtil.removeFailTimes(sysUser.getId());
+				List<SysUserRole> list = sysUserRoleService.getSysUserRoleList(sysUser.getId());
+				if(list != null && list.size() > 0) {
+					session.setAttribute(Constant.ROLEID, list.get(0).getRoleId());
+				} else {
+					throw new UnknownAccountException("未找到该账号对应的角色");
+				}
 			} else if (result == -1) {
 				res.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 				res.put(Constant.RESPONSE_CODE_MSG, "验证码已过期");
@@ -124,15 +134,6 @@ public class SysLoginController extends BaseController {
 				res.put(Constant.RESPONSE_CODE_MSG, "验证码错误");
 				failLoginHandle(username);
 			}
-			session.setAttribute("SysUser", sysUser);
-			
-			List<SysUserRole> list = sysUserRoleService.getSysUserRoleList(sysUser.getId());
-			if(list != null && list.size() > 0) {
-				session.setAttribute(Constant.ROLEID, list.get(0).getRoleId());
-			} else {
-				throw new UnknownAccountException("未找到该账号对应的角色");
-			}
-			
 			// res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		} catch (SysAccessCodeException ex){
 			logger.error("访问码无效", ex);
@@ -177,7 +178,6 @@ public class SysLoginController extends BaseController {
 
 	/**
 	 * 生成图片验证码
-	 * @param search
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/system/user/imgCode/generate.htm")

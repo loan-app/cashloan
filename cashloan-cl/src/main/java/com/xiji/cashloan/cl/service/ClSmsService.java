@@ -79,7 +79,7 @@ public interface ClSmsService extends BaseService<Sms, Long>{
 	 * @param code
 	 * @return
 	 */
-	int verifyLoginSms(SysUser sysUser, String type, String code);
+	int verifyLoginSms(String phone, String type, String code);
 
 	/**
 	 * 查询用户
