@@ -151,17 +151,24 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 			Map<String,Object> params = new HashMap<>();
 			params.put("userId",borrow.getUserId());
 			HelipayUser helipayUser = helipayUserService.getHelipayUser(params);
+            if (helipayUser == null || helipayUser.getHelipayUserId() == null){
+                Map<String,Object> result = new HashMap<String, Object>();
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE_MSG, "该用户合利宝未注册认证，请用户退出app重新登录！！！");
+                ServletUtils.writeToResponse(response, result);
+                return;
+            }
 			vo.setHelipayUserId(helipayUser.getHelipayUserId());
 		}
 
 		HelipayLoanConInfo helipayLoanConInfo = new HelipayLoanConInfo();
 		helipayLoanConInfo.setLoanTime(borrow.getTimeLimit());
 		helipayLoanConInfo.setLoanTimeUnit("D");// 借款时间单位:D-天;M-月;Y-年
-		helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest()/borrow.getAmount(),2)));
+        helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(36,2)));
 		helipayLoanConInfo.setPeriodization("1");
 		helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
-		helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
-		helipayLoanConInfo.setBody("退还");
+        helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(Double.parseDouble(amount)+(Double.parseDouble(amount)*0.36/360*Integer.parseInt(borrow.getTimeLimit())),2)));
+        helipayLoanConInfo.setBody("退还");
 		helipayLoanConInfo.setPurpose("生活消费");
 		vo.setHelipayLoanConInfo(helipayLoanConInfo);
 

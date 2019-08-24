@@ -318,7 +318,7 @@ public class HeliPayBiz implements PayCommon {
         reqVo.setP9_goodsName(vo.getRemark());
         reqVo.setP11_terminalType(vo.getTerminalType());
         reqVo.setP12_terminalId(vo.getTerminalId());
-        reqVo.setP13_orderIp(vo.getIp());
+        reqVo.setP13_orderIp("127.0.0.1");//使用默认值
         reqVo.setP16_serverCallbackUrl(HelipayUtil.rePaymentNotifyAddress());
         reqVo.setSignatureType(HelipayConstant.SIGNATURE_TYPE);
         BindCardPayResponseVo result = helipayHelper.repayment(reqVo);

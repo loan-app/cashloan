@@ -1521,8 +1521,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 				helipayLoanConInfo.setLoanInterestRate(Double.toString(BigDecimalUtil.decimal(borrow.getInterest()/borrow.getAmount(),2)));
 				helipayLoanConInfo.setPeriodization("1");
 				helipayLoanConInfo.setPeriodizationDays(borrow.getTimeLimit());
-				helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getInterest(),2)));
-				helipayLoanConInfo.setPurpose("生活消费");
+				helipayLoanConInfo.setPeriodizationFee (Double.toString(BigDecimalUtil.decimal(borrow.getRealAmount()+(borrow.getRealAmount()*0.36/360*Integer.parseInt(borrow.getTimeLimit())),2)));				helipayLoanConInfo.setPurpose("生活消费");
 				vo.setHelipayLoanConInfo(helipayLoanConInfo);
 
 				PaymentResponseVo result = PayCommonUtil.payment(vo);
