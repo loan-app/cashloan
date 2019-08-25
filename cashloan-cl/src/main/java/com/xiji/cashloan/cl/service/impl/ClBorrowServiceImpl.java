@@ -2382,13 +2382,19 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			logger.info("syncSceneBusinessLog，borrowId："+borrowId+"，nid："+nid+"，syncSceneBusinessLog更新结果："+result);
 			boolean haveNeed = sceneBusinessLogService.haveNeedExcuteService(borrowId);
 			if(!haveNeed){
-				borrow.setSubState("11");
-				logger.info("统计接口接口审核结果——借款borrow{}", JSON.toJSONString(borrow.toString()));
-				int i = clBorrowMapper.updatesub(borrowId);
-				logger.info("统计接口接口审核结果——borrow{},i{}的数据{}", JSON.toJSONString(borrow.toString()),i);
-				if (i > 0) {
-					rcBorrowRuleVerify(borrowId);
+				try {
+					borrow.setSubState("11");
+					logger.info("统计接口接口审核结果——借款borrow{}", JSON.toJSONString(borrow.toString()));
+					int i = clBorrowMapper.updatesub(borrowId);
+					logger.info("统计接口接口审核结果——borrow{},i{}的数据{}", JSON.toJSONString(borrow.toString()),i);
+					if (i > 0) {
+						rcBorrowRuleVerify(borrowId);
+					}
+				} catch (Exception e) {
+					logger.info("借款申请机审核报错：{}", e);
 				}
+
+
 			}
 		} else {
 			logger.error("syncSceneBusinessLog，borrowId："+borrowId+"，nid："+nid+"，未找到对应的sceneBusinessLog");
@@ -2409,12 +2415,16 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			sceneBusinessLogMapper.update(log);
 			boolean haveNeed = sceneBusinessLogService.haveNeedExcuteService(borrowId);
 			if(!haveNeed){
-				logger.info("接口异步通知——借款borrow" + borrow.toString());
-				borrow.setSubState("11");
-				int i = clBorrowMapper.updatesub(borrowId);
-				logger.info("接口异步通知——i的数据" + i);
-				if (i > 0) {
-					rcBorrowRuleVerify(borrowId);
+				try {
+					logger.info("接口异步通知——借款borrow" + borrow.toString());
+					borrow.setSubState("11");
+					int i = clBorrowMapper.updatesub(borrowId);
+					logger.info("接口异步通知——i的数据" + i);
+					if (i > 0) {
+						rcBorrowRuleVerify(borrowId);
+					}
+				} catch (Exception e) {
+					logger.info("借款申请机审核报错：{}", e);
 				}
 			}
 		}
