@@ -251,7 +251,7 @@ public interface ClBorrowMapper extends BaseMapper<Borrow,Long> {
 	 * @return
 	 */
 	
-	int updatesub(Borrow borrow);
+	int updatesub(@Param("id")Long id);
 
 	/**
 	 * 共享数据给宜信

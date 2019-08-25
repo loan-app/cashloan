@@ -718,10 +718,10 @@
         where id = #{id ,jdbcType=BIGINT} and state = #{preState,jdbcType=VARCHAR}
     </update>
     
-    <update id="updatesub"  parameterType="com.xiji.cashloan.core.domain.Borrow">
+    <update id="updatesub"  parameterType="java.lang.Long">
         update cl_borrow
-        set sub_state = #{subState,jdbcType=VARCHAR}
-        where id = #{id ,jdbcType=BIGINT} and sub_state = 0;
+        set sub_state = '11'
+        where id = #{id ,jdbcType=BIGINT} and sub_state = '0';
     </update>
 
 

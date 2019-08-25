@@ -1,5 +1,6 @@
 package com.xiji.cashloan.cl.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -2381,10 +2382,10 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			logger.info("syncSceneBusinessLog，borrowId："+borrowId+"，nid："+nid+"，syncSceneBusinessLog更新结果："+result);
 			boolean haveNeed = sceneBusinessLogService.haveNeedExcuteService(borrowId);
 			if(!haveNeed){
-				logger.info("统计接口接口审核结果——借款borrow" + borrow.toString());
 				borrow.setSubState("11");
-				int i = clBorrowMapper.updatesub(borrow);
-				logger.info("统计接口接口审核结果——i的数据" + i);
+				logger.info("统计接口接口审核结果——借款borrow{}", JSON.toJSONString(borrow.toString()));
+				int i = clBorrowMapper.updatesub(borrowId);
+				logger.info("统计接口接口审核结果——borrow{},i{}的数据{}", JSON.toJSONString(borrow.toString()),i);
 				if (i > 0) {
 					rcBorrowRuleVerify(borrowId);
 				}
@@ -2410,7 +2411,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 			if(!haveNeed){
 				logger.info("接口异步通知——借款borrow" + borrow.toString());
 				borrow.setSubState("11");
-				int i = clBorrowMapper.updatesub(borrow);
+				int i = clBorrowMapper.updatesub(borrowId);
 				logger.info("接口异步通知——i的数据" + i);
 				if (i > 0) {
 					rcBorrowRuleVerify(borrowId);
