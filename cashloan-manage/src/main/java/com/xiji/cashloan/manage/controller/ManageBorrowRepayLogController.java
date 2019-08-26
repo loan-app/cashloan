@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.xiji.cashloan.cl.domain.*;
 import com.xiji.cashloan.cl.model.ManageBRepayLogModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
@@ -13,7 +14,9 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.PaymentResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.helipay.vo.delegation.HelipayLoanConInfo;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.*;
 import com.xiji.cashloan.core.common.context.Constant;
@@ -276,6 +279,16 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		vo.setTerminalType("OTHER");
 		vo.setShareKey(bankCard.getUserId());
 		vo.setCardNo(bankCard.getCardNo());
+		String orderNo = "";
+		String payModelSelect = Global.getValue("pay_model_select");
+		if ("helipay".equals(payModelSelect)){
+			orderNo = HelipayUtil.getOrderId();
+		}else if ("kuaiqian".equals(payModelSelect)){
+			orderNo = KuaiqianPayUtil.getOrderId();
+		}else if ("chanpay".equals(payModelSelect)){
+			orderNo = ChanPayConstant.getOrderId();
+		}
+		vo.setOrderNo(orderNo);
 		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
 		String payMsg = "";
