@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.domain.operator.*;
 import com.xiji.cashloan.cl.mapper.*;
 import com.xiji.cashloan.cl.model.OperatorVoiceModel;
 import com.xiji.cashloan.cl.service.OperatorService;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.util.DateUtil;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
 import com.xiji.cashloan.core.common.util.StringUtil;
@@ -224,7 +225,17 @@ public class OperatorServiceImpl implements OperatorService {
                             logger.info("userContactsMapper.listShardSelective1 ==>" + (end - start) + "秒");
                             for (UserContacts userContacts : contacts) {
                                 String phone = userContacts.getPhone();
-                                OperatorVoiceModel operatorVoicesModel = operatorVoiceMapper.operatorVoicesCount(tableName, userId, phone,reqLogId);
+                                String operatorSelect = Global.getValue("operator_select");
+                                OperatorVoiceModel operatorVoicesModel = new OperatorVoiceModel();
+                                if ("yunqiao".equals(operatorSelect)){
+                                    if (StringUtil.isNotBlank(userContacts.getPhone())&&userContacts.getPhone().length() > 4){
+                                        String phonePre = phone.trim().substring(0,3);
+                                        String phoneSuffix = phone.substring(phone.length()-4,phone.length());
+                                        operatorVoicesModel = operatorVoiceMapper.operatorVoicesCount2(tableName, userId, phonePre,phoneSuffix,reqLogId);
+                                    }
+                                }else {
+                                    operatorVoicesModel = operatorVoiceMapper.operatorVoicesCount(tableName, userId, phone,reqLogId);
+                                }
                                 Integer totalCount = operatorVoicesModel.getTotalCount();
                                 Integer sumDuration = operatorVoicesModel.getSumDuration();
                                 Map<String, Object> param = new HashMap<String, Object>();

@@ -11,6 +11,7 @@ import com.xiji.cashloan.cl.util.black.CollectionUtil;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.ShardTableUtil;
+import com.xiji.cashloan.core.common.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -72,9 +73,21 @@ public class OperatorVoiceServiceImpl extends BaseServiceImpl<OperatorVoice, Lon
 		if (CollectionUtil.isNotEmpty(list) && CollectionUtil.isNotEmpty(userContactsList)){
 			for(OperatorVoice operatorVoice :list){
 				for (UserContacts userContacts1:userContactsList){
-					if (operatorVoice.getPeerNumber() != null && operatorVoice.getPeerNumber().equals(userContacts1.getPhone())){
-						operatorVoice.setPeerName(userContacts1.getName());
+
+					if (StringUtil.isNotBlank(userContacts1.getPhone()) && StringUtil.isNotBlank(operatorVoice.getPeerNumber()) && userContacts1.getPhone().length() > 4 && operatorVoice.getPeerNumber().length()> 4 ){
+
+						String phonePre = userContacts1.getPhone().trim().substring(0,3);
+						String phoneSuffix = userContacts1.getPhone().substring(userContacts1.getPhone().length()-4,userContacts1.getPhone().length());
+						String peerNumberPre = operatorVoice.getPeerNumber().substring(0,3);
+						String peerNumberSuffix = operatorVoice.getPeerNumber().substring(operatorVoice.getPeerNumber().length()-4,operatorVoice.getPeerNumber().length());
+
+						if (phonePre.equals(peerNumberPre) && phoneSuffix.equals(peerNumberSuffix)){
+							operatorVoice.setPeerName(userContacts1.getName());
+						}
 					}
+//					if (operatorVoice.getPeerNumber() != null && operatorVoice.getPeerNumber().equals(userContacts1.getPhone())){
+//						operatorVoice.setPeerName(userContacts1.getName());
+//					}
 				}
 			}
 		}

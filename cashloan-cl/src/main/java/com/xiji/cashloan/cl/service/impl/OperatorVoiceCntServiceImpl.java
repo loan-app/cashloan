@@ -85,8 +85,9 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
 					HashMap<String, String> contactMap = new HashMap<>();
 					for (UserContacts userCon : contacts) {
 						if (userCon != null) {
-							if (StringUtil.isNotEmpty(userCon.getPhone())) {
-								contactMap.put(userCon.getPhone(),StringUtil.isEmpty(userCon.getName())?"":userCon.getName());
+							if (StringUtil.isNotEmpty(userCon.getPhone())&& userCon.getPhone().length() > 4 && cntMetas.get(0).getPeerNum().contains("****")) {
+								String phone = userCon.getPhone().substring(0, 3) + "****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());
+								contactMap.put(phone,StringUtil.isEmpty(userCon.getName())?"":userCon.getName());
 							}
 						}
 					}

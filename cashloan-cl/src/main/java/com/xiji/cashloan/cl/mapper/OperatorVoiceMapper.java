@@ -54,7 +54,12 @@ public interface OperatorVoiceMapper extends BaseMapper<OperatorVoice, Long> {
 
     OperatorVoiceModel operatorVoicesCount(@Param("tableName") String tableName, @Param("userId") Long userId, @Param("phone") String phone,@Param("reqLogId") Long reqLogId);
 
+    OperatorVoiceModel operatorVoicesCount2(@Param("tableName") String tableName, @Param("userId") Long userId, @Param("phonePre") String phonePre,@Param("phoneSuffix") String phoneSuffix,@Param("reqLogId") Long reqLogId);
+
     OperatorVoiceModel operatorVoicesCount1(@Param("tableName1") String tableName1, @Param("userId") Long userId, @Param("phone") String phone);
+
+    OperatorVoiceModel operatorVoicesCount3(@Param("tableName") String tableName, @Param("userId") Long userId, @Param("phonePre") String phonePre,@Param("phoneSuffix") String phoneSuffix);
+
 
     /**
      * 根据用户id,请求记录id,查询通话详情

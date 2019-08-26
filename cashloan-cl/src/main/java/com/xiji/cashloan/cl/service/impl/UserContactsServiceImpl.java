@@ -11,6 +11,7 @@ import com.xiji.cashloan.cl.domain.UserContacts;
 import com.xiji.cashloan.cl.mapper.UserAuthMapper;
 import com.xiji.cashloan.cl.mapper.UserContactsMapper;
 import com.xiji.cashloan.cl.model.OperatorVoiceModel;
+import com.xiji.cashloan.core.common.context.Global;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -100,7 +101,18 @@ public class UserContactsServiceImpl extends BaseServiceImpl<UserContacts, Long>
 					userContacts.setName(name);
 					userContacts.setPhone(phone);
 					if(auth.getPhoneState().equals("30")){
-						OperatorVoiceModel voicesModel = operatorVoiceMapper.operatorVoicesCount1(tableName1, userId, phone);
+
+						String operatorSelect = Global.getValue("operator_select");
+						OperatorVoiceModel voicesModel = new OperatorVoiceModel();
+						if ("yunqiao".equals(operatorSelect)){
+							if (StringUtil.isNotBlank(userContacts.getPhone()) && userContacts.getPhone().length() > 4){
+								String phonePre = phone.trim().substring(0,3);
+								String phoneSuffix = phone.substring(phone.length()-4,phone.length());
+								voicesModel = operatorVoiceMapper.operatorVoicesCount3(tableName1, userId, phonePre,phoneSuffix);
+							}
+						}else {
+							voicesModel = operatorVoiceMapper.operatorVoicesCount1(tableName, userId, phone);
+						}
 						userContacts.setTotalCount(voicesModel.getTotalCount());
 						userContacts.setSumDuration(voicesModel.getSumDuration());
 					} else {
