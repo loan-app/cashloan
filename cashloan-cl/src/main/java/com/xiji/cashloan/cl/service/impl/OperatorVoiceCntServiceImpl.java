@@ -14,6 +14,7 @@ import com.xiji.cashloan.cl.mapper.UserContactsMapper;
 import com.xiji.cashloan.cl.service.OperatorVoiceCntService;
 import com.xiji.cashloan.cl.util.MobileUtil;
 import com.xiji.cashloan.cl.util.black.CollectionUtil;
+import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
 import com.xiji.cashloan.core.common.util.DateUtil;
@@ -83,12 +84,25 @@ public class OperatorVoiceCntServiceImpl extends BaseServiceImpl<OperatorVoiceCn
 					params.put("userId", userId);
 					List<UserContacts> contacts = userContactsMapper.listShardSelective1(tableName1, params);
 					HashMap<String, String> contactMap = new HashMap<>();
+					String operatorSelect = Global.getValue("operator_select");
 					for (UserContacts userCon : contacts) {
 						if (userCon != null) {
-							if (StringUtil.isNotEmpty(userCon.getPhone())&& userCon.getPhone().length() > 4 && cntMetas.get(0).getPeerNum().contains("****")) {
-								String phone = userCon.getPhone().substring(0, 3) + "****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());
-								contactMap.put(phone,StringUtil.isEmpty(userCon.getName())?"":userCon.getName());
+							String phone = userCon.getPhone();
+							if ("yunqiao".equals(operatorSelect)){
+								if (StringUtil.isNotEmpty(userCon.getPhone())&& userCon.getPhone().length() > 4 && cntMetas.get(0).getPeerNum().contains("*")) {
+									switch (userCon.getPhone().length()){
+										case 5:phone = "*" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										case 6:phone = "**" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										case 7:phone = "***" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										case 8:phone = "****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										case 9:phone = userCon.getPhone().substring(0, 1)+"****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										case 10:phone = userCon.getPhone().substring(0, 2)+"****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										case 11:phone = userCon.getPhone().substring(0, 3) + "****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+										default:phone = userCon.getPhone().substring(0, 3) + "****" + userCon.getPhone().substring(userCon.getPhone().length() - 4, userCon.getPhone().length());break;
+									}
+								}
 							}
+							contactMap.put(phone,StringUtil.isEmpty(userCon.getName())?"":userCon.getName());
 						}
 					}
 

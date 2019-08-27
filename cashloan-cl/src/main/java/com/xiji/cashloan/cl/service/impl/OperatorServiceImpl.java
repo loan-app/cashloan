@@ -223,13 +223,20 @@ public class OperatorServiceImpl implements OperatorService {
                             List<UserContacts> contacts = userContactsMapper.listShardSelective1(tableName1, params);
                             end = DateUtil.getNowTime();
                             logger.info("userContactsMapper.listShardSelective1 ==>" + (end - start) + "秒");
+                            String operatorSelect = Global.getValue("operator_select");
                             for (UserContacts userContacts : contacts) {
                                 String phone = userContacts.getPhone();
-                                String operatorSelect = Global.getValue("operator_select");
                                 OperatorVoiceModel operatorVoicesModel = new OperatorVoiceModel();
                                 if ("yunqiao".equals(operatorSelect)){
                                     if (StringUtil.isNotBlank(userContacts.getPhone())&&userContacts.getPhone().length() > 4){
-                                        String phonePre = phone.trim().substring(0,3);
+                                        String phonePre;
+                                        switch (userContacts.getPhone().length()){
+                                            case 9:phonePre = phone.trim().substring(0,1);break;
+                                            case 10:phonePre = phone.trim().substring(0,2);break;
+                                            case 11:phonePre = phone.trim().substring(0,3);break;
+                                            case 12:phonePre = phone.trim().substring(0,4);break;
+                                            default:phonePre = phone.trim().substring(0,3);break;
+                                        }
                                         String phoneSuffix = phone.substring(phone.length()-4,phone.length());
                                         operatorVoicesModel = operatorVoiceMapper.operatorVoicesCount2(tableName, userId, phonePre,phoneSuffix,reqLogId);
                                     }
