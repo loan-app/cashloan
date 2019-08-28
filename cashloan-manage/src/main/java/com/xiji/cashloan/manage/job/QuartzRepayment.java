@@ -6,6 +6,7 @@ import com.xiji.cashloan.cl.domain.PayLog;
 import com.xiji.cashloan.cl.model.BorrowRepayLogModel;
 import com.xiji.cashloan.cl.model.BorrowRepayModel;
 import com.xiji.cashloan.cl.model.PayLogModel;
+import com.xiji.cashloan.cl.model.pay.chanpay.constant.ChanPayConstant;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonHelper;
 import com.xiji.cashloan.cl.model.pay.common.PayCommonUtil;
 import com.xiji.cashloan.cl.model.pay.common.constant.PayConstant;
@@ -13,6 +14,8 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
+import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.service.BankCardService;
 import com.xiji.cashloan.cl.service.BorrowRepayService;
 import com.xiji.cashloan.cl.service.ClBorrowService;
@@ -198,6 +201,16 @@ public class QuartzRepayment implements Job {
 				vo.setTerminalType("OTHER");
 				vo.setShareKey(bankCard.getUserId());
 				vo.setCardNo(bankCard.getCardNo());
+				String orderNo = "";
+				String payModelSelect = Global.getValue("pay_model_select");
+				if ("helipay".equals(payModelSelect)){
+					orderNo = HelipayUtil.getOrderId();
+				}else if ("kuaiqian".equals(payModelSelect)){
+					orderNo = KuaiqianPayUtil.getOrderId();
+				}else if ("chanpay".equals(payModelSelect)){
+					orderNo = ChanPayConstant.getOrderId();
+				}
+				vo.setOrderNo(orderNo);
 				RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
 				String payOrderNo = "";
