@@ -2256,7 +2256,7 @@ public class ClBorrowServiceImpl extends BaseServiceImpl<Borrow, Long> implement
 						return;
 					}
 				}
-
+                logger.info("借款订单" + borrow.getId() + "==>模型分开启");
 				String pxSwitch = Global.getValue("px_switch");
 				String wjfSwitch = Global.getValue("wjf_switch");
 				if ("20".equals(pxSwitch) && "20".equals(wjfSwitch)) {

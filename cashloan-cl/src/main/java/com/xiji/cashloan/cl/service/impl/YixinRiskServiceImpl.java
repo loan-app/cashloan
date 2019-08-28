@@ -235,6 +235,7 @@ public class YixinRiskServiceImpl implements YixinRiskService {
                 log.setRespCode(String.valueOf(resJson.get("code")));
                 log.setIsSuccess(resJson.getBoolean("success") ? 1 : 0);
                 log.setRespMsg(resJson.getString("msg"));
+                log.setFlowId(resJson.getString("flowId"));
                 Date respTime = DateUtil.getNow();
                 log.setRespTime(respTime);
                 if (resJson.getBoolean("success") && "10000".equals(resJson.getString("code"))) {
@@ -248,7 +249,11 @@ public class YixinRiskServiceImpl implements YixinRiskService {
                         score = jsonData.getDouble("compositeScore");
                         saveScore(jsonData, borrow.getUserId(), resJson.getString("flowId"), borrow.getId());
                         logger.info("用户"+ userBaseinfo.getRealName() + ",综合决策报告小额评分为，result ==>"+score);
-                    } else {
+                    } else if (jsonData != null){
+                        score = 0.00;
+                        saveScore(jsonData, borrow.getUserId(), resJson.getString("flowId"), borrow.getId());
+                        logger.info("用户"+ userBaseinfo.getRealName() + ",综合决策报告决策建议为，数据不足，未给出建议 ==>"+resJson);
+                    }else {
                         logger.info("用户"+ userBaseinfo.getRealName() + ",综合决策报告小额评分异常，result ==>"+resJson);
                     }
                 } else {

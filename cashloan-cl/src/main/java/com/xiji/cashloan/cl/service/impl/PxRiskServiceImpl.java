@@ -185,6 +185,7 @@ public class PxRiskServiceImpl implements PxRiskService {
             }
             pxReqLogMapper.save(log);
         } catch (Exception e) {
+            logger.error("获取微积分模型分异常{} ==》"+e);
             e.printStackTrace();
         }
         return i;
