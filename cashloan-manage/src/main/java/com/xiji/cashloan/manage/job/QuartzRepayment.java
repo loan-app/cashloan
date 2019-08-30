@@ -249,25 +249,28 @@ public class QuartzRepayment implements Job {
 //				payLog.setPayReqTime(payReqTime);
 //				payLog.setCreateTime(DateUtil.getNow());
 //				payLogService.save(payLog);
+				payLog = payLogService.findByOrderNo(orderNo);
 				Map<String,Object> params = new HashMap<>();
 				if (StringUtil.isNotEmpty(payOrderNo)) {
 					params.put("payOrderNo",responseVo.getPayPlatNo());
 				}
-				params.put("state",PayLogModel.STATE_PAYMENT_WAIT);
-				params.put("code",responseVo.getStatusCode());
+				params.put("id",payLog.getId());
 				params.put("remark",responseVo.getMessage());
-				params.put("updateTime",DateUtil.getNow());
-				params.put("payReqTime",payReqTime);
-
-				payLog = payLogService.findByOrderNo(orderNo);
 				if ("10".equals(payLog.getState())){
-					params.put("id",payLog.getId());
+					if (PayConstant.RESULT_SUCCESS.equals(responseVo.getStatus())){
+						params.put("state",PayLogModel.STATE_PAYMENT_WAIT);
+					} else {
+						params.put("state",PayLogModel.STATE_PAYMENT_FAILED);
+					}
+					params.put("code",responseVo.getStatusCode());
+					payLogService.updateSelective(params);
+				} else {
 					payLogService.updateSelective(params);
 				}
 
 				succeed++;
 				total++;
-				
+
 				//8104就是没有该还款计划的code
 //				if(repayment.getRet_code().equals("8104")){
 //					//重新上传还款计划

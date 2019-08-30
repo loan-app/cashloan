@@ -289,19 +289,9 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 			orderNo = ChanPayConstant.getOrderId();
 		}
 		vo.setOrderNo(orderNo);
-		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
-
-		String payMsg = "";
-		String payOrderNo = "";
-		if (PayCommonUtil.success(responseVo.getStatus())) {
-			payOrderNo = responseVo.getOrderNo();
-		}
 
 		PayLog payLog = new PayLog();
-		payLog.setOrderNo(responseVo.getOrderNo());
-		if (StringUtil.isNotEmpty(payOrderNo)) {
-			payLog.setPayOrderNo(payOrderNo);
-		}
+		payLog.setOrderNo(orderNo);
 		payLog.setUserId(borrowRepay.getUserId());
 		payLog.setBorrowId(borrowRepay.getBorrowId());
 		payLog.setAmount(NumberUtil.getDouble(amount));
@@ -310,15 +300,35 @@ public class ManageBorrowRepayLogController extends ManageBaseController{
 		payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
 		payLog.setType(PayLogModel.TYPE_COLLECT);
 		payLog.setScenes(PayLogModel.SCENES_DEDUCTION);
-		if (PayConstant.RESULT_SUCCESS.equals(responseVo.getStatus())){
-			payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-		} else {
-			payLog.setState(PayLogModel.STATE_PAYMENT_FAILED);
-		}
-		payLog.setRemark(responseVo.getMessage());
+		payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
 		payLog.setPayReqTime(payReqTime);
 		payLog.setCreateTime(DateUtil.getNow());
 		payLogService.save(payLog);
+		RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
+
+		String payOrderNo = "";
+		if (PayCommonUtil.success(responseVo.getStatus())) {
+			payOrderNo = responseVo.getOrderNo();
+		}
+		Map<String,Object> params = new HashMap<>();
+		if (StringUtil.isNotEmpty(payOrderNo)) {
+			params.put("payOrderNo",responseVo.getPayPlatNo());
+		}
+
+		params.put("remark",responseVo.getMessage());
+		params.put("id",payLog.getId());
+		payLog = payLogService.findByOrderNo(orderNo);
+		if ("10".equals(payLog.getState())){
+			params.put("code",responseVo.getStatusCode());
+			if (PayConstant.RESULT_SUCCESS.equals(responseVo.getStatus())){
+				params.put("state",PayLogModel.STATE_PAYMENT_WAIT);
+			} else {
+				params.put("state",PayLogModel.STATE_PAYMENT_FAILED);
+			}
+			payLogService.updateSelective(params);
+		} else {
+			payLogService.updateSelective(params);
+		}
 
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
