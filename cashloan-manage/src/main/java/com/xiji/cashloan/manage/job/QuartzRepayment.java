@@ -14,6 +14,7 @@ import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentQueryVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.request.RepaymentReqVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentQueryResponseVo;
 import com.xiji.cashloan.cl.model.pay.common.vo.response.RepaymentResponseVo;
+import com.xiji.cashloan.cl.model.pay.helipay.constant.HelipayConstant;
 import com.xiji.cashloan.cl.model.pay.helipay.util.HelipayUtil;
 import com.xiji.cashloan.cl.model.pay.kuaiqian.util.KuaiqianPayUtil;
 import com.xiji.cashloan.cl.service.BankCardService;
@@ -211,17 +212,9 @@ public class QuartzRepayment implements Job {
 					orderNo = ChanPayConstant.getOrderId();
 				}
 				vo.setOrderNo(orderNo);
-				RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
 
-				String payOrderNo = "";
-				if (PayCommonUtil.success(responseVo.getStatus())) {
-					payOrderNo = responseVo.getOrderNo();
-				}
 				PayLog payLog = new PayLog();
-				payLog.setOrderNo(responseVo.getOrderNo());
-				if (StringUtil.isNotEmpty(payOrderNo)) {
-					payLog.setPayOrderNo(payOrderNo);
-				}
+				payLog.setOrderNo(orderNo);
 				payLog.setUserId(borrowRepay.getUserId());
 				payLog.setBorrowId(borrowRepay.getBorrowId());
 				payLog.setAmount(amount);
@@ -231,11 +224,46 @@ public class QuartzRepayment implements Job {
 				payLog.setType(PayLogModel.TYPE_COLLECT);
 				payLog.setScenes(PayLogModel.SCENES_REPAYMENT);
 				payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
-				payLog.setCode(responseVo.getStatusCode());
-				payLog.setRemark(responseVo.getMessage());
+				payLog.setCode(HelipayConstant.RESULT_CODE_SUCCESS);
 				payLog.setPayReqTime(payReqTime);
 				payLog.setCreateTime(DateUtil.getNow());
 				payLogService.save(payLog);
+				RepaymentResponseVo responseVo = PayCommonUtil.repayment(vo);
+
+				String payOrderNo = "";
+				if (PayCommonUtil.success(responseVo.getStatus())) {
+					payOrderNo = responseVo.getOrderNo();
+				}
+
+//				payLog.setUserId(borrowRepay.getUserId());
+//				payLog.setBorrowId(borrowRepay.getBorrowId());
+//				payLog.setAmount(amount);
+//				payLog.setCardNo(bankCard.getCardNo());
+//				payLog.setBank(bankCard.getBank());
+//				payLog.setSource(PayLogModel.SOURCE_FUNDS_OWN);
+//				payLog.setType(PayLogModel.TYPE_COLLECT);
+//				payLog.setScenes(PayLogModel.SCENES_REPAYMENT);
+//				payLog.setState(PayLogModel.STATE_PAYMENT_WAIT);
+//				payLog.setCode(responseVo.getStatusCode());
+//				payLog.setRemark(responseVo.getMessage());
+//				payLog.setPayReqTime(payReqTime);
+//				payLog.setCreateTime(DateUtil.getNow());
+//				payLogService.save(payLog);
+				Map<String,Object> params = new HashMap<>();
+				if (StringUtil.isNotEmpty(payOrderNo)) {
+					params.put("payOrderNo",responseVo.getPayPlatNo());
+				}
+				params.put("state",PayLogModel.STATE_PAYMENT_WAIT);
+				params.put("code",responseVo.getStatusCode());
+				params.put("remark",responseVo.getMessage());
+				params.put("updateTime",DateUtil.getNow());
+				params.put("payReqTime",payReqTime);
+
+				payLog = payLogService.findByOrderNo(orderNo);
+				if ("10".equals(payLog.getState())){
+					params.put("id",payLog.getId());
+					payLogService.updateSelective(params);
+				}
 
 				succeed++;
 				total++;

@@ -155,7 +155,12 @@ public class ChargeController extends BaseController {
 			return;
 		}
 		logger.info("进入订单" + orderNo + "处理中.....");
-
+		PayLog payLog = payLogService.findByOrderNo(orderNo);
+		if(null  == payLog ){
+			logger.warn("未查询到对应的支付订单");
+			response.setStatus(400);
+			return;
+		}
 		PayReqLog payReqLog = payReqLogService.findByOrderNo(orderNo);
 		if (payReqLog != null) {
 			int prl = payRespLogService.countByOrderNo(orderNo, PayRespLogModel.RESP_LOG_TYPE_NOTIFY);
@@ -172,12 +177,6 @@ public class ChargeController extends BaseController {
 			modifyPayReqLog(payReqLog,jsonMsg);
 		}
 
-		PayLog payLog = payLogService.findByOrderNo(orderNo);
-		if(null  == payLog ){
-			logger.warn("未查询到对应的支付订单");
-			response.setStatus(400);
-			return;
-		}
 		RepaymentNotifyDto dto = new RepaymentNotifyDto();
 		dto.setMessage(vo.getRt3_retMsg());
 		if (StringUtil.equals(vo.getRt2_retCode(), HelipayConstant.RESULT_CODE_SUCCESS) && "SUCCESS".equals(vo.getRt9_orderStatus())) {
