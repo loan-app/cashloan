@@ -180,7 +180,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			authApply(br);
 			return true;
 		}
-		pxRiskService.wjfhistory(borrow);
+		//pxRiskService.wjfhistory(borrow);
 		return false;
 	}
 
@@ -409,8 +409,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 					}
 				}
 			}
-		Borrow byPrimary = clBorrowService.findByPrimary(br.getBorrowId());
-        pxRiskService.wjfhistory(byPrimary);
+		//Borrow byPrimary = clBorrowService.findByPrimary(br.getBorrowId());
+        //pxRiskService.wjfhistory(byPrimary);
 		return result;
 	}
 
@@ -438,8 +438,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 			bp.setCreateTime(DateUtil.getNow());
 			return borrowProgressMapper.save(bp);
 		}
-		Borrow byPrimary = clBorrowService.findByPrimary(borrowId);
-		pxRiskService.wjfhistory(byPrimary);
+		//Borrow byPrimary = clBorrowService.findByPrimary(borrowId);
+		//pxRiskService.wjfhistory(byPrimary);
 		return i;
 
 
@@ -585,8 +585,8 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		}
 		result.put("Code", Constant.SUCCEED_CODE_VALUE);
 		result.put("Msg", "展期成功");
-		Borrow borrow = clBorrowService.findByPrimary(borrowRepay.getBorrowId());
-		pxRiskService.wjfhistory(borrow);
+		//Borrow borrow = clBorrowService.findByPrimary(borrowRepay.getBorrowId());
+		//pxRiskService.wjfhistory(borrow);
 		return result;
 	}
 
@@ -940,7 +940,7 @@ public class BorrowRepayServiceImpl extends BaseServiceImpl<BorrowRepay, Long> i
 		payReqLog.setReqDetailParams(JSONObject.toJSONString(sdkParam));
 		payReqLog.setIp(ip);
 		payReqLogMapper.save(payReqLog);
-        pxRiskService.wjfhistory(borrow);
+        //pxRiskService.wjfhistory(borrow);
 		return sdkParam;
 	}
 
