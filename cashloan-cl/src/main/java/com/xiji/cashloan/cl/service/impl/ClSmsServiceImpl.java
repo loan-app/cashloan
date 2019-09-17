@@ -12,6 +12,7 @@ import com.xiji.cashloan.cl.model.dsdata.SmsTkCreditRequest;
 import com.xiji.cashloan.cl.monitor.BusinessExceptionMonitor;
 import com.xiji.cashloan.cl.service.ClSmsService;
 import com.xiji.cashloan.cl.util.CallsOutSideFeeConstant;
+import com.xiji.cashloan.cl.util.SmsUtils;
 import com.xiji.cashloan.core.common.context.Global;
 import com.xiji.cashloan.core.common.mapper.BaseMapper;
 import com.xiji.cashloan.core.common.service.impl.BaseServiceImpl;
@@ -148,9 +149,13 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			int vcode = (int) (Math.random() * 9000) + 1000;
 			payload.put("mobile", phone);
 			payload.put("message", change(type)+vcode);
-			String result = sendCode(payload, tpl.getNumber());
-			logger.info("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
-			return result(result, phone, type, vcode);
+			try {
+				String result = sendCode(payload, tpl.getNumber());
+				logger.info("发送短信，phone：" + phone + "， type：" + type + "，同步响应结果：" + result);
+				return result(result, phone, type, vcode);
+			} catch (Exception e) {
+				logger.error("发送短信出错：{}", e);
+			}
 		}
 		logger.error("发送短信，phone：" + phone + "， type：" + type + "，没有获取到smsTpl");
 		return null;
@@ -421,14 +426,22 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 			sms.setSmsType(type);
 			sms.setVerifyTime(0);
 
-			if (code == 200) {
-				JSONObject resJson = JSONObject.parseObject(StringUtil.isNull(resultJson.get("res")));
-				JSONObject tempJson = JSONObject.parseObject(StringUtil.isNull(resultJson.get("tempParame")));
-				String orderNo = StringUtil.isNull(resultJson.get("orderNo"));
-				Integer tempCode = tempJson.getInteger("code");
-				sms.setContent(resJson.getString("result"));
+//{"code":"0","message":"SUCCESS","count":1,"feeCount":1,"msgId":"11594_1_0_18296134271_1_RlSRpvH_1"}
+			if (code == 200 || code == 0) {
+				String orderNo;
+				if(resultJson.get("res") != null
+						&& resultJson.get("tempParame") != null) {
+					JSONObject resJson = JSONObject.parseObject(StringUtil.isNull(resultJson.get("res")));
+					JSONObject tempJson = JSONObject.parseObject(StringUtil.isNull(resultJson.get("tempParame")));
+					orderNo = StringUtil.isNull(resultJson.get("orderNo"));
+					Integer tempCode = tempJson.getInteger("code");
+					sms.setContent(resJson.getString("result"));
+					sms.setCode(StringUtil.isNull(tempCode));
+				} else {
+					orderNo = StringUtil.isNull(resultJson.get("msgId"));
+					sms.setCode(vcode + "");
+				}
 				sms.setResp("短信发送中");
-				sms.setCode(StringUtil.isNull(tempCode));
 				sms.setOrderNo(orderNo);
 				sms.setState("30");
 				int ms = smsMapper.save(sms);
@@ -509,11 +522,42 @@ public class ClSmsServiceImpl extends BaseServiceImpl<Sms, Long> implements ClSm
 		if ("10".equals(sms_passageway)) {
 			return dsSendSms(payload, smsNo);
 		}
+
+		if ("20".equals(sms_passageway)) {
+			Map<String, Object> search = new HashMap<>();
+			search.put("state", "10");
+			search.put("number", smsNo);
+			if(smsTplMapper.listSelective(search).size() == 0) {
+				return "";
+			}
+			SmsTpl tpl = smsTplMapper.listSelective(search).get(0);
+			if(tpl != null && (tpl.getType().equals("register")
+					|| tpl.getType().equals("findReg")
+					|| tpl.getType().equals("findPay")
+					|| tpl.getType().equals("sysLogin")
+					|| tpl.getType().equals("userLogin")
+			)) {
+				try {
+					return SmsUtils.sendBeeSms(payload.get("mobile").toString(), payload.get("message").toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					return SmsUtils.sendQdzSms(payload.get("mobile").toString(), payload.get("message").toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
 		return "";
 	}
 
 	//大圣短信通道2(到期提醒短信发送)
 	private String dsSendSm2(Map<String, Object> payload, String smsNo){
+
 		final String APIHOST = Global.getValue("sms_apihost2");//发送地址
 
 		SmsTkCreditRequest creditRequest = new SmsTkCreditRequest(APIHOST,smsNo);
