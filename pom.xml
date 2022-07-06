@@ -20,7 +20,7 @@
 		<org.springframework.version>4.2.5.RELEASE</org.springframework.version>
 		<activiti.version>5.20.0</activiti.version>
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
-		<shiro.version>1.2.3</shiro.version>
+		<shiro.version>1.9.1</shiro.version>
 		<spring.mybatis.version>1.3.0</spring.mybatis.version>
 		<mybatis.version>3.4.0</mybatis.version>
 	</properties>
