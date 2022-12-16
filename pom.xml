@@ -17,7 +17,7 @@
 	</modules>
 
 	<properties>
-		<org.springframework.version>4.2.5.RELEASE</org.springframework.version>
+		<org.springframework.version>5.2.20.RELEASE</org.springframework.version>
 		<activiti.version>5.20.0</activiti.version>
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
 		<shiro.version>1.2.3</shiro.version>
